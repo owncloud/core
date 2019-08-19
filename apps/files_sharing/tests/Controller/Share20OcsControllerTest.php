@@ -25,10 +25,11 @@
 namespace OCA\Files_Sharing\Tests\API;
 
 use OC\OCS\Result;
+use OC\Share\Constants;
+use OC\Share20\Manager;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
-use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -43,19 +44,18 @@ use OCP\IUserSession;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use OCP\Files\Folder;
 use OCP\Files\Node;
 use OCP\Share\Exceptions\ShareNotFound;
-use OCP\Share\IManager;
-use OCP\Files\Cache\ICache;
-use OCP\Files\File;
-use OCA\Files_Sharing\External\Storage;
 use OCP\Share\IShare;
 use OCP\Share\IAttributes as IShareAttributes;
-use OC\Files\Cache\Cache;
+use OCP\Share\IManager;
+use OCP\Files\File;
+use OCP\Files\Storage;
 
 /**
  * Class Share20OcsControllerTest
@@ -65,19 +65,19 @@ use OC\Files\Cache\Cache;
  */
 class Share20OcsControllerTest extends TestCase {
 
-	/** @var \OC\Share20\Manager | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var Manager | MockObject */
 	private $shareManager;
 
-	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IGroupManager | MockObject */
 	private $groupManager;
 
-	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserManager | MockObject */
 	private $userManager;
 
-	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IRequest | MockObject */
 	private $request;
 
-	/** @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IRootFolder | MockObject */
 	private $rootFolder;
 
 	/** @var IURLGenerator */
@@ -105,7 +105,7 @@ class Share20OcsControllerTest extends TestCase {
 	private $config;
 
 	protected function setUp() {
-		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
+		$this->shareManager = $this->getMockBuilder(IManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->shareManager
@@ -167,7 +167,7 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	/**
-	 * @return Share20OcsController | \PHPUnit\Framework\MockObject\MockObject
+	 * @return Share20OcsController | MockObject
 	 */
 	private function mockFormatShare() {
 		return $this->getMockBuilder(Share20OcsController::class)
@@ -241,7 +241,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
 		$this->assertEquals($expected, $this->ocs->deleteShare(42));
 	}
 
@@ -263,12 +263,12 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 		$node->expects($this->once())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
-		$expected = new \OC\OCS\Result();
+		$expected = new Result();
 		$this->assertEquals($expected, $this->ocs->deleteShare(42));
 	}
 
@@ -290,13 +290,13 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED)
+			->with(ILockingProvider::LOCK_SHARED)
 			->will($this->throwException(new LockedException('mypath')));
 		$node->expects($this->never())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
-		$expected = new \OC\OCS\Result(null, 404, 'could not delete share');
+		$expected = new Result(null, 404, 'could not delete share');
 		$this->assertEquals($expected, $this->ocs->deleteShare(42));
 	}
 
@@ -597,7 +597,7 @@ class Share20OcsControllerTest extends TestCase {
 			['group', $group],
 		]));
 
-		$expected = new \OC\OCS\Result([$result]);
+		$expected = new Result([$result]);
 		$this->assertEquals($expected->getData(), $ocs->getShare($share->getId())->getData());
 	}
 
@@ -613,7 +613,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with('ocinternal:42')
 			->willReturn($share);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
 		$this->assertEquals($expected->getMeta(), $this->ocs->getShare(42)->getMeta());
 	}
 
@@ -684,7 +684,7 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testCreateShareNoPath() {
-		$expected = new \OC\OCS\Result(null, 404, 'Please specify a file or folder path');
+		$expected = new Result(null, 404, 'Please specify a file or folder path');
 
 		$result = $this->ocs->createShare();
 
@@ -710,7 +710,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with('invalid-path')
 			->will($this->throwException(new \OCP\Files\NotFoundException()));
 
-		$expected = new \OC\OCS\Result(null, 404, 'Wrong path, file/folder doesn\'t exist');
+		$expected = new Result(null, 404, 'Wrong path, file/folder doesn\'t exist');
 
 		$result = $this->ocs->createShare();
 
@@ -749,9 +749,9 @@ class Share20OcsControllerTest extends TestCase {
 
 		$path->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Please specify a valid user');
+		$expected = new Result(null, 404, 'Please specify a valid user');
 
 		$result = $this->ocs->createShare();
 
@@ -789,11 +789,11 @@ class Share20OcsControllerTest extends TestCase {
 			->with('valid-path')
 			->willReturn($path);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Please specify a valid user');
+		$expected = new Result(null, 404, 'Please specify a valid user');
 
 		$path->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$result = $this->ocs->createShare();
 
@@ -811,12 +811,12 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->request
 			->method('getParam')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['path', null, 'valid-path'],
 				['permissions', null, \OCP\Constants::PERMISSION_ALL],
 				['shareType', $this->any(), Share::SHARE_TYPE_USER],
 				['shareWith', null, 'validUser'],
-			]));
+			]);
 
 		$userFolder = $this->createMock('\OCP\Files\Folder');
 		$this->rootFolder->expects($this->once())
@@ -839,10 +839,10 @@ class Share20OcsControllerTest extends TestCase {
 
 		$path->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 		$path->expects($this->once())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('createShare')
 			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
@@ -856,7 +856,7 @@ class Share20OcsControllerTest extends TestCase {
 			}))
 			->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result();
+		$expected = new Result();
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -894,11 +894,11 @@ class Share20OcsControllerTest extends TestCase {
 				->with('valid-path')
 				->willReturn($path);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Please specify a valid user');
+		$expected = new Result(null, 404, 'Please specify a valid user');
 
 		$path->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$result = $this->ocs->createShare();
 
@@ -946,7 +946,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->sharingBlacklist->method('isGroupBlacklisted')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 403, 'The group is blacklisted for sharing');
+		$expected = new Result(null, 403, 'The group is blacklisted for sharing');
 
 		$result = $this->ocs->createShare();
 
@@ -997,10 +997,10 @@ class Share20OcsControllerTest extends TestCase {
 
 		$path->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 		$path->expects($this->once())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('createShare')
 			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
@@ -1014,7 +1014,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->sharingBlacklist->method('isGroupBlacklisted')->willReturn(false);
 
-		$expected = new \OC\OCS\Result();
+		$expected = new Result();
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1057,7 +1057,7 @@ class Share20OcsControllerTest extends TestCase {
 			->method('allowGroupSharing')
 			->willReturn(false);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Group sharing is disabled by the administrator');
+		$expected = new Result(null, 404, 'Group sharing is disabled by the administrator');
 
 		$result = $this->ocs->createShare();
 
@@ -1084,7 +1084,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('newShare')->willReturn(\OC::$server->getShareManager()->newShare());
 
-		$expected = new \OC\OCS\Result(null, 404, 'Public link sharing is disabled by the administrator');
+		$expected = new Result(null, 404, 'Public link sharing is disabled by the administrator');
 		$result = $this->ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1112,7 +1112,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('newShare')->willReturn(\OC::$server->getShareManager()->newShare());
 		$this->shareManager->method('shareApiAllowLinks')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 403, 'Public upload disabled by the administrator');
+		$expected = new Result(null, 403, 'Public upload disabled by the administrator');
 		$result = $this->ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1141,7 +1141,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiAllowLinks')->willReturn(true);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Public upload is only possible for publicly shared folders');
+		$expected = new Result(null, 404, 'Public upload is only possible for publicly shared folders');
 		$result = $this->ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1185,7 +1185,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1229,7 +1229,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1273,7 +1273,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1306,7 +1306,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiAllowLinks')->willReturn(true);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(false);
 
-		$expected = new \OC\OCS\Result(null, 403, 'Public upload disabled by the administrator');
+		$expected = new Result(null, 403, 'Public upload disabled by the administrator');
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1349,7 +1349,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1393,7 +1393,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1440,7 +1440,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1473,7 +1473,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiAllowLinks')->willReturn(true);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Invalid date, date format must be YYYY-MM-DD');
+		$expected = new Result(null, 404, 'Invalid date, date format must be YYYY-MM-DD');
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1537,11 +1537,11 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
-		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
 		$result = $this->ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1558,11 +1558,11 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
-		$expected = new \OC\OCS\Result(null, 400, 'Wrong or no update parameter given');
+		$expected = new Result(null, 400, 'Wrong or no update parameter given');
 		$result = $this->ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1579,11 +1579,11 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
-		$expected = new \OC\OCS\Result(null, 400, 'Wrong or no update parameter given');
+		$expected = new Result(null, 400, 'Wrong or no update parameter given');
 		$result = $this->ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1612,10 +1612,10 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 		$node->expects($this->once())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->request
 			->method('getParam')
@@ -1635,7 +1635,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1682,7 +1682,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1733,7 +1733,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1768,7 +1768,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 400, 'Invalid date. Format must be YYYY-MM-DD');
+		$expected = new Result(null, 400, 'Invalid date. Format must be YYYY-MM-DD');
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1816,7 +1816,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(false);
 
-		$expected = new \OC\OCS\Result(null, 403, 'Public upload disabled by the administrator');
+		$expected = new Result(null, 403, 'Public upload disabled by the administrator');
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1845,7 +1845,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 400, 'Public upload is only possible for publicly shared folders');
+		$expected = new Result(null, 400, 'Public upload is only possible for publicly shared folders');
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1870,10 +1870,10 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 		$node->expects($this->once())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->request
 			->method('getParam')
@@ -1891,7 +1891,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1919,10 +1919,10 @@ class Share20OcsControllerTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 		$node->expects($this->once())
 			->method('unlock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
@@ -1937,7 +1937,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -1984,7 +1984,7 @@ class Share20OcsControllerTest extends TestCase {
 			})
 		)->will($this->returnArgument(0));
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2032,7 +2032,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2074,7 +2074,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2106,7 +2106,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
-		$expected = new \OC\OCS\Result(null, 400, 'Can\'t change permissions for public share links');
+		$expected = new Result(null, 400, 'Can\'t change permissions for public share links');
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2141,7 +2141,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2178,7 +2178,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2217,7 +2217,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
 
-		$expected = new \OC\OCS\Result(null);
+		$expected = new Result(null);
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2643,7 +2643,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testGetShareApiDisabled() {
 		$ocs = $this->getOcsDisabledAPI();
 
-		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
+		$expected = new Result(null, 404, 'Share API is disabled');
 		$result = $ocs->getShare('my:id');
 
 		$this->assertEquals($expected, $result);
@@ -2652,7 +2652,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testDeleteShareApiDisabled() {
 		$ocs = $this->getOcsDisabledAPI();
 
-		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
+		$expected = new Result(null, 404, 'Share API is disabled');
 		$result = $ocs->deleteShare('my:id');
 
 		$this->assertEquals($expected, $result);
@@ -2661,7 +2661,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testCreateShareApiDisabled() {
 		$ocs = $this->getOcsDisabledAPI();
 
-		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
+		$expected = new Result(null, 404, 'Share API is disabled');
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected, $result);
@@ -2670,7 +2670,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testGetSharesApiDisabled() {
 		$ocs = $this->getOcsDisabledAPI();
 
-		$expected = new \OC\OCS\Result();
+		$expected = new Result();
 		$result = $ocs->getShares();
 
 		$this->assertEquals($expected, $result);
@@ -2679,7 +2679,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateShareApiDisabled() {
 		$ocs = $this->getOcsDisabledAPI();
 
-		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
+		$expected = new Result(null, 404, 'Share API is disabled');
 		$result = $ocs->updateShare('my:id');
 
 		$this->assertEquals($expected, $result);
@@ -3263,7 +3263,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testAcceptRejectShareApiDisabled($method, $target, $targetExists, $expectedState) {
 		$ocs = $this->getOcsDisabledAPI();
 
-		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
+		$expected = new Result(null, 404, 'Share API is disabled');
 		$result = $ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
@@ -3301,7 +3301,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->expects($this->never())
 			->method('updateShareForRecipient');
 
-		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
 		$result = $this->ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
@@ -3322,7 +3322,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->expects($this->never())
 			->method('updateShareForRecipient');
 
-		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
 		$result = $this->ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
@@ -3344,7 +3344,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$userShare->setShareOwner('currentUser');
 
-		$expected = new \OC\OCS\Result(null, 403, 'Only recipient can change accepted state');
+		$expected = new Result(null, 403, 'Only recipient can change accepted state');
 		$result = $this->ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
@@ -3374,12 +3374,12 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->expects($this->exactly(2))
 			->method('getSharedWith')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['currentUser', Share::SHARE_TYPE_USER, $userShare->getNode(), -1, 0, [$userShare]],
 				['currentUser', Share::SHARE_TYPE_GROUP, $userShare->getNode(), -1, 0, []]
-			]));
+			]);
 
-		$userFolder = $this->createMock('OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		if ($method === 'acceptShare') {
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
@@ -3399,9 +3399,95 @@ class Share20OcsControllerTest extends TestCase {
 			->with($this->currentUser->getUID())
 			->willReturn($userFolder);
 
-		$expected = new \OC\OCS\Result(null, 400, 'operation error');
+		$expected = new Result(null, 400, 'operation error');
 		$result = $this->ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @dataProvider providesShareAttributes
+	 */
+	public function testPermissionsViaAttributes($expectedPermission, $attributes) {
+		$share = $this->newShare();
+		$this->shareManager->method('newShare')->willReturn($share);
+
+		$share->setShareOwner('shareOwner');
+
+		$ocs = $this->mockFormatShare();
+		$ocs->expects(self::once())->method('formatShare')->willReturnCallback(static function (IShare $share) {
+			return [
+				'permissions' => $share->getPermissions(),
+				'attributes' => $share->getAttributes()
+			];
+		});
+
+		$this->request
+			->method('getParam')
+			->willReturnMap([
+				['path', null, 'valid-path'],
+				['permissions', null, null],
+				['attributes', null, $attributes],
+				['shareType', $this->any(), Share::SHARE_TYPE_USER],
+				['shareWith', null, 'validUser'],
+			]);
+
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+
+		$path = $this->createMock('\OCP\Files\File');
+		$storage = $this->createMock('OCP\Files\Storage');
+		$storage->method('instanceOfStorage')
+			->with('OCA\Files_Sharing\External\Storage')
+			->willReturn(false);
+		$path->method('getStorage')->willReturn($storage);
+		$userFolder->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+
+		$path->expects($this->once())
+			->method('lock')
+			->with(ILockingProvider::LOCK_SHARED);
+		$path->expects($this->once())
+			->method('unlock')
+			->with(ILockingProvider::LOCK_SHARED);
+
+		$this->shareManager->method('createShare')->will($this->returnArgument(0));
+
+		$result = $ocs->createShare();
+
+		$this->assertEquals($expectedPermission, $result->getData()['permissions']);
+	}
+
+	public function providesShareAttributes() {
+		return [
+			[
+				\OCP\Constants::PERMISSION_READ, [
+				['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true']
+			]
+			],
+			[
+				\OCP\Constants::PERMISSION_ALL, [
+				['scope' => 'ownCloud', 'key' => 'create', 'value' => 'true'],
+				['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true'],
+				['scope' => 'ownCloud', 'key' => 'update', 'value' => 'true'],
+				['scope' => 'ownCloud', 'key' => 'delete', 'value' => 'true'],
+				['scope' => 'ownCloud', 'key' => 'share', 'value' => 'true'],
+			]
+			],
+			[
+				\OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE , [
+				['scope' => 'ownCloud', 'key' => 'create', 'value' => 'true'],
+				['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true'],
+				['scope' => 'ownCloud', 'key' => 'share', 'value' => 'true'],
+			]
+			],
+		];
 	}
 }

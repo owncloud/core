@@ -50,4 +50,3 @@ class AddRolesEvent extends Event {
 		return \array_values($this->roles);
 	}
 }
-
