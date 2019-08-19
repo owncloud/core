@@ -6,6 +6,16 @@ local services = {
       image: 'mailhog/mailhog:latest',
     }],
 
+  proxy()::
+    [{
+      name: 'proxy',
+      pull: 'always',
+      image: 'pottava/proxy',
+    environment: {
+      PROXY_URL: 'http://server'
+    },
+    }],
+
   get(service)::
     if service != '' then $[service]() else [],
 };
@@ -167,7 +177,7 @@ local browsers = {
 };
 
 local suites = {
-  phpunit(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false)::
+  phpunit(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false, server='server')::
     [{
       name: 'phpunit-tests',
       image: image,
@@ -183,13 +193,13 @@ local suites = {
       ],
     }],
 
-  webui(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false)::
+  webui(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false, server='server')::
     [{
       name: 'webui-acceptance-tests',
       image: image,
       pull: 'always',
       environment: {
-        TEST_SERVER_URL: proto + '://server',
+        TEST_SERVER_URL: proto + '://' + server,
         BEHAT_FILTER_TAGS: filter,
         BEHAT_SUITE: suite,
         BROWSER: browser,
@@ -207,13 +217,13 @@ local suites = {
       ],
     }],
 
-  api(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false)::
+  api(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false, server='server')::
     [{
       name: 'api-acceptance-tests',
       image: image,
       pull: 'always',
       environment: {
-        TEST_SERVER_URL: proto + '://server',
+        TEST_SERVER_URL: proto + '://' + server,
         BEHAT_FILTER_TAGS: filter,
         BEHAT_SUITE: suite,
         [if num != '' then 'DIVIDE_INTO_NUM_PARTS']: std.split(num, '/')[1],
@@ -226,14 +236,14 @@ local suites = {
       ],
     }],
 
-  cli(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false)::
+  cli(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false, server='server')::
     [{
       name: 'cli-acceptance-tests',
       image: image,
       pull: 'always',
       environment: {
         MAILHOG_HOST: 'email',
-        TEST_SERVER_URL: proto + '://server',
+        TEST_SERVER_URL: proto + '://' + server,
         BEHAT_FILTER_TAGS: filter,
         BEHAT_SUITE: suite,
         [if num != '' then 'DIVIDE_INTO_NUM_PARTS']: std.split(num, '/')[1],
@@ -246,14 +256,14 @@ local suites = {
       ],
     }],
 
-  loc(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false)::
+  loc(image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false, server='server')::
     [{
       name: 'local-acceptance-tests',
       image: image,
       pull: 'always',
       environment: {
         MAILHOG_HOST: 'email',
-        TEST_SERVER_URL: proto + '://server',
+        TEST_SERVER_URL: proto + '://' + server,
         BEHAT_FILTER_TAGS: filter,
         BEHAT_SUITE: suite,
         [if num != '' then 'DIVIDE_INTO_NUM_PARTS']: std.split(num, '/')[1],
@@ -266,8 +276,8 @@ local suites = {
       ],
     }],
 
-  get(type, image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false)::
-    if type != '' then $[type](image, db, external, object, suite, browser, filter, num, proto, coverage) else [],
+  get(type, image='', db='', external='', object='', suite='', browser='', filter='', num='', proto='https', coverage=false, server='server')::
+    if type != '' then $[type](image, db, external, object, suite, browser, filter, num, proto, coverage, server) else [],
 };
 
 {
@@ -598,14 +608,14 @@ local suites = {
       depends_on: depends_on,
     },
 
-  behat(php='', db='', type='', browser='', suite='', filter='', num='', notification=false, email=false, federated='', proto='https', trigger={}, depends_on=[])::
+  behat(php='', db='', type='', browser='', suite='', filter='', num='', notification=false, proxy=false, email=false, federated='', proto='https', proxy=false, trigger={}, depends_on=[])::
     local database_split = std.split(db, ':');
     local database_name = database_split[0];
     local database_version = if std.length(database_split) == 2 then database_split[1] else '';
 
     {
       kind: 'pipeline',
-      name: 'behat' + (if browser != '' then '-' + browser else '-headless') + (if suite != '' then '-' + suite else '') + (if num != '' then '-' + std.join('-of-', std.split(num, "/")) else ''),
+      name: 'behat' + (if browser != '' then '-' + browser else '-headless') + (if suite != '' then '-' + suite else '') + + (if proxy == true then '-' + 'proxy' else '') + (if num != '' then '-' + std.join('-of-', std.split(num, "/")) else ''),
       platform: {
         os: 'linux',
         arch: 'amd64',
@@ -620,14 +630,14 @@ local suites = {
         $.vendorbin(image='owncloudci/php:' + php),
         $.yarn(image='owncloudci/php:' + php),
       ]
-      + $.server(image='owncloudci/php:' + php, db=database_name)
+      + $.server(image='owncloudci/php:' + php, db=database_name, proxy=proxy)
       + $.testingapp(image='owncloudci/php:' + php)
       + (if notification then $.notificationsapp(image='owncloudci/php:' + php) else [])
       + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
       + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log')
       + (if federated != '' then $.federated(image='owncloudci/php:' + php, version=federated, proto=proto) + $.permissions(image='owncloudci/php:' + php, name='federated', path='/drone/federated') + $.logging(image='owncloudci/php:' + php, name='federated-logfile', file='/drone/federated/data/owncloud.log') else [])
-      + suites.get(image='owncloudci/php:' + php, type=type, suite=suite, browser=browser, filter=filter, num=num, proto=proto),
-      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src', proto=proto) + (if federated != '' then $.owncloud(image='owncloudci/php:' + php, basename='federated', root='/drone/federated', proto=proto) else []) + browsers.get(browser) + databases.get(database_name, database_version) + (if email then services.get('email') else []),
+      + suites.get(image='owncloudci/php:' + php, type=type, suite=suite, browser=browser, filter=filter, num=num, proto=proto, server=(if proxy then 'proxy' else 'server')),
+      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src', proto=proto) + (if federated != '' then $.owncloud(image='owncloudci/php:' + php, basename='federated', root='/drone/federated', proto=proto) else []) + browsers.get(browser) + databases.get(database_name, database_version) + (if email then services.get('email') else []) + (if proxy then services.get('proxy') else []),
       trigger: trigger,
       depends_on: depends_on,
     },
@@ -809,11 +819,12 @@ local suites = {
       ],
     }],
 
-  server(image='owncloudci/php:7.1', db='', federated=false)::
+  server(image='owncloudci/php:7.1', db='', federated=false, proxy=false)::
     [{
       name: 'install-server',
       image: image,
       pull: 'always',
+      proxy: proxy,
       environment: {
         DB_TYPE: db,
       },
@@ -827,7 +838,7 @@ local suites = {
         'php occ security:certificates:import /drone/server.crt',
       ] + if federated then ['php occ security:certificates:import /drone/federated.crt'] else [] + [
         'php occ security:certificates',
-      ],
+      ] + if proxy then ['php occ config:system:set trusted_domains 3 --value=proxy'] else [],
     }],
 
   federated(image='owncloudci/php:7.1', version='', proto='https')::
