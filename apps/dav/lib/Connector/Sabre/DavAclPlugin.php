@@ -24,6 +24,7 @@ namespace OCA\DAV\Connector\Sabre;
 
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\INode;
+use Sabre\DAVACL\Plugin;
 
 /**
  * Class DavAclPlugin is a wrapper around \Sabre\DAVACL\Plugin that returns 404
@@ -33,14 +34,21 @@ use Sabre\DAV\INode;
  * @see https://github.com/owncloud/core/issues/22578
  * @package OCA\DAV\Connector\Sabre
  */
-class DavAclPlugin extends \Sabre\DAVACL\Plugin {
+class DavAclPlugin extends Plugin {
 	public function __construct() {
 		$this->hideNodesFromListings = true;
 		$this->allowUnauthenticatedAccess = false;
 	}
 
 	public function checkPrivileges($uri, $privileges, $recursion = self::R_PARENT, $throwExceptions = true) {
-		$access = parent::checkPrivileges($uri, $privileges, $recursion, false);
+		// within public-files throwing the exception NeedPrivileges is desired
+		$shallThrowExceptions = false;
+		$elements = \explode('/', $uri);
+		if ($elements[0] === 'public-files') {
+			$shallThrowExceptions = true;
+		}
+
+		$access = parent::checkPrivileges($uri, $privileges, $recursion, $shallThrowExceptions);
 		if ($access === false && $throwExceptions) {
 			/** @var INode $node */
 			$node = $this->server->tree->getNodeForPath($uri);
