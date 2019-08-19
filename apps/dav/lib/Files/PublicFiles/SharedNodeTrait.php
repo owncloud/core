@@ -53,7 +53,7 @@ trait SharedNodeTrait {
 	}
 
 	public function getETag() {
-		return $this->node->getETag();
+		return '"' . $this->node->getEtag() . '"';
 	}
 
 	public function delete() {
