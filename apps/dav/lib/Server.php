@@ -132,6 +132,7 @@ class Server {
 		$this->server->addPlugin(new CorsPlugin(OC::$server->getUserSession()));
 		$authPlugin = new Plugin();
 		if ($this->isRequestForSubtree(['public-files'])) {
+			$this->server->addPlugin(new PublicFilesPlugin());
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
 			$this->server->addPlugin(new PublicLinkEventsPlugin(\OC::$server->getEventDispatcher()));
 			$this->server->addPlugin(new PublicFilesPlugin());

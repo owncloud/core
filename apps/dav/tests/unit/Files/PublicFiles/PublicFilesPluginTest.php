@@ -31,12 +31,18 @@ use Test\TestCase;
 
 class PublicFilesPluginTest extends TestCase {
 	public function testInit() {
-		$server = $this->createMock(Server::class);
-		$server->expects($this->exactly(2))->method('on')->withConsecutive(
-			['propFind'],
-			['beforeMethod:PUT']);
-
 		$plugin = new PublicFilesPlugin();
+
+		$server = $this->createMock(Server::class);
+		$server->expects($this->exactly(4))
+			->method('on')
+			->withConsecutive(
+				['propFind', [$plugin, 'propFind']],
+				['beforeMethod:PUT', [$plugin, 'beforePut']],
+				['beforeWriteContent', [$plugin, 'handleBeforeWriteContent']],
+				['beforeCreateFile', [$plugin, 'handleBeforeCreateFile']]
+			);
+
 		$plugin->initialize($server);
 	}
 
