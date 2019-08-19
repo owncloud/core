@@ -239,7 +239,6 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" creates a public link share using the sharing API with settings$/
-	 * @Given /^user "([^"]*)" has created a public link share with settings$/
 	 *
 	 * @param string $user
 	 * @param TableNode|null $body
@@ -252,6 +251,20 @@ trait Sharing {
 		$rows[] = ['shareType', 'public_link'];
 		$newBody = new TableNode($rows);
 		$this->userCreatesAShareWithSettings($user, $newBody);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has created a public link share with settings$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedAPublicLinkShareWithSettings($user, $body) {
+		$this->userCreatesAPublicLinkShareWithSettings($user, $body);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
+		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
