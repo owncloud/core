@@ -63,7 +63,8 @@ class CleanProperties extends TimedJob {
 		$qb = $this->connection->getQueryBuilder();
 
 		$qb->delete('properties')
-			->where($qb->expr()->in('fileid', $qb->createParameter('fileids')));
+			->where($qb->expr()->in('fileid', $qb->createParameter('fileids')))
+			->orWhere($qb->expr()->isNull('fileid'));
 		$qb->setParameter('fileids', $fileids, IQueryBuilder::PARAM_INT_ARRAY);
 		$qb->execute();
 	}

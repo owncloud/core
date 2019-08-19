@@ -55,6 +55,41 @@ class CleanPropertiesTest extends TestCase {
 		$this->loginAsUser($this->username);
 	}
 
+	public function testDeleteNullFileidEntries() {
+		$qb = $this->connection->getQueryBuilder();
+		$qb->insert('properties')
+			->values([
+				'propertyname' => $qb->createNamedParameter('foo'),
+				'propertyvalue' => $qb->createNamedParameter('bar'),
+			]);
+		$qb->execute();
+		$userFolder = \OC::$server->getUserFolder($this->username);
+		$userFolder->newFile('aa.txt');
+
+		$fileIds[] = $userFolder->get('aa.txt')->getId();
+		foreach ($fileIds as $fileId) {
+			$qb = $this->connection->getQueryBuilder();
+			$qb->insert('properties')
+				->values([
+					'propertyname' => $qb->createNamedParameter('foo'),
+					'propertyvalue' => $qb->createNamedParameter('bar'),
+					'fileid' => $qb->createNamedParameter($fileId)
+				]);
+			$qb->execute();
+		}
+
+		$this->invokePrivate($this->cleanProperties, 'run', ['']);
+
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('fileid')
+			->from('properties');
+		$result = $qb->execute()->fetchAll();
+
+		//No null values would be there
+		$this->assertCount(1, $result);
+		$this->assertEquals((string)$fileIds[0], $result[0]['fileid']);
+	}
+
 	public function testDeleteOrphanEntries() {
 		$userFolder = \OC::$server->getUserFolder($this->username);
 		$userFolder->newFile('a.txt');
