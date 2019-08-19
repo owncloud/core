@@ -21,7 +21,11 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
+use OC\Files\Node\Folder;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
+use OCP\Files\FileInfo;
+use OCP\Files\NotFoundException;
+use Sabre\DAV\Exception\InsufficientStorage;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
@@ -51,6 +55,8 @@ class PublicFilesPlugin extends ServerPlugin {
 
 		$this->server->on('propFind', [$this, 'propFind']);
 		$this->server->on('beforeMethod:PUT', [$this, 'beforePut'], 1);
+		$this->server->on('beforeWriteContent', [$this, 'handleBeforeWriteContent'], 10);
+		$this->server->on('beforeCreateFile', [$this, 'handleBeforeCreateFile'], 10);
 	}
 
 	public function beforePut(RequestInterface $request, ResponseInterface $response) {
@@ -141,5 +147,93 @@ class PublicFilesPlugin extends ServerPlugin {
 				return $node->getNode()->getSize();
 			});
 		}
+	}
+
+	/**
+	 * Check quota before writing content
+	 *
+	 * @param string $uri target file URI
+	 * @param INode $node Sabre Node
+	 * @param resource $data data
+	 * @param bool $modified modified
+	 * @return bool|void
+	 * @throws InsufficientStorage
+	 * @throws NotFoundException
+	 */
+	public function handleBeforeWriteContent($uri, $node, $data, $modified) {
+		if (!$node instanceof SharedFile) {
+			return;
+		}
+		$node = $node->getShare()->getNode();
+		if (!$node instanceof Folder) {
+			return;
+		}
+		return $this->checkQuota($node);
+	}
+
+	/**
+	 * Check quota before creating file
+	 *
+	 * @param string $uri target file URI
+	 * @param resource $data data
+	 * @param INode $parent Sabre Node
+	 * @param bool $modified modified
+	 * @return bool
+	 * @throws InsufficientStorage
+	 * @throws NotFoundException
+	 */
+	public function handleBeforeCreateFile($uri, $data, $parent, $modified) {
+		$share = null;
+		if ($parent instanceof SharedFolder) {
+			$share = $parent->getShare();
+		}
+		if ($parent instanceof PublicSharedRootNode) {
+			$share = $parent->getShare();
+		}
+		if ($share === null) {
+			return;
+		}
+		$node = $share->getNode();
+		if (!$node instanceof Folder) {
+			return;
+		}
+		return $this->checkQuota($node);
+	}
+
+	/**
+	 * This method is called before any HTTP method and validates there is enough free space to store the file
+	 *
+	 * @param Folder $folder
+	 * @param int $length size to check whether it fits
+	 * @return bool
+	 * @throws InsufficientStorage
+	 */
+	public function checkQuota(Folder $folder, $length = null) {
+		if ($length === null) {
+			$length = $this->getLength();
+		}
+		if ($length) {
+			$freeSpace = $folder->getFreeSpace();
+			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && $length > $freeSpace) {
+				throw new InsufficientStorage();
+			}
+		}
+		return true;
+	}
+
+	public function getLength() {
+		$req = $this->server->httpRequest;
+		$length = $req->getHeader('X-Expected-Entity-Length');
+		if (!\is_numeric($length)) {
+			$length = $req->getHeader('Content-Length');
+			$length = \is_numeric($length) ? $length : null;
+		}
+
+		$ocLength = $req->getHeader('OC-Total-Length');
+		if (\is_numeric($length) && \is_numeric($ocLength)) {
+			return \max($length, $ocLength);
+		}
+
+		return $length;
 	}
 }
