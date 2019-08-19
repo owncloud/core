@@ -52,10 +52,15 @@ class RootCollection extends Collection {
 	 * @var bool
 	 */
 	public $disableListing = false;
+	/**
+	 * @var \OCP\IRequest
+	 */
+	private $request;
 
 	public function __construct() {
 		$this->l10n = \OC::$server->getL10N('dav');
 		$this->shareManager = \OC::$server->getShareManager();
+		$this->request = \OC::$server->getRequest();
 	}
 
 	/**
@@ -71,7 +76,7 @@ class RootCollection extends Collection {
 	public function getChild($name) {
 		try {
 			$share = $this->shareManager->getShareByToken($name);
-			return new PublicSharedRootNode($share);
+			return new PublicSharedRootNode($share, $this->request);
 		} catch (ShareNotFound $ex) {
 			throw new NotFound();
 		}
@@ -86,8 +91,8 @@ class RootCollection extends Collection {
 		}
 
 		$shares = $this->shareManager->getAllSharedWith(null, [Constants::SHARE_TYPE_LINK]);
-		return \array_map(static function (IShare $share) {
-			return new PublicSharedRootNode($share);
+		return \array_map(function (IShare $share) {
+			return new PublicSharedRootNode($share, $this->request);
 		}, $shares);
 	}
 }

@@ -22,11 +22,11 @@
 namespace OCA\DAV\Files\PublicFiles;
 
 use OCP\Constants;
-use OCP\Files\FileInfo;
 use OCP\Files\InvalidPathException;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\IRequest;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
@@ -42,14 +42,20 @@ class PublicSharedRootNode extends Collection {
 
 	/** @var IShare */
 	private $share;
+	/**
+	 * @var IRequest
+	 */
+	private $request;
 
 	/**
 	 * PublicSharedRootNode constructor.
 	 *
 	 * @param IShare $share
+	 * @param IRequest $request
 	 */
-	public function __construct(IShare $share) {
+	public function __construct(IShare $share, IRequest $request) {
 		$this->share = $share;
+		$this->request = $request;
 	}
 	/**
 	 * Returns an array with all the child nodes
@@ -57,6 +63,11 @@ class PublicSharedRootNode extends Collection {
 	 * @return INode[]
 	 */
 	public function getChildren() {
+		// Within a PROPFIND request we return no listing in case the share is a file drop folder
+		if ($this->isPropfind() && $this->isFileDropFolder()) {
+			return [];
+		}
+
 		if ($this->share->getNodeType() === 'folder') {
 			$nodes = $this->share->getNode()->getDirectoryListing();
 		} else {
@@ -159,5 +170,17 @@ class PublicSharedRootNode extends Collection {
 
 	protected function checkPermissions($permissions) {
 		return ($this->share->getPermissions() & $permissions) === $permissions;
+	}
+
+	private function isPropfind() {
+		return $this->request->getMethod() === 'PROPFIND';
+	}
+
+	/**
+	 * An anonymous upload folder aka file drop folder has only the create permission
+	 * @return bool
+	 */
+	public function isFileDropFolder(): bool {
+		return $this->share->getPermissions() === Constants::PERMISSION_CREATE;
 	}
 }

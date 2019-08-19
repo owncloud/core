@@ -27,6 +27,8 @@ use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\Xml\Property\GetLastModified;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
 
 /**
  * Class PublicFilesPlugin - additional PROPFIND properties for public shared
@@ -48,6 +50,41 @@ class PublicFilesPlugin extends ServerPlugin {
 		$this->server = $server;
 
 		$this->server->on('propFind', [$this, 'propFind']);
+		$this->server->on('beforeMethod:PUT', [$this, 'beforePut'], 1);
+	}
+
+	public function beforePut(RequestInterface $request, ResponseInterface $response) {
+		$path = $request->getPath();
+		if (!$this->server->tree->nodeExists($path)) {
+			return;
+		}
+		list($parentPath, ) = \Sabre\Uri\split($path);
+		$parent = $this->server->tree->getNodeForPath($parentPath);
+
+		// only in share roots of file drop folders auto renaming will be applied
+		if (!$parent instanceof PublicSharedRootNode) {
+			return;
+		}
+		if (!$parent->isFileDropFolder()) {
+			return;
+		}
+
+		// node already exists at target path - the path will be rewritten
+		$newPath = $this->newFileName($path);
+		$request->setUrl($request->getBaseUrl() . $newPath);
+	}
+
+	private function newFileName($path) {
+		$pathInfo = \pathinfo($path);
+		$dirName = $pathInfo['dirname'];
+		$fileName = $pathInfo['filename'];
+		$ext = $pathInfo['extension'];
+
+		$i = 1;
+		while ($this->server->tree->nodeExists("$dirName/$fileName ($i).$ext")) {
+			$i++;
+		}
+		return "$dirName/$fileName ($i).$ext";
 	}
 
 	public function propFind(PropFind $propFind, INode $node) {
