@@ -254,6 +254,7 @@ default:
         - FederationContext:
         - WebDavPropertiesContext:
         - FilesVersionsContext:
+        - PublicWebDavContext:
 
     cliProvisioning:
       paths:

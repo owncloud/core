@@ -173,15 +173,14 @@ Feature: transfer-ownership
   Scenario: transferring ownership of folder shares which has public link
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with user "user2" with permissions "all"
-    And user "user1" has created a public link share with settings
+    And user "user0" has uploaded file with content "user0 file" to "/test/somefile.txt"
+    And user "user0" has created a public link share with settings
       | path | /test/somefile.txt |
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
+    When the public downloads the last public shared file using the old public WebDAV API
+    Then the downloaded content should be "user0 file"
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of folder shared with third user
