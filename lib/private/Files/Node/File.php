@@ -63,12 +63,15 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function putContent($data) {
-		if ($this->checkPermissions(\OCP\Constants::PERMISSION_UPDATE)) {
-			$this->sendHooks(['preWrite']);
-			$this->view->file_put_contents($this->path, $data);
-			$this->fileInfo = null;
-			$this->sendHooks(['postWrite']);
-		} else {
+		if (!$this->checkPermissions(\OCP\Constants::PERMISSION_UPDATE)) {
+			throw new NotPermittedException();
+		}
+
+		$this->sendHooks(['preWrite']);
+		$result = $this->view->file_put_contents($this->path, $data);
+		$this->fileInfo = null;
+		$this->sendHooks(['postWrite']);
+		if ($result === false) {
 			throw new NotPermittedException();
 		}
 	}

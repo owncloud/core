@@ -95,16 +95,25 @@ class PublicSharedRootNode extends Collection {
 		if ($this->share->getNodeType() !== 'folder') {
 			throw new Forbidden('Permission denied to create file');
 		}
+		$pendingFile = null;
 		try {
-			$file = $this->share->getNode()->newFile($name);
-			$file->putContent($data);
-			return $file->getEtag();
+			$pendingFile = $this->share->getNode()->newFile($name);
+			$pendingFile->putContent($data);
+			$etag =  $pendingFile->getEtag();
+			// all operations have been successful - no need to cleanup the pending file in finally block
+			$pendingFile = null;
+			return $etag;
 		} catch (NotPermittedException $ex) {
 			throw new Forbidden('Permission denied to create file');
 		} catch (InvalidPathException $ex) {
 			throw new Forbidden('Permission denied to create file');
 		} catch (NotFoundException $ex) {
 			throw new Forbidden('Permission denied to create file');
+		} finally {
+			// in case of an exception we need to delete the pending file
+			if ($pendingFile) {
+				$pendingFile->delete();
+			}
 		}
 	}
 
