@@ -255,7 +255,7 @@ class MailNotifications {
 			'expirationDate' => $expirationDate,
 			'personalNote' => $personalNote
 		]);
-		$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filter->getFile()]);
+		$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filter->getFile(true)]);
 		list($htmlBody, $textBody) = $this->createMailBody(
 			$filter->getFile(),
 			$filter->getLink(),

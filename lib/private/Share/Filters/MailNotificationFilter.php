@@ -98,7 +98,10 @@ class MailNotificationFilter {
 	/**
 	 * @return string The filtered file name
 	 */
-	public function getFile() {
+	public function getFile($raw = false) {
+		if ($raw) {
+			return $this->inputFilter->getRawValue('file');
+		}
 		return $this->inputFilter->getValue('file');
 	}
 
