@@ -381,233 +381,6 @@ local suites = {
       depends_on: depends_on,
     },
 
-  javascript(trigger={}, depends_on=[])::
-    {
-      kind: 'pipeline',
-      name: 'test-javascript',
-      platform: {
-        os: 'linux',
-        arch: 'amd64',
-      },
-      steps: [
-        $.cache({ restore: true }),
-        $.composer(image='owncloudci/php:7.1'),
-        $.vendorbin(image='owncloudci/php:7.1'),
-        $.yarn(image='owncloudci/php:7.1'),
-        {
-          name: 'test-js',
-          image: 'owncloudci/php:7.1',
-          pull: 'always',
-          commands: [
-            'make test-js',
-          ],
-        },
-        {
-          name: 'coverage-upload',
-          image: 'plugins/codecov:2',
-          pull: 'always',
-          environment: {
-            CODECOV_TOKEN: {
-              from_secret: 'codecov_token',
-            },
-          },
-          settings: {
-            flags: [
-              'javascript',
-            ],
-            paths: [
-              'tests/output/coverage',
-            ],
-            files: [
-              '*.xml',
-            ],
-          },
-          when: {
-            instance: [
-              'drone.owncloud.services',
-              'drone.owncloud.com',
-            ],
-          },
-        },
-      ],
-      trigger: trigger,
-      depends_on: depends_on,
-    },
-
-  litmus(php='', db='', trigger={}, depends_on=[])::
-    local database_split = std.split(db, ':');
-    local database_name = database_split[0];
-    local database_version = if std.length(database_split) == 2 then database_split[1] else '';
-
-    {
-      kind: 'pipeline',
-      name: 'litmus-php' + php,
-      platform: {
-        os: 'linux',
-        arch: 'amd64',
-      },
-      steps: [
-        $.cache({ restore: true }),
-        $.composer(image='owncloudci/php:' + php),
-        $.vendorbin(image='owncloudci/php:' + php),
-        $.yarn(image='owncloudci/php:' + php),
-      ] + $.server(image='owncloudci/php:' + php, db=database_name) + [
-        {
-          name: 'setup-storage',
-          image: 'owncloudci/php:' + php,
-          pull: 'always',
-          environment: {
-            OC_PASS: '123456',
-          },
-          commands: [
-            'mkdir -p /drone/src/work/local_storage',
-            'php occ app:enable files_external',
-            'php occ config:system:set files_external_allow_create_new_local --value=true',
-            'php occ config:app:set core enable_external_storage --value=yes',
-            'php occ files_external:create local_storage local null::null -c datadir=/drone/src/work/local_storage',
-            'php occ user:add --password-from-env user1',
-          ],
-        },
-      ] + $.permissions(image='owncloudci/php:' + php) + [
-        {
-          name: 'create-share',
-          image: 'owncloudci/php:' + php,
-          pull: 'always',
-          commands: [
-            'curl -k -s -u user1:123456 -X MKCOL "https://server/remote.php/webdav/new_folder"',
-            'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin"',
-            'echo -n "PUBLIC_TOKEN=" > .env',
-            'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=3&permissions=15&name=new_folder" | grep token | cut -d">" -f2 | cut -d"<" -f1 >> .env'
-          ],
-        },
-      ] + $.logging(image='owncloudci/php:' + php) + [
-        {
-          name: test.name,
-          image: 'owncloud/litmus:latest',
-          pull: 'always',
-          environment: {
-            LITMUS_USERNAME: 'admin',
-            LITMUS_PASSWORD: 'admin',
-            TESTS: test.tests,
-          },
-          commands: [
-            'source .env',
-            'export LITMUS_URL=\'https://server/remote.php' + test.endpoint  + (if test.name == 'public-share' then '\'$PUBLIC_TOKEN' else '\''),
-            '/usr/local/bin/litmus-wrapper'
-          ]
-        }
-        for test in [
-          {
-            name: 'old-endpoint',
-            endpoint: '/webdav',
-            tests: 'basic copymove props locks http'
-          },
-          {
-            name: 'new-endpoint',
-            endpoint: '/dav/files/admin',
-            tests: 'basic copymove props locks http'
-          },
-          {
-            name: 'new-mount',
-            endpoint: '/dav/files/admin/local_storage/',
-            tests: 'basic copymove props locks http'
-          },
-          {
-            name: 'old-mount',
-            endpoint: '/webdav/local_storage/',
-            tests: 'basic copymove props locks http'
-          },
-          {
-            name: 'new-shared',
-            endpoint: '/dav/files/admin/new_folder/',
-            tests: 'basic copymove props locks http'
-          },
-          {
-            name: 'old-shared',
-            endpoint: '/webdav/new_folder/',
-            tests: 'basic copymove props locks http'
-          },
-          {
-            name: 'public-share',
-            endpoint: '/dav/public-files/',
-            tests: 'basic copymove http'
-          },
-        ]
-      ],
-      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src') + databases.get(database_name, database_version),
-      trigger: trigger,
-      depends_on: depends_on,
-    },
-
-  dav(php='', db='', suite='', trigger={}, depends_on=[])::
-    local database_split = std.split(db, ':');
-    local database_name = database_split[0];
-    local database_version = if std.length(database_split) == 2 then database_split[1] else '';
-
-    {
-      kind: 'pipeline',
-      name: (if std.endsWith(suite, '-old-endpoint') then std.strReplace(suite, '-old-endpoint', '-old') else suite + '-new') + '-php' + php + '-' + std.join('', database_split),
-      platform: {
-        os: 'linux',
-        arch: 'amd64',
-      },
-      steps: [
-        $.cache({ restore: true }),
-        $.composer(image='owncloudci/php:' + php),
-        $.vendorbin(image='owncloudci/php:' + php),
-        $.yarn(image='owncloudci/php:' + php),
-      ] + $.server(image='owncloudci/php:' + php, db=database_name) + [
-        {
-          name: 'dav-install',
-          image: 'owncloudci/php:' + php,
-          pull: 'always',
-          commands: [
-            'bash apps/dav/tests/ci/' + suite + '/install.sh',
-          ],
-        },
-      ] + $.permissions(image='owncloudci/php:' + php) + $.logging(image='owncloudci/php:' + php) + [
-        {
-          name: 'dav-test',
-          image: 'owncloudci/php:' + php,
-          pull: 'always',
-          commands: [
-            'bash apps/dav/tests/ci/' + suite + '/script.sh',
-          ],
-        },
-      ],
-      services: databases.get(database_name, database_version),
-      trigger: trigger,
-      depends_on: depends_on,
-    },
-
-  phpunit(php='', db='', coverage=false, external='', object='', proto='https', trigger={}, depends_on=[])::
-    local database_split = std.split(db, ':');
-    local database_name = database_split[0];
-    local database_version = if std.length(database_split) == 2 then database_split[1] else '';
-
-    {
-      kind: 'pipeline',
-      name: 'phpunit-php' + php + '-' + std.join('', database_split) + (if external != '' then '-external-' + external else '') + (if object != '' then '-object-' + object else ''),
-      platform: {
-        os: 'linux',
-        arch: 'amd64',
-      },
-      steps: [
-        $.cache({ restore: true }),
-        $.composer(image='owncloudci/php:' + php),
-        $.vendorbin(image='owncloudci/php:' + php),
-        $.yarn(image='owncloudci/php:' + php),
-      ]
-      + $.server(image='owncloudci/php:' + php, db=database_name)
-      + (if object == 'scality' then $.primarys3app(image='owncloudci/php:' + php, object=object) else [])
-      + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
-      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log') +
-      + suites.get(image='owncloudci/php:' + php, type='phpunit', coverage=coverage, db=database_name, external=external, object=object, proto=proto),
-      services: externals.get(external) + objects.get(object) + databases.get(database_name, database_version),
-      trigger: trigger,
-      depends_on: depends_on,
-    },
-
   behat(php='', db='', type='', browser='', suite='', filter='', num='', notification=false, proxy=false, email=false, federated='', proto='https', proxy=false, trigger={}, depends_on=[])::
     local database_split = std.split(db, ':');
     local database_name = database_split[0];
@@ -630,7 +403,7 @@ local suites = {
         $.vendorbin(image='owncloudci/php:' + php),
         $.yarn(image='owncloudci/php:' + php),
       ]
-      + $.server(image='owncloudci/php:' + php, db=database_name, proxy=proxy)
+      + $.server(image='owncloudci/php:' + php, db=database_name, federated=federated, proxy=proxy)
       + $.testingapp(image='owncloudci/php:' + php)
       + (if notification then $.notificationsapp(image='owncloudci/php:' + php) else [])
       + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
@@ -819,11 +592,12 @@ local suites = {
       ],
     }],
 
-  server(image='owncloudci/php:7.1', db='', federated=false, proxy=false)::
+  server(image='owncloudci/php:7.1', db='', federated='', proxy=false)::
     [{
       name: 'install-server',
       image: image,
       pull: 'always',
+      federated: federated,
       proxy: proxy,
       environment: {
         DB_TYPE: db,
@@ -832,13 +606,42 @@ local suites = {
         'bash tests/drone/install-server.sh',
         'php occ a:l',
         'php occ config:system:set trusted_domains 1 --value=server',
-      ] + if federated then ['php occ config:system:set trusted_domains 2 --value=federated'] else [] + [
+      ] + if federated != '' then ['php occ config:system:set trusted_domains 2 --value=federated'] else [] + [
         'php occ log:manage --level 2',
         'php occ config:list',
         'php occ security:certificates:import /drone/server.crt',
-      ] + if federated then ['php occ security:certificates:import /drone/federated.crt'] else [] + [
+      ] + if federated != '' then ['php occ security:certificates:import /drone/federated.crt'] else [] + [
         'php occ security:certificates',
       ] + if proxy then ['php occ config:system:set trusted_domains 3 --value=proxy'] else [],
+    }],
+
+  core(image='owncloudci/core', version='', db='mariadb')::
+    [{
+      name: 'install-core',
+      image: image,
+      pull: 'always',
+      settings: {
+        core_path: '/drone/owncloud',
+        version: version,
+       },
+      environment: {
+        DB_TYPE: db,
+      },
+    }, {
+      name: 'configure-core',
+      image: 'owncloudci/php:7.1',
+      pull: 'always',
+      commands: [
+        'cd /drone/owncloud',
+        'php occ a:l',
+        'php occ a:e testing',
+        'php occ a:l',
+        'php occ config:system:set trusted_domains 1 --value=server',
+        'php occ log:manage --level 2',
+        'php occ config:list',
+        'php occ security:certificates:import /drone/server.crt',
+        'php occ security:certificates',
+      ],
     }],
 
   federated(image='owncloudci/php:7.1', version='', proto='https')::

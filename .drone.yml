@@ -7,92 +7,92 @@ platform:
   arch: amd64
 
 steps:
-  - name: cache-restore
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      restore: true
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
-  - name: composer-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-composer-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: vendorbin-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make vendor-bin-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: yarn-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-nodejs-deps
-    environment:
-      NPM_CONFIG_CACHE: /drone/src/.cache/npm
-      YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-      bower_storage__packages: /drone/src/.cache/bower
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
 
-  - name: cache-rebuild
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      mount:
-        - .cache
-      rebuild: true
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      event:
-        - push
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-rebuild
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    mount:
+    - .cache
+    rebuild: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    event:
+    - push
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
-  - name: cache-flush
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      flush: true
-      flush_age: 14
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      event:
-        - push
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-flush
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    flush: true
+    flush_age: 14
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    event:
+    - push
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 trigger:
   ref:
-    - refs/heads/master
-    - refs/tags/**
-    - refs/pull/**
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
 
 ---
 kind: pipeline
@@ -103,62 +103,62 @@ platform:
   arch: amd64
 
 steps:
-  - name: cache-restore
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      restore: true
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
-  - name: composer-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-composer-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: vendorbin-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make vendor-bin-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: yarn-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-nodejs-deps
-    environment:
-      NPM_CONFIG_CACHE: /drone/src/.cache/npm
-      YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-      bower_storage__packages: /drone/src/.cache/bower
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
 
-  - name: php-style
-    pull: always
-    image: owncloudci/php:7.3
-    commands:
-      - make test-php-style
+- name: php-style
+  pull: always
+  image: owncloudci/php:7.3
+  commands:
+  - make test-php-style
 
 trigger:
   ref:
-    - refs/heads/master
-    - refs/tags/**
-    - refs/pull/**
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
 
 depends_on:
-  - install-dependencies
+- install-dependencies
 
 ---
 kind: pipeline
@@ -169,76 +169,76 @@ platform:
   arch: amd64
 
 steps:
-  - name: cache-restore
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      restore: true
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
-  - name: composer-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-composer-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: vendorbin-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make vendor-bin-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: yarn-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-nodejs-deps
-    environment:
-      NPM_CONFIG_CACHE: /drone/src/.cache/npm
-      YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-      bower_storage__packages: /drone/src/.cache/bower
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
 
-  - name: install-server
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - bash tests/drone/install-server.sh
-      - php occ a:l
-      - php occ config:system:set trusted_domains 1 --value=server
-      - php occ log:manage --level 2
-      - php occ config:list
-      - php occ security:certificates:import /drone/server.crt
-      - php occ security:certificates
-    environment:
-      DB_TYPE: sqlite
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: sqlite
 
-  - name: php-phan
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make test-php-phan
+- name: php-phan
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make test-php-phan
 
 trigger:
   ref:
-    - refs/heads/master
-    - refs/tags/**
-    - refs/pull/**
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
 
 depends_on:
-  - install-dependencies
+- install-dependencies
 
 ---
 kind: pipeline
@@ -249,78 +249,217 @@ platform:
   arch: amd64
 
 steps:
-  - name: cache-restore
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      restore: true
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
-  - name: composer-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-composer-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: vendorbin-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make vendor-bin-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: yarn-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-nodejs-deps
-    environment:
-      NPM_CONFIG_CACHE: /drone/src/.cache/npm
-      YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-      bower_storage__packages: /drone/src/.cache/bower
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
 
-  - name: install-server
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - bash tests/drone/install-server.sh
-      - php occ a:l
-      - php occ config:system:set trusted_domains 1 --value=server
-      - php occ log:manage --level 2
-      - php occ config:list
-      - php occ security:certificates:import /drone/server.crt
-      - php occ security:certificates
-    environment:
-      DB_TYPE: sqlite
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: sqlite
 
-  - name: php-phpstan
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make test-php-phpstan
+- name: php-phpstan
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make test-php-phpstan
 
 trigger:
   ref:
-    - refs/heads/master
-    - refs/tags/**
-    - refs/pull/**
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
 
 depends_on:
-  - install-dependencies
+- install-dependencies
 
+---
+kind: pipeline
+name: behat-headless-apiFederation
 
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: api-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_SUITE: apiFederation
+    TEST_SERVER_URL: https://server
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_CONFIG_TEMPLATE: ssl
+    APACHE_SSL_CERT: /drone/server.crt
+    APACHE_SSL_CERT_CN: server
+    APACHE_SSL_KEY: /drone/server.key
+    APACHE_WEBROOT: /drone/src
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
 
 ---
 kind: pipeline
@@ -335,189 +474,224 @@ workspace:
   path: src
 
 steps:
-  - name: cache-restore
-    pull: always
-    image: plugins/s3-cache:1
-    settings:
-      access_key:
-        from_secret: cache_s3_access_key
-      endpoint:
-        from_secret: cache_s3_endpoint
-      restore: true
-      secret_key:
-        from_secret: cache_s3_secret_key
-    when:
-      instance:
-        - drone.owncloud.services
-        - drone.owncloud.com
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
-  - name: composer-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-composer-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: vendorbin-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make vendor-bin-deps
-    environment:
-      COMPOSER_HOME: /drone/src/.cache/composer
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
 
-  - name: yarn-install
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - make install-nodejs-deps
-    environment:
-      NPM_CONFIG_CACHE: /drone/src/.cache/npm
-      YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-      bower_storage__packages: /drone/src/.cache/bower
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
 
-  - name: install-core
-    pull: always
-    image: owncloudci/core
-    settings:
-      core_path: /drone/owncloud
-      version: 10.2.1
-    environment:
-      DB_TYPE: mariadb
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ config:system:set trusted_domains 2 --value=federated
+  environment:
+    DB_TYPE: mariadb
 
-  - name: configure-core
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - cd /drone/owncloud
-      - php occ a:l
-      - php occ a:e testing
-      - php occ a:l
-      - php occ config:system:set trusted_domains 1 --value=server
-      - php occ log:manage --level 2
-      - php occ config:list
-      - php occ security:certificates:import /drone/server.crt
-      - php occ security:certificates
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
 
-  - name: owncloud-permissions
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - chown www-data -R /drone/owncloud
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
 
-  - name: owncloud-logfile
-    pull: always
-    image: owncloudci/php:7.1
-    detach: true
-    commands:
-      - tail -f /drone/owncloud/data/owncloud.log
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
 
-  - name: install-federated
-    pull: always
-    image: owncloudci/core
-    settings:
-      core_path: /drone/federated
-      exclude: apps/testing
-      version: daily-master-qa
+- name: install-federated
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /drone/federated
+    exclude: apps/testing
+    version: daily-master-qa
 
-  - name: configure-federated
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - cd /drone/federated
-      - php occ a:l
-      - php occ a:e testing
-      - php occ a:l
-      - php occ config:system:set trusted_domains 1 --value=server
-      - php occ config:system:set trusted_domains 2 --value=federated
-      - php occ log:manage --level 2
-      - php occ config:list
-      - echo "export TEST_SERVER_FED_URL=http://federated" > /drone/saved-settings.sh
-      - php occ security:certificates:import /drone/server.crt
-      - php occ security:certificates:import /drone/federated.crt
-      - php occ security:certificates
+- name: configure-federated
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /drone/federated
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ config:system:set trusted_domains 2 --value=federated
+  - php occ log:manage --level 2
+  - php occ config:list
+  - echo "export TEST_SERVER_FED_URL=http://federated" > /drone/saved-settings.sh
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates:import /drone/federated.crt
+  - php occ security:certificates
 
-  - name: federated-permissions
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - chown www-data -R /drone/federated
+- name: federated-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/federated
 
-  - name: federated-logfile
-    pull: always
-    image: owncloudci/php:7.1
-    detach: true
-    commands:
-      - tail -f /drone/federated/data/owncloud.log
+- name: federated-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/federated/data/owncloud.log
 
-  - name: webui-acceptance-tests
-    pull: always
-    image: owncloudci/php:7.1
-    commands:
-      - touch /drone/saved-settings.sh
-      - . /drone/saved-settings.sh
-      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
-    environment:
-      BEHAT_SUITE: webUISharingExternal
-      BROWSER: chrome
-      MAILHOG_HOST: email
-      PLATFORM: Linux
-      SELENIUM_HOST: chrome
-      SELENIUM_PORT: 4444
-      TEST_SERVER_URL: http://server
+- name: webui-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_SUITE: webUISharingExternal
+    BROWSER: chrome
+    MAILHOG_HOST: email
+    PLATFORM: Linux
+    SELENIUM_HOST: chrome
+    SELENIUM_PORT: 4444
+    TEST_SERVER_URL: http://server
 
 services:
-  - name: server
-    pull: always
-    image: owncloudci/php:7.1
-    command:
-      - /usr/local/bin/apachectl
-      - -e
-      - debug
-      - -D
-      - FOREGROUND
-    environment:
-      APACHE_WEBROOT: /drone/owncloud
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
 
-  - name: federated
-    pull: always
-    image: owncloudci/php:7.1
-    command:
-      - /usr/local/bin/apachectl
-      - -e
-      - debug
-      - -D
-      - FOREGROUND
-    environment:
-      APACHE_WEBROOT: /drone/federated
+- name: federated
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/federated
 
-  - name: chrome
-    pull: always
-    image: selenium/standalone-chrome-debug:3.141.59-oxygen
-    environment:
-      JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+- name: chrome
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
 
-  - name: mariadb
-    image: mariadb:10.2
-    environment:
-      MYSQL_DATABASE: owncloud
-      MYSQL_PASSWORD: owncloud
-      MYSQL_ROOT_PASSWORD: owncloud
-      MYSQL_USER: owncloud
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
 
-  - name: email
-    pull: always
-    image: mailhog/mailhog:latest
+- name: email
+  pull: always
+  image: mailhog/mailhog:latest
 
 trigger:
   ref:
-    - refs/heads/master
-    - refs/tags/**
-    - refs/pull/**
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
 
 depends_on:
-  - coding-standard
-  - phan-php7.1
-  - stan-php7.1
+- coding-standard
+- phan-php7.1
+- stan-php7.1
 
+---
+kind: pipeline
+name: chat-notifications
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  disable: true
+
+steps:
+- name: notify
+  image: plugins/slack:1
+  settings:
+    channel: server
+    webhook:
+      from_secret: public_rocketchat
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  status:
+  - failure
+
+depends_on:
+- install-dependencies
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+- behat-headless-apiFederation
+- behat-chrome-webUISharingExternal
+
+...
