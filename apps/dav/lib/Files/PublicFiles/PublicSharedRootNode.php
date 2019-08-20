@@ -30,6 +30,7 @@ use OCP\IRequest;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\INode;
 
 /**
@@ -57,10 +58,12 @@ class PublicSharedRootNode extends Collection {
 		$this->share = $share;
 		$this->request = $request;
 	}
+
 	/**
 	 * Returns an array with all the child nodes
 	 *
 	 * @return INode[]
+	 * @throws NotFound
 	 */
 	public function getChildren() {
 		// Within a PROPFIND request we return no listing in case the share is a file drop folder
@@ -68,14 +71,18 @@ class PublicSharedRootNode extends Collection {
 			return [];
 		}
 
-		if ($this->share->getNodeType() === 'folder') {
-			$nodes = $this->share->getNode()->getDirectoryListing();
-		} else {
-			$nodes = [$this->share->getNode()];
+		try {
+			if ($this->share->getNodeType() === 'folder') {
+				$nodes = $this->share->getNode()->getDirectoryListing();
+			} else {
+				$nodes = [$this->share->getNode()];
+			}
+			return \array_map(function (Node $node) {
+				return $this->nodeFactory($node, $this->share);
+			}, $nodes);
+		} catch (NotFoundException $ex) {
+			throw new NotFound();
 		}
-		return \array_map(function (Node $node) {
-			return $this->nodeFactory($node, $this->share);
-		}, $nodes);
 	}
 
 	public function createDirectory($name) {
