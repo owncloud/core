@@ -4,6 +4,7 @@ Feature: persistent-locking in case of a public link
   Background:
     Given user "user0" has been created with default attributes and skeleton files
 
+  @issue-36064
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "FOLDER" with change permission
@@ -11,6 +12,9 @@ Feature: persistent-locking in case of a public link
       | lockscope | <lock-scope> |
     Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "423"
+    And uploading a file should work using the new public WebDAV API
+    #And uploading a file should not work using the new public WebDAV API
+    #And the HTTP status code should be "423"
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -18,58 +22,110 @@ Feature: persistent-locking in case of a public link
       | new      | shared     |
       | new      | exclusive  |
 
+  @issue-36064
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
-    Given using <dav-path> DAV path
-    And user "user0" has created a public link share of folder "PARENT" with change permission
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT/CHILD" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
-    And the public uploads file "CHILD/test.txt" with content "test" using the old public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    And the public uploads file "CHILD/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And as "user0" file "/PARENT/CHILD/test.txt" should not exist
     But the content of file "/PARENT/test.txt" for user "user0" should be "test"
     Examples:
-      | dav-path | lock-scope |
-      | old      | shared     |
-      | old      | exclusive  |
-      | new      | shared     |
-      | new      | exclusive  |
+      | public-webdav-api-version | lock-scope |
+      | old                       | shared     |
+      | old                       | exclusive  |
+      #| new                       | shared     |
+      #| new                       | exclusive  |
 
+  @issue-36064
+  #after fixing the issue delete this Scenario and use the one above
+  Scenario Outline: Uploading a file into a locked subfolder of a public folder
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT/CHILD" setting following properties
+      | lockscope | <lock-scope> |
+    When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    And the public uploads file "CHILD/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "/PARENT/CHILD/test.txt" should exist
+    But the content of file "/PARENT/test.txt" for user "user0" should be "test"
+    Examples:
+      | public-webdav-api-version | lock-scope |
+      | new                       | shared     |
+      | new                       | exclusive  |
+
+  @issue-36064
   Scenario Outline: Overwrite a file inside a locked public folder
-    Given using <dav-path> DAV path
-    And user "user0" has created a public link share of folder "PARENT" with change permission
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "test" using the old public WebDAV API
+    When the public uploads file "parent.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "user0" should be "ownCloud test text file parent" plus end-of-line
     Examples:
-      | dav-path | lock-scope |
-      | old      | shared     |
-      | old      | exclusive  |
-      | new      | shared     |
-      | new      | exclusive  |
+      | public-webdav-api-version | lock-scope |
+      | old                       | shared     |
+      | old                       | exclusive  |
+      #| new                       | shared     |
+      #| new                       | exclusive  |
 
+  @issue-36064
+  #after fixing the issue delete this Scenario and use the one above
+  Scenario Outline: Overwrite a file inside a locked public folder
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When the public uploads file "parent.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "204"
+    And the content of file "/PARENT/parent.txt" for user "user0" should be "test"
+    Examples:
+      | public-webdav-api-version | lock-scope |
+      | new                       | shared     |
+      | new                       | exclusive  |
+
+  @issue-36064
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
-    Given using <dav-path> DAV path
-    And user "user0" has created a public link share of folder "PARENT" with change permission
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT/CHILD" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "changed text" using the old public WebDAV API
-    And the public uploads file "CHILD/child.txt" with content "test" using the old public WebDAV API
+    When the public uploads file "parent.txt" with content "changed text" using the <public-webdav-api-version> public WebDAV API
+    And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "user0" should be "changed text"
     But the content of file "/PARENT/CHILD/child.txt" for user "user0" should be "ownCloud test text file child" plus end-of-line
     Examples:
-      | dav-path | lock-scope |
-      | old      | shared     |
-      | old      | exclusive  |
-      | new      | shared     |
-      | new      | exclusive  |
+      | public-webdav-api-version | lock-scope |
+      | old                       | shared     |
+      | old                       | exclusive  |
+      #| new                       | shared     |
+      #| new                       | exclusive  |
 
-  Scenario: Public locking is forbidden
+  @issue-36064
+  #after fixing the issue delete this Scenario and use the one above
+  Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "user0" has created a public link share of folder "PARENT" with change permission
-    When the public locks "/CHILD" in the last public shared folder using the WebDAV API setting following properties
-      | lockscope | exclusive |
+    And user "user0" has locked folder "PARENT/CHILD" setting following properties
+      | lockscope | <lock-scope> |
+    When the public uploads file "parent.txt" with content "changed text" using the <public-webdav-api-version> public WebDAV API
+    And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "204"
+    And the content of file "/PARENT/parent.txt" for user "user0" should be "changed text"
+    But the content of file "/PARENT/CHILD/child.txt" for user "user0" should be "test"
+    Examples:
+      | public-webdav-api-version | lock-scope |
+      | new                       | shared     |
+      | new                       | exclusive  |
+
+  Scenario Outline: Public locking is forbidden
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    When the public locks "/CHILD" in the last public shared folder using the <public-webdav-api-version> public WebDAV API setting following properties
+      | lockscope | <lock-scope> |
     Then the HTTP status code should be "403"
     And the value of the item "//s:message" in the response should be "Forbidden to lock from public endpoint"
+    Examples:
+      | public-webdav-api-version | lock-scope |
+      | old                       | shared     |
+      | old                       | exclusive  |
+      | new                       | shared     |
+      | new                       | exclusive  |
