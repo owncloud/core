@@ -86,7 +86,7 @@ class PublicFilesPlugin extends ServerPlugin {
 		$fileName = $pathInfo['filename'];
 		$ext = $pathInfo['extension'];
 
-		$i = 1;
+		$i = 2;
 		while ($this->server->tree->nodeExists("$dirName/$fileName ($i).$ext")) {
 			$i++;
 		}
