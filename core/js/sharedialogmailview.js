@@ -98,16 +98,16 @@
 			var deferred           = $.Deferred();
 			var $formSentIndicator = this.$el.find('.emailPrivateLinkForm--sent-indicator');
 			if(mail.toSelf === true) {
-				this._addAddress(OC.getCurrentUser().email)
+				this._addAddress(OC.getCurrentUser().email);
 			}
 			var params = {
-				recipients : this._addresses.join(','),
+				recipients : this._addresses,
 				personalNote : mail.body,
 				link : this.model.getLink(),
 				format:'json'
 			};
 			$.post(
-				OC.linkToOCS('apps/files_sharing/api/v1') + 'notification/notifypubliclinkwithemail',
+				OC.linkToOCS('apps/files_sharing/api/v1') + 'notification/notify-public-link-by-email',
 				params,
 				function(result) {
 					if (result.ocs.meta.statuscode !== 100) {

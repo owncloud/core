@@ -87,18 +87,18 @@ $application->registerRoutes($this, [
 			'verb' => 'DELETE'
 		],
 		[
-			'name' => 'Share20Ocs#notifyRecipients',
+			'name' => 'Notification#notifyRecipients',
 			'url' => '/api/v1/notification/send',
 			'verb' => 'POST'
 		],
 		[
-			'name' => 'Share20Ocs#notifyRecipientsDisabled',
+			'name' => 'Notification#notifyRecipientsDisabled',
 			'url' => '/api/v1/notification/marksent',
 			'verb' => 'POST'
 		],
 		[
-			'name' => 'Notification#notifyPublicLinkRecipientsWithEmail',
-			'url' => '/api/v1/notification/notifypubliclinkwithemail',
+			'name' => 'Notification#notifyPublicLinkRecipientsByEmail',
+			'url' => '/api/v1/notification/notify-public-link-by-email',
 			'verb' => 'POST'
 		],
 	]

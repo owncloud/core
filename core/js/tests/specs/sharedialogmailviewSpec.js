@@ -132,12 +132,12 @@ describe('OC.Share.ShareDialogMailView', function() {
 			expect(callback.notCalled).toEqual(true);
 			expect(fakeServer.requests.length).toEqual(1);
 			expect(fakeServer.requests[0].method).toEqual('POST');
-			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual({
-				recipients: 'ernie@example.com,bert@example.com',
-				link: model.getLink(),
+			expect(fakeServer.requests[0].requestBody).toEqual($.param({
+				recipients: ["ernie@example.com","bert@example.com"],
 				personalNote: '',
+				link: model.getLink(),
 				format: 'json'
-			});
+			}));
 
 			fakeServer.requests[0].respond(
 				200, {
@@ -172,12 +172,12 @@ describe('OC.Share.ShareDialogMailView', function() {
 			expect(callback.notCalled).toEqual(true);
 			expect(fakeServer.requests.length).toEqual(1);
 			expect(fakeServer.requests[0].method).toEqual('POST');
-			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual({
-				recipients: 'glados@aperture.com,someuser@example.org',
-				link: model.getLink(),
+			expect(fakeServer.requests[0].requestBody).toEqual($.param({
+				recipients: ["glados@aperture.com","someuser@example.org"],
 				personalNote: 'The Cake Is A Lie!',
+				link: model.getLink(),
 				format: 'json'
-			});
+			}));
 
 			fakeServer.requests[0].respond(
 				200, {

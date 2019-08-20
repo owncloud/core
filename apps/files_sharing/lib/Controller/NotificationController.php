@@ -1,21 +1,4 @@
 <?php
-
-namespace OCA\Files_Sharing\Controller;
-
-use OC\OCS\Result;
-use OC\Share\MailNotifications;
-use OCP\AppFramework\OCSController;
-use OCP\Defaults;
-use OCP\IConfig;
-use OCP\IL10N;
-use OCP\ILogger;
-use OCP\IRequest;
-use OCP\IURLGenerator;
-use OCP\IUserSession;
-use OCP\Mail\IMailer;
-use OCP\Share\IManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 /**
  * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
@@ -36,78 +19,73 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  */
 
+namespace OCA\Files_Sharing\Controller;
+
+use OC\OCS\Result;
+use OC\Share\MailNotifications;
+use OCP\AppFramework\OCSController;
+use OCP\Files\IRootFolder;
+use OCP\IGroupManager;
+use OCP\IL10N;
+use OCP\IRequest;
+use OCP\IUser;
+use OCP\IUserManager;
+use OCP\IUserSession;
+use OCP\Share;
+
 class NotificationController extends OCSController {
-	/** @var IManager */
-	private $shareManager;
+	/** @var MailNotifications */
+	private $mailNotifications;
 	/** @var IUserSession */
 	private $userSession;
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
+	/** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
+	/** @var IRootFolder */
+	private $rootFolder;
 	/** @var IL10N */
 	private $l;
-	/** @var IMailer */
-	private $mailer;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
-	/** @var Defaults */
-	private $defaults;
-
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		IManager $shareManager,
-		IConfig $config,
-		ILogger $logger,
-		IL10N $l,
-		IMailer $mailer,
+		MailNotifications $mailNotifications,
 		IUserSession $userSession,
-		IURLGenerator $urlGenerator,
-		EventDispatcherInterface $eventDispatcher,
-		Defaults $defaults
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IRootFolder $rootFolder,
+		IL10N $l
 	) {
 		parent::__construct($appName, $request);
-		$this->shareManager = $shareManager;
-		$this->config = $config;
-		$this->l = $l;
-		$this->logger = $logger;
-		$this->mailer = $mailer;
+		$this->mailNotifications = $mailNotifications;
 		$this->userSession = $userSession;
-		$this->urlGenerator = $urlGenerator;
-		$this->eventDispatcher = $eventDispatcher;
-		$this->defaults = $defaults;
+		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
+		$this->rootFolder = $rootFolder;
+		$this->l = $l;
 	}
 
 	/**
 	 * @NoAdminRequired
 	 *
-	 * @param string $link
-	 * @param string $recipients
-	 * @param string $personalNote
+	 * @param string $link URL of the shared link
+	 * @param string[] $recipients
+	 * @param string $personalNote Sender's personal note about share
 	 * @return Result
 	 */
-	public function notifyPublicLinkRecipientsWithEmail($link, $recipients, $personalNote) {
+	public function notifyPublicLinkRecipientsByEmail($link, $recipients, $personalNote) {
 		$message = null;
 		$code = 100;
-		$mailNotification = new MailNotifications(
-			$this->shareManager,
-			$this->userSession->getUser(),
-			$this->l,
-			$this->mailer,
-			$this->config,
-			$this->logger,
-			$this->defaults,
-			$this->urlGenerator,
-			$this->eventDispatcher
-		);
-		$result = $mailNotification->sendLinkShareMail(
-			$recipients,
-			$link,
-			$personalNote
-		);
+		$sender = $this->userSession->getUser();
+		$result = $recipients;
+		if ($sender) {
+			$result = $this->mailNotifications->sendLinkShareMail(
+				$sender,
+				$recipients,
+				$link,
+				$personalNote
+			);
+		}
 		if (!empty($result)) {
 			$message = $this->l->t("Couldn't send mail to following recipient(s): %s ",
 				\implode(', ', $result)
@@ -115,5 +93,77 @@ class NotificationController extends OCSController {
 			$code = 400;
 		}
 		return new Result(null, $code, $message);
+	}
+
+	/**
+	 * Send a notification to share recipient(s)
+	 *
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @param int $itemSource
+	 * @param string $itemType
+	 * @param int $shareType
+	 * @param string $recipient
+	 *
+	 * @return Result
+	 */
+	public function notifyRecipients($itemSource, $itemType, $shareType, $recipient) {
+		$recipientList = [];
+		$sender = $this->userSession->getUser();
+		if ($shareType === Share::SHARE_TYPE_USER) {
+			$recipientList[] = $this->userManager->get($recipient);
+		} elseif ($shareType === Share::SHARE_TYPE_GROUP) {
+			$group = $this->groupManager->get($recipient);
+			$recipientList = $group->searchUsers('');
+		}
+		// don't send a mail to the user who shared the file
+		$recipientList = \array_filter($recipientList, function ($user) {
+			/** @var IUser $user */
+			return $user->getUID() !== $this->userSession->getUser()->getUID();
+		});
+
+		$userFolder = $this->rootFolder->getUserFolder($sender->getUID());
+		$nodes = $userFolder->getById($itemSource, true);
+		$node = $nodes[0] ?? null;
+		$result = $this->mailNotifications->sendInternalShareMail($sender, $node, $shareType, $recipientList);
+
+		// if we were able to send to at least one recipient, mark as sent
+		// allowing the user to resend would spam users who already got a notification
+		if (\count($result) < \count($recipientList)) {
+			// FIXME: migrate to a new share API
+			Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+		}
+
+		if (empty($result)) {
+			$message = null;
+			$data = ['status' => 'success'];
+		} else {
+			$message = $this->l->t(
+				"Couldn't send mail to following recipient(s): %s ",
+				\implode(', ', $result)
+			);
+			$data = ['status' => 'error'];
+		}
+		return new Result($data, 200, $message);
+	}
+
+	/**
+	 * Just mark a notification to share recipient(s) as sent
+	 *
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @param int $itemSource
+	 * @param string $itemType
+	 * @param int $shareType
+	 * @param string $recipient
+	 *
+	 * @return Result
+	 */
+	public function notifyRecipientsDisabled($itemSource, $itemType, $shareType, $recipient) {
+		// FIXME: migrate to a new share API
+		Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+		return new Result(['status' => 'success']);
 	}
 }
