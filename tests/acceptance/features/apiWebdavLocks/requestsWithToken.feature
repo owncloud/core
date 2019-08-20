@@ -79,6 +79,8 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "user0" using the old public WebDAV API
     Then the HTTP status code should be "423"
+    When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "user0" using the new public WebDAV API
+    Then the HTTP status code should be "412"
     And the content of file "/PARENT/parent.txt" for user "user0" should be "ownCloud test text file parent" plus end-of-line
     Examples:
       | lock-scope |

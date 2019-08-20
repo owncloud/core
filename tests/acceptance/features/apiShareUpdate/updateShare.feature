@@ -291,6 +291,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -424,6 +425,7 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -444,6 +446,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -464,6 +467,7 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -506,6 +510,9 @@ Feature: sharing
       | permissions | read,update,create |
     When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "403"
+    When the public deletes file "CHILD/child.txt" from the last public share using the new public WebDAV API
+    Then the HTTP status code should be "404"
+    And as "user0" file "PARENT/CHILD/child.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -526,6 +533,10 @@ Feature: sharing
       | permissions | read,update,create,delete |
     When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "204"
+    And as "user0" file "PARENT/CHILD/child.txt" should not exist
+    When the public deletes file "parent.txt" from the last public share using the new public WebDAV API
+    Then the HTTP status code should be "204"
+    And as "user0" file "PARENT/parent.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

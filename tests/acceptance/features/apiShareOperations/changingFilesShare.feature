@@ -55,55 +55,88 @@ Feature: sharing
       | new              |
 
   @public_link_share-feature-required
+  @issue-36060
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions
     Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
-    When the public deletes file "welcome.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "welcome.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "<http-status-code>"
     And as "user0" file "PARENT/welcome.txt" <should-or-not> exist
     Examples:
-      | permissions               | http-status-code | should-or-not |
-      | read,update,create        | 403              | should        |
-      | read,update,create,delete | 204              | should not    |
+      | public-webdav-api-version | permissions               | http-status-code | should-or-not |
+      | old                       | read,update,create        | 403              | should        |
+      | new                       | read,update,create        | 204              | should not    |
+      #| new                       | read,update,create        | 403              | should        |
+      | old                       | read,update,create,delete | 204              | should not    |
+      | new                       | read,update,create,delete | 204              | should not    |
 
   @public_link_share-feature-required
+  @issue-36060
+  Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create
+    Given user "user0" has created a public link share with settings
+      | path        | /PARENT            |
+      | permissions | read,update,create |
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file "/PARENT/parent.txt" should exist
+    And as "user0" file "/PARENT/newparent.txt" should not exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      #| new                       |
+
+  @public_link_share-feature-required
+  @issue-36060
+  # After fixing the issue delete this scenario and use the one above to test both cases
   Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create
     Given user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
-    Then the HTTP status code should be "403"
-    And as "user0" file "/PARENT/parent.txt" should exist
-    And as "user0" file "/PARENT/newparent.txt" should not exist
-
-  @public_link_share-feature-required
-  Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create,delete
-    Given user "user0" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the new public WebDAV API
     Then the HTTP status code should be "201"
     And as "user0" file "/PARENT/parent.txt" should not exist
     And as "user0" file "/PARENT/newparent.txt" should exist
 
   @public_link_share-feature-required
-  Scenario: Public link share permissions work correctly for upload with share permissions read,update,create
+  Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete
+    Given user "user0" has created a public link share with settings
+      | path        | /PARENT                   |
+      | permissions | read,update,create,delete |
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "/PARENT/parent.txt" should not exist
+    And as "user0" file "/PARENT/newparent.txt" should exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create
     Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    When the public uploads file "lorem.txt" with content "test" using the old public WebDAV API
+    When the public uploads file "lorem.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/PARENT/lorem.txt" should not exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
 
   @public_link_share-feature-required
-  Scenario: Public link share permissions work correctly for upload with share permissions read,update,create,delete
+  Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create,delete
     Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
-    When the public uploads file "lorem.txt" with content "test" using the old public WebDAV API
+    When the public uploads file "lorem.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "PARENT/lorem.txt" for user "user0" should be "test"
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |

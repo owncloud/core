@@ -181,6 +181,8 @@ Feature: transfer-ownership
     Then the command should have been successful
     When the public downloads the last public shared file using the old public WebDAV API
     Then the downloaded content should be "user0 file"
+    When the public downloads the last public shared file using the new public WebDAV API
+    Then the downloaded content should be "user0 file"
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of folder shared with third user

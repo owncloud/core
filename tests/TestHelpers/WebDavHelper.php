@@ -330,8 +330,11 @@ class WebDavHelper {
 	public static function getDavPath(
 		$user, $davPathVersionToUse = 1, $type = "files"
 	) {
-		if ($type === "public-files") {
+		if ($type === "public-files" || $type === "public-files-old") {
 			return "public.php/webdav/";
+		}
+		if ($type === "public-files-new") {
+			return "remote.php/dav/public-files/$user/";
 		}
 		if ($type === "archive") {
 			return "remote.php/dav/archive/$user/files";
