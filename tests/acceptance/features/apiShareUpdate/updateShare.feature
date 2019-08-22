@@ -512,7 +512,7 @@ Feature: sharing
     When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "403"
     When the public deletes file "CHILD/child.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "404"
+    Then the HTTP status code should be "403"
     And as "user0" file "PARENT/CHILD/child.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
