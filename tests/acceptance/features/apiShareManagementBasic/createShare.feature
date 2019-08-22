@@ -162,23 +162,25 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1)
     Given using OCS API version "<ocs_api_version>"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
-      | path | welcome.txt |
+      | path | randomfile.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | item_type              | file         |
-      | mimetype               | text/plain   |
-      | file_target            | /welcome.txt |
-      | path                   | /welcome.txt |
-      | permissions            | read         |
-      | share_type             | public_link  |
-      | displayname_file_owner | User Zero    |
-      | displayname_owner      | User Zero    |
-      | uid_file_owner         | user0        |
-      | uid_owner              | user0        |
-      | name                   |              |
-    And the last public shared file should be able to be downloaded without a password
+      | item_type              | file            |
+      | mimetype               | text/plain      |
+      | file_target            | /randomfile.txt |
+      | path                   | /randomfile.txt |
+      | permissions            | read            |
+      | share_type             | public_link     |
+      | displayname_file_owner | User Zero       |
+      | displayname_owner      | User Zero       |
+      | uid_file_owner         | user0           |
+      | uid_owner              | user0           |
+      | name                   |                 |
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -187,26 +189,30 @@ Feature: sharing
   @smokeTest @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file with password
     Given using OCS API version "<ocs_api_version>"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
-      | path     | welcome.txt |
-      | password | %public%    |
+      | path     | randomfile.txt |
+      | password | %public%       |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | item_type              | file         |
-      | mimetype               | text/plain   |
-      | file_target            | /welcome.txt |
-      | path                   | /welcome.txt |
-      | permissions            | read         |
-      | share_type             | public_link  |
-      | displayname_file_owner | User Zero    |
-      | displayname_owner      | User Zero    |
-      | uid_file_owner         | user0        |
-      | uid_owner              | user0        |
-      | name                   |              |
-    And the last public shared file should be able to be downloaded with password "%public%"
-    But the last public shared file should not be able to be downloaded with password "%regular%"
-    And the last public shared file should not be able to be downloaded without a password
+      | item_type              | file            |
+      | mimetype               | text/plain      |
+      | file_target            | /randomfile.txt |
+      | path                   | /randomfile.txt |
+      | permissions            | read            |
+      | share_type             | public_link     |
+      | displayname_file_owner | User Zero       |
+      | displayname_owner      | User Zero       |
+      | uid_file_owner         | user0           |
+      | uid_owner              | user0           |
+      | name                   |                 |
+    And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the public download of the last publicly shared file using the old public WebDAV API with password "%regular%" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "%regular%" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the old public WebDAV API without a password should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API without a password should fail with HTTP status code "401"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -215,24 +221,26 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share
     Given using OCS API version "<ocs_api_version>"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
-      | path        | welcome.txt |
-      | permissions | all         |
+      | path        | randomfile.txt |
+      | permissions | all            |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | item_type              | file         |
-      | mimetype               | text/plain   |
-      | file_target            | /welcome.txt |
-      | path                   | /welcome.txt |
-      | permissions            | read         |
-      | share_type             | public_link  |
-      | displayname_file_owner | User Zero    |
-      | displayname_owner      | User Zero    |
-      | uid_file_owner         | user0        |
-      | uid_owner              | user0        |
-      | name                   |              |
-    And the last public shared file should be able to be downloaded without a password
+      | item_type              | file            |
+      | mimetype               | text/plain      |
+      | file_target            | /randomfile.txt |
+      | path                   | /randomfile.txt |
+      | permissions            | read            |
+      | share_type             | public_link     |
+      | displayname_file_owner | User Zero       |
+      | displayname_owner      | User Zero       |
+      | uid_file_owner         | user0           |
+      | uid_owner              | user0           |
+      | name                   |                 |
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -827,12 +835,13 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
+    And user "user0" has uploaded file with content "long file" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the last public shared file should be able to be downloaded without a password
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "long file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "long file"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -1107,30 +1116,32 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
-      | path | textfile0.txt |
+      | path | randomfile.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
-      | file_target | /textfile0.txt |
-      | path        | /textfile0.txt |
-      | item_type   | file           |
-      | share_type  | public_link    |
-      | permissions | read           |
-      | uid_owner   | user0          |
-      | expiration  | +7 days        |
+      | file_target | /randomfile.txt |
+      | path        | /randomfile.txt |
+      | item_type   | file            |
+      | share_type  | public_link     |
+      | permissions | read            |
+      | uid_owner   | user0           |
+      | expiration  | +7 days         |
     When user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
-      | file_target | /textfile0.txt |
-      | path        | /textfile0.txt |
-      | item_type   | file           |
-      | share_type  | public_link    |
-      | permissions | read           |
-      | uid_owner   | user0          |
-      | expiration  | +7 days        |
-    And the last public shared file should be able to be downloaded without a password
+      | file_target | /randomfile.txt |
+      | path        | /randomfile.txt |
+      | item_type   | file            |
+      | share_type  | public_link     |
+      | permissions | read            |
+      | uid_owner   | user0           |
+      | expiration  | +7 days         |
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
