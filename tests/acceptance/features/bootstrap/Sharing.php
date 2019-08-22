@@ -438,38 +438,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then user :user should be able to download the range :range of file :path using the sharing API and the content should be :content
-	 *
-	 * @param string $user
-	 * @param string $range
-	 * @param string $path
-	 * @param string $content
-	 *
-	 * @return void
-	 */
-	public function userShouldBeAbleToDownloadTheRangeOfFileAndTheContentShouldBe($user, $range, $path, $content) {
-		$path = \ltrim($path, "/");
-		$url = $this->getBaseUrl() . "/remote.php/webdav/$path";
-		$headers = [
-			'Range' => $range
-		];
-		$this->response = HttpRequestHelper::get(
-			$url, $user, $this->getPasswordForUser($user), $headers
-		);
-		Assert::assertEquals(
-			206,
-			$this->response->getStatusCode()
-		);
-		$buf = '';
-		$body = $this->response->getBody();
-		while (!$body->eof()) {
-			// read everything
-			$buf .= $body->read(8192);
-		}
-		Assert::assertSame($content, $buf);
-	}
-
-	/**
 	 * @param string $url
 	 * @param string $user
 	 * @param string $password
