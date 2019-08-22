@@ -120,7 +120,7 @@ class PublicSharedRootNode extends Collection {
 			$etag =  $pendingFile->getEtag();
 			// all operations have been successful - no need to cleanup the pending file in finally block
 			$pendingFile = null;
-			return $etag;
+			return '"' . $etag . '"';
 		} catch (NotPermittedException $ex) {
 			throw new Forbidden('Permission denied to create file');
 		} catch (InvalidPathException $ex) {
