@@ -315,17 +315,19 @@ class PublicWebDavContext implements Context {
 
 	/**
 	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API without a password$/
+	 * @Then /^the public download of file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API should fail with HTTP status code "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @param string $publicWebDAVAPIVersion
+	 * @param string $expectedHttpCode
 	 *
 	 * @return void
 	 */
 	public function shouldNotBeAbleToDownloadFileInsidePublicSharedFolder(
-		$path, $publicWebDAVAPIVersion
+		$path, $publicWebDAVAPIVersion, $expectedHttpCode = "401"
 	) {
 		$this->shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
-			"", $path, $publicWebDAVAPIVersion, ""
+			"", $path, $publicWebDAVAPIVersion, "", $expectedHttpCode
 		);
 	}
 
@@ -391,16 +393,24 @@ class PublicWebDavContext implements Context {
 	 * @param string $path
 	 * @param string $publicWebDAVAPIVersion
 	 * @param string $password
+	 * @param string $expectedHttpCode
 	 *
 	 * @return void
 	 */
 	public function shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
-		$range, $path, $publicWebDAVAPIVersion, $password
+		$range, $path, $publicWebDAVAPIVersion, $password, $expectedHttpCode = "401"
 	) {
 		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
 			$path, $password, $range, $publicWebDAVAPIVersion
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe(401);
+		$responseContent = $this->featureContext->getResponse()->getBody()->getContents();
+		\libxml_use_internal_errors(true);
+		Assert::assertNotFalse(
+			\simplexml_load_string($responseContent),
+			"response body is not valid XML, maybe download did work\n" .
+			"response body: \n$responseContent\n"
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe($expectedHttpCode);
 	}
 
 	/**
