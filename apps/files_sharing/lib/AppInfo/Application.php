@@ -42,6 +42,8 @@ use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Notification\Events\RegisterNotifierEvent;
 
 class Application extends App {
+	private $isProviderRegistered = false;
+
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_sharing', $urlParams);
 
@@ -169,11 +171,16 @@ class Application extends App {
 	}
 
 	public function registerMountProviders() {
-		/** @var \OCP\IServerContainer $server */
-		$server = $this->getContainer()->query('ServerContainer');
-		$mountProviderCollection = $server->getMountProviderCollection();
-		$mountProviderCollection->registerProvider($this->getContainer()->query('MountProvider'));
-		$mountProviderCollection->registerProvider($this->getContainer()->query('ExternalMountProvider'));
+		// We need to prevent adding providers more than once
+		// Doing this on MountProviderCollection level makes a lot tests to fail
+		if ($this->isProviderRegistered === false) {
+			/** @var \OCP\IServerContainer $server */
+			$server = $this->getContainer()->query('ServerContainer');
+			$mountProviderCollection = $server->getMountProviderCollection();
+			$mountProviderCollection->registerProvider($this->getContainer()->query('MountProvider'));
+			$mountProviderCollection->registerProvider($this->getContainer()->query('ExternalMountProvider'));
+			$this->isProviderRegistered = true;
+		}
 	}
 
 	/**

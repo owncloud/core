@@ -69,12 +69,17 @@ abstract class TestCase extends \Test\TestCase {
 	/** @var \OCP\Files\IRootFolder */
 	protected $rootFolder;
 
+	private static $alreadyRegistered = false;
+
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 
-		$application = new Application();
-		$application->registerMountProviders();
-		$application->registerNotifier();
+		if (!self::$alreadyRegistered) {
+			$application = new Application();
+			$application->registerMountProviders();
+			$application->registerNotifier();
+			self::$alreadyRegistered = true;
+		}
 		
 		// reset backend
 		\OC::$server->getGroupManager()->clearBackends();

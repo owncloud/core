@@ -231,14 +231,14 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		$relTargetPath = $this->stripUserFilesPath($target);
-		$share = $this->storage->getShare();
+		$share = $this->getStorage()->getShare();
 
 		$result = true;
 
 		try {
 			$this->updateFileTarget($relTargetPath, $share);
 			$this->setMountPoint($target);
-			$this->storage->setMountPoint($relTargetPath);
+			$this->getStorage()->setMountPoint($relTargetPath);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('files_sharing',
 				'Could not rename mount point for shared folder "' . $this->getMountPoint() . '" to "' . $target . '"',
