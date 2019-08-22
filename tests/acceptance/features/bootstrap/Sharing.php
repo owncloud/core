@@ -429,28 +429,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the public shared file "([^"]*)" should not be able to be downloaded$/
-	 *
-	 * @param string $path
-	 *
-	 * @return void
-	 */
-	public function publicSharedFileCannotBeDownloaded($path) {
-		$token = $this->getLastShareToken();
-		$fullUrl = $this->getBaseUrl()
-			. "/public.php/webdav/" . \rawurlencode(\ltrim($path, '/'));
-
-		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
-		$this->response = HttpRequestHelper::get($fullUrl, $token, "", $headers);
-		Assert::assertGreaterThanOrEqual(
-			400, $this->response->getStatusCode(), 'download must fail'
-		);
-		Assert::assertLessThanOrEqual(
-			499, $this->response->getStatusCode(), '4xx error expected'
-		);
-	}
-
-	/**
 	 * Give the mimetype of the last shared file
 	 *
 	 * @return string

@@ -7,13 +7,15 @@ Feature: sharing
     And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest @public_link_share-feature-required
+  @issue-36076
   Scenario: Downloading from upload-only share is forbidden
     Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
-    Then the public shared file "test.txt" should not be able to be downloaded
-    And the HTTP status code should be "404"
+    Then the public download of file "/test.txt" from inside the last public shared folder using the old public WebDAV API should fail with HTTP status code "404"
+    And the public should be able to download the range "bytes=0-7" of file "/test.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "ownCloud"
+    #And the public download of file "/test.txt" from inside the last public shared folder using the new public WebDAV API should fail with HTTP status code "404"
 
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and skeleton files:
