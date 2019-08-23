@@ -232,6 +232,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		$relTargetPath = $this->stripUserFilesPath($target);
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$share = $this->getStorage()->getShare();
 
 		$result = true;
@@ -239,6 +240,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		try {
 			$this->updateFileTarget($relTargetPath, $share);
 			$this->setMountPoint($target);
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$this->getStorage()->setMountPoint($relTargetPath);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('files_sharing',
