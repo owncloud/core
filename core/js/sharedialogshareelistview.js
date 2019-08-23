@@ -67,7 +67,7 @@
 			'{{/if}}' +
 			'</div>' +
 			'<div class="shareAttributes"">' +
-			'{{#each shareAttributes}}' +
+			'{{#each shareAttributesV1}}' +
 			'<span class="shareOption">' +
 			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
 			'<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
@@ -121,8 +121,10 @@
 		},
 
 		/**
+		 * Get shareAttributesApi v1 attributes and update checkboxes
 		 * @param shareIndex
 		 * @returns {object}
+		 * @deprecated shareAttributesApi v2 requires apps to extend ShareItemModel
 		 */
 		getAttributesObject: function(shareIndex) {
 			var model = this.model;
@@ -136,15 +138,15 @@
 			// share (and stored in DB)
 			var attributes = model.getShareAttributes(shareIndex);
 
+			// Display shareAttributesV1 checkboxes (registered and with label)
 			var list = [];
 			attributes.map(function(attribute) {
-				// Check if the share attribute set for this file is still in
-				// registered share attributes and get its label
+				// Display only shareAttributesApi v1 attributes ,
+				// other attributes should be handled by apps
 				var regAttr = model.getRegisteredShareAttribute(
 					attribute.scope,
 					attribute.key
 				);
-
 				if (regAttr && regAttr.label) {
 					list.push({
 						cid: cid,
@@ -155,12 +157,6 @@
 						name: attribute.key,
 						label: regAttr.label
 					});
-				} else {
-					OC.Notification.showTemporary(t('core', 'Share with ' +
-						'user {shareWith} has attribute {name} which is ' +
-						'no longer available. Please recreate the share!',
-						{ name: attribute.key, shareWith: shareWith })
-					);
 				}
 			});
 
@@ -191,7 +187,7 @@
 				hasCreatePermission: this.model.hasCreatePermission(shareIndex),
 				hasUpdatePermission: this.model.hasUpdatePermission(shareIndex),
 				hasDeletePermission: this.model.hasDeletePermission(shareIndex),
-				shareAttributes: this.getAttributesObject(shareIndex),
+				shareAttributesV1: this.getAttributesObject(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
@@ -336,7 +332,11 @@
 				permissions |= $(checkbox).data('permissions');
 			});
 
-			// Check extra share permissions
+			/**
+			 * ShareAttributesApi v1 attributes
+			 *
+		 	 * @deprecated attributes will be removed, shareAttributesApi v2 requires apps to extend ShareItemModel updateShare
+			 */
 			var attributes = [];
 			$('.attributes', $li).each(function(index, checkbox) {
 				var checked = $(checkbox).is(':checked');
@@ -348,7 +348,11 @@
 				});
 			});
 
-			this.model.updateShare(shareId, {permissions: permissions, attributes: attributes});
+			this.model.updateShare(
+				shareId,
+				{permissions: permissions, attributes: attributes},
+				{}
+			);
 		},
 
 		onCrudsToggle: function(event) {
