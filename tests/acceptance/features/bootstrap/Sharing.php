@@ -438,62 +438,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the last public shared file should be able to be downloaded without a password$/
-	 *
-	 * @return void
-	 */
-	public function checkLastPublicSharedFileDownload() {
-		if (\count($this->lastShareData->data->element) > 0) {
-			$url = $this->lastShareData->data[0]->url;
-		} else {
-			$url = $this->lastShareData->data->url;
-		}
-		$fullUrl = "$url/download";
-		$this->checkDownload($fullUrl, null, null, $this->getMimeTypeOfLastSharedFile());
-	}
-
-	/**
-	 * @Then the last public shared file should not be able to be downloaded without a password
-	 *
-	 * @return void
-	 */
-	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithoutAPassword() {
-		$this->theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword(null);
-	}
-
-	/**
-	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
-	 *
-	 * @param string $password
-	 *
-	 * @return void
-	 */
-	public function checkLastPublicSharedFileWithPasswordDownload($password) {
-		$token = $this->getLastShareToken();
-		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
-		$this->checkDownload($fullUrl, $token, $password, $this->getMimeTypeOfLastSharedFile());
-	}
-
-	/**
-	 * @Then the last public shared file should not be able to be downloaded with password :password
-	 *
-	 * @param string $password
-	 *
-	 * @return void
-	 */
-	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword($password) {
-		$token = $this->getLastShareToken();
-		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $token, $password
-		);
-		Assert::assertEquals(
-			401,
-			$this->response->getStatusCode()
-		);
-	}
-
-	/**
 	 * @Then user :user should be able to download the range :range of file :path using the sharing API and the content should be :content
 	 *
 	 * @param string $user

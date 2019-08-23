@@ -43,18 +43,20 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @param string $range ignore if empty
 	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function downloadPublicFileWithRange($range, $publicWebDAVAPIVersion) {
+	public function downloadPublicFileWithRange($range, $publicWebDAVAPIVersion, $password ="") {
 		$lastShareData = $this->featureContext->getLastShareData()->data;
+		$password = $this->featureContext->getActualPassword($password);
 		$token = $lastShareData->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token, 0, "public-files-$publicWebDAVAPIVersion"
 		);
 		$fullUrl = $this->featureContext->getBaseUrl() . "/$davPath";
 		$user = $this->getUsernameForPublicWebdavApi(
-			$token, "", $publicWebDAVAPIVersion
+			$token, $password, $publicWebDAVAPIVersion
 		);
 		if ($publicWebDAVAPIVersion === "new") {
 			$fullUrl = $fullUrl . $lastShareData->file_target;
@@ -68,7 +70,7 @@ class PublicWebDavContext implements Context {
 			];
 		}
 		$this->featureContext->setResponse(
-			HttpRequestHelper::get($fullUrl, $user, "", $headers)
+			HttpRequestHelper::get($fullUrl, $user, $password, $headers)
 		);
 	}
 
@@ -293,6 +295,84 @@ class PublicWebDavContext implements Context {
 	) {
 		$this->publicUploadContent(
 			$filename, '', $body, false, [], $publicWebDAVAPIVersion
+		);
+	}
+
+	/**
+	 * @Then /^the public should be able to download the last publicly shared file using the (old|new) public WebDAV API without a password and the content should be "([^"]*)"$/
+	 *
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $expectedContent
+	 *
+	 * @return void
+	 */
+	public function checkLastPublicSharedFileDownload(
+		$publicWebDAVAPIVersion, $expectedContent
+	) {
+		$this->checkLastPublicSharedFileWithPasswordDownload(
+			$publicWebDAVAPIVersion, "", $expectedContent
+		);
+	}
+
+	/**
+	 * @Then /^the public should be able to download the last publicly shared file using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
+	 *
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 * @param string $expectedContent
+	 *
+	 * @return void
+	 */
+	public function checkLastPublicSharedFileWithPasswordDownload(
+		$publicWebDAVAPIVersion, $password, $expectedContent
+	) {
+		$this->downloadPublicFileWithRange(
+			"", $publicWebDAVAPIVersion, $password
+		);
+		$this->featureContext->downloadedContentShouldBe($expectedContent);
+	}
+
+	/**
+	 * @Then /^the public download of the last publicly shared file using the (old|new) public WebDAV API with password "([^"]*)" should fail with HTTP status code "([^"]*)"$/
+	 *
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 * @param string $expectedHttpCode
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword(
+		$publicWebDAVAPIVersion,
+		$password,
+		$expectedHttpCode
+	) {
+		$this->downloadPublicFileWithRange(
+			"", $publicWebDAVAPIVersion, $password
+		);
+		$responseContent = $this->featureContext->getResponse()->getBody()->getContents();
+		\libxml_use_internal_errors(true);
+		Assert::assertNotFalse(
+			\simplexml_load_string($responseContent),
+			"response body is not valid XML, maybe download did work\n" .
+			"response body: \n$responseContent\n"
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe($expectedHttpCode);
+	}
+
+	/**
+	 * @Then /^the public download of the last publicly shared file using the (old|new) public WebDAV API without a password should fail with HTTP status code "([^"]*)"$/
+	 *
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $expectedHttpCode
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithoutAPassword(
+		$publicWebDAVAPIVersion,
+		$expectedHttpCode
+	) {
+		$this->theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword(
+			$publicWebDAVAPIVersion, "", $expectedHttpCode
 		);
 	}
 
