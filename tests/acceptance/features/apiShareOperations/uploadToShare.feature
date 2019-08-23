@@ -17,7 +17,6 @@ Feature: sharing
     And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
   @smokeTest @public_link_share-feature-required
-  @issue-36067
   Scenario: Uploading same file to a public upload-only share multiple times via new API
     # The new API does the autorename automatically in upload-only folders
     Given as user "user0"
@@ -28,8 +27,7 @@ Feature: sharing
     When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
-    And the content of file "/FOLDER/test (1).txt" for user "user0" should be "test2"
-    #And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
+    And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
   @public_link_share-feature-required
   @issue-36055
