@@ -181,6 +181,8 @@ Feature: sharing
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
+    And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "404"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -241,6 +243,8 @@ Feature: sharing
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
+    And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "404"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

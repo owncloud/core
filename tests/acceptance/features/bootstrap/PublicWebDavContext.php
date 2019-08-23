@@ -529,6 +529,29 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public upload to the last publicly shared file using the (old|new) public WebDAV API should fail with HTTP status code "([^"]*)"$/
+	 *
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $expectedHttpCode
+	 *
+	 * @return void
+	 */
+	public function publiclyUploadingShouldToSharedFileShouldFail(
+		$publicWebDAVAPIVersion, $expectedHttpCode
+	) {
+		$filename = "";
+		if ($publicWebDAVAPIVersion === "new") {
+			$filename = $this->featureContext->getLastShareData()->data[0]->file_target;
+		}
+
+		$this->publicUploadContent(
+			$filename, '', 'test', false,
+			[], $publicWebDAVAPIVersion
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe($expectedHttpCode);
+	}
+
+	/**
 	 * @Then /^uploading a file should not work using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
