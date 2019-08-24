@@ -1196,7 +1196,7 @@ class Share20OcsController extends OCSController {
 				if (isset($formattedAttr['enabled'])) {
 					$value = (bool) \json_decode($formattedAttr['enabled']);
 				}
-				if ($value) {
+				if ($value !== null) {
 					$newShareAttributes->setAttribute(
 						$formattedAttr['scope'],
 						$formattedAttr['key'],
