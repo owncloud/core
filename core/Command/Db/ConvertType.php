@@ -200,6 +200,7 @@ class ConvertType extends Command {
 		if ($input->isInteractive()) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
 			$q = new Question('<question>Enter a password to access a target database: </question>', false);
 			$q->setHidden(true);
 			$password = $dialog->ask($input, $output, $q);
@@ -248,6 +249,7 @@ class ConvertType extends Command {
 			}
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
 			$continue = $dialog->ask($input, $output, new Question('<question>Continue with the conversion (y/n)? [n] </question>', false));
 			if ($continue !== 'y') {
 				return;

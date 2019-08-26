@@ -46,6 +46,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		if ($data === null) {
 			return null;
 		}
+		'@phan-var \OC\Files\Storage\Storage $this->storage';
 		list($sourceStorage, $internalPath) = $this->storage->resolvePath($path);
 		$data['permissions'] = $sourceStorage->getPermissions($internalPath);
 		return $data;
@@ -57,6 +58,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		}
 		if ($this->storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			/** @var \OC\Files\Storage\Storage $storage */
+			'@phan-var \OC\Files\Storage\Storage $this->storage';
 			list($storage) = $this->storage->resolvePath('');
 			$this->sourceScanner = $storage->getScanner();
 			return $this->sourceScanner;
@@ -73,6 +75,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
 		$sourceScanner = $this->getSourceScanner();
 		if ($sourceScanner instanceof NoopScanner) {
+			'@phan-var \OC\Files\Storage\Storage $this->storage';
 			list(, $internalPath) = $this->storage->resolvePath($path);
 			return $sourceScanner->scan($internalPath, $recursive, $reuse, $lock);
 		} else {
@@ -88,6 +91,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
 		$sourceScanner = $this->getSourceScanner();
 		if ($sourceScanner instanceof NoopScanner) {
+			'@phan-var \OC\Files\Storage\Storage $this->storage';
 			list(, $internalPath) = $this->storage->resolvePath($file);
 			return parent::scan($internalPath, self::SCAN_SHALLOW, $reuseExisting, $lock);
 		} else {

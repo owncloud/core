@@ -2034,6 +2034,8 @@ class Share extends Constants {
 					// see github issue #10588 for more details
 					// Need to find a solution which works for all back-ends
 					$collectionBackend = self::getBackend($row['item_type']);
+					// and need to sort out exactly what class or interface this always is
+					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					$sharedParents = $collectionBackend->getParents($row['item_source']);
 					foreach ($sharedParents as $parent) {
 						$collectionItems[] = $parent;
@@ -2058,6 +2060,8 @@ class Share extends Constants {
 			// Need to find a solution which works for all back-ends
 			$collectionItems = [];
 			$collectionBackend = self::getBackend('folder');
+			// and need to sort out exactly what class or interface this always is
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$sharedParents = $collectionBackend->getParents($item, $shareWith, $uidOwner);
 			foreach ($sharedParents as $parent) {
 				$collectionItems[] = $parent;

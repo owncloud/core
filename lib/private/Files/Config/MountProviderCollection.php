@@ -94,6 +94,7 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 						new View('/' . $user->getUID() . '/files'),
 						$takenMountpoints
 					);
+					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					if ($mount->moveMount($newMountpoint)) {
 						$fsMountManager = Filesystem::getMountManager();
 						if ($fsMountManager->findIn($mountpoint)) {

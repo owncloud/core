@@ -125,7 +125,10 @@ class ConfigAdapter implements IMountProvider {
 	public function getMountsForUser(IUser $user, IStorageFactory $loader) {
 		$mounts = [];
 
+		// setUser is in UserTrait.
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$this->userStoragesService->setUser($user);
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$this->userGlobalStoragesService->setUser($user);
 
 		foreach ($this->userGlobalStoragesService->getUniqueStorages() as $storage) {
@@ -174,7 +177,10 @@ class ConfigAdapter implements IMountProvider {
 			$mounts[$storage->getMountPoint()] = $mount;
 		}
 
+		// resetUser is in UserTrait.
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$this->userStoragesService->resetUser();
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$this->userGlobalStoragesService->resetUser();
 
 		return $mounts;

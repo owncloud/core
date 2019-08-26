@@ -159,6 +159,7 @@ class OC_Util {
 		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Common')) {
 				/** @var \OC\Files\Storage\Common $storage */
+				'@phan-var \OC\Files\Storage\Common $storage';
 				$storage->setMountOptions($mount->getOptions());
 			}
 			return $storage;

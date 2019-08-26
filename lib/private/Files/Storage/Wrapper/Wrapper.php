@@ -336,7 +336,9 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	 * @return array
 	 */
 	public function search($query) {
-		return $this->getWrapperStorage()->search($query);
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->search($query);
 	}
 
 	/**
@@ -618,6 +620,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	public function lockNodePersistent($internalPath, array $lockInfo) {
 		$storage = $this->getWrapperStorage();
 		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			'@phan-var \OCP\Files\Storage\IPersistentLockingStorage $storage';
 			return $storage->lockNodePersistent($internalPath, $lockInfo);
 		}
 		return false;
@@ -626,6 +629,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	public function unlockNodePersistent($internalPath, array $lockInfo) {
 		$storage = $this->getWrapperStorage();
 		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			'@phan-var \OCP\Files\Storage\IPersistentLockingStorage $storage';
 			$storage->unlockNodePersistent($internalPath, $lockInfo);
 		}
 	}
@@ -633,6 +637,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	public function getLocks($internalPath, $returnChildLocks = false) {
 		$storage = $this->getWrapperStorage();
 		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			'@phan-var \OCP\Files\Storage\IPersistentLockingStorage $storage';
 			return $storage->getLocks($internalPath, $returnChildLocks);
 		}
 

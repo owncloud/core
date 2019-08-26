@@ -88,6 +88,7 @@ class MetaPlugin extends ServerPlugin {
 
 				$uid = $this->userSession->getUser()->getUID();
 				$baseFolder = $this->rootFolder->get($uid . '/files/');
+				'@phan-var \OC\Files\Node\Folder $baseFolder';
 				$files = $baseFolder->getById($fileId);
 				if (!$files) {
 					return null;

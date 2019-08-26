@@ -89,6 +89,7 @@ $mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDis
  * @var \OCA\Files_Sharing\External\Storage $storage
  */
 $storage = $mount->getStorage();
+'@phan-var \OCA\Files_Sharing\External\Storage $storage';
 try {
 	// check if storage exists
 	$storage->checkStorageAvailability();

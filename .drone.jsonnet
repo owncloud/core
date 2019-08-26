@@ -44,7 +44,7 @@ local pipelines = [
     depends_on=standard_deps
   )
   for php in [
-    '7.1',
+    '7.1', '7.2', '7.3',
   ]
 ] + [
   #

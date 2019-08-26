@@ -391,6 +391,8 @@ class View {
 	 */
 	public function readdir($handle) {
 		$fsLocal = new Local(['datadir' => '/']);
+		// ToDo: Local does not have readdir - what is happening here?
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		return $fsLocal->readdir($handle);
 	}
 
@@ -836,6 +838,7 @@ class View {
 							/**
 							 * @var \OC\Files\Mount\MountPoint | \OC\Files\Mount\MoveableMount $mount1
 							 */
+							'@phan-var \OC\Files\Mount\MountPoint | \OC\Files\Mount\MoveableMount $mount1';
 							$sourceMountPoint = $mount1->getMountPoint();
 							$result = $mount1->moveMount($absolutePath2);
 							$manager->moveMount($sourceMountPoint, $mount1->getMountPoint());

@@ -118,11 +118,13 @@ class MoveAvatarOutsideHome implements IRepairStep {
 			// call get instead of getUserFolder to avoid needless skeleton copy
 			/** @var Folder $oldAvatarFolder */
 			$oldAvatarFolder = $this->rootFolder->get('/' . $userId . '/avatars/');
+			'@phan-var \OCP\Files\Folder $oldAvatarFolder';
 			try {
 				$oldAvatarFile = $oldAvatarFolder->get('/avatar.jpg');
 			} catch (NotFoundException $e) {
 				$oldAvatarFile = $oldAvatarFolder->get('/avatar.png');
 			}
+			'@phan-var \OC\Files\Node\File $oldAvatarFile';
 			$newAvatarStorage = $this->rootFolder->get('/avatars/')->getStorage();
 			$avatar = new Avatar($newAvatarStorage, $this->l, $user, $this->logger);
 			$avatar->set($oldAvatarFile->getContent());

@@ -181,6 +181,7 @@ class PublishPlugin extends ServerPlugin {
 
 			// If there's no ACL support, we allow everything
 			if ($acl) {
+				'@phan-var \OCA\DAV\Connector\Sabre\DavAclPlugin $acl';
 				$acl->checkPrivileges($path, '{DAV:}write');
 			}
 
@@ -209,6 +210,7 @@ class PublishPlugin extends ServerPlugin {
 
 			// If there's no ACL support, we allow everything
 			if ($acl) {
+				'@phan-var \OCA\DAV\Connector\Sabre\DavAclPlugin $acl';
 				$acl->checkPrivileges($path, '{DAV:}write');
 			}
 

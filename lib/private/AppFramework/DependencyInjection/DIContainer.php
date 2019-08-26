@@ -66,6 +66,7 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		/** @var \OC\ServerContainer $server */
 		$server = $this->getServer();
+		'@phan-var \OC\ServerContainer $server';
 		$server->registerAppContainer($appName, $this);
 
 		// aliases
@@ -105,7 +106,9 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 		$this->registerService('OC\\CapabilitiesManager', function ($c) {
-			return $this->getServer()->getCapabilitiesManager();
+			$server = $this->getServer();
+			'@phan-var \OC\Server $server';
+			return $server->getCapabilitiesManager();
 		});
 
 		$this->registerService('OCP\Comments\ICommentsManager', function ($c) {
@@ -376,6 +379,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 		$this->registerService('TwoFactorMiddleware', function (SimpleContainer $c) use ($app) {
+			// ToDo: DIServer is in DIContainer and not in SimpleContainer
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$twoFactorManager = $c->getServer()->getTwoFactorAuthManager();
 			$userSession = $app->getServer()->getUserSession();
 			$urlGenerator = $app->getServer()->getURLGenerator();

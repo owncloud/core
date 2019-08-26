@@ -57,6 +57,9 @@ class ProviderFactory implements IProviderFactory {
 	 */
 	protected function defaultShareProvider() {
 		if ($this->defaultProvider === null) {
+			// serverContainer really has to be more than just an IServerContainer
+			// because getLazyRootFolder() is only in \OC\Server
+			'@phan-var \OC\Server $this->serverContainer';
 			$this->defaultProvider = new DefaultShareProvider(
 				$this->serverContainer->getDatabaseConnection(),
 				$this->serverContainer->getUserManager(),

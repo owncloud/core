@@ -593,6 +593,7 @@ class OC_Helper {
 		$sourceStorage = $storage;
 		if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			$includeExtStorage = false;
+			'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
 			$sourceStorage = $storage->getSourceStorage();
 		}
 		if ($includeExtStorage) {
@@ -605,7 +606,8 @@ class OC_Helper {
 
 		// TODO: need a better way to get total space from storage
 		if ($sourceStorage->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota')) {
-			/** @var \OC\Files\Storage\Wrapper\Quota $storage */
+			/** @var \OC\Files\Storage\Wrapper\Quota $sourceStorage */
+			'@phan-var \OC\Files\Storage\Wrapper\Quota $sourceStorage';
 			$quota = $sourceStorage->getQuota();
 		}
 		$free = $sourceStorage->free_space('');

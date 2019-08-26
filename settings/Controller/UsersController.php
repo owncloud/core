@@ -193,6 +193,7 @@ class UsersController extends Controller {
 			$restorePossible = true;
 		}
 
+		'@phan-var \OC\Group\Manager $this->groupManager';
 		$subAdminGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($user);
 		foreach ($subAdminGroups as $key => $subAdminGroup) {
 			$subAdminGroups[$key] = $subAdminGroup->getGID();
@@ -311,7 +312,9 @@ class UsersController extends Controller {
 				$users[] = $this->formatUserForIndex($user);
 			}
 		} else {
-			$subAdminOfGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
+			$groupManager = $this->groupManager;
+			'@phan-var \OC\Group\Manager $groupManager';
+			$subAdminOfGroups = $groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
 			// New class returns IGroup[] so convert back
 			$gids = [];
 			foreach ($subAdminOfGroups as $group) {
@@ -416,12 +419,14 @@ class UsersController extends Controller {
 						continue;
 					}
 
+					'@phan-var \OC\Group\Manager $this->groupManager';
 					if (!$this->groupManager->getSubAdmin()->isSubAdminofGroup($currentUser, $groupObject)) {
 						unset($groups[$key]);
 					}
 				}
 			}
 
+			'@phan-var \OC\Group\Manager $this->groupManager';
 			if (empty($groups)) {
 				$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($currentUser);
 				// New class returns IGroup[] so convert back
@@ -754,6 +759,7 @@ class UsersController extends Controller {
 			);
 		}
 
+		'@phan-var \OC\Group\Manager $this->groupManager';
 		if (!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
 				[
@@ -806,17 +812,20 @@ class UsersController extends Controller {
 		$user = $this->userManager->get($id);
 
 		if ($userId !== $id
-			&& !$this->isAdmin
-			&& !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Forbidden')
-					]
-				],
-				Http::STATUS_FORBIDDEN
-			);
+			&& !$this->isAdmin) {
+			$groupManager = $this->groupManager;
+			'@phan-var \OC\Group\Manager $groupManager';
+			if (!$groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
+				return new DataResponse(
+					[
+						'status' => 'error',
+						'data' => [
+							'message' => (string)$this->l10n->t('Forbidden')
+						]
+					],
+					Http::STATUS_FORBIDDEN
+				);
+			}
 		}
 
 		if ($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
@@ -927,6 +936,7 @@ class UsersController extends Controller {
 				}
 			}
 		} else {
+			'@phan-var \OC\Group\Manager $this->groupManager';
 			$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
 
 			$uniqueUsers = [];
@@ -964,6 +974,7 @@ class UsersController extends Controller {
 		}
 
 		$user = $this->userManager->get($username);
+		'@phan-var \OC\Group\Manager $this->groupManager';
 
 		if ($user === null ||
 			!$user->canChangeDisplayName() ||
@@ -1052,6 +1063,7 @@ class UsersController extends Controller {
 	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$user = $this->userManager->get($id);
+		'@phan-var \OC\Group\Manager $this->groupManager';
 		if ($this->isAdmin ||
 			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
 				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) ||
@@ -1132,6 +1144,7 @@ class UsersController extends Controller {
 	public function setEnabled($id, $enabled) {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
+		'@phan-var \OC\Group\Manager $this->groupManager';
 
 		if ($userId === $id ||
 			(!$this->isAdmin &&

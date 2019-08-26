@@ -612,6 +612,7 @@ class OC_App {
 	public static function getAppInfo($appId, $path = false) {
 		/** @var \OC\App\AppManager $am */
 		$am = \OC::$server->getAppManager();
+		'@phan-var \OC\App\AppManager $am';
 		if ($path) {
 			return $am->getAppInfoByPath($appId);
 		}

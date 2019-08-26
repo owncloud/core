@@ -403,6 +403,7 @@ class Encoding extends Wrapper {
 	 * @return array
 	 */
 	public function search($query) {
+		'@phan-var \OC\Files\Storage\Common $this->storage';
 		return $this->storage->search($query);
 	}
 

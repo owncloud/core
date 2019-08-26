@@ -202,6 +202,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$shareManager = \OC::$server->getShareManager();
 		// FIXME: make it stop earlier in '/$userId/files'
 		while ($targetNode !== null && $targetNode->getPath() !== '/') {
+			'@phan-var \OC\Share20\Manager $shareManager';
 			$shares = $shareManager->getSharesByPath($targetNode);
 
 			foreach ($shares as $share) {
@@ -231,6 +232,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		$relTargetPath = $this->stripUserFilesPath($target);
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$share = $this->getStorage()->getShare();
 
 		$result = true;
@@ -238,6 +240,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		try {
 			$this->updateFileTarget($relTargetPath, $share);
 			$this->setMountPoint($target);
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$this->getStorage()->setMountPoint($relTargetPath);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('files_sharing',
@@ -257,6 +260,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$mountManager = \OC\Files\Filesystem::getMountManager();
 		/** @var $storage \OCA\Files_Sharing\SharedStorage */
 		$storage = $this->getStorage();
+		'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
 		$result = $storage->unshareStorage();
 		$mountManager->removeMount($this->mountPoint);
 

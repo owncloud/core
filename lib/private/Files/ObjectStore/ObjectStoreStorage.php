@@ -338,6 +338,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 		// living on different buckets?
 		/** @var ObjectStoreStorage $sourceStorage */
+		'@phan-var ObjectStoreStorage $sourceStorage';
 		if ($this->getBucket() !== $sourceStorage->getBucket()) {
 			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 		}

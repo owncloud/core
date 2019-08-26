@@ -95,6 +95,7 @@ class AutorenamePlugin extends ServerPlugin {
 				return;
 			}
 
+			'@phan-var ObjectTree $this->server->tree';
 			$view = $this->server->tree->getView();
 			list($nodePath, $nodeName) = \Sabre\Uri\split($node->getPath());
 			$newName = \OC_Helper::buildNotExistingFileNameForView($nodePath, $nodeName, $view);

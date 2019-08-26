@@ -1066,6 +1066,7 @@ class FederatedShareProvider implements IShareProvider {
 			'remoteshare.received',
 			new GenericEvent('', ['remote' => $remote])
 		);
+		'@phan-var GenericEvent $event';
 		if ($event->getArgument('autoAddServers')) {
 			return false;
 		}

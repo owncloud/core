@@ -198,6 +198,7 @@ class Scanner extends BasicEmitter implements IScanner {
 							}
 						}
 						// Only update metadata that has changed
+						'@phan-var \OC\Files\Cache\CacheEntry $cacheData';
 						$newData = \array_diff_assoc($data, $cacheData->getData());
 					} else {
 						$newData = $data;

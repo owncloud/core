@@ -723,6 +723,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			if ($config->getSystemValue('filelocking.enabled', true) or (\defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				/** @var \OC\Memcache\Factory $memcacheFactory */
 				$memcacheFactory = $c->getMemCacheFactory();
+				'@phan-var \OC\Memcache\Factory $memcacheFactory';
 				$memcache = $memcacheFactory->createLocking('lock');
 				if (!($memcache instanceof \OC\Memcache\NullCache)) {
 					return new MemcacheLockingProvider($memcache, $ttl);

@@ -218,7 +218,9 @@ class ViewController extends Controller {
 
 		$user = $this->userSession->getUser()->getUID();
 
-		$navItems = \OCA\Files\App::getNavigationManager()->getAll();
+		$navigationManager = \OCA\Files\App::getNavigationManager();
+		'@phan-var \OC\NavigationManager $navigationManager';
+		$navItems = $navigationManager->getAll();
 		\usort($navItems, function ($item1, $item2) {
 			return $item1['order'] - $item2['order'];
 		});
@@ -283,6 +285,7 @@ class ViewController extends Controller {
 	public function showFile($fileId, $details = null) {
 		$uid = $this->userSession->getUser()->getUID();
 		$baseFolder = $this->rootFolder->get($uid . '/files/');
+		'@phan-var \OCP\Files\Folder $baseFolder';
 		$files = $baseFolder->getById($fileId);
 		$params = [];
 
