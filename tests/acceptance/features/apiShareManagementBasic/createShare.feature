@@ -273,6 +273,8 @@ Feature: sharing
     And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "wnCloud"
     And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "wnCloud"
     And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%" and the content should be "wnCloud"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -388,10 +390,28 @@ Feature: sharing
       | id          | A_NUMBER    |
       | share_type  | public_link |
       | permissions | read        |
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder                  |
+      | permissions | read,update,create,delete |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the last response should be empty
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 403             | 200              |
+      | 2               | 403             | 403              |
 
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with edit permissions keeps it
@@ -406,6 +426,8 @@ Feature: sharing
       | id          | A_NUMBER                  |
       | share_type  | public_link               |
       | permissions | read,update,create,delete |
+    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -424,6 +446,8 @@ Feature: sharing
       | id          | A_NUMBER    |
       | share_type  | public_link |
       | permissions | read,create |
+    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
