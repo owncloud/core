@@ -3406,7 +3406,117 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providesShareAttributes
+	 * @dataProvider providesTestAttributes
+	 */
+	public function testSettingAttributes($attributes, $expectedAttributeObject) {
+		$share = $this->newShare();
+		$this->shareManager->method('newShare')->willReturn($share);
+
+		$share->setShareOwner('shareOwner');
+
+		$ocs = $this->mockFormatShare();
+		$ocs->expects(self::once())->method('formatShare')->willReturnCallback(static function (IShare $share) {
+			return [
+				'permissions' => $share->getPermissions(),
+				'attributes' => $share->getAttributes()
+			];
+		});
+
+		$this->request
+			->method('getParam')
+			->willReturnMap([
+				['path', null, 'valid-path'],
+				['permissions', null, 1],
+				['attributes', null, $attributes],
+				['shareType', $this->any(), Share::SHARE_TYPE_USER],
+				['shareWith', null, 'validUser'],
+			]);
+
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+
+		$path = $this->createMock('\OCP\Files\File');
+		$storage = $this->createMock('OCP\Files\Storage');
+		$storage->method('instanceOfStorage')
+			->with('OCA\Files_Sharing\External\Storage')
+			->willReturn(false);
+		$path->method('getStorage')->willReturn($storage);
+		$userFolder->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+
+		$path->expects($this->once())
+			->method('lock')
+			->with(ILockingProvider::LOCK_SHARED);
+		$path->expects($this->once())
+			->method('unlock')
+			->with(ILockingProvider::LOCK_SHARED);
+
+		$this->shareManager->method('createShare')->will($this->returnArgument(0));
+
+		$result = $ocs->createShare();
+
+		$this->assertEquals(1, $result->getData()['permissions']);
+		$this->assertEquals($expectedAttributeObject, $result->getData()['attributes']->toArray());
+	}
+
+	public function providesTestAttributes() {
+		return [
+			[
+				[
+					['scope' => 'permissions', 'key' => 'download', 'value' => 'true']
+				],
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => 'true']
+				],
+			],
+			[
+				[
+					['scope' => 'permissions', 'key' => 'download', 'value' => 'false']
+				],
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => 'false']
+				],
+			],
+			[
+				[
+					['scope' => 'permissions', 'key' => 'download', 'value' => null]
+				],
+				[],
+			],
+			[
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => true]
+				],
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => true]
+				],
+			],
+			[
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => false]
+				],
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => false]
+				],
+			],
+			[
+				[
+					['scope' => 'permissions', 'key' => 'download', 'enabled' => null]
+				],
+				[],
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider providesPermissionsViaAttributes
 	 */
 	public function testPermissionsViaAttributes($expectedPermission, $attributes) {
 		$share = $this->newShare();
@@ -3465,28 +3575,28 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expectedPermission, $result->getData()['permissions']);
 	}
 
-	public function providesShareAttributes() {
+	public function providesPermissionsViaAttributes() {
 		return [
 			[
 				\OCP\Constants::PERMISSION_READ, [
-				['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true']
-			]
+					['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true']
+				]
 			],
 			[
 				\OCP\Constants::PERMISSION_ALL, [
-				['scope' => 'ownCloud', 'key' => 'create', 'value' => 'true'],
-				['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true'],
-				['scope' => 'ownCloud', 'key' => 'update', 'value' => 'true'],
-				['scope' => 'ownCloud', 'key' => 'delete', 'value' => 'true'],
-				['scope' => 'ownCloud', 'key' => 'share', 'value' => 'true'],
-			]
+					['scope' => 'ownCloud', 'key' => 'create', 'value' => 'true'],
+					['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true'],
+					['scope' => 'ownCloud', 'key' => 'update', 'value' => 'true'],
+					['scope' => 'ownCloud', 'key' => 'delete', 'value' => 'true'],
+					['scope' => 'ownCloud', 'key' => 'share', 'value' => 'true'],
+				]
 			],
 			[
 				\OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE , [
-				['scope' => 'ownCloud', 'key' => 'create', 'value' => 'true'],
-				['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true'],
-				['scope' => 'ownCloud', 'key' => 'share', 'value' => 'true'],
-			]
+					['scope' => 'ownCloud', 'key' => 'create', 'value' => 'true'],
+					['scope' => 'ownCloud', 'key' => 'read', 'value' => 'true'],
+					['scope' => 'ownCloud', 'key' => 'share', 'value' => 'true'],
+				]
 			],
 		];
 	}
