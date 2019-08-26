@@ -132,29 +132,26 @@ describe('OC.Share.ShareDialogMailView', function() {
 			expect(callback.notCalled).toEqual(true);
 			expect(fakeServer.requests.length).toEqual(1);
 			expect(fakeServer.requests[0].method).toEqual('POST');
-			expect(fakeServer.requests[0].url).toEqual(OC.generateUrl('core/ajax/share.php'));
-			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual({
-				action: 'email',
-				toAddress: 'ernie@example.com,bert@example.com',
+			expect(fakeServer.requests[0].requestBody).toEqual($.param({
+				recipients: ["ernie@example.com","bert@example.com"],
+				personalNote: '',
 				link: model.getLink(),
-				itemType: 'folder',
-				itemSource: '123',
-				file: 'shared_folder',
-				expiration: '2017-10-12',
-				emailBody: '',
-				toSelf: 'false'
-			});
+				format: 'json'
+			}));
 
 			fakeServer.requests[0].respond(
 				200, {
 					'Content-Type': 'application/json'
 				},
 				JSON.stringify({
-					status: 'success',
-					data: [
-						'someresult1',
-						'someresult2'
-					]
+					ocs: {
+						meta: {
+							status: "success",
+							statuscode: 100,
+							message: null
+						},
+						data: []
+					}
 				})
 			);
 
@@ -165,7 +162,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 
 			expect(callback.calledOnce).toEqual(true);
 		});
-		it('sends mail to self if BCC is checked', function() {
+		it('sends mail to self if toSelf is checked', function() {
 			var callback = sinon.stub();
 			view._addAddress('GlaDOS@aperture.com');
 			view.$('.emailPrivateLinkForm--emailToSelf').prop('checked', 'checked');
@@ -175,29 +172,26 @@ describe('OC.Share.ShareDialogMailView', function() {
 			expect(callback.notCalled).toEqual(true);
 			expect(fakeServer.requests.length).toEqual(1);
 			expect(fakeServer.requests[0].method).toEqual('POST');
-			expect(fakeServer.requests[0].url).toEqual(OC.generateUrl('core/ajax/share.php'));
-			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual({
-				action: 'email',
-				toAddress: 'glados@aperture.com',
+			expect(fakeServer.requests[0].requestBody).toEqual($.param({
+				recipients: ["glados@aperture.com","someuser@example.org"],
+				personalNote: 'The Cake Is A Lie!',
 				link: model.getLink(),
-				itemType: 'folder',
-				itemSource: '123',
-				file: 'shared_folder',
-				expiration: '2017-10-12',
-				emailBody: 'The Cake Is A Lie!',
-				toSelf: 'true'
-			});
+				format: 'json'
+			}));
 
 			fakeServer.requests[0].respond(
 				200, {
 					'Content-Type': 'application/json'
 				},
 				JSON.stringify({
-					status: 'success',
-					data: [
-						'someresult1',
-						'someresult2'
-					]
+					ocs: {
+						meta: {
+							status: "success",
+							statuscode: 100,
+							message: null
+						},
+						data: []
+					}
 				})
 			);
 
@@ -229,9 +223,13 @@ describe('OC.Share.ShareDialogMailView', function() {
 					'Content-Type': 'application/json'
 				},
 				JSON.stringify({
-					status: 'error',
-					data: {
-						message: 'whatever...'
+					ocs: {
+						meta: {
+							status: "error",
+							statuscode: 400,
+							message: "Couldn't send mail to following recipient(s): email@example.com'"
+						},
+						data: []
 					}
 				})
 			);
