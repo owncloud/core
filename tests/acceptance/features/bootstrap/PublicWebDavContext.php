@@ -48,29 +48,13 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function downloadPublicFileWithRange($range, $publicWebDAVAPIVersion, $password ="") {
-		$lastShareData = $this->featureContext->getLastShareData()->data;
-		$password = $this->featureContext->getActualPassword($password);
-		$token = $lastShareData->token;
-		$davPath = WebDavHelper::getDavPath(
-			$token, 0, "public-files-$publicWebDAVAPIVersion"
-		);
-		$fullUrl = $this->featureContext->getBaseUrl() . "/$davPath";
-		$user = $this->getUsernameForPublicWebdavApi(
-			$token, $password, $publicWebDAVAPIVersion
-		);
 		if ($publicWebDAVAPIVersion === "new") {
-			$fullUrl = $fullUrl . $lastShareData->file_target;
+			$path = $this->featureContext->getLastShareData()->data->file_target;
+		} else {
+			$path = "";
 		}
-
-		$headers = [];
-		if ($range !== "") {
-			$headers = [
-				'X-Requested-With' => 'XMLHttpRequest',
-				'Range' => $range
-			];
-		}
-		$this->featureContext->setResponse(
-			HttpRequestHelper::get($fullUrl, $user, $password, $headers)
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
+			$path, $password, $range, $publicWebDAVAPIVersion
 		);
 	}
 
@@ -83,6 +67,18 @@ class PublicWebDavContext implements Context {
 	 */
 	public function downloadPublicFile($publicWebDAVAPIVersion) {
 		$this->downloadPublicFileWithRange("", $publicWebDAVAPIVersion);
+	}
+
+	/**
+	 * @When /^the public downloads the last public shared file with password "([^"]*)" using the (old|new) public WebDAV API$/
+	 *
+	 * @param string $password
+	 * @param string $publicWebDAVAPIVersion
+	 *
+	 * @return void
+	 */
+	public function downloadPublicFileWithPassword($password, $publicWebDAVAPIVersion) {
+		$this->downloadPublicFileWithRange("", $publicWebDAVAPIVersion, $password);
 	}
 
 	/**
