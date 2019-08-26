@@ -405,20 +405,21 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with content :content sending the locktoken of :itemToUseLockOf of the public using the old public WebDAV API
+	 * @When /^the public uploads file "([^"]*)" with content "([^"]*)" sending the locktoken of "([^"]*)" of the public using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $filename
 	 * @param string $content
 	 * @param string $itemToUseLockOf
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
 	public function publicUploadFileSendingLockTokenOfPublic(
-		$filename, $content, $itemToUseLockOf
+		$filename, $content, $itemToUseLockOf, $publicWebDAVAPIVersion
 	) {
 		$lockOwner = (string)$this->featureContext->getLastShareData()->data->token;
 		$this->publicUploadFileSendingLockTokenOfUser(
-			$filename, $content, $itemToUseLockOf, $lockOwner
+			$filename, $content, $itemToUseLockOf, $lockOwner, $publicWebDAVAPIVersion
 		);
 	}
 	/**
