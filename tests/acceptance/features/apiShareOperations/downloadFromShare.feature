@@ -17,6 +17,15 @@ Feature: sharing
     And the public should be able to download the range "bytes=0-7" of file "/test.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "ownCloud"
     #And the public download of file "/test.txt" from inside the last public shared folder using the new public WebDAV API should fail with HTTP status code "404"
 
+  @public_link_share-feature-required
+  Scenario: Downloading from share after the share source was deleted
+    Given user "user0" has created a public link share with settings
+      | path        | PARENT |
+      | permissions | read   |
+    When user "user0" deletes folder "PARENT" using the WebDAV API
+    Then the public download of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API should fail with HTTP status code "404"
+    And the public download of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API should fail with HTTP status code "404"
+
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and skeleton files:
       | username |
