@@ -2969,16 +2969,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.4.30",
+            "version": "v3.4.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "d129c017e8602507688ef2c3007951a16c1a8407"
+                "reference": "d822cb654000a95b7855362c0d5b127f6a6d8baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/d129c017e8602507688ef2c3007951a16c1a8407",
-                "reference": "d129c017e8602507688ef2c3007951a16c1a8407",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d822cb654000a95b7855362c0d5b127f6a6d8baa",
+                "reference": "d822cb654000a95b7855362c0d5b127f6a6d8baa",
                 "shasum": ""
             },
             "require": {
@@ -3014,7 +3014,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-30T15:47:52+00:00"
+            "time": "2019-08-26T07:52:58+00:00"
         },
         {
             "name": "symfony/routing",
