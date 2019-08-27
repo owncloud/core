@@ -550,23 +550,26 @@ class PublicWebDavContext implements Context {
 
 	/**
 	 * @Then /^uploading a file should not work using the (old|new) public WebDAV API$/
+	 * @Then /^the public upload to the last publicly shared folder using the (old|new) public WebDAV API should fail with HTTP status code "([^"]*)"$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
+	 * @param string $expectedHttpCode
 	 *
 	 * @return void
 	 */
-	public function publiclyUploadingShouldNotWork($publicWebDAVAPIVersion) {
+	public function publiclyUploadingShouldNotWork(
+		$publicWebDAVAPIVersion, $expectedHttpCode = null
+	) {
 		$this->publicUploadContent(
 			'whateverfilefortesting.txt', '', 'test', false,
 			[], $publicWebDAVAPIVersion
 		);
 		$response = $this->featureContext->getResponse();
-		Assert::assertTrue(
-			($response->getStatusCode() == 507)
-			|| (
-				($response->getStatusCode() >= 400)
-				&& ($response->getStatusCode() <= 499)
-				),
+		if ($expectedHttpCode === null) {
+			$expectedHttpCode = [507, 400, 401, 403, 404, 423];
+		}
+		$this->featureContext->theHTTPStatusCodeShouldBe(
+			$expectedHttpCode,
 			"upload should have failed but passed with code " .
 			$response->getStatusCode()
 		);
