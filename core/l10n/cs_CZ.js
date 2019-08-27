@@ -30,7 +30,6 @@ OC.L10N.register(
     "Failed to set password. Please contact the administrator." : "Chyba při ukládání hesla. Kontaktujte prosím správce systému.",
     "Failed to set password. Please contact your administrator." : "Chyba při ukládání hesla. Kontaktujte prosím svého správce systému.",
     "Failed to send email. Please contact your administrator." : "Chyba při odesílání emailu. Prosím kontaktujte správce systému.",
-    "Couldn't send mail to following recipient(s): %s " : "Email nemohl být odeslán těmto příjemcům: 1%s",
     "Preparing update" : "Příprava na aktualizaci",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Upozornění opravy:",

@@ -22,7 +22,6 @@ OC.L10N.register(
     "Recipients can view or download contents." : "Vastaanottaja voi katsoa tai ladata sisältöä.",
     "Download / View / Upload" : "Lataa / Näytä / Lähetä",
     "Upload only" : "Vain lähetys",
-    "Couldn't send mail to following recipient(s): %s " : "Ei voitu lähettää sähköpostia seuraaville vastaanottajille: %s",
     "Preparing update" : "Valmistellaan päivitystä",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Korjausvaroitus:",

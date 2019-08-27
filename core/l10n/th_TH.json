@@ -29,7 +29,6 @@
     "Failed to set password. Please contact the administrator." : "ไม่สามารถตั้งรหัสผ่าน โปรดติดต่อผู้ดูแลระบบ",
     "Failed to set password. Please contact your administrator." : "ไม่สามารถตั้งรหัสผ่าน โปรดติดต่อผู้ดูแลระบบ",
     "Failed to send email. Please contact your administrator." : "ไม่สามารถส่งอีเมล โปรดติดต่อผู้ดูแลระบบ",
-    "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
     "Preparing update" : "เตรียมอัปเดต",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "เตือนการซ่อมแซม:",

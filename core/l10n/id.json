@@ -24,7 +24,6 @@
     "Recipients can view, download and upload contents." : "Penerima dapat melihat, mengunduh dan meng unggah konten.",
     "Upload only" : "Unggah saja",
     "Receive files from multiple recipients without revealing the contents of the folder." : "Terima data dari beragam pengirim tanpa mengungkapkan konten dari foldernya.",
-    "Couldn't send mail to following recipient(s): %s " : "Tidak dapat mengirim surel kepada penerima berikut: %s",
     "Preparing update" : "Mempersiapkan pembaruan",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Peringatan perbaikan:",

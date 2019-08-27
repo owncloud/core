@@ -31,7 +31,6 @@ OC.L10N.register(
     "Failed to set password. Please contact the administrator." : "Produciuse un fallo ao estabelecer o contrasinal. Contacte co seu administrador. ",
     "Failed to set password. Please contact your administrator." : "Produciuse un fallo ao estabelecer o contrasinal. Contacte co seu administrador. ",
     "Failed to send email. Please contact your administrator." : "Produciuse un fallo ao enviar o correo. Contacte co seu administrador. ",
-    "Couldn't send mail to following recipient(s): %s " : "Non foi posíbel enviar o correo aos seguintes destinatarios: %s",
     "Preparing update" : "Preparando a actualización",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Aviso de arranxo:",

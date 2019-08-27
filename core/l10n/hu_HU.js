@@ -23,7 +23,6 @@ OC.L10N.register(
     "Download / View / Upload" : "Letöltés / Megjelenítés / Feltöltés",
     "Upload only" : "Csak feltöltés",
     "Receive files from multiple recipients without revealing the contents of the folder." : "Fájlok fogadása többszörös fogadóktól a mappa tartalmának felfedése nélkül",
-    "Couldn't send mail to following recipient(s): %s " : "Email küldese sikertelen a következő(k)nek: %s",
     "Preparing update" : "Felkészülés a frissítésre",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Javítási figyelmeztetés:",

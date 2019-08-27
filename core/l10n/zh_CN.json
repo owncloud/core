@@ -26,7 +26,6 @@
     "Failed to set password. Please contact the administrator." : "无法设置密码，请联系管理员。",
     "Failed to set password. Please contact your administrator." : "无法设置密码，请联系管理员。",
     "Failed to send email. Please contact your administrator." : "无法发送电子邮件，请联系管理员。",
-    "Couldn't send mail to following recipient(s): %s " : "无法发送邮件到下列收件人: %s ",
     "Preparing update" : "正在准备更新",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "修复警告：",

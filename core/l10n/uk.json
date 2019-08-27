@@ -19,7 +19,6 @@
     "Download / View" : "Завантаження / Перегляд",
     "Download / View / Upload" : "Завантаження / Перегляд / Вивантаження",
     "Upload only" : "Тільки вивантаження",
-    "Couldn't send mail to following recipient(s): %s " : "Не вдалося надіслати повідомлення наступним користувачам: %s",
     "Preparing update" : "Підготовка до оновлення",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Попередження відновлення:",

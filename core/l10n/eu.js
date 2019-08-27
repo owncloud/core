@@ -21,7 +21,6 @@ OC.L10N.register(
     "Download / View" : "Deskargatu / Ikusi",
     "Download / View / Upload" : "Deskargatu / Ikusi / Kargatu",
     "Upload only" : "Kargatu bakarrik",
-    "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s",
     "Preparing update" : "Eguneraketa prestatzen",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Konponketa abisua:",

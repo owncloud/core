@@ -28,7 +28,6 @@ OC.L10N.register(
     "Failed to set password. Please contact the administrator." : "Impostazione password fallita. Contatta l'amministratore di sistema.",
     "Failed to set password. Please contact your administrator." : "Impostazione password fallita. Contatta l'amministratore di sistema.",
     "Failed to send email. Please contact your administrator." : "Invio email fallito. Contatta l'amministratore di sistema.",
-    "Couldn't send mail to following recipient(s): %s " : "Invio dell'email fallito al/ai seguente/i destinatario/i: %s ",
     "Preparing update" : "Preparazione aggiornamento",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Avviso di riparazione",

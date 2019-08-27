@@ -29,7 +29,6 @@
     "Failed to set password. Please contact the administrator." : "Αποτυχία καθορισμού συνθηματικού. Παρακαλούμε επικοινωνήστε με τον διαχειριστή σας.",
     "Failed to set password. Please contact your administrator." : "Αποτυχία ορισμού συνθηματικού. Παρακαλούμε επικοινωνήστε με τον διαχειριστή σας.",
     "Failed to send email. Please contact your administrator." : "Αποτυχία αποστολής μηνύματος ηλ. ταχυδρομείου. Παρακαλούμε επικοινωνήστε με τον διαχειριστή σας.",
-    "Couldn't send mail to following recipient(s): %s " : "Αδυναμία αποστολής αλληλογραφίας στους παρακάτω παραλήπτες: %s ",
     "Preparing update" : "Προετοιμασία ενημέρωσης",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Προειδοποίηση διόρθωσης: ",

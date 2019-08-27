@@ -21,7 +21,6 @@ OC.L10N.register(
     "Download / View" : "Descarregar / Veure",
     "Download / View / Upload" : "Descarregar / Veure / Pujar",
     "Failed to set password. Please contact your administrator." : "No s'ha pogut establir una contrasenya. Per favor, contacta amb l'administrador.",
-    "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s",
     "Preparing update" : "Preparant l'actualització",
     "[%d / %d]: %s" : "[%d/%d]:%s",
     "Repair warning: " : "Advertiment de reparació:",

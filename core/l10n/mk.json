@@ -26,7 +26,6 @@
     "Failed to set password. Please contact the administrator." : "Неуспешно поставување на лозинка. Контактирајте го администраторот.",
     "Failed to set password. Please contact your administrator." : "Неуспешно поставување на лозинка. Контактирајте го администраторот.",
     "Failed to send email. Please contact your administrator." : "Неуспешно испраќање на Email. Контактирајте го администраторот.",
-    "Couldn't send mail to following recipient(s): %s " : "Не можеше да се испрати пошта до следниот примател(и): %s ",
     "Preparing update" : "Ја подготвувам надградбата",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Предупредувања при поправка:",

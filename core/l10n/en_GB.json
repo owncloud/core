@@ -26,7 +26,6 @@
     "Failed to set password. Please contact the administrator." : "Failed to set password. Please contact the administrator.",
     "Failed to set password. Please contact your administrator." : "Failed to set password. Please contact your administrator.",
     "Failed to send email. Please contact your administrator." : "Failed to send email. Please contact your administrator.",
-    "Couldn't send mail to following recipient(s): %s " : "Couldn't send mail to following recipient(s): %s ",
     "Preparing update" : "Preparing update",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Repair warning: ",

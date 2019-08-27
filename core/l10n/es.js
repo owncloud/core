@@ -31,7 +31,6 @@ OC.L10N.register(
     "Failed to set password. Please contact the administrator." : "No se pudo establecer la contraseña. Por favor contacte con su administrador.",
     "Failed to set password. Please contact your administrator." : "No se pudo establecer la contraseña. Por favor contacte con su administrador.",
     "Failed to send email. Please contact your administrator." : "No se pudo enviar el correo electrónico. Por favor contacte con su administrador.",
-    "Couldn't send mail to following recipient(s): %s " : "No se puede enviar un correo electrónico a los siguientes receptores: %s ",
     "Preparing update" : "Preparando la actualización",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Advertencia de reparación:",

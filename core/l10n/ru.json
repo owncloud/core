@@ -29,7 +29,6 @@
     "Failed to set password. Please contact the administrator." : "Не удалось установить пароль. Пожалуйста, свяжитесь с вашим администратором.",
     "Failed to set password. Please contact your administrator." : "Не удалось установить пароль. Пожалуйста, свяжитесь с вашим администратором.",
     "Failed to send email. Please contact your administrator." : "Не удалось отправить почту. Пожалуйста, свяжитесь с вашим администратором.",
-    "Couldn't send mail to following recipient(s): %s " : "Не удалось отправить почту следующим получателям: %s ",
     "Preparing update" : "Подготовка к обновлению",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Предупреждение восстановления:",

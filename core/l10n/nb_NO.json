@@ -26,7 +26,6 @@
     "Failed to set password. Please contact the administrator." : "Kunne ikke angi passord. Ta kontakt med administratoren.",
     "Failed to set password. Please contact your administrator." : "Kunne ikke angi passord. Ta kontakt med administratoren.",
     "Failed to send email. Please contact your administrator." : "Kunne ikke sende e-post. Ta kontakt med administratoren din.",
-    "Couldn't send mail to following recipient(s): %s " : "Kunne ikke sende e-post til følgende mottaker (e): %s",
     "Preparing update" : "Forbereder oppdatering",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Advarsel fra reparering: ",

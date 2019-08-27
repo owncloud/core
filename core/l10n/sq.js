@@ -31,7 +31,6 @@ OC.L10N.register(
     "Failed to set password. Please contact the administrator." : "S’u arrit të caktohet fjalëkalim. Ju lutemi, lidhuni me përgjegjësin.",
     "Failed to set password. Please contact your administrator." : "S’u arrit të caktohet fjalëkalim. Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "Failed to send email. Please contact your administrator." : "S’u arrit të dërgohej email. Ju lutemi, lidhuni me përgjegjësin tuaj.",
-    "Couldn't send mail to following recipient(s): %s " : "S’u dërgua dot postë te marrësi(t) vijues: %s ",
     "Preparing update" : "Po përgatitet përditësimi",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Sinjalizim ndreqjeje: ",

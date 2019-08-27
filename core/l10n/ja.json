@@ -21,7 +21,6 @@
     "Download / View / Upload" : "ダウンロード / 表示 / アップロード",
     "Upload only" : "アップロードのみ",
     "Receive files from multiple recipients without revealing the contents of the folder." : "フォルダーの内容を見せないで、複数の相手からファイルを受け取ります。",
-    "Couldn't send mail to following recipient(s): %s " : "以下の宛先にメールを送信できませんでした: %s",
     "Preparing update" : "アップデートの準備中",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "修復の警告:",

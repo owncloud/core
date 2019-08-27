@@ -21,7 +21,6 @@
     "Download / View / Upload" : "Download / Bekijk / Upload",
     "Upload only" : "Alleen uploaden",
     "Receive files from multiple recipients without revealing the contents of the folder." : "Ontvang bestanden van meerdere ontvangers zonder de inhoud van de map te weergeven.",
-    "Couldn't send mail to following recipient(s): %s " : "Kon geen e-mail versturen naar de volgende ontvanger(s): %s ",
     "Preparing update" : "Update voorbereiden",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Reparatiewaarschuwing:",

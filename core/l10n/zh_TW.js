@@ -21,7 +21,6 @@ OC.L10N.register(
     "Download / View" : "下載 / 檢視",
     "Download / View / Upload" : "下載 / 檢視 / 上傳",
     "Upload only" : "僅上傳",
-    "Couldn't send mail to following recipient(s): %s " : "無法發送郵件給以下人員：%s",
     "Preparing update" : "準備更新",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "修復警告：",

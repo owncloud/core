@@ -29,7 +29,6 @@
     "Failed to set password. Please contact the administrator." : "Passwort erstellen fehlgeschlagen. Bitte kontaktieren Sie ihren Administrator",
     "Failed to set password. Please contact your administrator." : "Passwort erstellen fehlgeschlagen. Bitte kontaktieren Sie ihren Administrator",
     "Failed to send email. Please contact your administrator." : "E-mail versand fehlgeschlagen. Bitte kontaktieren Sie ihren Administrator.",
-    "Couldn't send mail to following recipient(s): %s " : "Zu folgenden Empfängern konnte keine Email geschickt werden: %s",
     "Preparing update" : "Update vorbereiten",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Reperaturwarnung:",
