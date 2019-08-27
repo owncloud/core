@@ -3018,16 +3018,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v3.4.30",
+            "version": "v3.4.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "8d804d8a65a26dc9de1aaf2ff3a421e581d050e6"
+                "reference": "8b0faa681c4ee14701e76a7056fef15ac5384163"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/8d804d8a65a26dc9de1aaf2ff3a421e581d050e6",
-                "reference": "8d804d8a65a26dc9de1aaf2ff3a421e581d050e6",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/8b0faa681c4ee14701e76a7056fef15ac5384163",
+                "reference": "8b0faa681c4ee14701e76a7056fef15ac5384163",
                 "shasum": ""
             },
             "require": {
@@ -3090,7 +3090,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-06-26T11:14:13+00:00"
+            "time": "2019-08-26T07:50:50+00:00"
         },
         {
             "name": "symfony/translation",
