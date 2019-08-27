@@ -192,9 +192,12 @@ class Manager implements IManager {
 	protected function passwordMustBeEnforced($permissions) {
 		$roEnforcement = $permissions === \OCP\Constants::PERMISSION_READ && $this->shareApiLinkEnforcePasswordReadOnly();
 		$woEnforcement = $permissions === \OCP\Constants::PERMISSION_CREATE && $this->shareApiLinkEnforcePasswordWriteOnly();
+		// use read, write & delete enforcement for the case
+		$rwdEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE)) &&
+			$this->shareApiLinkEnforcePasswordReadWriteDelete();
 		// use read & write enforcement for the rest of the cases
 		$rwEnforcement = ($permissions !== \OCP\Constants::PERMISSION_READ && $permissions !== \OCP\Constants::PERMISSION_CREATE) && $this->shareApiLinkEnforcePasswordReadWrite();
-		if ($roEnforcement || $woEnforcement || $rwEnforcement) {
+		if ($roEnforcement || $woEnforcement || $rwEnforcement || $rwdEnforcement) {
 			return true;
 		} else {
 			return false;
@@ -1520,6 +1523,15 @@ class Manager implements IManager {
 	 */
 	public function shareApiLinkEnforcePasswordReadWrite() {
 		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
+	}
+
+	/**
+	 * Is password enforced for read, write & delete shares?
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePasswordReadWriteDelete() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write_delete', 'no') === 'yes';
 	}
 
 	/**

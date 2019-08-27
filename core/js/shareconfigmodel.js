@@ -23,6 +23,7 @@
 			publicUploadEnabled: false,
 			enforceLinkPasswordReadOnly: oc_appconfig.core.enforceLinkPasswordReadOnly,
 			enforceLinkPasswordReadWrite: oc_appconfig.core.enforceLinkPasswordReadWrite,
+			enforceLinkPasswordReadWriteDelete: oc_appconfig.core.enforceLinkPasswordReadWriteDelete,
 			enforceLinkPasswordWriteOnly: oc_appconfig.core.enforceLinkPasswordWriteOnly,
 			isDefaultExpireDateEnforced: oc_appconfig.core.defaultExpireDateEnforced === true,
 			isDefaultExpireDateEnabled: oc_appconfig.core.defaultExpireDateEnabled === true,

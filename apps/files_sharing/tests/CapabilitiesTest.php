@@ -132,25 +132,27 @@ class CapabilitiesTest extends \Test\TestCase {
 
 	public function linkPasswordProvider() {
 		return [
-			['no', 'no', 'yes'],
-			['no', 'yes', 'no'],
-			['no', 'yes', 'yes'],
-			['yes', 'no', 'no'],
-			['yes', 'no', 'yes'],
-			['yes', 'yes', 'no'],
-			['yes', 'yes', 'yes'],
+			['no', 'no', 'no', 'yes'],
+			['no', 'yes', 'no', 'no'],
+			['no', 'yes', 'no', 'yes'],
+			['no', 'no', 'yes', 'no'],
+			['yes', 'no', 'no', 'no'],
+			['yes', 'no', 'no', 'yes'],
+			['yes', 'yes', 'no', 'no'],
+			['yes', 'yes', 'yes', 'yes'],
 		];
 	}
 
 	/**
 	 * @dataProvider linkPasswordProvider
 	 */
-	public function testLinkPassword($readOnly, $readWrite, $writeOnly) {
+	public function testLinkPassword($readOnly, $readWrite, $readWriteDelete, $writeOnly) {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],
 			['core', 'shareapi_allow_links', 'yes', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_only', 'no', $readOnly],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', $readWrite],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', $readWriteDelete],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', $writeOnly],
 		];
 		$result = $this->getResults($map);
@@ -162,6 +164,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertEquals($readOnly === 'yes', $result['public']['password']['enforced_for']['read_only']);
 		$this->assertEquals($readWrite === 'yes', $result['public']['password']['enforced_for']['read_write']);
 		$this->assertEquals($writeOnly === 'yes', $result['public']['password']['enforced_for']['upload_only']);
+		$this->assertEquals($readWriteDelete === 'yes', $result['public']['password']['enforced_for']['read_write_delete']);
 	}
 
 	public function testLinkNoPassword() {
@@ -170,6 +173,7 @@ class CapabilitiesTest extends \Test\TestCase {
 			['core', 'shareapi_allow_links', 'yes', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'no'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'no'],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'no'],
 		];
 		$result = $this->getResults($map);
@@ -179,6 +183,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertFalse($result['public']['password']['enforced']);
 		$this->assertFalse($result['public']['password']['enforced_for']['read_only']);
 		$this->assertFalse($result['public']['password']['enforced_for']['read_write']);
+		$this->assertFalse($result['public']['password']['enforced_for']['read_write_delete']);
 		$this->assertFalse($result['public']['password']['enforced_for']['upload_only']);
 	}
 
