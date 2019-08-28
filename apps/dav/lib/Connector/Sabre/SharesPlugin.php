@@ -180,6 +180,15 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			return $this->cachedParents[$path];
 		}
 
+		// check if we have cached the parent folder before going through all the process
+		$parentPath = \dirname($path);
+		if (isset($this->cachedParents[$parentPath])) {
+			$nodeList = $this->cachedParents[$parentPath];
+			$nodeList[] = $node;
+			$this->cachedParents[$path] = $nodeList;
+			return $nodeList;
+		}
+
 		$pathParts = \explode('/', $path);
 		$pathPartsCount = \count($pathParts);
 		$composedPath = '';  // in order to build the path starting from the root
@@ -259,18 +268,21 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			$this->cachedShareTypes = $this->convertToHashMap($returnedShares, $initShareTypes);
 		}
 
-		if ($propFind->getStatus(self::SHARETYPESPARENTS_PROPERTYNAME) !== null) {
+		if ($sabreNode instanceof \OCA\DAV\Connector\Sabre\Directory &&
+			$propFind->getDepth() !== 0 &&
+			$propFind->getStatus(self::SHARETYPESPARENTS_PROPERTYNAME) !== null
+		) {
 			$parentNodeIdsArray = [];
 			$parentNodes = $this->getParentNodesForNode($sabreNode);
 			foreach ($parentNodes as $parentNode) {
 				$parentNodeId = $parentNode->getId();
 				$parentNodeIdsArray[] = $parentNodeId;
 				$initShareTypes[$parentNodeId] = [];
+			}
 
-				$parentShares = $this->getSharesForNodeIds($parentNodeIdsArray);
-				foreach ($this->convertToHashMap($parentShares, $initShareTypes) as $parentNodeId => $data) {
-					$this->cachedShareTypes[$parentNodeId] = $data;
-				}
+			$parentShares = $this->getSharesForNodeIds($parentNodeIdsArray);
+			foreach ($this->convertToHashMap($parentShares, $initShareTypes) as $parentNodeId => $data) {
+				$this->cachedShareTypes[$parentNodeId] = $data;
 			}
 		}
 
@@ -316,8 +328,10 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 				}
 				$shareTypes = \array_keys($shareTypesHash);
 
-				$shareTypeList = new ShareTypeList($shareTypes);
-				$shareTypeListParentList[] = new ShareTypeListParent(new Href($baseFSPath . $parentNode->getPath()), $shareTypeList);
+				if (!empty($shareTypes)) {
+					$shareTypeList = new ShareTypeList($shareTypes);
+					$shareTypeListParentList[] = new ShareTypeListParent(new Href($baseFSPath . $parentNode->getPath()), $shareTypeList);
+				}
 			}
 			return new ShareTypeListParentList($shareTypeListParentList);
 		});
