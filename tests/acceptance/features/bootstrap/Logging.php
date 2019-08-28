@@ -360,9 +360,12 @@ trait Logging {
 						} else {
 							$match = (\strpos($logEntry[$attribute], $logEntryExpectedNotToExist[$attribute]) !== false);
 						}
-						if (!$match) {
-							break;
-						}
+					}
+					if (!isset($logEntry[$attribute])) {
+						$match = false;
+					}
+					if (!$match) {
+						break;
 					}
 				}
 			}
