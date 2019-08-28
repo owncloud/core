@@ -275,6 +275,7 @@ class Server {
 				$userFolder = OC::$server->getUserFolder();
 				$this->server->addPlugin(new SharesPlugin(
 					$this->server->tree,
+					"files/" . $user->getUID(),
 					$userSession,
 					OC::$server->getShareManager()
 				));

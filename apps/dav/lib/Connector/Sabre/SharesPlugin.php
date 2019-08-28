@@ -24,6 +24,11 @@ namespace OCA\DAV\Connector\Sabre;
 use OCP\IUserSession;
 use OCP\Share\IShare;
 use Sabre\DAV\PropFind;
+use Sabre\DAV\INode;
+use Sabre\DAV\Xml\Property\Href;
+use OCA\DAV\Connector\Sabre\ShareTypeList;
+use OCA\DAV\Connector\Sabre\ShareTypeListParent;
+use OCA\DAV\Connector\Sabre\ShareTypeListParentList;
 
 /**
  * Sabre Plugin to provide share-related properties
@@ -31,6 +36,7 @@ use Sabre\DAV\PropFind;
 class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	const SHARETYPES_PROPERTYNAME = '{http://owncloud.org/ns}share-types';
+	const SHARETYPESPARENTS_PROPERTYNAME = '{http://owncloud.org/ns}share-types-parents';
 
 	/**
 	 * Reference to main server object
@@ -49,6 +55,9 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	private $tree;
 
+	/** @var string */
+	private $fsRelativePathFromTreeRoot;
+
 	/**
 	 * @var string
 	 */
@@ -64,6 +73,9 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	private $cachedShareTypes;
 
+	/** @var array */
+	private $cachedParents = [];
+
 	/**
 	 * @param \Sabre\DAV\Tree $tree tree
 	 * @param IUserSession $userSession user session
@@ -72,10 +84,12 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function __construct(
 		\Sabre\DAV\Tree $tree,
+		$fsRelativePathFromTreeRoot,
 		IUserSession $userSession,
 		\OCP\Share\IManager $shareManager
 	) {
 		$this->tree = $tree;
+		$this->fsRelativePathFromTreeRoot = $fsRelativePathFromTreeRoot;
 		$this->shareManager = $shareManager;
 		$this->userId = $userSession->getUser()->getUID();
 		$this->cachedShareTypes = [];
@@ -94,7 +108,9 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	public function initialize(\Sabre\DAV\Server $server) {
 		$server->xml->namespacesMap[self::NS_OWNCLOUD] = 'oc';
 		$server->xml->elementMap[self::SHARETYPES_PROPERTYNAME] = 'OCA\\DAV\\Connector\\Sabre\\ShareTypeList';
+		$server->xml->elementMap[self::SHARETYPESPARENTS_PROPERTYNAME] = 'OCA\\DAV\Connector\\Sabre\\ShareTypeListParentList';
 		$server->protectedProperties[] = self::SHARETYPES_PROPERTYNAME;
+		$server->protectedProperties[] = self::SHARETYPESPARENTS_PROPERTYNAME;
 
 		$this->server = $server;
 		$this->server->on('propFind', [$this, 'handleGetProperties']);
@@ -147,6 +163,52 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	}
 
 	/**
+	 * Get the parent nodes for this specific nodes
+	 * The list of INode will start from the root folder and traverse the node's
+	 * parents until we reach the target node. The target node will also be included
+	 * in the list.
+	 * Note that this function uses internal caching optimized to reduce the number
+	 * of hits to the "getNodeForPath" function:
+	  * - The caching will be done by path in order to check in the cache for
+	  * parent folders easily (we can't know anything using the just id)
+	 */
+	private function getParentNodesForNode(\OCA\DAV\Connector\Sabre\Node $node) {
+		$nodePath = $node->getPath();
+		$path = \trim($nodePath, '/');
+
+		if (isset($this->cachedParents[$path])) {
+			return $this->cachedParents[$path];
+		}
+
+		$pathParts = \explode('/', $path);
+		$pathPartsCount = \count($pathParts);
+		$composedPath = '';  // in order to build the path starting from the root
+		$accumulatedNodes = [];  // to store the nodes we're traversing
+
+		for ($i = 0; $i < $pathPartsCount - 1; $i++) {
+			$composedPath .= $pathParts[$i];
+			if (isset($this->cachedParents[$composedPath])) {
+				// this path is already cached -> prepare for the next iteration and skip this one
+				$accumulatedNodes = $this->cachedParents[$composedPath];
+				$composedPath .= '/';
+				continue;
+			}
+
+			$composedNodePath = "{$this->fsRelativePathFromTreeRoot}/$composedPath";
+			$targetNode = $this->tree->getNodeForPath($composedNodePath);
+
+			$accumulatedNodes[] = $targetNode;  // add the node to the parent list
+			$this->cachedParents[\trim($targetNode->getPath(), '/')] = $accumulatedNodes;  // store the node with the parents
+			$composedPath .= '/';
+		}
+
+		$accumulatedNodes[] = $node;
+		$this->cachedParents[\trim($node->getPath(), '/')] = $accumulatedNodes;
+
+		return $accumulatedNodes;
+	}
+
+	/**
 	 * Adds shares to propfind response
 	 *
 	 * @param PropFind $propFind propfind object
@@ -154,7 +216,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function handleGetProperties(
 		PropFind $propFind,
-		\Sabre\DAV\INode $sabreNode
+		INode $sabreNode
 	) {
 		if (!($sabreNode instanceof \OCA\DAV\Connector\Sabre\Node)) {
 			return;
@@ -197,6 +259,21 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			$this->cachedShareTypes = $this->convertToHashMap($returnedShares, $initShareTypes);
 		}
 
+		if ($propFind->getStatus(self::SHARETYPESPARENTS_PROPERTYNAME) !== null) {
+			$parentNodeIdsArray = [];
+			$parentNodes = $this->getParentNodesForNode($sabreNode);
+			foreach ($parentNodes as $parentNode) {
+				$parentNodeId = $parentNode->getId();
+				$parentNodeIdsArray[] = $parentNodeId;
+				$initShareTypes[$parentNodeId] = [];
+
+				$parentShares = $this->getSharesForNodeIds($parentNodeIdsArray);
+				foreach ($this->convertToHashMap($parentShares, $initShareTypes) as $parentNodeId => $data) {
+					$this->cachedShareTypes[$parentNodeId] = $data;
+				}
+			}
+		}
+
 		$propFind->handle(self::SHARETYPES_PROPERTYNAME, function () use ($sabreNode) {
 			if (isset($this->cachedShareTypes[$sabreNode->getId()])) {
 				// Share types in cache for this node
@@ -213,6 +290,36 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			$shareTypes = \array_keys($shareTypesHash);
 
 			return new ShareTypeList($shareTypes);
+		});
+
+		$propFind->handle(self::SHARETYPESPARENTS_PROPERTYNAME, function () use ($sabreNode) {
+			$parentNodes = $this->getParentNodesForNode($sabreNode);
+			$shareTypeListParentList = [];
+			$baseFSPath = \rtrim($this->server->getBaseUri() . $this->fsRelativePathFromTreeRoot, '/');
+			foreach ($parentNodes as $parentNode) {
+				if ($parentNode === $sabreNode) {
+					// the node will be returned as the last element of the parent list, so skip it.
+					continue;
+				}
+
+				if (isset($this->cachedShareTypes[$parentNode->getId()])) {
+					// Share types in cache for this node
+					$shareTypesHash = $this->cachedShareTypes[$parentNode->getId()];
+				} else {
+					// Share types for this node not in cache, obtain if any
+					$nodeId = $parentNode->getId();
+					$returnedShares = $this->getSharesForNodeIds([$nodeId]);
+
+					// Initialize share types for this node and obtain share types hash if any
+					$initShareTypes[$nodeId] = [];
+					$shareTypesHash = $this->convertToHashMap($returnedShares, $initShareTypes)[$nodeId];
+				}
+				$shareTypes = \array_keys($shareTypesHash);
+
+				$shareTypeList = new ShareTypeList($shareTypes);
+				$shareTypeListParentList[] = new ShareTypeListParent(new Href($baseFSPath . $parentNode->getPath()), $shareTypeList);
+			}
+			return new ShareTypeListParentList($shareTypeListParentList);
 		});
 	}
 }

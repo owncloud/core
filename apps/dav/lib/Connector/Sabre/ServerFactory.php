@@ -173,6 +173,7 @@ class ServerFactory {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\TagsPlugin($objectTree, $this->tagManager));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\SharesPlugin(
 					$objectTree,
+					'',
 					$this->userSession,
 					\OC::$server->getShareManager()
 				));
