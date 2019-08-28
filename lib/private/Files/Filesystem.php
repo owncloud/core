@@ -637,38 +637,36 @@ class Filesystem {
 	* @return boolean
 	*/
 	public static function isForbiddenFileOrDir($FileOrDir, $ed = []) {
-		$excluded = [];
-		$blacklist = [];
 		$path_parts = [];
-		$ppx = [];
 		$blacklist = \OC::$server->getSystemConfig()->getValue('blacklisted_files', ['.htaccess']);
 		if ($ed) {
 			$excluded = $ed;
 		} else {
 			$excluded = \OC::$server->getSystemConfig()->getValue('excluded_directories', $ed);
 		}
-		// explode '/'
-		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
-		$ppx = \array_map('strtolower', $ppx);
-		// further explode each array element with '\' and add to result array if found
-		foreach ($ppx as $pp) {
-			// only add an array element if strlen != 0
-			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
+
+		$lowercaseFileOrDir = \strtolower($FileOrDir);
+		// explode the file or dir
+		foreach (\explode('/', $FileOrDir) as $part) {
+			if ($part !== '') {
+				// further explode each array element with '\' and add to result array if found
+				foreach (\explode('\\', $part) as $microPart) {
+					if ($microPart !== '') {
+						$path_parts[$microPart] = true;
+					}
+				}
+			}
 		}
-		if ($excluded) {
-			$excluded = \array_map('trim', $excluded);
-			$excluded = \array_map('strtolower', $excluded);
-			$match = \array_intersect($path_parts, $excluded);
-			if ($match) {
+
+		$excludedOrBlacklisted = \array_merge($excluded, $blacklist);
+		foreach ($excludedOrBlacklisted as $forbiddenName) {
+			$forbiddenName = \strtolower(\trim($forbiddenName));
+			if (isset($path_parts[$forbiddenName])) {
+				// the path contains an excluded or blacklisted name
 				return true;
 			}
 		}
-		$blacklist = \array_map('trim', $blacklist);
-		$blacklist = \array_map('strtolower', $blacklist);
-		$match = \array_intersect($path_parts, $blacklist);
-		if ($match) {
-			return true;
-		}
+
 		return false;
 	}
 
