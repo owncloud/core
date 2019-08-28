@@ -136,6 +136,42 @@ class TrashbinContext implements Context {
 	}
 
 	/**
+	 * converts the trashItemHRef from /<base>/remote.php/dav/trash-bin/<user>/<item_id>/ to /trash-bin/<user>/<item_id>
+	 *
+	 * @param string $href
+	 *
+	 * @return string
+	 */
+	private function convertTrashbinHref($href) {
+		$trashItemHRef = \trim($href, '/');
+		$parts = \explode('/', $trashItemHRef);
+		return '/' . \join('/', \array_slice($parts, -3));
+	}
+
+	/**
+	 * @When /^user "([^"]*)" deletes the (?:file|folder|entry) with original path "([^"]*)" from the trashbin using the trashbin API$/
+	 *
+	 * @param string $user
+	 * @param string $originalPath
+	 *
+	 * @return void
+	 */
+	public function deleteFileFromTrashbin($user, $originalPath) {
+		$listing = $this->listTrashbinFolder($user, null);
+		$originalPath = \trim($originalPath, '/');
+
+		foreach ($listing as $entry) {
+			if ($entry['original-location'] === $originalPath) {
+				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
+				$response = $this->featureContext->makeDavRequest(
+					$user, 'DELETE', $trashItemHRef, [], null, 'trash-bin', null, 2
+				);
+				$this->featureContext->setResponse($response);
+			}
+		}
+	}
+
+	/**
 	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in trash$/
 	 *
 	 * @param string $user
@@ -203,11 +239,7 @@ class TrashbinContext implements Context {
 		$destinationPath = \trim($destinationPath, '/');
 		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$destinationPath";
 
-		// we need to get the trashItemHRef from the format
-		// /<base>/remote.php/dav/trash-bin/<user>/<item_id>/ -->> /trash-bin/<user>/<item_id>
-		$trashItemHRef = \trim($trashItemHRef, '/');
-		$parts = \explode('/', $trashItemHRef);
-		$trashItemHRef = '/' . \join('/', \array_slice($parts, -3));
+		$trashItemHRef = $this->convertTrashbinHref($trashItemHRef);
 		$headers['Destination'] = $destinationValue;
 		$response = $this->featureContext->makeDavRequest(
 			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
