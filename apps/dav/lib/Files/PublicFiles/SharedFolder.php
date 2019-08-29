@@ -23,6 +23,8 @@ namespace OCA\DAV\Files\PublicFiles;
 
 use OCP\Constants;
 use OCP\Files\Folder;
+use OCP\Files\InvalidPathException;
+use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
@@ -71,8 +73,17 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	}
 
 	public function createFile($name, $data = null) {
-		$file = $this->folder->newFile($name);
-		$file->putContent($data);
+		try {
+			$file = $this->folder->newFile($name);
+			$file->putContent($data);
+			return '"' . $file->getEtag() . '"';
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to create file');
+		} catch (InvalidPathException $ex) {
+			throw new Forbidden('Permission denied to create file');
+		} catch (NotFoundException $ex) {
+			throw new Forbidden('Permission denied to create file');
+		}
 	}
 
 	public function getACL() {
