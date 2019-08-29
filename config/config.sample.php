@@ -210,10 +210,10 @@ $CONFIG = array(
 'remember_login_cookie_lifetime' => 60*60*24*15,
 
 /**
- * The lifetime of a session after inactivity; the default is 24 hours,
+ * The lifetime of a session after inactivity; the default is 20 minutes,
  * expressed in seconds.
  */
-'session_lifetime' => 60 * 60 * 24,
+'session_lifetime' => 60 * 20,
 
 /**
  * Enable or disable session keep-alive when a user is logged in to the Web UI.

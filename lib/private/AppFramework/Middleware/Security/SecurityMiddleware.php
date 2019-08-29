@@ -126,7 +126,7 @@ class SecurityMiddleware extends Middleware {
 		// security checks
 		$isPublicPage = $this->reflector->hasAnnotation('PublicPage');
 		if (!$isPublicPage) {
-			if (!$this->isLoggedIn()) {
+			if (!$this->session->isLoggedIn() && !\OC::handleLogin($this->request)) {
 				throw new NotLoggedInException();
 			}
 
@@ -236,14 +236,5 @@ class SecurityMiddleware extends Middleware {
 		}
 
 		throw $exception;
-	}
-
-	private function isLoggedIn() {
-		static $loginCalled = false;
-		if (!$loginCalled && !$this->session->isLoggedIn()) {
-			\OC::handleLogin($this->request);
-			$loginCalled = true;
-		}
-		return $this->session->isLoggedIn();
 	}
 }

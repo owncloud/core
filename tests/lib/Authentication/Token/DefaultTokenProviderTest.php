@@ -239,7 +239,7 @@ class DefaultTokenProviderTest extends TestCase {
 	}
 
 	public function testInvalidateOldTokens() {
-		$defaultSessionLifetime = 60 * 60 * 24;
+		$defaultSessionLifetime = 60 * 20;
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('session_lifetime', $defaultSessionLifetime)
