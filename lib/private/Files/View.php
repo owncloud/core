@@ -1486,7 +1486,7 @@ class View {
 
 			$data = $this->getCacheEntry($storage, $internalPath, $directory);
 
-			if (!$data instanceof ICacheEntry || !isset($data['fileid']) || !($data->getPermissions() && Constants::PERMISSION_READ)) {
+			if (!$data instanceof ICacheEntry || !isset($data['fileid']) || !($data->getPermissions() & Constants::PERMISSION_READ)) {
 				return [];
 			}
 
@@ -1539,7 +1539,7 @@ class View {
 						$rootEntry = $subCache->get('');
 					}
 
-					if ($rootEntry && ($rootEntry->getPermissions() && Constants::PERMISSION_READ)) {
+					if ($rootEntry && ($rootEntry->getPermissions() & Constants::PERMISSION_READ)) {
 						$relativePath = \trim(\substr($mountPoint, $dirLength), '/');
 						if ($pos = \strpos($relativePath, '/')) {
 							//mountpoint inside subfolder add size to the correct folder
