@@ -16,7 +16,10 @@ Feature: upload file using new chunking
       | 1 | AAAAA |
       | 2 | BBBBB |
       | 3 | CCCCC |
-    Then as "user0" file "/myChunkedFile.txt" should exist
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
+    And as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
