@@ -105,7 +105,7 @@ class TrashBinManager {
 	public function delete(string $user, AbstractTrashBinNode $trashItem) {
 		$path = $trashItem->getPathInTrash();
 		$path = \implode('/', $path);
-		Trashbin::delete($path, $user, $trashItem->getDeleteTimestamp());
+		Trashbin::delete($path, $user);
 	}
 
 	public function deleteAll() {
