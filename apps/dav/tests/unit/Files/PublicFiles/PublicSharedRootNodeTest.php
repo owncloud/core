@@ -22,6 +22,7 @@
 namespace OCA\DAV\Tests\Unit\Files\PublicFiles;
 
 use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
+use OCP\Constants;
 use OCP\Files\NotFoundException;
 use OCP\IRequest;
 use OCP\Share\IShare;
@@ -38,5 +39,16 @@ class PublicSharedRootNodeTest extends TestCase {
 
 		$publicSharedRoot = new PublicSharedRootNode($share, $request);
 		$publicSharedRoot->getChildren();
+	}
+
+	public function testNoChildrenOnGetForPublicUpload() {
+		$share = $this->createMock(IShare::class);
+		$request = $this->createMock(IRequest::class);
+		$share->method('getPermissions')->willReturn(Constants::PERMISSION_CREATE);
+		$request->method('getMethod')->willReturn('GET');
+
+		$publicSharedRoot = new PublicSharedRootNode($share, $request);
+		$children = $publicSharedRoot->getChildren();
+		$this->assertEmpty($children);
 	}
 }

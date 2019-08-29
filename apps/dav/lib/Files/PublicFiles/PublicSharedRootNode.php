@@ -69,7 +69,9 @@ class PublicSharedRootNode extends Collection implements IACL {
 	 */
 	public function getChildren() {
 		// Within a PROPFIND request we return no listing in case the share is a file drop folder
-		if ($this->isPropfind() && $this->isFileDropFolder()) {
+		if ($this->isFileDropFolder()
+			&& ($this->isPropfind() || $this->isGet())
+		) {
 			return [];
 		}
 
@@ -225,6 +227,13 @@ class PublicSharedRootNode extends Collection implements IACL {
 
 	private function isPropfind() {
 		return $this->request->getMethod() === 'PROPFIND';
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function isGet() {
+		return $this->request->getMethod() === 'GET';
 	}
 
 	/**
