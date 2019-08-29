@@ -178,3 +178,21 @@ Feature: sharing
     And user "user1" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/shared/textfile.txt" should exist
+
+  Scenario Outline: A Group share recipient tries to delete the share
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    # Note: in the user_ldap test environment user1 is in grp1
+    And user "user1" has been added to group "grp1"
+    And user "user0" has shared file "/PARENT/parent.txt" with group "grp1"
+    When user "user1" deletes the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "404"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 200             |
+      | 2               | 404             |
