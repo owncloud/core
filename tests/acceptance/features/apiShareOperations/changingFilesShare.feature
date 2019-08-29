@@ -55,7 +55,6 @@ Feature: sharing
       | new              |
 
   @public_link_share-feature-required
-  @issue-36060
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions
     Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
@@ -67,13 +66,11 @@ Feature: sharing
     Examples:
       | public-webdav-api-version | permissions               | http-status-code | should-or-not |
       | old                       | read,update,create        | 403              | should        |
-      | new                       | read,update,create        | 204              | should not    |
-      #| new                       | read,update,create        | 403              | should        |
+      | new                       | read,update,create        | 403              | should        |
       | old                       | read,update,create,delete | 204              | should not    |
       | new                       | read,update,create,delete | 204              | should not    |
 
   @public_link_share-feature-required
-  @issue-36060
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create
     Given user "user0" has created a public link share with settings
       | path        | /PARENT            |
@@ -85,19 +82,7 @@ Feature: sharing
     Examples:
       | public-webdav-api-version |
       | old                       |
-      #| new                       |
-
-  @public_link_share-feature-required
-  @issue-36060
-  # After fixing the issue delete this scenario and use the one above to test both cases
-  Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create
-    Given user "user0" has created a public link share with settings
-      | path        | /PARENT            |
-      | permissions | read,update,create |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "201"
-    And as "user0" file "/PARENT/parent.txt" should not exist
-    And as "user0" file "/PARENT/newparent.txt" should exist
+      | new                       |
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete

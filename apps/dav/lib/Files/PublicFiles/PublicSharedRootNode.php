@@ -32,14 +32,16 @@ use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\INode;
+use Sabre\DAVACL\ACLTrait;
+use Sabre\DAVACL\IACL;
 
 /**
  * Class PublicSharedRootNode - root node of a public share
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-class PublicSharedRootNode extends Collection {
-	use NodeFactoryTrait;
+class PublicSharedRootNode extends Collection implements IACL {
+	use NodeFactoryTrait, ACLTrait;
 
 	/** @var IShare */
 	private $share;
@@ -86,9 +88,6 @@ class PublicSharedRootNode extends Collection {
 	}
 
 	public function createDirectory($name) {
-		if (!$this->checkPermissions(Constants::PERMISSION_CREATE)) {
-			throw new Forbidden('Permission denied to create directory');
-		}
 		if ($this->share->getNodeType() !== 'folder') {
 			throw new Forbidden('Creating a folder in a file is not allowed');
 		}
@@ -107,9 +106,6 @@ class PublicSharedRootNode extends Collection {
 	 * @throws NotFoundException
 	 */
 	public function createFile($name, $data = null) {
-		if (!$this->checkPermissions(Constants::PERMISSION_CREATE)) {
-			throw new Forbidden('Permission denied to create file');
-		}
 		if ($this->share->getNodeType() !== 'folder') {
 			throw new Forbidden('Permission denied to create file');
 		}
@@ -136,14 +132,8 @@ class PublicSharedRootNode extends Collection {
 	}
 
 	public function delete() {
-		if (!$this->checkPermissions(Constants::PERMISSION_DELETE)) {
-			throw new Forbidden('Permission denied to delete a resource');
-		}
-		try {
-			$this->share->getNode()->delete();
-		} catch (NotPermittedException $ex) {
-			throw new Forbidden('Permission denied to create directory');
-		}
+		// the root folder can never be deleted
+		throw new Forbidden('Permission denied to delete a resource');
 	}
 
 	/**
@@ -173,6 +163,60 @@ class PublicSharedRootNode extends Collection {
 			$p .= 'CK';
 		}
 		return $p;
+	}
+
+	/**
+	 * Returns a list of ACE's for this node.
+	 *
+	 * Each ACE has the following properties:
+	 *   * 'privilege', a string such as {DAV:}read or {DAV:}write. These are
+	 *     currently the only supported privileges
+	 *   * 'principal', a url to the principal who owns the node
+	 *   * 'protected' (optional), indicating that this ACE is not allowed to
+	 *      be updated.
+	 *
+	 * @return array
+	 */
+	public function getACL() {
+		$acl = [
+			[
+				'privilege' => '{DAV:}all',
+				'principal' => '{DAV:}owner',
+				'protected' => true,
+			],
+			[
+				'privilege' => '{DAV:}read',
+				'principal' => 'principals/system/public',
+				'protected' => true,
+			]
+		];
+
+		if ($this->checkPermissions(Constants::PERMISSION_UPDATE)) {
+			$acl[] =
+				[
+					'privilege' => '{DAV:}write-content',
+					'principal' => 'principals/system/public',
+					'protected' => true,
+				];
+		}
+		if ($this->checkPermissions(Constants::PERMISSION_DELETE)) {
+			$acl[] =
+				[
+					'privilege' => '{DAV:}unbind',
+					'principal' => 'principals/system/public',
+					'protected' => true,
+				];
+		}
+		if ($this->checkPermissions(Constants::PERMISSION_CREATE)) {
+			$acl[] =
+				[
+					'privilege' => '{DAV:}bind',
+					'principal' => 'principals/system/public',
+					'protected' => true,
+				];
+		}
+
+		return $acl;
 	}
 
 	protected function checkPermissions($permissions) {

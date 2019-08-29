@@ -367,9 +367,9 @@ Feature: sharing
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "201"
     When the public uploads file "test.txt" with content "test2" using the <public-webdav-api-version> public WebDAV API
-    Then the HTTP status code should be "<unsuccess-code>"
+    Then the HTTP status code should be "403"
     And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
     Examples:
-      | public-webdav-api-version | unsuccess-code |
-      | old                       | 403            |
-      | new                       | 404            |
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
