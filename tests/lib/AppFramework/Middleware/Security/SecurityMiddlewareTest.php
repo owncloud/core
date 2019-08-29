@@ -465,6 +465,51 @@ class SecurityMiddlewareTest extends TestCase {
 	}
 
 	/**
+	 * Test that redirect to login page takes place
+	 * when not logged in user uses a private permalink
+	 * and any content-type is accepted by client
+	 *
+	 * @throws \Exception
+	 */
+	public function testAfterExceptionReturnsLoginPageForAnyContentType() {
+		$this->request = new Request(
+			[
+				'server' =>
+					[
+						'HTTP_ACCEPT' => '*/*',
+						'REQUEST_URI' => 'owncloud/index.php/f/42'
+					]
+			],
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
+		);
+
+		$exception = new NotLoggedInException();
+		$sessionMock = $this->getMockBuilder(ISession::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->controller = $this->getMockBuilder(LoginController::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->middleware = $this->getMiddleware(false, false);
+
+		$this->logger
+			->expects($this->once())
+			->method('debug')
+			->with($exception->getMessage());
+
+		$response = $this->middleware->afterException(
+			$this->controller,
+			'showFile',
+			$exception
+		);
+
+		$this->assertInstanceOf(RedirectResponse::class, $response);
+	}
+
+	/**
 	 * @throws \Exception
 	 */
 	public function testAfterExceptionReturnsLoginPageForCsrfErrorOnLogin() {
