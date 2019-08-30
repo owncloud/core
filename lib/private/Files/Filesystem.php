@@ -647,7 +647,7 @@ class Filesystem {
 
 		$lowercaseFileOrDir = \strtolower($FileOrDir);
 		// explode the file or dir
-		foreach (\explode('/', $FileOrDir) as $part) {
+		foreach (\explode('/', $lowercaseFileOrDir) as $part) {
 			if ($part !== '') {
 				// further explode each array element with '\' and add to result array if found
 				foreach (\explode('\\', $part) as $microPart) {

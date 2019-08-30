@@ -206,7 +206,10 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			$targetNode = $this->tree->getNodeForPath($composedNodePath);
 
 			$accumulatedNodes[] = $targetNode;  // add the node to the parent list
-			$this->cachedParents[\trim($targetNode->getPath(), '/')] = $accumulatedNodes;  // store the node with the parents
+			if ($targetNode instanceof \OCA\DAV\Connector\Sabre\Node) {
+				// only these nodes will be cached because other nodes won't have the "getPath" method
+				$this->cachedParents[\trim($targetNode->getPath(), '/')] = $accumulatedNodes;  // store the node with the parents
+			}
 			$composedPath .= '/';
 		}
 

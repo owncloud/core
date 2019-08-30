@@ -70,6 +70,7 @@ class SharesPluginTest extends \Test\TestCase {
 
 		$this->plugin = new \OCA\DAV\Connector\Sabre\SharesPlugin(
 			$this->tree,
+			'',
 			$userSession,
 			$this->shareManager
 		);
