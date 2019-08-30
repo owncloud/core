@@ -22,9 +22,6 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Add;
-use OC\User\Service\CreateUserService;
-use OC\User\Service\PasswordGeneratorService;
-use OC\User\Service\UserSendMailService;
 use OC\User\User;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -46,22 +43,7 @@ class AddTest extends TestCase {
 		parent::setUp();
 
 		$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
-		$command = new Add(\OC::$server->getGroupManager(),
-			new CreateUserService(
-				\OC::$server->getUserSession(), \OC::$server->getGroupManager(),
-				\OC::$server->getUserManager(), \OC::$server->getSecureRandom(),
-				\OC::$server->getLogger(),
-				new UserSendMailService(
-					\OC::$server->getSecureRandom(), \OC::$server->getConfig(),
-					\OC::$server->getMailer(), \OC::$server->getURLGenerator(),
-					new \OC_Defaults(), \OC::$server->getTimeFactory(),
-					\OC::$server->getL10N('settings')
-				),
-				new PasswordGeneratorService(
-					\OC::$server->getEventDispatcher(), \OC::$server->getSecureRandom()
-				)
-			)
-		);
+		$command = new Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer());
 		$command->setApplication($application);
 		$this->commandTester = new CommandTester($command);
 		$this->createUser('user1');
@@ -96,6 +78,7 @@ class AddTest extends TestCase {
 			[['uid' => 'user2', '--email' => 'invalidemail'], [], 'Invalid email address supplied'],
 			[['uid' => 'user2', '--password-from-env' => null], [], '--password-from-env given, but OC_PASS is empty!'],
 			/*[['uid' => 'user2'], ['p@ssw0rd', 'password'], 'Passwords did not match'],
+			[['uid' => 'user2'], ['p@ssw0rd', 'p@ssw0rd'], 'was created successfully'],
 			[['uid' => 'user2', '--display-name' => 'John Doe'], ['p@ssw0rd', 'p@ssw0rd'], 'Display name set to '],
 			[['uid' => 'user2', '--email' => 'user1@example.com'], ['p@ssw0rd', 'p@ssw0rd'], 'Email address set to '],
 			[['uid' => 'user2', '--group' => ['admin']], ['p@ssw0rd', 'p@ssw0rd'], 'added to group '],*/

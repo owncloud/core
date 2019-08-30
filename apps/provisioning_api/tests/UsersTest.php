@@ -30,7 +30,6 @@
 namespace OCA\Provisioning_API\Tests;
 
 use OC\OCS\Result;
-use OC\User\Service\CreateUserService;
 use OCA\Provisioning_API\Users;
 use OCP\API;
 use OCP\ILogger;
@@ -57,8 +56,6 @@ class UsersTest extends OriginalTest {
 	protected $api;
 	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit\Framework\MockObject\MockObject */
 	private $twoFactorAuthManager;
-	/** @var CreateUserService | PHPUnit\Framework\MockObject\MockObject */
-	private $createUserService;
 
 	protected function tearDown() {
 		$_GET = null;
@@ -82,13 +79,11 @@ class UsersTest extends OriginalTest {
 		$this->twoFactorAuthManager->expects($this->any())
 			->method('isTwoFactorAuthenticated')
 			->willReturn(false);
-		$this->createUserService = $this->createMock(CreateUserService::class);
 		$this->api = $this->getMockBuilder(Users::class)
 			->setConstructorArgs([
 				$this->userManager,
 				$this->groupManager,
 				$this->userSession,
-				$this->createUserService,
 				$this->logger,
 				$this->twoFactorAuthManager
 			])
@@ -329,17 +324,15 @@ class UsersTest extends OriginalTest {
 	public function testAddUserSuccessful() {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
-		$newUserCreated = $this->createMock(IUser::class);
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
 			->will($this->returnValue(false));
-		$this->createUserService
+		$this->userManager
 			->expects($this->once())
 			->method('createUser')
-			->with(['username' => 'NewUser', 'password' => 'PasswordOfTheNewUser', 'email' => ''])
-			->will($this->returnValue($newUserCreated));
+			->with('NewUser', 'PasswordOfTheNewUser');
 		$this->logger
 			->expects($this->once())
 			->method('info')
@@ -392,22 +385,27 @@ class UsersTest extends OriginalTest {
 			->with('ExistingGroup')
 			->willReturn(true);
 		$user = $this->createMock(IUser::class);
-		$this->createUserService
+		$this->userManager
 			->expects($this->once())
 			->method('createUser')
-			->with(['username' => 'NewUser', 'password' => 'PasswordOfTheNewUser', 'email' => ''])
+			->with('NewUser', 'PasswordOfTheNewUser')
 			->willReturn($user);
-		$this->createUserService
-			->expects($this->once())
-			->method('addUserToGroups')
-			->with($user, ['ExistingGroup'])
-			->will($this->returnValue([]));
 		$group = $this->createMock(IGroup::class);
+		$group
+			->expects($this->once())
+			->method('addUser')
+			->with($user);
+		$this->groupManager
+			->expects($this->once())
+			->method('get')
+			->with('ExistingGroup')
+			->willReturn($group);
 		$this->logger
-			->expects($this->exactly(1))
+			->expects($this->exactly(2))
 			->method('info')
 			->withConsecutive(
-				['Successful addUser call with userid: NewUser', ['app' => 'ocs_api']]
+				['Successful addUser call with userid: NewUser', ['app' => 'ocs_api']],
+				['Added userid NewUser to group ExistingGroup', ['app' => 'ocs_api']]
 			);
 
 		$expected = new Result(null, 100);
@@ -422,10 +420,10 @@ class UsersTest extends OriginalTest {
 			->method('userExists')
 			->with('NewUser')
 			->will($this->returnValue(false));
-		$this->createUserService
+		$this->userManager
 			->expects($this->once())
 			->method('createUser')
-			->with(['username' => 'NewUser', 'password' => 'PasswordOfTheNewUser', 'email' => ''])
+			->with('NewUser', 'PasswordOfTheNewUser')
 			->will($this->throwException(new \Exception('User backend not found.')));
 		$this->logger
 			->expects($this->once())
@@ -601,22 +599,27 @@ class UsersTest extends OriginalTest {
 			)
 			->willReturn(true);
 		$user = $this->createMock(IUser::class);
-		$this->createUserService
+		$this->userManager
 			->expects($this->once())
 			->method('createUser')
-			->with(['username' => 'NewUser', 'password' => 'PasswordOfTheNewUser', 'email' => ''])
+			->with('NewUser', 'PasswordOfTheNewUser')
 			->willReturn($user);
-		$this->createUserService
-			->expects($this->once())
-			->method('addUserToGroups')
-			->with($user, ['ExistingGroup1', 'ExistingGroup2'])
-			->willReturn([]);
 		$existingGroup1 = $this->createMock(IGroup::class);
 		$existingGroup2 = $this->createMock(IGroup::class);
+		$existingGroup1
+			->expects($this->once())
+			->method('addUser')
+			->with($user);
+		$existingGroup2
+			->expects($this->once())
+			->method('addUser')
+			->with($user);
 		$this->groupManager
-			->expects($this->exactly(2))
+			->expects($this->exactly(4))
 			->method('get')
 			->withConsecutive(
+				['ExistingGroup1'],
+				['ExistingGroup2'],
 				['ExistingGroup1'],
 				['ExistingGroup2']
 			)
@@ -625,10 +628,12 @@ class UsersTest extends OriginalTest {
 				['ExistingGroup2', $existingGroup2]
 			]));
 		$this->logger
-			->expects($this->exactly(1))
+			->expects($this->exactly(3))
 			->method('info')
 			->withConsecutive(
-				['Successful addUser call with userid: NewUser', ['app' => 'ocs_api']]
+				['Successful addUser call with userid: NewUser', ['app' => 'ocs_api']],
+				['Added userid NewUser to group ExistingGroup1', ['app' => 'ocs_api']],
+				['Added userid NewUser to group ExistingGroup2', ['app' => 'ocs_api']]
 			);
 		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
 			->disableOriginalConstructor()->getMock();
