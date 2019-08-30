@@ -161,7 +161,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1)
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
@@ -190,7 +191,8 @@ Feature: sharing
 
   @smokeTest @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file with password
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | randomfile.txt |
@@ -222,7 +224,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | randomfile.txt |
@@ -252,7 +255,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
     Then the OCS status code should be "<ocs_status_code>"
@@ -282,7 +286,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder, with a password
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
       | password | %public% |
@@ -379,7 +384,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
@@ -415,7 +421,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with edit permissions keeps it
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /afolder                  |
@@ -435,7 +442,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with upload permissions keeps it
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /afolder    |
@@ -862,7 +870,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "long file" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt |
@@ -877,7 +886,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" creates a public link share using the sharing API with settings
@@ -1141,7 +1151,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
@@ -1323,7 +1334,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder, and checking it's content
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "ownCloud test text file parent" to "/PARENT/parent.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |

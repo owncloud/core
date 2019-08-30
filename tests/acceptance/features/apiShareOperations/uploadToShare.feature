@@ -22,7 +22,8 @@ Feature: sharing
   @smokeTest @public_link_share-feature-required
   Scenario: Uploading same file to a public upload-only share multiple times via new API
     # The new API does the autorename automatically in upload-only folders
-    Given as user "user0"
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
@@ -55,7 +56,8 @@ Feature: sharing
   @issue-36055
   #After fixing the issue delete this Scenario and use the commented-out step in the above scenario
   Scenario: Uploading file to a public upload-only share that was deleted does not work
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When user "user0" deletes file "/FOLDER" using the WebDAV API
@@ -64,6 +66,7 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading file to a public read-only share folder does not work
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | read   |
@@ -101,7 +104,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading to a public upload-only share
-    Given as user "user0"
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
@@ -116,7 +120,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading to a public upload-only share with password
-    Given as user "user0"
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
@@ -164,7 +169,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading to a public read/write share with password
-    Given as user "user0"
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
@@ -259,6 +265,7 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder with read/write permission when the sharer has unsufficient quota does not work
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | change |
@@ -304,6 +311,7 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has unsufficient quota does not work
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
@@ -315,7 +323,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
@@ -326,7 +335,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder
-    Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    Given the administrator has enabled DAV tech_preview
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | all    |
@@ -338,7 +348,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -364,7 +375,8 @@ Feature: sharing
 
   @smokeTest @public_link_share-feature-required
   Scenario: Uploading to a public upload-read-write and no edit and no overwrite share
-    Given as user "user0"
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
@@ -375,7 +387,8 @@ Feature: sharing
 
   @smokeTest @public_link_share-feature-required
   Scenario Outline: Uploading same file to a public upload-read-write and no edit and no overwrite share multiple times
-    Given as user "user0"
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |

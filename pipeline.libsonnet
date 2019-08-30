@@ -453,6 +453,14 @@ local suites = {
         $.yarn(image='owncloudci/php:' + php),
       ] + $.server(image='owncloudci/php:' + php, db=database_name) + [
         {
+          name: 'tech-preview',
+          image: 'owncloudci/php:' + php,
+          pull: 'always',
+          commands: [
+            'php occ config:system:set dav.enable.tech_preview --value=true --type boolean',
+          ],
+        },
+        {
           name: 'setup-storage',
           image: 'owncloudci/php:' + php,
           pull: 'always',

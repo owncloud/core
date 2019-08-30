@@ -88,7 +88,8 @@ Feature: sharing
 
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
-    Given using OCS API version "1"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "1"
     And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
@@ -103,7 +104,8 @@ Feature: sharing
 
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
-    Given using OCS API version "1"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "1"
     And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"

@@ -57,6 +57,46 @@ class OccContext implements Context {
 	private $lastDeletedJobId;
 
 	/**
+	 * @var boolean techPreviewEnabled
+	 */
+	private $techPreviewEnabled = false;
+
+	/**
+	 * @return boolean
+	 */
+	public function isTechPreviewEnabled() {
+		return $this->techPreviewEnabled;
+	}
+
+	/**
+	 * @Given the administrator has enabled DAV tech_preview
+	 *
+	 * @return void
+	 */
+	public function enableDAVTechPreview() {
+		if (!$this->isTechPreviewEnabled()) {
+			$this->theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+				"dav.enable.tech_preview", "true", "boolean"
+			);
+			$this->techPreviewEnabled = true;
+		}
+	}
+
+	/**
+	 * @Given the administrator has disabled DAV tech_preview
+	 *
+	 * @return void
+	 */
+	public function disableDAVTechPreview() {
+		if ($this->isTechPreviewEnabled()) {
+			$this->theAdministratorDeletesSystemConfigKeyUsingTheOccCommand(
+				"dav.enable.tech_preview"
+			);
+			$this->techPreviewEnabled = false;
+		}
+	}
+
+	/**
 	 * @When /^the administrator invokes occ command "([^"]*)"$/
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 *
@@ -927,6 +967,21 @@ class OccContext implements Context {
 			$this->theCommandShouldHaveBeenSuccessful();
 		}
 	}
+
+	/**
+	 * This will run after EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function resetDAVTechPreview() {
+		if ($this->isTechPreviewEnabled()) {
+			$this->disableDAVTechPreview();
+		}
+	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.

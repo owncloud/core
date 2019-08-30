@@ -108,6 +108,7 @@ default:
         - '%paths.base%/../features/apiShareManagement'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -117,6 +118,7 @@ default:
         - '%paths.base%/../features/apiShareManagementBasic'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -126,6 +128,7 @@ default:
         - '%paths.base%/../features/apiShareOperations'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -135,6 +138,7 @@ default:
         - '%paths.base%/../features/apiShareReshare'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -144,6 +148,7 @@ default:
         - '%paths.base%/../features/apiShareUpdate'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -183,6 +188,7 @@ default:
         - '%paths.base%/../features/apiWebdavLocks'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - WebDavLockingContext:
         - WebDavPropertiesContext:
@@ -192,6 +198,7 @@ default:
         - '%paths.base%/../features/apiWebdavLocks2'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - WebDavLockingContext:
         - WebDavPropertiesContext:
@@ -210,6 +217,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
+        - OccContext:
         - SearchContext:
         - PublicWebDavContext:
 
@@ -508,6 +516,7 @@ default:
         - '%paths.base%/../features/webUITrashbin'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - TrashbinContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
