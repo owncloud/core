@@ -41,7 +41,6 @@ class Capabilities implements ICapability {
 		$cap =  [
 			'dav' => [
 				'chunking' => '1.0',
-				'trashbin' => '1.0',
 				'reports' => [
 					'search-files',
 				]
@@ -50,6 +49,10 @@ class Capabilities implements ICapability {
 
 		if ($this->config->getSystemValue('dav.enable.async', false)) {
 			$cap['async'] = '1.0';
+		}
+
+		if ($this->config->getSystemValue('dav.enable.tech_preview', false) === true) {
+			$cap['dav']['trashbin'] = '1.0';
 		}
 
 		return $cap;

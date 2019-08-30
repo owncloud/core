@@ -1435,4 +1435,10 @@ $CONFIG = array(
  * Async dav extensions can be enabled or disabled.
  */
 'dav.enable.async' => false,
+
+
+/**
+ * Tech preview extensions are disabled by default.
+ */
+'dav.enable.tech_preview' => false,
 );
