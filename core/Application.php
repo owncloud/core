@@ -45,7 +45,6 @@ use OCP\BackgroundJob\IJobList;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IServerContainer;
-use OCP\IURLGenerator;
 use OCP\Util;
 
 /**
@@ -89,11 +88,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('UserManager'),
-				$c->query('Defaults'),
-				$c->query('OC\User\Service\UserSendMailService'),
-				$c->query('URLGenerator'),
-				$c->query('Logger'),
-				$c->query('L10N')
+				$c->query('Defaults')
 			);
 		});
 		$container->registerService('AvatarController', static function (SimpleContainer $c) {
