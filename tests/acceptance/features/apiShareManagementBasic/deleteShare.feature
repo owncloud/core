@@ -120,8 +120,7 @@ Feature: sharing
     And as "user1" file "/sub/shared_file.txt" should exist in trash
 
   @smokeTest
-  Scenario Outline: unshare from self
-    Given using OCS API version "<ocs_api_version>"
+  Scenario: unshare from self
     And group "grp1" has been created
     And these users have been created with default attributes and without skeleton files:
       | username |
@@ -134,15 +133,10 @@ Feature: sharing
     And user "user2" has shared file "/PARENT/parent.txt" with group "grp1"
     And user "user2" has stored etag of element "/PARENT"
     And user "user1" has stored etag of element "/"
-    When user "user1" deletes the last share using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
+    When user "user1" unshares file "parent.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
     And the etag of element "/" of user "user1" should have changed
     And the etag of element "/PARENT" of user "user2" should not have changed
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
@@ -178,3 +172,45 @@ Feature: sharing
     And user "user1" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/shared/textfile.txt" should exist
+
+  Scenario Outline: A Group share recipient tries to delete the share
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And user "user0" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
+    And user "user0" has shared entry "<entry_to_share>" with group "grp1"
+    When user "user1" deletes the last share using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user0" entry "<entry_to_share>" should exist
+    And as "user1" entry "<received_entry>" should exist
+    And as "user2" entry "<received_entry>" should exist
+    Examples:
+      | entry_to_share     | ocs_api_version | http_status_code | received_entry |
+      | /PARENT/parent.txt | 1               | 200              | parent.txt     |
+      | /PARENT/parent.txt | 2               | 404              | parent.txt     |
+      | /PARENT            | 1               | 200              | PARENT         |
+      | /PARENT            | 2               | 404              | PARENT         |
+
+  Scenario Outline: An individual share recipient tries to delete the share
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has shared entry "<entry_to_share>" with user "user1"
+    When user "user1" deletes the last share using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user0" entry "<entry_to_share>" should exist
+    And as "user1" entry "<received_entry>" should exist
+    Examples:
+      | entry_to_share     | ocs_api_version | http_status_code | received_entry |
+      | /PARENT/parent.txt | 1               | 200              | parent.txt     |
+      | /PARENT/parent.txt | 2               | 404              | parent.txt     |
+      | /PARENT            | 1               | 200              | PARENT         |
+      | /PARENT            | 2               | 404              | PARENT         |

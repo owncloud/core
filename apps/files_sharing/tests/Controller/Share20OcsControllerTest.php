@@ -1530,7 +1530,7 @@ class Share20OcsControllerTest extends TestCase {
 		$ocs->createShare();
 	}
 
-	public function testUpdateShareCantAccess() {
+	public function testUpdateShareCantChange() {
 		$node = $this->createMock('\OCP\Files\Folder');
 		$share = $this->newShare();
 		$share->setNode($node);
@@ -1541,7 +1541,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
-		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$expected = new Result(null, 404, 'Could not update share');
 		$result = $this->ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());

@@ -302,7 +302,7 @@ class Share20OcsController extends OCSController {
 			return new Result(null, 404, 'could not delete share');
 		}
 
-		if (!$this->canAccessShare($share)) {
+		if (!$this->canChangeShare($share)) {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 			return new Result(null, 404, $this->l->t('Could not delete share'));
 		}
@@ -737,9 +737,9 @@ class Share20OcsController extends OCSController {
 
 		$share->getNode()->lock(ILockingProvider::LOCK_SHARED);
 
-		if (!$this->canAccessShare($share)) {
+		if (!$this->canChangeShare($share)) {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
-			return new Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
+			return new Result(null, 404, $this->l->t('Could not update share'));
 		}
 
 		$permissions = $this->getPermissionsFromRequest();
@@ -1010,6 +1010,22 @@ class Share20OcsController extends OCSController {
 		$share->setTarget($pathAttempt);
 
 		return $share;
+	}
+
+	/**
+	 * Check session user is owner or sharer of the share
+	 *
+	 * @param IShare $share
+	 * @return bool
+	 */
+	protected function canChangeShare(IShare $share) {
+		// Only owner or the sharer of the file can update or delete share
+		if ($share->getShareOwner() === $this->userSession->getUser()->getUID() ||
+			$share->getSharedBy() === $this->userSession->getUser()->getUID()
+		) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
