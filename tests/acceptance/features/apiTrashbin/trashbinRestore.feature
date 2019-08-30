@@ -21,6 +21,8 @@ Feature: Restore deleted files/folders
     And user "user1" has deleted file "/renamed_shared/shared_file.txt"
     When user "user1" restores the file with original path "/renamed_shared/shared_file.txt" using the trashbin API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     And as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in trash
     And user "user1" should see the following elements
       | /renamed_shared/                |
@@ -38,6 +40,8 @@ Feature: Restore deleted files/folders
     And as "user0" file "/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     And as "user0" the folder with original path "/textfile0.txt" should not exist in trash
     And user "user0" should see the following elements
       | /FOLDER/           |
@@ -91,6 +95,8 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "<delete-path>"
     When user "user0" restores the file with original path "<delete-path>" to "<restore-path>" using the trashbin API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     And as "user0" the file with original path "<delete-path>" should not exist in trash
     And as "user0" file "<restore-path>" should exist
     And as "user0" file "<delete-path>" should not exist
@@ -189,6 +195,8 @@ Feature: Restore deleted files/folders
     When user "user0" creates folder "/new-folder" using the WebDAV API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
@@ -209,6 +217,8 @@ Feature: Restore deleted files/folders
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And user "user0" should see the following elements
       | /local_storage/                  |

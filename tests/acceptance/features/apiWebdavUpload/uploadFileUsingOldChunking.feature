@@ -11,11 +11,16 @@ Feature: upload file using old chunking
     And the owncloud log level has been set to debug
     And the owncloud log has been cleared
 
+  @issue-36115
   Scenario: Upload chunked file asc
     When user "user0" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
       | 1 | AAAAA |
       | 2 | BBBBB |
       | 3 | CCCCC |
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      #| ETag | /^"[a-f0-9]{1,32}"$/ |
+      | ETag | /^[a-f0-9]{1,32}$/ |
     Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 

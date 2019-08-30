@@ -13,7 +13,10 @@ Feature: sharing
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     And the public uploads file "test.txt" with content "test2" with autorename mode using the old public WebDAV API
-    Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
+    And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
   @smokeTest @public_link_share-feature-required
@@ -26,6 +29,8 @@ Feature: sharing
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API
     When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
@@ -102,8 +107,12 @@ Feature: sharing
       | permissions | create |
     When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
     Then the content of file "/FOLDER/test-old.txt" for user "user0" should be "test-old"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
     Then the content of file "/FOLDER/test-new.txt" for user "user0" should be "test-new"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
 
   @public_link_share-feature-required
   Scenario: Uploading to a public upload-only share with password
@@ -127,6 +136,8 @@ Feature: sharing
       | shareWith   | user1  |
     When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     Examples:
       | dav-path |
       | old      |
@@ -144,6 +155,8 @@ Feature: sharing
       | shareWith   | grp1   |
     When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     Examples:
       | dav-path |
       | old      |
@@ -203,6 +216,8 @@ Feature: sharing
     And user "user0" has shared file "myfile.txt" with user "user1"
     When user "user1" uploads file "filesForUpload/textfile.txt" to "/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     Examples:
       | dav-path |
       | old      |
@@ -366,6 +381,8 @@ Feature: sharing
       | permissions | uploadwriteonly |
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
     When the public uploads file "test.txt" with content "test2" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
     And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
