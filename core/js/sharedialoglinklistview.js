@@ -103,6 +103,7 @@
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
 			}
+
 		},
 
 		onRemoveButtonClick: function (ev) {
@@ -150,7 +151,7 @@
 				expireDate: this.configModel.getDefaultExpirationDateString(),
 				shareType: OC.Share.SHARE_TYPE_LINK,
 				itemType: this.itemModel.get('itemType'),
-				itemSource: this.itemModel.get('itemSource')
+				itemSource: this.itemModel.get('itemSource'),
 			});
 			this._showPopupForShare(newShare);
 		},

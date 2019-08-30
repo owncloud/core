@@ -72,6 +72,10 @@ $enforceLinkPasswordWriteOnly = $config->getAppValue('core', 'shareapi_enforce_l
 $enforceLinkPasswordReadWriteDelete = $config->getAppValue('core', 'shareapi_enforce_links_password_read_write_delete', 'no') === 'yes';
 $outgoingServer2serverShareEnabled = $config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 
+$container = \OC::$server->getAppContainer('files_sharing');
+$rolesController = $container->query('OC\Core\Controller\RolesController');
+$roles = $rolesController->getRoles();
+
 $countOfDataLocation = 0;
 
 $value = $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no');
@@ -182,6 +186,9 @@ $array = [
 				'enabledPreviewProviders' => $previewManager->getSupportedMimes()
 			]
 		],
+	"oc_roles" => [
+			"roles" => $roles,
+	],
 	"oc_defaults" => [
 			'entity' => $defaults->getEntity(),
 			'name' => $defaults->getName(),
@@ -227,6 +234,7 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
 
 $array['oc_appconfig'] = \json_encode($array['oc_appconfig']);
+$array['oc_roles'] = \json_encode($array['oc_roles']['roles']);
 $array['oc_config'] = \json_encode($array['oc_config']);
 $array['oc_defaults'] = \json_encode($array['oc_defaults']);
 

@@ -26,12 +26,22 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 	var tooltipStub;
 	var model;
 	var view;
+	var roles;
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
 	var PASSWORD_PLACEHOLDER_MESSAGE = 'Choose a password';
 
 	beforeEach(function() {
+		roles = {
+					"data":[
+						{"id":"core.viewer","displayName":"Download \/ View","context":{"publicLinks":{"displayDescription":"Recipients can view or download contents.","order":10,"resourceTypes":["*"],"permissions":{"ownCloud":{"read":true}}}}},
+						{"id":"core.editor","displayName":"Download \/ View \/ Edit","context":{"publicLinks":{"displayDescription":"Recipients can view, download and edit contents.","order":20,"resourceTypes":["httpd\/unix-directory"],"permissions":{"ownCloud":{"create":true,"read":true,"update":true,"delete":true}}}}},
+						{"id":"core.contributor","displayName":"Download \/ View \/ Upload","context":{"publicLinks":{"displayDescription":"Recipients can view, download and upload contents.","order":30,"resourceTypes":["httpd\/unix-directory"],"permissions":{"ownCloud":{"create":true,"read":true}}}}},
+						{"id":"core.uploader","displayName":"Upload only (File Drop)","context":{"publicLinks":{"displayDescription":"Receive files from multiple recipients without revealing the contents of the folder.","order":40,"resourceTypes":["httpd\/unix-directory"],"permissions":{"ownCloud":{"create":true}}}}}
+					]
+		};
 		configModel = new OC.Share.ShareConfigModel();
+		configModel.attributes.roles = roles.data;
 		fileInfoModel = new OCA.Files.FileInfoModel({
 			id: 123,
 			name: 'shared_folder',
@@ -438,7 +448,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
 			configModel.set('enforceLinkPasswordReadWrite', true);
 			view.render();
-			view.$('#sharingDialogAllowpublicUploadWrite-' + view.cid).prop('checked', true)
+			view.$('#sharingDialogAllowpublicUploadWrite-' + view.cid).prop('checked', true);
 			var handler = sinon.stub();
 			view.on('saved', handler);
 			view._save();

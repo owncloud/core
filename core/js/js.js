@@ -14,6 +14,7 @@ var oc_webroot;
 var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
 
 window.oc_config = window.oc_config || {};
+window.oc_roles = window.oc_roles || {};
 
 if (typeof oc_webroot === "undefined") {
 	oc_webroot = location.pathname;
