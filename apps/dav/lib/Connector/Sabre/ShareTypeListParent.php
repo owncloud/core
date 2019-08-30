@@ -24,24 +24,23 @@ namespace OCA\DAV\Connector\Sabre;
 use Sabre\Xml\Element;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
-use Sabre\DAV\Xml\Property\Href;
 use OCA\DAV\Connector\Sabre\ShareTypeList;
 
 class ShareTypeListParent implements Element {
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
-	/** @var Href */
+	/** @var string */
 	private $href;
 	/** @var ShareTypeList */
 	private $shareTypeList;
 
-	public function __construct(Href $href, ShareTypeList $shareTypeList) {
+	public function __construct(string $href, ShareTypeList $shareTypeList) {
 		$this->href = $href;
 		$this->shareTypeList = $shareTypeList;
 	}
 
 	/**
-	 * @return Href
+	 * @return string
 	 */
 	public function getHref() {
 		return $this->href;
@@ -81,7 +80,7 @@ class ShareTypeListParent implements Element {
 
 	public function xmlSerialize(Writer $writer) {
 		$writer->startElement('{' . self::NS_OWNCLOUD . '}parent');
-		$this->href->xmlSerialize($writer);
+		$writer->writeElement('{DAV:}href', $this->href);
 		$this->shareTypeList->xmlSerialize($writer);
 		$writer->endElement();
 	}

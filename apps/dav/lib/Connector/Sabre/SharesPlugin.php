@@ -25,7 +25,6 @@ use OCP\IUserSession;
 use OCP\Share\IShare;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\INode;
-use Sabre\DAV\Xml\Property\Href;
 use OCA\DAV\Connector\Sabre\ShareTypeList;
 use OCA\DAV\Connector\Sabre\ShareTypeListParent;
 use OCA\DAV\Connector\Sabre\ShareTypeListParentList;
@@ -330,7 +329,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 
 				if (!empty($shareTypes)) {
 					$shareTypeList = new ShareTypeList($shareTypes);
-					$shareTypeListParentList[] = new ShareTypeListParent(new Href($baseFSPath . $parentNode->getPath()), $shareTypeList);
+					$shareTypeListParentList[] = new ShareTypeListParent($baseFSPath . $parentNode->getPath(), $shareTypeList);
 				}
 			}
 			return new ShareTypeListParentList($shareTypeListParentList);
