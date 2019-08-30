@@ -176,17 +176,41 @@ Feature: sharing
   Scenario Outline: A Group share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    And user "user0" has been created with default attributes and skeleton files
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
       | user1    |
-    # Note: in the user_ldap test environment user1 is in grp1
+      | user2    |
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
-    And user "user0" has shared file "/PARENT/parent.txt" with group "grp1"
+    And user "user2" has been added to group "grp1"
+    And user "user0" has shared entry "<entry_to_share>" with group "grp1"
     When user "user1" deletes the last share using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "404"
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user0" entry "<entry_to_share>" should exist
+    And as "user1" entry "<received_entry>" should exist
+    And as "user2" entry "<received_entry>" should exist
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 200             |
-      | 2               | 404             |
+      | entry_to_share     | ocs_api_version | http_status_code | received_entry |
+      | /PARENT/parent.txt | 1               | 200              | parent.txt     |
+      | /PARENT/parent.txt | 2               | 404              | parent.txt     |
+      | /PARENT            | 1               | 200              | PARENT         |
+      | /PARENT            | 2               | 404              | PARENT         |
+
+  Scenario Outline: An individual share recipient tries to delete the share
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has shared entry "<entry_to_share>" with user "user1"
+    When user "user1" deletes the last share using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user0" entry "<entry_to_share>" should exist
+    And as "user1" entry "<received_entry>" should exist
+    Examples:
+      | entry_to_share     | ocs_api_version | http_status_code | received_entry |
+      | /PARENT/parent.txt | 1               | 200              | parent.txt     |
+      | /PARENT/parent.txt | 2               | 404              | parent.txt     |
+      | /PARENT            | 1               | 200              | PARENT         |
+      | /PARENT            | 2               | 404              | PARENT         |
