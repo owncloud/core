@@ -321,7 +321,6 @@ OC.L10N.register(
     "New password" : "Sandi baru",
     "New Password" : "Sandi Baru",
     "Reset password" : "Setel ulang sandi",
-    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hai,\n\nsekedar memberi tahu bahwa Andaa sekarang memiliki akun %s.\n\nNama Pengguna Anda: %s\nAkses di: %s\n",
     "This ownCloud instance is currently in single user mode." : "ownCloud ini sedang dalam mode pengguna tunggal.",
     "This means only administrators can use the instance." : "Ini berarti hanya administrator yang dapat menggunakan ownCloud.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Hubungi administrator sistem anda jika pesan ini terus muncul atau muncul tiba-tiba.",

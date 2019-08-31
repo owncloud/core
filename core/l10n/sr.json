@@ -211,7 +211,6 @@
     "New password" : "Нова лозинка",
     "New Password" : "Нова лозинка",
     "Reset password" : "Ресетуј лозинку",
-    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Поздрав.\n\nСамо да знате да сада имате %s налог.\n\nВаше корисничко име: %s\nПриступите му на: %s\n",
     "This ownCloud instance is currently in single user mode." : "Овај оунКлауд тренутно ради у режиму једног корисника.",
     "This means only administrators can use the instance." : "То значи да га могу користити само администратори.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Контактирајте администратора ако се порука понавља или се неочекивано појавила.",

@@ -116,8 +116,6 @@
     "Username contains whitespace at the beginning or at the end" : "Потребителското име съдържа интервали в началото или края си",
     "A valid password must be provided" : "Валидна парола трябва да бъде зададена.",
     "The username is already being used" : "Това потребителско име е вече заето.",
-    "Your %s account was created" : "Вашия %s профил бе създаден",
-    "%s password changed successfully" : "%s паролата е сменена успешно",
     "Login canceled by app" : "Вписването преустановено от приложението",
     "User disabled" : "Потребителят е деактивиран",
     "Settings" : "Настройки",

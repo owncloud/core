@@ -121,8 +121,6 @@
     "Username contains whitespace at the beginning or at the end" : "Användarnamnet innehåller ett blankslag vid början eller slutet",
     "A valid password must be provided" : "Ett giltigt lösenord måste anges",
     "The username is already being used" : "Användarnamnet används redan",
-    "Your %s account was created" : "Ditt %s konto skapades",
-    "%s password changed successfully" : "%s lösenord ändrades",
     "Login canceled by app" : "Inloggningen avbröts av appen",
     "User disabled" : "Användare inaktiverad",
     "Settings" : "Inställningar",

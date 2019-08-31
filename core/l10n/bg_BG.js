@@ -296,7 +296,6 @@ OC.L10N.register(
     "New password" : "Нова парола",
     "New Password" : "Нова Парола",
     "Reset password" : "Възстановяване на паролата",
-    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Здрасти,\n\nСамо да ти кажа, че имаш %s профил.\n\nПотребителя ти е: %s\nДостъпи го: %s\n",
     "This ownCloud instance is currently in single user mode." : "В момента този ownCloud е в режим допускащ само един потребител.",
     "This means only administrators can use the instance." : "Това означава, че само администраторът може да го използва.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Свържи се със системния си администратор ако това съобщение се задържи твърде дълго или се е появило неочаквано.",

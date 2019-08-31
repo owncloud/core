@@ -15,9 +15,9 @@
     "Error occurred while posting comment" : "Errorea gertatu da iruzkina bidaltzean",
     "{count} unread comments" : "{count} irakurri gabeko iruzkin",
     "Comment" : "Iruzkina",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Iruzkinak</strong> fitxategientzat <em>(beti ikusen dira jarioan)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Iruzkinak</strong> fitxategientzat <em>(beti erakusten dira jarioan)</em>",
     "You commented" : "Zuk iruzkindua",
-    "%1$s commented" : "%1$s iruzkinduta",
+    "%1$s commented" : "%1$s iruzkindua",
     "You commented on %2$s" : "Zuk iruzkindua %2$s",
     "%1$s commented on %2$s" : "%1$s iruzkindua %2$s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -125,8 +125,6 @@
     "Username contains whitespace at the beginning or at the end" : "De gebruikersnaam bevat spaties aan het begin of eind",
     "A valid password must be provided" : "Er moet een geldig wachtwoord worden opgegeven",
     "The username is already being used" : "De gebruikersnaam bestaat al",
-    "Your %s account was created" : "Uw %s account is aangemaakt",
-    "%s password changed successfully" : "%s wachtwoord succesvol gewijzigd.",
     "Login canceled by app" : "Inloggen geannuleerd door app",
     "User disabled" : "Gebruiker gedeactiveerd",
     "Settings" : "Instellingen",

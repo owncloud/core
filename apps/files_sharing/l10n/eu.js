@@ -39,6 +39,12 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$sk zurekin %1$s elkarbanatu du",
     "Shares" : "Partekatuak",
     "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\"-(e)k \"%3$s\" partekatu du zurekin (\"%2$s\"-(r)en izenean)",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\"-(e)k \"%3$s\" partekatu du zurekin",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\"-(e)k \"%3$s\" ikustera gonbidatu zaitu (\"%2$s\"-(r)en izenean)",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\"-(e)k \"%3$s\" ikustera gonbidatu zaitu",
+    "Accept" : "Onartu",
+    "Decline" : "Uko egin",
     "This share is password-protected" : "Elkarbanatutako hau pasahitzarekin babestuta dago",
     "The password is wrong. Try again." : "Pasahitza ez da egokia. Saiatu berriro.",
     "Password" : "Pasahitza",
@@ -54,6 +60,7 @@ OC.L10N.register(
     "For more info, please ask the person who sent this link." : "Informazio gehiagorako, mesedez eskatu lotura hau bidali zuen pertsonari",
     "Download" : "Deskargatu",
     "Download %s" : "Deskargatu %s",
-    "Direct link" : "Lotura zuzena"
+    "Direct link" : "Lotura zuzena",
+    "Nothing to configure." : "Konfiguratzeko ezer"
 },
 "nplurals=2; plural=(n != 1);");

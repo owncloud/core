@@ -100,8 +100,6 @@
     "A valid username must be provided" : "Należy podać prawidłową nazwę użytkownika",
     "A valid password must be provided" : "Należy podać prawidłowe hasło",
     "The username is already being used" : "Ta nazwa użytkownika jest już używana",
-    "Your %s account was created" : "Utworzono konto %s",
-    "%s password changed successfully" : "%s hasło zmieniono pomyślnie",
     "User disabled" : "Użytkownik zablokowany",
     "Settings" : "Ustawienia",
     "Users" : "Użytkownicy",

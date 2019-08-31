@@ -4,7 +4,7 @@ OC.L10N.register(
     "Contact birthdays" : "kontaktuen urtebetetze datak",
     "Personal" : "Pertsonala",
     "Contacts" : "Kontaktuak",
-    "Technical details" : "Arazo teknikoak",
+    "Technical details" : "Xehetasun teknikoak",
     "Remote Address: %s" : "Urruneko Helbidea: %s",
     "Request ID: %s" : "Eskariaren IDa: %s"
 },

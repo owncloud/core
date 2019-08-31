@@ -90,8 +90,6 @@
     "A valid username must be provided" : "必须提供合法的用户名",
     "A valid password must be provided" : "必须提供合法的密码",
     "The username is already being used" : "用户名已被使用",
-    "Your %s account was created" : "你的帐户 %s 已创建",
-    "%s password changed successfully" : "%s 密码修改成功",
     "Settings" : "设置",
     "Users" : "用户",
     "A safe home for all your data" : "为您的所有数据提供一个安全的家。",

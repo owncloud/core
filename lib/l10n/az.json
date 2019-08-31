@@ -32,7 +32,6 @@
     "Share type %s is not valid for %s" : "Yayımlanma  tipi %s etibarlı deyil %s üçün",
     "A valid username must be provided" : "Düzgün istifadəçi adı daxil edilməlidir",
     "A valid password must be provided" : "Düzgün şifrə daxil edilməlidir",
-    "Your %s account was created" : "Sizin %s hesab yaradıldı",
     "Settings" : "Quraşdırmalar",
     "Users" : "İstifadəçilər",
     "Imprint" : "İşarələmək",

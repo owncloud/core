@@ -273,7 +273,6 @@ OC.L10N.register(
     "New password" : "Contraseña nueva",
     "New Password" : "Contraseña nueva",
     "Reset password" : "Restablecer contraseña",
-    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hola, ¿qué hai?,\n\nnamái déxamos dicite qu'agora ties una cuenta %s\n\nNome d'usuariu: %s\n\nAccede: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "Esta instalación d'ownCloud ta en mou d'usuariu únicu.",
     "This means only administrators can use the instance." : "Esto quier dicir que namái pue usala un alministrador.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Contauta col alministrador si esti problema sigui apaeciendo.",

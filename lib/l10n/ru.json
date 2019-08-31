@@ -132,8 +132,6 @@
     "The username can not be longer than 64 characters" : "Имя пользователя не может быть длиннее 64 символов",
     "A valid password must be provided" : "Укажите допустимый пароль",
     "The username is already being used" : "Имя пользователя уже используется",
-    "Your %s account was created" : "Учетная запись %s создана",
-    "%s password changed successfully" : "Пароль %s изменён успешно",
     "Login canceled by app" : "Вход отменен приложением",
     "User disabled" : "Пользователь отключен",
     "Settings" : "Настройки",
