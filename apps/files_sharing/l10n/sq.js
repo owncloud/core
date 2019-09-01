@@ -103,6 +103,7 @@ OC.L10N.register(
     "Unknown share type" : "Lloj i panjohur ndarjesh",
     "Not a directory" : "S’është drejtori",
     "Could not lock path" : "S’u kyç dot shtegu",
+    "Could not update share" : "S’u përditësua dot ndarja",
     "Can't change permissions for public share links" : "S’mund të ndryshohen lejet për lidhje ndarjesh publike",
     "Wrong or no update parameter given" : "Ose u dha parametër i gabuar përditësimesh, pse s’u dha fare ",
     "Only recipient can change accepted state" : "Gjendjen e pranimit mund ta ndryshojnë vetëm marrësi",
