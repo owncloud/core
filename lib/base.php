@@ -294,7 +294,7 @@ class OC {
 			&& !$isOccControllerRequested
 		) {
 			// send http status 503
-			\header('HTTP/1.1 503 Service Temporarily Unavailable');
+			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');
 			\header('Retry-After: 120');
 
@@ -322,7 +322,7 @@ class OC {
 			}
 		}
 		// send http status 503
-		\header('HTTP/1.1 503 Service Temporarily Unavailable');
+		\http_response_code(503);
 		\header('Status: 503 Service Temporarily Unavailable');
 		\header('Retry-After: 120');
 
@@ -369,7 +369,7 @@ class OC {
 		}
 		if ($disableWebUpdater || $tooBig) {
 			// send http status 503
-			\header('HTTP/1.1 503 Service Temporarily Unavailable');
+			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');
 			\header('Retry-After: 120');
 
@@ -684,7 +684,7 @@ class OC {
 		// Check whether the sample configuration has been copied
 		if ($systemConfig->getValue('copied_sample_config', false)) {
 			$l = \OC::$server->getL10N('lib');
-			\header('HTTP/1.1 503 Service Temporarily Unavailable');
+			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');
 			OC_Template::printErrorPage(
 				$l->t('Sample configuration detected'),
@@ -706,7 +706,7 @@ class OC {
 			&& !\OC::$server->getTrustedDomainHelper()->isTrustedDomain($host)
 			&& self::$server->getConfig()->getSystemValue('installed', false)
 		) {
-			\header('HTTP/1.1 400 Bad Request');
+			\http_response_code(400);
 			\header('Status: 400 Bad Request');
 
 			\OC::$server->getLogger()->warning(
@@ -923,7 +923,7 @@ class OC {
 				}
 				throw $e;
 			} catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
-				//header('HTTP/1.0 404 Not Found');
+				//http_response_code(404);
 			} catch (Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
 				OC_Response::setStatus(405);
 				return;
@@ -935,7 +935,7 @@ class OC {
 			// not allowed any more to prevent people
 			// mounting this root directly.
 			// Users need to mount remote.php/webdav instead.
-			\header('HTTP/1.1 405 Method Not Allowed');
+			\http_response_code(405);
 			\header('Status: 405 Method Not Allowed');
 			return;
 		}

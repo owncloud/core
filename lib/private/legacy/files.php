@@ -76,7 +76,7 @@ class OC_Files {
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 		if ($fileSize > -1) {
 			if (!empty($rangeArray)) {
-				\header('HTTP/1.1 206 Partial Content', true);
+				\http_response_code(206);
 				\header('Accept-Ranges: bytes', true);
 				if (\count($rangeArray) > 1) {
 					$type = 'multipart/byteranges; boundary='.self::getBoundary();
@@ -274,7 +274,7 @@ class OC_Files {
 		if (\OC\Files\Filesystem::isReadable($filename) && !$event->hasArgument('errorMessage')) {
 			self::sendHeaders($filename, $name, $rangeArray);
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
-			\header("HTTP/1.1 404 Not Found");
+			\http_response_code(404);
 			$tmpl = new OC_Template('', '404', 'guest');
 			$tmpl->printPage();
 			exit();
@@ -312,7 +312,7 @@ class OC_Files {
 				// file is unseekable
 				\header_remove('Accept-Ranges');
 				\header_remove('Content-Range');
-				\header("HTTP/1.1 200 OK");
+				\http_response_code(200);
 				self::sendHeaders($filename, $name, []);
 				$view->readfile($filename);
 			}
