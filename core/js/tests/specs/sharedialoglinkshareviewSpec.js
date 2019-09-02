@@ -282,6 +282,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				configModel.set({
 					enforceLinkPasswordReadOnly : true,
 					enforceLinkPasswordWriteOnly : true,
+					enforceLinkPasswordReadWriteDelete: true,
 					enforceLinkPasswordReadWrite : true
 				});
 				view.render();
@@ -436,6 +437,18 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 		it('displays inline error when password enforced for read & write but missing', function() {
 			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
 			configModel.set('enforceLinkPasswordReadWrite', true);
+			view.render();
+			view.$('#sharingDialogAllowpublicUploadWrite-' + view.cid).prop('checked', true)
+			var handler = sinon.stub();
+			view.on('saved', handler);
+			view._save();
+			expect(handler.notCalled).toEqual(true);
+
+			expect(view.$('.linkPassText').next('.error-message').hasClass('hidden')).toEqual(false);
+		});
+		it('displays inline error when password enforced for read, write & delete but missing', function () {
+			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
+			configModel.set('enforceLinkPasswordReadWriteDelete', true);
 			view.render();
 			view.$('#sharingDialogAllowPublicReadWrite-' + view.cid).prop('checked', true)
 			var handler = sinon.stub();

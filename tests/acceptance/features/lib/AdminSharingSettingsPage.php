@@ -49,6 +49,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $enforceLinkPasswordReadOnlyCheckboxId = 'enforceLinkPasswordReadOnly';
 	protected $enforceLinkPasswordReadWriteCheckboxXpath = '//label[@for="enforceLinkPasswordReadWrite"]';
 	protected $enforceLinkPasswordReadWriteCheckboxId = 'enforceLinkPasswordReadWrite';
+	protected $enforceLinkPasswordReadWriteDeleteCheckboxXpath = '//label[@for="enforceLinkPasswordReadWriteDelete"]';
+	protected $enforceLinkPasswordReadWriteDeleteCheckboxId = 'enforceLinkPasswordReadWriteDelete';
 	protected $enforceLinkPasswordWriteOnlyCheckboxXpath = '//label[@for="enforceLinkPasswordWriteOnly"]';
 	protected $enforceLinkPasswordWriteOnlyCheckboxId = 'enforceLinkPasswordWriteOnly';
 	protected $allowResharingCheckboxXpath = '//label[@for="allowResharing"]';
@@ -227,6 +229,25 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			$action,
 			$this->enforceLinkPasswordReadWriteCheckboxXpath,
 			$this->enforceLinkPasswordReadWriteCheckboxId
+		);
+	}
+
+	/**
+	 * toggle enforce password protection for read, write and delete links
+	 *
+	 * @param Session $session
+	 * @param string $action "enables|disables"
+	 *
+	 * @return void
+	 */
+	public function toggleEnforcePasswordProtectionForReadWriteDeleteLinks(
+		Session $session, $action
+	) {
+		$this->toggleCheckbox(
+			$session,
+			$action,
+			$this->enforceLinkPasswordReadWriteDeleteCheckboxXpath,
+			$this->enforceLinkPasswordReadWriteDeleteCheckboxId
 		);
 	}
 

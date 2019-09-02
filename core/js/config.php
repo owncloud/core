@@ -69,6 +69,7 @@ if ($defaultExpireDateEnabled) {
 $enforceLinkPasswordReadOnly = $config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
 $enforceLinkPasswordReadWrite = $config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
 $enforceLinkPasswordWriteOnly = $config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
+$enforceLinkPasswordReadWriteDelete = $config->getAppValue('core', 'shareapi_enforce_links_password_read_write_delete', 'no') === 'yes';
 $outgoingServer2serverShareEnabled = $config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 
 $countOfDataLocation = 0;
@@ -171,6 +172,7 @@ $array = [
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
 				'enforceLinkPasswordReadOnly' => $enforceLinkPasswordReadOnly,
 				'enforceLinkPasswordReadWrite' => $enforceLinkPasswordReadWrite,
+				'enforceLinkPasswordReadWriteDelete' => $enforceLinkPasswordReadWriteDelete,
 				'enforceLinkPasswordWriteOnly' => $enforceLinkPasswordWriteOnly,
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
 				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
