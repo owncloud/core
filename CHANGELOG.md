@@ -7,17 +7,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+
 - Support for php 7.3 [#34559](https://github.com/owncloud/core/pull/34559) [#35775](https://github.com/owncloud/core/pull/35775) [#35752](https://github.com/owncloud/core/pull/35752)
 - Support for redirecting private links to ownCloud phoenix frontend [#35819](https://github.com/owncloud/core/pull/35819)
 - `encryption:fixencryptedversion` command to address issues related to encrypted versions  [#115](https://github.com/owncloud/encryption/pull/115)
-- DAV endpoint for public shares [#35932](https://github.com/owncloud/core/pull/35932)
-- Webdav trashbin api [#35716](https://github.com/owncloud/core/pull/35716) [#35879](https://github.com/owncloud/core/pull/35879) 
+- Tech preview DAV endpoint for public shares [#35932](https://github.com/owncloud/core/pull/35932) [#36057](https://github.com/owncloud/core/issues/36057) [#36021](https://github.com/owncloud/core/issues/36021) [#36059](https://github.com/owncloud/core/issues/36059) [#36066](https://github.com/owncloud/core/issues/36066) [#36080](https://github.com/owncloud/core/issues/36080) [#36061](https://github.com/owncloud/core/issues/36061) [#36119](https://github.com/owncloud/core/issues/36119) [#36049](https://github.com/owncloud/core/issues/36049) [#36068](https://github.com/owncloud/core/issues/36068)
+- Tech preview DAV endpoint for trashbin [#35716](https://github.com/owncloud/core/pull/35716) [#35879](https://github.com/owncloud/core/pull/35879) [#36053](https://github.com/owncloud/core/issues/36053) [#36073](https://github.com/owncloud/core/issues/36073)
+- OCS Roles API and ability to set permissions via share attribues - [#36024](https://github.com/owncloud/core/issues/36024) [#36086](https://github.com/owncloud/core/issues/36086)
+- OCS API for public link share email notification - [#36063](https://github.com/owncloud/core/issues/36063)
+- JS API v2 for share attributes - [#35836](https://github.com/owncloud/core/issues/35836)
 - Url `/cron` in addition to `/cron.php` to execute cronjobs via webcron [#34932](https://github.com/owncloud/core/pull/34932)
 - `system:cron` occ command for executing background tasks via system cron [#34932](https://github.com/owncloud/core/pull/34932)
 - `previews_path` config option to configure thumbnail storage path [#35131](https://github.com/owncloud/core/pull/35131)
 - Show activity when share receiver unshares a received share [#35193](https://github.com/owncloud/core/pull/35193)
+- Document phoenix.baseUrl in config.sample.php - [#36007](https://github.com/owncloud/core/issues/36007)
 
 ### Changed
+
 - Allow two-factor providers to display custom challenge message [#34848](https://github.com/owncloud/core/issues/34848)
 - Handling of unauthenticated ajax requests to prevent browser issues [#36003](https://github.com/owncloud/core/pull/36003)
 - Improved share permission handling [#35884](https://github.com/owncloud/core/pull/35884)
@@ -30,23 +36,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Improved wording for several user/administrator encryption related interactions [#21](https://github.com/owncloud/encryption/pull/21) [#117](https://github.com/owncloud/encryption/pull/117)
 - Handling of composer autoloader for `apps/files_external` [#35755](https://github.com/owncloud/core/pull/35755)
 - Renamed share icon to be adblock friendly [#35199](https://github.com/owncloud/core/pull/35199)
-- Bump sabre/xml 2.1.2 from to 2.1.3 [#36036](https://github.com/owncloud/core/pull/36036)
-- Bump sabre/dav from 3.2 to 4.0 [#34559](https://github.com/owncloud/core/pull/34559)
-- Bump icewind/smb from 3.1.1 to 3.1.2 [#36017](https://github.com/owncloud/core/pull/36017)
-- Bump symfony/polyfill components from v1.11.0 to v1.12.0 [#35989](https://github.com/owncloud/core/pull/35989)
-- Bump doctrine/lexer from v1.0.1 to 1.0.2 [#35625](https://github.com/owncloud/core/pull/35625)
-- Bump theseer/tokenizer from 1.1.2 to 1.1.3 [#35625](https://github.com/owncloud/core/pull/35625)
-- Bump egulias/email-validator from 2.1.7 to 2.1.11 [#35341](https://github.com/owncloud/core/pull/35341) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934) [#36026](https://github.com/owncloud/core/pull/36026)
-- Bump nikic/php-parser from 4.2.1 to 4.2.3 [#35337](https://github.com/owncloud/core/pull/35337) [#36015](https://github.com/owncloud/core/pull/36015)
-- Bump phpseclib/phpseclib from 2.0.15 to 2.0.21 [#35336](https://github.com/owncloud/core/pull/35336) [#35565](https://github.com/owncloud/core/pull/35565) [#35643](https://github.com/owncloud/core/pull/35643) [#35827](https://github.com/owncloud/core/pull/35827)
-- Bump league/flysystem from 1.0.51 to 1.0.53 [#35275](https://github.com/owncloud/core/pull/35275) [#35644](https://github.com/owncloud/core/pull/35644)
-- Bump symfony from v3.4.26 to v3.4.30 [#35146](https://github.com/owncloud/core/pull/35146) [#35348](https://github.com/owncloud/core/pull/35348) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934)
-- Bump swiftmailer/swiftmailer from 6.2.0 to 6.2.1 [#35075](https://github.com/owncloud/core/pull/35075)
 - Bump @bower_components/handlebars from v4.1.1 to v4.1.2 [#35025](https://github.com/owncloud/core/pull/35025)
 - Bump @bower_components/jsTimezoneDetect from 1.0.5 to v1.0.6  [#33776](https://github.com/owncloud/core/pull/33776)
-
+- Bump doctrine/lexer from v1.0.1 to 1.0.2 [#35625](https://github.com/owncloud/core/pull/35625)
+- Bump egulias/email-validator from 2.1.7 to 2.1.11 [#35341](https://github.com/owncloud/core/pull/35341) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934) [#36026](https://github.com/owncloud/core/pull/36026) [#36026](https://github.com/owncloud/core/issues/36026)
+- Bump icewind/smb from 3.1.1 to 3.1.2 [#36017](https://github.com/owncloud/core/pull/36017)
+- Bump icewind/smb from 3.1.1 to 3.1.2 in /apps/files_external/3rdparty - [#36017](https://github.com/owncloud/core/issues/36017)
+- Bump league/flysystem from 1.0.51 to 1.0.55 [#35275](https://github.com/owncloud/core/pull/35275) [#35644](https://github.com/owncloud/core/pull/35644) [#36099](https://github.com/owncloud/core/issues/36099)
+- Bump nikic/php-parser from 4.2.1 to 4.2.3 [#35337](https://github.com/owncloud/core/pull/35337) [#36015](https://github.com/owncloud/core/pull/36015) [#36015](https://github.com/owncloud/core/issues/36015)
+- Bump phan to 1.3.5 and enable on PHP 7.2 7.3 - [#35818](https://github.com/owncloud/core/issues/35818)
+- Bump phpseclib/phpseclib from 2.0.15 to 2.0.21 [#35336](https://github.com/owncloud/core/pull/35336) [#35565](https://github.com/owncloud/core/pull/35565) [#35643](https://github.com/owncloud/core/pull/35643) [#35827](https://github.com/owncloud/core/pull/35827)
+- Bump sabre/dav from 3.2 to 4.0.1 [#34559](https://github.com/owncloud/core/pull/34559) [#36094](https://github.com/owncloud/core/issues/36094)
+- Bump sabre/xml 2.1.2 from to 2.1.3 [#36036](https://github.com/owncloud/core/pull/36036) [#36036](https://github.com/owncloud/core/issues/36036)
+- Bump swiftmailer/swiftmailer from 6.2.0 to 6.2.1 [#35075](https://github.com/owncloud/core/pull/35075)
+- Bump symfony from v3.4.26 to v3.4.31 [#35146](https://github.com/owncloud/core/pull/35146) [#35348](https://github.com/owncloud/core/pull/35348) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934) [#36098](https://github.com/owncloud/core/issues/36098) [#36097](https://github.com/owncloud/core/issues/36097) [#35989](https://github.com/owncloud/core/pull/35989) - Bump symfony/process from 3.4.30 to 3.4.31 - [#36095](https://github.com/owncloud/core/issues/36095) [#36096](https://github.com/owncloud/core/issues/36096) [#36093](https://github.com/owncloud/core/issues/36093)
+- Bump theseer/tokenizer from 1.1.2 to 1.1.3 [#35625](https://github.com/owncloud/core/pull/35625)
+- Updating webmozart/assert (1.4.0 => 1.5.0) - [#36103](https://github.com/owncloud/core/issues/36103)
+- Updating zendframework/zend-filter (2.9.1 => 2.9.2) - [#36102](https://github.com/owncloud/core/issues/36102)
+- Updating zendframework/zend-inputfilter (2.10.0 => 2.10.1) - [#36112](https://github.com/owncloud/core/issues/36112)
+- Update the minimum required Node engine version to 8.15.0 - [#36033](https://github.com/owncloud/core/issues/36033)
 
 ### Removed
+
 - Deprecated `update` script from `files` app [#35781](https://github.com/owncloud/core/pull/35781)
 - Dropped `APC` and `XCache` support [#35782](https://github.com/owncloud/core/pull/35782)
 - Old table repair step will drop deprecated `contacts_cards_properties` table [#35721](https://github.com/owncloud/core/pull/35721)
@@ -55,13 +66,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Moved ownCloud default encryption app into separate repository [#35949](https://github.com/owncloud/core/pull/35949)
 
 ### Fixed
+
+- Use bit operators when checking share file permission - [#36111](https://github.com/owncloud/core/issues/36111)
+- Only share owner should be able to update or delete share - [#36120](https://github.com/owncloud/core/issues/36120)
+- Fix various issues with session handling in relation to redis - [#35888](https://github.com/owncloud/core/issues/35888)
+- Fix issue where IE did not redirect to login page when user is not logged in - [#36079](https://github.com/owncloud/core/issues/36079)
+- Check that all user mount points has unique names - [#36029](https://github.com/owncloud/core/issues/36029)
+- Fix loading of app.php when using a separate apps folder - [#36054](https://github.com/owncloud/core/issues/36054)
+- Respect default app config within the TwoFactorChallengeController - [#36031](https://github.com/owncloud/core/issues/36031)
+- Don't send WWW-Authenticate headers with schema Basic for ajax requests - [#36003](https://github.com/owncloud/core/issues/36003)
+- Fix issue when share folder and shares go missing when storage becomes unavailable - [#35998](https://github.com/owncloud/core/issues/35998)
 - Handling of OCM sharing when receiving server did not include a protocol (i.e. `https`) [#35711](https://github.com/owncloud/core/pull/35711)
 - Performance improvements when loading groups of users [#35822](https://github.com/owncloud/core/pull/35822) 
 - Relative path handling for `files:checksums:verify` occ command [#35694](https://github.com/owncloud/core/pull/35694)
 - Failed rename operation leading to unavailable external storage [#35598](https://github.com/owncloud/core/pull/35598)
 - Comment creation event missing ID field [#35799](https://github.com/owncloud/core/pull/35799)
 - Improved handling of share expire input fields to avoid user error [#35779](https://github.com/owncloud/core/pull/35779)
-- Refactored user creation in order to allow same flow for `occ` and `api` [#35972](https://github.com/owncloud/core/pull/35972)
 - Maintain dav properties when files are moved to trashbin [#35954](https://github.com/owncloud/core/pull/35954)
 - Usage of domain when authenticate with SMB/WND shares [#35892](https://github.com/owncloud/core/pull/35892) 
 - Triggering dav events on the public webdav endpoint [#35820](https://github.com/owncloud/core/pull/35820)
@@ -94,6 +114,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [10.2.1]- 2019-07-03
 
 ### Fixed
+
 - Error when user was removed from a group - [#35289](https://github.com/owncloud/core/issues/35289) [#35570](https://github.com/owncloud/core/issues/35570)
 - Incorrect avatar storage location - [#35311](https://github.com/owncloud/core/issues/35311) [#35531](https://github.com/owncloud/core/issues/35531)
 - Incorrect rendering of password changed notification email - [#35255](https://github.com/owncloud/core/issues/35255) [#35491](https://github.com/owncloud/core/issues/35491)
