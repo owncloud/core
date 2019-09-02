@@ -83,12 +83,33 @@ class RolesController extends OCSController {
 			]);
 		$event->addRole(
 			[
+				'id' => 'core.contributor',
+				'displayName' => $this->l10n->t('Download / View / Upload'),
+				'context' => [
+					'publicLinks' => [
+						'displayDescription' => $this->l10n->t('Recipients can view, download and upload contents.'),
+						'order' => 20,
+						'resourceTypes' => [
+							'httpd/unix-directory'
+						],
+						'permissions' => [
+							'ownCloud' => [
+								'create' => true,
+								'read' => true,
+							]
+						]
+					]
+				]
+
+			]);
+		$event->addRole(
+			[
 				'id' => 'core.editor',
 				'displayName' => $this->l10n->t('Download / View / Edit'),
 				'context' => [
 					'publicLinks' => [
-						'displayDescription' => $this->l10n->t('Recipients can view, download and edit contents.'),
-						'order' => 20,
+						'displayDescription' => $this->l10n->t('Recipients can view, download, edit, delete and upload contents.'),
+						'order' => 30,
 						'resourceTypes' => [
 							'httpd/unix-directory'
 						],
@@ -102,27 +123,6 @@ class RolesController extends OCSController {
 						]
 					]
 				]
-			]);
-		$event->addRole(
-			[
-				'id' => 'core.contributor',
-				'displayName' => $this->l10n->t('Download / View / Upload'),
-				'context' => [
-					'publicLinks' => [
-						'displayDescription' => $this->l10n->t('Recipients can view, download and upload contents.'),
-						'order' => 30,
-						'resourceTypes' => [
-							'httpd/unix-directory'
-						],
-						'permissions' => [
-							'ownCloud' => [
-								'create' => true,
-								'read' => true,
-							]
-						]
-					]
-				]
-
 			]);
 		$event->addRole(
 			[

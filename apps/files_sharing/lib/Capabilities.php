@@ -85,6 +85,8 @@ class Capabilities implements ICapability {
 				$public['password']['enforced_for']['upload_only'] = $woPasswordEnforced;
 				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced;
 
+				$public['roles_api'] = true;
+
 				$public['expire_date'] = [];
 				$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
 				if ($public['expire_date']['enabled']) {

@@ -120,6 +120,29 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertFalse($result['public']['enabled']);
 	}
 
+	public function providesRolesCapability() {
+		return [
+			[['core', 'shareapi_enabled', 'yes', 'no'],['core', 'shareapi_allow_links', 'yes', 'no']],
+			[['core', 'shareapi_enabled', 'yes', 'yes'],['core', 'shareapi_allow_links', 'yes', 'no']],
+			[['core', 'shareapi_enabled', 'yes', 'yes'],['core', 'shareapi_allow_links', 'yes', 'yes']]
+		];
+	}
+
+	/**
+	 * @dataProvider providesRolesCapability
+	 */
+	public function testRolesCapability($shareApiEnabled, $shareApiAllowLinks) {
+		$map = [$shareApiEnabled, $shareApiAllowLinks];
+		$results = $this->getResults($map);
+
+		if (($shareApiEnabled[3] === 'no') || ($shareApiAllowLinks[3] === 'no')) {
+			$this->assertArrayNotHasKey('roles_api', $results);
+		} else {
+			$this->assertArrayHasKey('roles_api', $results['public']);
+			$this->assertTrue($results['public']['roles_api']);
+		}
+	}
+
 	public function testOnlyLinkSharing() {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],
