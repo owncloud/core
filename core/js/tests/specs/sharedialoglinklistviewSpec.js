@@ -29,9 +29,23 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 	var tooltipStub;
 	var showPopupStub;
 	var publicLinkStub;
+	var roles;
 
 	beforeEach(function() {
+		roles = {
+			"ocs":{
+				"data": {
+					"data":[
+						{"id":"core.viewer","displayName":"Download \/ View","context":{"publicLinks":{"displayDescription":"Recipients can view or download contents.","order":10,"resourceTypes":["*"],"permissions":{"ownCloud":{"read":true}}}}},
+						{"id":"core.editor","displayName":"Download \/ View \/ Edit","context":{"publicLinks":{"displayDescription":"Recipients can view, download and edit contents.","order":20,"resourceTypes":["httpd\/unix-directory"],"permissions":{"ownCloud":{"create":true,"read":true,"update":true,"delete":true}}}}},
+						{"id":"core.contributor","displayName":"Download \/ View \/ Upload","context":{"publicLinks":{"displayDescription":"Recipients can view, download and upload contents.","order":30,"resourceTypes":["httpd\/unix-directory"],"permissions":{"ownCloud":{"create":true,"read":true}}}}},
+						{"id":"core.uploader","displayName":"Upload only (File Drop)","context":{"publicLinks":{"displayDescription":"Receive files from multiple recipients without revealing the contents of the folder.","order":40,"resourceTypes":["httpd\/unix-directory"],"permissions":{"ownCloud":{"create":true}}}}}
+					]
+				}
+			}
+		};
 		configModel = new OC.Share.ShareConfigModel();
+		configModel.attributes.roles = roles.ocs.data;
 		fileInfoModel = new OCA.Files.FileInfoModel({
 			id: 123,
 			name: 'shared_file_name.txt',
@@ -39,7 +53,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 			size: 100,
 			mimetype: 'text/plain',
 			permissions: 31,
-			sharePermissions: 31
+			sharePermissions: 31,
 		});
 		itemModel = new OC.Share.ShareItemModel({
 			itemType: 'folder',
@@ -144,7 +158,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 		}
 
 		it('sets default values and shows popup', function() {
-			var defaultDateStub = sinon.stub(configModel, 'getDefaultExpirationDateString'); 
+			var defaultDateStub = sinon.stub(configModel, 'getDefaultExpirationDateString');
 			defaultDateStub.returns('2017-03-03');
 			var popup = showPopup();
 			expect(popup.model.toJSON()).toEqual({
@@ -154,7 +168,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 				expireDate: '2017-03-03',
 				shareType: OC.Share.SHARE_TYPE_LINK,
 				itemType: 'folder',
-				itemSource: 123
+				itemSource: 123,
 			});
 			expect(popup.configModel).toEqual(configModel);
 			expect(popup.itemModel).toEqual(itemModel);
@@ -212,10 +226,10 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 		beforeEach(function() {
 			socialConfigStub = sinon.stub(configModel, 'isSocialShareEnabled');
 		});
-		afterEach(function() { 
-			socialConfigStub.restore(); 
+		afterEach(function() {
+			socialConfigStub.restore();
 		});
-		
+
 		it('does not show share button if social is disabled', function() {
 			socialConfigStub.returns(false);
 			view.render();

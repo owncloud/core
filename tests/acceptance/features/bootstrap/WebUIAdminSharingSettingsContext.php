@@ -164,6 +164,19 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When /^the administrator (enables|disables) enforce password protection for read and write and delete links using the webUI$/
+	 *
+	 * @param string $action
+	 *
+	 * @return void
+	 */
+	public function adminTogglesEnforcePasswordProtectionForReadWriteDeleteLinks($action) {
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteDeleteLinks(
+			$this->getSession(), $action
+		);
+	}
+
+	/**
 	 * @When /^the administrator (enables|disables) enforce password protection for upload only links using the webUI$/
 	 *
 	 * @param string $action

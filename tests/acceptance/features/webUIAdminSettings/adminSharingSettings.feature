@@ -41,6 +41,11 @@ Feature: admin sharing settings
     When the administrator enables enforce password protection for read and write links using the webUI
     Then the "public@@@password@@@enforced_for@@@read_write" capability of files sharing app should be "1"
 
+  Scenario: enable enforce password protection for read and write and delete links
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables enforce password protection for read and write and delete links using the webUI
+    Then the "public@@@password@@@enforced_for@@@read_write_delete" capability of files sharing app should be "1"
+
   Scenario: enable enforce password protection for upload-only links
     Given the administrator has browsed to the admin sharing settings page
     When the administrator enables enforce password protection for upload only links using the webUI
@@ -105,6 +110,12 @@ Feature: admin sharing settings
     And the administrator has browsed to the admin sharing settings page
     When the administrator disables enforce password protection for read and write links using the webUI
     Then the "public@@@password@@@enforced_for@@@read_write" capability of files sharing app should be "EMPTY"
+
+  Scenario: disable enforce password protection for read and write and delete links
+    Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "no"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator disables enforce password protection for read and write and delete links using the webUI
+    Then the "public@@@password@@@enforced_for@@@read_write_delete" capability of files sharing app should be "EMPTY"
 
   Scenario: disable enforce password protection for upload-only links
     Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "no"

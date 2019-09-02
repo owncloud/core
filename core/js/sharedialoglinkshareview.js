@@ -28,15 +28,15 @@
 				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
 			'{{#if publicUploadPossible}}' +
-			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
-				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
-				'<p><em>{{publicReadWriteDescription}}</em></p>' +
-			'</div>' +
 			'<div id="allowpublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadWriteValue}}" name="publicPermissions" id="sharingDialogAllowpublicUploadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowpublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
 				'<p><em>{{publicUploadWriteDescription}}</em></p>' +
+			'</div>' +
+			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
+				'<p><em>{{publicReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadValue}}" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadSelected}}checked{{/if}} />' +
@@ -95,6 +95,10 @@
 			});
 
 			OC.Plugins.attach('OCA.Share.ShareDialogLinkShareView', this);
+
+			if (!this._roles) {
+				this._roles = this.configModel.get('roles');
+			}
 		},
 
 		/**
@@ -115,7 +119,8 @@
 			var roEnforcement = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
 			var woEnforcement = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
 			var rwEnforcement = (permissions !== OC.PERMISSION_READ && permissions !== OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite');
-			if (roEnforcement || woEnforcement || rwEnforcement) {
+			var rwdEnforcement = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE) && this.configModel.get('enforceLinkPasswordReadWriteDelete'));
+			if (roEnforcement || woEnforcement || rwEnforcement || rwdEnforcement) {
 				return true;
 			} else {
 				return false;
@@ -235,46 +240,10 @@
 		},
 
 		render: function () {
-			var isPasswordSet = !!this.model.get('encryptedPassword');
-
 			// only show email field for new shares and if enabled globally
 			var showEmailField = this.configModel.isMailPublicNotificationEnabled();
 
-			this.$el.html(this.template({
-				cid: this.cid,
-				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
-				linkNameLabel: t('core', 'Link name'),
-				namePlaceholder: t('core', 'Name'),
-				name: this.model.get('name'),
-				isPasswordSet: isPasswordSet,
-
-				fileNameLabel              : t('core', 'Filename'),
-				passwordLabel              : t('core', 'Password'),
-
-				publicUploadPossible       : this._isPublicUploadPossible(),
-
-				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
-				publicUploadDescription    : t('core', 'Receive files from multiple recipients without revealing the contents of the folder.'),
-				publicUploadValue          : OC.PERMISSION_CREATE,
-				publicUploadSelected       : this.model.get('permissions') === OC.PERMISSION_CREATE,
-
-				publicReadLabel            : t('core', 'Download / View'),
-				publicReadDescription      : t('core', 'Recipients can view or download contents.'),
-				publicReadValue            : OC.PERMISSION_READ,
-				publicReadSelected         : this.model.get('permissions') === OC.PERMISSION_READ,
-
-				publicUploadWriteLabel       : t('core', 'Download / View / Upload'),
-				publicUploadWriteDescription : t('core', 'Recipients can view, download and upload contents.'),
-				publicUploadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_CREATE,
-				publicUploadWriteSelected    : this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_CREATE),
-
-				publicReadWriteLabel       : t('core', 'Download / View / Edit'),
-				publicReadWriteDescription : t('core', 'Recipients can view, download and edit contents.'),
-				publicReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
-				publicReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
-
-				isMailEnabled: showEmailField
-			}));
+			this.$el.html(this.template(this._populateData(this._roles, showEmailField)));
 
 			this.$('.datepicker').datepicker({dateFormat : 'dd-mm-yy'});
 
@@ -296,6 +265,69 @@
 			this.delegateEvents();
 
 			return this;
+		},
+
+		/**
+		 * Populate the data object which could be read and processed.
+		 */
+		_populateData: function(data, showEmailField) {
+			var isPasswordSet = !!this.model.get('encryptedPassword');
+
+			var dataObject = {
+				cid: this.cid,
+				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
+				linkNameLabel: t('core', 'Link name'),
+				namePlaceholder: t('core', 'Name'),
+				name: this.model.get('name'),
+				isPasswordSet: isPasswordSet,
+
+				fileNameLabel              : t('core', 'Filename'),
+				passwordLabel              : t('core', 'Password'),
+
+				publicUploadPossible       : this._isPublicUploadPossible(),
+
+				isMailEnabled: showEmailField
+			};
+
+			for (var i = 0; i < _.size(data); i++) {
+				var permissionsData = data[i]['context']['publicLinks']['permissions']['ownCloud'];
+				if (data[i]['id'] === "core.viewer") {
+					dataObject.publicReadLabel = t('core', data[i]['displayName']);
+					dataObject.publicReadDescription =  t('core', data[i]['context']['publicLinks']['displayDescription']);
+
+					if (permissionsData['read'] === true) {
+						dataObject.publicReadValue = OC.PERMISSION_READ;
+					}
+					dataObject.publicReadSelected = this.model.get('permissions') === OC.PERMISSION_READ;
+				} else if(data[i]['id'] === "core.editor") {
+					dataObject.publicReadWriteLabel = t('core', data[i]['displayName']);
+					dataObject.publicReadWriteDescription =  t('core', data[i]['context']['publicLinks']['displayDescription']);
+
+					if (permissionsData['read'] === true && permissionsData['create'] === true
+						&& permissionsData['update'] === true && permissionsData['delete'] === true) {
+						dataObject.publicReadWriteValue = OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE;
+					}
+					dataObject.publicReadWriteSelected = this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE);
+				} else if(data[i]['id'] === "core.contributor") {
+					dataObject.publicUploadWriteLabel = t('core', data[i]['displayName']);
+					dataObject.publicUploadWriteDescription =  t('core', data[i]['context']['publicLinks']['displayDescription']);
+
+					if (permissionsData['read'] === true && permissionsData['create'] === true) {
+						dataObject.publicUploadWriteValue = OC.PERMISSION_READ | OC.PERMISSION_CREATE;
+					}
+					dataObject.publicUploadWriteSelected = this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_CREATE);
+				} else if(data[i]['id'] === "core.uploader") {
+					dataObject.publicUploadLabel = t('core', data[i]['displayName']);
+					dataObject.publicUploadDescription =  t('core', data[i]['context']['publicLinks']['displayDescription']);
+
+					if (permissionsData['create'] === true) {
+						dataObject.publicUploadValue = OC.PERMISSION_CREATE;
+					}
+					dataObject.publicUploadSelected = this.model.get('permissions') === OC.PERMISSION_CREATE;
+				}
+			}
+
+			return dataObject;
 		},
 
 		_onClickReset: function () {
@@ -327,6 +359,7 @@
 			this.$dialog.ocdialog('close');
 			this.model.unset("resetPassword");
 		},
+
 		/**
 		 * @returns {Function} from Handlebars
 		 * @private
