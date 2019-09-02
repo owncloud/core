@@ -23,9 +23,11 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCP\Share\IShare;
+use OCA\DAV\Connector\Sabre\Node;
+use OCA\DAV\Connector\Sabre\SharesPlugin;
 
 class SharesPluginTest extends \Test\TestCase {
-	const SHARETYPES_PROPERTYNAME = \OCA\DAV\Connector\Sabre\SharesPlugin::SHARETYPES_PROPERTYNAME;
+	const SHARETYPES_PROPERTYNAME = SharesPlugin::SHARETYPES_PROPERTYNAME;
 
 	/**
 	 * @var \Sabre\DAV\Server
@@ -81,7 +83,7 @@ class SharesPluginTest extends \Test\TestCase {
 	 * @dataProvider sharesGetPropertiesDataProvider
 	 */
 	public function testGetProperties($shareTypes) {
-		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Node')
+		$sabreNode = $this->getMockBuilder(Node::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode->expects($this->any())
@@ -132,6 +134,82 @@ class SharesPluginTest extends \Test\TestCase {
 		$this->assertEmpty($result[404]);
 		unset($result[404]);
 		$this->assertEquals($shareTypes, $result[200][self::SHARETYPES_PROPERTYNAME]->getShareTypes());
+	}
+
+	public function testGetPropertiesParents() {
+		$sabreNode = $this->createMock(Node::class);
+		$sabreNode->method('getId')->willReturn(\strlen('/dummy/path/1'));  // assign the id using the path length
+		$sabreNode->method('getPath')->willReturn('/dummy/path/1');
+
+		$requestedShareTypes = [
+			\OCP\Share::SHARE_TYPE_USER,
+			\OCP\Share::SHARE_TYPE_GROUP,
+			\OCP\Share::SHARE_TYPE_LINK,
+			\OCP\Share::SHARE_TYPE_REMOTE
+		];
+
+		$this->tree->method('getNodeForPath')
+			->will($this->returnCallback(function ($nodePath) {
+				$node = $this->createMock(Node::class);
+				$node->method('getPath')->willReturn($nodePath);
+				$node->method('getId')->willReturn(\strlen($nodePath));
+				return $node;
+			}));
+
+		$this->shareManager->expects($this->any())
+			->method('getAllSharesBy')
+			->with(
+				$this->equalTo('user1'),
+				$requestedShareTypes,
+				$this->anything()
+			)
+			->will($this->returnCallback(function ($userId, $requestedShareTypes, $nodeIds) {
+				$allShares = [];
+				foreach ($nodeIds as $nodeId) {
+					if ($nodeId === \strlen('/dummy')) {
+						$shareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK];
+					} elseif ($nodeId === \strlen('/dummy/path')) {
+						$shareTypes = [\OCP\Share::SHARE_TYPE_GROUP];
+					} else {
+						continue;
+					}
+
+					foreach ($shareTypes as $shareType) {
+						$share = $this->createMock(IShare::class);
+						$share->method('getShareType')->willReturn($shareType);
+						$share->method('getNodeId')->willReturn($nodeId);
+						$allShares[] = $share;
+					}
+				}
+
+				return $allShares;
+			}));
+
+		$propFind = new \Sabre\DAV\PropFind(
+			'/dummy/path/1',
+			[SharesPlugin::SHARETYPESPARENTS_PROPERTYNAME],
+			0
+		);
+
+		$this->plugin->handleGetProperties(
+			$propFind,
+			$sabreNode
+		);
+
+		$result = $propFind->getResultForMultiStatus();
+
+		$mappedResult = [];
+		foreach ($result[200][SharesPlugin::SHARETYPESPARENTS_PROPERTYNAME]->getParents() as $parent) {
+			$mappedResult[$parent->getHref()] = $parent->getShareTypeList()->getShareTypes();
+		}
+
+		$expectedParents = [
+			'/dummy/path' => [\OCP\Share::SHARE_TYPE_GROUP],
+			'/dummy' => [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK],
+		];
+		$this->assertEmpty($result[404]);
+		unset($result[404]);
+		$this->assertEquals($expectedParents, $mappedResult);
 	}
 
 	/**
