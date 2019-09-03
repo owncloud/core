@@ -30,6 +30,7 @@
 namespace OCA\Provisioning_API;
 
 use OC\OCS\Result;
+use OC\User\Service\CreateUserService;
 use OC_Helper;
 use OCP\API;
 use OCP\Files\FileInfo;
@@ -50,25 +51,33 @@ class Users {
 	private $groupManager;
 	/** @var IUserSession */
 	private $userSession;
+	/** @var CreateUserService */
+	private $createUserService;
 	/** @var ILogger */
 	private $logger;
 	/** @var \OC\Authentication\TwoFactorAuth\Manager */
 	private $twoFactorAuthManager;
 
 	/**
+	 * Users constructor.
+	 *
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
+	 * @param CreateUserService $createUserService
 	 * @param ILogger $logger
+	 * @param \OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager
 	 */
 	public function __construct(IUserManager $userManager,
 								IGroupManager $groupManager,
 								IUserSession $userSession,
+								CreateUserService $createUserService,
 								ILogger $logger,
 								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
+		$this->createUserService = $createUserService;
 		$this->logger = $logger;
 		$this->twoFactorAuthManager = $twoFactorAuthManager;
 	}
@@ -125,8 +134,9 @@ class Users {
 	 */
 	public function addUser() {
 		$userId = isset($_POST['userid']) ? $_POST['userid'] : null;
-		$password = isset($_POST['password']) ? $_POST['password'] : null;
-		$groups = isset($_POST['groups']) ? $_POST['groups'] : null;
+		$password = isset($_POST['password']) ? $_POST['password'] : '';
+		$groups = isset($_POST['groups']) ? $_POST['groups'] : [];
+		$emailAddress = isset($_POST['email']) ? $_POST['email'] : '';
 		$user = $this->userSession->getUser();
 		$isAdmin = $this->groupManager->isAdmin($user->getUID());
 		$subAdminManager = $this->groupManager->getSubAdmin();
@@ -140,7 +150,7 @@ class Users {
 			return new Result(null, 102, 'User already exists');
 		}
 
-		if (\is_array($groups)) {
+		if (\is_array($groups) && (\count($groups) > 0)) {
 			foreach ($groups as $group) {
 				if (!$this->groupManager->groupExists($group)) {
 					return new Result(null, 104, 'group '.$group.' does not exist');
@@ -156,13 +166,14 @@ class Users {
 		}
 
 		try {
-			$newUser = $this->userManager->createUser($userId, $password);
+			$newUser = $this->createUserService->createUser(['username' => $userId, 'password' => $password, 'email' => $emailAddress]);
 			$this->logger->info('Successful addUser call with userid: '.$userId, ['app' => 'ocs_api']);
 
-			if (\is_array($groups)) {
-				foreach ($groups as $group) {
-					$this->groupManager->get($group)->addUser($newUser);
-					$this->logger->info('Added userid '.$userId.' to group '.$group, ['app' => 'ocs_api']);
+			if (\count($groups) > 0) {
+				$failedToAddGroups = $this->createUserService->addUserToGroups($newUser, $groups);
+				if (\count($failedToAddGroups) > 0) {
+					$failedToAddGroups = \implode(',', $failedToAddGroups);
+					$this->logger->error("User $userId could not be added to groups $failedToAddGroups");
 				}
 			}
 			return new Result(null, 100);

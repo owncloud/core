@@ -23,11 +23,12 @@
 
 namespace OC\Core\Command\User;
 
-use OC\Files\Filesystem;
+use OC\User\Service\CreateUserService;
 use OCP\IGroupManager;
 use OCP\IUser;
-use OCP\IUserManager;
-use OCP\Mail\IMailer;
+use OCP\User\Exceptions\CannotCreateUserException;
+use OCP\User\Exceptions\InvalidEmailException;
+use OCP\User\Exceptions\UserAlreadyExistsException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,25 +37,23 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\Question;
 
 class Add extends Command {
-	/** @var \OCP\IUserManager */
-	protected $userManager;
-
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 
-	/** @var IMailer  */
-	protected $mailer;
+	/** @var CreateUserService */
+	private $createUserService;
 
 	/**
-	 * @param IUserManager $userManager
+	 * Add constructor.
+	 *
 	 * @param IGroupManager $groupManager
-	 * @param IMailer $mailer
+	 * @param CreateUserService $createUserService
 	 */
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IMailer $mailer) {
+	public function __construct(IGroupManager $groupManager,
+								CreateUserService $createUserService) {
 		parent::__construct();
-		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
-		$this->mailer = $mailer;
+		$this->createUserService = $createUserService;
 	}
 
 	protected function configure() {
@@ -94,32 +93,28 @@ class Add extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
-		if ($this->userManager->userExists($uid)) {
+		$email = $input->getOption('email');
+		$displayName = $input->getOption('display-name');
+		$passwordFromEnv = $input->getOption('password-from-env');
+		$groupInput = $input->getOption('group');
+
+		if ($this->createUserService->userExists($uid)) {
 			$output->writeln('<error>The user "' . $uid . '" already exists.</error>');
 			return 1;
 		}
 
-		// Validate email before we create the user
-		if ($input->getOption('email')) {
-			// Validate first
-			if (!$this->mailer->validateMailAddress($input->getOption('email'))) {
-				// Invalid! Error
-				$output->writeln('<error>Invalid email address supplied</error>');
-				return 1;
-			} else {
-				$email = $input->getOption('email');
-			}
-		} else {
-			$email = null;
+		if (!$email) {
+			$email = '';
 		}
 
-		if ($input->getOption('password-from-env')) {
+		$password = '';
+		if ($passwordFromEnv) {
 			$password = \getenv('OC_PASS');
 			if (!$password) {
 				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
 				return 1;
 			}
-		} elseif ($input->isInteractive()) {
+		} elseif (($email === '') && $input->isInteractive()) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
 			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
@@ -134,15 +129,20 @@ class Add extends Command {
 				$output->writeln("<error>Passwords did not match!</error>");
 				return 1;
 			}
-		} else {
-			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a password!</error>");
-			return 1;
 		}
 
-		$user = $this->userManager->createUser(
-			$input->getArgument('uid'),
-			$password
-		);
+		try {
+			$user = $this->createUserService->createUser(['username' => $uid, 'password' => $password, 'email' => $email]);
+		} catch (InvalidEmailException $e) {
+			$output->writeln('<error>Invalid email address supplied</error>');
+			return 1;
+		} catch (CannotCreateUserException $e) {
+			$output->writeln("<error>" . $e->getMessage() .  "</error>");
+			return 1;
+		} catch (UserAlreadyExistsException $e) {
+			$output->writeln("<error>" . $e->getMessage() .  "</error>");
+			return 1;
+		}
 
 		if ($user instanceof IUser) {
 			$output->writeln('<info>The user "' . $user->getUID() . '" was created successfully</info>');
@@ -151,34 +151,25 @@ class Add extends Command {
 			return 1;
 		}
 
-		if ($input->getOption('display-name')) {
-			$user->setDisplayName($input->getOption('display-name'));
+		if ($displayName) {
+			$user->setDisplayName($displayName);
 			$output->writeln('Display name set to "' . $user->getDisplayName() . '"');
 		}
 
 		// Set email if supplied & valid
-		if ($email !== null) {
-			$user->setEMailAddress($email);
+		if ($email !== '') {
 			$output->writeln('Email address set to "' . $user->getEMailAddress() . '"');
 		}
 
-		$groups = $input->getOption('group');
-
-		if (!empty($groups)) {
-			// Make sure we init the Filesystem for the user, in case we need to
-			// init some group shares.
-			Filesystem::init($user->getUID(), '');
+		$failedToAddGroups = $this->createUserService->addUserToGroups($user, $groupInput);
+		if (\count($failedToAddGroups) > 0) {
+			$failedGroups = \implode(',', $failedToAddGroups);
+			$output->writeln("<warning>Unable to add user: $uid to groups: $failedGroups</warning>");
+			return 2;
 		}
-
-		foreach ($groups as $groupName) {
-			$group = $this->groupManager->get($groupName);
-			if (!$group) {
-				$this->groupManager->createGroup($groupName);
-				$group = $this->groupManager->get($groupName);
-				$output->writeln('Created group "' . $group->getGID() . '"');
-			}
-			$group->addUser($user);
-			$output->writeln('User "' . $user->getUID() . '" added to group "' . $group->getGID() . '"');
+		foreach ($groupInput as $groupName) {
+			$output->writeln("User $uid added to group $groupName");
 		}
+		return 0;
 	}
 }
