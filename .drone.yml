@@ -624,13 +624,18 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
     DB_TYPE: mariadb
+
+- name: tech-preview
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
 
 - name: setup-storage
   pull: always
@@ -5063,7 +5068,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -5205,7 +5209,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -5347,7 +5350,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean 
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -5489,7 +5491,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -5925,7 +5926,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -6208,7 +6208,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -6350,7 +6349,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -6633,7 +6631,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -7199,7 +7196,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -10888,7 +10884,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -12244,7 +12239,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -12400,7 +12394,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -12878,7 +12871,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -13186,7 +13178,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
@@ -13333,7 +13324,6 @@ steps:
   - bash tests/drone/install-server.sh
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
   - php occ log:manage --level 2
   - php occ config:list
   - php occ security:certificates:import /drone/server.crt
