@@ -612,6 +612,7 @@ class ManagerTest extends \Test\TestCase {
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_delete', 'no', 'yes'],
 		]));
 
 		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ]));
@@ -624,13 +625,26 @@ class ManagerTest extends \Test\TestCase {
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_ALL]));
+		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE]));
+	}
+
+	public function testPasswordMustBeEnforcedForReadWriteDelete() {
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
+		]));
+
+		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced',
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE]));
 	}
 
 	public function testPasswordMustBeEnforcedForWriteOnly() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
@@ -641,6 +655,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'no'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
@@ -651,16 +666,30 @@ class ManagerTest extends \Test\TestCase {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
 		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_ALL]));
 	}
 
+	public function testPasswordMustBeEnforcedForReadWriteDeleteNotEnforced() {
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
+		]));
+
+		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced',
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE]));
+	}
+
 	public function testPasswordMustBeEnforcedForWriteOnlyNotEnforced() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write_delete', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'no'],
 		]));
 

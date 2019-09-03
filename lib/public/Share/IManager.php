@@ -294,6 +294,14 @@ interface IManager {
 	public function shareApiLinkEnforcePasswordWriteOnly();
 
 	/**
+	 * Is password enforced for read,write & delete shares?
+	 *
+	 * @return bool true if password is enforced, false otherwise
+	 * @since 10.3.0
+	 */
+	public function shareApiLinkEnforcePasswordReadWriteDelete();
+
+	/**
 	 * Is default expire date enabled
 	 *
 	 * @return bool

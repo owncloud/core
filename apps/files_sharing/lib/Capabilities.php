@@ -80,10 +80,12 @@ class Capabilities implements ICapability {
 				$roPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
 				$rwPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
 				$woPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
+				$rwdPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write_delete', 'no') === 'yes';
 				$public['password']['enforced_for']['read_only'] = $roPasswordEnforced;
 				$public['password']['enforced_for']['read_write'] = $rwPasswordEnforced;
 				$public['password']['enforced_for']['upload_only'] = $woPasswordEnforced;
-				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced;
+				$public['password']['enforced_for']['read_write_delete'] = $rwdPasswordEnforced;
+				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced || $rwdPasswordEnforced;
 
 				$public['roles_api'] = true;
 
