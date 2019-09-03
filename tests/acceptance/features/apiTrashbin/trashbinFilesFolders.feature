@@ -5,7 +5,8 @@ Feature: files and folders exist in the trashbin after being deleted
   So that I can recover data easily
 
   Background:
-    Given using OCS API version "1"
+    Given the administrator has added system config key "dav.enable.tech_preview" with value "true" and type "boolean"
+    And using OCS API version "1"
     And as the administrator
 
   @smokeTest
