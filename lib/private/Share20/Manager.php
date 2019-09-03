@@ -40,6 +40,7 @@ use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Security\IHasher;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\GenericShareException;
@@ -85,6 +86,8 @@ class Manager implements IManager {
 	private $view;
 	/** @var IDBConnection  */
 	private $connection;
+	/** @var IUserSession  */
+	private $userSession;
 
 	/**
 	 * Manager constructor.
@@ -99,6 +102,10 @@ class Manager implements IManager {
 	 * @param IProviderFactory $factory
 	 * @param IUserManager $userManager
 	 * @param IRootFolder $rootFolder
+	 * @param EventDispatcher $eventDispatcher
+	 * @param View $view
+	 * @param IDBConnection $connection
+	 * @param IUserSession $userSession
 	 */
 	public function __construct(
 			ILogger $logger,
@@ -113,7 +120,8 @@ class Manager implements IManager {
 			IRootFolder $rootFolder,
 			EventDispatcher $eventDispatcher,
 			View $view,
-			IDBConnection $connection
+			IDBConnection $connection,
+			IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -129,6 +137,7 @@ class Manager implements IManager {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->view = $view;
 		$this->connection = $connection;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -322,7 +331,8 @@ class Manager implements IManager {
 		}
 
 		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
-		if ($shareNode->getOwner()->getUID() !== $share->getSharedBy()) {
+		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
+			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
 			$maxPermissions = $this->calculateReshareNodePermissions($share);
 		}
 
@@ -642,8 +652,6 @@ class Manager implements IManager {
 	public function createShare(\OCP\Share\IShare $share) {
 		$this->canShare($share);
 
-		$this->generalChecks($share);
-
 		// Verify if there are any issues with the path
 		$this->pathCreateChecks($share->getNode());
 
@@ -661,6 +669,8 @@ class Manager implements IManager {
 		} else {
 			$share->setShareOwner($share->getNode()->getOwner()->getUID());
 		}
+
+		$this->generalChecks($share);
 
 		//Verify share type
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
@@ -1280,13 +1290,13 @@ class Manager implements IManager {
 	 */
 	public function getAllSharedWith($userId, $shareTypes, $node = null) {
 		$shares = [];
-		
+
 		// Aggregate all required $shareTypes by mapping provider to supported shareTypes
 		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
 		foreach ($providerIdMap as $providerId => $shareTypeArray) {
 			// Get provider from cache
 			$provider = $this->factory->getProvider($providerId);
-			
+
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			$shares = \array_merge($shares, $queriedShares);
@@ -1294,7 +1304,7 @@ class Manager implements IManager {
 
 		return $shares;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */
