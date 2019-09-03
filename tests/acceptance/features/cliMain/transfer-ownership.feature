@@ -171,7 +171,8 @@ Feature: transfer-ownership
 
   @skipOnEncryptionType:user-keys @public_link_share-feature-required
   Scenario: transferring ownership of folder shares which has public link
-    Given user "user0" has been created with default attributes and skeleton files
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "user0 file" to "/test/somefile.txt"

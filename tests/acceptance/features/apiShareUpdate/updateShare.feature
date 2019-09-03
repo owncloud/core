@@ -62,7 +62,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share with password and adding an expiration date
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | randomfile.txt |
@@ -413,7 +414,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions "all"
@@ -455,7 +457,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions "all"
@@ -498,7 +501,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Updating share permissions from change to read/update/create restricts public from deleting files
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -521,7 +525,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Updating share permissions from read/update/create to change allows public to delete files
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |

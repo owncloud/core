@@ -5,7 +5,7 @@ Feature: files and folders can be deleted from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
   Background:
-    Given the administrator has added system config key "dav.enable.tech_preview" with value "true" and type "boolean"
+    Given the administrator has enabled DAV tech_preview
 
   @smokeTest
   Scenario Outline: Trashbin can be emptied

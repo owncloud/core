@@ -29,7 +29,8 @@ Feature: download file
 
   @public_link_share-feature-required
   Scenario: download a public shared file with range
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path | welcome.txt |
     When the public downloads the last public shared file with range "bytes=51-77" using the old public WebDAV API
     Then the downloaded content should be "example file for developers"
@@ -38,6 +39,7 @@ Feature: download file
 
   @public_link_share-feature-required
   Scenario: download a public shared file inside a folder with range
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path | PARENT |
     And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the old public WebDAV API

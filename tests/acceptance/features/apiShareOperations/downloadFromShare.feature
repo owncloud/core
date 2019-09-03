@@ -9,7 +9,8 @@ Feature: sharing
   @smokeTest @public_link_share-feature-required
   @issue-36076
   Scenario: Downloading from upload-only share is forbidden
-    Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
@@ -18,7 +19,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Downloading from share after the share source was deleted
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | PARENT |
       | permissions | read   |
     When user "user0" deletes folder "PARENT" using the WebDAV API
@@ -65,6 +67,7 @@ Feature: sharing
 
   @smokeTest @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
       | password | %public% |
@@ -93,6 +96,7 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
@@ -122,6 +126,7 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission
+    Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
