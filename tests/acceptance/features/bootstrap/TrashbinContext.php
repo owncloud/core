@@ -38,6 +38,12 @@ class TrashbinContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var OccContext
+	 */
+	private $occContext;
+
+	/**
 	 * @When user :user empties the trashbin using the trashbin API
 	 * @Given user :user has emptied the trashbin
 	 *
@@ -183,6 +189,8 @@ class TrashbinContext implements Context {
 		$path = \trim($path, '/');
 		$sections = \explode('/', $path, 2);
 
+		$techPreviewHadToBeEnabled = $this->enableDAVTechPreview();
+
 		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
 		Assert::assertNotNull($firstEntry);
@@ -195,6 +203,11 @@ class TrashbinContext implements Context {
 
 		// TODO: handle deeper structures
 		$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/')));
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+
 		$checkedName = \basename($path);
 
 		$found = false;
@@ -217,7 +230,11 @@ class TrashbinContext implements Context {
 	 * @return bool
 	 */
 	private function isInTrash($user, $originalPath) {
+		$techPreviewHadToBeEnabled = $this->enableDAVTechPreview();
 		$listing = $this->listTrashbinFolder($user, null);
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
 		$originalPath = \trim($originalPath, '/');
 
 		foreach ($listing as $entry) {
@@ -226,6 +243,18 @@ class TrashbinContext implements Context {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @return bool true if DAV Tech Preview was disabled and had to be enabled
+	 */
+	private function enableDAVTechPreview() {
+		if (!$this->occContext->isTechPreviewEnabled()) {
+			$this->occContext->enableDAVTechPreview();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -405,5 +434,6 @@ class TrashbinContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->occContext = $environment->getContext('OccContext');
 	}
 }

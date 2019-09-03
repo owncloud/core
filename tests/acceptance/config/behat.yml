@@ -108,6 +108,7 @@ default:
         - '%paths.base%/../features/apiShareManagement'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -515,6 +516,7 @@ default:
         - '%paths.base%/../features/webUITrashbin'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - TrashbinContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
