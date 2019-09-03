@@ -39,6 +39,7 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Security\IHasher;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\ShareNotFound;
@@ -88,6 +89,8 @@ class ManagerTest extends \Test\TestCase {
 	protected $view;
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
 	protected $connection;
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
+	protected $userSession;
 
 	public function setUp() {
 		parent::setUp();
@@ -103,6 +106,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->eventDispatcher = new EventDispatcher();
 		$this->view = $this->createMock(View::class);
 		$this->connection = $this->createMock(IDBConnection::class);
+		$this->userSession = $this->createMock(IUserSession::class);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -125,7 +129,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->userSession
 		);
 
 		$this->defaultProvider = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -159,7 +164,8 @@ class ManagerTest extends \Test\TestCase {
 				$this->rootFolder,
 				$this->eventDispatcher,
 				$this->view,
-				$this->connection
+				$this->connection,
+				$this->userSession
 			]);
 	}
 
@@ -791,7 +797,7 @@ class ManagerTest extends \Test\TestCase {
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK, $rootFolder, null, $user0, $user0, 16, null, null), 'You can\'t share your root folder', true];
 
 		/**
-		 * Basic share (not re-share) with enough permission inputs
+		 * Normal share (not re-share) with enough permission inputs
 		 */
 		$ownerUser = $this->createMock(IUser::class);
 		$ownerUser->method('getUID')->willReturn('user1');
@@ -817,7 +823,7 @@ class ManagerTest extends \Test\TestCase {
 	/**
 	 * @dataProvider dataGeneralChecks
 	 *
-	 * @param $share
+	 * @param IShare $share
 	 * @param $exceptionMessage
 	 * @param $exception
 	 */
@@ -828,6 +834,10 @@ class ManagerTest extends \Test\TestCase {
 			['user0', true],
 			['user1', true],
 		]));
+
+		$sessionUser = $this->createMock(IUser::class);
+		$sessionUser->method('getUID')->willReturn('user1');
+		$this->userSession->method('getUser')->willReturn($sessionUser);
 
 		$this->groupManager->method('groupExists')->will($this->returnValueMap([
 			['group0', true],
@@ -2770,7 +2780,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->userSession
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2805,7 +2816,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->userSession
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2909,7 +2921,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->userSession
 		);
 
 		$provider1 = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -3326,6 +3339,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$user1 = $this->createMock(IUser::class);
 		$user1->method('getUID')->willReturn('user1');
+		$this->userSession->method('getUser')->willReturn($user1);
 
 		$this->userManager->method('userExists')
 			->will($this->returnValueMap([
@@ -3375,7 +3389,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->userSession
 		);
 
 		$share = $this->createMock(IShare::class);
@@ -3385,6 +3400,7 @@ class ManagerTest extends \Test\TestCase {
 		$share->method('getPassword')->willReturn('123456');
 		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_UPDATE);
 		$share->method('getSharedBy')->willReturn('user1');
+		$share->method('getShareOwner')->willReturn('user1');
 		$share->method('getNode')->willReturn($node);
 
 		$share->expects($this->never())
