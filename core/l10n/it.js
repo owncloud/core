@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "Scarica / visiona",
     "Recipients can view or download contents." : "I destinatari possono vedere o scaricare contenuti",
     "Download / View / Upload" : "Scarica / Visiona / Carica",
+    "Recipients can view, download, edit, delete and upload contents." : "I destinatari possono vedere, scaricare, modificare, cancellare ed inviare contenuti",
     "Upload only" : "Carica solo",
     "Receive files from multiple recipients without revealing the contents of the folder." : "Ricevi file da più destinatari senza rivelare il contenuto della cartella.",
     "Preparing update" : "Preparazione aggiornamento",

@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "Превземи / Погледај",
     "Recipients can view or download contents." : "Примателите може да ги прегледуваат или преземат содржините.",
     "Download / View / Upload" : "Превземи / Погледај / Подигни",
+    "Recipients can view, download, edit, delete and upload contents." : "Примателите можат да ги гледаат, да ги преземаат, уредуваат, бришат и да поставуваат содржини.",
     "Upload only" : "Само прикачување",
     "Receive files from multiple recipients without revealing the contents of the folder." : "Примање на датотеки од повеќе примачи без откривање на содржината на папката.",
     "Preparing update" : "Ја подготвувам надградбата",

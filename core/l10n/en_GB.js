@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "Download / View",
     "Recipients can view or download contents." : "Recipients can view or download contents.",
     "Download / View / Upload" : "Download / View / Upload",
+    "Recipients can view, download, edit, delete and upload contents." : "Recipients can view, download, edit, delete and upload contents.",
     "Upload only" : "Upload only",
     "Receive files from multiple recipients without revealing the contents of the folder." : "Receive files from multiple recipients without revealing the contents of the folder.",
     "Preparing update" : "Preparing update",
