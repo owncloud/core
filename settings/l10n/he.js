@@ -196,7 +196,6 @@ OC.L10N.register(
     "Allow users to share via link" : "אפשר למשתמשים לשתף באמצעות קישור",
     "Allow public uploads" : "אפשר העלאות ציבוריות",
     "Enforce password protection for read-only links" : "אכיפת הגנה באמצעות סיסמא עבור קישורים לקריאה בלבד",
-    "Enforce password protection for read & write links" : "אכיפת הגנה באמצעות סיסמא עבור קישורים לקריאה ולכתיבה",
     "Enforce password protection for upload-only (File Drop) links" : "אכיפת הגנה באמצעות סיסמא עבור קישורים להעלאה בלבד (גרירת קבצים)",
     "Set default expiration date" : "הגדרת תאריך תפוגה ברירת מחדל",
     "Expire after " : "פג אחרי",

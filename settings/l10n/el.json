@@ -194,7 +194,6 @@
     "Allow users to share via link" : "Να επιτρέπεται σε χρήστες ο διαμοιρασμός μέσω συνδέσμου",
     "Allow public uploads" : "Να επιτρέπεται η κοινόχρηστη μεταφόρτωση",
     "Enforce password protection for read-only links" : "Εφαρμογή προστασίας με συνθηματικό για συνδέσμους μόνο για ανάγνωση",
-    "Enforce password protection for read & write links" : "Εφαρμογή προστασίας με συνθηματικό για συνδέσμους για ανάγνωση & εγγραφή",
     "Enforce password protection for upload-only (File Drop) links" : "Εφαρμογή προστασίας με συνθηματικό για συνδέσμους μόνο για μεταφόρτωση (File Drop)",
     "Set default expiration date" : "Ορισμός προεπιλεγμένης ημερομηνίας λήξης",
     "Expire after " : "Λήξη μετά από ",

@@ -182,7 +182,6 @@ OC.L10N.register(
     "Allow users to share via link" : "Engedjük meg az állományok linkekkel történő megosztását",
     "Allow public uploads" : "Nyilvános feltöltés engedélyezése",
     "Enforce password protection for read-only links" : "Jelszavas védelem kényszerítése a csak olvasható hivatkozásokra.",
-    "Enforce password protection for read & write links" : "Jelszavas védelem kényszerítése az írható-olvasható hivatkozásokra.",
     "Set default expiration date" : "Alapértelmezett lejárati idő beállítása",
     "Expire after " : "A lejárat legyen",
     "days" : "nap",

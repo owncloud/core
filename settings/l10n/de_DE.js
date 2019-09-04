@@ -196,7 +196,6 @@ OC.L10N.register(
     "Allow users to share via link" : "Benutzern erlauben, Inhalte über Links zu teilen",
     "Allow public uploads" : "Öffentliches Hochladen erlauben",
     "Enforce password protection for read-only links" : "Passwort für \"nur lesen\" Links erzwingen",
-    "Enforce password protection for read & write links" : "Passwort für lesbare und schreibbare Links erzwingen",
     "Enforce password protection for upload-only (File Drop) links" : "Passwort für Upload-Links (File Drop) erzwingen",
     "Set default expiration date" : "Standardmäßiges Ablaufdatum setzen",
     "Expire after " : "Ablauf nach ",

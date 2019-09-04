@@ -190,7 +190,6 @@
     "Allow users to share via link" : "Pozwól użytkownikom współdzielić przez link",
     "Allow public uploads" : "Pozwól na  publiczne wczytywanie",
     "Enforce password protection for read-only links" : "Wymuś zabezpieczenie hasłem dla linków tylko do odczytu.",
-    "Enforce password protection for read & write links" : "Wymuś zabezpieczenie hasłem dla linków do zapisu.",
     "Set default expiration date" : "Ustaw domyślną datę wygaśnięcia",
     "Expire after " : "Wygaś po",
     "days" : "dniach",
