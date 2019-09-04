@@ -181,7 +181,7 @@ local pipelines = [
   # external storage
   #
   pipeline.phpunit(
-    php='7.1',
+    php='7.3',
     db='sqlite',
     coverage=true,
     external=matrix,
@@ -198,7 +198,7 @@ local pipelines = [
   # scality storage
   #
   pipeline.phpunit(
-    php='7.1',
+    php='7.3',
     db='sqlite',
     coverage=true,
     object='scality',
@@ -211,7 +211,7 @@ local pipelines = [
   #
   pipeline.behat(
     type='api',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     suite=matrix.suite,
     notification=matrix.notification,
@@ -256,7 +256,7 @@ local pipelines = [
   #
   pipeline.behat(
     type='cli',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     suite=matrix.suite,
     notification=matrix.notification,
@@ -276,7 +276,7 @@ local pipelines = [
   #
   pipeline.behat(
     type='loc',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     suite=matrix.suite,
     notification=matrix.notification,
@@ -293,7 +293,7 @@ local pipelines = [
   #
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='chrome',
@@ -348,7 +348,7 @@ local pipelines = [
   #
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='firefox',
@@ -363,7 +363,7 @@ local pipelines = [
 
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='firefox',
@@ -378,7 +378,7 @@ local pipelines = [
 
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='firefox',
@@ -393,7 +393,7 @@ local pipelines = [
 
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='chrome',
@@ -409,7 +409,7 @@ local pipelines = [
 
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='chrome',
@@ -425,7 +425,7 @@ local pipelines = [
 
   pipeline.behat(
     type='webui',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     browser='chrome',
@@ -441,7 +441,7 @@ local pipelines = [
 
   pipeline.behat(
     type='api',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     filter='@smokeTest&&~@notifications-app-required',
@@ -455,7 +455,7 @@ local pipelines = [
 
   pipeline.behat(
     type='api',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     filter='@smokeTest&&~@notifications-app-required',
@@ -469,7 +469,7 @@ local pipelines = [
 
   pipeline.behat(
     type='api',
-    php='7.1',
+    php='7.3',
     db='mariadb:10.2',
     proto='http',
     filter='@smokeTest&&~@notifications-app-required',
