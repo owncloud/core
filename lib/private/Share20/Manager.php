@@ -321,8 +321,9 @@ class Manager implements IManager {
 			$maxPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
 		}
 
+		$nodeOwner = $shareNode->getOwner()->getUID();
 		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
-		if ($shareNode->getOwner()->getUID() !== $share->getSharedBy()) {
+		if ($nodeOwner !== $share->getSharedBy() && $nodeOwner !== $this->rootFolder->getOwner()->getUID()) {
 			$maxPermissions = $this->calculateReshareNodePermissions($share);
 		}
 
@@ -1280,13 +1281,13 @@ class Manager implements IManager {
 	 */
 	public function getAllSharedWith($userId, $shareTypes, $node = null) {
 		$shares = [];
-		
+
 		// Aggregate all required $shareTypes by mapping provider to supported shareTypes
 		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
 		foreach ($providerIdMap as $providerId => $shareTypeArray) {
 			// Get provider from cache
 			$provider = $this->factory->getProvider($providerId);
-			
+
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			$shares = \array_merge($shares, $queriedShares);
@@ -1294,7 +1295,7 @@ class Manager implements IManager {
 
 		return $shares;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */
