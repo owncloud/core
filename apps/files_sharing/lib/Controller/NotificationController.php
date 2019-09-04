@@ -66,6 +66,7 @@ class NotificationController extends OCSController {
 	}
 
 	/**
+	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param string $link URL of the shared link
