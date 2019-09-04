@@ -608,10 +608,11 @@ local suites = {
       depends_on: depends_on,
     },
 
-  behat(php='', db='', type='', browser='', suite='', filter='', num='', notification=false, proxy=false, email=false, federated='', proto='https', proxy=false, trigger={}, depends_on=[])::
+  behat(php='', db='', type='', browser='', suite='', filter='', num='', notification=false, proxy=false, email=false, federated='', federatedphp='', proto='https', proxy=false, trigger={}, depends_on=[])::
     local database_split = std.split(db, ':');
     local database_name = database_split[0];
     local database_version = if std.length(database_split) == 2 then database_split[1] else '';
+    local phpfederated = if federatedphp == '' then php else federatedphp;
 
     {
       kind: 'pipeline',
@@ -635,9 +636,9 @@ local suites = {
       + (if notification then $.notificationsapp(image='owncloudci/php:' + php) else [])
       + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
       + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log')
-      + (if federated != '' then $.federated(image='owncloudci/php:' + php, version=federated, proto=proto) + $.permissions(image='owncloudci/php:' + php, name='federated', path='/drone/federated') + $.logging(image='owncloudci/php:' + php, name='federated-logfile', file='/drone/federated/data/owncloud.log') else [])
+      + (if federated != '' then $.federated(image='owncloudci/php:' + phpfederated, version=federated, proto=proto) + $.permissions(image='owncloudci/php:' + phpfederated, name='federated', path='/drone/federated') + $.logging(image='owncloudci/php:' + phpfederated, name='federated-logfile', file='/drone/federated/data/owncloud.log') else [])
       + suites.get(image='owncloudci/php:' + php, type=type, suite=suite, browser=browser, filter=filter, num=num, proto=proto, server=(if proxy then 'proxy' else 'server')),
-      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src', proto=proto) + (if federated != '' then $.owncloud(image='owncloudci/php:' + php, basename='federated', root='/drone/federated', proto=proto) else []) + browsers.get(browser) + databases.get(database_name, database_version) + (if email then services.get('email') else []) + (if proxy then services.get('proxy') else []),
+      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src', proto=proto) + (if federated != '' then $.owncloud(image='owncloudci/php:' + phpfederated, basename='federated', root='/drone/federated', proto=proto) else []) + browsers.get(browser) + databases.get(database_name, database_version) + (if email then services.get('email') else []) + (if proxy then services.get('proxy') else []),
       trigger: trigger,
       depends_on: depends_on,
     },

@@ -4063,7 +4063,7 @@ steps:
 
 - name: configure-federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   commands:
   - cd /drone/federated
   - php occ a:l
@@ -4080,13 +4080,13 @@ steps:
 
 - name: federated-permissions
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   commands:
   - chown www-data -R /drone/federated
 
 - name: federated-logfile
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   detach: true
   commands:
   - tail -f /drone/federated/data/owncloud.log
@@ -4121,7 +4121,7 @@ services:
 
 - name: federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -9950,7 +9950,7 @@ steps:
 
 - name: configure-federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   commands:
   - cd /drone/federated
   - php occ a:l
@@ -9967,13 +9967,13 @@ steps:
 
 - name: federated-permissions
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   commands:
   - chown www-data -R /drone/federated
 
 - name: federated-logfile
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   detach: true
   commands:
   - tail -f /drone/federated/data/owncloud.log
@@ -10009,7 +10009,7 @@ services:
 
 - name: federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
