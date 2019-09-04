@@ -22,8 +22,7 @@ Feature: sharing
 
   @smokeTest @files_trashbin-app-required
   Scenario Outline: moving a file out of a share as recipient creates a backup for the owner
-    Given the administrator has enabled DAV tech_preview
-    And using <dav-path-version> DAV path
+    Given using <dav-path-version> DAV path
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared file "/shared" with user "user1"
@@ -39,8 +38,7 @@ Feature: sharing
 
   @files_trashbin-app-required
   Scenario Outline: moving a folder out of a share as recipient creates a backup for the owner
-    Given the administrator has enabled DAV tech_preview
-    And using <dav-path-version> DAV path
+    Given using <dav-path-version> DAV path
     And user "user0" has created folder "/shared"
     And user "user0" has created folder "/shared/sub"
     And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"

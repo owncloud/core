@@ -39,6 +39,12 @@ class PublicWebDavContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var OccContext
+	 */
+	private $occContext;
+
+	/**
 	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $range ignore if empty
@@ -323,10 +329,21 @@ class PublicWebDavContext implements Context {
 	public function checkLastPublicSharedFileWithPasswordDownload(
 		$publicWebDAVAPIVersion, $password, $expectedContent
 	) {
+		if ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
 		$this->downloadPublicFileWithRange(
 			"", $publicWebDAVAPIVersion, $password
 		);
+
 		$this->featureContext->downloadedContentShouldBe($expectedContent);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
 	}
 
 	/**
@@ -457,10 +474,21 @@ class PublicWebDavContext implements Context {
 	public function shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
 		$range, $path, $publicWebDAVAPIVersion, $password, $content
 	) {
+		if ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
 		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
 			$path, $password, $range, $publicWebDAVAPIVersion
 		);
+
 		$this->featureContext->downloadedContentShouldBe($content);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
 	}
 
 	/**
@@ -477,9 +505,16 @@ class PublicWebDavContext implements Context {
 	public function shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
 		$range, $path, $publicWebDAVAPIVersion, $password, $expectedHttpCode = "401"
 	) {
+		if ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
 		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
 			$path, $password, $range, $publicWebDAVAPIVersion
 		);
+
 		$responseContent = $this->featureContext->getResponse()->getBody()->getContents();
 		\libxml_use_internal_errors(true);
 		Assert::assertNotFalse(
@@ -488,6 +523,10 @@ class PublicWebDavContext implements Context {
 			"response body: \n$responseContent\n"
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBe($expectedHttpCode);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
 	}
 
 	/**
@@ -537,15 +576,24 @@ class PublicWebDavContext implements Context {
 		$publicWebDAVAPIVersion, $expectedHttpCode
 	) {
 		$filename = "";
+
 		if ($publicWebDAVAPIVersion === "new") {
 			$filename = $this->featureContext->getLastShareData()->data[0]->file_target;
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
 		}
 
 		$this->publicUploadContent(
 			$filename, '', 'test', false,
 			[], $publicWebDAVAPIVersion
 		);
+
 		$this->featureContext->theHTTPStatusCodeShouldBe($expectedHttpCode);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
 	}
 
 	/**
@@ -560,10 +608,21 @@ class PublicWebDavContext implements Context {
 	public function publiclyUploadingShouldNotWork(
 		$publicWebDAVAPIVersion, $expectedHttpCode = null
 	) {
+		if ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
 		$this->publicUploadContent(
 			'whateverfilefortesting.txt', '', 'test', false,
 			[], $publicWebDAVAPIVersion
 		);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+
 		$response = $this->featureContext->getResponse();
 		if ($expectedHttpCode === null) {
 			$expectedHttpCode = [507, 400, 401, 403, 404, 423];
@@ -585,6 +644,13 @@ class PublicWebDavContext implements Context {
 	public function publiclyUploadingShouldWork($publicWebDAVAPIVersion) {
 		$path = "whateverfilefortesting-$publicWebDAVAPIVersion-publicWebDAVAPI.txt";
 		$content = "test $publicWebDAVAPIVersion";
+
+		if ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
 		$this->publicUploadContent(
 			$path, '', $content, false, [], $publicWebDAVAPIVersion
 		);
@@ -597,6 +663,10 @@ class PublicWebDavContext implements Context {
 		$this->shouldBeAbleToDownloadFileInsidePublicSharedFolder(
 			$path, $publicWebDAVAPIVersion, $content
 		);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
 	}
 
 	/**
@@ -679,5 +749,6 @@ class PublicWebDavContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->occContext = $environment->getContext('OccContext');
 	}
 }

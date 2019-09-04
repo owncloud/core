@@ -9,8 +9,7 @@ Feature: sharing
   @smokeTest @public_link_share-feature-required
   @issue-36076
   Scenario: Downloading from upload-only share is forbidden
-    Given the administrator has enabled DAV tech_preview
-    And user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
+    Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
@@ -19,8 +18,7 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Downloading from share after the share source was deleted
-    Given the administrator has enabled DAV tech_preview
-    And user "user0" has created a public link share with settings
+    Given user "user0" has created a public link share with settings
       | path        | PARENT |
       | permissions | read   |
     When user "user0" deletes folder "PARENT" using the WebDAV API
@@ -67,12 +65,12 @@ Feature: sharing
 
   @smokeTest @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
-    Given the administrator has enabled DAV tech_preview
+    Given user "user0" has uploaded file with content "user0 file" to "/PARENT/CHILD/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
       | password | %public% |
-    Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "wnCloud"
+    Then the public should be able to download file "/CHILD/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the public should be able to download file "/CHILD/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user0 file"
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission
     Given user "user1" has been created with default attributes and skeleton files
@@ -96,13 +94,13 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission
-    Given the administrator has enabled DAV tech_preview
+    Given user "user0" has uploaded file with content "user0 file" to "/PARENT/CHILD/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
       | permissions | change   |
-    Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "wnCloud"
+    Then the public should be able to download file "/CHILD/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the public should be able to download file "/CHILD/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user0 file"
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission
     Given user "user1" has been created with default attributes and skeleton files
@@ -126,10 +124,10 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission
-    Given the administrator has enabled DAV tech_preview
+    Given user "user0" has uploaded file with content "user0 file" to "/PARENT/CHILD/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
       | permissions | read     |
-    Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "wnCloud"
+    Then the public should be able to download file "/CHILD/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the public should be able to download file "/CHILD/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user0 file"

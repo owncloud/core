@@ -22,6 +22,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
+use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -45,11 +46,10 @@ class TrashbinContext implements Context {
 
 	/**
 	 * @When user :user empties the trashbin using the trashbin API
-	 * @Given user :user has emptied the trashbin
 	 *
 	 * @param string $user user
 	 *
-	 * @return void
+	 * @return ResponseInterface
 	 */
 	public function emptyTrashbin($user) {
 		$response = WebDavHelper::makeDavRequest(
@@ -64,6 +64,20 @@ class TrashbinContext implements Context {
 			2,
 			'trash-bin'
 		);
+
+		$this->featureContext->setResponse($response);
+		return $response;
+	}
+
+	/**
+	 * @Given user :user has emptied the trashbin
+	 *
+	 * @param string $user user
+	 *
+	 * @return void
+	 */
+	public function userHasEmptiedTrashbin($user) {
+		$response = $this->emptyTrashbin($user);
 
 		Assert::assertEquals(
 			204, $response->getStatusCode()
@@ -155,16 +169,17 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes the (?:file|folder|entry) with original path "([^"]*)" from the trashbin using the trashbin API$/
+	 * @When /^user "([^"]*)" tries to delete the (?:file|folder|entry) with original path "([^"]*)" from the trashbin using the trashbin API$/
 	 *
 	 * @param string $user
 	 * @param string $originalPath
 	 *
-	 * @return void
+	 * @return int the number of items that were matched and requested for delete
 	 */
-	public function deleteFileFromTrashbin($user, $originalPath) {
+	public function tryToDeleteFileFromTrashbin($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
+		$numItemsDeleted = 0;
 
 		foreach ($listing as $entry) {
 			if ($entry['original-location'] === $originalPath) {
@@ -173,8 +188,29 @@ class TrashbinContext implements Context {
 					$user, 'DELETE', $trashItemHRef, [], null, 'trash-bin', null, 2
 				);
 				$this->featureContext->setResponse($response);
+				$numItemsDeleted++;
 			}
 		}
+
+		return $numItemsDeleted;
+	}
+
+	/**
+	 * @When /^user "([^"]*)" deletes the (?:file|folder|entry) with original path "([^"]*)" from the trashbin using the trashbin API$/
+	 *
+	 * @param string $user
+	 * @param string $originalPath
+	 *
+	 * @return void
+	 */
+	public function deleteFileFromTrashbin($user, $originalPath) {
+		$numItemsDeleted = $this->tryToDeleteFileFromTrashbin($user, $originalPath);
+
+		Assert::assertEquals(
+			1,
+			$numItemsDeleted,
+			"Expected to delete exactly one item from the trashbin but $numItemsDeleted were deleted"
+		);
 	}
 
 	/**
@@ -189,23 +225,25 @@ class TrashbinContext implements Context {
 		$path = \trim($path, '/');
 		$sections = \explode('/', $path, 2);
 
-		$techPreviewHadToBeEnabled = $this->enableDAVTechPreview();
+		$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 
 		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
 		Assert::assertNotNull($firstEntry);
 
+		if (\count($sections) !== 1) {
+			// TODO: handle deeper structures
+			$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/')));
+		}
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+
 		// query was on the main element ?
 		if (\count($sections) === 1) {
 			// already found, return
 			return;
-		}
-
-		// TODO: handle deeper structures
-		$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/')));
-
-		if ($techPreviewHadToBeEnabled) {
-			$this->occContext->disableDAVTechPreview();
 		}
 
 		$checkedName = \basename($path);
@@ -230,7 +268,7 @@ class TrashbinContext implements Context {
 	 * @return bool
 	 */
 	private function isInTrash($user, $originalPath) {
-		$techPreviewHadToBeEnabled = $this->enableDAVTechPreview();
+		$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		$listing = $this->listTrashbinFolder($user, null);
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
@@ -243,18 +281,6 @@ class TrashbinContext implements Context {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * @return bool true if DAV Tech Preview was disabled and had to be enabled
-	 */
-	private function enableDAVTechPreview() {
-		if (!$this->occContext->isTechPreviewEnabled()) {
-			$this->occContext->enableDAVTechPreview();
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	/**
@@ -280,11 +306,12 @@ class TrashbinContext implements Context {
 	 * @param string $user
 	 * @param string $originalPath
 	 * @param string $destinationPath
+	 * @param bool $throwExceptionIfNotFound
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	private function restoreElement($user, $originalPath, $destinationPath = null) {
+	private function restoreElement($user, $originalPath, $destinationPath = null, $throwExceptionIfNotFound = true) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
 		if ($destinationPath === null) {
@@ -303,10 +330,12 @@ class TrashbinContext implements Context {
 		// The requested element to restore was not even in the trashbin.
 		// Throw an exception, because there was not any API call, and so there
 		// is also no up-to-date response to examine in later test steps.
-		throw new \Exception(
-			__METHOD__
-			. " cannot restore from trashbin because no element was found for user $user at original path $originalPath"
-		);
+		if ($throwExceptionIfNotFound) {
+			throw new \Exception(
+				__METHOD__
+				. " cannot restore from trashbin because no element was found for user $user at original path $originalPath"
+			);
+		}
 	}
 
 	/**
@@ -331,6 +360,18 @@ class TrashbinContext implements Context {
 		} else {
 			$this->featureContext->downloadedContentShouldBe($alternativeContent);
 		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" tries to restore the (?:file|folder|entry) with original path "([^"]*)" using the trashbin API$/
+	 *
+	 * @param string $user
+	 * @param string $originalPath
+	 *
+	 * @return void
+	 */
+	public function userTriesToRestoreElementInTrash($user, $originalPath) {
+		$this->restoreElement($user, $originalPath, null, false);
 	}
 
 	/**

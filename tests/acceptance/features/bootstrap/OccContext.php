@@ -71,7 +71,7 @@ class OccContext implements Context {
 	/**
 	 * @Given the administrator has enabled DAV tech_preview
 	 *
-	 * @return void
+	 * @return bool true if DAV Tech Preview was disabled and had to be enabled
 	 */
 	public function enableDAVTechPreview() {
 		if (!$this->isTechPreviewEnabled()) {
@@ -79,7 +79,9 @@ class OccContext implements Context {
 				"dav.enable.tech_preview", "true", "boolean"
 			);
 			$this->techPreviewEnabled = true;
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -88,12 +90,10 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function disableDAVTechPreview() {
-		if ($this->isTechPreviewEnabled()) {
-			$this->theAdministratorDeletesSystemConfigKeyUsingTheOccCommand(
-				"dav.enable.tech_preview"
-			);
-			$this->techPreviewEnabled = false;
-		}
+		$this->theAdministratorDeletesSystemConfigKeyUsingTheOccCommand(
+			"dav.enable.tech_preview"
+		);
+		$this->techPreviewEnabled = false;
 	}
 
 	/**

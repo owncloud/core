@@ -26,8 +26,7 @@ Feature: reshare as public link
 
   @public_link_share-feature-required
   Scenario Outline: creating a public link from a share with share+read only permissions is allowed
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
     And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
@@ -78,8 +77,7 @@ Feature: reshare as public link
 
   @public_link_share-feature-required
   Scenario Outline: creating a public link from a share with share+read+write permissions is allowed
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
     And user "user0" has shared folder "/test" with user "user1" with permissions "all"
@@ -99,8 +97,7 @@ Feature: reshare as public link
 
   @public_link_share-feature-required
   Scenario Outline: creating an upload public link from a share with share+read+write permissions is allowed
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
     And user "user0" has shared folder "/test" with user "user1" with permissions "all"
