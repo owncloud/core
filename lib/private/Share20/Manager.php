@@ -39,6 +39,7 @@ use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\ILogger;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Security\IHasher;
 use OCP\Security\ISecureRandom;
@@ -208,10 +209,11 @@ class Manager implements IManager {
 	 * Check for generic requirements before creating a share
 	 *
 	 * @param \OCP\Share\IShare $share
+	 * @param IUser $actingUser
 	 * @throws \InvalidArgumentException
 	 * @throws GenericShareException
 	 */
-	protected function generalChecks(\OCP\Share\IShare $share) {
+	protected function generalChecks(\OCP\Share\IShare $share, IUser $actingUser = null) {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			// We expect a valid user as sharedWith for user shares
 			if (!$this->userManager->userExists($share->getSharedWith())) {
@@ -273,17 +275,19 @@ class Manager implements IManager {
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
-		$this->validatePermissions($share);
+		$this->validatePermissions($share, $actingUser);
 	}
 
 	/**
 	 * Validate if the permission allowed
 	 *
 	 * @param IShare $share The share to validate its permission
+	 * @param IUser $actingUser If the acting user is null or different than share-owner, permission will be calculated with the sharer user permission,
+	 *                          if the acting user is the share-owner, permission will be calculated with share-owner permissions even it's a reshare.
 	 * @throws GenericShareException
 	 * @throws \InvalidArgumentException
 	 */
-	protected function validatePermissions(IShare $share) {
+	protected function validatePermissions(IShare $share, IUser $actingUser = null) {
 		// Permissions should be set
 		if ($share->getPermissions() === null) {
 			throw new \InvalidArgumentException('A share requires permissions');
@@ -321,8 +325,13 @@ class Manager implements IManager {
 			$maxPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
 		}
 
+		$nodeOwner = $shareNode->getOwner()->getUID();
+		$actingUserUID = "";
+		if ($actingUser !== null) {
+			$actingUserUID = $actingUser->getUID();
+		}
 		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
-		if ($shareNode->getOwner()->getUID() !== $share->getSharedBy()) {
+		if ($nodeOwner !== $share->getSharedBy() && $nodeOwner !== $actingUserUID) {
 			$maxPermissions = $this->calculateReshareNodePermissions($share);
 		}
 
@@ -873,14 +882,9 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * Update a share
-	 *
-	 * @param \OCP\Share\IShare $share
-	 * @return \OCP\Share\IShare The share object
-	 * @throws \InvalidArgumentException
-	 * @throws GenericShareException
+	 * @inheritDoc
 	 */
-	public function updateShare(\OCP\Share\IShare $share) {
+	public function updateShare(\OCP\Share\IShare $share, IUser $actingUser = null) {
 		$expirationDateUpdated = false;
 
 		$this->canShare($share);
@@ -908,7 +912,7 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Can\'t share with the share owner');
 		}
 
-		$this->generalChecks($share);
+		$this->generalChecks($share, $actingUser);
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			$this->userCreateChecks($share);
@@ -1280,13 +1284,13 @@ class Manager implements IManager {
 	 */
 	public function getAllSharedWith($userId, $shareTypes, $node = null) {
 		$shares = [];
-		
+
 		// Aggregate all required $shareTypes by mapping provider to supported shareTypes
 		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
 		foreach ($providerIdMap as $providerId => $shareTypeArray) {
 			// Get provider from cache
 			$provider = $this->factory->getProvider($providerId);
-			
+
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			$shares = \array_merge($shares, $queriedShares);
@@ -1294,7 +1298,7 @@ class Manager implements IManager {
 
 		return $shares;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */

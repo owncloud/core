@@ -853,7 +853,7 @@ class Share20OcsController extends OCSController {
 		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));
 
 		try {
-			$share = $this->shareManager->updateShare($share);
+			$share = $this->shareManager->updateShare($share, $this->userSession->getUser());
 		} catch (GenericShareException $e) {
 			$code = $e->getCode() === 0 ? 403 : $e->getCode();
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);

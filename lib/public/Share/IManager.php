@@ -25,6 +25,7 @@ use OC\User\NoUserException;
 use OCP\Files\Node;
 
 use OCP\Files\NotFoundException;
+use OCP\IUser;
 use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\Exceptions\TransferSharesException;
@@ -53,12 +54,14 @@ interface IManager {
 	 * The share can't be removed this way (permission 0): use deleteShare
 	 *
 	 * @param IShare $share
+	 * @param IUser $actingUser If the acting user is null or different than share-owner, permission will be calculated with the sharer user permission,
+	 *                          if the acting user is the share-owner, permission will be calculated with share-owner permissions even it's a reshare.
 	 * @return IShare The share object
 	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
 	 * @throws GenericShareException If $share requirements do not match
 	 * @since 9.0.0
 	 */
-	public function updateShare(IShare $share);
+	public function updateShare(IShare $share, IUser $actingUser = null);
 
 	/**
 	 * Delete a share
@@ -105,7 +108,7 @@ interface IManager {
 	 * @since 10.0.0
 	 */
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares = false);
-	
+
 	/**
 	 * Get shares shared by (initiated) by the provided user.
 	 *
@@ -154,7 +157,7 @@ interface IManager {
 	 * @since 10.0.0
 	 */
 	public function getAllSharedWith($userId, $shareTypes, $node = null);
-	
+
 	/**
 	 * Get shares shared with $user.
 	 * Filter by $node if provided
