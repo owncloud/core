@@ -103,7 +103,7 @@ class ListApps extends Base {
 
 		\sort($disabledApps);
 		foreach ($disabledApps as $app) {
-			$apps['disabled'][$app] = null;
+			$apps['disabled'][$app] = (isset($versions[$app])) ? $versions[$app] : null;
 		}
 
 		$this->writeAppList($input, $output, $apps);
