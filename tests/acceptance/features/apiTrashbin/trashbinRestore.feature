@@ -5,7 +5,8 @@ Feature: Restore deleted files/folders
   So that I can recover accidentally deleted files/folders in ownCloud
 
   Background:
-    Given using OCS API version "1"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "1"
     And as the administrator
 
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path

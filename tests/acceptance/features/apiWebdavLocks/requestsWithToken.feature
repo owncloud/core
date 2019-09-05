@@ -74,7 +74,8 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | exclusive  |
 
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
-    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "user0" using the old public WebDAV API

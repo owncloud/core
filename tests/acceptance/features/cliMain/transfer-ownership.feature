@@ -179,10 +179,8 @@ Feature: transfer-ownership
       | path | /test/somefile.txt |
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
-    When the public downloads the last public shared file using the old public WebDAV API
-    Then the downloaded content should be "user0 file"
-    When the public downloads the last public shared file using the new public WebDAV API
-    Then the downloaded content should be "user0 file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of folder shared with third user

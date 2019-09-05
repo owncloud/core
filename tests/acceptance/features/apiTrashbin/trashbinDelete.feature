@@ -4,6 +4,9 @@ Feature: files and folders can be deleted from the trashbin
   I want to delete files and folders from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
+  Background:
+    Given the administrator has enabled DAV tech_preview
+
   @smokeTest
   Scenario Outline: Trashbin can be emptied
     Given using <dav-path> DAV path

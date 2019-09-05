@@ -58,8 +58,12 @@ class RootCollection extends SimpleCollection {
 		$systemPrincipals->disableListing = $disableListing;
 		$filesCollection = new Files\RootCollection($userPrincipalBackend, 'principals/users');
 		$filesCollection->disableListing = $disableListing;
-		$trashBinCollection = new TrashBin\RootCollection($userPrincipalBackend, 'principals/users');
-		$trashBinCollection->disableListing = $disableListing;
+
+		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
+			$trashBinCollection = new TrashBin\RootCollection($userPrincipalBackend, 'principals/users');
+			$trashBinCollection->disableListing = $disableListing;
+		}
+
 		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend, $groupPrincipalBackend, $random);
 		$calendarRoot = new CalendarRoot($userPrincipalBackend, $caldavBackend, 'principals/users');
 		$calendarRoot->disableListing = $disableListing;
@@ -99,25 +103,28 @@ class RootCollection extends SimpleCollection {
 		$queueCollection->disableListing = $disableListing;
 
 		$children = [
-				new SimpleCollection('principals', [
-						$userPrincipals,
-						$groupPrincipals,
-						$systemPrincipals]),
-				$filesCollection,
-				$trashBinCollection,
-				$calendarRoot,
-				$publicCalendarRoot,
-				new SimpleCollection('addressbooks', [
-						$usersAddressBookRoot,
-						$systemAddressBookRoot]),
-				$systemTagCollection,
-				$systemTagRelationsCollection,
-				$uploadCollection,
-				$avatarCollection,
-				new Meta\RootCollection(\OC::$server->getLazyRootFolder()),
-				$queueCollection,
-				$publicFilesRoot
+			new SimpleCollection('principals', [
+				$userPrincipals,
+				$groupPrincipals,
+				$systemPrincipals]),
+			$filesCollection,
+			$calendarRoot,
+			$publicCalendarRoot,
+			new SimpleCollection('addressbooks', [
+				$usersAddressBookRoot,
+				$systemAddressBookRoot]),
+			$systemTagCollection,
+			$systemTagRelationsCollection,
+			$uploadCollection,
+			$avatarCollection,
+			new Meta\RootCollection(\OC::$server->getLazyRootFolder()),
+			$queueCollection,
+			$publicFilesRoot
 		];
+
+		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
+			$children[] = $trashBinCollection;
+		}
 
 		parent::__construct('root', $children);
 	}

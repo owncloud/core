@@ -56,7 +56,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions
-    Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
@@ -72,7 +73,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
     When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
@@ -86,7 +88,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
     When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
@@ -100,7 +103,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create
-    Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
@@ -114,7 +118,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create,delete
-    Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
