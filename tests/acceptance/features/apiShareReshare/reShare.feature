@@ -278,7 +278,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-36107
   Scenario Outline: Update of user reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
@@ -288,17 +287,12 @@ Feature: sharing
     When user "user0" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    #And the HTTP status code should be "200"
-    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
-    #And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 404             | 200              |
-      | 2               | 404             | 404              |
-      #| ocs_api_version | ocs_status_code |
-      #| 1               | 100             |
-      #| 2               | 200             |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: Update of group reshare by the original share owner can increase permissions up to permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
@@ -318,7 +312,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-36107
   Scenario Outline: Update of group reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
@@ -330,17 +323,12 @@ Feature: sharing
     When user "user0" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    #And the HTTP status code should be "200"
-    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
-    #And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 404             | 200              |
-      | 2               | 404             | 404              |
-      #| ocs_api_version | ocs_status_code |
-      #| 1               | 100             |
-      #| 2               | 200             |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
