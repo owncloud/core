@@ -196,6 +196,8 @@ OC.L10N.register(
     "Allow users to share via link" : "Разрешить пользователям публикации через ссылки",
     "Allow public uploads" : "Разрешить открытые/публичные загрузки",
     "Enforce password protection for read-only links" : "Принудительная защита паролем для ссылок только для чтения",
+    "Enforce password protection for read + write links" : "Принудительная защита паролем для ссылок для чтения и записи",
+    "Enforce password protection for read + write + delete links" : "Принудительная защита паролем для ссылок для чтения, записи и удаления",
     "Enforce password protection for upload-only (File Drop) links" : "Принудительная защита паролем для ссылок только для записи (отправка файлов)",
     "Set default expiration date" : "Установить дату истечения по умолчанию",
     "Expire after " : "Истечение через",

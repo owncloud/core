@@ -196,6 +196,8 @@ OC.L10N.register(
     "Allow users to share via link" : "Permitir que os usuarios compartan a través de ligazóns",
     "Allow public uploads" : "Permitir os envíos públicos",
     "Enforce password protection for read-only links" : "Forzar a protección por contrasinal pra ligazóns de só lectura",
+    "Enforce password protection for read + write links" : "Forzar a protección por contrasinal pra ligazóns de lectura + escritura",
+    "Enforce password protection for read + write + delete links" : "Forzar a protección por contrasinal pra ligazóns de lectura + escritura + eliminación",
     "Enforce password protection for upload-only (File Drop) links" : "Forzar a protección por contrasinal pra ligazóns de só envío (Soltar ficheiro)",
     "Set default expiration date" : "Definir a data predeterminada de caducidade",
     "Expire after " : "Caduca após ",

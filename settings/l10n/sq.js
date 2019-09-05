@@ -196,6 +196,8 @@ OC.L10N.register(
     "Allow users to share via link" : "Lejoji përdoruesit të ndajnë me të tjerët përmes lidhjesh",
     "Allow public uploads" : "Lejo ngarkime publike",
     "Enforce password protection for read-only links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-lexim",
+    "Enforce password protection for read + write links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit lexim + shkrim",
+    "Enforce password protection for read + write + delete links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit lexim + shkrim + fshirje",
     "Enforce password protection for upload-only (File Drop) links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-ngarkim (File Drop)",
     "Set default expiration date" : "Caktoni datë parazgjedhje skadimi",
     "Expire after " : "Skadon pas ",
