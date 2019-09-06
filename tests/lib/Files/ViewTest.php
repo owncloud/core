@@ -2681,7 +2681,10 @@ class ViewTest extends TestCase {
 	public function providesShareFolder() {
 		return [
 			['/MyTestShareFolder', '/MyTestShareFolder'],
+			['MyTestShareFolder', '/MyTestShareFolder'],
 			['/MyTestShareFolder/Share/Foo', '/MyTestShareFolder'],
+			['MyTestShareFolder/Share/Foo', '/MyTestShareFolder'],
+			['/MyTestShareFolder/Share/Foo', '/MyTestShareFolder/Share'],
 		];
 	}
 
