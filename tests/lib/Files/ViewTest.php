@@ -2681,7 +2681,10 @@ class ViewTest extends TestCase {
 	public function providesShareFolder() {
 		return [
 			['/MyTestShareFolder', '/MyTestShareFolder'],
+			['MyTestShareFolder', '/MyTestShareFolder'],
 			['/MyTestShareFolder/Share/Foo', '/MyTestShareFolder'],
+			['MyTestShareFolder/Share/Foo', 'MyTestShareFolder'],
+			['/MyTestShareFolder/Share/Foo', '/MyTestShareFolder/Share'],
 		];
 	}
 
@@ -2700,5 +2703,40 @@ class ViewTest extends TestCase {
 		$view = new View('/' . $this->user . '/files');
 		$view->mkdir($shareFolder);
 		$this->assertFalse($view->rmdir($deleteFolder));
+	}
+
+	public function providesNonShareFolder() {
+		return [
+			['/', 'AnotherFolder'],
+			['/', 'AnotherFolder/Subfolder'],
+			['/MyTestShareFolder', 'AnotherFolder'],
+			['/MyTestShareFolder/Share/Foo', '/MyTest'],
+			['/MyTestShareFolder/Share/Foo', '/Share'],
+			['/MyTestShareFolder/Share/Foo', 'Share'],
+			['/MyTestShareFolder/Share/Foo', '/Share/Foo'],
+			['/MyTestShareFolder/Share/Foo', '/Fo'],
+			['/MyTestShareFolder/Share/Foo', '/Foo'],
+			['/MyTestShareFolder/Share/Foo', '/Foo/Share'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesNonShareFolder
+	 */
+	public function testDeleteNonShareFolder($shareFolder, $deleteFolder) {
+		/**
+		 * Using overwriteService in this method instead of setUp, because there
+		 * are other methods in the test's which might get affected if we use it
+		 * in setUp.
+		 */
+		$this->overwriteService('AllConfig', $this->config);
+		$this->config->method('getSystemValue')
+			->willReturn($shareFolder);
+		$storage1 = $this->getTestStorage();
+		Filesystem::mount($storage1, [], '/');
+		$view = new View('');
+		$view->mkdir($shareFolder);
+		$view->mkdir($deleteFolder);
+		$this->assertTrue($view->rmdir($deleteFolder));
 	}
 }
