@@ -67,6 +67,34 @@ class SharingBlacklistTest extends \Test\TestCase {
 		$this->assertEquals($ids, $this->sharingBlacklist->getBlacklistedReceiverGroups());
 	}
 
+	public function getBlacklistedReceiverGroupsProvider() {
+		return [
+			["", []],
+			["[\"invalid JSON missing right square bracket\"", []],
+			["[]", []],
+			["{\"abc\":\"group1\"}", ["group1"]],
+			["[[\"group1\"]]", []],
+			["[0]", ["0"]],
+			["[1]", ["1"]],
+			["[1.23]", ["1.23"]],
+			["[1.23e-4]", ["1.23e-4"]],
+			["[\"group1\"]", ["group1"]],
+			["[\"group1\", \"group2\", \"group3\"]", ["group1", "group2", "group3"]],
+		];
+	}
+
+	/**
+	 * Test cases for when the admin directly sets blacklisted_receiver_groups,
+	 * e.g. with an occ command, and might not set valid JSON, or might set valid
+	 * JSON but not in the expected structure.
+	 *
+	 * @dataProvider getBlacklistedReceiverGroupsProvider
+	 */
+	public function testGetBlacklistedReceiverGroups($ids, $result) {
+		$this->config->method('getAppValue')->willReturn($ids);
+		$this->assertEquals($result, $this->sharingBlacklist->getBlacklistedReceiverGroups());
+	}
+
 	private function getGroupMock($id, $displayname) {
 		$groupMock = $this->getMockBuilder(IGroup::class)
 			->disableOriginalConstructor()

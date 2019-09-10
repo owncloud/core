@@ -75,7 +75,7 @@ class SharingBlacklist {
 	 * @return string[] the list of group ids
 	 */
 	public function getBlacklistedReceiverGroups() {
-		return \json_decode($this->config->getAppValue('files_sharing', 'blacklisted_receiver_groups', '[]'), true);
+		return \array_keys($this->fetchBlacklistedReceiverGroupIds());
 	}
 
 	private function initCache() {
@@ -88,14 +88,27 @@ class SharingBlacklist {
 		}
 	}
 
+	/**
+	 * @return bool[] an array with group ids as the keys, the values do not matter
+	 *                If the blacklisted receiver groups cannot be parsed as valid JSON,
+	 *                then an empty list is returned.
+	 *                Any parsed group ids that are not string, int or float are dropped from the list.
+	 */
 	private function fetchBlacklistedReceiverGroupIds() {
 		$configuredBlacklist = $this->config->getAppValue('files_sharing', 'blacklisted_receiver_groups', '[]');
 		$decodedGroups = \json_decode($configuredBlacklist, true);
-		// expected a plain array here
+
+		if (!\is_array($decodedGroups)) {
+			$decodedGroups = [];
+		}
+
 		$groupSet = [];
 		foreach ($decodedGroups as $group) {
-			$groupSet[$group] = true;
+			if (\is_string($group) || \is_int($group) || \is_float($group)) {
+				$groupSet[(string) $group] = true;
+			}
 		}
+
 		return $groupSet;
 	}
 }
