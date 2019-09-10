@@ -19,7 +19,7 @@ Feature: restrict resharing
     And user "user2" has created folder "simple-folder"
     And user "user2" has logged in using the webUI
 
-  @skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend @files_sharing-app-required
+  @skipOnMICROSOFTEDGE @skipOnFIREFOX @TestAlsoOnExternalUserBackend @files_sharing-app-required
   @smokeTest
   Scenario: share a folder with another internal user and prohibit resharing
     Given the setting "Allow resharing" in the section "Sharing" has been enabled

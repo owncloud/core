@@ -69,6 +69,23 @@ if ($defaultExpireDateEnabled) {
 $enforceLinkPasswordReadOnly = $config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
 $enforceLinkPasswordReadWrite = $config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
 $enforceLinkPasswordWriteOnly = $config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
+
+$value = $config->getAppValue('core', 'shareapi_default_expire_date_user_share', 'no');
+$defaultExpireDateUserEnabled = ($value === 'yes') ? true :false;
+
+$defaultExpireDateUser = (int) $config->getAppValue('core', 'shareapi_expire_after_n_days_user_share', '7');
+
+$value = $config->getAppValue('core', 'shareapi_enforce_expire_date_user_share', 'no');
+$enforceDefaultExpireDateUser = ($value === 'yes') ? true : false;
+
+$value = $config->getAppValue('core', 'shareapi_default_expire_date_group_share', 'no');
+$defaultExpireDateGroupEnabled = ($value === 'yes') ? true :false;
+
+$defaultExpireDateGroup = (int) $config->getAppValue('core', 'shareapi_expire_after_n_days_group_share', '7');
+
+$value = $config->getAppValue('core', 'shareapi_enforce_expire_date_group_share', 'no');
+$enforceDefaultExpireDateGroup =  ($value === 'yes') ? true : false;
+
 $enforceLinkPasswordReadWriteDelete = $config->getAppValue('core', 'shareapi_enforce_links_password_read_write_delete', 'no') === 'yes';
 $outgoingServer2serverShareEnabled = $config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 
@@ -174,6 +191,15 @@ $array = [
 				'enforceLinkPasswordReadWrite' => $enforceLinkPasswordReadWrite,
 				'enforceLinkPasswordReadWriteDelete' => $enforceLinkPasswordReadWriteDelete,
 				'enforceLinkPasswordWriteOnly' => $enforceLinkPasswordWriteOnly,
+				
+				'defaultExpireDateUserEnabled' => $defaultExpireDateUserEnabled,
+				'defaultExpireDateUser' => $defaultExpireDateUser,
+				'enforceDefaultExpireDateUser' => $enforceDefaultExpireDateUser,
+				
+				'defaultExpireDateGroupEnabled' => $defaultExpireDateGroupEnabled,
+				'defaultExpireDateGroup' => $defaultExpireDateGroup,
+				'enforceDefaultExpireDateGroup' => $enforceDefaultExpireDateGroup,
+
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
 				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,

@@ -278,8 +278,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And user "user1" from server "REMOTE" shares "/simple-folder (2)" with user "user2" from server "LOCAL" using the sharing API
-    And the user sets the sharing permissions of user "user2@%local_server%/ (federated)" for "simple-folder (2)" using the webUI to
-      | edit | no |
+    And the user updates the last share using the sharing API with
+      | permissions | read |
     And user "user2" re-logs in to "%local_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     Then as "user2" folder "/simple-folder (2)" should exist

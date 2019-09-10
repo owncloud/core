@@ -73,6 +73,20 @@ Feature: capabilities
       | files_sharing | user@@@send_mail                          | EMPTY             |
       | files         | bigfilechunking                           | 1                 |
 
+  @smokeTest @skipOnOcV10.3
+  # These are new capabilities in 10.4
+  Scenario: getting default capabilities with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                                          | value             |
+      | files_sharing | user@@@expire_date@@@enabled                             | EMPTY             |
+      | files_sharing | group@@@expire_date@@@enabled                            | EMPTY             |
+      | files_sharing | providers_capabilities@@@ocinternal@@@user@@@element[0]  | shareExpiration   |
+      | files_sharing | providers_capabilities@@@ocinternal@@@group@@@element[0] | shareExpiration   |
+      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]  | shareExpiration   |
+      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
+      | files_sharing | providers_capabilities@@@ocFederatedSharing@@@remote     | EMPTY             |
+
   @files_trashbin-app-required
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
@@ -99,6 +113,70 @@ Feature: capabilities
     Then the capabilities should contain
       | capability    | path_to_element     | value |
       | files_sharing | default_permissions | 7     |
+
+  @skipOnOcV10.3
+  Scenario: user expire date can be enabled
+    Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | user@@@expire_date@@@enabled  | 1     |
+      | files_sharing | user@@@expire_date@@@days     | 7     |
+      | files_sharing | user@@@expire_date@@@enforced | EMPTY |
+
+  @skipOnOcV10.3
+  Scenario: user expire date can be enforced
+    Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | user@@@expire_date@@@enabled  | 1     |
+      | files_sharing | user@@@expire_date@@@days     | 7     |
+      | files_sharing | user@@@expire_date@@@enforced | 1     |
+
+  @skipOnOcV10.3
+  Scenario: user expire date days can be set
+    Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "14"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | user@@@expire_date@@@enabled  | 1     |
+      | files_sharing | user@@@expire_date@@@days     | 14    |
+      | files_sharing | user@@@expire_date@@@enforced | EMPTY |
+
+  @skipOnOcV10.3
+  Scenario: group expire date can be enabled
+    Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                | value |
+      | files_sharing | group@@@expire_date@@@enabled  | 1     |
+      | files_sharing | group@@@expire_date@@@days     | 7     |
+      | files_sharing | group@@@expire_date@@@enforced | EMPTY |
+
+  @skipOnOcV10.3
+  Scenario: group expire date can be enforced
+    Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | group@@@expire_date@@@enabled  | 1     |
+      | files_sharing | group@@@expire_date@@@days     | 7     |
+      | files_sharing | group@@@expire_date@@@enforced | 1     |
+
+  @skipOnOcV10.3
+  Scenario: group expire date days can be set
+    Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "14"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                | value |
+      | files_sharing | group@@@expire_date@@@enabled  | 1     |
+      | files_sharing | group@@@expire_date@@@days     | 14    |
+      | files_sharing | group@@@expire_date@@@enforced | EMPTY |
 
 	#feature added in #31824 will be released in 10.0.10
   @smokeTest @skipOnOcV10.0.9

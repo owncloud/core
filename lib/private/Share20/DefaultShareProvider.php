@@ -107,6 +107,11 @@ class DefaultShareProvider implements IShareProvider {
 		$qb->insert('share');
 		$qb->setValue('share_type', $qb->createNamedParameter($share->getShareType()));
 
+		//If an expiration date is set store it
+		if ($share->getExpirationDate() !== null) {
+			$qb->setValue('expiration', $qb->createNamedParameter($share->getExpirationDate(), 'datetime'));
+		}
+
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			//Set the UID of the user we share with
 			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()));
@@ -122,11 +127,6 @@ class DefaultShareProvider implements IShareProvider {
 			//If a password is set store it
 			if ($share->getPassword() !== null) {
 				$qb->setValue('share_with', $qb->createNamedParameter($share->getPassword()));
-			}
-
-			//If an expiration date is set store it
-			if ($share->getExpirationDate() !== null) {
-				$qb->setValue('expiration', $qb->createNamedParameter($share->getExpirationDate(), 'datetime'));
 			}
 
 			if (\method_exists($share, 'getParent')) {
@@ -222,6 +222,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
@@ -235,6 +236,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
@@ -261,6 +263,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->execute();
 		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
@@ -402,6 +405,12 @@ class DefaultShareProvider implements IShareProvider {
 				$share->getAttributes()
 			);
 
+			// shareExpiration is either null or a formatted date
+			$shareExpiration = $share->getExpirationDate();
+			if ($shareExpiration !== null) {
+				$shareExpiration = $shareExpiration->format('Y-m-d 00:00:00');
+			}
+
 			// Check if there is a usergroup share
 			$this->dbConn->upsert(
 				'*PREFIX*share',
@@ -417,6 +426,7 @@ class DefaultShareProvider implements IShareProvider {
 					'file_target' => $share->getTarget(),
 					'attributes' => $shareAttributes,
 					'permissions' => $share->getPermissions(),
+					'expiration' => $shareExpiration,
 					'stime' => $share->getShareTime()->getTimestamp(),
 					'accepted' => $share->getState(),
 				],
@@ -1286,5 +1296,23 @@ class DefaultShareProvider implements IShareProvider {
 			];
 		}
 		return \json_encode($compressedAttributes);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getProviderCapabilities() {
+		return [
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_USER] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION
+			],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_GROUP] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION
+			],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_LINK] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION,
+				IShareProvider::CAPABILITY_STORE_PASSWORD
+			],
+		];
 	}
 }

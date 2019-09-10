@@ -481,6 +481,7 @@ default:
         - WebUISharingContext:
         - EmailContext:
         - WebUIAdminSharingSettingsContext:
+        - OccContext:
 
     webUISharingInternalUsers:
       paths:

@@ -99,6 +99,52 @@
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
 	p('hidden');
 }?>">
+		<input type="checkbox" name="shareapi_default_expire_date_user_share" id="shareapiDefaultExpireDateUserShare" class="checkbox"
+					   value="1" <?php if ($_['shareDefaultExpireDateSetUserShare'] === 'yes') {
+	print_unescaped('checked="checked"');
+} ?> />
+		<label for="shareapiDefaultExpireDateUserShare"><?php p($l->t('Set default expiration date for user shares'));?></label><br/>
+		<span id="setDefaultExpireDateUserShare" class="indent <?php if ($_['shareDefaultExpireDateSetUserShare'] === 'no' || $_['shareAPIEnabled'] === 'no') {
+	p('hidden');
+}?>">
+			<?php p($l->t('Expire after ')); ?>
+			<input type="number" name='shareapi_expire_after_n_days_user_share' id="shareapiExpireAfterNDaysUserShare" min="0" placeholder="<?php p('7')?>"
+				   value='<?php p($_['shareExpireAfterNDaysUserShare']) ?>' />
+			<?php p($l->t('days')); ?><br/>
+			<?php if ($_['shareEnforceExpireDateUserShare'] === 'yes'): ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date_user_share" id="shareapiEnforceExpireDateUserShare" class="checkbox" value="1" checked="checked" />
+			<?php else: ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date_user_share" id="shareapiEnforceExpireDateUserShare" class="checkbox" value="1" />
+			<?php endif; ?>
+			<label class="indent" for="shareapiEnforceExpireDateUserShare"><?php p($l->t('Enforce as maximum expiration date'));?></label><br/>
+		</span>
+	</p>
+	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
+	p('hidden');
+}?>">
+		<input type="checkbox" name="shareapi_default_expire_date_group_share" id="shareapiDefaultExpireDateGroupShare" class="checkbox"
+					   value="1" <?php if ($_['shareDefaultExpireDateSetGroupShare'] === 'yes') {
+	print_unescaped('checked="checked"');
+} ?> />
+		<label for="shareapiDefaultExpireDateGroupShare"><?php p($l->t('Set default expiration date for group shares'));?></label><br/>
+		<span id="setDefaultExpireDateGroupShare" class="indent <?php if ($_['shareDefaultExpireDateSetGroupShare'] === 'no' || $_['shareAPIEnabled'] === 'no') {
+	p('hidden');
+}?>">
+			<?php p($l->t('Expire after ')); ?>
+			<input type="number" name='shareapi_expire_after_n_days_group_share' id="shareapiExpireAfterNDaysGroupShare" min="0" placeholder="<?php p('7')?>"
+				   value='<?php p($_['shareExpireAfterNDaysGroupShare']) ?>' />
+			<?php p($l->t('days')); ?><br/>
+			<?php if ($_['shareEnforceExpireDateGroupShare'] === 'yes'): ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date_group_share" id="shareapiEnforceExpireDateGroupShare" class="checkbox" value="1" checked="checked" />
+			<?php else: ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date_group_share" id="shareapiEnforceExpireDateGroupShare" class="checkbox" value="1" />
+			<?php endif; ?>
+			<label class="indent" for="shareapiEnforceExpireDateGroupShare"><?php p($l->t('Enforce as maximum expiration date'));?></label><br/>
+		</span>
+	</p>
+	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
+	p('hidden');
+}?>">
 		<input type="checkbox" name="shareapi_auto_accept_share" id="autoAcceptShare" class="checkbox"
 			value="1" <?php if ($_['autoAcceptShare'] === 'yes') {
 	print_unescaped('checked="checked"');
