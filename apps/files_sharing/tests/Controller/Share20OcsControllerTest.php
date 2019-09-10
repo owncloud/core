@@ -1570,6 +1570,8 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateNoParametersOther() {
+		$ocs = $this->mockFormatShare();
+
 		$node = $this->createMock('\OCP\Files\Folder');
 		$share = $this->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -1577,14 +1579,19 @@ class Share20OcsControllerTest extends TestCase {
 			->setShareType(Share::SHARE_TYPE_GROUP)
 			->setNode($node);
 
-		$node->expects($this->once())
-			->method('lock')
-			->with(ILockingProvider::LOCK_SHARED);
-
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
-		$expected = new Result(null, 400, 'Wrong or no update parameter given');
-		$result = $this->ocs->updateShare(42);
+		$this->shareManager->expects($this->once())->method('updateShare')->with(
+			$this->callback(function (\OCP\Share\IShare $share) {
+				return $share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
+				$share->getPassword() === null &&
+				$share->getExpirationDate() === null;
+			})
+		)->will($this->returnArgument(0));
+		$this->shareManager->method('getSharedWith')->willReturn([]);
+
+		$expected = new Result(null);
+		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());

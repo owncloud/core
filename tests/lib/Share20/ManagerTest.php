@@ -902,7 +902,9 @@ class ManagerTest extends \Test\TestCase {
 	 */
 	public function testvalidateExpirationDateEnforceButNotSet() {
 		$share = $this->manager->newShare();
-		$share->setProviderId('foo')->setId('bar');
+		$share->setId(43)
+			->setProviderId('prov')
+			->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -915,7 +917,7 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testvalidateExpirationDateEnforceButNotEnabledAndNotSet() {
 		$share = $this->manager->newShare();
-		$share->setProviderId('foo')->setId('bar');
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -929,13 +931,13 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testvalidateExpirationDateEnforceButNotSetNewShare() {
 		$share = $this->manager->newShare();
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
 				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
 				['core', 'shareapi_expire_after_n_days', '7', '3'],
 				['core', 'shareapi_default_expire_date', 'no', 'yes'],
-				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
 			]));
 
 		$expected = new \DateTime();
@@ -952,7 +954,8 @@ class ManagerTest extends \Test\TestCase {
 		$future->add(new \DateInterval('P7D'));
 
 		$share = $this->manager->newShare();
-		$share->setExpirationDate($future);
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK)
+			->setExpirationDate($future);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -3538,6 +3541,10 @@ class DummyFactory implements IProviderFactory {
 	private $provider;
 
 	public function __construct(\OCP\IServerContainer $serverContainer) {
+	}
+
+	public function getProviders() {
+		return [$this->provider];
 	}
 
 	/**
