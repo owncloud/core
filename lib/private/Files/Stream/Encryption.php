@@ -305,6 +305,25 @@ class Encryption extends Wrapper {
 		return $result;
 	}
 
+	/**
+	* stream_read wrapper to read a block of the requested size
+	* There is a problem with the underlying php functions not returing the requested amount of data in any case.
+	* Thus, this function will call the read mechanism of its parent until it has read the currect amount.
+	*/
+	private function stream_read_block($blockSize) {
+		$remaining = $blockSize;
+		$data = "";
+
+		do {
+			$chunk = parent::stream_read($remaining);
+			$chunk_len = \strlen($chunk);
+			$data .= $chunk;
+			$remaining -= $chunk_len;
+		} while (($remaining > 0) && ($chunk_len > 0));
+
+		return $data;
+	}
+
 	public function stream_write($data) {
 		$length = 0;
 		// loop over $data to fit it in 6126 sized unencrypted blocks
@@ -445,7 +464,7 @@ class Encryption extends Wrapper {
 		// don't try to fill the cache when trying to write at the end of the unencrypted file when it coincides with new block
 		if ($this->cache === '' && !($this->position === $this->unencryptedSize && ($this->position % $this->unencryptedBlockSize) === 0)) {
 			// Get the data from the file handle
-			$data = parent::stream_read($this->util->getBlockSize());
+			$data = $this->stream_read_block($this->util->getBlockSize());
 			$position = (int)\floor($this->position/$this->unencryptedBlockSize);
 			$numberOfChunks = (int)($this->unencryptedSize / $this->unencryptedBlockSize);
 			if ($numberOfChunks === $position) {
@@ -470,7 +489,7 @@ class Encryption extends Wrapper {
 	 * read first block to skip the header
 	 */
 	protected function skipHeader() {
-		parent::stream_read($this->headerSize);
+		$this->stream_read_block($this->headerSize);
 	}
 
 	/**
