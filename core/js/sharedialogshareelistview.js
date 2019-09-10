@@ -74,6 +74,12 @@
 			'</span>' +
 			'{{/each}}' +
 			'</div>' +
+			'{{#if defaultExpireDateUserEnabled}}' +
+			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
+			'<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration" placeholder="{{expirationDate}}" />' +
+			'<button class="removeExpiration">Remove</button>' +
+			'</label>' +
+			'{{/if}}' +
 			'</li>' +
 			'{{/each}}' +
 			'</ul>'
@@ -104,7 +110,8 @@
 			'click .permissions': 'onPermissionChange',
 			'click .attributes': 'onPermissionChange',
 			'click .showCruds': 'onCrudsToggle',
-			'click .mailNotification': 'onSendMailNotification'
+			'click .mailNotification': 'onSendMailNotification',
+			'click .removeExpiration' : 'onRemoveExpiration'
 		},
 
 		initialize: function(options) {
@@ -188,6 +195,7 @@
 				hasUpdatePermission: this.model.hasUpdatePermission(shareIndex),
 				hasDeletePermission: this.model.hasDeletePermission(shareIndex),
 				shareAttributesV1: this.getAttributesObject(shareIndex),
+				expirationDate: this.model.getExpirationDate(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
@@ -218,6 +226,7 @@
 				createPermissionPossible: this.model.createPermissionPossible(),
 				updatePermissionPossible: this.model.updatePermissionPossible(),
 				deletePermissionPossible: this.model.deletePermissionPossible(),
+				defaultExpireDateUserEnabled: this.configModel.isDefaultExpireDateUserEnabled(),
 				sharePermission: OC.PERMISSION_SHARE,
 				createPermission: OC.PERMISSION_CREATE,
 				updatePermission: OC.PERMISSION_UPDATE,
@@ -240,6 +249,8 @@
 		},
 
 		render: function() {
+			var self =this;
+
 			this.$el.html(this.template({
 				cid: this.cid,
 				sharees: this.getShareeList()
@@ -261,6 +272,13 @@
 			this.$el.find('.has-tooltip').tooltip({
 				placement: 'bottom'
 			});
+
+
+			if (this.configModel.isDefaultExpireDateUserEnabled()) {
+				this.$el.find('.expiration:not(.hasDatepicker)').each(function(){
+					self._setDatepicker(this)
+				})
+			}
 
 			this.delegateEvents();
 
@@ -384,6 +402,41 @@
 				$target.removeClass('hidden');
 				$loading.addClass('hidden');
 			});
+		},
+
+		onRemoveExpiration: function(event) {
+			var shareId = $(event.target).closest('li').data('share-id');
+
+			this.model.updateShare( shareId, {
+				expireDate: null
+			});
+		},
+
+		_onExpirationChange: function(el) {
+			var $el        = $(el)
+			var shareId    = $el.closest('li').data('share-id');
+			var expiration = moment($el.val(), 'DD-MM-YYYY').format()
+
+			this.model.updateShare( shareId, {
+				expireDate: expiration
+			});
+		},
+
+		_setDatepicker: function(el) {
+			var self = this;
+			var $el = $(el);
+			var defaultExpireDate = "+" + this.configModel.getDefaultExpireDateUser() + 'd'
+
+			$el.datepicker({
+				minDate: "+1d",
+				dateFormat : 'dd-mm-yy',
+				onSelect : function() {
+					self._onExpirationChange(el)
+				}
+			});
+
+			if (this.configModel.isDefaultExpireDateUserEnforced())
+				$el.datepicker( "option", "maxDate", defaultExpireDate );
 		}
 	});
 

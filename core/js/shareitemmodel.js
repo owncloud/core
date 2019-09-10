@@ -165,6 +165,20 @@
 			options = options || {};
 			properties = _.extend({}, properties);
 
+			// Set default expiration date
+			if (
+				this.configModel.isDefaultExpireDateUserEnabled() && (
+					shareType === OC.Share.SHARE_TYPE_USER ||
+					shareType === OC.Share.SHARE_TYPE_GUEST ||
+					shareType === OC.Share.SHARE_TYPE_REMOTE )
+				) {
+				properties.expireDate = this.configModel.getDefaultExpireDateUser('YYYY-MM-DD')
+			}
+
+			else if (this.configModel.isDefaultExpireDateGroupEnabled() && shareType === OC.Share.SHARE_TYPE_GROUP) {
+				properties.expireDate = this.configModel.getDefaultExpireDateGroup('YYYY-MM-DD')
+			}
+
 			// Get default permissions
 			var permissions = properties.permissions || OC.PERMISSION_ALL;
 			properties.permissions = permissions & this.getDefaultPermissions();
@@ -441,6 +455,15 @@
 				throw "Unknown Share";
 			}
 			return share.share_type;
+		},
+
+		getExpirationDate: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return (share.expiration !== null) ? moment(share.expiration).format('DD-MM-YYYY') : null;
 		},
 
 		/**
