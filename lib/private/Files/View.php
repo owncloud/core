@@ -352,10 +352,13 @@ class View {
 	 */
 	public function rmdir($path) {
 		return $this->emittingCall(function () use (&$path) {
-			if (($path !== '') &&
-				(\strpos($this->config->getSystemValue('share_folder', '/'), $path) !== false)) {
-				Util::writeLog("core", "The folder $path could not be deleted as it is configured as share_folder in config.", Util::WARN);
-				return false;
+			if ($path !== '') {
+				$shareFolder = \trim($this->config->getSystemValue('share_folder', '/'), '/');
+				$trimmedPath = \trim($path, '/');
+				if ((\strpos("$shareFolder/", "$trimmedPath/") === 0)) {
+					Util::writeLog("core", "The folder $path could not be deleted as it is configured as share_folder in config.", Util::WARN);
+					return false;
+				}
 			}
 			$absolutePath = $this->getAbsolutePath($path);
 			$mount = Filesystem::getMountManager()->find($absolutePath);
