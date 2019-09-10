@@ -468,11 +468,11 @@ local suites = {
             OC_PASS: '123456',
           },
           commands: [
-            'mkdir -p /drone/src/work/local_storage',
+            'mkdir -p /drone/0/work/local_storage',
             'php occ app:enable files_external',
             'php occ config:system:set files_external_allow_create_new_local --value=true',
             'php occ config:app:set core enable_external_storage --value=yes',
-            'php occ files_external:create local_storage local null::null -c datadir=/drone/src/work/local_storage',
+            'php occ files_external:create local_storage local null::null -c datadir=/drone/0/work/local_storage',
             'php occ user:add --password-from-env user1',
           ],
         },
@@ -542,7 +542,7 @@ local suites = {
           },
         ]
       ],
-      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src') + databases.get(database_name, database_version),
+      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/0') + databases.get(database_name, database_version),
       trigger: trigger,
       depends_on: depends_on,
     },
@@ -608,8 +608,8 @@ local suites = {
       ]
       + $.server(image='owncloudci/php:' + php, db=database_name)
       + (if object == 'scality' then $.primarys3app(image='owncloudci/php:' + php, object=object) else [])
-      + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
-      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log') +
+      + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/0')
+      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/0/data/owncloud.log') +
       + suites.get(image='owncloudci/php:' + php, type='phpunit', coverage=coverage, db=database_name, external=external, object=object, proto=proto),
       services: externals.get(external) + objects.get(object) + databases.get(database_name, database_version),
       trigger: trigger,
@@ -631,7 +631,7 @@ local suites = {
       },
       workspace: {
         base: '/drone',
-        path: 'src',
+        path: '0',
       },
       steps: [
         $.cache({ restore: true }),
@@ -642,11 +642,11 @@ local suites = {
       + $.server(image='owncloudci/php:' + php, db=database_name, federated=federated, proxy=proxy)
       + $.testingapp(image='owncloudci/php:' + php)
       + (if notification then $.notificationsapp(image='owncloudci/php:' + php) else [])
-      + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
-      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log')
+      + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/0')
+      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/0/data/owncloud.log')
       + (if federated != '' then $.federated(image='owncloudci/php:' + phpfederated, version=federated, proto=proto) + $.permissions(image='owncloudci/php:' + phpfederated, name='federated', path='/drone/federated') + $.logging(image='owncloudci/php:' + phpfederated, name='federated-logfile', file='/drone/federated/data/owncloud.log') else [])
       + suites.get(image='owncloudci/php:' + php, type=type, suite=suite, browser=browser, filter=filter, num=num, proto=proto, server=(if proxy then 'proxy' else 'server')),
-      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/src', proto=proto) + (if federated != '' then $.owncloud(image='owncloudci/php:' + phpfederated, basename='federated', root='/drone/federated', proto=proto) else []) + browsers.get(browser) + databases.get(database_name, database_version) + (if email then services.get('email') else []) + (if proxy then services.get('proxy') else []),
+      services: $.owncloud(image='owncloudci/php:' + php, basename='server', root='/drone/0', proto=proto) + (if federated != '' then $.owncloud(image='owncloudci/php:' + phpfederated, basename='federated', root='/drone/federated', proto=proto) else []) + browsers.get(browser) + databases.get(database_name, database_version) + (if email then services.get('email') else []) + (if proxy then services.get('proxy') else []),
       trigger: trigger,
       depends_on: depends_on,
     },
@@ -715,9 +715,9 @@ local suites = {
       image: image,
       pull: 'always',
       environment: {
-        NPM_CONFIG_CACHE: '/drone/src/.cache/npm',
-        YARN_CACHE_FOLDER: '/drone/src/.cache/yarn',
-        bower_storage__packages: '/drone/src/.cache/bower',
+        NPM_CONFIG_CACHE: '/drone/0/.cache/npm',
+        YARN_CACHE_FOLDER: '/drone/0/.cache/yarn',
+        bower_storage__packages: '/drone/0/.cache/bower',
       },
       commands: [
         'make install-nodejs-deps',
@@ -730,7 +730,7 @@ local suites = {
       image: image,
       pull: 'always',
       environment: {
-        COMPOSER_HOME: '/drone/src/.cache/composer',
+        COMPOSER_HOME: '/drone/0/.cache/composer',
       },
       commands: [
         'make install-composer-deps',
@@ -743,7 +743,7 @@ local suites = {
       image: image,
       pull: 'always',
       environment: {
-        COMPOSER_HOME: '/drone/src/.cache/composer',
+        COMPOSER_HOME: '/drone/0/.cache/composer',
       },
       commands: [
         'make vendor-bin-deps',
@@ -756,10 +756,10 @@ local suites = {
       image: image,
       pull: 'always',
       commands: [
-        'git clone https://github.com/owncloud/testing.git /drone/src/apps/testing',
-        'cd /drone/src/apps/testing',
+        'git clone https://github.com/owncloud/testing.git /drone/0/apps/testing',
+        'cd /drone/0/apps/testing',
         'composer install',
-        'cd /drone/src',
+        'cd /drone/0',
         'php occ a:l',
         'php occ a:e testing',
         'php occ a:l',
@@ -772,10 +772,10 @@ local suites = {
       image: image,
       pull: 'always',
       commands: [
-        'git clone https://github.com/owncloud/files_primary_s3.git /drone/src/apps/files_primary_s3',
-        'cd /drone/src/apps/files_primary_s3',
+        'git clone https://github.com/owncloud/files_primary_s3.git /drone/0/apps/files_primary_s3',
+        'cd /drone/0/apps/files_primary_s3',
         'composer install',
-        'cd /drone/src',
+        'cd /drone/0',
         'php occ a:l',
         'php occ a:e files_primary_s3',
         'php occ a:l',
@@ -785,7 +785,7 @@ local suites = {
       image: image,
       pull: 'always',
       commands: [
-        'cp /drone/src/apps/files_primary_s3/tests/drone/' + object + '.config.php /drone/src/config',
+        'cp /drone/0/apps/files_primary_s3/tests/drone/' + object + '.config.php /drone/0/config',
         'php ./occ s3:create-bucket owncloud --accept-warning',
       ],
     }],
@@ -796,17 +796,17 @@ local suites = {
       image: image,
       pull: 'always',
       commands: [
-        'git clone https://github.com/owncloud/notifications.git /drone/src/apps/notifications',
-        'cd /drone/src/apps/notifications',
+        'git clone https://github.com/owncloud/notifications.git /drone/0/apps/notifications',
+        'cd /drone/0/apps/notifications',
         'composer install',
-        'cd /drone/src',
+        'cd /drone/0',
         'php occ a:l',
         'php occ a:e notifications',
         'php occ a:l',
       ],
     }],
 
-  owncloud(image='owncloudci/php:7.1', basename='server', root='/drone/src', proto='https')::
+  owncloud(image='owncloudci/php:7.1', basename='server', root='/drone/0', proto='https')::
     [{
       name: basename,
       image: image,
@@ -881,7 +881,7 @@ local suites = {
       ],
     }],
 
-  permissions(image='owncloudci/php:7.1', name='owncloud', path='/drone/src')::
+  permissions(image='owncloudci/php:7.1', name='owncloud', path='/drone/0')::
     [{
       name: name + '-permissions',
       image: image,

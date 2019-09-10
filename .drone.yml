@@ -29,7 +29,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -37,7 +37,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -45,9 +45,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: cache-rebuild
   pull: always
@@ -125,7 +125,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -133,7 +133,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -141,9 +141,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: php-style
   pull: always
@@ -191,7 +191,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -199,7 +199,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -207,9 +207,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -271,7 +271,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -279,7 +279,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -287,9 +287,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -351,7 +351,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -359,7 +359,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -367,9 +367,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -431,7 +431,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -439,7 +439,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -447,9 +447,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -511,7 +511,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -519,7 +519,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -527,9 +527,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: test-js
   pull: always
@@ -597,7 +597,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -605,7 +605,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -613,9 +613,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -641,11 +641,11 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - mkdir -p /drone/src/work/local_storage
+  - mkdir -p /drone/0/work/local_storage
   - php occ app:enable files_external
   - php occ config:system:set files_external_allow_create_new_local --value=true
   - php occ config:app:set core enable_external_storage --value=yes
-  - php occ files_external:create local_storage local null::null -c datadir=/drone/src/work/local_storage
+  - php occ files_external:create local_storage local null::null -c datadir=/drone/0/work/local_storage
   - php occ user:add --password-from-env user1
   environment:
     OC_PASS: 123456
@@ -654,7 +654,7 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: create-share
   pull: always
@@ -771,7 +771,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -823,7 +823,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -831,7 +831,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -839,9 +839,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -867,7 +867,7 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
@@ -933,7 +933,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -941,7 +941,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -949,9 +949,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -977,7 +977,7 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
@@ -1043,7 +1043,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1051,7 +1051,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1059,9 +1059,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1087,7 +1087,7 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
@@ -1153,7 +1153,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1161,7 +1161,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1169,9 +1169,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1197,7 +1197,7 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
@@ -1263,7 +1263,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1271,7 +1271,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1279,9 +1279,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1301,14 +1301,14 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.0
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1361,7 +1361,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1369,7 +1369,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1377,9 +1377,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1399,14 +1399,14 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.0
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1468,7 +1468,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1476,7 +1476,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1484,9 +1484,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1506,14 +1506,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1566,7 +1566,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1574,7 +1574,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1582,9 +1582,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1604,14 +1604,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1673,7 +1673,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1681,7 +1681,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1689,9 +1689,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1711,14 +1711,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1780,7 +1780,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1788,7 +1788,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1796,9 +1796,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1818,14 +1818,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1887,7 +1887,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -1895,7 +1895,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -1903,9 +1903,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -1925,14 +1925,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -1993,7 +1993,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2001,7 +2001,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2009,9 +2009,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2031,14 +2031,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2097,7 +2097,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2105,7 +2105,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2113,9 +2113,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2135,14 +2135,14 @@ steps:
   pull: always
   image: owncloudci/php:7.2
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.2
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2195,7 +2195,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2203,7 +2203,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2211,9 +2211,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2233,14 +2233,14 @@ steps:
   pull: always
   image: owncloudci/php:7.2
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.2
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2302,7 +2302,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2310,7 +2310,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2318,9 +2318,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2340,14 +2340,14 @@ steps:
   pull: always
   image: owncloudci/php:7.3
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.3
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2400,7 +2400,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2408,7 +2408,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2416,9 +2416,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2438,14 +2438,14 @@ steps:
   pull: always
   image: owncloudci/php:7.3
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.3
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2507,7 +2507,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2515,7 +2515,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2523,9 +2523,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2545,14 +2545,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2617,7 +2617,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2625,7 +2625,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2633,9 +2633,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2655,14 +2655,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2727,7 +2727,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2735,7 +2735,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2743,9 +2743,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2765,14 +2765,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2826,7 +2826,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2834,7 +2834,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2842,9 +2842,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2864,10 +2864,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/files_primary_s3.git /drone/src/apps/files_primary_s3
-  - cd /drone/src/apps/files_primary_s3
+  - git clone https://github.com/owncloud/files_primary_s3.git /drone/0/apps/files_primary_s3
+  - cd /drone/0/apps/files_primary_s3
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e files_primary_s3
   - php occ a:l
@@ -2876,21 +2876,21 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - cp /drone/src/apps/files_primary_s3/tests/drone/scality.config.php /drone/src/config
+  - cp /drone/0/apps/files_primary_s3/tests/drone/scality.config.php /drone/0/config
   - php ./occ s3:create-bucket owncloud --accept-warning
 
 - name: owncloud-permissions
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: phpunit-tests
   pull: always
@@ -2930,7 +2930,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -2955,7 +2955,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -2963,7 +2963,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -2971,9 +2971,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -2993,10 +2993,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3005,14 +3005,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -3040,7 +3040,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -3071,7 +3071,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3096,7 +3096,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -3104,7 +3104,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -3112,9 +3112,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -3134,10 +3134,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3146,14 +3146,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -3181,7 +3181,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -3212,7 +3212,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3237,7 +3237,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -3245,7 +3245,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -3253,9 +3253,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -3275,10 +3275,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3287,14 +3287,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -3322,7 +3322,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -3353,7 +3353,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3378,7 +3378,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -3386,7 +3386,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -3394,9 +3394,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -3416,10 +3416,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3428,14 +3428,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -3463,7 +3463,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -3494,7 +3494,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3519,7 +3519,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -3527,7 +3527,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -3535,9 +3535,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -3557,10 +3557,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3569,14 +3569,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -3604,7 +3604,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -3635,7 +3635,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3660,7 +3660,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -3668,7 +3668,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -3676,9 +3676,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -3698,10 +3698,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3710,14 +3710,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -3745,7 +3745,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -3776,7 +3776,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3801,7 +3801,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -3809,7 +3809,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -3817,9 +3817,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -3841,10 +3841,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -3853,14 +3853,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: install-federated
   pull: always
@@ -3926,7 +3926,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: federated
   pull: always
@@ -3973,7 +3973,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -3998,7 +3998,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4006,7 +4006,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4014,9 +4014,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4038,10 +4038,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4050,14 +4050,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: install-federated
   pull: always
@@ -4123,7 +4123,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: federated
   pull: always
@@ -4170,7 +4170,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -4195,7 +4195,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4203,7 +4203,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4211,9 +4211,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4233,10 +4233,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4245,14 +4245,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -4280,7 +4280,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -4311,7 +4311,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -4336,7 +4336,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4344,7 +4344,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4352,9 +4352,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4374,10 +4374,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4386,14 +4386,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -4421,7 +4421,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -4452,7 +4452,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -4477,7 +4477,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4485,7 +4485,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4493,9 +4493,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4515,10 +4515,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4527,14 +4527,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -4562,7 +4562,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -4593,7 +4593,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -4618,7 +4618,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4626,7 +4626,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4634,9 +4634,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4656,10 +4656,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4668,14 +4668,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -4703,7 +4703,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -4734,7 +4734,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -4759,7 +4759,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4767,7 +4767,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4775,9 +4775,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4797,10 +4797,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4809,14 +4809,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -4844,7 +4844,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -4875,7 +4875,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -4900,7 +4900,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -4908,7 +4908,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -4916,9 +4916,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -4938,10 +4938,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -4950,14 +4950,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -4985,7 +4985,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5016,7 +5016,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5041,7 +5041,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5049,7 +5049,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5057,9 +5057,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5079,10 +5079,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5091,14 +5091,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5126,7 +5126,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5157,7 +5157,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5182,7 +5182,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5190,7 +5190,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5198,9 +5198,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5220,10 +5220,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5232,14 +5232,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5267,7 +5267,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5298,7 +5298,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5323,7 +5323,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5331,7 +5331,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5339,9 +5339,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5361,10 +5361,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5373,14 +5373,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5408,7 +5408,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5439,7 +5439,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5464,7 +5464,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5472,7 +5472,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5480,9 +5480,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5502,10 +5502,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5514,14 +5514,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5549,7 +5549,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5580,7 +5580,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5605,7 +5605,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5613,7 +5613,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5621,9 +5621,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5643,10 +5643,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5655,10 +5655,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/notifications.git /drone/src/apps/notifications
-  - cd /drone/src/apps/notifications
+  - git clone https://github.com/owncloud/notifications.git /drone/0/apps/notifications
+  - cd /drone/0/apps/notifications
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e notifications
   - php occ a:l
@@ -5667,14 +5667,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5702,7 +5702,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5733,7 +5733,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5758,7 +5758,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5766,7 +5766,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5774,9 +5774,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5796,10 +5796,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5808,14 +5808,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5843,7 +5843,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -5874,7 +5874,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -5899,7 +5899,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -5907,7 +5907,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -5915,9 +5915,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -5937,10 +5937,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -5949,14 +5949,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -5984,7 +5984,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6015,7 +6015,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6040,7 +6040,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6048,7 +6048,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6056,9 +6056,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6078,10 +6078,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6090,14 +6090,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6125,7 +6125,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6156,7 +6156,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6181,7 +6181,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6189,7 +6189,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6197,9 +6197,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6219,10 +6219,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6231,14 +6231,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6266,7 +6266,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6297,7 +6297,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6322,7 +6322,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6330,7 +6330,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6338,9 +6338,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6360,10 +6360,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6372,14 +6372,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6407,7 +6407,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6438,7 +6438,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6463,7 +6463,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6471,7 +6471,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6479,9 +6479,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6501,10 +6501,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6513,14 +6513,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6548,7 +6548,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6579,7 +6579,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6604,7 +6604,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6612,7 +6612,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6620,9 +6620,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6642,10 +6642,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6654,14 +6654,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6689,7 +6689,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6720,7 +6720,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6745,7 +6745,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6753,7 +6753,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6761,9 +6761,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6783,10 +6783,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6795,14 +6795,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6830,7 +6830,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -6861,7 +6861,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -6886,7 +6886,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -6894,7 +6894,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -6902,9 +6902,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -6924,10 +6924,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -6936,14 +6936,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -6971,7 +6971,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -7002,7 +7002,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7027,7 +7027,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7035,7 +7035,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7043,9 +7043,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7065,10 +7065,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7077,14 +7077,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: cli-acceptance-tests
   pull: always
@@ -7113,7 +7113,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -7144,7 +7144,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7169,7 +7169,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7177,7 +7177,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7185,9 +7185,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7207,10 +7207,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7219,14 +7219,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: cli-acceptance-tests
   pull: always
@@ -7255,7 +7255,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -7286,7 +7286,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7311,7 +7311,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7319,7 +7319,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7327,9 +7327,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7349,10 +7349,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7361,14 +7361,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: cli-acceptance-tests
   pull: always
@@ -7397,7 +7397,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -7432,7 +7432,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7457,7 +7457,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7465,7 +7465,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7473,9 +7473,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7495,10 +7495,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7507,14 +7507,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: cli-acceptance-tests
   pull: always
@@ -7543,7 +7543,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -7574,7 +7574,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7599,7 +7599,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7607,7 +7607,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7615,9 +7615,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7637,10 +7637,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7649,14 +7649,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: local-acceptance-tests
   pull: always
@@ -7685,7 +7685,7 @@ services:
     APACHE_SSL_CERT: /drone/server.crt
     APACHE_SSL_CERT_CN: server
     APACHE_SSL_KEY: /drone/server.key
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -7716,7 +7716,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7741,7 +7741,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7749,7 +7749,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7757,9 +7757,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7779,10 +7779,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7791,14 +7791,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -7827,7 +7827,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -7868,7 +7868,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -7893,7 +7893,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -7901,7 +7901,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -7909,9 +7909,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -7931,10 +7931,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -7943,14 +7943,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -7979,7 +7979,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8020,7 +8020,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8045,7 +8045,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8053,7 +8053,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8061,9 +8061,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8083,10 +8083,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8095,14 +8095,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -8131,7 +8131,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8168,7 +8168,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8193,7 +8193,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8201,7 +8201,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8209,9 +8209,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8231,10 +8231,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8243,14 +8243,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -8279,7 +8279,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8316,7 +8316,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8341,7 +8341,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8349,7 +8349,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8357,9 +8357,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8379,10 +8379,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8391,14 +8391,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -8427,7 +8427,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8464,7 +8464,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8489,7 +8489,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8497,7 +8497,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8505,9 +8505,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8527,10 +8527,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8539,14 +8539,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -8575,7 +8575,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8616,7 +8616,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8641,7 +8641,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8649,7 +8649,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8657,9 +8657,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8679,10 +8679,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8691,14 +8691,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -8727,7 +8727,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8764,7 +8764,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8789,7 +8789,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8797,7 +8797,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8805,9 +8805,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8827,10 +8827,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8839,14 +8839,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -8875,7 +8875,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -8916,7 +8916,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -8941,7 +8941,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -8949,7 +8949,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -8957,9 +8957,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -8979,10 +8979,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -8991,14 +8991,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -9027,7 +9027,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -9064,7 +9064,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -9089,7 +9089,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -9097,7 +9097,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -9105,9 +9105,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -9127,10 +9127,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -9139,14 +9139,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -9175,7 +9175,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -9212,7 +9212,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -9237,7 +9237,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -9245,7 +9245,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -9253,9 +9253,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -9275,10 +9275,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -9287,14 +9287,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -9323,7 +9323,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -9360,7 +9360,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -9385,7 +9385,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -9393,7 +9393,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -9401,9 +9401,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -9423,10 +9423,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -9435,14 +9435,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -9471,7 +9471,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -9508,7 +9508,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -9533,7 +9533,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -9541,7 +9541,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -9549,9 +9549,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -9571,10 +9571,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -9583,14 +9583,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -9619,7 +9619,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -9656,7 +9656,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -9681,7 +9681,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -9689,7 +9689,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -9697,9 +9697,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -9721,10 +9721,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -9733,14 +9733,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: install-federated
   pull: always
@@ -9807,7 +9807,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: federated
   pull: always
@@ -9860,7 +9860,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -9885,7 +9885,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -9893,7 +9893,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -9901,9 +9901,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -9925,10 +9925,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -9937,14 +9937,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: install-federated
   pull: always
@@ -10011,7 +10011,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: federated
   pull: always
@@ -10064,7 +10064,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -10089,7 +10089,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -10097,7 +10097,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -10105,9 +10105,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -10127,10 +10127,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -10139,14 +10139,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -10175,7 +10175,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -10216,7 +10216,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -10241,7 +10241,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -10249,7 +10249,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -10257,9 +10257,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -10279,10 +10279,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -10291,14 +10291,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -10327,7 +10327,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -10368,7 +10368,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -10393,7 +10393,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -10401,7 +10401,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -10409,9 +10409,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -10431,10 +10431,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -10443,10 +10443,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/notifications.git /drone/src/apps/notifications
-  - cd /drone/src/apps/notifications
+  - git clone https://github.com/owncloud/notifications.git /drone/0/apps/notifications
+  - cd /drone/0/apps/notifications
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e notifications
   - php occ a:l
@@ -10455,14 +10455,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -10491,7 +10491,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -10532,7 +10532,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -10557,7 +10557,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -10565,7 +10565,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -10573,9 +10573,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -10595,10 +10595,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -10607,14 +10607,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -10643,7 +10643,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -10684,7 +10684,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -10709,7 +10709,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -10717,7 +10717,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -10725,9 +10725,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -10747,10 +10747,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -10759,14 +10759,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -10795,7 +10795,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -10832,7 +10832,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -10857,7 +10857,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -10865,7 +10865,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -10873,9 +10873,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -10895,10 +10895,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -10907,14 +10907,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -10943,7 +10943,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -10980,7 +10980,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11005,7 +11005,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11013,7 +11013,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11021,9 +11021,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11043,10 +11043,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11055,14 +11055,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11091,7 +11091,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -11128,7 +11128,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11153,7 +11153,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11161,7 +11161,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11169,9 +11169,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11191,10 +11191,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11203,14 +11203,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11239,7 +11239,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -11276,7 +11276,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11301,7 +11301,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11309,7 +11309,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11317,9 +11317,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11339,10 +11339,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11351,14 +11351,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11387,7 +11387,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -11424,7 +11424,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11449,7 +11449,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11457,7 +11457,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11465,9 +11465,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11487,10 +11487,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11499,14 +11499,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11535,7 +11535,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -11576,7 +11576,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11601,7 +11601,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11609,7 +11609,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11617,9 +11617,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11639,10 +11639,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11651,14 +11651,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11687,7 +11687,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -11728,7 +11728,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11753,7 +11753,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11761,7 +11761,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11769,9 +11769,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11791,10 +11791,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11803,14 +11803,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11839,7 +11839,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -11880,7 +11880,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -11905,7 +11905,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -11913,7 +11913,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -11921,9 +11921,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -11943,10 +11943,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -11955,14 +11955,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -11991,7 +11991,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -12032,7 +12032,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -12057,7 +12057,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -12065,7 +12065,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -12073,9 +12073,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -12095,10 +12095,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -12107,14 +12107,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -12145,7 +12145,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: firefox
   pull: always
@@ -12187,7 +12187,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -12212,7 +12212,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -12220,7 +12220,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -12228,9 +12228,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -12250,10 +12250,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -12262,14 +12262,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -12300,7 +12300,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: firefox
   pull: always
@@ -12342,7 +12342,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -12367,7 +12367,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -12375,7 +12375,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -12383,9 +12383,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -12405,10 +12405,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -12417,14 +12417,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -12455,7 +12455,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: firefox
   pull: always
@@ -12497,7 +12497,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -12522,7 +12522,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -12530,7 +12530,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -12538,9 +12538,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -12561,10 +12561,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -12573,14 +12573,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -12611,7 +12611,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -12658,7 +12658,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -12683,7 +12683,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -12691,7 +12691,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -12699,9 +12699,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -12722,10 +12722,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -12734,14 +12734,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -12772,7 +12772,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -12819,7 +12819,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -12844,7 +12844,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -12852,7 +12852,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -12860,9 +12860,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -12883,10 +12883,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -12895,14 +12895,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: webui-acceptance-tests
   pull: always
@@ -12933,7 +12933,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: chrome
   pull: always
@@ -12980,7 +12980,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -13005,7 +13005,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -13013,7 +13013,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -13021,9 +13021,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -13044,10 +13044,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -13056,14 +13056,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -13089,7 +13089,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -13126,7 +13126,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -13151,7 +13151,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -13159,7 +13159,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -13167,9 +13167,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -13190,10 +13190,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -13202,14 +13202,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -13235,7 +13235,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
@@ -13272,7 +13272,7 @@ platform:
 
 workspace:
   base: /drone
-  path: src
+  path: 0
 
 steps:
 - name: cache-restore
@@ -13297,7 +13297,7 @@ steps:
   commands:
   - make install-composer-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: vendorbin-install
   pull: always
@@ -13305,7 +13305,7 @@ steps:
   commands:
   - make vendor-bin-deps
   environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
+    COMPOSER_HOME: /drone/0/.cache/composer
 
 - name: yarn-install
   pull: always
@@ -13313,9 +13313,9 @@ steps:
   commands:
   - make install-nodejs-deps
   environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
+    NPM_CONFIG_CACHE: /drone/0/.cache/npm
+    YARN_CACHE_FOLDER: /drone/0/.cache/yarn
+    bower_storage__packages: /drone/0/.cache/bower
 
 - name: install-server
   pull: always
@@ -13336,10 +13336,10 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
-  - cd /drone/src/apps/testing
+  - git clone https://github.com/owncloud/testing.git /drone/0/apps/testing
+  - cd /drone/0/apps/testing
   - composer install
-  - cd /drone/src
+  - cd /drone/0
   - php occ a:l
   - php occ a:e testing
   - php occ a:l
@@ -13348,14 +13348,14 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - chown www-data -R /drone/src
+  - chown www-data -R /drone/0
 
 - name: owncloud-logfile
   pull: always
   image: owncloudci/php:7.1
   detach: true
   commands:
-  - tail -f /drone/src/data/owncloud.log
+  - tail -f /drone/0/data/owncloud.log
 
 - name: api-acceptance-tests
   pull: always
@@ -13381,7 +13381,7 @@ services:
   - -D
   - FOREGROUND
   environment:
-    APACHE_WEBROOT: /drone/src
+    APACHE_WEBROOT: /drone/0
 
 - name: mariadb
   image: mariadb:10.2
