@@ -52,6 +52,7 @@ use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\IAvatarManager;
 use OCP\Security\ISecureRandom;
+use OCP\UserEmailException;
 use OCP\UserTokenException;
 use OCP\UserTokenExpiredException;
 use OCP\UserTokenMismatchException;
@@ -1068,7 +1069,14 @@ class UsersController extends Controller {
 			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
 				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) ||
 				($this->userSession->getUser()->getUID() === $id)) {
-			$user->setEMailAddress($mailAddress);
+			try {
+				$user->setEMailAddress($mailAddress);
+			} catch (UserEmailException $exception) {
+				return new JSONResponse([
+					'error' => 'cannotSetEmailAddress',
+					'message' => $this->l10n->t($exception->getMessage())
+				], HTTP::STATUS_CONFLICT);
+			}
 			if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
 				$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
 			}

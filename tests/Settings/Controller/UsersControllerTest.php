@@ -33,6 +33,7 @@ use OC\SubAdmin;
 use OC\Mail\Message;
 use OCP\IUser;
 use OC\Group\Manager;
+use OCP\UserEmailException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -2068,6 +2069,29 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$response = $this->container['UsersController']->setMailAddress($user->getUID(), $mailAddress);
 		$this->assertSame($responseCode, $response->getStatus());
+	}
+
+	public function testEmailAddressDuplicate() {
+		$this->container['IsAdmin'] = true;
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('foo'));
+
+		$this->container['UserManager']
+			->expects($this->once())
+			->method('get')
+			->with('foo')
+			->willReturn($user);
+
+		$user->method('setEMailAddress')
+			->willThrowException(new UserEmailException('email already exists'));
+
+		$response = $this->container['UsersController']->setEmailAddress($user->getUID(), 'foo@bar.com');
+		$this->assertEquals(Http::STATUS_CONFLICT, $response->getStatus());
 	}
 
 	public function testStatsAdmin() {

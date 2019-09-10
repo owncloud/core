@@ -853,7 +853,7 @@ $(document).ready(function () {
 						$input.removeAttr('disabled')
 							.triggerHandler('blur'); // needed instead of $input.blur() for Firefox
 					}).fail(function (result) {
-						OC.Notification.showTemporary(result.responseJSON.data.message);
+						OC.Notification.showTemporary(result.responseJSON.message);
 						$td.find('.loading-small').css('display', '');
 						$input.removeAttr('disabled')
 							.css('padding-right', '6px');

@@ -74,6 +74,21 @@ class UserTest extends TestCase {
 		$this->user = new User($this->account, $this->accountMapper, $this->emitter, $this->config, $this->urlGenerator, $this->eventDispatcher);
 	}
 
+	public function testEmailAddress() {
+		$this->user->setEMailAddress('foo@bar.com');
+		$this->assertEquals('foo@bar.com', $this->user->getEMailAddress());
+	}
+
+	/**
+	 * @expectedException \OCP\UserEmailException
+	 * @expectedExceptionMessage email: foo@bar.com is already used. Kindly try different email address.
+	 */
+	public function testEmailAddressWithDuplicateFail() {
+		$this->accountMapper->method('update')
+			->willThrowException(new \Exception());
+		$this->user->setEMailAddress('foo@bar.com');
+	}
+
 	public function testDisplayName() {
 		$this->account->setDisplayName('Foo');
 		$this->assertEquals('Foo', $this->user->getDisplayName());

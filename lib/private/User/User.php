@@ -44,6 +44,7 @@ use OCP\IUserBackend;
 use OCP\IUserSession;
 use OCP\PreConditionNotMetException;
 use OCP\User\IChangePasswordBackend;
+use OCP\UserEmailException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -202,13 +203,17 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
-		$mailAddress = \trim($mailAddress);
-		if ($mailAddress === $this->account->getEmail()) {
-			return;
+		try {
+			$mailAddress = \trim($mailAddress);
+			if ($mailAddress === $this->account->getEmail()) {
+				return;
+			}
+			$this->account->setEmail($mailAddress);
+			$this->mapper->update($this->account);
+			$this->triggerChange('eMailAddress', $mailAddress);
+		} catch (\Exception $exception) {
+			throw new UserEmailException("email: {$mailAddress} is already used. Kindly try different email address.");
 		}
-		$this->account->setEmail($mailAddress);
-		$this->mapper->update($this->account);
-		$this->triggerChange('eMailAddress', $mailAddress);
 	}
 
 	/**
