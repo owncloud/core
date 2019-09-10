@@ -90,12 +90,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @var string the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
-	
+
 	/**
 	 * @var array the changes made to capabilities for the test scenario
 	 */
 	private $savedCapabilitiesChanges = [];
-	
+
 	/**
 	 * table of capabilities to map the human readable terms from the settings page
 	 * to terms in the capabilities XML and testing app
@@ -458,7 +458,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$title, $this->generalErrorPage->getPageTitle()
 		);
 	}
-	
+
 	/**
 	 * @Then an error should be displayed on the general error webUI page saying :error
 	 *
@@ -553,7 +553,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				"$value can only be 'disabled' or 'enabled'"
 			);
 		}
-		
+
 		$capability = $this->capabilities[\strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
 			$this->featureContext->getBaseUrl(),
@@ -664,7 +664,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		
+
 		$response = AppConfigHelper::getCapabilities(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -797,7 +797,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				}
 			}
 		);
-		
+
 		if ($this->oldCSRFSetting === "") {
 			$this->featureContext->deleteSystemConfig('csrf.disabled');
 		} elseif ($this->oldCSRFSetting !== null) {
@@ -805,7 +805,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'csrf.disabled', $this->oldCSRFSetting, 'boolean'
 			);
 		}
-		
+
 		foreach ($this->createdFiles as $file) {
 			\unlink($file);
 		}

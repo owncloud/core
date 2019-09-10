@@ -165,6 +165,20 @@
 			options = options || {};
 			properties = _.extend({}, properties);
 
+			// Set default expiration date
+			if (
+				this.configModel.isDefaultExpireDateUserEnabled() && (
+					shareType === OC.Share.SHARE_TYPE_USER ||
+					shareType === OC.Share.SHARE_TYPE_GUEST ||
+					shareType === OC.Share.SHARE_TYPE_REMOTE )
+				) {
+				properties.expireDate = this.configModel.getDefaultExpireDateUser('YYYY-MM-DD')
+			}
+
+			else if (this.configModel.isDefaultExpireDateGroupEnabled() && shareType === OC.Share.SHARE_TYPE_GROUP) {
+				properties.expireDate = this.configModel.getDefaultExpireDateGroup('YYYY-MM-DD')
+			}
+
 			// Get default permissions
 			var permissions = properties.permissions || OC.PERMISSION_ALL;
 			properties.permissions = permissions & this.getDefaultPermissions();
@@ -205,7 +219,10 @@
 
 		updateShare: function(shareId, properties, options) {
 			var self = this;
-			options = options || {};
+
+			options = _.defaults(options, {
+				silent: false
+			})
 
 			// Extend attributes for update share
 			properties.attributes = this._handleUpdateShareAttributes(shareId, properties, options);
@@ -217,6 +234,7 @@
 				dataType: 'json'
 			}).done(function() {
 				self.fetch({
+					silent: options.silent,
 					success: function() {
 						if (_.isFunction(options.success)) {
 							options.success(self);
@@ -443,6 +461,15 @@
 			return share.share_type;
 		},
 
+		getExpirationDate: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return (share.expiration !== null) ? moment(share.expiration).format('DD-MM-YYYY') : null;
+		},
+
 		/**
 		 * whether permission is in permission bitmap
 		 *
@@ -642,14 +669,20 @@
 			return superShare;
 		},
 
-		fetch: function() {
+		fetch: function(options) {
 			var model = this;
+
+			options = _.defaults(options, {
+				silent: false
+			})
+
 			this.trigger('request', this);
 
 			var deferred = $.when(
 				this._fetchShares(),
 				this._fetchReshare()
 			);
+
 			deferred.done(function(data1, data2) {
 				model.trigger('sync', 'GET', this);
 				var sharesMap = {};
@@ -665,7 +698,9 @@
 				model.set(model.parse({
 					shares: sharesMap,
 					reshare: reshare
-				}));
+				}), {
+					silent: options.silent
+				});
 			});
 
 			return deferred;

@@ -24,6 +24,7 @@ namespace OCA\Files_Sharing\Tests;
 
 use OCA\Files_Sharing\Capabilities;
 use OCP\IL10N;
+use OCP\Share\IManager;
 
 /**
  * Class CapabilitiesTest
@@ -39,6 +40,8 @@ class CapabilitiesTest extends \Test\TestCase {
 
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
+	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
+	private $shareManager;
 
 	/**
 	 *
@@ -56,6 +59,8 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->l10n = $this->createMock(IL10N::class);
 		$this->l10n->method('t')
 			->willReturn('Public link');
+
+		$this->shareManager = $this->createMock(IManager::class);
 	}
 
 	/**
@@ -81,7 +86,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	private function getResults(array $map) {
 		$stub = $this->getMockBuilder('\OCP\IConfig')->disableOriginalConstructor()->getMock();
 		$stub->method('getAppValue')->will($this->returnValueMap($map));
-		$cap = new Capabilities($stub, $this->userSearch, $this->l10n);
+		$cap = new Capabilities($this->shareManager, $stub, $this->userSearch, $this->l10n);
 		$result = $this->getFilesSharingPart($cap->getCapabilities());
 		return $result;
 	}

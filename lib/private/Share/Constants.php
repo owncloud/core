@@ -32,6 +32,15 @@ class Constants {
 	const SHARE_TYPE_CONTACT = 5; // ToDo Check if it is still in use otherwise remove it
 	const SHARE_TYPE_REMOTE = 6;  // ToDo Check if it is still in use otherwise remove it
 
+	const CONVERT_SHARE_TYPE_TO_STRING = [
+		self::SHARE_TYPE_USER => 'user',
+		self::SHARE_TYPE_GROUP => 'group',
+		self::SHARE_TYPE_LINK => 'link',
+		self::SHARE_TYPE_GUEST => 'guest',
+		self::SHARE_TYPE_CONTACT => 'contact',
+		self::SHARE_TYPE_REMOTE => 'remote',
+	];
+
 	/**
 	 * Values for the "accepted" field of a share.
 	 */

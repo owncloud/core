@@ -552,8 +552,6 @@ Feature: sharing
     When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    When user "user0" gets the info of the last share using the sharing API
-    Then the last response should be empty
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |

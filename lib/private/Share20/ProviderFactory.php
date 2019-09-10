@@ -96,6 +96,13 @@ class ProviderFactory implements IProviderFactory {
 		return $this->federatedProvider;
 	}
 
+	public function getProviders() {
+		return [
+			$this->defaultShareProvider(),
+			$this->federatedShareProvider()
+		];
+	}
+
 	/**
 	 * @inheritdoc
 	 */

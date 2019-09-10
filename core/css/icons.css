@@ -321,6 +321,10 @@ img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-
 	background-image: url('../img/actions/starred.svg');
 }
 
+.icon-time {
+	background-image: url('../img/actions/time.svg');
+}
+
 .icon-toggle {
 	background-image: url('../img/actions/toggle.svg');
 }
