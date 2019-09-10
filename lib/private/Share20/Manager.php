@@ -657,6 +657,9 @@ class Manager implements IManager {
 		// Verify if there are any issues with the path
 		$this->pathCreateChecks($share->getNode());
 
+		//Verify the expiration date
+		$this->validateExpirationDate($share);
+
 		/*
 		 * On creation of a share the owner is always the owner of the path
 		 * Except for mounted federated shares.
@@ -694,9 +697,6 @@ class Manager implements IManager {
 					\OCP\Security\ISecureRandom::CHAR_DIGITS
 				)
 			);
-
-			//Verify the expiration date
-			$this->validateExpirationDate($share);
 
 			//Verify the password
 			if ($this->passwordMustBeEnforced($share->getPermissions()) && $share->getPassword() === null) {
@@ -922,6 +922,12 @@ class Manager implements IManager {
 
 		$this->generalChecks($share);
 
+		//Verify the expiration date
+		$this->validateExpirationDate($share);
+		if ($share->getExpirationDate() != $originalShare->getExpirationDate()) {
+			$expirationDateUpdated = true;
+		}
+
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			$this->userCreateChecks($share);
 		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
@@ -945,13 +951,6 @@ class Manager implements IManager {
 						($share->getShouldHashPassword() === true)) {
 					$share->setPassword($this->hasher->hash($share->getPassword()));
 				}
-			}
-
-			//Verify the expiration date
-			$this->validateExpirationDate($share);
-
-			if ($share->getExpirationDate() != $originalShare->getExpirationDate()) {
-				$expirationDateUpdated = true;
 			}
 		}
 
@@ -1191,9 +1190,7 @@ class Manager implements IManager {
 
 			$queriedShares = $provider->getAllSharesBy($userId, $shareTypeArray, $nodeIDs, $reshares);
 			foreach ($queriedShares as $queriedShare) {
-				if ($queriedShare->getShareType() === \OCP\Share::SHARE_TYPE_LINK && $queriedShare->getExpirationDate() !== null &&
-					$queriedShare->getExpirationDate() <= $today
-				) {
+				if ($queriedShare->getExpirationDate() !== null && $queriedShare->getExpirationDate() <= $today) {
 					try {
 						$this->deleteShare($queriedShare);
 					} catch (NotFoundException $e) {
@@ -1226,54 +1223,50 @@ class Manager implements IManager {
 		 * Work around so we don't return expired shares but still follow
 		 * proper pagination.
 		 */
-		if ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
-			$shares2 = [];
-			$today = new \DateTime();
+		$shares2 = [];
+		$today = new \DateTime();
 
-			while (true) {
-				$added = 0;
-				foreach ($shares as $share) {
-					// Check if the share is expired and if so delete it
-					if ($share->getExpirationDate() !== null &&
-						$share->getExpirationDate() <= $today
-					) {
-						try {
-							$this->deleteShare($share);
-						} catch (NotFoundException $e) {
-							//Ignore since this basically means the share is deleted
-						}
-						continue;
+		while (true) {
+			$added = 0;
+			foreach ($shares as $share) {
+				// Check if the share is expired and if so delete it
+				if ($share->getExpirationDate() !== null && $share->getExpirationDate() <= $today) {
+					try {
+						$this->deleteShare($share);
+					} catch (NotFoundException $e) {
+						//Ignore since this basically means the share is deleted
 					}
-					$added++;
-					$shares2[] = $share;
-
-					if (\count($shares2) === $limit) {
-						break;
-					}
+					continue;
 				}
+				$added++;
+				$shares2[] = $share;
 
 				if (\count($shares2) === $limit) {
 					break;
 				}
-
-				// If there was no limit on the select we are done
-				if ($limit === -1) {
-					break;
-				}
-
-				$offset += $added;
-
-				// Fetch again $limit shares
-				$shares = $provider->getSharesBy($userId, $shareType, $path, $reshares, $limit, $offset);
-
-				// No more shares means we are done
-				if (empty($shares)) {
-					break;
-				}
 			}
 
-			$shares = $shares2;
+			if (\count($shares2) === $limit) {
+				break;
+			}
+
+			// If there was no limit on the select we are done
+			if ($limit === -1) {
+				break;
+			}
+
+			$offset += $added;
+
+			// Fetch again $limit shares
+			$shares = $provider->getSharesBy($userId, $shareType, $path, $reshares, $limit, $offset);
+
+			// No more shares means we are done
+			if (empty($shares)) {
+				break;
+			}
 		}
+
+		$shares = $shares2;
 
 		return $shares;
 	}
@@ -1284,7 +1277,58 @@ class Manager implements IManager {
 	public function getSharedWith($userId, $shareType, $node = null, $limit = 50, $offset = 0) {
 		$provider = $this->factory->getProviderForType($shareType);
 
-		return $provider->getSharedWith($userId, $shareType, $node, $limit, $offset);
+		$shares = $provider->getSharedWith($userId, $shareType, $node, $limit, $offset);
+
+		/*
+		 * Work around so we don't return expired shares but still follow
+		 * proper pagination.
+		 */
+		$shares2 = [];
+		$today = new \DateTime();
+
+		while (true) {
+			$added = 0;
+			foreach ($shares as $share) {
+				// Check if the share is expired and if so delete it
+				if ($share->getExpirationDate() !== null && $share->getExpirationDate() <= $today) {
+					try {
+						$this->deleteShare($share);
+					} catch (NotFoundException $e) {
+						//Ignore since this basically means the share is deleted
+					}
+					continue;
+				}
+				$added++;
+				$shares2[] = $share;
+
+				if (\count($shares2) === $limit) {
+					break;
+				}
+			}
+
+			if (\count($shares2) === $limit) {
+				break;
+			}
+
+			// If there was no limit on the select we are done
+			if ($limit === -1) {
+				break;
+			}
+
+			$offset += $added;
+
+			// Fetch again $limit shares
+			$shares = $provider->getSharesBy($userId, $shareType, $path, $reshares, $limit, $offset);
+
+			// No more shares means we are done
+			if (empty($shares)) {
+				break;
+			}
+		}
+
+		$shares = $shares2;
+
+		return $shares;
 	}
 
 	/**
@@ -1295,13 +1339,25 @@ class Manager implements IManager {
 
 		// Aggregate all required $shareTypes by mapping provider to supported shareTypes
 		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
+
+		$today = new \DateTime();
 		foreach ($providerIdMap as $providerId => $shareTypeArray) {
 			// Get provider from cache
 			$provider = $this->factory->getProvider($providerId);
 
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
-			$shares = \array_merge($shares, $queriedShares);
+			foreach ($queriedShares as $queriedShare) {
+				if ($queriedShare->getExpirationDate() !== null && $queriedShare->getExpirationDate() <= $today) {
+					try {
+						$this->deleteShare($queriedShare);
+					} catch (NotFoundException $e) {
+						//Ignore since this basically means the share is deleted
+					}
+					continue;
+				}
+				$shares[] = $queriedShare;
+			}
 		}
 
 		return $shares;
@@ -1321,9 +1377,7 @@ class Manager implements IManager {
 		$share = $provider->getShareById($id, $recipient);
 
 		// Validate link shares expiration date
-		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK &&
-			$share->getExpirationDate() !== null &&
-			$share->getExpirationDate() <= new \DateTime()) {
+		if ($share->getExpirationDate() !== null && $share->getExpirationDate() <= new \DateTime()) {
 			$this->deleteShare($share);
 			throw new ShareNotFound();
 		}
@@ -1381,8 +1435,7 @@ class Manager implements IManager {
 			$share = $provider->getShareByToken($token);
 		}
 
-		if ($share->getExpirationDate() !== null &&
-			$share->getExpirationDate() <= new \DateTime()) {
+		if ($share->getExpirationDate() !== null && $share->getExpirationDate() <= new \DateTime()) {
 			$this->deleteShare($share);
 			throw new ShareNotFound();
 		}

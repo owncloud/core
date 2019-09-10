@@ -196,6 +196,11 @@ class Share20OcsController extends OCSController {
 		$result['file_parent'] = $node->getParent()->getId();
 		$result['file_target'] = $share->getTarget();
 
+		$expiration = $share->getExpirationDate();
+		if ($expiration !== null) {
+			$result['expiration'] = $expiration->format('Y-m-d 00:00:00');
+		}
+
 		if ($share->getShareType() === Share::SHARE_TYPE_USER) {
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			$result['share_with'] = $share->getSharedWith();
@@ -220,11 +225,6 @@ class Share20OcsController extends OCSController {
 			if ($share->getToken() !== null) {
 				$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
 			}
-
-			$expiration = $share->getExpirationDate();
-			if ($expiration !== null) {
-				$result['expiration'] = $expiration->format('Y-m-d 00:00:00');
-			}
 		} elseif ($share->getShareType() === Share::SHARE_TYPE_REMOTE) {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $share->getSharedWith();
@@ -235,7 +235,7 @@ class Share20OcsController extends OCSController {
 
 		$result['attributes'] = null;
 		if ($attributes = $share->getAttributes()) {
-			$result['attributes'] =  \json_encode($attributes->toArray());
+			$result['attributes'] = \json_encode($attributes->toArray());
 		}
 
 		return $result;
@@ -377,6 +377,18 @@ class Share20OcsController extends OCSController {
 			$permissions &= ~($permissions & ~$path->getPermissions());
 		}
 
+		//Expire date
+		$expireDate = $this->request->getParam('expireDate', '');
+		if ($expireDate !== '') {
+			try {
+				$expireDate = $this->parseDate($expireDate);
+				$share->setExpirationDate($expireDate);
+			} catch (Exception $e) {
+				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+				return new Result(null, 404, $this->l->t('Invalid date, date format must be YYYY-MM-DD'));
+			}
+		}
+
 		$shareWith = $this->request->getParam('shareWith', null);
 
 		$globalAutoAccept = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
@@ -470,19 +482,6 @@ class Share20OcsController extends OCSController {
 
 			if ($password !== '') {
 				$share->setPassword($password);
-			}
-
-			//Expire date
-			$expireDate = $this->request->getParam('expireDate', '');
-
-			if ($expireDate !== '') {
-				try {
-					$expireDate = $this->parseDate($expireDate);
-					$share->setExpirationDate($expireDate);
-				} catch (Exception $e) {
-					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
-					return new Result(null, 404, $this->l->t('Invalid date, date format must be YYYY-MM-DD'));
-				}
 			}
 		} elseif ($shareType === Share::SHARE_TYPE_REMOTE) {
 			if (!$this->shareManager->outgoingServer2ServerSharesAllowed()) {
@@ -822,18 +821,6 @@ class Share20OcsController extends OCSController {
 				$share->setPermissions($newPermissions);
 			}
 
-			if ($expireDate === '') {
-				$share->setExpirationDate(null);
-			} elseif ($expireDate !== null) {
-				try {
-					$expireDate = $this->parseDate($expireDate);
-				} catch (Exception $e) {
-					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
-					return new Result(null, 400, $e->getMessage());
-				}
-				$share->setExpirationDate($expireDate);
-			}
-
 			if ($password === '') {
 				$share->setPassword(null);
 			} elseif ($password !== null) {
@@ -848,6 +835,18 @@ class Share20OcsController extends OCSController {
 				$newPermissions = (int)$permissions;
 				$share->setPermissions($newPermissions);
 			}
+		}
+
+		if ($expireDate === '') {
+			$share->setExpirationDate(null);
+		} elseif ($expireDate !== null) {
+			try {
+				$expireDate = $this->parseDate($expireDate);
+			} catch (Exception $e) {
+				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+				return new Result(null, 400, $e->getMessage());
+			}
+			$share->setExpirationDate($expireDate);
 		}
 
 		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));
