@@ -254,6 +254,7 @@ class DAV extends Common {
 		// we either don't know it, or we know it exists but need more details
 		if ($cachedResponse === null || $cachedResponse === true) {
 			$this->init();
+			$response = false;
 			try {
 				// client propfind is in \OC\HTTP\Client
 				/* @phan-suppress-next-line PhanUndeclaredMethod */
@@ -274,9 +275,9 @@ class DAV extends Common {
 				if ($e->getHttpStatus() === Http::STATUS_NOT_FOUND) {
 					$this->statCache->clear($path . '/');
 					$this->statCache->set($path, false);
-					return false;
+				} else {
+					$this->convertException($e, $path);
 				}
-				$this->convertException($e, $path);
 			} catch (\Exception $e) {
 				$this->convertException($e, $path);
 			}
