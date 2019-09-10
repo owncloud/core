@@ -52,18 +52,20 @@ class SharingDialog extends OwncloudPage {
 	private $suffixToIdentifyRemoteUsers = " Federated";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
-	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
-	private $permissionsFieldByGroupName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s (group)']/..";
+	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/../..";
+	private $permissionsFieldByGroupName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s (group)']/../..";
 	private $permissionLabelXpath = ".//label[@for='%s']";
-	private $showCrudsXpath = ".//*[@class='showCruds']";
+	private $showCrudsXpath = ".//*[@class='action-item toggleShareDetails']";
 	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
 	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
 	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
 	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
-
+	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/../..//input[contains(@class, 'expiration')]";
+	private $shareWithClearExpirationFieldXpath = "/following-sibling::button[@class='removeExpiration']"; // in relation to $shareWithExpirationFieldXpath
 	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
+	private $shareWithListDetailsXpath = "//div[@class='shareWithList__details']";
 	private $userOrGroupNameSpanXpath = "//span[contains(@class,'username')]";
 	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
 	private $sharedWithGroupAndSharerName = null;
@@ -87,6 +89,122 @@ class SharingDialog extends OwncloudPage {
 			" xpath $this->shareWithFieldXpath could not find share-with-field"
 		);
 		return $shareWithField;
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @return null|NodeElement
+	 */
+	private function getExpirationFieldFor($user, $type = 'user') {
+		if ($type === "group") {
+			$user = \sprintf($this->groupFramework, $user);
+		}
+		return $this->find("xpath", \sprintf($this->shareWithExpirationFieldXpath, $user));
+	}
+
+	/**
+	 * click the dropdown button for share actions in the sidebar
+	 *
+	 * @return void
+	 */
+	public function toggleShareActionsDropDown() {
+		$showCrudsBtn = $this->find("xpath", $this->showCrudsXpath);
+		$this->assertElementNotNull(
+			$showCrudsBtn,
+			__METHOD__
+			. " xpath $this->showCrudsXpath could not find show-cruds button"
+		);
+		$showCrudsBtn->click();
+	}
+
+	/**
+	 * open the dropdown for share actions in the sidebar
+	 *
+	 * @return void
+	 */
+	public function openShareActionsDropDown() {
+		$this->toggleShareActionsDropDown();
+		$this->waitTillElementIsNotNull($this->shareWithListDetailsXpath);
+	}
+
+	/**
+	 * close the dropdown for share actions in the sidebar
+	 *
+	 * @return void
+	 */
+	public function closeShareActionsDropDown() {
+		$this->toggleShareActionsDropDown();
+		$this->waitTillElementIsNull($this->shareWithListDetailsXpath);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @return bool
+	 */
+	public function isExpirationFieldVisible($user, $type = 'user') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$visible = ($field and $field->isVisible());
+		return $visible;
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @throws \Exception
+	 * @return string
+	 */
+	public function getExpirationDateFor($user, $type = 'user') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$this->assertElementNotNull(
+			$field,
+			"Could not find expiration field for " . $type . " '$user'"
+		);
+		return $field->getValue();
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $type
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function setExpirationDateFor(Session $session, $user, $type = 'user', $value = '') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$this->assertElementNotNull(
+			$field,
+			"Could not find expiration field for " . $type . " '$user'"
+		);
+		$field->setValue($value . "\n");
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @return void
+	 */
+	public function clearExpirationDateFor(Session $session, $user, $type = 'user') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$this->assertElementNotNull(
+			$field,
+			"Could not find expiration field for " . $type . " '$user'"
+		);
+		$removeBtn = $field->find("xpath", $this->shareWithClearExpirationFieldXpath);
+		$this->assertElementNotNull(
+			$removeBtn,
+			"Could not find expiration field remove button for " . $type . " '$user'"
+		);
+		$removeBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
@@ -361,10 +479,8 @@ class SharingDialog extends OwncloudPage {
 				. " xpath $this->showCrudsXpath could not find show-cruds button for user "
 				. $shareReceiverName
 		);
+		$showCrudsBtn->click();
 		foreach ($permissions as $permission => $value) {
-			//the additional permission disappear again after they are changed
-			//so we need to open them again and again
-			$showCrudsBtn->click();
 			$value = \strtolower($value);
 
 			//to find where to click is a little bit complicated

@@ -14,17 +14,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with                 | user1             |
-      | share_with_displayname     | User One          |
-      | file_target                | /welcome.txt      |
-      | path                       | /welcome.txt      |
-      | permissions                | share,read,update |
-      | uid_owner                  | user0             |
-      | displayname_owner          | User Zero         |
-      | item_type                  | file              |
-      | mimetype                   | text/plain        |
-      | storage_id                 | ANY_VALUE         |
-      | share_type                 | user              |
+      | share_with             | user1             |
+      | share_with_displayname | User One          |
+      | file_target            | /welcome.txt      |
+      | path                   | /welcome.txt      |
+      | permissions            | share,read,update |
+      | uid_owner              | user0             |
+      | displayname_owner      | User Zero         |
+      | item_type              | file              |
+      | mimetype               | text/plain        |
+      | storage_id             | ANY_VALUE         |
+      | share_type             | user              |
     And  the downloaded content when downloading file "welcome.txt" for user "user1" with range "bytes=0-6" should be "Welcome"
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -38,17 +38,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with                 | user1                 |
-      | share_with_displayname     | User One              |
-      | file_target                | /welcome.txt          |
-      | path                       | /welcome.txt          |
-      | permissions                | <granted_permissions> |
-      | uid_owner                  | user0                 |
-      | displayname_owner          | User Zero             |
-      | item_type                  | file                  |
-      | mimetype                   | text/plain            |
-      | storage_id                 | ANY_VALUE             |
-      | share_type                 | user                  |
+      | share_with             | user1                 |
+      | share_with_displayname | User One              |
+      | file_target            | /welcome.txt          |
+      | path                   | /welcome.txt          |
+      | permissions            | <granted_permissions> |
+      | uid_owner              | user0                 |
+      | displayname_owner      | User Zero             |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | storage_id             | ANY_VALUE             |
+      | share_type             | user                  |
     Examples:
       | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
       # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
@@ -97,17 +97,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with                 | user1                |
-      | share_with_displayname     | User One             |
-      | file_target                | /FOLDER              |
-      | path                       | /FOLDER              |
-      | permissions                | all                  |
-      | uid_owner                  | user0                |
-      | displayname_owner          | User Zero            |
-      | item_type                  | folder               |
-      | mimetype                   | httpd/unix-directory |
-      | storage_id                 | ANY_VALUE            |
-      | share_type                 | user                 |
+      | share_with             | user1                |
+      | share_with_displayname | User One             |
+      | file_target            | /FOLDER              |
+      | path                   | /FOLDER              |
+      | permissions            | all                  |
+      | uid_owner              | user0                |
+      | displayname_owner      | User Zero            |
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | storage_id             | ANY_VALUE            |
+      | share_type             | user                 |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -170,17 +170,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with                 | user1             |
-      | share_with_displayname     | User One          |
-      | file_target                | /welcome.txt      |
-      | path                       | /welcome.txt      |
-      | permissions                | share,read,update |
-      | uid_owner                  | user0             |
-      | displayname_owner          | User Zero         |
-      | item_type                  | file              |
-      | mimetype                   | text/plain        |
-      | storage_id                 | ANY_VALUE         |
-      | share_type                 | user              |
+      | share_with             | user1             |
+      | share_with_displayname | User One          |
+      | file_target            | /welcome.txt      |
+      | path                   | /welcome.txt      |
+      | permissions            | share,read,update |
+      | uid_owner              | user0             |
+      | displayname_owner      | User Zero         |
+      | item_type              | file              |
+      | mimetype               | text/plain        |
+      | storage_id             | ANY_VALUE         |
+      | share_type             | user              |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -292,7 +292,7 @@ Feature: sharing
     And the administrator has enabled DAV tech_preview
     And user "user0" has uploaded file with content "user0 file" to "/PARENT/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
-      | path     | PARENT   |
+      | path | PARENT |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -357,8 +357,8 @@ Feature: sharing
   Scenario Outline: Getting the share information of public link share from the OCS API does not expose sensitive information
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
-      | path     | welcome.txt   |
-      | password | %public%      |
+      | path     | welcome.txt |
+      | password | %public%    |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -379,16 +379,16 @@ Feature: sharing
   Scenario Outline: Getting the share information of passwordless public-links hides credential placeholders
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
-      | path     | welcome.txt   |
+      | path | welcome.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | file_target            | /welcome.txt   |
-      | path                   | /welcome.txt   |
-      | item_type              | file           |
-      | share_type             | public_link    |
-      | permissions            | read           |
-      | uid_owner              | user0          |
+      | file_target | /welcome.txt |
+      | path        | /welcome.txt |
+      | item_type   | file         |
+      | share_type  | public_link  |
+      | permissions | read         |
+      | uid_owner   | user0        |
     And the fields of the last response should not include
       | share_with             | ANY_VALUE |
       | share_with_displayname | ANY_VALUE |
@@ -469,8 +469,8 @@ Feature: sharing
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
-      | path        | /afolder    |
-      | permissions | create      |
+      | path        | /afolder |
+      | permissions | create   |
     # And the fields of the last response should include
     #  | id          | A_NUMBER    |
     #  | share_type  | public_link |
@@ -533,18 +533,18 @@ Feature: sharing
     # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | permission                 |
-      | 1               | 403             | 200              | create                     |
+      | ocs_api_version | ocs_status_code | http_status_code | permission                |
+      | 1               | 403             | 200              | create                    |
       #| 1               | 100             | 200              | create                     |
-      | 2               | 403             | 403              | create                     |
+      | 2               | 403             | 403              | create                    |
       #| 2               | 200             | 200              | create                     |
-      | 1               | 403             | 200              | create,read,update         |
+      | 1               | 403             | 200              | create,read,update        |
       #| 1               | 100             | 200              | create,read,update         |
-      | 2               | 403             | 403              | create,read,update         |
+      | 2               | 403             | 403              | create,read,update        |
       #| 2               | 200             | 200              | create,read,update         |
-      | 1               | 403             | 200              | read,create,update,delete  |
+      | 1               | 403             | 200              | read,create,update,delete |
       #| 1               | 100             | 200              | read,create,update,delete  |
-      | 2               | 403             | 403              | read,create,update,delete  |
+      | 2               | 403             | 403              | read,create,update,delete |
       #| 2               | 200             | 200              | read,create,update,delete  |
 
   @public_link_share-feature-required
@@ -1139,11 +1139,11 @@ Feature: sharing
     When user "user3" shares file "randomfile.txt" with user "user1" with permissions "read,update" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user3              |
-      | share_with  | user1              |
-      | file_target | /randomfile (2).txt|
-      | item_type   | file               |
-      | permissions | read,update        |
+      | uid_owner   | user3               |
+      | share_with  | user1               |
+      | file_target | /randomfile (2).txt |
+      | item_type   | file                |
+      | permissions | read,update         |
     And the content of file "randomfile.txt" for user "user1" should be "user2 file"
     And the content of file "randomfile (2).txt" for user "user1" should be "user3 file"
     Examples:
@@ -1258,13 +1258,13 @@ Feature: sharing
     And the HTTP status code should be "200"
     And the content of file "textfile3.txt" for user "user3" should be "ownCloud test text file 3" plus end-of-line
     Examples:
-      | ocs_api_version | group_id1           | group_id2            | group_id3            | ocs_status_code |
-      | 1              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             |
-      | 1              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 100             |
-      | 1              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 100             |
-      | 2              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 200             |
-      | 2              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             |
-      | 2              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             |
+      | ocs_api_version | group_id1            | group_id2            | group_id3            | ocs_status_code |
+      | 1               | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             |
+      | 1               | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 100             |
+      | 1               | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 100             |
+      | 2               | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 200             |
+      | 2               | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             |
+      | 2               | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             |
 
   @skipOnLDAP @issue-ldap-250
   Scenario Outline: group names are case-sensitive, sharing with non-existent groups with different upper and lower case names
@@ -1291,13 +1291,13 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
-      |ocs_api_version | group_id1            | group_id2            | group_id3            | ocs_status_code | http_status_code |
-      | 1              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             | 200              |
-      | 1              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 100             | 200              |
-      | 1              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 100             | 200              |
-      | 2              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 200             | 404              |
-      | 2              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             | 404              |
-      | 2              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             | 404              |
+      | ocs_api_version | group_id1            | group_id2            | group_id3            | ocs_status_code | http_status_code |
+      | 1               | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             | 200              |
+      | 1               | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 100             | 200              |
+      | 1               | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 100             | 200              |
+      | 2               | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 200             | 404              |
+      | 2               | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             | 404              |
+      | 2               | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             | 404              |
 
   @public_link_share-feature-required
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced
@@ -1462,10 +1462,10 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | grp1                 |
-      | file_target | /textfile0.txt       |
-      | path        | /textfile0.txt       |
-      | uid_owner   | user0                |
+      | share_with  | grp1           |
+      | file_target | /textfile0.txt |
+      | path        | /textfile0.txt |
+      | uid_owner   | user0          |
     And as "user1" file "/textfile0.txt" should exist
     And as "user2" file "/textfile0.txt" should exist
     When the administrator deletes group "grp1" using the provisioning API
@@ -1535,7 +1535,7 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "user1" should see the following elements
-     | /randomfile.txt |
+      | /randomfile.txt |
     And user "user2" should see the following elements
       | /randomfile.txt |
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
@@ -1619,3 +1619,664 @@ Feature: sharing
     When the public downloads file "parent.txt" from inside the last public shared folder using the old public WebDAV API
     Then the value of the item "//s:message" in the response should be ""
     And the HTTP status code should be "404"
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enabled but not enforced, user shares without specifying expireDate
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | expiration |  |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enabled but not enforced, user shares with expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | user       |
+      | shareWith   | user1      |
+      | permissions | read,share |
+      | expireDate  | +15 days   |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | share_type  | user     |
+      | file_target | /FOLDER  |
+      | uid_owner   | user0    |
+      | expiration  | +15 days |
+      | share_with  | user1    |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
+
+  @skipOnOcV10.3 @issue-36568
+  Scenario Outline: sharing with expiration date is not enabled, user shares with expiration date set
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | user       |
+      | shareWith   | user1      |
+      | permissions | read,share |
+      | expireDate  | +15 days   |
+    Then the OCS status code should be "<ocs_status_code>"
+    # And the HTTP status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | share_type  | user     |
+      | file_target | /FOLDER  |
+      | uid_owner   | user0    |
+      | share_with  | user1    |
+      | expiration  | +15 days |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled but not enforced, user shares with expiration date and then disables
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | user       |
+      | shareWith   | user1      |
+      | permissions | read,share |
+      | expireDate  | +15 days   |
+    And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | share_type  | user     |
+      | file_target | /FOLDER  |
+      | uid_owner   | user0    |
+      | share_with  | user1    |
+      | expiration  | +15 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced, user shares with expiration date and then disables
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | user       |
+      | shareWith   | user1      |
+      | permissions | read,share |
+    And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | share_type  | user    |
+      | file_target | /FOLDER |
+      | uid_owner   | user0   |
+      | share_with  | user1   |
+      | expiration  | +7 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enabled but not enforced for groups, user shares without specifying expireDate
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" shares folder "/FOLDER" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | expiration |  |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enabled but not enforced for groups, user shares with expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | group      |
+      | shareWith   | grp1       |
+      | permissions | read,share |
+      | expireDate  | +15 days   |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | share_type  | group    |
+      | file_target | /FOLDER  |
+      | uid_owner   | user0    |
+      | expiration  | +15 days |
+      | share_with  | grp1     |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
+
+  @skipOnOcV10.3 @issue-36568
+  Scenario Outline: sharing with expiration date is not enabled for groups, user shares with expiration date set
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | group      |
+      | shareWith   | grp1       |
+      | permissions | read,share |
+      | expireDate  | +15 days   |
+    Then the OCS status code should be "<ocs_status_code>"
+    # And the HTTP status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | share_type  | group    |
+      | file_target | /FOLDER  |
+      | uid_owner   | user0    |
+      | expiration  | +15 days |
+      | share_with  | grp1     |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled but not enforced for groups, user shares with expiration date and then disables
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | group      |
+      | shareWith   | grp1       |
+      | permissions | read,share |
+      | expireDate  | +15 days   |
+    And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | share_type  | group    |
+      | file_target | /FOLDER  |
+      | uid_owner   | user0    |
+      | share_with  | grp1     |
+      | expiration  | +15 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for groups, user shares with expiration date and then disables
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | /FOLDER    |
+      | shareType   | group      |
+      | shareWith   | grp1       |
+      | permissions | read,share |
+      | expireDate  | +3 days    |
+    And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | share_type  | group   |
+      | file_target | /FOLDER |
+      | uid_owner   | user0   |
+      | share_with  | grp1    |
+      | expiration  | +3 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for users, user shares without setting expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "textfile0.txt" with user "user1" using the sharing API
+    Then the fields of the last response should include
+      | share_type  | user           |
+      | file_target | /textfile0.txt |
+      | uid_owner   | user0          |
+      | share_with  | user1          |
+      | expiration  | +7 days        |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for users, user shares with expiration date more than the default
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | textfile0.txt |
+      | shareType   | user          |
+      | shareWith   | user1         |
+      | permissions | read,share    |
+      | expireDate  | +10 days      |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "404"
+    And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced/max expire date is set, user shares without setting expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "textfile0.txt" with user "user1" using the sharing API
+    Then the fields of the last response should include
+      | share_type  | user           |
+      | file_target | /textfile0.txt |
+      | uid_owner   | user0          |
+      | share_with  | user1          |
+      | expiration  | +30 days       |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for users/max expire date set, user shares with expiration date more than the max expire date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | textfile0.txt |
+      | shareType   | user          |
+      | shareWith   | user1         |
+      | permissions | read,share    |
+      | expireDate  | +40 days      |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "404"
+    And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled/max expire date is set, user shares and changes the max expire date greater than the previous one
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "textfile0.txt" with user "user1" with permissions "read,share" using the sharing API
+    And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "40"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration | +30 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled/max expire date is set, user shares and changes max expire date less than the previous one
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "textfile0.txt" with user "user1" with permissions "read,share" using the sharing API
+    And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "15"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration | +30 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for groups, user shares without setting expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" shares file "textfile0.txt" with group "grp1" using the sharing API
+    Then the fields of the last response should include
+      | share_type  | group          |
+      | file_target | /textfile0.txt |
+      | uid_owner   | user0          |
+      | share_with  | grp1           |
+      | expiration  | +7 days        |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for groups, user shares with expiration date more than the default
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | textfile0.txt |
+      | shareType   | group         |
+      | shareWith   | grp1          |
+      | permissions | read,share    |
+      | expireDate  | +10 days      |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "404"
+    And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced/max expire date is set for groups, user shares without setting expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" shares file "textfile0.txt" with group "grp1" using the sharing API
+    Then the fields of the last response should include
+      | share_type  | group          |
+      | file_target | /textfile0.txt |
+      | uid_owner   | user0          |
+      | share_with  | grp1           |
+      | expiration  | +30 days       |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled and enforced for users/max expire date set for groups, user shares with expiration date more than the max expire date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | textfile0.txt |
+      | shareType   | group         |
+      | shareWith   | grp1          |
+      | permissions | read,share    |
+      | expireDate  | +40 days      |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "404"
+    And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled/max expire date is set for groups, user shares and changes the max expire date greater than the previous one
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
+    And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration | +30 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date is enabled/max expire date is set for groups, user shares and changes max expire date less than the previous one
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
+    And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "15"
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration | +30 days |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares to the group
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    When user "user0" shares file "FOLDER" with group "grp1" with permissions "read,share" using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration |  |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for groups, user shares to the user
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "/FOLDER" with user "user1" with permissions "read,share" using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration |  |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares with invalid expiration date set
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path               | textfile0.txt |
+      | shareType          | user          |
+      | shareWith          | user1         |
+      | permissions        | read,share    |
+      | expireDateAsString | INVALID-DATE  |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
+    And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 404             | 200              |
+      | 2               | 404             | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares with different time format
+    Given using OCS API version "2"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path               | textfile0.txt |
+      | shareType          | user          |
+      | shareWith          | user1         |
+      | permissions        | read,share    |
+      | expireDateAsString | <date>        |
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "200"
+    Then the fields of the last response should include
+      | expiration | 2050-12-11 |
+    Examples:
+      | date                |
+      | 2050-12-11          |
+      | 11-12-2050          |
+      | 12/11/2050          |
+      | 11.12.2050          |
+      | 11.12.2050 12:30:40 |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares with humanized expiration date format
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path               | textfile0.txt |
+      | shareType          | user          |
+      | shareWith          | user1         |
+      | permissions        | read,share    |
+      | expireDateAsString | tomorrow      |
+    Then the fields of the last response should include
+      | expiration | tomorrow |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares with humanized expiration date format in past
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path               | textfile0.txt |
+      | shareType          | user          |
+      | shareWith          | user1         |
+      | permissions        | read,share    |
+      | expireDateAsString | yesterday     |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
+    And the OCS status message should be "Expiration date is in the past"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 404             | 200              |
+      | 2               | 404             | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares with invalid humanized expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path               | textfile0.txt |
+      | shareType          | user          |
+      | shareWith          | user1         |
+      | permissions        | read,share    |
+      | expireDateAsString | 123           |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
+    And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 404             | 200              |
+      | 2               | 404             | 404              |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date enforced for users, user shares with past expiration date set
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path               | textfile0.txt |
+      | shareType          | user          |
+      | shareWith          | user1         |
+      | permissions        | read,share    |
+      | expireDateAsString | -10 days      |
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
+    And the OCS status message should be "Expiration date is in the past"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 404             | 200              |
+      | 2               | 404             | 404              |
+
+  @skipOnOcV10.3 @issue-36569
+  Scenario Outline: sharing with expiration date set, max expire date is 0, user shares without specifying expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "0"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | textfile0.txt |
+      | shareType   | user          |
+      | shareWith   | user1         |
+      | permissions | read,share    |
+    Then the fields of the last response should include
+      | expiration | today |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10.3
+  Scenario Outline: sharing with expiration date set, max expire date is 1, user shares without specifying expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "1"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" creates a share using the sharing API with settings
+      | path        | textfile0.txt |
+      | shareType   | user          |
+      | shareWith   | user1         |
+      | permissions | read,share    |
+    Then the fields of the last response should include
+      | expiration | tomorrow |
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |

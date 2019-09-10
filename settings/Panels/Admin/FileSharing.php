@@ -111,6 +111,15 @@ class FileSharing implements ISettings {
 		$template->assign('shareExcludedGroupsList', $excludedGroupsList !== null ? \implode('|', $excludedGroupsList) : '');
 		$template->assign('shareExpireAfterNDays', $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
 		$template->assign('shareEnforceExpireDate', $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
+
+		$template->assign('shareDefaultExpireDateSetUserShare', $this->config->getAppValue('core', 'shareapi_default_expire_date_user_share', 'no'));
+		$template->assign('shareExpireAfterNDaysUserShare', $this->config->getAppValue('core', 'shareapi_expire_after_n_days_user_share', '7'));
+		$template->assign('shareEnforceExpireDateUserShare', $this->config->getAppValue('core', 'shareapi_enforce_expire_date_user_share', 'no'));
+
+		$template->assign('shareDefaultExpireDateSetGroupShare', $this->config->getAppValue('core', 'shareapi_default_expire_date_group_share', 'no'));
+		$template->assign('shareExpireAfterNDaysGroupShare', $this->config->getAppValue('core', 'shareapi_expire_after_n_days_group_share', '7'));
+		$template->assign('shareEnforceExpireDateGroupShare', $this->config->getAppValue('core', 'shareapi_enforce_expire_date_group_share', 'no'));
+
 		$template->assign('autoAcceptShare', $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes'));
 
 		$permList = [

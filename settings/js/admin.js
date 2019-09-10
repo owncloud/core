@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 	$('#shareapiExpireAfterNDays').change(function() {
 		var value = $(this).val();
-		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
+		if (isNaN(value) || (parseInt(value, 10) <= 0) || parseInt(value, 10).toString() !== value) {
 			$(this).val('7');
 		}
 	});
@@ -71,6 +71,31 @@ $(document).ready(function(){
 
 	$('#shareapiDefaultExpireDate').change(function() {
 		$("#setDefaultExpireDate").toggleClass('hidden', !this.checked);
+	});
+
+
+	$('#shareapiExpireAfterNDaysUserShare').change(function() {
+		var value = parseInt($(this).val(), 10)
+
+		if (value <= 0 || isNaN(value)) {
+			$(this).val(7);
+		}
+	});
+
+	$('#shareapiDefaultExpireDateUserShare').change(function() {
+		$("#setDefaultExpireDateUserShare").toggleClass('hidden', !this.checked);
+	});
+
+	$('#shareapiExpireAfterNDaysGroupShare').change(function() {
+		var value = parseInt($(this).val(), 10)
+
+		if (value <= 0 || isNaN(value)) {
+			$(this).val(7);
+		}
+	});
+
+	$('#shareapiDefaultExpireDateGroupShare').change(function() {
+		$("#setDefaultExpireDateGroupShare").toggleClass('hidden', !this.checked);
 	});
 
 	$('#allowLinks').change(function() {

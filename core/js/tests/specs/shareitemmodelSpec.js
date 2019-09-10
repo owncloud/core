@@ -1141,6 +1141,50 @@ describe('OC.Share.ShareItemModel', function() {
 				shareWith: 'group1'
 			});
 		});
+		it('sends defaultExpireDateUser if enabled', function() {
+			var expireUserDays  = 7;
+			var expireGroupDays = 14;
+			var expireUserDate  = moment().add(expireUserDays, 'days').format('YYYY-MM-DD')
+
+			configModel.set({
+				isDefaultExpireDateUserEnabled: true,
+				defaultExpireDateUser: expireUserDays,
+
+				isDefaultExpireDateGroupEnabled: true,
+				defaultExpireDateGroup: expireGroupDays
+			})
+
+			model.addShare({
+				shareType: OC.Share.SHARE_TYPE_USER,
+				shareWith: 'user1',
+				permissions: OC.PERMISSION_READ,
+			});
+
+			expect(fakeServer.requests.length).toEqual(1);
+			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual( jasmine.objectContaining({expireDate: expireUserDate}) )
+		})
+		it('sends defaultExpireDateGroup if enabled', function() {
+			var expireUserDays  = 7;
+			var expireGroupDays = 2;
+			var expireGroupDate = moment().add(expireGroupDays, 'days').format('YYYY-MM-DD')
+
+			configModel.set({
+				isDefaultExpireDateUserEnabled: true,
+				defaultExpireDateUser: expireUserDays,
+
+				isDefaultExpireDateGroupEnabled: true,
+				defaultExpireDateGroup: expireGroupDays
+			})
+
+			model.addShare({
+				shareType: OC.Share.SHARE_TYPE_GROUP,
+				shareWith: 'group1',
+				permissions: OC.PERMISSION_READ,
+			});
+
+			expect(fakeServer.requests.length).toEqual(1);
+			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual( jasmine.objectContaining({expireDate: expireGroupDate}) )
+		})
 		it('calls error handler with error message', function() {
 			var errorStub = sinon.stub();
 			model.addShare({
