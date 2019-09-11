@@ -279,7 +279,14 @@ class DAV extends Common {
 					$this->convertException($e, $path);
 				}
 			} catch (\Exception $e) {
-				$this->convertException($e, $path);
+				if ($e->getCode() === \CURLE_COULDNT_CONNECT || $e->getCode() === \CURLE_OPERATION_TIMEDOUT) {
+					\OC::$server->getLogger()->warning(
+						'Storage is not available due to the connection timeout to {hostName}',
+						['hostName' => $this->host]
+					);
+				} else {
+					$this->convertException($e, $path);
+				}
 			}
 		} else {
 			$response = $cachedResponse;
