@@ -38,6 +38,7 @@ use OCP\IUser;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
+use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
@@ -111,10 +112,14 @@ class MailNotifications {
 	 * @param Node shared node
 	 * @param string $shareType share type
 	 * @param IUser[] $recipientList list of recipients
-	 *
+	 * @throws GenericShareException
 	 * @return array list of user to whom the mail send operation failed
 	 */
 	public function sendInternalShareMail($sender, $node, $shareType, $recipientList) {
+		if ($this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no') !== 'yes') {
+			$message_t = $this->l->t("Internal mail notification for shared files is not allowed");
+			throw new GenericShareException($message_t, $message_t, 403);
+		}
 		$noMail = [];
 
 		foreach ($recipientList as $recipient) {
@@ -205,10 +210,14 @@ class MailNotifications {
 	 * @param string[] $recipients recipient email addresses
 	 * @param string $link the share link
 	 * @param string $personalNote sender note
-	 *
+	 * @throws GenericShareException
 	 * @return string[] $result of failed recipients
 	 */
 	public function sendLinkShareMail($sender, $recipients, $link, $personalNote = null) {
+		if ($this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no') !== 'yes') {
+			$message_t = $this->l->t("Public link mail notification is not allowed");
+			throw new GenericShareException($message_t, $message_t, 403);
+		}
 		$recipientsAsString = \implode(', ', $recipients);
 		$currentUser = $sender->getUID();
 		$notificationLang = $this->config->getAppValue(

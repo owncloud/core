@@ -137,6 +137,13 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendLinkShareMailWithoutReplyTo() {
+		$this->config
+			->method('getAppValue')
+			->withConsecutive(
+				['core', 'shareapi_allow_public_notification', 'no'],
+				['core', 'shareapi_public_notification_lang', null]
+			)
+			->willReturnOnConsecutiveCalls('yes', null);
 		$message = $this->createMock(Message::class);
 		$message
 			->expects($this->once())
@@ -181,6 +188,13 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendLinkShareMailPersonalNote() {
+		$this->config
+			->method('getAppValue')
+			->withConsecutive(
+				['core', 'shareapi_allow_public_notification', 'no'],
+				['core', 'shareapi_public_notification_lang', null]
+			)
+			->willReturnOnConsecutiveCalls('yes', null);
 		$message = $this->createMock(Message::class);
 		$message
 			->expects($this->once())
@@ -242,6 +256,13 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendLinkShareMailWithReplyTo() {
+		$this->config
+			->method('getAppValue')
+			->withConsecutive(
+				['core', 'shareapi_allow_public_notification', 'no'],
+				['core', 'shareapi_public_notification_lang', null]
+			)
+			->willReturnOnConsecutiveCalls('yes', null);
 		$message = $this->createMock(Message::class);
 		$message
 			->expects($this->exactly(2))
@@ -301,6 +322,13 @@ class MailNotificationsTest extends TestCase {
 	 * @param array $to
 	 */
 	public function testSendLinkShareMailException($to) {
+		$this->config
+			->method('getAppValue')
+			->withConsecutive(
+				['core', 'shareapi_allow_public_notification', 'no'],
+				['core', 'shareapi_public_notification_lang', null]
+			)
+			->willReturnOnConsecutiveCalls('yes', null);
 		$this->setupMailerMock('TestUser shared »MyFile« with you', $to);
 		$this->shareManager
 			->method('getShareByToken')
@@ -317,6 +345,10 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendInternalShareMail() {
+		$this->config
+			->method('getAppValue')
+			->with('core', 'shareapi_allow_mail_notification', 'no')
+			->willReturn('yes');
 		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', false);
 
 		$shareMock = $this->getShareMock(
@@ -354,6 +386,10 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendInternalShareMailException() {
+		$this->config
+			->method('getAppValue')
+			->with('core', 'shareapi_allow_mail_notification', 'no')
+			->willReturn('yes');
 		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', false);
 
 		$share = $this->getShareMock(
@@ -407,6 +443,10 @@ class MailNotificationsTest extends TestCase {
 	 * @dataProvider emptinessProvider
 	 */
 	public function testSendInternalShareMailNoMail($emptiness) {
+		$this->config
+			->method('getAppValue')
+			->with('core', 'shareapi_allow_mail_notification', 'no')
+			->willReturn('yes');
 		$recipient = $this->createMock(IUser::class);
 		$recipient
 				->expects($this->once())
@@ -438,11 +478,13 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testPublicLinkNotificationIsTranslated() {
-		$this->config->expects($this->once())
+		$this->config
 			->method('getAppValue')
-			->with('core', 'shareapi_public_notification_lang', null)
-			->willReturn('ru');
-
+			->withConsecutive(
+				['core', 'shareapi_allow_public_notification', 'no'],
+				['core', 'shareapi_public_notification_lang', null]
+			)
+			->willReturnOnConsecutiveCalls('yes', 'ru');
 		$message = $this->createMock(Message::class);
 		$message
 			->expects($this->once())
@@ -533,6 +575,10 @@ class MailNotificationsTest extends TestCase {
 	 * @param string $senderLanguage
 	 */
 	public function testSendInternalShareWithRecipientLanguageCode($recipientLanguage, $senderLanguage) {
+		$this->config
+			->method('getAppValue')
+			->with('core', 'shareapi_allow_mail_notification', 'no')
+			->willReturn('yes');
 		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', false);
 		$shareMock = $this->getShareMock(
 			['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z']
@@ -571,5 +617,36 @@ class MailNotificationsTest extends TestCase {
 			$recipientList
 		);
 		$this->assertSame([], $result);
+	}
+
+	/**
+	 * @expectedException \OCP\Share\Exceptions\GenericShareException
+	 */
+	public function testSendLinkShareMailIfObeysConfig() {
+		$this->config
+			->method('getAppValue')
+			->with('core', 'shareapi_allow_public_notification', 'no')
+			->willReturn('no');
+		$this->mailNotifications->sendLinkShareMail(
+			$this->user,
+			['test@user'],
+			''
+		);
+	}
+
+	/**
+	 * @expectedException \OCP\Share\Exceptions\GenericShareException
+	 */
+	public function testSendInternalShareMailIfObeysConfig() {
+		$this->config
+			->method('getAppValue')
+			->with('core', 'shareapi_allow_mail_notification', 'no')
+			->willReturn('no');
+		$this->mailNotifications->sendInternalShareMail(
+			$this->user,
+			'3',
+			'file',
+			['test@user']
+		);
 	}
 }
