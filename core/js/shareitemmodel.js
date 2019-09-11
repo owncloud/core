@@ -375,6 +375,13 @@
 		},
 
 		/**
+		 * @returns {OC.Share.Types.ShareAttribute[]}
+		 */
+		getReshareAttributes: function() {
+			return this.get('reshare').attributes;
+		},
+
+		/**
 		 * Returns all share entries that only apply to the current item
 		 * (file/folder)
 		 *
