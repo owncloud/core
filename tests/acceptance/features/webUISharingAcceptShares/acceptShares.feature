@@ -66,6 +66,21 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be listed in the files page on the webUI
     And file "testimage.jpg" should not be listed in the files page on the webUI
 
+  Scenario Outline: accept an offered share when there is a default folder for received shares
+    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And the administrator has set the default folder for received shares to "<share_folder>"
+    And user "user2" has shared folder "/simple-folder" with user "user1"
+    And user "user2" has shared file "/testimage.jpg" with user "user1"
+    And user "user1" has logged in using the webUI
+    When the user accepts share "simple-folder" offered by user "User Two" using the webUI
+    And the user accepts share "testimage.jpg" offered by user "User Two" using the webUI
+    Then folder "simple-folder" should be listed in the files page folder "<share_folder>" on the webUI
+    And file "testimage.jpg" should be listed in the files page folder "<share_folder>" on the webUI
+    Examples:
+      | share_folder        |
+      | /ReceivedShares     |
+      | /My/Received/Shares |
+
   @smokeTest
   Scenario: decline an offered (pending) share
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
@@ -175,6 +190,19 @@ Feature: accept/decline shares coming from internal users
     And file "testimage.jpg" should be listed in the shared-with-you page on the webUI
     And folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "" in the shared-with-you page on the webUI
+
+  Scenario Outline: auto-accept a share when there is a default folder for received shares
+    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
+    And the administrator has set the default folder for received shares to "<share_folder>"
+    And user "user2" has shared folder "/simple-folder" with user "user1"
+    And user "user2" has shared file "/testimage.jpg" with user "user1"
+    When user "user1" logs in using the webUI
+    Then folder "simple-folder" should be listed in the files page folder "<share_folder>" on the webUI
+    And file "testimage.jpg" should be listed in the files page folder "<share_folder>" on the webUI
+    Examples:
+      | share_folder        |
+      | /ReceivedShares     |
+      | /My/Received/Shares |
 
   Scenario: decline auto-accepted shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled

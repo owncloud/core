@@ -1171,10 +1171,14 @@ trait WebDav {
 				'$expectedElements has to be an instance of TableNode'
 			);
 		}
-		$responseXmlObject = $this->listFolder($user, "/", 3);
+		$responseXmlObject = $this->listFolder($user, "/", 5);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
+			// Allow the table of expected elements to have entries that do
+			// not have to specify the "implied" leading slash, or have multiple
+			// leading slashes, to make scenario outlines more flexible
+			$expectedElement = "/" . \ltrim($expectedElement, "/");
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			$element = $responseXmlObject->xpath(
 				"//d:response/d:href[text() = \"$webdavPath\"]"

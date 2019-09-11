@@ -418,6 +418,7 @@ default:
         - '%paths.base%/../features/webUISharingAcceptShares'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:

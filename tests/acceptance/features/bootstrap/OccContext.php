@@ -302,6 +302,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has set the default folder for received shares to :folder
+	 *
+	 * @param string $folder
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetTheDefaultFolderForReceivedSharesTo($folder) {
+		$this->theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+			"share_folder", $folder
+		);
+	}
+
+	/**
 	 * @Given the administrator has set the mail smtpmode to :smtpmode
 	 *
 	 * @param string $smtpmode
@@ -309,8 +322,8 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
-		$this->invokingTheCommand(
-			"config:system:set  --value $smtpmode mail_smtpmode"
+		$this->theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+			"mail_smtpmode", $smtpmode
 		);
 	}
 
@@ -657,7 +670,9 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value, $type="string") {
+	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+		$key, $value, $type="string"
+	) {
 		$this->invokingTheCommand(
 			"config:system:set --value ${value} --type ${type} ${key}"
 		);
