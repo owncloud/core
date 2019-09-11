@@ -420,7 +420,7 @@ class DefaultShareProvider implements IShareProvider {
 					'file_target' => $share->getTarget(),
 					'attributes' => $shareAttributes,
 					'permissions' => $share->getPermissions(),
-					'expiration' => $share->getExpirationDate(),
+					'expiration' => $share->getExpirationDate()->format('Y-m-d 00:00:00'),
 					'stime' => $share->getShareTime()->getTimestamp(),
 					'accepted' => $share->getState(),
 				],
