@@ -2109,28 +2109,28 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "f91c7d4437dcbc6f89c8b64e855e1544f4b60250"
+                "reference": "4125c77f21a802d4335a2be27cba210fc8717307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/f91c7d4437dcbc6f89c8b64e855e1544f4b60250",
-                "reference": "f91c7d4437dcbc6f89c8b64e855e1544f4b60250",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/4125c77f21a802d4335a2be27cba210fc8717307",
+                "reference": "4125c77f21a802d4335a2be27cba210fc8717307",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
+                "ext-curl": "*",
                 "ext-mbstring": "*",
-                "php": ">=7.0",
+                "php": "^7.0",
                 "sabre/event": ">=4.0 <6.0",
                 "sabre/uri": "^2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=6.0.0",
-                "sabre/cs": "~1.0.0"
+                "phpunit/phpunit": "^6.0 || ^7.0"
             },
             "suggest": {
                 "ext-curl": " to make http requests with the Client class"
@@ -2151,9 +2151,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "The sabre/http library provides utilities for dealing with http requests and responses. ",
@@ -2161,7 +2161,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2018-06-04T21:27:19+00:00"
+            "time": "2019-09-11T12:43:07+00:00"
         },
         {
             "name": "sabre/uri",
