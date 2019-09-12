@@ -32,6 +32,7 @@
 	 * @property {string} share_with
 	 * @property {string} displayname_owner
 	 * @property {number} permissions
+	 * @property {OC.Share.Types.ShareAttribute[]} attributes
 	 */
 
 	/**
@@ -371,6 +372,13 @@
 		 */
 		getReshareType: function() {
 			return this.get('reshare').share_type;
+		},
+
+		/**
+		 * @returns {OC.Share.Types.ShareAttribute[]}
+		 */
+		getReshareAttributes: function() {
+			return this.get('reshare').attributes;
 		},
 
 		/**
@@ -719,24 +727,10 @@
 			}
 
 			/** @type {OC.Share.Types.ShareInfo[]} **/
-			var shares = _.map(data.shares, function(share) {
-				// properly parse some values because sometimes the server
-				// returns integers as string...
-				var i;
-				for (i = 0; i < SHARE_RESPONSE_INT_PROPS.length; i++) {
-					var propInt = SHARE_RESPONSE_INT_PROPS[i];
-					if (!_.isUndefined(share[propInt])) {
-						share[propInt] = parseInt(share[propInt], 10);
-					}
-				}
-				for (i = 0; i < SHARE_RESPONSE_JSON_PROPS.length; i++) {
-					var propJson = SHARE_RESPONSE_JSON_PROPS[i];
-					if (!_.isUndefined(share[propJson])) {
-						share[propJson] = JSON.parse(share.attributes);
-					}
-				}
-				return share;
-			});
+			var shares = _.map(data.shares, this._parseShare);
+
+			/** @type {OC.Share.Types.Reshare} **/
+			var reshare = this._parseShare(data.reshare);
 
 			this._legacyFillCurrentShares(shares);
 
@@ -773,10 +767,35 @@
 
 			// use the old crappy way for other shares for now
 			return {
-				reshare: data.reshare,
+				reshare: reshare,
 				shares: shares,
 				permissions: permissions
 			};
+		},
+
+		/**
+		 * Parse fields of the response
+		 *
+		 * @param {OC.Share.Types.ShareInfo} share
+		 * @returns {OC.Share.Types.ShareInfo} share
+		 */
+		_parseShare: function(share) {
+			// properly parse some values because sometimes the server
+			// returns integers as string...
+			var i;
+			for (i = 0; i < SHARE_RESPONSE_INT_PROPS.length; i++) {
+				var propInt = SHARE_RESPONSE_INT_PROPS[i];
+				if (!_.isUndefined(share[propInt])) {
+					share[propInt] = parseInt(share[propInt], 10);
+				}
+			}
+			for (i = 0; i < SHARE_RESPONSE_JSON_PROPS.length; i++) {
+				var propJson = SHARE_RESPONSE_JSON_PROPS[i];
+				if (!_.isUndefined(share[propJson])) {
+					share[propJson] = JSON.parse(share[propJson]);
+				}
+			}
+			return share;
 		},
 
 		/**
