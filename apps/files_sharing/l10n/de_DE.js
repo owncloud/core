@@ -103,6 +103,7 @@ OC.L10N.register(
     "Unknown share type" : "Unbekannter Freigabetyp",
     "Not a directory" : "Kein Verzeichnis",
     "Could not lock path" : "Pfad konnte nicht gesperrt werden",
+    "Could not update share" : "Freigabe konnte nicht aktualisiert werden",
     "Can't change permissions for public share links" : "Berechtigungen für öffentlich freigegebene Links konnten nicht geändert werden",
     "Wrong or no update parameter given" : "Falscher oder kein Updateparameter wurde übergeben",
     "Only recipient can change accepted state" : "Nur der Empfänger kann den Empfangsstatus ändern",

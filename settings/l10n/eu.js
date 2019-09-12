@@ -67,6 +67,7 @@ OC.L10N.register(
     "Error while uninstalling app" : "Erroea izan da aplikazioa desinstalatzerakoan",
     "Uninstall" : "Desinstalatu",
     "Valid until {date}" : "{date} arte baliogarria",
+    "Disconnect" : "Deskonektatu",
     "Sending..." : "Bidaltzen...",
     "Select a profile picture" : "Profilaren irudia aukeratu",
     "Very weak password" : "Pasahitz oso ahula",

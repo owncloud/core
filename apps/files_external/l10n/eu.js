@@ -43,6 +43,7 @@ OC.L10N.register(
     "Never" : "Inoiz",
     "External Storage" : "Kanpoko biltegiratzea",
     "Folder name" : "Karpetaren izena",
+    "Authentication" : "Autentifikazioa",
     "Configuration" : "Konfigurazioa",
     "Available for" : "Hauentzat eskuragarri",
     "Add storage" : "Gehitu biltegiratzea",

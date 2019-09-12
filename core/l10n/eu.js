@@ -218,6 +218,7 @@ OC.L10N.register(
     "Line: %s" : "Lerroa: %s",
     "Trace" : "Arrastoa",
     "Imprint" : "Imprint",
+    "Privacy Policy" : "Pribatasun Politika",
     "Create an <strong>admin account</strong>" : "Sortu <strong>kudeatzaile kontu<strong> bat",
     "Username" : "Erabiltzaile izena",
     "Storage & database" : "Biltegia & datubasea",
