@@ -162,28 +162,28 @@
             "authors": [
                 {
                     "name": "Nicolai Ehemann",
-                    "role": "Author/Maintainer",
-                    "email": "en@enlightened.de"
+                    "email": "en@enlightened.de",
+                    "role": "Author/Maintainer"
                 },
                 {
                     "name": "André Rothe",
-                    "role": "Contributor",
-                    "email": "arothe@zks.uni-leipzig.de"
+                    "email": "arothe@zks.uni-leipzig.de",
+                    "role": "Contributor"
                 },
                 {
                     "name": "Lukas Reschke",
-                    "role": "Contributor",
-                    "email": "lukas@owncloud.com"
+                    "email": "lukas@owncloud.com",
+                    "role": "Contributor"
                 },
                 {
                     "name": "Thomas Müller",
-                    "role": "Contributor",
-                    "email": "thomas.mueller@tmit.eu"
+                    "email": "thomas.mueller@tmit.eu",
+                    "role": "Contributor"
                 },
                 {
                     "name": "Roeland Jago Douma",
-                    "role": "Contributor",
-                    "email": "roeland@famdouma.nl"
+                    "email": "roeland@famdouma.nl",
+                    "role": "Contributor"
                 }
             ],
             "description": "Stream zip files without i/o overhead",
@@ -1046,14 +1046,14 @@
             "authors": [
                 {
                     "name": "Olivier Paroz",
-                    "role": "Developer",
                     "email": "dev-lognormalizer@interfasys.ch",
-                    "homepage": "http://www.interfasys.ch"
+                    "homepage": "http://www.interfasys.ch",
+                    "role": "Developer"
                 },
                 {
                     "name": "Jordi Boggiano",
-                    "role": "Developer",
-                    "email": "j.boggiano@seld.be"
+                    "email": "j.boggiano@seld.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Parses variables and converts them to string so that they can be logged",
@@ -1065,7 +1065,7 @@
             "time": "2015-08-01T16:27:37+00:00"
         },
         {
-            "name": "jeremeamia/superclosure",
+            "name": "jeremeamia/SuperClosure",
             "version": "2.4.0",
             "source": {
                 "type": "git",
@@ -1494,18 +1494,18 @@
             "authors": [
                 {
                     "name": "Greg Beaver",
-                    "role": "Helper",
-                    "email": "cellog@php.net"
+                    "email": "cellog@php.net",
+                    "role": "Helper"
                 },
                 {
                     "name": "Andrei Zmievski",
-                    "role": "Lead",
-                    "email": "andrei@php.net"
+                    "email": "andrei@php.net",
+                    "role": "Lead"
                 },
                 {
                     "name": "Stig Bakken",
-                    "role": "Developer",
-                    "email": "stig@php.net"
+                    "email": "stig@php.net",
+                    "role": "Developer"
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",
@@ -1548,8 +1548,8 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
-                    "role": "Lead",
-                    "email": "cweiske@php.net"
+                    "email": "cweiske@php.net",
+                    "role": "Lead"
                 }
             ],
             "description": "Minimal set of PEAR core files to be used as composer dependency",
@@ -1655,28 +1655,28 @@
             "authors": [
                 {
                     "name": "Jim Wigginton",
-                    "role": "Lead Developer",
-                    "email": "terrafrost@php.net"
+                    "email": "terrafrost@php.net",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Patrick Monnerat",
-                    "role": "Developer",
-                    "email": "pm@datasphere.ch"
+                    "email": "pm@datasphere.ch",
+                    "role": "Developer"
                 },
                 {
                     "name": "Andreas Fischer",
-                    "role": "Developer",
-                    "email": "bantu@phpbb.com"
+                    "email": "bantu@phpbb.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Hans-Jürgen Petrich",
-                    "role": "Developer",
-                    "email": "petrich@tronic-media.com"
+                    "email": "petrich@tronic-media.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Graham Campbell",
-                    "role": "Developer",
-                    "email": "graham@alt-three.com"
+                    "email": "graham@alt-three.com",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
@@ -1889,18 +1889,18 @@
             "authors": [
                 {
                     "name": "Michele Locati",
-                    "role": "Developer",
-                    "email": "mlocati@gmail.com"
+                    "email": "mlocati@gmail.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Remo Laubacher",
-                    "role": "Collaborator, motivator and perfectionist supporter",
-                    "email": "remo.laubacher@gmail.com"
+                    "email": "remo.laubacher@gmail.com",
+                    "role": "Collaborator, motivator and perfectionist supporter"
                 },
                 {
                     "name": "Christian Schmidt",
-                    "role": "Developer",
-                    "email": "github@chsc.dk"
+                    "email": "github@chsc.dk",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP-Unicode CLDR",
@@ -2086,9 +2086,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "sabre/event is a library for lightweight event-based programming",
@@ -2109,28 +2109,28 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "f91c7d4437dcbc6f89c8b64e855e1544f4b60250"
+                "reference": "4125c77f21a802d4335a2be27cba210fc8717307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/f91c7d4437dcbc6f89c8b64e855e1544f4b60250",
-                "reference": "f91c7d4437dcbc6f89c8b64e855e1544f4b60250",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/4125c77f21a802d4335a2be27cba210fc8717307",
+                "reference": "4125c77f21a802d4335a2be27cba210fc8717307",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
+                "ext-curl": "*",
                 "ext-mbstring": "*",
-                "php": ">=7.0",
+                "php": "^7.0",
                 "sabre/event": ">=4.0 <6.0",
                 "sabre/uri": "^2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=6.0.0",
-                "sabre/cs": "~1.0.0"
+                "phpunit/phpunit": "^6.0 || ^7.0"
             },
             "suggest": {
                 "ext-curl": " to make http requests with the Client class"
@@ -2151,9 +2151,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "The sabre/http library provides utilities for dealing with http requests and responses. ",
@@ -2161,7 +2161,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2018-06-04T21:27:19+00:00"
+            "time": "2019-09-11T12:43:07+00:00"
         },
         {
             "name": "sabre/uri",
@@ -2260,21 +2260,21 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 },
                 {
                     "name": "Dominik Tobschall",
-                    "role": "Developer",
                     "email": "dominik@fruux.com",
-                    "homepage": "http://tobschall.de/"
+                    "homepage": "http://tobschall.de/",
+                    "role": "Developer"
                 },
                 {
                     "name": "Ivan Enderlin",
-                    "role": "Developer",
                     "email": "ivan.enderlin@hoa-project.net",
-                    "homepage": "http://mnt.io/"
+                    "homepage": "http://mnt.io/",
+                    "role": "Developer"
                 }
             ],
             "description": "The VObject library for PHP allows you to easily parse and manipulate iCalendar and vCard objects",
@@ -3783,18 +3783,18 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Heuer",
-                    "role": "Developer",
-                    "email": "sebastian@phpeople.de"
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "Developer",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -4663,8 +4663,8 @@
             "authors": [
                 {
                     "name": "Marco Pivetta",
-                    "role": "maintainer",
-                    "email": "ocramius@gmail.com"
+                    "email": "ocramius@gmail.com",
+                    "role": "maintainer"
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
@@ -5320,8 +5320,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
