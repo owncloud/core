@@ -315,6 +315,7 @@ default:
         - '%paths.base%/../features/webUICreateDelete'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - TagsContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
@@ -418,6 +419,7 @@ default:
         - '%paths.base%/../features/webUISharingAcceptShares'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - OccContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:

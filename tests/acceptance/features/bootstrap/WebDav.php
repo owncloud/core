@@ -1727,31 +1727,34 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then user :user should be able to delete file :source
+	 * @Then /^user "([^"]*)" should be able to delete (file|folder|entry) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $source
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBeAbleToDeleteFile($user, $source) {
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+	public function userShouldBeAbleToDeleteEntry($user, $entry, $source) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
-		$this->asFileOrFolderShouldNotExist($user, "file", $source);
+		$this->asFileOrFolderShouldNotExist($user, $entry, $source);
 	}
 
 	/**
-	 * @Then user :user should not be able to delete file :source
+	 * @Then /^user "([^"]*)" should not be able to delete (file|folder|entry) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $source
 	 *
 	 * @return void
 	 */
-	public function theUserShouldNotBeAbleToDeleteFile($user, $source) {
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+	public function theUserShouldNotBeAbleToDeleteEntry($user, $entry, $source) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 	}
 
 	/**
