@@ -42,7 +42,8 @@ if ($federatedShareProvider->isIncomingServer2serverShareEnabled() === false) {
 }
 
 $token = $_POST['token'];
-$remote = $_POST['remote'];
+// cut query and|or anchor part off
+$remote = \strtok($_POST['remote'], '?#');
 $owner = $_POST['owner'];
 $ownerDisplayName = $_POST['ownerDisplayName'];
 $name = $_POST['name'];
