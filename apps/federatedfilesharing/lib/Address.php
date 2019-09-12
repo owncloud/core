@@ -134,6 +134,8 @@ class Address {
 		//Origin is the last part
 		$parts = \explode('@', $this->cloudId);
 		$rawOrigin = \array_pop($parts);
+		// cut query and|or anchor part off
+		$rawOrigin = \strtok($rawOrigin, '?#');
 		if ($fileNamePosition = \strpos($rawOrigin, '/index.php')) {
 			$rawOrigin = \substr($rawOrigin, 0, $fileNamePosition);
 		}
