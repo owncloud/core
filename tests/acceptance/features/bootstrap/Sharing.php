@@ -1827,8 +1827,8 @@ trait Sharing {
 		foreach ($table as $row) {
 			$found = false;
 			//the API returns the path without trailing slash, but we want to
-			//be able to accept trailing slashes in the step definition
-			$row['path'] = \rtrim($row['path'], "/");
+			//be able to accept leading and/or trailing slashes in the step definition
+			$row['path'] = "/" . \trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
 					Assert::assertArraySubset($row, $share);

@@ -216,3 +216,29 @@ Feature: deleting files and folders
     And as "user1" folder "simple-folder/simple-empty-folder" should not exist
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
+
+  Scenario Outline: delete a folder when there is a default folder for received shares
+    Given the administrator has set the default folder for received shares to "<share_folder>"
+    And user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/ShareThis"
+    And user "user1" has created folder "<other_folder1>"
+    And user "user1" has created folder "<top_folder2>"
+    And user "user1" has created folder "<top_folder2>/<other_folder2>"
+    And user "user0" has shared folder "/ShareThis" with user "user1"
+    And the user reloads the current page of the webUI
+    When the user deletes folder "<other_folder1>" using the webUI
+    Then as "user1" folder "<other_folder1>" should not exist
+    When the user opens folder "<top_folder2>" using the webUI
+    And the user deletes folder "<other_folder2>" using the webUI
+    Then as "user1" folder "<top_folder2>/<other_folder2>" should not exist
+    When the user browses to the files page
+    And the user deletes folder "<top_folder2>" using the webUI
+    Then as "user1" folder "<top_folder2>" should not exist
+    When the user deletes folder "<top_share_folder_on_ui>" using the webUI
+    Then a notification should be displayed on the webUI with the text 'Error deleting file "<top_share_folder_on_ui>".'
+    And as "user1" folder "<share_folder>/ShareThis" should exist
+    Examples:
+      | share_folder        | top_share_folder_on_ui |other_folder1 | top_folder2 | other_folder2  |
+      | /ReceivedShares     | ReceivedShares         | Received     | Top         | ReceivedShares |
+      | ReceivedShares      | ReceivedShares         | Received     | Top         | ReceivedShares |
+      | /My/Received/Shares | My                     | M            | Received    | Shares         |

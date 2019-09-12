@@ -1171,10 +1171,14 @@ trait WebDav {
 				'$expectedElements has to be an instance of TableNode'
 			);
 		}
-		$responseXmlObject = $this->listFolder($user, "/", 3);
+		$responseXmlObject = $this->listFolder($user, "/", 5);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
+			// Allow the table of expected elements to have entries that do
+			// not have to specify the "implied" leading slash, or have multiple
+			// leading slashes, to make scenario outlines more flexible
+			$expectedElement = "/" . \ltrim($expectedElement, "/");
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			$element = $responseXmlObject->xpath(
 				"//d:response/d:href[text() = \"$webdavPath\"]"
@@ -1723,31 +1727,34 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then user :user should be able to delete file :source
+	 * @Then /^user "([^"]*)" should be able to delete (file|folder|entry) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $source
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBeAbleToDeleteFile($user, $source) {
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+	public function userShouldBeAbleToDeleteEntry($user, $entry, $source) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
-		$this->asFileOrFolderShouldNotExist($user, "file", $source);
+		$this->asFileOrFolderShouldNotExist($user, $entry, $source);
 	}
 
 	/**
-	 * @Then user :user should not be able to delete file :source
+	 * @Then /^user "([^"]*)" should not be able to delete (file|folder|entry) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $source
 	 *
 	 * @return void
 	 */
-	public function theUserShouldNotBeAbleToDeleteFile($user, $source) {
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+	public function theUserShouldNotBeAbleToDeleteEntry($user, $entry, $source) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 	}
 
 	/**

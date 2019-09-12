@@ -36,6 +36,32 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
 
+  Scenario Outline: share a file & folder with another internal user when auto accept is enabled and there is a default folder for received shares
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
+    And the administrator has set the default folder for received shares to "<share_folder>"
+    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+    And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /FOLDER/                               |
+      | /PARENT/                               |
+      | <top_folder>/PARENT<suffix>/           |
+      | <top_folder>/PARENT<suffix>/parent.txt |
+      | /textfile0.txt                         |
+      | <top_folder>/textfile0<suffix>.txt     |
+    And the sharing API should report to user "user1" that these shares are in the accepted state
+      | path                                  |
+      | <top_folder>/<received_parent_name>/  |
+      | <top_folder>/<received_textfile_name> |
+    Examples:
+      | share_folder        | top_folder          | suffix | received_parent_name | received_textfile_name |
+      |                     |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
+      | /                   |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
+      | /ReceivedShares     | /ReceivedShares     |        | PARENT               | textfile0.txt          |
+      | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
+      | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
+
   Scenario: share a file & folder with internal group when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -314,6 +340,55 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+
+  Scenario Outline: accept a pending share when there is a default folder for received shares
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And the administrator has set the default folder for received shares to "<share_folder>"
+    And user "user0" has shared folder "/PARENT" with user "user1"
+    And user "user0" has shared file "/textfile0.txt" with user "user1"
+    When user "user1" accepts the share "/PARENT" offered by user "user0" using the sharing API
+    And user "user1" accepts the share "/textfile0.txt" offered by user "user0" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id                     | A_NUMBER                                      |
+      | share_type             | user                                          |
+      | uid_owner              | user0                                         |
+      | displayname_owner      | User Zero                                     |
+      | permissions            | share,read,update                             |
+      | uid_file_owner         | user0                                         |
+      | displayname_file_owner | User Zero                                     |
+      | state                  | 0                                             |
+      | path                   | <top_folder>/<received_textfile_name>         |
+      | item_type              | file                                          |
+      | mimetype               | text/plain                                    |
+      | storage_id             | shared::<top_folder>/<received_textfile_name> |
+      | storage                | A_NUMBER                                      |
+      | item_source            | A_NUMBER                                      |
+      | file_source            | A_NUMBER                                      |
+      | file_parent            | A_NUMBER                                      |
+      | file_target            | <top_folder>/<received_textfile_name>         |
+      | share_with             | user1                                         |
+      | share_with_displayname | User One                                      |
+      | mail_send              | 0                                             |
+    And user "user1" should see the following elements
+      | /FOLDER/                               |
+      | /PARENT/                               |
+      | <top_folder>/PARENT<suffix>/           |
+      | <top_folder>/PARENT<suffix>/parent.txt |
+      | /textfile0.txt                         |
+      | <top_folder>/textfile0<suffix>.txt     |
+    And the sharing API should report to user "user1" that these shares are in the accepted state
+      | path                                  |
+      | <top_folder>/<received_parent_name>/  |
+      | <top_folder>/<received_textfile_name> |
+    Examples:
+      | share_folder        | top_folder          | suffix | received_parent_name | received_textfile_name |
+      |                     |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
+      | /                   |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
+      | /ReceivedShares     | /ReceivedShares     |        | PARENT               | textfile0.txt          |
+      | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
+      | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
 
   Scenario: accept an accepted share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
