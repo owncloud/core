@@ -303,6 +303,7 @@ class SharedMountTest extends TestCase {
 		\OC\Files\Filesystem::rename($path, "newPath");
 		$this->assertTrue(\OC\Files\Filesystem::file_exists('newPath'));
 		$this->assertFalse(\OC\Files\Filesystem::file_exists($path));
+		$this->logout();
 
 		// change permissions
 		$share->setPermissions($afterPerm);

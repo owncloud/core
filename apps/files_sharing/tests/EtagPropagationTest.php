@@ -179,6 +179,7 @@ class EtagPropagationTest extends PropagationTestCase {
 				$this->fileEtags[$id] = $this->rootView->getFileInfo($path)->getEtag();
 			}
 		}
+		$this->logout();
 	}
 
 	public function testOwnerWritesToShare() {
@@ -442,6 +443,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testEtagChangeOnPermissionsChange() {
+		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$userFolder = $this->rootFolder->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
 		$node = $userFolder->get('/sub1/sub2/folder');
 
