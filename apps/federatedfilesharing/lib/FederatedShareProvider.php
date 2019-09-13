@@ -1090,4 +1090,13 @@ class FederatedShareProvider implements IShareProvider {
 
 		return $event->getArgument('isRemoteTrusted') === true;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getProviderCapabilities() {
+		return [
+			\OCP\Share::SHARE_TYPE_REMOTE => [],
+		];
+	}
 }

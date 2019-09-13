@@ -24,6 +24,7 @@ use OCP\Capabilities\ICapability;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Util\UserSearch;
+use OCP\Share\IManager;
 
 /**
  * Class Capabilities
@@ -32,6 +33,8 @@ use OCP\Util\UserSearch;
  */
 class Capabilities implements ICapability {
 
+	/** @var IManager */
+	private $shareManager;
 	/** @var IConfig */
 	private $config;
 
@@ -49,7 +52,8 @@ class Capabilities implements ICapability {
 	 * @param IConfig $config
 	 * @param UserSearch $userSearch
 	 */
-	public function __construct(IConfig $config, UserSearch $userSearch, IL10N $l10n) {
+	public function __construct(IManager $shareManager, IConfig $config, UserSearch $userSearch, IL10N $l10n) {
+		$this->shareManager = $shareManager;
 		$this->config = $config;
 		$this->userSearch = $userSearch;
 		$this->l10n = $l10n;
@@ -69,6 +73,7 @@ class Capabilities implements ICapability {
 			$res['user'] = ['send_mail' => false];
 			$res['resharing'] = false;
 			$res['can_share'] = false;
+			$res['providers_capabilities'] = false;
 		} else {
 			$res['api_enabled'] = true;
 
@@ -130,6 +135,7 @@ class Capabilities implements ICapability {
 			$res["user_enumeration"] = $user_enumeration;
 
 			$res['default_permissions'] = (int)$this->config->getAppValue('core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL);
+			$res['providers_capabilities'] = $this->shareManager->getProvidersCapabilities();
 		}
 
 		//Federated sharing

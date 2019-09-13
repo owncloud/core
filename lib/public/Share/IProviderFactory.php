@@ -40,6 +40,11 @@ interface IProviderFactory {
 	public function __construct(IServerContainer $serverContainer);
 
 	/**
+	 * @return IShareProvider[]
+	 */
+	public function getProviders();
+
+	/**
 	 * @param string $id
 	 * @return IShareProvider
 	 * @throws ProviderException
