@@ -73,6 +73,29 @@ $(document).ready(function(){
 		$("#setDefaultExpireDate").toggleClass('hidden', !this.checked);
 	});
 
+
+	$('#shareapiExpireAfterNDaysUserShare').change(function() {
+		var value = $(this).val();
+		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
+			$(this).val('7');
+		}
+	});
+
+	$('#shareapiDefaultExpireDateUserShare').change(function() {
+		$("#setDefaultExpireDateUserShare").toggleClass('hidden', !this.checked);
+	});
+
+	$('#shareapiExpireAfterNDaysGroupShare').change(function() {
+		var value = $(this).val();
+		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
+			$(this).val('7');
+		}
+	});
+
+	$('#shareapiDefaultExpireDateGroupShare').change(function() {
+		$("#setDefaultExpireDateGroupShare").toggleClass('hidden', !this.checked);
+	});
+
 	$('#allowLinks').change(function() {
 		$("#publicLinkSettings").toggleClass('hidden', !this.checked);
 		$('#setDefaultExpireDate').toggleClass('hidden', !(this.checked && $('#shareapiDefaultExpireDate')[0].checked));

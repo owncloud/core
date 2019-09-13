@@ -46,7 +46,7 @@ interface IShareProvider {
 	 */
 	const CAPABILITY_STORE_EXPIRATION = 'share expiration';
 	/**
-	 * Store the (hsashed) password to protect the share. A value of null means
+	 * Store the (hashed) password to protect the share. A value of null means
 	 * that the share isn't protected by a password.
 	 */
 	const CAPABILITY_STORE_PASSWORD = 'password protected';

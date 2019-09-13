@@ -416,13 +416,34 @@ class Manager implements IManager {
 			}
 		}
 
+		switch ($share->getShareType()) {
+			case \OCP\Share::SHARE_TYPE_USER:
+				$isEnforced = $this->shareApiLinkDefaultExpireDateEnforcedForUsers();
+				$thereIsDefault = $this->shareApiLinkDefaultExpireDateForUsers();
+				$defaultDays = $this->shareApiLinkDefaultExpireDaysForUsers();
+				break;
+			case \OCP\Share::SHARE_TYPE_GROUP:
+				$isEnforced = $this->shareApiLinkDefaultExpireDateEnforcedForGroups();
+				$thereIsDefault = $this->shareApiLinkDefaultExpireDateForGroups();
+				$defaultDays = $this->shareApiLinkDefaultExpireDaysForGroups();
+				break;
+			case \OCP\Share::SHARE_TYPE_LINK:
+				$isEnforced = $this->shareApiLinkDefaultExpireDateEnforced();
+				$thereIsDefault = $this->shareApiLinkDefaultExpireDate();
+				$defaultDays = $this->shareApiLinkDefaultExpireDays();
+				break;
+			default:
+				$isEnforced = false;
+				break;
+		}
+
 		// If we enforce the expiration date check that is does not exceed
-		if ($this->shareApiLinkDefaultExpireDateEnforced()) {
+		if ($isEnforced) {
 			// If expiredate is empty and it is a new share, set a default one if there is a default
-			if ($this->isNewShare($share) && $expirationDate === null && $this->shareApiLinkDefaultExpireDate()) {
+			if ($this->isNewShare($share) && $expirationDate === null && $thereIsDefault) {
 				$expirationDate = new \DateTime();
 				$expirationDate->setTime(0, 0, 0);
-				$expirationDate->add(new \DateInterval('P'.$this->shareApiLinkDefaultExpireDays().'D'));
+				$expirationDate->add(new \DateInterval('P'.$defaultDays.'D'));
 			}
 
 			if ($expirationDate === null) {
@@ -431,9 +452,9 @@ class Manager implements IManager {
 
 			$date = new \DateTime();
 			$date->setTime(0, 0, 0);
-			$date->add(new \DateInterval('P' . $this->shareApiLinkDefaultExpireDays() . 'D'));
+			$date->add(new \DateInterval('P' . $defaultDays . 'D'));
 			if ($date < $expirationDate) {
-				$message = $this->l->t('Cannot set expiration date more than %s days in the future', [$this->shareApiLinkDefaultExpireDays()]);
+				$message = $this->l->t('Cannot set expiration date more than %s days in the future', [$defaultDays]);
 				throw new GenericShareException($message, $message, 404);
 			}
 		}
@@ -1643,6 +1664,60 @@ class Manager implements IManager {
 	 */
 	public function shareApiLinkDefaultExpireDays() {
 		return (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7');
+	}
+
+	/**
+	 * Is default expire date enabled for user shares
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateForUsers() {
+		return $this->config->getAppValue('core', 'shareapi_default_expire_date_user_share', 'no') === 'yes';
+	}
+
+	/**
+	 * Is default expire date enforced for user shares
+	 *`
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateEnforcedForUsers() {
+		return $this->shareApiLinkDefaultExpireDateForUsers() &&
+			$this->config->getAppValue('core', 'shareapi_enforce_expire_date_user_share', 'no') === 'yes';
+	}
+
+	/**
+	 * Number of default expire days for user shares
+	 * @return int
+	 */
+	public function shareApiLinkDefaultExpireDaysForUsers() {
+		return (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days_user_share', '7');
+	}
+
+	/**
+	 * Is default expire date enabled for group shares
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateForGroups() {
+		return $this->config->getAppValue('core', 'shareapi_default_expire_date_group_share', 'no') === 'yes';
+	}
+
+	/**
+	 * Is default expire date enforced for group shares
+	 *`
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateEnforcedForGroups() {
+		return $this->shareApiLinkDefaultExpireDateForGroups() &&
+			$this->config->getAppValue('core', 'shareapi_enforce_expire_date_group_share', 'no') === 'yes';
+	}
+
+	/**
+	 * Number of default expire days for group shares
+	 * @return int
+	 */
+	public function shareApiLinkDefaultExpireDaysForGroups() {
+		return (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days_group_share', '7');
 	}
 
 	/**
