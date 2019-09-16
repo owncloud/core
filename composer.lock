@@ -162,28 +162,28 @@
             "authors": [
                 {
                     "name": "Nicolai Ehemann",
-                    "email": "en@enlightened.de",
-                    "role": "Author/Maintainer"
+                    "role": "Author/Maintainer",
+                    "email": "en@enlightened.de"
                 },
                 {
                     "name": "André Rothe",
-                    "email": "arothe@zks.uni-leipzig.de",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "arothe@zks.uni-leipzig.de"
                 },
                 {
                     "name": "Lukas Reschke",
-                    "email": "lukas@owncloud.com",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "lukas@owncloud.com"
                 },
                 {
                     "name": "Thomas Müller",
-                    "email": "thomas.mueller@tmit.eu",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "thomas.mueller@tmit.eu"
                 },
                 {
                     "name": "Roeland Jago Douma",
-                    "email": "roeland@famdouma.nl",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "roeland@famdouma.nl"
                 }
             ],
             "description": "Stream zip files without i/o overhead",
@@ -1065,7 +1065,7 @@
             "time": "2015-08-01T16:27:37+00:00"
         },
         {
-            "name": "jeremeamia/SuperClosure",
+            "name": "jeremeamia/superclosure",
             "version": "2.4.0",
             "source": {
                 "type": "git",
@@ -1494,18 +1494,18 @@
             "authors": [
                 {
                     "name": "Greg Beaver",
-                    "email": "cellog@php.net",
-                    "role": "Helper"
+                    "role": "Helper",
+                    "email": "cellog@php.net"
                 },
                 {
                     "name": "Andrei Zmievski",
-                    "email": "andrei@php.net",
-                    "role": "Lead"
+                    "role": "Lead",
+                    "email": "andrei@php.net"
                 },
                 {
                     "name": "Stig Bakken",
-                    "email": "stig@php.net",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "stig@php.net"
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",
@@ -1612,16 +1612,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.21",
+            "version": "2.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "9f1287e68b3f283339a9f98f67515dd619e5bf9d"
+                "reference": "cbddb5244edff6d2599977f1a1e4c8657f292e7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9f1287e68b3f283339a9f98f67515dd619e5bf9d",
-                "reference": "9f1287e68b3f283339a9f98f67515dd619e5bf9d",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/cbddb5244edff6d2599977f1a1e4c8657f292e7c",
+                "reference": "cbddb5244edff6d2599977f1a1e4c8657f292e7c",
                 "shasum": ""
             },
             "require": {
@@ -1700,7 +1700,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2019-07-12T12:53:49+00:00"
+            "time": "2019-09-15T22:48:44+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -1889,18 +1889,18 @@
             "authors": [
                 {
                     "name": "Michele Locati",
-                    "email": "mlocati@gmail.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "mlocati@gmail.com"
                 },
                 {
                     "name": "Remo Laubacher",
-                    "email": "remo.laubacher@gmail.com",
-                    "role": "Collaborator, motivator and perfectionist supporter"
+                    "role": "Collaborator, motivator and perfectionist supporter",
+                    "email": "remo.laubacher@gmail.com"
                 },
                 {
                     "name": "Christian Schmidt",
-                    "email": "github@chsc.dk",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "github@chsc.dk"
                 }
             ],
             "description": "PHP-Unicode CLDR",
@@ -2031,9 +2031,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -2086,9 +2086,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "sabre/event is a library for lightweight event-based programming",
@@ -2351,14 +2351,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 },
                 {
                     "name": "Markus Staab",
-                    "role": "Developer",
-                    "email": "markus.staab@redaxo.de"
+                    "email": "markus.staab@redaxo.de",
+                    "role": "Developer"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -3692,8 +3692,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "role": "Developer",
-                    "homepage": "http://frankkleine.de/"
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -4663,8 +4663,8 @@
             "authors": [
                 {
                     "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "role": "maintainer"
+                    "role": "maintainer",
+                    "email": "ocramius@gmail.com"
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
