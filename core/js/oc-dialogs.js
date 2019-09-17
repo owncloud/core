@@ -782,11 +782,14 @@ var OCdialogs = {
 					date: OC.Util.relativeModifiedDate(entry.mtime)
 				});
 				if (entry.type === 'file') {
-					var urlSpec = {
-						file: dir + '/' + entry.name
-					};
-					var previewUrl = OC.generateUrl('/core/preview.png?') + $.param(urlSpec);
-					$li.find('img').attr('src', previewUrl);
+					FileList.lazyLoadPreview({
+						path: dir + '/' + entry.name,
+						mime: entry.mimetype,
+						etag: entry.etag,
+						callback: function(url) {
+							$li.find('img').attr('src', url);
+						}
+					});
 				}
 				else {
 					$li.find('img').attr('src', OC.Util.replaceSVGIcon(entry.icon));
@@ -835,7 +838,7 @@ var OCdialogs = {
 		self._fillFilePicker(dir);
 		var getOcDialog = this.closest('.oc-dialog');
 		var buttonEnableDisable = $('.primary', getOcDialog);
-		if (this.$filePicker.data('mimetype') === "http/unix-directory") {
+		if (self.$filePicker.data('mimetype') === "http/unix-directory") {
 			buttonEnableDisable.prop("disabled", false);
 		} else {
 			buttonEnableDisable.prop("disabled", true);
