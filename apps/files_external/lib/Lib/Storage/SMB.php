@@ -135,6 +135,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	protected function getFileInfo($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		$path = $this->buildPath($path);
+		if ($this->isForbiddenName(\basename($path))) {
+			throw new ForbiddenException("$path contains a forbidden name");
+		}
+
 		if (!isset($this->statCache[$path])) {
 			try {
 				$this->log("stat fetching '$path'");
@@ -199,11 +203,20 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	protected function getFolderContents($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			// OC forbidden folder will return empty results
+			$this->log("$path contains a forbidden name. Returning empty list");
+			return $this->leave(__FUNCTION__, []);
+		}
 		try {
 			$path = $this->buildPath($path);
 			$result = [];
 			$children = $this->share->dir($path);
 			foreach ($children as $fileInfo) {
+				if ($this->isForbiddenName($fileInfo->getName())) {
+					$this->log($fileInfo->getName() . " ignored inside $path. Forbidden name");
+					continue;
+				}
 				// check if the file is readable before adding it to the list
 				// can't use "isReadable" function here, use smb internals instead
 				try {
@@ -256,6 +269,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 		if ($this->isRootDir($source) || $this->isRootDir($target)) {
 			$this->log("refusing to rename \"$source\" to \"$target\"");
+			return $this->leave(__FUNCTION__, false);
+		}
+
+		if ($this->isForbiddenName(\basename($source)) || $this->isForbiddenName(\basename($target))) {
+			$this->log("either $source or $target contains a forbidden name");
 			return $this->leave(__FUNCTION__, false);
 		}
 
@@ -317,6 +335,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public function stat($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		try {
 			$result = $this->formatInfo($this->getFileInfo($path));
 		} catch (NotFoundException $e) {
@@ -342,6 +365,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$files = $this->share->dir($this->root);
 		$result = 0;
 		foreach ($files as $fileInfo) {
+			if ($this->isForbiddenName($fileInfo->getName())) {
+				$this->log($fileInfo->getName() . " ignored inside $path. Forbidden name");
+				continue;
+			}
 			if ($fileInfo->getMTime() > $result) {
 				$result = $fileInfo->getMTime();
 			}
@@ -379,6 +406,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 		if ($this->isRootDir($path)) {
 			$this->log("refusing to unlink \"$path\"");
+			return $this->leave(__FUNCTION__, false);
+		}
+
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
 			return $this->leave(__FUNCTION__, false);
 		}
 
@@ -430,6 +462,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public function fopen($path, $mode) {
 		$this->log('enter: '.__FUNCTION__."($path, $mode)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$fullPath = $this->buildPath($path);
 		$result = false;
 		try {
@@ -506,6 +543,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			return $this->leave(__FUNCTION__, false);
 		}
 
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$this->removeFromCache($path);
@@ -537,6 +579,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function touch($path, $time = null) {
 		$this->log('enter: '.__FUNCTION__."($path, $time)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			if (!$this->file_exists($path)) {
@@ -558,6 +605,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function opendir($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		// forbidden names are handled inside the getFolderContents method
 		$result = false;
 		try {
 			$files = $this->getFolderContents($path);
@@ -580,6 +628,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function filetype($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		// forbiddenNames are handled inside the getFileInfo
 		$result = false;
 		try {
 			$result = $this->getFileInfo($path)->isDirectory() ? 'dir' : 'file';
@@ -597,6 +646,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function mkdir($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		$path = $this->buildPath($path);
 		try {
@@ -619,6 +673,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function file_exists($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$this->getFileInfo($path);
@@ -637,6 +696,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function isReadable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -655,6 +719,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function isUpdatable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -675,6 +744,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 	public function isDeletable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isForbiddenName(\basename($path))) {
+			$this->log("$path contains a forbidden name");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -689,6 +763,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
+	}
+
+	private function isForbiddenName($name) {
+		return $name === 'DfsrPrivate';
 	}
 
 	/**
