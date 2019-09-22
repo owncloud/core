@@ -330,10 +330,11 @@ class Manager implements IManager {
 			$maxPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
 		}
 
-		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
+		/** If it is re-share, calculate $maxPermissions based on supershare permissions */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			$maxPermissions = $this->calculateReshareNodePermissions($share);
+			$shareFileNode = $this->getShareFileNode($share);
+			$maxPermissions = $shareFileNode->getPermissions();
 		}
 
 		// Check that we do not share with more permissions than we have
@@ -344,51 +345,16 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * It calculates reshare permissions based on all share mount points
-	 * that mounted to UserFolder of sharer user
+	 * Get parent IShare share for the given IShare share, or return null
+	 * in case parent is not a share.
 	 *
-	 * @param \OCP\Share\IShare $share The share to validate its permission
-	 * @return int
+	 * @param IShare $share
+	 * @return IShare|null
 	 */
-	protected function calculateReshareNodePermissions(IShare $share) {
-		/*
-		 * if it is an incoming federated share, use node permission
-		 */
-		if ($share->getNode()->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-			return $share->getNode()->getPermissions();
-		}
-		$maxPermissions = 0;
-		$incomingShares = [];
-		$shareTypes = [
-			\OCP\Share::SHARE_TYPE_USER,
-			\OCP\Share::SHARE_TYPE_GROUP
-		];
+	protected function getShareFileNode(IShare $share) {
+		// Retrieve incoming share node
 		$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-		/**
-		 * The node can be shared multiple times, get all share nodes
-		 */
-		$incomingShareNodes = $userFolder->getById($share->getNode()->getId());
-		foreach ($incomingShareNodes as $incomingShareNode) {
-			/**
-			 * find mountpoint of the share node,
-			 * check incoming share permissions based on mountpoint node
-			 */
-			$mount = $incomingShareNode->getMountPoint();
-			$shareMountPointNodes = $userFolder->getById($mount->getStorageRootId());
-			foreach ($shareMountPointNodes as $shareMountPointNode) {
-				$incomingShares = \array_merge($incomingShares, $this->getAllSharedWith(
-					$share->getSharedBy(),
-					$shareTypes,
-					$shareMountPointNode
-				));
-			}
-		}
-
-		foreach ($incomingShares as $incomingShare) {
-			$maxPermissions |= $incomingShare->getPermissions();
-		}
-
-		return $maxPermissions;
+		return $userFolder->getById($share->getNode()->getId(), true)[0];
 	}
 
 	/**
