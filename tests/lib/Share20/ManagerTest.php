@@ -3524,24 +3524,24 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @dataProvider strictSubsetOfDataProvider
+	 * @dataProvider strictSubsetOfPermissionsDataProvider
 	 *
 	 * @param int $allowedPermissions
 	 * @param int $newPermissions
 	 * @param boolean $expected
 	 */
-	public function testStrictSubsetOf($allowedPermissions, $newPermissions, $expected) {
+	public function testStrictSubsetOfPermissions($allowedPermissions, $newPermissions, $expected) {
 		$this->assertEquals(
 			$expected,
 			$this->invokePrivate(
 				$this->manager,
-				'strictSubsetOf',
+				'strictSubsetOfPermissions',
 				[$allowedPermissions, $newPermissions]
 			)
 		);
 	}
 
-	public function strictSubsetOfDataProvider() {
+	public function strictSubsetOfPermissionsDataProvider() {
 		return [
 			[\bindec('11111'), \bindec('0111'), true],
 			[\bindec('01101'), \bindec('01001'), true],
