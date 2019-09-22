@@ -330,10 +330,24 @@ class Manager implements IManager {
 			$maxPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
 		}
 
-		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
+		/** If share node is also share (reshare), get $maxPermissions based on supershare permissions */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			$maxPermissions = $this->calculateReshareNodePermissions($share);
+			// if it is an incoming federated share, use node permission directly
+			if ($shareNode->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+				return $shareNode->getPermissions();
+			}
+
+			// check if share node file is also a share
+			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
+			$shareFileNode = $userFolder->getById($share->getNode()->getId(), true)[0];
+			$shareFileStorage = $shareFileNode->getStorage();
+			if ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+				/** @var \OCA\Files_Sharing\SharedStorage $shareFileStorage */
+				'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
+				$parentShare = $shareFileStorage->getShare();
+				$maxPermissions = $parentShare->getPermissions();
+			}
 		}
 
 		// Check that we do not share with more permissions than we have
@@ -341,54 +355,6 @@ class Manager implements IManager {
 			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
-	}
-
-	/**
-	 * It calculates reshare permissions based on all share mount points
-	 * that mounted to UserFolder of sharer user
-	 *
-	 * @param \OCP\Share\IShare $share The share to validate its permission
-	 * @return int
-	 */
-	protected function calculateReshareNodePermissions(IShare $share) {
-		/*
-		 * if it is an incoming federated share, use node permission
-		 */
-		if ($share->getNode()->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-			return $share->getNode()->getPermissions();
-		}
-		$maxPermissions = 0;
-		$incomingShares = [];
-		$shareTypes = [
-			\OCP\Share::SHARE_TYPE_USER,
-			\OCP\Share::SHARE_TYPE_GROUP
-		];
-		$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-		/**
-		 * The node can be shared multiple times, get all share nodes
-		 */
-		$incomingShareNodes = $userFolder->getById($share->getNode()->getId());
-		foreach ($incomingShareNodes as $incomingShareNode) {
-			/**
-			 * find mountpoint of the share node,
-			 * check incoming share permissions based on mountpoint node
-			 */
-			$mount = $incomingShareNode->getMountPoint();
-			$shareMountPointNodes = $userFolder->getById($mount->getStorageRootId());
-			foreach ($shareMountPointNodes as $shareMountPointNode) {
-				$incomingShares = \array_merge($incomingShares, $this->getAllSharedWith(
-					$share->getSharedBy(),
-					$shareTypes,
-					$shareMountPointNode
-				));
-			}
-		}
-
-		foreach ($incomingShares as $incomingShare) {
-			$maxPermissions |= $incomingShare->getPermissions();
-		}
-
-		return $maxPermissions;
 	}
 
 	/**
