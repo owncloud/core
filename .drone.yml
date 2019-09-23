@@ -1524,6 +1524,24 @@ steps:
     COVERAGE: true
     DB_TYPE: sqlite
 
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
 trigger:
   ref:
   - refs/heads/master
@@ -1621,6 +1639,24 @@ steps:
   environment:
     COVERAGE: true
     DB_TYPE: mariadb
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: mariadb
@@ -1729,6 +1765,24 @@ steps:
     COVERAGE: true
     DB_TYPE: mysql
 
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
 services:
 - name: mysql
   image: mysql:5.5
@@ -1835,6 +1889,24 @@ steps:
   environment:
     COVERAGE: true
     DB_TYPE: mysql
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: mysql
@@ -1943,6 +2015,24 @@ steps:
     COVERAGE: true
     DB_TYPE: postgres
 
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
 services:
 - name: postgres
   image: postgres:9.4
@@ -2048,6 +2138,24 @@ steps:
   environment:
     COVERAGE: true
     DB_TYPE: oracle
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: oracle
@@ -2564,6 +2672,24 @@ steps:
     DB_TYPE: sqlite
     FILES_EXTERNAL_TYPE: webdav
 
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
 services:
 - name: webdav
   pull: always
@@ -2674,6 +2800,24 @@ steps:
     DB_TYPE: sqlite
     FILES_EXTERNAL_TYPE: samba
 
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
 services:
 - name: samba
   pull: always
@@ -2783,6 +2927,24 @@ steps:
     COVERAGE: true
     DB_TYPE: sqlite
     FILES_EXTERNAL_TYPE: windows
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 trigger:
   ref:
@@ -2901,6 +3063,24 @@ steps:
     COVERAGE: true
     DB_TYPE: sqlite
     PRIMARY_OBJECTSTORE: files_primary_s3
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: scality
