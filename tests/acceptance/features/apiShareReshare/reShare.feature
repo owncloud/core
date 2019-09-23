@@ -193,26 +193,35 @@ Feature: sharing
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/PARENT" with user "user1" with permissions <received_permissions>
     When user "user1" shares folder "/PARENT" with user "user2" with permissions <reshare_permissions> using the sharing API
-    Then the OCS status code should be "404"
+    Then the OCS status code should be "<occ_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/PARENT" should not exist
+    And as "user2" folder "/PARENT" should exist
     But as "user1" folder "/PARENT" should exist
+    And as "user0" file "/PARENT/parent.txt" should exist
+    And as "user1" file "/PARENT/parent.txt" should exist
+    And as "user2" file "/PARENT/parent.txt" should exist
+    # Actually user2 should not be able to delete a file in PARENT of user0
+    When user "user2" deletes file "/PARENT/parent.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "user0" file "/PARENT/parent.txt" should not exist
+    And as "user1" file "/PARENT/parent.txt" should not exist
+    And as "user2" file "/PARENT/parent.txt" should not exist
     Examples:
-      | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
+      | ocs_api_version | occ_status_code | http_status_code | received_permissions | reshare_permissions |
       # try to pass on extra delete (including reshare)
-      | 1               | 200              | 17                   | 25                  |
-      | 2               | 404              | 17                   | 25                  |
-      | 1               | 200              | 19                   | 27                  |
-      | 2               | 404              | 19                   | 27                  |
-      | 1               | 200              | 23                   | 31                  |
-      | 2               | 404              | 23                   | 31                  |
+      | 1               | 100             | 200              | 17                   | 25                  |
+      | 2               | 200             | 200              | 17                   | 25                  |
+      | 1               | 100             | 200              | 19                   | 27                  |
+      | 2               | 200             | 200              | 19                   | 27                  |
+      | 1               | 100             | 200              | 23                   | 31                  |
+      | 2               | 200             | 200              | 23                   | 31                  |
       # try to pass on extra delete (but not reshare)
-      | 1               | 200              | 17                   | 9                   |
-      | 2               | 404              | 17                   | 9                   |
-      | 1               | 200              | 19                   | 11                  |
-      | 2               | 404              | 19                   | 11                  |
-      | 1               | 200              | 23                   | 15                  |
-      | 2               | 404              | 23                   | 15                  |
+      | 1               | 100             | 200              | 17                   | 9                   |
+      | 2               | 200             | 200              | 17                   | 9                   |
+      | 1               | 100             | 200              | 19                   | 11                  |
+      | 2               | 200             | 200              | 19                   | 11                  |
+      | 1               | 100             | 200              | 23                   | 15                  |
+      | 2               | 200             | 200              | 23                   | 15                  |
 
   Scenario Outline: Update of reshare can reduce permissions
     Given using OCS API version "<ocs_api_version>"
