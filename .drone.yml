@@ -1529,18 +1529,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 trigger:
   ref:
@@ -1645,18 +1645,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: mariadb
@@ -1770,18 +1770,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: mysql
@@ -1895,18 +1895,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: mysql
@@ -2020,18 +2020,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: postgres
@@ -2144,18 +2144,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: oracle
@@ -2677,18 +2677,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: webdav
@@ -2805,18 +2805,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: samba
@@ -2933,18 +2933,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 trigger:
   ref:
@@ -3069,18 +3069,18 @@ steps:
   image: plugins/codecov:2
   settings:
     files:
-      - "*.xml"
+    - "*.xml"
     flags:
-      - phpunit
+    - phpunit
     paths:
-      - tests/output/coverage
+    - tests/output/coverage
   environment:
     CODECOV_TOKEN:
       from_secret: codecov_token
   when:
     instance:
-      - drone.owncloud.services
-      - drone.owncloud.com
+    - drone.owncloud.services
+    - drone.owncloud.com
 
 services:
 - name: scality
