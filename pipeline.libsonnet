@@ -609,8 +609,37 @@ local suites = {
       + $.server(image='owncloudci/php:' + php, db=database_name)
       + (if object == 'scality' then $.primarys3app(image='owncloudci/php:' + php, object=object) else [])
       + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
-      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log') +
-      + suites.get(image='owncloudci/php:' + php, type='phpunit', coverage=coverage, db=database_name, external=external, object=object, proto=proto),
+      + $.logging(image='owncloudci/php:' + php, name='owncloud-logfile', file='/drone/src/data/owncloud.log')
+      + suites.get(image='owncloudci/php:' + php, type='phpunit', coverage=coverage, db=database_name, external=external, object=object, proto=proto)
+      + ( if coverage == true then [
+        {
+          name: 'coverage-upload',
+          image: 'plugins/codecov:2',
+          pull: 'always',
+          environment: {
+            CODECOV_TOKEN: {
+              from_secret: 'codecov_token',
+            },
+          },
+          settings: {
+            flags: [
+              'phpunit',
+            ],
+            paths: [
+              'tests/output/coverage',
+            ],
+            files: [
+              '*.xml',
+            ],
+          },
+          when: {
+            instance: [
+              'drone.owncloud.services',
+              'drone.owncloud.com',
+            ],
+          },
+        },
+      ] else []),
       services: externals.get(external) + objects.get(object) + databases.get(database_name, database_version),
       trigger: trigger,
       depends_on: depends_on,
