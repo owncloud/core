@@ -268,8 +268,7 @@ class SyncBackend extends Command {
 
 		if ($userToSync !== null) {
 			// Run the sync using the internal username if mapped
-			$syncService->run($backend, new \ArrayIterator([$userToSync]), function () {
-			});
+			$syncService->run($backend, new \ArrayIterator([$userToSync]));
 		} else {
 			// Not found
 			$this->handleRemovedUsers([$uid => $dummy], $input, $output, $missingAccountsAction);
