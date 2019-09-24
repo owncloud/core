@@ -111,8 +111,7 @@ class SyncServiceTest extends TestCase {
 		// Ignore state flag
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
-		});
+		$s->run($backend, new AllUsersIterator($backend));
 
 		static::invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
@@ -135,8 +134,7 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(1))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
-		});
+		$s->run($backend, new AllUsersIterator($backend));
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
@@ -294,7 +292,7 @@ class SyncServiceTest extends TestCase {
 			->method('getUserValue')
 			->with('user1', 'core', 'username', null)
 			->willReturn(null);
-		
+
 		$this->config->expects($this->once())
 			->method('setUserValue')
 			->with('user1', 'core', 'username', 'userName1');
