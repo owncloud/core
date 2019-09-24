@@ -790,8 +790,9 @@
 				}
 			}
 			for (i = 0; i < SHARE_RESPONSE_JSON_PROPS.length; i++) {
+				// Parse JSON if not yet parsed
 				var propJson = SHARE_RESPONSE_JSON_PROPS[i];
-				if (!_.isUndefined(share[propJson])) {
+				if (!_.isUndefined(share[propJson]) && !_.isObject(share[propJson])) {
 					share[propJson] = JSON.parse(share[propJson]);
 				}
 			}
