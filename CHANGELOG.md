@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Allow two-factor providers to display custom challenge message [#34848](https://github.com/owncloud/core/issues/34848)
 - Handling of unauthenticated ajax requests to prevent browser issues [#36003](https://github.com/owncloud/core/pull/36003)
 - Improved share permission handling [#35884](https://github.com/owncloud/core/pull/35884)
+- Improve the JS attributes handling during reshare [#36214](https://github.com/owncloud/core/pull/36214)
 - Refined user administration setting button [#35877](https://github.com/owncloud/core/pull/35877)
 - Improved mobile device experience [#35919](https://github.com/owncloud/core/pull/35919) [#35813](https://github.com/owncloud/core/pull/35813) [#35347](https://github.com/owncloud/core/pull/35347)
 - Reference the new iOS app in the list of available applications [#35918](https://github.com/owncloud/core/pull/35918)
