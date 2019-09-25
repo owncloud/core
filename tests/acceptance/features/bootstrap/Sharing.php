@@ -172,7 +172,7 @@ trait Sharing {
 	 *       |                 |     1 = read; 2 = update; 4 = create;               |
 	 *       |                 |     8 = delete; 16 = share; 31 = all                |
 	 *       |                 |     15 = change                                     |
-	 *       |                 |     7 = uploadwriteonly                             |
+	 *       |                 |     5 = uploadwriteonly                             |
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
