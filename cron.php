@@ -40,4 +40,8 @@ if (!\OC::$CLI) {
 }
 
 echo 'Please use ./occ system:cron' . PHP_EOL;
-exit(1);
+$return = \system('./occ system:cron');
+// in case of an error while cron execution we exit with error code as well
+if ($return === false) {
+	exit(1);
+}
