@@ -260,8 +260,7 @@ class SyncBackend extends Command {
 		$dummy = new Account(); // to prevent null pointer when writing messages
 		if (\count($users) === 1) {
 			// Run the sync using the internal username if mapped
-			$syncService->run($backend, new \ArrayIterator([$users[0]]), function () {
-			});
+			$syncService->run($backend, new \ArrayIterator([$users[0]]));
 		} else {
 			// Not found
 			$this->handleRemovedUsers([$uid => $dummy], $input, $output, $missingAccountsAction);
