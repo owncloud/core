@@ -221,6 +221,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added delay in search field - [#34613](https://github.com/owncloud/core/issues/34613)
 - Tidy up code for notification by email - [#34786](https://github.com/owncloud/core/issues/34786) [#35137](https://github.com/owncloud/core/issues/35137)
 - Some code now made PHP 7 specific - [#34925](https://github.com/owncloud/core/issues/34925)
+- cron.php calls the new occ system:cron command as a fallback - [#36221](https://github.com/owncloud/core/issues/36221)
+- Update the CA bundle - [#36219](https://github.com/owncloud/core/issues/36219)
 
 ### Removed
 
