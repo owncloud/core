@@ -102,8 +102,8 @@ class AddressBookImplTest extends TestCase {
 		$pattern = 'pattern';
 		$searchProperties = ['properties'];
 
-		$this->backend->expects($this->once())->method('search')
-			->with($this->addressBookInfo['id'], $pattern, $searchProperties, 10, 0)
+		$this->backend->expects($this->once())->method('searchEx')
+			->with($this->addressBookInfo['id'], $pattern, $searchProperties, [], 10, 0)
 			->willReturn(
 				[
 					['uri' => 'foo.vcf', 'carddata' => 'cardData1'],
