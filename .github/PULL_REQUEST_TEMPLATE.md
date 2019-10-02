@@ -60,7 +60,4 @@ Please set the following labels:
 - [ ] Unit tests added
 - [ ] Acceptance tests added
 - [ ] Documentation ticket raised: <link> 
-
-## Open tasks:
-<!-- In case of incomplete PR, please list the open tasks here -->
-- [ ] Backport (if applicable set "backport-request" label and remove when the backport was done)
+- [ ] Changelog item, see [TEMPLATE](../changelog/README.md)
