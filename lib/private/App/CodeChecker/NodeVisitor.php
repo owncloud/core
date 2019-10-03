@@ -132,15 +132,6 @@ class NodeVisitor extends NodeVisitorAbstract {
 					$this->checkBlackListFunction($node->class->toString(), $node->name, $node);
 					$this->checkBlackListMethod($node->class->toString(), $node->name, $node);
 				}
-
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = $c::call();
-					 */
-					// $this->checkBlackListMethod($node->class->..., $node->name, $node);
-				}
 			}
 		}
 		if ($node instanceof Node\Expr\MethodCall) {
