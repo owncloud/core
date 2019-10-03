@@ -134,19 +134,6 @@ class NodeVisitor extends NodeVisitorAbstract {
 				}
 			}
 		}
-		if ($node instanceof Node\Expr\MethodCall) {
-			if ($node->var !== null) {
-				if ($node->var instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = new OC_API();
-					 *       $n = $c::call();
-					 *       $n = $c->call();
-					 */
-					// $this->checkBlackListMethod($node->var->..., $node->name, $node);
-				}
-			}
-		}
 		if ($node instanceof Node\Expr\ClassConstFetch) {
 			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
