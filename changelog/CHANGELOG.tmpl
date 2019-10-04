@@ -1,0 +1,32 @@
+{{- range $changes := . }}{{ with $changes -}}
+Changelog for ownCloud Core {{ .Version }} ({{ .Date }})
+=======================================
+
+The following sections list the changes in ownCloud core {{ .Version }} relevant to
+ownCloud admins and users. The changes are ordered by importance.
+
+Summary
+-------
+{{ range $entry := .Entries }}{{ with $entry }}
+* {{ .TypeShort }} [#{{ .PrimaryID }}]({{ .PrimaryURL }}): {{ .Title }}
+{{- end }}{{ end }}
+
+Details
+-------
+{{ range $entry := .Entries }}{{ with $entry }}
+* {{ .Type }} [#{{ .PrimaryID }}]({{ .PrimaryURL }}): {{ .Title }}
+{{ range $par := .Paragraphs }}
+{{ wrap $par 80 3 }}
+{{ end -}}
+{{ range $url := .IssueURLs }}
+{{ $url -}}
+{{ end -}}
+{{ range $url := .PRURLs }}
+{{ $url -}}
+{{ end -}}
+{{ range $url := .OtherURLs }}
+{{ $url -}}
+{{ end }}
+{{ end }}{{ end }}
+
+{{ end }}{{ end -}}
