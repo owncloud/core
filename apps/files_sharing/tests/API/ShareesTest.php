@@ -1426,10 +1426,14 @@ class ShareesTest extends TestCase {
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
 
+		$configMap = [
+			['trusted_domains', [], ['trusted.domain.tld', 'trusted2.domain.tld']],
+			['accounts.enable_medial_search', true, true]
+		];
+
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->with('trusted_domains')
-			->willReturn(['trusted.domain.tld', 'trusted2.domain.tld']);
+			->will($this->returnValueMap($configMap));
 		$this->userSearch->expects($this->any())
 			->method('isSearchable')
 			->willReturn($isSearchable);
@@ -1448,7 +1452,7 @@ class ShareesTest extends TestCase {
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())
 			->method('search')
-			->with($searchTerm, ['EMAIL', 'CLOUD', 'FN'], [], 2, 0)
+			->with($searchTerm, ['EMAIL', 'CLOUD', 'FN'], ['matchMode' => 'ANY'], 2, 0)
 			->willReturn($contacts);
 
 		$this->invokePrivate($this->sharees, 'getRemote', [$searchTerm]);
@@ -1961,7 +1965,7 @@ class ShareesTest extends TestCase {
 
 		$exactExpected = [['label' => 'Bob', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'testBob']]];
 		$expected = [];
-		
+
 		$this->invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
 		$result = $this->invokePrivate($this->sharees, 'result');
 		$this->assertEquals($exactExpected, $result['exact']['users']);

@@ -812,14 +812,52 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return array an array of contacts which are arrays of key-value-pairs
 	 */
 	public function search($addressBookId, $pattern, $searchProperties, $limit = 100, $offset = 0) {
+		return $this->searchEx($addressBookId, $pattern, $searchProperties, [], $limit, $offset);
+	}
+
+	/**
+	 * search contact with options
+	 *
+	 * @param int $addressBookId
+	 * @param string $pattern which should match within the $searchProperties
+	 * @param array $searchProperties defines the properties within the query pattern should match
+	 * @param array $options
+	 * 			available options:
+	 * 				'matchMode'
+	 * 					- 'ANY' (default) - pattern can be anywhere in property value
+	 * 					- 'START' - property value should start with pattern
+	 * 					- 'END' - property value should end with pattern
+	 * 					- 'EXACT' - property value should match the pattern exactly
+	 * @param int $limit
+	 * @param int $offset
+	 * @return array an array of contacts which are arrays of key-value-pairs
+	 */
+	public function searchEx($addressBookId, $pattern, $searchProperties, $options, $limit = 100, $offset = 0) {
 		$query = $this->db->getQueryBuilder();
 		$query2 = $this->db->getQueryBuilder();
 		$query2->selectDistinct('cp.cardid')->from($this->dbCardsPropertiesTable, 'cp');
+
+		$matchMode = $options['matchMode'] ?? 'any';
+		switch ($matchMode) {
+			case 'START':
+				$searchPattern = $this->db->escapeLikeParameter($pattern) . '%';
+				break;
+			case 'END':
+				$searchPattern = '%' . $this->db->escapeLikeParameter($pattern);
+				break;
+			case 'EXACT':
+				$searchPattern = $this->db->escapeLikeParameter($pattern);
+				break;
+			case 'ANY':
+			default:
+				$searchPattern = '%' . $this->db->escapeLikeParameter($pattern) . '%';
+		}
+
 		foreach ($searchProperties as $property) {
 			$query2->orWhere(
 				$query2->expr()->andX(
 					$query2->expr()->eq('cp.name', $query->createNamedParameter($property)),
-					$query2->expr()->iLike('cp.value', $query->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%'))
+					$query2->expr()->iLike('cp.value', $query->createNamedParameter($searchPattern))
 				)
 			);
 		}

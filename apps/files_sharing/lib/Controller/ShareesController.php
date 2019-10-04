@@ -360,7 +360,16 @@ class ShareesController extends OCSController {
 		// Fetch remote search properties from app config
 		$searchProperties = \explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
 		// Search in contacts
-		$addressBookContacts = $this->contactsManager->search($search, $searchProperties, [], $this->limit, $this->offset);
+		$matchMode = $this->config->getSystemValue('accounts.enable_medial_search', true) === true
+			? 'ANY'
+			: 'START';
+		$addressBookContacts = $this->contactsManager->search(
+			$search,
+			$searchProperties,
+			[ 'matchMode' => $matchMode ],
+			$this->limit,
+			$this->offset
+		);
 		$foundRemoteById = false;
 		foreach ($addressBookContacts as $contact) {
 			if (isset($contact['isLocalSystemBook'])) {
