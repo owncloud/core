@@ -218,6 +218,8 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 					}
 				} catch (NotFoundException $e) {
 					$this->swallow(__FUNCTION__, $e);
+				} catch (ForbiddenException $e) {
+					$this->swallow(__FUNCTION__, $e);
 				}
 			}
 		} catch (ConnectException $e) {
