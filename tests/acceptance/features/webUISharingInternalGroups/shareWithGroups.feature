@@ -316,4 +316,82 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for file "lorem.txt"
     Then the group "grp1" should not be in share with group list
 
+  @skipOnOcV10.3
+  Scenario: sharing indicator of items inside a shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-empty-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with group "grp1"
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | simple-empty-folder |
+      | lorem.txt           |
 
+  @skipOnOcV10.3
+  Scenario: sharing indicator of items inside a shared folder two levels down
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-empty-folder/"
+    And user "user1" has created folder "/simple-folder/simple-empty-folder/new-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/simple-empty-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with group "grp1"
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens folder "simple-empty-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | new-folder |
+      | lorem.txt  |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator of items inside a re-shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-empty-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with user "user2"
+    And user "user2" has shared folder "simple-folder" with group "grp1"
+    And user "user2" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | simple-empty-folder |
+      | lorem.txt           |
+
+  @skipOnOcV10.3
+  Scenario: no sharing indicator of items inside a not shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-sub-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should not have share indicators on the webUI
+      | simple-sub-folder |
+      | lorem.txt         |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator for file uploaded inside a shared folder
+    Given user "user3" has shared folder "/simple-empty-folder" with group "grp1"
+    And user "user3" has logged in using the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    And the user uploads file "new-lorem.txt" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | new-lorem.txt |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator for folder created inside a shared folder
+    Given user "user3" has shared folder "/simple-empty-folder" with group "grp1"
+    And user "user3" has logged in using the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    And the user creates a folder with the name "sub-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | sub-folder |
+
+  @skipOnOcV10.3
+  Scenario: sharing details of items inside a shared folder shared with user and group
+    Given user "user3" has created folder "/simple-folder/sub-folder"
+    And user "user3" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/sub-folder/lorem.txt"
+    And user "user3" has shared folder "simple-folder" with user "user2"
+    And user "user3" has shared folder "/simple-folder/sub-folder" with group "grp1"
+    And user "user3" has logged in using the webUI
+    When the user opens folder "simple-folder/sub-folder" using the webUI
+    And the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
+    Then user "User Two" should be listed as share receiver via "simple-folder" on the webUI
+    And group "grp1" should be listed as share receiver via "sub-folder" on the webUI

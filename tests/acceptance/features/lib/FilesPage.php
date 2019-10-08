@@ -399,4 +399,17 @@ class FilesPage extends FilesPageBasic {
 	public function waitForUploadProgressbarToFinish() {
 		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();
 	}
+
+	/**
+	 * checks whether given resource is marked as shared or not
+	 *
+	 * @param string $fileName
+	 * @param Session $session
+	 *
+	 * @return bool
+	 */
+	public function isSharedIndicatorPresent($fileName, $session) {
+		$fileRow = $this->findFileRowByName($fileName, $session);
+		return $fileRow->isSharedIndicatorPresent();
+	}
 }

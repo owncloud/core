@@ -28,7 +28,7 @@ use Behat\Mink\Session;
  * Shared with you page.
  */
 class SharedWithYouPage extends FilesPageBasic {
-	
+
 	/**
 	 *
 	 * @var string $path
@@ -38,28 +38,28 @@ class SharedWithYouPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-sharingin']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharingin']//div[@id='emptycontent']";
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileListXpath() {
 		return $this->fileListXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileNamesXpath() {
 		return $this->fileNamesXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileNameMatchXpath() {
 		return $this->fileNameMatchXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -95,7 +95,7 @@ class SharedWithYouPage extends FilesPageBasic {
 	) {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
-		
+
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			$row = $this->findFileRowByName($name, $session);
 			try {
