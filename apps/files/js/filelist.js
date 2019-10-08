@@ -1723,6 +1723,38 @@
 			return OC.linkToRemoteBase('dav') + '/files/' + uid + encodedPath;
 		},
 
+		getDirShareInfo: function(dir) {
+			var client     = this.filesClient
+			var options    = {
+				properties : ['{' + OC.Files.Client.NS_OWNCLOUD + '}share-types']
+			}
+
+			return new Promise( function(resolve, reject) {
+				client.getFileInfo(dir, options).done(function(s, dir) {
+					resolve({
+						name : dir.name,
+						shareTypes : dir.shareTypes
+					})
+				}).fail(function(error) {
+					reject(error)
+				})
+			})
+		},
+
+		getPathShareInfo: function(path) {
+			var crumbs     = [];
+			var pathToHere = '';
+			var parts      = (path === '/') ? ['/'] : path.split('/')
+
+			for (var i = 0; i < parts.length; i++) {
+				var part = parts[i];
+				pathToHere += part + '/';
+				crumbs.push(this.getDirShareInfo(pathToHere))
+			}
+
+			return Promise.all(crumbs)
+		},
+
 		/**
 		 * Generates a preview URL based on the URL space.
 		 * @param urlSpec attributes for the URL
