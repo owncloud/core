@@ -188,6 +188,16 @@ class Scanner extends PublicEmitter {
 		if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
 			(!$storage->isCreatable('') or !$storage->isCreatable('files'))
 		) {
+			$isGuest = \OC::$server->getConfig()->getUserValue(
+					$this->user,
+				'owncloud',
+				'isGuest',
+				false
+				);
+			if ($isGuest) {
+				return true;
+			}
+
 			if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
 				throw new ForbiddenException();
 			} else {// if the root exists in neither the cache nor the storage the user isn't setup yet
