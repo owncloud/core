@@ -1723,7 +1723,18 @@
 			return OC.linkToRemoteBase('dav') + '/files/' + uid + encodedPath;
 		},
 
+		/**
+		 * Fetch shareTypes of a certain directory
+		 * @param {String} dir directory string
+		 * @return {Promise} object with name and shareTypes
+		 */
 		getDirShareInfo: function(dir) {
+			// Dir can't be empty
+			if (typeof dir !== 'string' || dir.length === 0) {
+				console.error('getDirShareInfo(). param must be typeof string and can not be empty!')
+				return false
+			}
+
 			var client     = this.filesClient
 			var options    = {
 				properties : ['{' + OC.Files.Client.NS_OWNCLOUD + '}share-types']
@@ -1741,10 +1752,21 @@
 			})
 		},
 
+		/**
+		 * Fetch shareInfos recursively from current
+		 * directory down to root
+		 * @param {String} dir directory string
+		 * @return {Promise} array of objects with name and shareTypes
+		 */
 		getPathShareInfo: function(path) {
+			if (typeof dir !== 'string') {
+				console.error('getDirShareInfo(). param must be typeof string!')
+				return false
+			}
+
 			var crumbs     = [];
 			var pathToHere = '';
-			var parts      = (path === '/') ? ['/'] : path.split('/')
+			var parts      = (path === '/' || path.length === 0) ? ['/'] : path.split('/')
 
 			for (var i = 0; i < parts.length; i++) {
 				var part = parts[i];
