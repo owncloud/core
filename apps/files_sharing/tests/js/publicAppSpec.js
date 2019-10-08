@@ -94,7 +94,7 @@ describe('OCA.Sharing.PublicApp tests', function() {
 			// uploader function messes up with fakeServer
 			var uploaderDetectStub = sinon.stub(OC.Uploader.prototype, '_supportAjaxUploadWithProgress');
 			App.initialize($('#preview'));
-			expect(fakeServer.requests.length).toEqual(1);
+			expect(fakeServer.requests.length).toEqual(2);
 			expect(fakeServer.requests[0].method).toEqual('PROPFIND');
 			expect(fakeServer.requests[0].url).toEqual('https://example.com:9876/owncloud/public.php/webdav/subdir');
 			expect(fakeServer.requests[0].requestHeaders.Authorization).toEqual('Basic c2g0dG9rOm51bGw=');
