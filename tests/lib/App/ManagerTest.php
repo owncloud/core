@@ -635,4 +635,15 @@ class ManagerTest extends TestCase {
 			],
 		];
 	}
+
+	/**
+	 * This test is to make sure if the app is not whitelisted then the app will
+	 * not be enabled for the user. The checkAppForUser would return false.
+	 */
+	public function testCheckAppNotForGuestUser() {
+		$user = $this->createMock(IUser::class);
+		$user->method('getExtendedAttributes')
+			->willReturn(['whitelistedAppsForGuests' => ['foo', 'bar']]);
+		$this->assertFalse($this->invokePrivate($this->manager, 'checkAppForUser', [true, 'foobar', $user]));
+	}
 }

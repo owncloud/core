@@ -11,6 +11,7 @@
  * @author Tom Needham <tom@owncloud.com>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Sujith Haridasan <sharidasan@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -37,13 +38,16 @@ use OC_Helper;
 use OCP\Events\EventEmitterTrait;
 use OCP\IAvatarManager;
 use OCP\IImage;
+use OCP\ILogger;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IConfig;
 use OCP\IUserBackend;
 use OCP\IUserSession;
+use OCP\User\NotPermittedActionException;
 use OCP\PreConditionNotMetException;
 use OCP\User\IChangePasswordBackend;
+use OCP\User\UserExtendedAttributesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -77,6 +81,18 @@ class User implements IUser {
 	/** @var Session  */
 	private $userSession;
 
+	/** @var null|array */
+	private $userExtendedAttributes = null;
+
+	/**
+	 * This flag is true by default. This flag when set to false
+	 * would not allow the set operations in this class. Or in other
+	 * words the update to the accounts table will be restricted through this flag.
+	 * This flag is only modified inside getExtendedAttributes method.
+	 * @var bool
+	 */
+	private $allowUserAccountUpdate = true;
+
 	/**
 	 * User constructor.
 	 *
@@ -88,6 +104,7 @@ class User implements IUser {
 	 * @param EventDispatcher|null $eventDispatcher
 	 * @param \OC\Group\Manager|null $groupManager
 	 * @param Session|null $userSession
+	 * @param ILogger|null $logger
 	 */
 	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
 								$urlGenerator = null, EventDispatcher $eventDispatcher = null,
@@ -96,6 +113,9 @@ class User implements IUser {
 		$this->account = $account;
 		$this->mapper = $mapper;
 		$this->emitter = $emitter;
+		if ($eventDispatcher === null) {
+			$eventDispatcher = \OC::$server->getEventDispatcher();
+		}
 		$this->eventDispatcher = $eventDispatcher;
 		if ($config === null) {
 			$config = \OC::$server->getConfig();
@@ -140,8 +160,13 @@ class User implements IUser {
 	 * TODO move username to account table
 	 *
 	 * @param string $userName
+	 * @throws NotPermittedActionException
 	 */
 	public function setUserName($userName) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		$currentUserName = $this->getUserName();
 		if ($userName !== $currentUserName) {
 			$uid = $this->getUID();
@@ -171,8 +196,13 @@ class User implements IUser {
 	 *
 	 * @param string $displayName
 	 * @return bool
+	 * @throws NotPermittedActionException
 	 */
 	public function setDisplayName($displayName) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		if (!$this->canChangeDisplayName()) {
 			return false;
 		}
@@ -199,9 +229,14 @@ class User implements IUser {
 	 *
 	 * @param string|null $mailAddress
 	 * @return void
+	 * @throws NotPermittedActionException
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		$mailAddress = \trim($mailAddress);
 		if ($mailAddress === $this->account->getEmail()) {
 			return;
@@ -289,8 +324,13 @@ class User implements IUser {
 	 * @param string $recoveryPassword for the encryption app to reset encryption keys
 	 * @return bool
 	 * @throws \InvalidArgumentException
+	 * @throws NotPermittedActionException
 	 */
 	public function setPassword($password, $recoveryPassword = null) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		if (\OCP\Util::isEmptyString($password)) {
 			throw new \InvalidArgumentException('Password cannot be empty');
 		}
@@ -410,11 +450,16 @@ class User implements IUser {
 	}
 
 	/**
-	 * set the enabled status for the user
+	 * Set the enabled status for the user
 	 *
 	 * @param bool $enabled
+	 * @throws NotPermittedActionException
 	 */
 	public function setEnabled($enabled) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		if ($enabled === true) {
 			$this->account->setState(Account::STATE_ENABLED);
 		} else {
@@ -452,13 +497,19 @@ class User implements IUser {
 	}
 
 	/**
-	 * set the users' quota
+	 * Set the users' quota
 	 *
 	 * @param string $quota
 	 * @return void
+	 * @throws NotPermittedActionException
+	 * @throws PreConditionNotMetException
 	 * @since 9.0.0
 	 */
 	public function setQuota($quota) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		if ($quota !== 'none' and $quota !== 'default') {
 			$quota = OC_Helper::computerFileSize($quota);
 			$quota = OC_Helper::humanFileSize($quota);
@@ -538,9 +589,14 @@ class User implements IUser {
 
 	/**
 	 * @param string[] $terms
+	 * @throws NotPermittedActionException
 	 * @since 10.0.1
 	 */
 	public function setSearchTerms(array $terms) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+
 		// Check length of terms, cut if too long
 		$terms = \array_map(function ($term) {
 			return \substr($term, 0, 191);
@@ -554,5 +610,66 @@ class User implements IUser {
 	 */
 	public function getAccountId() {
 		return $this->account->getId();
+	}
+
+	/**
+	 * get the attributes of user for apps
+	 * This method sends event which is listened by the apps. The apps would add attributes which
+	 * are specific to this user. Say for example a user might have access to a blog site, in such
+	 * case the app which is responsible for this control could listen to this event and
+	 * add an attribute say:
+	 * "blogSite" => "https://foo/bar"
+	 * Apps add attributes and their value in the form of key => value. The userExtendedAttributes
+	 * does not care which app added the attributes. It only considers about the
+	 * attributes.
+	 * The argument clearCache is used to clear userExtendedAttributes. If there are
+	 * external apps involved or under any circumstance we know there will be delay
+	 * in response from the app, then its safe to use clearCache as false.
+	 * New event is triggered under the following conditions:
+	 * - if the userExtendedAttributes is null or empty array ( even if clearCache is set to false, in this condition, event will be triggered )
+	 * - if clearCache is set to true
+	 * The flag allowUserAccountUpdate is set to true by default. This flag is set to false before event is emitted.
+	 * This flag is checked on all the set operations, in this class to make sure no user account
+	 * table update is allowed when the extended attributes are provided by the apps. Once the
+	 * event listeners have done their task, the flag is set back to true.
+	 * The exception is thrown when the listener tries call this method again. This is to
+	 * prevent infinite loop. Also the exceptions thrown during any operation by the listeners
+	 * are allowed to go up. The exceptions are not caught in this method.
+	 *
+	 *
+	 * @param bool $clearCache, set to true if user attributes should be created every time, else false is set to reuse the userExtendedAttributes cache.
+	 * @return array
+	 * @throws NotPermittedActionException
+	 * @since 10.3.1
+	 */
+	public function getExtendedAttributes($clearCache = false) {
+		if (!$this->allowUserAccountUpdate) {
+			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
+		}
+		/**
+		 * using empty because userExtendedAttributes could either be null or empty array
+		 * or an array of attributes
+		 */
+		if ($clearCache || !isset($this->userExtendedAttributes) || [] === $this->userExtendedAttributes) {
+			$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this);
+
+			/**
+			 * Restrict the user accounts table update for the set operations as the apps
+			 * listening to the event below will be providing extended attributes of this
+			 * user.
+			 */
+			$this->allowUserAccountUpdate = false;
+			try {
+				$this->eventDispatcher->dispatch(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent);
+			} finally {
+				//Reset the flag to true so that account table can now be allowed to update.
+				$this->allowUserAccountUpdate = true;
+			}
+
+			//Just overwrite the userExtendedAttributes if clearCache is true
+			$this->userExtendedAttributes = $userExtendedAttributesEvent->getAttributes();
+		}
+
+		return $this->userExtendedAttributes;
 	}
 }
