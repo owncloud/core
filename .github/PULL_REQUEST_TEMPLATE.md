@@ -60,4 +60,4 @@ Please set the following labels:
 - [ ] Unit tests added
 - [ ] Acceptance tests added
 - [ ] Documentation ticket raised: <link> 
-- [ ] Changelog item, see [TEMPLATE](../changelog/README.md)
+- [ ] Changelog item, see [TEMPLATE](https://github.com/owncloud/core/blob/master/changelog/TEMPLATE)
