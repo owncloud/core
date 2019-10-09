@@ -27,6 +27,17 @@ Feature: download file
       | old         |
       | new         |
 
+  Scenario Outline: download a file larger than 4MB (ref: https://github.com/sabre-io/http/pull/119 )
+    Given using <dav_version> DAV path
+    And user "user0" has uploaded file "/file9000000.txt" ending with "text at end of file" of size 9000000 bytes
+    When user "user0" downloads file "/file9000000.txt" using the WebDAV API
+    Then the size of the downloaded file should be 9000000 bytes
+    And the downloaded content should end with "text at end of file"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   @public_link_share-feature-required
   Scenario: download a public shared file with range
     Given the administrator has enabled DAV tech_preview

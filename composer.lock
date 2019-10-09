@@ -2109,16 +2109,16 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.0.2",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "c9833073175bf02c8550695860fe375e26b68709"
+                "reference": "59359212b84138ddb93167d67733fe5d06ba9b6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/c9833073175bf02c8550695860fe375e26b68709",
-                "reference": "c9833073175bf02c8550695860fe375e26b68709",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/59359212b84138ddb93167d67733fe5d06ba9b6b",
+                "reference": "59359212b84138ddb93167d67733fe5d06ba9b6b",
                 "shasum": ""
             },
             "require": {
@@ -2161,7 +2161,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2019-09-12T15:36:08+00:00"
+            "time": "2019-10-08T11:45:03+00:00"
         },
         {
             "name": "sabre/uri",
