@@ -162,28 +162,28 @@
             "authors": [
                 {
                     "name": "Nicolai Ehemann",
-                    "email": "en@enlightened.de",
-                    "role": "Author/Maintainer"
+                    "role": "Author/Maintainer",
+                    "email": "en@enlightened.de"
                 },
                 {
                     "name": "André Rothe",
-                    "email": "arothe@zks.uni-leipzig.de",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "arothe@zks.uni-leipzig.de"
                 },
                 {
                     "name": "Lukas Reschke",
-                    "email": "lukas@owncloud.com",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "lukas@owncloud.com"
                 },
                 {
                     "name": "Thomas Müller",
-                    "email": "thomas.mueller@tmit.eu",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "thomas.mueller@tmit.eu"
                 },
                 {
                     "name": "Roeland Jago Douma",
-                    "email": "roeland@famdouma.nl",
-                    "role": "Contributor"
+                    "role": "Contributor",
+                    "email": "roeland@famdouma.nl"
                 }
             ],
             "description": "Stream zip files without i/o overhead",
@@ -1046,14 +1046,14 @@
             "authors": [
                 {
                     "name": "Olivier Paroz",
+                    "role": "Developer",
                     "email": "dev-lognormalizer@interfasys.ch",
-                    "homepage": "http://www.interfasys.ch",
-                    "role": "Developer"
+                    "homepage": "http://www.interfasys.ch"
                 },
                 {
                     "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "j.boggiano@seld.be"
                 }
             ],
             "description": "Parses variables and converts them to string so that they can be logged",
@@ -1494,18 +1494,18 @@
             "authors": [
                 {
                     "name": "Greg Beaver",
-                    "email": "cellog@php.net",
-                    "role": "Helper"
+                    "role": "Helper",
+                    "email": "cellog@php.net"
                 },
                 {
                     "name": "Andrei Zmievski",
-                    "email": "andrei@php.net",
-                    "role": "Lead"
+                    "role": "Lead",
+                    "email": "andrei@php.net"
                 },
                 {
                     "name": "Stig Bakken",
-                    "email": "stig@php.net",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "stig@php.net"
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",
@@ -1548,8 +1548,8 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
-                    "email": "cweiske@php.net",
-                    "role": "Lead"
+                    "role": "Lead",
+                    "email": "cweiske@php.net"
                 }
             ],
             "description": "Minimal set of PEAR core files to be used as composer dependency",
@@ -1889,18 +1889,18 @@
             "authors": [
                 {
                     "name": "Michele Locati",
-                    "email": "mlocati@gmail.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "mlocati@gmail.com"
                 },
                 {
                     "name": "Remo Laubacher",
-                    "email": "remo.laubacher@gmail.com",
-                    "role": "Collaborator, motivator and perfectionist supporter"
+                    "role": "Collaborator, motivator and perfectionist supporter",
+                    "email": "remo.laubacher@gmail.com"
                 },
                 {
                     "name": "Christian Schmidt",
-                    "email": "github@chsc.dk",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "github@chsc.dk"
                 }
             ],
             "description": "PHP-Unicode CLDR",
@@ -2031,9 +2031,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -2086,9 +2086,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "sabre/event is a library for lightweight event-based programming",
@@ -2260,21 +2260,21 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 },
                 {
                     "name": "Dominik Tobschall",
+                    "role": "Developer",
                     "email": "dominik@fruux.com",
-                    "homepage": "http://tobschall.de/",
-                    "role": "Developer"
+                    "homepage": "http://tobschall.de/"
                 },
                 {
                     "name": "Ivan Enderlin",
+                    "role": "Developer",
                     "email": "ivan.enderlin@hoa-project.net",
-                    "homepage": "http://mnt.io/",
-                    "role": "Developer"
+                    "homepage": "http://mnt.io/"
                 }
             ],
             "description": "The VObject library for PHP allows you to easily parse and manipulate iCalendar and vCard objects",
@@ -2351,14 +2351,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 },
                 {
                     "name": "Markus Staab",
-                    "email": "markus.staab@redaxo.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "markus.staab@redaxo.de"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -3692,8 +3692,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://frankkleine.de/"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -3783,18 +3783,18 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 },
                 {
                     "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "sebastian@phpeople.de"
                 },
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -3999,22 +3999,22 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.8.1",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76"
+                "reference": "f6811d96d97bdf400077a0cc100ae56aa32b9203"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
-                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/f6811d96d97bdf400077a0cc100ae56aa32b9203",
+                "reference": "f6811d96d97bdf400077a0cc100ae56aa32b9203",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
-                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
+                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0",
                 "sebastian/comparator": "^1.1|^2.0|^3.0",
                 "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
@@ -4058,7 +4058,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2019-06-13T12:50:23+00:00"
+            "time": "2019-10-03T11:07:50+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4459,12 +4459,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9942bfb2b2980de5e6971cbfa463d236f7865f02"
+                "reference": "8a9c65d4dc3421877d806cb99b60d7f33689ca51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9942bfb2b2980de5e6971cbfa463d236f7865f02",
-                "reference": "9942bfb2b2980de5e6971cbfa463d236f7865f02",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/8a9c65d4dc3421877d806cb99b60d7f33689ca51",
+                "reference": "8a9c65d4dc3421877d806cb99b60d7f33689ca51",
                 "shasum": ""
             },
             "conflict": {
@@ -4487,7 +4487,6 @@
                 "contao/core": ">=2,<3.5.39",
                 "contao/core-bundle": ">=4,<4.4.39|>=4.5,<4.7.5",
                 "contao/listing-bundle": ">=4,<4.4.8",
-                "contao/newsletter-bundle": ">=4,<4.1",
                 "datadog/dd-trace": ">=0.30,<0.30.2",
                 "david-garcia/phpwhois": "<=4.3.1",
                 "doctrine/annotations": ">=1,<1.2.7",
@@ -4668,7 +4667,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-10-07T22:05:53+00:00"
+            "time": "2019-10-08T10:45:32+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5320,8 +5319,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
