@@ -30,7 +30,6 @@ use OC\Files\View;
 use OC\Share20\ProviderFactory;
 use OCP\Files\FileInfo;
 use OCP\Files\Mount\IMountManager;
-use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
@@ -54,9 +53,6 @@ class TransferOwnership extends Command {
 
 	/** @var Manager  */
 	private $encryptionManager;
-
-	/** @var ILogger  */
-	private $logger;
 
 	/** @var ProviderFactory  */
 	private $shareProviderFactory;
@@ -85,12 +81,11 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger, ProviderFactory $shareProviderFactory) {
+	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ProviderFactory $shareProviderFactory) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
 		$this->encryptionManager = $encryptionManager;
-		$this->logger = $logger;
 		$this->shareProviderFactory = $shareProviderFactory;
 		parent::__construct();
 	}
@@ -135,7 +130,7 @@ class TransferOwnership extends Command {
 		$this->inputPath = \ltrim($this->inputPath, '/');
 
 		// target user has to be ready
-		if (!\OC::$server->getEncryptionManager()->isReadyForUser($this->destinationUser)) {
+		if (!$this->encryptionManager->isReadyForUser($this->destinationUser)) {
 			$output->writeln("<error>The target user is not ready to accept files. The user has at least to be logged in once.</error>");
 			return 2;
 		}
@@ -196,7 +191,6 @@ class TransferOwnership extends Command {
 		$output->writeln("Analysing files of $this->sourceUser ...");
 		$progress = new ProgressBar($output);
 		$progress->start();
-		$self = $this;
 		$walkPath = "$this->sourceUser/files";
 		if (\strlen($this->inputPath) > 0) {
 			if ($this->inputPath !== "$this->sourceUser/files") {
@@ -257,11 +251,24 @@ class TransferOwnership extends Command {
 			$offset = 0;
 			while (true) {
 				$sharePage = $this->shareManager->getSharesBy($this->sourceUser, $shareType, null, true, 50, $offset);
-				$progress->advance(\count($sharePage));
 				if (empty($sharePage)) {
 					break;
 				}
 
+				if (\strlen($this->inputPath)>1) {
+					$inputPathWithEndingSlash = \rtrim($this->inputPath, '/') . '/';
+					/**
+					 * filter only shares within the source folder
+					 */
+					$sharePage = \array_filter($sharePage, function (IShare $share) use ($inputPathWithEndingSlash) {
+						/**
+						 * trim sharePath, because `/` character trimmed with ltrim in inputPath
+						 */
+						$trimmedSharePath = \ltrim($share->getNode()->getPath(), '/');
+						return $trimmedSharePath === $this->inputPath || (\strpos($trimmedSharePath, $inputPathWithEndingSlash) === 0);
+					});
+				}
+				$progress->advance(\count($sharePage));
 				$this->shares = \array_merge($this->shares, $sharePage);
 				$offset += 50;
 			}
