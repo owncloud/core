@@ -1,0 +1,6 @@
+Change: Add PHP 7.3 and 7.4 travis testing
+
+Add current supported versions of php in the travis matrix
+
+https://github.com/owncloud/core/pull/37366
+https://www.php.net/supported-versions.php

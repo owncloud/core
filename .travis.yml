@@ -2,6 +2,8 @@ sudo: false
 language: php
 php:
   - 7.2
+  - 7.3
+  - 7.4
 
 cache:
   directories:
@@ -33,6 +35,7 @@ addons:
     - owncloud
 
 before_install:
+  - nvm install --lts
   - make
   - sh -c "if [ '$TEST_DAV' = '1' ] || [ '$TC' = 'selenium' ]; then bash tests/travis/before_install.sh $DB; fi"
 
