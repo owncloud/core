@@ -22,6 +22,7 @@ namespace Test\Share20;
 
 use OC\Files\View;
 use OC\Share20\Manager;
+use OC\Share20\ShareAttributes;
 use OCP\Files\File;
 use OC\Share20\Share;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
@@ -39,9 +40,11 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Security\IHasher;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Share\IAttributes;
 use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
@@ -88,6 +91,8 @@ class ManagerTest extends \Test\TestCase {
 	protected $view;
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
 	protected $connection;
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
+	protected $userSession;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -103,6 +108,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->eventDispatcher = new EventDispatcher();
 		$this->view = $this->createMock(View::class);
 		$this->connection = $this->createMock(IDBConnection::class);
+		$this->userSession = $this->createMock(IUserSession::class);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -125,7 +131,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->userSession
 		);
 
 		$this->defaultProvider = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -822,26 +829,18 @@ class ManagerTest extends \Test\TestCase {
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_GROUP, $rootFolder, $group0, $user0, $user0, 2, null, null), 'You can\'t share your root folder', true];
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK, $rootFolder, null, $user0, $user0, 16, null, null), 'You can\'t share your root folder', true];
 
-		/**
-		 * Basic share (not re-share) with enough permission inputs
-		 */
-		$ownerUser = $this->createMock(IUser::class);
-		$ownerUser->method('getUID')->willReturn('user1');
 		$fileFullPermission = $this->createMock(File::class);
 		$fileFullPermission->method('getPermissions')->willReturn(31);
-		$fileFullPermission->method('getOwner')->willReturn($ownerUser);
 		$fileFullPermission->method('isShareable')->willReturn(true);
+
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, null, null, null), 'A share requires permissions', true];
 
-		/**
-		 * Normal share (not re-share) with not enough permission input
-		 */
-		$fileLessPermission = $this->createMock(File::class);
-		$fileLessPermission->method('getPermissions')->willReturn(1);
-		$fileLessPermission->method('getOwner')->willReturn($ownerUser);
-		$fileLessPermission->method('isShareable')->willReturn(true);
-		$fileLessPermission->method('getPath')->willReturn('/user1/sharedfile');
-		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileLessPermission, $user0, $user1, $user1, 17, null, null), 'Cannot increase permissions of /user1/sharedfile', true];
+		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, -1, null, null), 'Invalid permissions', true];
+		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, 100, null, null), 'Invalid permissions', true];
+
+		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, 0, null, null), 'Cannot remove all permissions', true];
+
+		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, 31, null, null), null, false];
 
 		return $data;
 	}
@@ -883,9 +882,118 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertSame($exception, $thrown);
 	}
 
+	public function dataShareNotEnoughPermissions() {
+		$file = $this->createMock(File::class);
+		$file->method('getPermissions')->willReturn(17);
+		$file->method('getName')->willReturn('sharedfile');
+		$file->method('getPath')->willReturn('/user1/sharedfile');
+
+		// Normal share (not re-share) should just use share node permission
+		// exception when trying to share with more permission than share has
+		$share = $this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $file, 'user0', 'user1', 'user1', 31, null, null);
+		$data[] = [$share, null, 'Cannot set the requested share permissions for sharedfile', true];
+
+		// Federated reshare should just use share node permission
+		// exception when trying to share with more permission than node has
+		$fileExternalStorage = $this->createMock('OCA\Files_Sharing\External\Storage');
+		$fileExternalStorage->method('instanceOfStorage')
+			->willReturnCallback(function ($storageClass) {
+				return ($storageClass === 'OCA\Files_Sharing\External\Storage');
+			});
+		$fileExternal = $this->createMock(File::class);
+		$fileExternal->method('getStorage')->willReturn($fileExternalStorage);
+		$share = $this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $file, 'user0', 'user1', 'user2', 31, null, null);
+		$data[] = [$share, $fileExternal, 'Cannot set the requested share permissions for sharedfile', true];
+
+		// Normal reshare should just use supershare node permission
+		// exception when trying to share with more permission than supershare has
+		$superShare = $this->createMock(IShare::class);
+		$superShare->method('getPermissions')->willReturn(1);
+		$fileReshareStorage = $this->createMock('OCA\Files_Sharing\SharedStorage');
+		$fileReshareStorage->method('instanceOfStorage')
+			->willReturnCallback(function ($storageClass) {
+				return ($storageClass === 'OCA\Files_Sharing\SharedStorage');
+			});
+		$fileReshareStorage->method('getShare')->willReturn($superShare);
+		$fileReshare = $this->createMock(File::class);
+		$fileReshare->method('getStorage')->willReturn($fileReshareStorage);
+		$share = $this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $file, 'user0', 'user1', 'user2', 17, null, null);
+		$data[] = [$share, $fileReshare, 'Cannot set the requested share permissions for sharedfile', true];
+
+		// Normal reshare should just use supershare node attributes
+		// exception when trying to share with more attributes than supershare has
+		$superShareAttributes = new ShareAttributes();
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test', true);
+		$superShare = $this->createMock(IShare::class);
+		$superShare->method('getPermissions')->willReturn(17);
+		$superShare->method('getAttributes')->willReturn($superShareAttributes);
+		$fileReshareStorage = $this->createMock('OCA\Files_Sharing\SharedStorage');
+		$fileReshareStorage->method('instanceOfStorage')
+			->willReturnCallback(function ($storageClass) {
+				return ($storageClass === 'OCA\Files_Sharing\SharedStorage');
+			});
+		$fileReshareStorage->method('getShare')->willReturn($superShare);
+		$fileReshare = $this->createMock(File::class);
+		$fileReshare->method('getStorage')->willReturn($fileReshareStorage);
+		$share = $this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $file, 'user0', 'user1', 'user2', 17, null, null, $shareAttributes);
+		$data[] = [$share, $fileReshare, 'Cannot set the requested share attributes for sharedfile', true];
+
+		return $data;
+	}
+
+	/**
+	 * @dataProvider dataShareNotEnoughPermissions
+	 *
+	 * @param $share
+	 * @param $superShareNode
+	 * @param $exceptionMessage
+	 * @param $exception
+	 */
+	public function testShareNotEnoughPermissions($share, $superShareNode, $exceptionMessage, $exception) {
+		$sharer = $this->createMock(IUser::class);
+		$sharer->method('getUID')->willReturn($share->getSharedBy());
+		$this->userSession->method('getUser')->willReturn($sharer);
+
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([$superShareNode]);
+		$this->rootFolder->method('getUserFolder')->willReturn($userFolder);
+
+		try {
+			$this->invokePrivate($this->manager, 'validatePermissions', [$share]);
+			$thrown = false;
+		} catch (\OCP\Share\Exceptions\GenericShareException $e) {
+			$this->assertEquals($exceptionMessage, $e->getHint());
+			$thrown = true;
+		}
+
+		$this->assertSame($exception, $thrown);
+	}
+
+	/**
+	 * Non-movable mount share can be shared with delete and update permission
+	 * even if permission for file do not have this permission
+	 */
+	public function testShareNonMovableMountPermissions() {
+		$nonMovableMountPoint = $this->createMock(IMountPoint::class);
+		$file = $this->createMock(File::class);
+		$file->method('getPermissions')->willReturn(1);
+		$file->method('getMountPoint')->willReturn($nonMovableMountPoint);
+		$share = $this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $file, 'user0', 'user1', 'user1', 11, null, null);
+
+		try {
+			$this->invokePrivate($this->manager, 'validatePermissions', [$share]);
+			$thrown = false;
+		} catch (\Exception $e) {
+			$thrown = true;
+		}
+
+		$this->assertSame(false, $thrown);
+	}
+
 	/**
 	 */
-	public function testvalidateExpirationDateInPast() {
+	public function testValidateExpirationDateInPast() {
 		$this->expectException(\OCP\Share\Exceptions\GenericShareException::class);
 		$this->expectExceptionMessage('Expiration date is in the past');
 
@@ -3521,6 +3629,102 @@ class ManagerTest extends \Test\TestCase {
 		$shares = $this->manager->getAllSharedWith($user, [\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER]);
 		$this->assertCount(2, $shares);
 		$this->assertSame($shares, [$share1, $share2]);
+	}
+
+	/**
+	 * @dataProvider strictSubsetOfAttributesDataProvider
+	 *
+	 * @param IAttributes $allowedAttributes
+	 * @param IAttributes $newAttributes
+	 * @param boolean $expected
+	 */
+	public function testStrictSubsetOfAttributes($allowedAttributes, $newAttributes, $expected) {
+		$this->assertEquals(
+			$expected,
+			$this->invokePrivate(
+				$this->manager,
+				'strictSubsetOfAttributes',
+				[$allowedAttributes, $newAttributes]
+			)
+		);
+	}
+
+	public function strictSubsetOfAttributesDataProvider() {
+		// no exception - supershare and share are equal
+		$superShareAttributes = new ShareAttributes();
+		$shareAttributes = new ShareAttributes();
+		$data[] = [$superShareAttributes,$shareAttributes, true];
+
+		// no exception - supershare and share are equal
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test', true);
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test', true);
+		$data[] = [$superShareAttributes,$shareAttributes, true];
+
+		// no exception - disabling attribute that supershare has enabled
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test', true);
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test', false);
+		$data[] = [$superShareAttributes,$shareAttributes, true];
+
+		// exception - adding an attribute while supershare has none
+		$superShareAttributes = new ShareAttributes();
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test', true);
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		// exception - enabling attribute that supershare has disabled
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test', false);
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test', true);
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		// exception - removing attribute of that supershare has enabled
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test', true);
+		$shareAttributes = new ShareAttributes();
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		// exception - removing attribute of that supershare has disabled
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test', false);
+		$shareAttributes = new ShareAttributes();
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		// exception - removing one of attributes of supershare
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test1', false);
+		$superShareAttributes->setAttribute('test', 'test2', false);
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test1', false);
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		// exception - disabling one of attributes of supershare
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test1', false);
+		$superShareAttributes->setAttribute('test', 'test2', false);
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test1', false);
+		$shareAttributes->setAttribute('test', 'test2', true);
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		// exception - swaping one of attributes of supershare
+		$superShareAttributes = new ShareAttributes();
+		$superShareAttributes->setAttribute('test', 'test1', false);
+		$superShareAttributes->setAttribute('test', 'test01', false);
+		$superShareAttributes->setAttribute('test', 'test3', true);
+		$superShareAttributes->setAttribute('test', 'test4', null);
+		$shareAttributes = new ShareAttributes();
+		$shareAttributes->setAttribute('test', 'test1', false);
+		$shareAttributes->setAttribute('test', 'test10', false);
+		$superShareAttributes->setAttribute('test', 'test3', null);
+		$superShareAttributes->setAttribute('test', 'test4', true);
+		$data[] = [$superShareAttributes,$shareAttributes, false];
+
+		return $data;
 	}
 
 	/**

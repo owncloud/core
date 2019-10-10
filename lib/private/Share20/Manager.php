@@ -311,7 +311,7 @@ class Manager implements IManager {
 		 *       and this check should be done in Share object's setPermission method
 		 */
 		if ($share->getPermissions() < 0 || $share->getPermissions() > \OCP\Constants::PERMISSION_ALL) {
-			$message_t = $this->l->t('invalid permissionss');
+			$message_t = $this->l->t('Invalid permissions');
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
@@ -322,6 +322,9 @@ class Manager implements IManager {
 
 		/* Use share node permission as default $maxPermissions */
 		$maxPermissions = $shareNode->getPermissions();
+
+		/* Attributes default is null, as attributes are restricted only in reshare */
+		$maxAttributes = null;
 
 		/*
 		 * Quick fix for #23536
@@ -345,7 +348,7 @@ class Manager implements IManager {
 			if ($shareFileNode) {
 				$shareFileStorage = $shareFileNode->getStorage();
 				if ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-					// if $shareFileNode is an incoming federated share, use node permission directly
+					// if $shareFileNode is an incoming federated share, use share node permission directly
 					$maxPermissions = $shareNode->getPermissions();
 				} elseif ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
 					// if $shareFileNode is user/group share, use supershare permissions
@@ -353,13 +356,20 @@ class Manager implements IManager {
 					'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
 					$parentShare = $shareFileStorage->getShare();
 					$maxPermissions = $parentShare->getPermissions();
+					$maxAttributes = $parentShare->getAttributes();
 				}
 			}
 		}
 
 		/* Check that we do not share with more permissions than we have */
 		if (!$this->strictSubsetOfPermissions($maxPermissions, $share->getPermissions())) {
-			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
+			$message_t = $this->l->t('Cannot set the requested share permissions for %s', [$share->getNode()->getName()]);
+			throw new GenericShareException($message_t, $message_t, 404);
+		}
+
+		/* Check that we do not share with more attributes than we have */
+		if ($maxAttributes !== null && !$this->strictSubsetOfAttributes($maxAttributes, $share->getAttributes())) {
+			$message_t = $this->l->t('Cannot set the requested share attributes for %s', [$share->getNode()->getName()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 	}
@@ -1667,5 +1677,38 @@ class Manager implements IManager {
 	 */
 	private function strictSubsetOfPermissions($allowedPermissions, $newPermissions) {
 		return (($allowedPermissions | $newPermissions) === $allowedPermissions);
+	}
+
+	/**
+	 * Check $newAttributes attribute is a subset of $allowedAttributes
+	 *
+	 * @param IAttributes $allowedAttributes
+	 * @param IAttributes $newAttributes
+	 * @return boolean ,true if $allowedAttributes enabled is super set of $newAttributes enabled, else false
+	 */
+	private function strictSubsetOfAttributes($allowedAttributes, $newAttributes) {
+		// if both are empty, it is strict subset
+		if ((!$allowedAttributes || empty($allowedAttributes->toArray()))
+			&& (!$newAttributes || empty($newAttributes->toArray()))) {
+			return true;
+		}
+
+		// make sure that number of attributes is the same
+		if (\count($allowedAttributes->toArray()) !== \count($newAttributes->toArray())) {
+			return false;
+		}
+
+		// if number of attributes is the same, make sure that attributes are
+		// existing in allowed set and disabled attribute is not being enabled
+		foreach ($newAttributes->toArray() as $newAttribute) {
+			$allowedEnabled = $allowedAttributes->getAttribute($newAttribute['scope'], $newAttribute['key']);
+			if (($newAttribute['enabled'] === true && $allowedEnabled === false)
+				|| ($newAttribute['enabled'] === null && $allowedEnabled !== null)
+				|| $allowedEnabled === null) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
