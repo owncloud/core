@@ -331,7 +331,7 @@ class ViewController extends Controller {
 		}
 
 		if ($this->userSession->isLoggedIn() and empty($files)) {
-			$param["error"] = $this->l10n->t("You don't have permissions to access this file/folder - Please contact the owner to share it with you.");
+			$param["error"] = $this->l10n->t("This resource is not available - Please contact the owner.");
 			$response = new TemplateResponse("core", 'error', ["errors" => [$param]], 'guest');
 			$response->setStatus(Http::STATUS_NOT_FOUND);
 			return $response;
