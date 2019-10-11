@@ -356,6 +356,34 @@
 			OC.Plugins.attach('OCA.Files.FileList', this);
 		},
 
+		dirShareInfoIndicator: function () {
+			var $el = $('#shareinfo_indicator')
+
+			if ( !$el.length ) {
+
+				$el        = $('<div>', { id : 'shareinfo_indicator' });
+				$textbox   = $('<span>', { class : "text", text : t('core', 'shared') })
+				$sharelist = $('<div>', { class : 'list', html : '<ul></ul>' })
+
+				$el.append($textbox, $sharelist).appendTo($('#controls')).hide()
+			}
+
+			this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
+				var shares = path.filter( function(dir) {
+					return dir.shareTypes.length > 0
+				})
+
+				// Stop if there are no shares present
+				if (shares.length === 0) {
+					$el.fadeOut('fast')
+					return
+				}
+
+				$el.fadeIn('fast')
+				$el.find('.list ul').append('<li>Hallo</li>')
+			});
+		},
+
 		/**
 		 * Destroy / uninitialize this instance.
 		 */
@@ -1744,7 +1772,7 @@
 				client.getFileInfo(dir, options).done(function(s, dir) {
 					resolve({
 						name : dir.name,
-						shareTypes : dir.shareTypes
+						shareTypes : (dir.shareTypes !== undefined) ? dir.shareTypes : []
 					})
 				}).fail(function(error) {
 					reject(error)
@@ -1759,7 +1787,7 @@
 		 * @return {Promise} array of objects with name and shareTypes
 		 */
 		getPathShareInfo: function(path) {
-			if (typeof dir !== 'string') {
+			if (typeof path !== 'string') {
 				console.error('getDirShareInfo(). param must be typeof string!')
 				return false
 			}

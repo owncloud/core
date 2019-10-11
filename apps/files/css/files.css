@@ -983,3 +983,54 @@ html.ie8 #controls .button.new {
 	position: inherit;
 	right: inherit;
 }
+
+/*
+ * Directory sharing indocator
+ *
+ * #fff4cc - Background yellow
+ * #d5c999 - Border dirty yellow
+ * #927800 - Text dark dirty yellow
+ */
+
+#controls #shareinfo_indicator {
+	float: right;
+    height: 32px;
+    position: relative;
+    align-items: center;
+	padding: 6px 7px 0 0;
+}
+
+#controls #shareinfo_indicator .text {
+	display: block;
+	background-color: #fff4cc;
+	border: 1px solid #d5c999;
+	border-radius: 3px;
+	color: #927800;
+	padding: 4px 30px 4px 12px;
+	position: relative;
+	cursor: pointer;
+}
+
+#controls #shareinfo_indicator .text:after {
+	content: "";
+	position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #927800 transparent transparent transparent;
+    right: 10px;
+    top: calc(50% - 2px);
+}
+
+#controls #shareinfo_indicator:not(:hover) .list {
+	display: none;
+}
+
+#controls #shareinfo_indicator .list {
+	position: absolute;
+	top: 42px;
+	right: 7px;
+
+	background: rebeccapurple;
+}
