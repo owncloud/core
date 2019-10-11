@@ -1310,17 +1310,18 @@ trait BasicStructure {
 	 *
 	 * @param string $name
 	 * @param string $size
+	 * @param string $endData
 	 *
 	 * @return void
 	 */
-	public function createLocalFileOfSpecificSize($name, $size) {
+	public function createLocalFileOfSpecificSize($name, $size, $endData = 'a') {
 		$folder = $this->workStorageDirLocation();
 		if (!\is_dir($folder)) {
 			\mkDir($folder);
 		}
 		$file = \fopen($folder . $name, 'w');
-		\fseek($file, $size - 1, SEEK_CUR);
-		\fwrite($file, 'a'); // write a dummy char at SIZE position
+		\fseek($file, $size - \strlen($endData), SEEK_CUR);
+		\fwrite($file, $endData); // write the end data to force the file size
 		\fclose($file);
 	}
 

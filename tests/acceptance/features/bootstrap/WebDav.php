@@ -656,6 +656,32 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the size of the downloaded file should be :size bytes
+	 *
+	 * @param string $size
+	 *
+	 * @return void
+	 */
+	public function sizeOfDownloadedFileShouldBe($size) {
+		Assert::assertEquals(
+			$size, \strlen((string)$this->response->getBody())
+		);
+	}
+
+	/**
+	 * @Then /^the downloaded content should end with "([^"]*)"$/
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function downloadedContentShouldEndWith($content) {
+		Assert::assertEquals(
+			$content, \substr((string)$this->response->getBody(), -\strlen($content))
+		);
+	}
+
+	/**
 	 * @Then /^the downloaded content should be "([^"]*)"$/
 	 *
 	 * @param string $content
@@ -1609,7 +1635,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user has uploaded file :destination of :bytes bytes
+	 * @Given user :user has uploaded file :destination of size :bytes bytes
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -1617,14 +1643,14 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userHasUploadedFileToOfBytes($user, $destination, $bytes) {
-		$this->userUploadsAFileToOfBytes($user, $destination, $bytes);
+	public function userHasUploadedFileToOfSizeBytes($user, $destination, $bytes) {
+		$this->userUploadsAFileToOfSizeBytes($user, $destination, $bytes);
 		$expectedElements = new TableNode([["$destination"]]);
 		$this->checkElementList($user, $expectedElements);
 	}
 
 	/**
-	 * @When user :user uploads file :destination of :bytes bytes
+	 * @When user :user uploads file :destination of size :bytes bytes
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -1632,9 +1658,39 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userUploadsAFileToOfBytes($user, $destination, $bytes) {
+	public function userUploadsAFileToOfSizeBytes($user, $destination, $bytes) {
+		$this->userUploadsAFileToEndingWithOfSizeBytes($user, $destination, 'a', $bytes);
+	}
+
+	/**
+	 * @Given user :user has uploaded file :destination ending with :text of size :bytes bytes
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $text
+	 * @param string $bytes
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedFileToEndingWithOfSizeBytes($user, $destination, $text, $bytes) {
+		$this->userUploadsAFileToEndingWithOfSizeBytes($user, $destination, $text, $bytes);
+		$expectedElements = new TableNode([["$destination"]]);
+		$this->checkElementList($user, $expectedElements);
+	}
+
+	/**
+	 * @When user :user uploads file :destination ending with :text of size :bytes bytes
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $text
+	 * @param string $bytes
+	 *
+	 * @return void
+	 */
+	public function userUploadsAFileToEndingWithOfSizeBytes($user, $destination, $text, $bytes) {
 		$filename = "filespecificSize.txt";
-		$this->createLocalFileOfSpecificSize($filename, $bytes);
+		$this->createLocalFileOfSpecificSize($filename, $bytes, $text);
 		Assert::assertFileExists($this->workStorageDirLocation() . $filename);
 		$this->userUploadsAFileTo(
 			$user,
