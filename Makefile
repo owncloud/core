@@ -60,6 +60,7 @@ TEST_PHP_SUITE=
 TEST_SERVER_URL?=
 TEST_SERVER_FED_URL?=
 TEST_EXTERNAL_USER_BACKENDS?=
+TESTING_REMOTE_SYSTEM?=true
 BEHAT_FEATURE?=
 NORERUN?=
 BEHAT_RERUN_TIMES?=
@@ -199,15 +200,15 @@ test-js-debug: $(nodejs_deps)
 
 .PHONY: test-acceptance-api
 test-acceptance-api: $(acceptance_test_deps)
-	./tests/acceptance/run.sh --remote --type api
+	./tests/acceptance/run.sh --type api
 
 .PHONY: test-acceptance-cli
 test-acceptance-cli: $(acceptance_test_deps)
-	./tests/acceptance/run.sh --remote --type cli
+	./tests/acceptance/run.sh --type cli
 
 .PHONY: test-acceptance-webui
 test-acceptance-webui: $(acceptance_test_deps)
-	./tests/acceptance/run.sh --remote --type webUI
+	./tests/acceptance/run.sh --type webUI
 
 .PHONY: test-php-style
 test-php-style: vendor-bin/owncloud-codestyle/vendor vendor-bin/php_codesniffer/vendor
