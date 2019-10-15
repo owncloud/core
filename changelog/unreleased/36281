@@ -1,0 +1,5 @@
+Bugfix: Avoid unnecessary "Avatar not found" logs by initializing ViewOnlyPlugin for only files
+
+ViewOnlyPlugin was producing too many warning logs for users who have not an avatar. By registering ViewOnlyPlugin for only files problem resolved.
+
+https://github.com/owncloud/core/pull/36281

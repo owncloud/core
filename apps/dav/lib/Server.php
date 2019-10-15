@@ -137,7 +137,6 @@ class Server {
 			$this->server->addPlugin(new PublicFilesPlugin());
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
 			$this->server->addPlugin(new PublicLinkEventsPlugin(\OC::$server->getEventDispatcher()));
-			$this->server->addPlugin(new PublicFilesPlugin());
 		}
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
@@ -218,10 +217,11 @@ class Server {
 			OC::$server->getLazyRootFolder()
 		));
 
-		// Allow view-only plugin for webdav requests
-		$this->server->addPlugin(new ViewOnlyPlugin(
-			OC::$server->getLogger()
-		));
+		if ($this->isRequestForSubtree(['files', 'trash-bin', 'public-files'])) {
+			$this->server->addPlugin(new ViewOnlyPlugin(
+				OC::$server->getLogger()
+			));
+		}
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
@@ -245,7 +245,7 @@ class Server {
 					)
 				);
 
-				if ($this->isRequestForSubtree(['files', 'uploads', 'trash-bin'])) {
+				if ($this->isRequestForSubtree(['files', 'uploads', 'trash-bin', 'public-files'])) {
 					//For files only
 					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
 						new FileCustomPropertiesBackend(
