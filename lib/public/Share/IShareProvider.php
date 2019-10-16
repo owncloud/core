@@ -241,9 +241,14 @@ interface IShareProvider {
 	 * Get the share provider's capabilities. It will return a map with the supported
 	 * share type with the list of capabilities for that share type:
 	 * [
-	 *   \OCP\Share::SHARE_TYPE_USER => [IShareProvider::CAPABILITY_STORE_EXPIRATION],
-	 *   \OCP\Share::SHARE_TYPE_LINK => [IShareProvider::CAPABILITY_STORE_EXPIRATION, IShareProvider::CAPABILITY_STORE_PASSWORD],
-	 *   \OCP\Share::SHARE_TYPE_GROUP => []
+	 *   \OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_USER] => [
+	 *     IShareProvider::CAPABILITY_STORE_EXPIRATION
+	 *   ],
+	 *   \OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_LINK] => [
+	 *     IShareProvider::CAPABILITY_STORE_EXPIRATION,
+	 *     IShareProvider::CAPABILITY_STORE_PASSWORD
+	 *   ],
+	 *   \OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_GROUP] => []
 	 * ]
 	 * Supported share types by this provider should have the corresponding entry even if
 	 * it doesn't support extra capabilities

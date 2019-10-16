@@ -1297,9 +1297,16 @@ class DefaultShareProvider implements IShareProvider {
 	 */
 	public function getProviderCapabilities() {
 		return [
-			\OCP\Share::SHARE_TYPE_USER => [IShareProvider::CAPABILITY_STORE_EXPIRATION],
-			\OCP\Share::SHARE_TYPE_GROUP => [IShareProvider::CAPABILITY_STORE_EXPIRATION],
-			\OCP\Share::SHARE_TYPE_LINK => [IShareProvider::CAPABILITY_STORE_EXPIRATION, IShareProvider::CAPABILITY_STORE_PASSWORD],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_USER] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION
+			],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_GROUP] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION
+			],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_LINK] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION,
+				IShareProvider::CAPABILITY_STORE_PASSWORD
+			],
 		];
 	}
 }

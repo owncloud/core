@@ -111,6 +111,19 @@ class Capabilities implements ICapability {
 			$res["public"] = $public;
 
 			$res['user']['send_mail'] = $this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no') === 'yes';
+			$res['user']['expire_date'] = [];
+			$res['user']['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date_user_share', 'no') === 'yes';
+			if ($res['user']['expire_date']['enabled']) {
+				$res['user']['expire_date']['days'] = $this->config->getAppValue('core', 'shareapi_expire_after_n_days_user_share', '7');
+				$res['user']['expire_date']['enforced'] = $this->config->getAppValue('core', 'shareapi_enforce_expire_date_user_share', 'no') === 'yes';
+			}
+
+			$res['group']['expire_date'] = [];
+			$res['group']['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date_group_share', 'no') === 'yes';
+			if ($res['group']['expire_date']['enabled']) {
+				$res['group']['expire_date']['days'] = $this->config->getAppValue('core', 'shareapi_expire_after_n_days_group_share', '7');
+				$res['group']['expire_date']['enforced'] = $this->config->getAppValue('core', 'shareapi_enforce_expire_date_group_share', 'no') === 'yes';
+			}
 
 			$res['resharing'] = $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes') === 'yes';
 

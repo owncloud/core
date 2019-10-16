@@ -1096,7 +1096,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function getProviderCapabilities() {
 		return [
-			\OCP\Share::SHARE_TYPE_REMOTE => [],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_REMOTE] => [],
 		];
 	}
 }
