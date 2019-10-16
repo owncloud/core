@@ -15,7 +15,7 @@ A personal cloud which runs on your own server.**
 * :rocket: **Expandable with dozens of Apps** ...like Calendar, Contacts, Mail or News.
 * :cloud: **All Benefits of the Cloud** ...on your own Server.
 * :lock: **Encryption** You can encrypt data in transit with secure https connections. You can enable the encryption app to encrypt data on storage for improved security and privacy.
-* ...
+* trigger CI
 
 ## Installation instructions
 https://doc.owncloud.org/server/10.2/admin_manual/installation/
