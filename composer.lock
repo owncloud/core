@@ -1065,7 +1065,7 @@
             "time": "2015-08-01T16:27:37+00:00"
         },
         {
-            "name": "jeremeamia/SuperClosure",
+            "name": "jeremeamia/superclosure",
             "version": "2.4.0",
             "source": {
                 "type": "git",
@@ -2031,9 +2031,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -2351,14 +2351,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 },
                 {
                     "name": "Markus Staab",
-                    "role": "Developer",
-                    "email": "markus.staab@redaxo.de"
+                    "email": "markus.staab@redaxo.de",
+                    "role": "Developer"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -3400,16 +3400,16 @@
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "2.12.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-validator.git",
-                "reference": "64c33668e5fa2d39c6289a878f927ea2b0850c30"
+                "reference": "7b870a7515f3a35afbecc39d63f34a861f40f58b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/64c33668e5fa2d39c6289a878f927ea2b0850c30",
-                "reference": "64c33668e5fa2d39c6289a878f927ea2b0850c30",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/7b870a7515f3a35afbecc39d63f34a861f40f58b",
+                "reference": "7b870a7515f3a35afbecc39d63f34a861f40f58b",
                 "shasum": ""
             },
             "require": {
@@ -3463,13 +3463,13 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "provides a set of commonly needed validators",
-            "homepage": "https://github.com/zendframework/zend-validator",
+            "description": "Validation classes for a wide range of domains, and the ability to chain validators to create complex validation criteria",
             "keywords": [
+                "ZendFramework",
                 "validator",
-                "zf2"
+                "zf"
             ],
-            "time": "2019-01-30T14:26:10+00:00"
+            "time": "2019-10-12T12:17:57+00:00"
         }
     ],
     "packages-dev": [
@@ -3692,8 +3692,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "role": "Developer",
-                    "homepage": "http://frankkleine.de/"
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
