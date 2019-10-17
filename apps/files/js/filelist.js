@@ -1834,7 +1834,7 @@
 
 				self._chechPathHasShares().then(function(e) {
 					if (e) {
-						$('tr[data-type="dir"] .thumbnail').css({'backgroundImage' : 'url(' + OC.MimeType.getIconUrl('dir-shared') + ')'})
+						$('#fileList tr td.filename .thumbnail').addClass('sharetree-item')
 					}
 				})
 			}, 250)
