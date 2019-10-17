@@ -1363,6 +1363,8 @@
 				this.updateEmptyContent();
 			}
 
+			this._setSharedIcon()
+
 			return $tr;
 		},
 
@@ -1484,6 +1486,8 @@
 					self.changeDirectory(currentDir, true);
 				}
 			});
+
+			this._setSharedIcon()
 		},
 		linkTo: function(dir) {
 			return OC.linkTo('files', 'index.php')+"?dir="+ encodeURIComponent(dir).replace(/%2F/g, '/');
@@ -1803,6 +1807,37 @@
 			}
 
 			return Promise.all(crumbs)
+		},
+
+
+		_chechPathHasShares: function() {
+			let self = this;
+
+			return this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
+
+				let sharedFolders = _.filter(path, function(dir) {
+					return dir.shareTypes.length > 0
+				})
+
+				if (sharedFolders.length > 0)
+					return true
+
+				return false
+			})
+		},
+	
+		_setSharedIcon: function() {
+			var self = this;
+			setTimeout(function(){
+				// Sad, but there  is no ready callback
+				// so let's do it this way 4 now.
+
+				self._chechPathHasShares().then(function(e) {
+					if (e) {
+						$('tr[data-type="dir"] .thumbnail').css({'backgroundImage' : 'url(' + OC.MimeType.getIconUrl('dir-shared') + ')'})
+					}
+				})
+			}, 250)
 		},
 
 		/**
