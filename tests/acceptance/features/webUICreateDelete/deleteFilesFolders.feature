@@ -234,8 +234,7 @@ Feature: deleting files and folders
     When the user browses to the files page
     And the user deletes folder "<top_folder2>" using the webUI
     Then as "user1" folder "<top_folder2>" should not exist
-    When the user deletes folder "<top_share_folder_on_ui>" using the webUI
-    Then a notification should be displayed on the webUI with the text 'Error deleting file "<top_share_folder_on_ui>".'
+    And it should not be possible to delete folder "<top_share_folder_on_ui>" using the webUI
     And as "user1" folder "<share_folder>/ShareThis" should exist
     Examples:
       | share_folder        | top_share_folder_on_ui |other_folder1 | top_folder2 | other_folder2  |
