@@ -335,7 +335,7 @@ class NotificationPublisherTest extends TestCase {
 
 		$this->notificationManager->expects($this->exactly(2))
 			->method('markProcessed')
-			->withConsecutive($notifications[0], $notifications[1]);
+			->withConsecutive([$notifications[0]], [$notifications[1]]);
 
 		$share = $this->createShare();
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);

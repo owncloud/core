@@ -3196,7 +3196,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->expects($this->exactly(2))
 			->method('updateShareForRecipient')
-			->withConsecutive($userShare, $groupShare);
+			->withConsecutive([$userShare], [$groupShare]);
 
 		$userFolder = $this->createMock('OCP\Files\Folder');
 		if ($method === 'acceptShare') {

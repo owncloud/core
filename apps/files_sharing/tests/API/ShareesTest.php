@@ -607,8 +607,8 @@ class ShareesTest extends TestCase {
 				$this->groupManager->expects($this->exactly(2))
 					->method('getUserGroupIds')
 					->withConsecutive(
-						$user,
-						$singleUser
+						[$user],
+						[$singleUser]
 					)
 					->willReturn($groupResponse);
 			} else {
