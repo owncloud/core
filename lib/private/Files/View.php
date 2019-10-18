@@ -353,9 +353,7 @@ class View {
 	public function rmdir($path) {
 		return $this->emittingCall(function () use (&$path) {
 			if ($path !== '') {
-				$shareFolder = \trim($this->config->getSystemValue('share_folder', '/'), '/');
-				$trimmedPath = \trim($path, '/');
-				if ((\strpos("$shareFolder/", "$trimmedPath/") === 0)) {
+				if ($this->isShareFolderOrShareFolderParent($path)) {
 					Util::writeLog("core", "The folder $path could not be deleted as it is configured as share_folder in config.", Util::WARN);
 					return false;
 				}
@@ -378,6 +376,22 @@ class View {
 			}
 			return $result;
 		}, ['before' => ['path' => $this->getAbsolutePath($path)], 'after' => ['path' => $this->getAbsolutePath($path)]], 'file', 'delete');
+	}
+
+	/**
+	 * Checks whether given path is a share folder or one of share folder parents
+	 *
+	 * @param $path - path relative to the files folder
+	 *
+	 * @return bool
+	 */
+	protected function isShareFolderOrShareFolderParent($path) {
+		$shareFolder = \trim($this->config->getSystemValue('share_folder', '/'), '/');
+		if ($shareFolder === '') {
+			return false;
+		}
+		$trimmedPath = \trim($path, '/');
+		return $shareFolder === $trimmedPath || \strpos($shareFolder, "$trimmedPath/") === 0;
 	}
 
 	/**
@@ -1504,7 +1518,14 @@ class View {
 				return (!\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
 			});
 			$files = \array_map(function (ICacheEntry $content) use ($path, $storage, $mount, $sharingDisabled) {
-				if ($sharingDisabled) {
+				try {
+					$itemPath = $this->getPath($content['fileid'], false);
+					$hasShareFolderInPath = $this->isShareFolderOrShareFolderParent($itemPath);
+				} catch (NotFoundException $e) {
+					$hasShareFolderInPath = false;
+				}
+
+				if ($sharingDisabled || $hasShareFolderInPath) {
 					$content['permissions'] = $content['permissions'] & ~\OCP\Constants::PERMISSION_SHARE;
 				}
 				$owner = $this->getUserObjectForOwner($storage->getOwner($content['path']));

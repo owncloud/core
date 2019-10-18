@@ -1,0 +1,7 @@
+Bugfix: Disallow sharing share_folder or it's parents
+
+share_folder had share permission so it was possible for the user to share it along with some received shares.
+It caused aweird behavior. So sharing share_folder (or any of it's parent folders) was prohibited.
+
+https://github.com/owncloud/core/issues/36241
+https://github.com/owncloud/core/pull/36297
