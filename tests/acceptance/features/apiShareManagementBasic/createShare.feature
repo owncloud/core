@@ -1347,7 +1347,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-35488
+  @issue-35488 @skipOnLDAP
   Scenario: creating a new share with user and a group having same name
     Given these users have been created without skeleton files:
       | username |
@@ -1374,7 +1374,7 @@ Feature: sharing
     # And the content of file "randomfile.txt" for user "user1" should be "user0 file"
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
 
-  @issue-35488
+  @issue-35488 @skipOnLDAP
   Scenario: creating a new share with group and a user having same name
     Given these users have been created without skeleton files:
       | username |
@@ -1401,6 +1401,7 @@ Feature: sharing
     # And the content of file "randomfile.txt" for user "user2" should be "user0 file"
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
 
+  @skipOnLDAP
   Scenario: creating a new share with user and a group having same name but different case
     Given these users have been created without skeleton files:
       | username |
@@ -1420,6 +1421,7 @@ Feature: sharing
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
 
+  @skipOnLDAP
   Scenario: creating a new share with group and a user having same name but different case
     Given these users have been created without skeleton files:
       | username |
