@@ -77,7 +77,7 @@ class SharingBlacklistTest extends \Test\TestCase {
 			["[0]", ["0"]],
 			["[1]", ["1"]],
 			["[1.23]", ["1.23"]],
-			["[1.23e-4]", ["1.23e-4"]],
+			["[\"1.23e-4\"]", ["1.23e-4"]],
 			["[\"group1\"]", ["group1"]],
 			["[\"group1\", \"group2\", \"group3\"]", ["group1", "group2", "group3"]],
 		];
