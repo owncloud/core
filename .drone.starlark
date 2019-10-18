@@ -50,6 +50,7 @@ config = {
 			'externalTypes': [
 				'webdav',
 				'samba',
+				'sftp',
 				'windows',
 				'scality'
 			],
@@ -1083,6 +1084,7 @@ def phptests(testType):
 							scalityService(needScality) +
 							webdavService(externalType == 'webdav') +
 							sambaService(externalType == 'samba') +
+							sftpService(externalType == 'sftp') +
 							params['extraServices'],
 						'depends_on': [],
 						'trigger': {
@@ -1534,6 +1536,28 @@ def sambaService(needed):
 			'public;/tmp;yes;no;no;test;none;test',
 			'-S',
 		]
+	}]
+
+def sftpService(needed):
+	if not needed:
+		return []
+
+	# 'test:12345:1001::upload'
+	# Creates a user 'test' with password '12345', UID '1001'
+	# The user has a folder called 'upload' that they can write to.
+	# The tests depend on the 'upload' folder already existing, because
+	# "Just remember that the users can't create new files directly under their
+	#  own home directory, so make sure there are at least one subdirectory
+	#  if you want them to upload files" https://hub.docker.com/r/atmoz/sftp/
+	# Also see apps/files_external/tests/env/start-sftp-atmoz.sh where the
+	# docker image can be started "locally".
+	return [{
+		'name': 'sftp',
+		'image': 'atmoz/sftp',
+		'pull': 'always',
+		'environment': {
+			'SFTP_USERS': 'test:12345:1001::upload'
+		}
 	}]
 
 def scalityService(scalityS3):
