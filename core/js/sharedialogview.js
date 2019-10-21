@@ -29,9 +29,10 @@
 		'        <div class="oneline">' +
 		'            <input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
 		'            <span class="shareWithLoading icon-loading-small hidden"></span>'+
-		'{{{remoteShareInfo}}}' +
+		'            {{{remoteShareInfo}}}' +
 		'        </div>' +
 		'        <div class="shareeListView subView"></div>' +
+		'        <div class="shareeTreeView subView"></div>' +
 		'    </div>' +
 		'    <div class="linkShareView subView tab hidden" style="padding-left:0;padding-right:0;"></div>' +
 		'</div>' +

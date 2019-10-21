@@ -1774,10 +1774,21 @@
 
 			return new Promise( function(resolve, reject) {
 				client.getFileInfo(dir, options).done(function(s, dir) {
-					resolve({
+					var shareInfo = {
 						name : dir.name,
-						shareTypes : (dir.shareTypes !== undefined) ? dir.shareTypes : []
-					})
+						path : dir.path
+					}
+
+					if (dir.shareTypes === undefined) {
+						Object.assign(shareInfo, { shares : [] })
+						resolve(shareInfo)
+					}
+					else {
+						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: (dir.path + '/' + dir.name)}), function(e) {
+							Object.assign(shareInfo, { shares : e.ocs.data })
+							resolve(shareInfo)
+						})
+					}
 				}).fail(function(error) {
 					reject(error)
 				})
@@ -1816,7 +1827,7 @@
 			return this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
 
 				let sharedFolders = _.filter(path, function(dir) {
-					return dir.shareTypes.length > 0
+					return dir.shares.length > 0
 				})
 
 				if (sharedFolders.length > 0)
@@ -1828,16 +1839,42 @@
 	
 		_setSharedIcon: function() {
 			var self = this;
-			setTimeout(function(){
-				// Sad, but there  is no ready callback
-				// so let's do it this way 4 now.
+			var $shareTreeView = $('#app-sidebar .shareeTreeView');
+			var shareTreeItems = '';
+		
+			var template =
+				'<li>' + 
+				'   <strong>share_with_displayname</strong><br>' +
+				'   <span>path</span><br>' +
+				'</li>';
+
+			$shareTreeView.ready( function(){
+
+				// Remove content's
+				$shareTreeView.text('')
 
 				self._chechPathHasShares().then(function(e) {
-					if (e) {
-						$('#fileList tr td.filename .thumbnail').addClass('sharetree-item')
+
+					if (!e) return
+
+					// Add share-tree icon to files and folders
+					$('#fileList tr td.filename .thumbnail').addClass('sharetree-item')
+					
+					// Add items to the sharefiev in the sidebar
+					if ($shareTreeView.length) {
+						self.getPathShareInfo( self.getCurrentDirectory() ).then( share => {
+							share.filter( share => share.shares.length).forEach( item => {
+								item.shares.forEach( share => {
+									shareTreeItems += template.replace(/share_with_displayname|path/g, key => share[key] )
+								})
+							})
+
+							$shareTreeView.append(`<ul>${shareTreeItems}</ul>`)
+						})
 					}
+
 				})
-			}, 250)
+			})
 		},
 
 		/**
