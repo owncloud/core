@@ -28,6 +28,7 @@ use OCP\ITempManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Cron extends Command {
@@ -63,7 +64,8 @@ class Cron extends Command {
 	protected function configure() {
 		$this
 			->setName('system:cron')
-			->setDescription('Execute background jobs as cron');
+			->setDescription('Execute background jobs as cron')
+			->addOption('progress', 'p', InputOption::VALUE_NONE, 'shows a progress bar - for use in manual execution. Do not use when executing from crontab');
 	}
 
 	/**
@@ -100,7 +102,9 @@ class Cron extends Command {
 			$this->config->setAppValue('core', 'backgroundjobs_mode', 'cron');
 		}
 
+		$showProgress = $input->getOption('progress');
 		$progress = new ProgressBar($output);
+		$progress->setFormat(" %message%\n %current% [%bar%]");
 
 		// We only ask for jobs for 14 minutes, because after 15 minutes the next
 		// system cron task should spawn.
@@ -112,9 +116,11 @@ class Cron extends Command {
 				$this->jobList->unlockJob($job);
 				break;
 			}
-			$progress->advance();
-			$jobName = \get_class($job);
-			$progress->setMessage("Executing: {$job->getId()} - {$jobName}");
+			if ($showProgress) {
+				$progress->advance();
+				$jobName = \get_class($job);
+				$progress->setMessage("Executing: {$job->getId()} - {$jobName}");
+			}
 
 			$job->execute($this->jobList, $this->logger);
 
@@ -134,7 +140,9 @@ class Cron extends Command {
 		if ($this->config->getSystemValue('cron_log', true)) {
 			$this->config->setAppValue('core', 'lastcron', \time());
 		}
-		$output->writeln('');
+		if ($showProgress) {
+			$output->writeln('');
+		}
 
 		return 0;
 	}

@@ -111,7 +111,7 @@ class CronTest extends TestCase {
 		$this->jobList->method('getNext')->willReturnOnConsecutiveCalls($job, null);
 		$this->jobList->expects(self::once())->method('setLastJob')->with($job);
 
-		$this->commandTester->execute([]);
+		$this->commandTester->execute(['--progress' => true]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains('1 [->--------------------------]', $output);
 	}
