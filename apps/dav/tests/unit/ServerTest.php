@@ -55,6 +55,7 @@ class ServerTest extends \Test\TestCase {
 			'principals' => ['principals/users/admin', ['caldav', 'oc-resource-sharing', 'carddav']],
 			'calendars' => ['calendars/admin', ['caldav', 'oc-resource-sharing']],
 			'addressbooks' => ['addressbooks/admin', ['carddav', 'oc-resource-sharing']],
+			'files' => ['files/admin', ['OCA\DAV\DAV\ViewOnlyPlugin']]
 		];
 	}
 }
