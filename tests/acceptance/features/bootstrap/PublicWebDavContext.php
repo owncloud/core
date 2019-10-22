@@ -223,16 +223,20 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename using the old WebDAV API
+	 * @When the public uploads file :filename using the :publicWebDAVAPIVersion WebDAV API
 	 * @Given the public has uploaded file :filename
 	 *
 	 * @param string $source target file name
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
-	public function publiclyUploadingFile($source) {
+	public function publiclyUploadingFile($source, $publicWebDAVAPIVersion) {
 		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
-		$this->publicUploadContent(\basename($source), '', $file->getContents());
+		$this->publicUploadContent(
+			\basename($source), '', $file->getContents(),
+			false, [], $publicWebDAVAPIVersion
+		);
 	}
 
 	/**
