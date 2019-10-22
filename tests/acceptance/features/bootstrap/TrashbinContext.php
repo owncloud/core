@@ -89,15 +89,19 @@ class TrashbinContext implements Context {
 	 *
 	 * @param string $user user
 	 * @param string $path path
+	 * @param string $requestingUser user
 	 *
 	 * @return array response
 	 */
-	public function listTrashbinFolder($user, $path) {
+	public function listTrashbinFolder($user, $path, $requestingUser = null) {
+		if ($requestingUser === null) {
+			$requestingUser = $user;
+		}
 		$path = $path ?? '/';
 		$responseXml = WebDavHelper::listFolder(
 			$this->featureContext->getBaseUrl(),
-			$user,
-			$this->featureContext->getPasswordForUser($user),
+			$requestingUser,
+			$this->featureContext->getPasswordForUser($requestingUser),
 			"/trash-bin/$user/$path",
 			1,
 			[
@@ -153,6 +157,19 @@ class TrashbinContext implements Context {
 			}
 		);
 		return $files;
+	}
+
+	/**
+	 * @When :requestingUser requests list of files in trashbin for user :user
+	 *
+	 * @param string $requestingUser
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function triesToListFilesInTrashbinForUser($requestingUser, $user) {
+		$responseXml = $this->listTrashbinFolder($user, "/", $requestingUser);
+		\var_dump($responseXml);
 	}
 
 	/**
@@ -214,14 +231,32 @@ class TrashbinContext implements Context {
 	}
 
 	/**
+	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist for user "([^"]*)" in trash$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $path
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function asEntryExistsAsRequestedByDifferentUser($requestingUser, $path, $user) {
+		$this->asFileOrFolderExistsInTrash($user, $path, $requestingUser);
+	}
+
+	/**
 	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in trash$/
 	 *
 	 * @param string $user
 	 * @param string $path
+	 * @param string $requestingUser
 	 *
 	 * @return void
 	 */
-	public function asFileOrFolderExistsInTrash($user, $path) {
+	public function asFileOrFolderExistsInTrash($user, $path, $requestingUser = null) {
+		if ($requestingUser === null) {
+			$requestingUser = $user;
+		}
+
 		$path = \trim($path, '/');
 		$sections = \explode('/', $path, 2);
 
@@ -233,7 +268,7 @@ class TrashbinContext implements Context {
 
 		if (\count($sections) !== 1) {
 			// TODO: handle deeper structures
-			$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/')));
+			$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/'), $requestingUser));
 		}
 
 		if ($techPreviewHadToBeEnabled) {

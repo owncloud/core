@@ -24,7 +24,22 @@ Feature: files and folders can be deleted from the trashbin
       | old      |
       | new      |
 
-    Scenario: delete a single file from the trashbin
+  Scenario Outline: Try to get the list of files for the different user as admin
+    Given using <dav-path> DAV path
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    When user "user0" deletes file "./textfile0.txt" using the WebDAV API
+    And user "user0" deletes file "./textfile1.txt" using the WebDAV API
+    Then as "user1" file "/textfile0.txt" should exist for user "user0" in trash
+    And as "user1" file "/textfile1.txt" should exist for user "user0" in trash
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  Scenario: delete a single file from the trashbin
       Given user "user0" has been created with default attributes and skeleton files
       And user "user0" has deleted file "/textfile0.txt"
       And user "user0" has deleted file "/textfile1.txt"
