@@ -887,10 +887,6 @@ class Session implements IUserSession, Emitter {
 			);
 			return false;
 		}
-		$this->logger->debug(
-			'token {token} with token id {tokenId} found, validating',
-			['app' => __METHOD__, 'token' => $this->hashToken($token), 'tokenId' => $dbToken->getId()]
-		);
 
 		// Check if login names match
 		if ($user !== null && $dbToken->getLoginName() !== $user) {
