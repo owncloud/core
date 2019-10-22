@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [10.3.0] - 2019-10-15
 
 ### Added
 
@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Support for redirecting private links to ownCloud phoenix frontend [#35819](https://github.com/owncloud/core/pull/35819)
 - `encryption:fixencryptedversion` command to address issues related to encrypted versions  [#115](https://github.com/owncloud/encryption/pull/115)
 - Tech preview DAV endpoint for public shares [#35932](https://github.com/owncloud/core/pull/35932) [#36057](https://github.com/owncloud/core/issues/36057) [#36021](https://github.com/owncloud/core/issues/36021) [#36059](https://github.com/owncloud/core/issues/36059) [#36066](https://github.com/owncloud/core/issues/36066) [#36080](https://github.com/owncloud/core/issues/36080) [#36061](https://github.com/owncloud/core/issues/36061) [#36119](https://github.com/owncloud/core/issues/36119) [#36049](https://github.com/owncloud/core/issues/36049) [#36068](https://github.com/owncloud/core/issues/36068)
-- Tech preview DAV endpoint for trashbin [#35716](https://github.com/owncloud/core/pull/35716) [#35879](https://github.com/owncloud/core/pull/35879) [#36053](https://github.com/owncloud/core/issues/36053) [#36073](https://github.com/owncloud/core/issues/36073)
+- Tech preview DAV endpoint for trashbin [#35716](https://github.com/owncloud/core/pull/35716) [#35879](https://github.com/owncloud/core/pull/35879) [#36053](https://github.com/owncloud/core/issues/36053) [#36073](https://github.com/owncloud/core/issues/36073) 
+- Disable Tech preview trashbin and public DAV APIs by default - [#36124](https://github.com/owncloud/core/issues/36124)
 - OCS Roles API and ability to set permissions via share attributes - [#36024](https://github.com/owncloud/core/issues/36024) [#36086](https://github.com/owncloud/core/issues/36086)
 - OCS API for public link share email notification - [#36063](https://github.com/owncloud/core/issues/36063)
 - JS API v2 for share attributes - [#35836](https://github.com/owncloud/core/issues/35836)
@@ -21,12 +22,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - `previews_path` config option to configure thumbnail storage path [#35131](https://github.com/owncloud/core/pull/35131)
 - Show activity when share receiver unshares a received share [#35193](https://github.com/owncloud/core/pull/35193)
 - Document phoenix.baseUrl in config.sample.php - [#36007](https://github.com/owncloud/core/issues/36007)
+- Add getReshareAttributes method to shareitemmodel with fix for parsing - [#36186](https://github.com/owncloud/core/issues/36186)
+- Add new migrations to dav app to prevent invalid dav properties - [#36084](https://github.com/owncloud/core/issues/36084)
 
 ### Changed
 
 - Allow two-factor providers to display custom challenge message [#34848](https://github.com/owncloud/core/issues/34848)
 - Handling of unauthenticated ajax requests to prevent browser issues [#36003](https://github.com/owncloud/core/pull/36003)
 - Improved share permission handling [#35884](https://github.com/owncloud/core/pull/35884)
+- Improve the JS attributes handling during reshare [#36214](https://github.com/owncloud/core/pull/36214)
 - Refined user administration setting button [#35877](https://github.com/owncloud/core/pull/35877)
 - Improved mobile device experience [#35919](https://github.com/owncloud/core/pull/35919) [#35813](https://github.com/owncloud/core/pull/35813) [#35347](https://github.com/owncloud/core/pull/35347)
 - Reference the new iOS app in the list of available applications [#35918](https://github.com/owncloud/core/pull/35918)
@@ -48,6 +52,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump phpseclib/phpseclib from 2.0.15 to 2.0.21 [#35336](https://github.com/owncloud/core/pull/35336) [#35565](https://github.com/owncloud/core/pull/35565) [#35643](https://github.com/owncloud/core/pull/35643) [#35827](https://github.com/owncloud/core/pull/35827)
 - Bump sabre/dav from 3.2 to 4.0.1 [#34559](https://github.com/owncloud/core/pull/34559) [#36094](https://github.com/owncloud/core/issues/36094)
 - Bump sabre/xml 2.1.2 from to 2.1.3 [#36036](https://github.com/owncloud/core/pull/36036) [#36036](https://github.com/owncloud/core/issues/36036)
+- Bump sabre/uri from 2.1.2 to 2.1.3 [#36189](https://github.com/owncloud/core/issues/36189)
+- Bump sabre/http from 5.0.0 to 5.0.2 [#36192](https://github.com/owncloud/core/issues/36192)
 - Bump swiftmailer/swiftmailer from 6.2.0 to 6.2.1 [#35075](https://github.com/owncloud/core/pull/35075)
 - Bump symfony from v3.4.26 to v3.4.31 [#35146](https://github.com/owncloud/core/pull/35146) [#35348](https://github.com/owncloud/core/pull/35348) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934) [#36098](https://github.com/owncloud/core/issues/36098) [#36097](https://github.com/owncloud/core/issues/36097) [#35989](https://github.com/owncloud/core/pull/35989) - Bump symfony/process from 3.4.30 to 3.4.31 - [#36095](https://github.com/owncloud/core/issues/36095) [#36096](https://github.com/owncloud/core/issues/36096) [#36093](https://github.com/owncloud/core/issues/36093)
 - Bump theseer/tokenizer from 1.1.2 to 1.1.3 [#35625](https://github.com/owncloud/core/pull/35625)
@@ -67,6 +73,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Fix potential issue when a user tries to delete the share_folder entry - [#36170](https://github.com/owncloud/core/issues/36170)
+- Clean up code of sharing blacklist feature - [#36038](https://github.com/owncloud/core/issues/36038)
+- Obey to config in share mail notifications APIs - [#36161](https://github.com/owncloud/core/issues/36161)
+- Don't invalidate the auth token if there isn't a user session active - [#36153](https://github.com/owncloud/core/issues/36153)
+- Fix typos in 'phoenix.baseUrl' documentation - [#36152](https://github.com/owncloud/core/issues/36152)
+- Don't check the CSRF token on public link email API - [#36158](https://github.com/owncloud/core/issues/36158)
+- Remove hardcoded http response codes - [#36127](https://github.com/owncloud/core/issues/36127)
+- Fix permission handling for share owner of a reshare - [#36193](https://github.com/owncloud/core/issues/36193)
+- Improve logging when a remote host went down suddenly - [#36180](https://github.com/owncloud/core/issues/36180)
 - Use bit operators when checking share file permission - [#36111](https://github.com/owncloud/core/issues/36111)
 - Only share owner should be able to update or delete share - [#36120](https://github.com/owncloud/core/issues/36120)
 - Fix various issues with session handling in relation to redis - [#35888](https://github.com/owncloud/core/issues/35888)
@@ -204,6 +219,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added delay in search field - [#34613](https://github.com/owncloud/core/issues/34613)
 - Tidy up code for notification by email - [#34786](https://github.com/owncloud/core/issues/34786) [#35137](https://github.com/owncloud/core/issues/35137)
 - Some code now made PHP 7 specific - [#34925](https://github.com/owncloud/core/issues/34925)
+- cron.php calls the new occ system:cron command as a fallback - [#36221](https://github.com/owncloud/core/issues/36221)
+- Update the CA bundle - [#36219](https://github.com/owncloud/core/issues/36219)
 
 ### Removed
 
@@ -1149,7 +1166,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.2.1...master
+[10.3.0]: https://github.com/owncloud/core/compare/v10.2.1...v10.3.0
 [10.2.1]: https://github.com/owncloud/core/compare/v10.2.0...v10.2.1
 [10.2.0]: https://github.com/owncloud/core/compare/v10.1.1...v10.2.0
 [10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
