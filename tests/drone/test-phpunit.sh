@@ -32,6 +32,11 @@ set_up_external_storage() {
       cp tests/drone/configs/config.files_external.smb-windows.php apps/files_external/tests/config.smb.php
       FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
       ;;
+    sftp)
+      wait-for-it -t 120 sftp:22
+      cp tests/drone/configs/config.files_external.sftp.php apps/files_external/tests/config.sftp.php
+      FILES_EXTERNAL_TEST_TO_RUN=SftpTest.php
+      ;;
     *)
       echo "Unsupported files external type!"
       exit 1
