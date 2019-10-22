@@ -1,0 +1,7 @@
+Change: Update sabre/dav from version 4.0.1 to 4.0.2
+
+sabre/http 4.0.2 was released. It fixes a server error when syncing carddav/caldav.
+
+https://github.com/owncloud/core/issues/36299
+https://github.com/owncloud/core/pull/36300
+https://github.com/sabre-io/dav/releases/tag/4.0.2
