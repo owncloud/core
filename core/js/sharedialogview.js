@@ -31,8 +31,6 @@
 		'            <span class="shareWithLoading icon-loading-small hidden"></span>'+
 		'            {{{remoteShareInfo}}}' +
 		'        </div>' +
-		'        <div class="shareeListView subView"></div>' +
-		'        <div class="shareeTreeView subView"></div>' +
 		'    </div>' +
 		'    <div class="linkShareView subView tab hidden" style="padding-left:0;padding-right:0;"></div>' +
 		'</div>' +

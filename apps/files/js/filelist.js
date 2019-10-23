@@ -169,6 +169,13 @@
 		_sortComparator: null,
 
 		/**
+		 * Stores shareTree items and infos
+		 * 
+		 * @type Array
+		 */
+		_shareTree: [],
+
+		/**
 		 * Whether to do a client side sort.
 		 * When false, clicking on a table header will call reload().
 		 * When true, clicking on a table header will simply resort the list.
@@ -1076,6 +1083,11 @@
 			$(window).scrollTop(0);
 
 			this.$fileList.trigger(jQuery.Event('updated'));
+			
+			this._setShareTree().then(function() {
+				$('#filestable').trigger(jQuery.Event('shareTreeSet'));
+			});
+			
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
@@ -1363,7 +1375,8 @@
 				this.updateEmptyContent();
 			}
 
-			this._setSharedIcon()
+			this._setShareTreeIcons()
+			this._setShareTreeView()
 
 			return $tr;
 		},
@@ -1487,7 +1500,9 @@
 				}
 			});
 
-			this._setSharedIcon()
+			$('#filestable').on('shareTreeSet', function() {
+				self._setShareTreeIcons();
+			})
 		},
 		linkTo: function(dir) {
 			return OC.linkTo('files', 'index.php')+"?dir="+ encodeURIComponent(dir).replace(/%2F/g, '/');
@@ -1820,60 +1835,67 @@
 			return Promise.all(crumbs)
 		},
 
-
-		_chechPathHasShares: function() {
+		_setShareTree: function() {
 			let self = this;
 
 			return this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
-
-				let sharedFolders = _.filter(path, function(dir) {
+				self._shareTree = _.filter(path, function(dir) {
 					return dir.shares.length > 0
 				})
-
-				if (sharedFolders.length > 0)
-					return true
-
-				return false
 			})
 		},
-	
-		_setSharedIcon: function() {
-			var self = this;
-			var $shareTreeView = $('#app-sidebar .shareeTreeView');
-			var shareTreeItems = '';
-		
-			var template =
-				'<li>' + 
-				'   <strong>share_with_displayname</strong><br>' +
-				'   <span>path</span><br>' +
-				'</li>';
 
-			$shareTreeView.ready( function(){
+		_setShareTreeIcons: function() {
+			if (!this._shareTree.length)
+				return
 
-				// Remove content's
-				$shareTreeView.text('')
+			// Add share-tree icon to files and folders
+			// each per <tr> in the table
+			$('#fileList tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
+		},
 
-				self._chechPathHasShares().then(function(e) {
+		_setShareTreeView: function() {
+			var self           = this;
+			var $shareTabView  = $('#shareTabView .dialogContainer');
+			var $shareTreeView = $('<div>', { class : 'shareTreeView' , html : '<ul></ul>'});
 
-					if (!e) return
+			$shareTabView.ready( function() {
 
-					// Add share-tree icon to files and folders
-					$('#fileList tr td.filename .thumbnail').addClass('sharetree-item')
-					
-					// Add items to the sharefiev in the sidebar
-					if ($shareTreeView.length) {
-						self.getPathShareInfo( self.getCurrentDirectory() ).then( share => {
-							share.filter( share => share.shares.length).forEach( item => {
-								item.shares.forEach( share => {
-									shareTreeItems += template.replace(/share_with_displayname|path/g, key => share[key] )
-								})
-							})
+				if (!self._shareTree.length)
+					return
 
-							$shareTreeView.append(`<ul>${shareTreeItems}</ul>`)
+				// Add items to the shareview in the sidebar ... if it's open
+				if (!$('#app-sidebar').hasClass('disappear')) {
+
+					$shareTabView.append($shareTreeView)
+
+					// Shared folders
+					self._shareTree.forEach( folder => {
+
+						// Shares by folder
+						folder.shares.forEach( share => {
+
+							let $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
+
+							// user/group shares
+							if (share.share_type === 0) {
+								let $name   = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
+								let $avatar = $('<div>',    { class : 'shareTree-item-avatar' })
+
+								$('<li class="shareTree-item">').append( $avatar, $name, $path).appendTo($shareTreeView.find('> ul'))
+								$avatar.avatar(share.share_with, 32)
+							}
+
+							// link shares
+							else if (share.share_type === 3) {
+								let $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
+								let $icon = $('<span>',    { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
+
+								$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($shareTreeView.find('> ul'))
+							}
 						})
-					}
-
-				})
+					})
+				}
 			})
 		},
 

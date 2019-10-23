@@ -51,6 +51,9 @@
 		'<div class="clear-both">' +
 		'	<button class="addLink">{{addLinkText}}</button>' +
 		'</div>' +
+		'<div class="linkTreeView subView">'+
+		'   <ul class="linkTree"></ul>'
+		'</div>' +
 		'<div class="privacyWarningMessage">{{privacyWarningMessage}}</div>';
 
 	/**
