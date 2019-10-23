@@ -30,6 +30,7 @@ use OC\Files\Cache\CacheEntry;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
+use OCP\Files\ObjectStore\ObjectStoreOperationException;
 
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
@@ -37,6 +38,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @var array
 	 */
 	private static $tmpFiles = [];
+	private $movingBetweenBuckets = [];
 	/**
 	 * @var \OCP\Files\ObjectStore\IObjectStore $objectStore
 	 */
@@ -305,6 +307,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					\file_put_contents($tmpFile, $source);
 				}
 				self::$tmpFiles[$tmpFile] = $path;
+				if (isset($this->movingBetweenBuckets[$this->getBucket()])) {
+					$this->movingBetweenBuckets[$this->getBucket()]['paths'][$path] = true;
+				}
 
 				return \fopen('close://' . $tmpFile, $mode);
 		}
@@ -340,7 +345,15 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		/** @var ObjectStoreStorage $sourceStorage */
 		'@phan-var ObjectStoreStorage $sourceStorage';
 		if ($this->getBucket() !== $sourceStorage->getBucket()) {
-			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+			$this->movingBetweenBuckets[$this->getBucket()] = [
+				'sourceStorage' => $sourceStorage,
+				'sourceBase' => $sourceInternalPath,
+				'targetBase' => $targetInternalPath,
+				'paths' => [],
+			];
+			$result = parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+			unset($this->movingBetweenBuckets[$this->getBucket()]);
+			return $result;
 		}
 
 		// source and target live on the same object store and we can simply rename
@@ -421,7 +434,25 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 		$stat['etag'] = $this->getETag($path);
 
-		$fileId = $this->getCache()->put($path, $stat);
+		if (isset($this->movingBetweenBuckets[$this->getBucket()]['paths'][$path])) {
+			// if we're moving ensure we update the filecache moving the file in order to keep the old fileid
+			$targetBase = $this->movingBetweenBuckets[$this->getBucket()]['targetBase'];
+			$sourceBase = $this->movingBetweenBuckets[$this->getBucket()]['sourceBase'];
+			if (\substr($path, 0, \strlen($targetBase)) === $targetBase) {
+				$movingPath = \substr($path, \strlen($targetBase));
+				$originalSource = $sourceBase . $movingPath;
+				$originalStorage = $this->movingBetweenBuckets[$this->getBucket()]['sourceStorage'];
+				$fileId = $originalStorage->stat($originalSource)['fileid'];
+				// TODO: moveFromCache before or after writing the object? what if it fails?
+				$this->getCache()->moveFromCache($originalStorage->getCache(), $originalSource, $path);
+			} else {
+				// if the target path is outside the base... this shouldn't happen, but fallback to normal behaviour
+				$fileId = $this->getCache()->put($path, $stat);
+			}
+			unset($this->movingBetweenBuckets[$this->getBucket()]['paths'][$path]);
+		} else {
+			$fileId = $this->getCache()->put($path, $stat);
+		}
 		try {
 			//upload to object storage
 			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
