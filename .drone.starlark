@@ -37,7 +37,7 @@ config = {
 			'coverage': True,
 			'extraCommandsBeforeTestRun': [
 				'ls -l /var/cache',
-				'apt-get -y install samba-common',
+				'apt-get update && apt-get -y install samba-common',
 				'ls -l /var/cache',
 			],
 		},
