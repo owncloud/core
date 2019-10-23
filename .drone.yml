@@ -240,16 +240,6 @@ steps:
   environment:
     DB_TYPE: sqlite
 
-- name: samba-cache
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - pwd
-  - ls -l /var/cache
-  - mkdir /var/cache/samba
-  - chmod 777 /var/cache/samba
-  - ls -l /var/cache
-
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.1
@@ -267,6 +257,11 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - chmod 777 /var/cache/samba
+  - ls -l /var/cache
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
@@ -381,16 +376,6 @@ steps:
   environment:
     DB_TYPE: sqlite
 
-- name: samba-cache
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - pwd
-  - ls -l /var/cache
-  - mkdir /var/cache/samba
-  - chmod 777 /var/cache/samba
-  - ls -l /var/cache
-
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.1
@@ -408,6 +393,11 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - chmod 777 /var/cache/samba
+  - ls -l /var/cache
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true

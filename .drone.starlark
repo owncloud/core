@@ -35,19 +35,12 @@ config = {
 				'windows',
 			],
 			'coverage': True,
-			'extraSetup': [
-				{
-					'name': 'samba-cache',
-					'image': 'owncloudci/php:7.0',
-					'pull': 'always',
-					'commands': [
-					    'pwd',
-					    'ls -l /var/cache',
-					    'mkdir /var/cache/samba',
-					    'chmod 777 /var/cache/samba',
-					    'ls -l /var/cache',
-					]
-				}
+			'extraCommandsBeforeTestRun': [
+				'pwd',
+				'ls -l /var/cache',
+				'mkdir /var/cache/samba',
+				'chmod 777 /var/cache/samba',
+				'ls -l /var/cache',
 			],
 		},
 		'external2' : {
@@ -937,7 +930,7 @@ def phptests(testType):
 									'FILES_EXTERNAL_TYPE': filesExternalType,
 									'PRIMARY_OBJECTSTORE': primaryObjectstore
 								},
-								'commands': [
+								'commands': params['extraCommandsBeforeTestRun'] + [
 									command
 								]
 							}
