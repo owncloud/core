@@ -1795,12 +1795,12 @@
 					}
 
 					if (dir.shareTypes === undefined) {
-						Object.assign(shareInfo, { shares : [] })
+						shareInfo.shares = []
 						resolve(shareInfo)
 					}
 					else {
 						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: (dir.path + '/' + dir.name)}), function(e) {
-							Object.assign(shareInfo, { shares : e.ocs.data })
+							shareInfo.shares = e.ocs.data
 							resolve(shareInfo)
 						})
 					}
@@ -1870,10 +1870,10 @@
 					$shareTabView.append($shareTreeView)
 
 					// Shared folders
-					self._shareTree.forEach( folder => {
+					self._shareTree.forEach( function(folder) {
 
 						// Shares by folder
-						folder.shares.forEach( share => {
+						folder.shares.forEach( function(share) {
 
 							let $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
 
