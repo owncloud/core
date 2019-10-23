@@ -36,10 +36,8 @@ config = {
 			],
 			'coverage': True,
 			'extraCommandsBeforeTestRun': [
-				'pwd',
 				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'chmod 777 /var/cache/samba',
+				'apt-get -y install samba-common',
 				'ls -l /var/cache',
 			],
 		},

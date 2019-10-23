@@ -257,10 +257,8 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - pwd
   - ls -l /var/cache
-  - mkdir /var/cache/samba
-  - chmod 777 /var/cache/samba
+  - apt-get -y install samba-common
   - ls -l /var/cache
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
@@ -393,10 +391,8 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - pwd
   - ls -l /var/cache
-  - mkdir /var/cache/samba
-  - chmod 777 /var/cache/samba
+  - apt-get -y install samba-common
   - ls -l /var/cache
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
