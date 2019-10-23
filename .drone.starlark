@@ -37,7 +37,20 @@ config = {
 				'windows',
 				'scality'
 			],
-			'coverage': True
+			'coverage': True,
+			'extraSetup': [
+				{
+					'name': 'configure-app',
+					'image': 'owncloudci/php:7.0',
+					'pull': 'always',
+					'commands': [
+					    'pwd',
+					    'ls -l /var/cache',
+					    'mkdir /var/cache/samba',
+					    'ls -l /var/cache',
+					]
+				}
+			],
 		},
 	},
 
@@ -898,6 +911,7 @@ def phptests(testType):
 							installServer(phpVersion, db, params['logLevel']) +
 							installExtraApps(phpVersion, extraAppsDict) +
 							setupScality(phpVersion, needScality) +
+							params['extraSetup'] +
 							fixPermissions(phpVersion, False) +
 							owncloudLog('server', 'src') +
 						[

@@ -240,6 +240,15 @@ steps:
   environment:
     DB_TYPE: sqlite
 
+- name: configure-app
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - ls -l /var/cache
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.1
@@ -370,6 +379,15 @@ steps:
   - php occ security:certificates
   environment:
     DB_TYPE: sqlite
+
+- name: configure-app
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - ls -l /var/cache
 
 - name: fix-permissions
   pull: always
@@ -502,6 +520,15 @@ steps:
   environment:
     DB_TYPE: sqlite
 
+- name: configure-app
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - ls -l /var/cache
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.1
@@ -628,6 +655,15 @@ steps:
   - php occ security:certificates
   environment:
     DB_TYPE: sqlite
+
+- name: configure-app
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - ls -l /var/cache
 
 - name: fix-permissions
   pull: always
@@ -768,6 +804,15 @@ steps:
   - wait-for-it -t 60 scality:8000
   - cp /drone/src/apps/files_primary_s3/tests/drone/scality.config.php /drone/src/config
   - php occ s3:create-bucket owncloud --accept-warning
+
+- name: configure-app
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - pwd
+  - ls -l /var/cache
+  - mkdir /var/cache/samba
+  - ls -l /var/cache
 
 - name: fix-permissions
   pull: always
