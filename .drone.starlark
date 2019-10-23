@@ -12,34 +12,17 @@ config = {
 
 	'codestyle': True,
 
-	'phpstan': True,
+	'phpstan': False,
 
-	'phan': True,
+	'phan': False,
 
-	'javascript': True,
+	'javascript': False,
 
-	'litmus': True,
+	'litmus': False,
 
-	'dav': True,
+	'dav': False,
 
 	'phpunit': {
-		'allDatabases' : {
-			'phpVersions': [
-				'7.1',
-			]
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.0',
-				'7.2',
-				'7.3',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			],
-			'coverage': False
-		},
 		'external' : {
 			'phpVersions': [
 				'7.1',
@@ -58,152 +41,7 @@ config = {
 		},
 	},
 
-	'acceptance': {
-		'api': {
-			'suites': [
-				'apiAuth',
-				'apiAuthOcs',
-				'apiCapabilities',
-				'apiComments',
-				'apiFavorites',
-				'apiMain',
-				'apiProvisioning-v1',
-				'apiProvisioning-v2',
-				'apiProvisioningGroups-v1',
-				'apiProvisioningGroups-v2',
-				'apiSharees',
-				'apiShareManagement',
-				'apiShareManagementBasic',
-				'apiShareOperations',
-				'apiShareReshare',
-				'apiShareUpdate',
-				'apiTags',
-				'apiTrashbin',
-				'apiVersions',
-				'apiWebdavLocks',
-				'apiWebdavLocks2',
-				'apiWebdavMove',
-				'apiWebdavOperations',
-				'apiWebdavProperties',
-				'apiWebdavUpload',
-			],
-		},
-		'apiNotifications': {
-			'suites': [
-				'apiSharingNotifications',
-			],
-			'extraApps': {
-				'notifications': 'composer install'
-			},
-		},
-		'apiFederation': {
-			'suites': [
-				'apiFederation',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', '10.2.1']
-		},
-		'cli': {
-			'suites': [
-				'cliBackground',
-				'cliMain',
-				'cliProvisioning',
-				'cliTrashbin',
-			],
-			'emailNeeded': True,
-		},
-		'cliAppManagement': {
-			'suites': [
-				'cliAppManagement',
-			],
-			'testingRemoteSystem': False
-		},
-		'webUI': {
-			'suites': {
-				'webUIAddUsers': '',
-				'webUIAdminSettings': '',
-				'webUIComments': '',
-				'webUICreateDelete': '',
-				'webUIFavorites': '',
-				'webUIFiles': '',
-				'webUILogin': '',
-				'webUIManageQuota': '',
-				'webUIManageUsersGroups': 'webUIManageUsersGrps',
-				'webUIMoveFilesFolders': 'webUIMoveFilesFolder',
-				'webUIPersonalSettings': 'webUIPersonalSetting',
-				'webUIRenameFiles': '',
-				'webUIRenameFolders': '',
-				'webUIRestrictSharing': '',
-				'webUISettingsMenu': '',
-				'webUISharingAcceptShares': 'webUISharingAcceptSh',
-				'webUISharingAutocompletion': 'webUISharingAutocomp',
-				'webUISharingInternalGroups': 'webUISharingIntGroup',
-				'webUISharingInternalUsers': 'webUISharingIntUsers',
-				'webUISharingPublic': '',
-				'webUITags': '',
-				'webUITrashbin': '',
-				'webUIUpload': '',
-				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
-				'webUIWebdavLocks': '',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-		},
-		'webUINotifications': {
-			'suites': {
-				'webUISharingNotifications': 'webUISharingNotify',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-			'extraApps': {
-				'notifications': 'composer install'
-			},
-		},
-		'webUIFederation': {
-			'suites': {
-				'webUISharingExternal': 'webUISharingExt',
-			},
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', '10.2.1']
-		},
-		'webUIFirefox': {
-			'suites': {
-				'webUIFirefoxSmoketest': 'webUIFfSmoke',
-			},
-			'browsers': [
-				'firefox'
-			],
-			'emailNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'webUIProxy': {
-			'suites': {
-				'webUIProxySmoketest': 'webUIProxySmoke',
-			},
-			'browsers': [
-				'chrome'
-			],
-			'emailNeeded': True,
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'apiProxy': {
-			'suites': {
-				'apiProxySmoketest': 'apiProxySmoke',
-			},
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-	}
+	'acceptance': False
 }
 
 def main(ctx):
