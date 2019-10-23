@@ -220,6 +220,7 @@ default:
         - OccContext:
         - SearchContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     apiWebdavProperties:
       paths:

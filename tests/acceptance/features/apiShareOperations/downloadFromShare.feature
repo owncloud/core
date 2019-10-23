@@ -7,7 +7,6 @@ Feature: sharing
     And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest @public_link_share-feature-required
-  @issue-36076
   Scenario: Downloading from upload-only share is forbidden
     Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
     When user "user0" creates a public link share using the sharing API with settings
