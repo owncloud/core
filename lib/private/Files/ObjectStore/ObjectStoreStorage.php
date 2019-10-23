@@ -30,7 +30,6 @@ use OC\Files\Cache\CacheEntry;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
-use OCP\Files\ObjectStore\ObjectStoreOperationException;
 
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
@@ -38,6 +37,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @var array
 	 */
 	private static $tmpFiles = [];
+	/** @var array */
 	private $movingBetweenBuckets = [];
 	/**
 	 * @var \OCP\Files\ObjectStore\IObjectStore $objectStore
@@ -74,6 +74,22 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
+	/**
+	 * This is intended to be used during the moveFromStorage call
+	 * DO NOT USE OUTSIDE OF THIS CLASS
+	 */
+	public function setMovingBetweenBucketsInfo(array $info) {
+		$this->movingBetweenBuckets = $info;
+	}
+
+	/**
+	 * This is intended to be used during the moveFromStorage call
+	 * DO NOT USE OUTSIDE OF THIS CLASS
+	 */
+	public function clearMovingBetweenBucketsInfo() {
+		$this->movingBetweenBuckets = [];
+	}
+
 	public function mkdir($path) {
 		$path = $this->normalizePath($path);
 
@@ -92,7 +108,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if ($path === '') {
 			//create root on the fly
 			$data['etag'] = $this->getETag('');
-			$this->getCache()->put('', $data);
+			if (empty($this->movingBetweenBuckets)) {
+				$this->getCache()->put('', $data);
+			}
 			return true;
 		} else {
 			// if parent does not exist, create it
@@ -107,12 +125,14 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				// parent is a file
 				return false;
 			}
-			// finally create the new dir
-			$mTime = \time(); // update mtime
-			$data['mtime'] = $mTime;
-			$data['storage_mtime'] = $mTime;
-			$data['etag'] = $this->getETag($path);
-			$this->getCache()->put($path, $data);
+			if (empty($this->movingBetweenBuckets)) {
+				// finally create the new dir
+				$mTime = \time(); // update mtime
+				$data['mtime'] = $mTime;
+				$data['storage_mtime'] = $mTime;
+				$data['etag'] = $this->getETag($path);
+				$this->getCache()->put($path, $data);
+			}
 			return true;
 		}
 	}
@@ -170,7 +190,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 		$this->rmObjects($path);
 
-		$this->getCache()->remove($path);
+		if (empty($this->movingBetweenBuckets)) {
+			$this->getCache()->remove($path);
+		}
 
 		return true;
 	}
@@ -204,7 +226,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					//removing from cache is ok as it does not exist in the objectstore anyway
 				}
 			}
-			$this->getCache()->remove($path);
+			if (empty($this->movingBetweenBuckets)) {
+				$this->getCache()->remove($path);
+			}
 			return true;
 		}
 		return false;
@@ -325,7 +349,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$source = $this->normalizePath($source);
 		$target = $this->normalizePath($target);
 		$this->remove($target);
-		$this->getCache()->move($source, $target);
+		if (empty($this->movingBetweenBuckets)) {
+			$this->getCache()->move($source, $target);
+		}
 		$this->touch(\dirname($target));
 		return true;
 	}
@@ -351,8 +377,14 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				'targetBase' => $targetInternalPath,
 				'paths' => [],
 			];
-			$result = parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
-			unset($this->movingBetweenBuckets[$this->getBucket()]);
+			$sourceStorage->setMovingBetweenBucketsInfo($this->movingBetweenBuckets);
+			try {
+				$result = parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+				$this->getCache()->moveFromCache($sourceStorage->getCache(), $sourceInternalPath, $targetInternalPath);
+			} finally {
+				$sourceStorage->clearMovingBetweenBucketsInfo();
+				unset($this->movingBetweenBuckets[$this->getBucket()]);
+			}
 			return $result;
 		}
 
@@ -443,8 +475,6 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				$originalSource = $sourceBase . $movingPath;
 				$originalStorage = $this->movingBetweenBuckets[$this->getBucket()]['sourceStorage'];
 				$fileId = $originalStorage->stat($originalSource)['fileid'];
-				// TODO: moveFromCache before or after writing the object? what if it fails?
-				$this->getCache()->moveFromCache($originalStorage->getCache(), $originalSource, $path);
 			} else {
 				// if the target path is outside the base... this shouldn't happen, but fallback to normal behaviour
 				$fileId = $this->getCache()->put($path, $stat);
