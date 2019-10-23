@@ -39,9 +39,8 @@ use OCA\Files_External\Lib\Storage\SMB;
 class SmbTest extends \Test\Files\Storage\Storage {
 	protected function setUp() {
 		parent::setUp();
-
 		$id = $this->getUniqueID();
-		$config = include('files_external/tests/config.smb.php');
+		$config = include 'files_external/tests/config.smb.php';
 		if (!\is_array($config) or !$config['run']) {
 			$this->markTestSkipped('Samba backend not configured');
 		}
@@ -50,7 +49,7 @@ class SmbTest extends \Test\Files\Storage\Storage {
 		}
 		$config['root'] .= $id; //make sure we have an new empty folder to work in
 		$this->instance = new SMB($config);
-		$this->assertTrue($this->instance->mkdir('/'));
+		$this->assertTrue($this->instance->mkdir('/'), 'Failed to create a root dir');
 	}
 
 	protected function tearDown() {
@@ -70,9 +69,10 @@ class SmbTest extends \Test\Files\Storage\Storage {
 
 	public function testRenameWithSpaces() {
 		$this->instance->mkdir('with spaces');
+		$this->assertTrue($this->instance->is_dir('with spaces'), 'Failed to create directory with spaces');
 		$result = $this->instance->rename('with spaces', 'foo bar');
-		$this->assertTrue($result);
-		$this->assertTrue($this->instance->is_dir('foo bar'));
+		$this->assertTrue($result, 'Failed to rename dir');
+		$this->assertTrue($this->instance->is_dir('foo bar'), 'Failed to locate the dir with a new name');
 	}
 
 	public function testStorageId() {
