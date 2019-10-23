@@ -23,7 +23,34 @@ config = {
 	'dav': False,
 
 	'phpunit': {
-		'external' : {
+		'external1' : {
+			'phpVersions': [
+				'7.1',
+			],
+			'databases': [
+				'sqlite',
+			],
+			'externalTypes': [
+				'samba',
+				'windows',
+			],
+			'coverage': True,
+			'extraSetup': [
+				{
+					'name': 'samba-cache',
+					'image': 'owncloudci/php:7.0',
+					'pull': 'always',
+					'commands': [
+					    'pwd',
+					    'ls -l /var/cache',
+					    'mkdir /var/cache/samba',
+					    'chmod 777 /var/cache/samba',
+					    'ls -l /var/cache',
+					]
+				}
+			],
+		},
+		'external2' : {
 			'phpVersions': [
 				'7.1',
 			],
@@ -32,25 +59,10 @@ config = {
 			],
 			'externalTypes': [
 				'webdav',
-				'samba',
 				'sftp',
-				'windows',
 				'scality'
 			],
 			'coverage': True,
-			'extraSetup': [
-				{
-					'name': 'configure-app',
-					'image': 'owncloudci/php:7.0',
-					'pull': 'always',
-					'commands': [
-					    'pwd',
-					    'ls -l /var/cache',
-					    'mkdir /var/cache/samba',
-					    'ls -l /var/cache',
-					]
-				}
-			],
 		},
 	},
 
