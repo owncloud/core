@@ -171,7 +171,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						$parentData = $this->scanFile($parent);
 						$parentId = $parentData['fileid'];
 					}
-					if ($parent) {
+					if ($parent && $parentId !== null) {
 						$data['parent'] = $parentId;
 					}
 					if ($cacheData === null) {
