@@ -658,10 +658,14 @@ class Filesystem {
 		if ($excluded) {
 			$excluded = \array_map('trim', $excluded);
 			$excluded = \array_map('strtolower', $excluded);
-			foreach($path_parts as $path_part) {
-				foreach($excluded as $blackitem) {
-					if(\preg_match('/'.$blackitem.'/i', $path_part)) {
-						return true;
+			foreach($excluded as $blackitem) {
+				if(@\preg_match($blackitem, null) === false) {
+					\OC::$server->getLogger()->error('Malformed exclude regex: '.$blackitem.' - Check excluded_directories variable in config file.', ['app' => __CLASS__]);
+				} else {
+					foreach($path_parts as $path_part) {
+						if(\preg_match('/'.$blackitem.'/i', $path_part)) {
+							return true;
+						}
 					}
 				}
 			}
@@ -670,8 +674,7 @@ class Filesystem {
 		$blacklist = \array_map('strtolower', $blacklist);
 		foreach($blacklist as $blackitem) {
 			if(@\preg_match($blackitem, null) === false) {
-				$msg = "Backends provided no user object for $user";
-				\OC::$server->getLogger()->error('Malformed regex: '.$blackitem, ['app' => __CLASS__]);
+				\OC::$server->getLogger()->error('Malformed blacklist regex: '.$blackitem.' - Check blacklisted_files variable in config file.', ['app' => __CLASS__]);
 			} else {
 				foreach($path_parts as $path_part) {
 					if(\preg_match('/'.$blackitem.'/i', $path_part)) {
