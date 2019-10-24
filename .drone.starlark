@@ -36,9 +36,12 @@ config = {
 			],
 			'coverage': True,
 			'extraCommandsBeforeTestRun': [
+				'ls -l /drone',
+				'ls -l /drone/sambacache',
 				'ls -l /var/cache',
 				'apt-get update && apt-get -y install samba-common',
 				'ls -l /var/cache',
+				'php -m',
 			],
 		},
 		'external2' : {
@@ -1385,6 +1388,7 @@ def sambaService(needed):
 		'image': 'owncloudci/samba:latest',
 		'pull': 'always',
 		'command': [
+			'-g cache directory = /drone/sambacache',
 			'-u',
 			'test;test',
 			'-s',
