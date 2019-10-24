@@ -1205,9 +1205,15 @@ $CONFIG = array(
  * Blacklist a specific file or files and disallow the upload of files
  * with this name. `.htaccess` is blocked by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * Blacklist is based on regex expression. 
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
+ * WARNING: String case is systematicaly lowered
  */
 'blacklisted_files' => array(
-	'^\.htaccess$',
+	'^\.htaccess$', // disallow .htaccess file
+//	'.*\.pst$',     // disallow *.pst (MS Outlook) file
+//	'.*dummy.*',    // disallow file with name contaning 'dummy'
+//	'^sample.*',	// disallow file with name beginning by 'sample'
 ),
 
 /**
@@ -1218,11 +1224,15 @@ $CONFIG = array(
  * Please see the documentation for details and examples.
  * Use when the storage backend supports eg snapshot directories to be excluded.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
+ * WARNING: String case is systematicaly lowered
  */
 'excluded_directories' =>
 	array (
-		'^\.snapshot$',
-		'^~snapshot$',
+		'^\.snapshot$',  // exclude '.snapshot' folder
+		'^~snapshot$',   // exclude '~snapshot' folder
+//		'.*backup.*',    // exclude folder with name containing the string 'backup'
+//		'Thomas.*',      // exclude folder with name beginning by the string 'Thomas'
 	),
 /**
  * Exclude files from the integrity checker command
