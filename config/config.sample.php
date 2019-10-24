@@ -1206,7 +1206,9 @@ $CONFIG = array(
  * with this name. `.htaccess` is blocked by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
-'blacklisted_files' => array('.htaccess'),
+'blacklisted_files' => array(
+	'^\.htaccess$',
+),
 
 /**
  * Exclude specific directory names and disallow scanning, creating and renaming
@@ -1219,8 +1221,8 @@ $CONFIG = array(
  */
 'excluded_directories' =>
 	array (
-		'.snapshot',
-		'~snapshot',
+		'^\.snapshot$',
+		'^~snapshot$',
 	),
 /**
  * Exclude files from the integrity checker command
