@@ -42,6 +42,10 @@ config = {
 				'apt-get update && apt-get -y install samba-common',
 				'ls -l /var/cache',
 				'php -m',
+				'ls -l /etc/samba',
+				'cat /etc/samba/smb.conf',
+				'echo "[global]\n  cache directory = /drone/sambacache\n" > /etc/samba/smb.conf',
+				'cat /etc/samba/smb.conf',
 			],
 		},
 		'external2' : {
