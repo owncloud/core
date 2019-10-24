@@ -666,6 +666,7 @@ class Filesystem {
 		$blacklist = \array_map('trim', $blacklist);
 		$blacklist = \array_map('strtolower', $blacklist);
 		$match = \array_intersect($path_parts, $blacklist);
+		// change must be done here !!
 		if ($match) {
 			return true;
 		}
