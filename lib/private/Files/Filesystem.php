@@ -655,21 +655,26 @@ class Filesystem {
 			// only add an array element if strlen != 0
 			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
 		}
-		if ($excluded) {
-			$excluded = \array_map('trim', $excluded);
-			$excluded = \array_map('strtolower', $excluded);
-			$match = \array_intersect($path_parts, $excluded);
-			if ($match) {
-				return true;
-			}
-		}
-		$blacklist = \array_map('trim', $blacklist);
-		$blacklist = \array_map('strtolower', $blacklist);
-		$match = \array_intersect($path_parts, $blacklist);
-		// change must be done here !!
-		if ($match) {
-			return true;
-		}
+                if ($excluded) {
+                        $excluded = \array_map('trim', $excluded);
+                        $excluded = \array_map('strtolower', $excluded);
+                        foreach($path_parts as $path_part) {
+                                foreach($excluded as $blackitem) {
+                                        if(preg_match('/'.$blackitem.'/i', $path_part)) {
+                                                 return true;
+                                        }
+                                }
+                        }
+                }
+                $blacklist = \array_map('trim', $blacklist);
+                $blacklist = \array_map('strtolower', $blacklist);
+                foreach($path_parts as $path_part) {
+                        foreach($blacklist as $blackitem) {
+                                if(preg_match('/'.$blackitem.'/i', $path_part)) {
+                                        return true;
+                                }
+                        }
+                }
 		return false;
 	}
 
