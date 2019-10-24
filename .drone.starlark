@@ -49,11 +49,9 @@ config = {
 			],
 			'externalTypes': [
 				'webdav',
-				# disable - see https://github.com/owncloud/core/issues/36322
-				# 'samba',
+				'samba',
 				'sftp',
-				# disable - see https://github.com/owncloud/core/issues/36322
-				# 'windows',
+				'windows',
 				'scality'
 			],
 			'coverage': True
