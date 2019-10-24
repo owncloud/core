@@ -257,6 +257,16 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
+  - ls -l /drone
+  - ls -l /drone/sambacache
+  - ls -l /var/cache
+  - apt-get update && apt-get -y install samba-common
+  - ls -l /var/cache
+  - php -m
+  - ls -l /etc/samba
+  - cat /etc/samba/smb.conf
+  - "echo \"[global]\n  cache directory = /drone/sambacache\n\" > /etc/samba/smb.conf"
+  - cat /etc/samba/smb.conf
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
@@ -286,6 +296,7 @@ services:
   pull: always
   image: owncloudci/samba:latest
   command:
+  - -g cache directory = /drone/sambacache
   - -u
   - test;test
   - -s
@@ -388,6 +399,16 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
+  - ls -l /drone
+  - ls -l /drone/sambacache
+  - ls -l /var/cache
+  - apt-get update && apt-get -y install samba-common
+  - ls -l /var/cache
+  - php -m
+  - ls -l /etc/samba
+  - cat /etc/samba/smb.conf
+  - "echo \"[global]\n  cache directory = /drone/sambacache\n\" > /etc/samba/smb.conf"
+  - cat /etc/samba/smb.conf
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
