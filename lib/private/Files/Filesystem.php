@@ -628,6 +628,7 @@ class Filesystem {
 	* Regex validity checker.
 	* Check last regex validation error origin. Return a string describing error cause.
 	* @return string
+	* @see https://www.php.net/manual/function.preg-last-error.php
 	*/
 	private static function is_preg_error() {
 		$errors = array(
@@ -654,7 +655,6 @@ class Filesystem {
 	* @param string $FileOrDir
 	* @param array $ed
 	* @return boolean
-	* @see https://www.php.net/manual/function.preg-last-error.php
 	*/
 	public static function isForbiddenFileOrDir($FileOrDir, $ed = []) {
 		$excluded = [];
@@ -680,7 +680,8 @@ class Filesystem {
 			$excluded = \array_map('trim', $excluded);
 			$excluded = \array_map('strtolower', $excluded);
 			foreach($excluded as $blackitem) {
-				if(@\preg_match($blackitem, null) === false) {
+				\preg_match($blackitem, null);  // regex validy check
+				if(\preg_last_error() !== PREG_NO_ERROR) {
 					\OC::$server->getLogger()->error('Exclude regex error: '.$blackitem
 									 .' - Check excluded_directories variable in config file: '.is_preg_error(),
 									 ['app' => __CLASS__]);
@@ -697,7 +698,8 @@ class Filesystem {
 		$blacklist = \array_map('trim', $blacklist);
 		$blacklist = \array_map('strtolower', $blacklist);
 		foreach($blacklist as $blackitem) {
-			if(@\preg_match($blackitem, null) === false) {
+			\preg_match($blackitem, null);  // regex validy check
+			if(\preg_last_error() !== PREG_NO_ERROR) {
 				\OC::$server->getLogger()->error('Blacklist regex error: '.$blackitem
 								 .' - Check blacklisted_files variable in config file: '.is_preg_error(),
 								 ['app' => __CLASS__]);
