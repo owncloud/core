@@ -522,16 +522,16 @@ table td.filename .uploadtext {
 
 #fileList tr:not(:hover):not(.selected) td.filename .thumbnail.sharetree-item:after {
 	position: absolute;
-    display: block;
-    content: '';
-    bottom: 0px;
-    right: -5px;
-    z-index: 10;
-    background-image: url(../img/shareinfo.svg);
-    width: 14px;
-    height: 14px;
-    background-repeat: no-repeat;
-    background-position: center;
+	display: block;
+	content: '';
+	bottom: 0px;
+	right: -5px;
+	z-index: 10;
+	background-image: url(../img/shareinfo.svg);
+	width: 14px;
+	height: 14px;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .shareTree {
@@ -552,7 +552,7 @@ table td.filename .uploadtext {
 	border-radius: 50%;
 	float: left;
 	margin-right: 10px;
-	transform: translateY(5px);
+	margin-top: 5px;
 }
 
 .shareTree-item-icon {
@@ -568,12 +568,6 @@ table td.filename .uploadtext {
 .shareTree-item-path {
 	display: block;
 }
-
-.shareTree-item-path:before,
-.shareTree-item-path:after {
-	content: '"';
-}
-
 
 /* Show checkbox when hovering, checked, or selected */
 html.ie8 #fileList tr td.filename > .selectCheckBox:checked,
@@ -1044,11 +1038,11 @@ html.ie8 #controls .button.new {
  sharing indicator on the top right is still pending
  ---------------------------------------------------
 
-#controls #shareinfo_indicator {
+ #controls #shareinfo_indicator {
 	float: right;
-    height: 32px;
-    position: relative;
-    align-items: center;
+	height: 32px;
+	position: relative;
+	align-items: center;
 	padding: 6px 7px 0 0;
 }
 
@@ -1066,13 +1060,13 @@ html.ie8 #controls .button.new {
 #controls #shareinfo_indicator .text:after {
 	content: "";
 	position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 4px 4px 0 4px;
-    border-color: #927800 transparent transparent transparent;
-    right: 10px;
-    top: calc(50% - 2px);
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 4px 4px 0 4px;
+	border-color: #927800 transparent transparent transparent;
+	right: 10px;
+	top: calc(50% - 2px);
 }
 
 #controls #shareinfo_indicator:not(:hover) .list {

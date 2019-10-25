@@ -1092,8 +1092,8 @@
 
 			this.$fileList.trigger(jQuery.Event('updated'));
 			
-			this._setShareTree().then(function() {
-				$('#filestable').trigger(jQuery.Event('shareTreeSet'));
+			this._updateShareTree().then(function() {
+				$('#filestable').trigger(jQuery.Event('shareTreeUpdated'));
 			});
 			
 			_.defer(function() {
@@ -1508,7 +1508,7 @@
 				}
 			});
 
-			$('#filestable').on('shareTreeSet', function() {
+			$('#filestable').on('shareTreeUpdated', function() {
 				self._setShareTreeIcons();
 			})
 		},
@@ -1856,7 +1856,7 @@
 			return Promise.all(crumbs)
 		},
 
-		_setShareTree: function() {
+		_updateShareTree: function() {
 			let self = this;
 
 			return this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
@@ -1872,7 +1872,7 @@
 
 			// Add share-tree icon to files and folders
 			// each per <tr> in the table
-			$('#fileList tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
+			this.$el.find('#fileList tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
 		},
 
 		_setShareTreeView: function() {
