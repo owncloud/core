@@ -1878,7 +1878,7 @@
 					return
 
 				// Add items to the shareview in the sidebar ... if it's open
-				if (!$('#app-sidebar').hasClass('disappear')) {
+				if (OC.Apps.AppSidebarVisible()) {
 
 					$shareTabView.append($shareTreeView)
 

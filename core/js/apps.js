@@ -45,6 +45,17 @@
 	};
 
 	/**
+	 * Check if sidebar is visible/hidden
+	 *
+	 * @param {Object} [$el] sidebar element to check, defaults to $('#app-sidebar')
+	 */
+
+	exports.Apps.AppSidebarVisible = function($el) {
+		var $appSidebar = $el || $('#app-sidebar');
+		return !$appSidebar.hasClass('disappear');
+	};
+
+	/**
 	 * Provides a way to slide down a target area through a button and slide it
 	 * up if the user clicks somewhere else. Used for the news app settings and
 	 * add new field.
