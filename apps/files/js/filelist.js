@@ -1778,11 +1778,22 @@
 		getDirShareInfo: function(dir) {
 			// Dir can't be empty
 			if (typeof dir !== 'string' || dir.length === 0) {
-				console.error('getDirShareInfo(). param must be typeof string and can not be empty!')
-				return false
+				return Promise.reject('getDirShareInfo(). param must be typeof string and can not be empty!')
 			}
 
-			var client     = this.filesClient
+			// Shareinfo may already exist
+			var fromTree = this._shareTree.filter(function(item) {
+				return item.path === (dir !== '/') ?  dir.replace(/\/$/, "") : '/'
+			})
+
+			// Return existing data
+			// avoiding a new API call
+			if (fromTree.length) {
+				return Promise.resolve(fromTree[0])
+			}
+
+			var self       = this;
+			var client     = this.filesClient;
 			var options    = {
 				properties : ['{' + OC.Files.Client.NS_OWNCLOUD + '}share-types']
 			}
@@ -1799,8 +1810,10 @@
 						resolve(shareInfo)
 					}
 					else {
+						// Fetch all shares for directory in question
 						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: (dir.path + '/' + dir.name)}), function(e) {
 							shareInfo.shares = e.ocs.data
+							self._shareTree.push(shareInfo)
 							resolve(shareInfo)
 						})
 					}
