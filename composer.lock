@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "799c8f05c3591ff31c33e75da588a2e5",
+    "content-hash": "21f976be3631264dd32ac8175a24c296",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1971,16 +1971,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "fd0234d46c045fc9b35ec06bd2e7b490240e6ade"
+                "reference": "aa30e99cd94f1abb4cb9fd86875919dffe237707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/fd0234d46c045fc9b35ec06bd2e7b490240e6ade",
-                "reference": "fd0234d46c045fc9b35ec06bd2e7b490240e6ade",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/aa30e99cd94f1abb4cb9fd86875919dffe237707",
+                "reference": "aa30e99cd94f1abb4cb9fd86875919dffe237707",
                 "shasum": ""
             },
             "require": {
@@ -2046,7 +2046,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2019-10-19T07:17:49+00:00"
+            "time": "2019-10-24T21:20:13+00:00"
         },
         {
             "name": "sabre/event",
@@ -3693,8 +3693,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://frankkleine.de/"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -4457,17 +4457,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "15eb463aecc9e315b89b744ee0feb0bb1b4c6787"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/15eb463aecc9e315b89b744ee0feb0bb1b4c6787",
-                "reference": "15eb463aecc9e315b89b744ee0feb0bb1b4c6787",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -5381,6 +5370,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "sabre/dav": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
