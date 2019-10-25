@@ -679,15 +679,15 @@ class Filesystem {
 		if ($excluded) {
 			$excluded = \array_map('trim', $excluded);
 			$excluded = \array_map('strtolower', $excluded);
-			foreach($excluded as $blackitem) {
+			foreach ($excluded as $blackitem) {
 				\preg_match($blackitem, null);  // regex validy check
-				if(\preg_last_error() !== PREG_NO_ERROR) {
+				if (\preg_last_error() !== PREG_NO_ERROR) {
 					\OC::$server->getLogger()->error('Exclude regex error: '.$blackitem
-									 .' - Check excluded_directories variable in config file: '.is_preg_error(),
+									  .' - Check excluded_directories variable in config file: '.is_preg_error(),
 									 ['app' => __CLASS__]);
 				} else {
-					foreach($path_parts as $path_part) {
-						if(\preg_match('/'.$blackitem.'/i', $path_part)) {
+					foreach ($path_parts as $path_part) {
+						if (\preg_match('/'.$blackitem.'/i', $path_part)) {
 							return true;
 						}
 					}
@@ -697,15 +697,15 @@ class Filesystem {
 
 		$blacklist = \array_map('trim', $blacklist);
 		$blacklist = \array_map('strtolower', $blacklist);
-		foreach($blacklist as $blackitem) {
+		foreach ($blacklist as $blackitem) {
 			\preg_match($blackitem, null);  // regex validy check
-			if(\preg_last_error() !== PREG_NO_ERROR) {
+			if (\preg_last_error() !== PREG_NO_ERROR) {
 				\OC::$server->getLogger()->error('Blacklist regex error: '.$blackitem
-								 .' - Check blacklisted_files variable in config file: '.is_preg_error(),
+								  .' - Check blacklisted_files variable in config file: '.is_preg_error(),
 								 ['app' => __CLASS__]);
 			} else {
-				foreach($path_parts as $path_part) {
-					if(\preg_match('/'.$blackitem.'/i', $path_part)) {
+				foreach ($path_parts as $path_part) {
+					if (\preg_match('/'.$blackitem.'/i', $path_part)) {
 						return true;
 					}
 				}
