@@ -75,7 +75,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	/**
-	 * This is intended to be used during the moveFromStorage call
+	 * This is intended to be used during the moveFromStorage call. While moving, this is needed
+	 * for the sourceStorage to know we're moving stuff and it shouldn't change the cache
+	 * until it's finished.
 	 * DO NOT USE OUTSIDE OF THIS CLASS
 	 */
 	public function setMovingBetweenBucketsInfo(array $info) {
@@ -83,7 +85,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	/**
-	 * This is intended to be used during the moveFromStorage call
+	 * This is intended to be used during the moveFromStorage call. While moving, this is needed
+	 * for the sourceStorage to know we're moving stuff and it shouldn't change the cache
+	 * until it's finished. This will be called when we finish moving all the files, in order
+	 * for the sourceStorage to operate normally.
 	 * DO NOT USE OUTSIDE OF THIS CLASS
 	 */
 	public function clearMovingBetweenBucketsInfo() {
@@ -332,6 +337,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				}
 				self::$tmpFiles[$tmpFile] = $path;
 				if (isset($this->movingBetweenBuckets[$this->getBucket()])) {
+					// if we're moving files, mark the path we're moving. This is needed because
+					// we need to know the fileid of the file we're moving in order to create
+					// the new file with the same name in the other bucket
 					$this->movingBetweenBuckets[$this->getBucket()]['paths'][$path] = true;
 				}
 
@@ -382,6 +390,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				$result = parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 				$this->getCache()->moveFromCache($sourceStorage->getCache(), $sourceInternalPath, $targetInternalPath);
 			} finally {
+				// ensure we restore the normal behaviour in both storages
 				$sourceStorage->clearMovingBetweenBucketsInfo();
 				unset($this->movingBetweenBuckets[$this->getBucket()]);
 			}
@@ -467,7 +476,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$stat['etag'] = $this->getETag($path);
 
 		if (isset($this->movingBetweenBuckets[$this->getBucket()]['paths'][$path])) {
-			// if we're moving ensure we update the filecache moving the file in order to keep the old fileid
+			// if we're moving, we need the fileid of the old entry in order to create the new
+			// file with the same name. The "movingBetweenBuckets" should contain enough
+			// information to get the fileid of the old entry from the filecache.
 			$targetBase = $this->movingBetweenBuckets[$this->getBucket()]['targetBase'];
 			$sourceBase = $this->movingBetweenBuckets[$this->getBucket()]['sourceBase'];
 			if (\substr($path, 0, \strlen($targetBase)) === $targetBase) {
