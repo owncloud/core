@@ -1209,7 +1209,7 @@ $CONFIG = array(
  * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
  * WARNING: String case is systematicaly lowered
  */
-'blacklisted_files' => array (
+'blacklisted_files' => array(
 	'^\.htaccess$', // disallow .htaccess file
 //	'.*\.pst$',     // disallow *.pst (MS Outlook) file
 //	'.*dummy.*',    // disallow file with name contaning 'dummy'
@@ -1227,7 +1227,7 @@ $CONFIG = array(
  * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
  * WARNING: String case is systematicaly lowered
  */
-'excluded_directories' => array (
+'excluded_directories' => array(
 		'^\.snapshot$',  // exclude '.snapshot' folder
 		'^~snapshot$',   // exclude '~snapshot' folder
 //		'.*backup.*',    // exclude folder with name containing the string 'backup'
@@ -1237,7 +1237,7 @@ $CONFIG = array(
  * Exclude files from the integrity checker command
  */
 'integrity.excluded.files' =>
-	array (
+	array(
 		'.DS_Store',
 		'Thumbs.db',
 		'.directory',
