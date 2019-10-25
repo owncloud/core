@@ -1031,12 +1031,18 @@ html.ie8 #controls .button.new {
 }
 
 /*
- * Directory sharing indocator
+ * Directory sharing indicator
  *
  * #fff4cc - Background yellow
  * #d5c999 - Border dirty yellow
  * #927800 - Text dark dirty yellow
  */
+
+ /*
+ ---------------------------------------------------
+ Keep the code, since final descision about
+ sharing indicator on the top right is still pending
+ ---------------------------------------------------
 
 #controls #shareinfo_indicator {
 	float: right;
@@ -1079,4 +1085,4 @@ html.ie8 #controls .button.new {
 	right: 7px;
 
 	background: rebeccapurple;
-}
+} */
