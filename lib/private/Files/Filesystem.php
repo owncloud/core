@@ -625,6 +625,25 @@ class Filesystem {
 	}
 
 	/**
+	* Regex validity checker.
+	* Check last regex validation error origin. Return a string describing error cause.
+	* @return string
+	*/
+	private static function is_preg_error() {
+		$errors = array(
+		        PREG_NO_ERROR               => 'Code 0 : No errors',
+		        PREG_INTERNAL_ERROR         => 'Code 1 : Internal PCRE error, most likely a syntax error',
+		        PREG_BACKTRACK_LIMIT_ERROR  => 'Code 2 : Backtrack limit was exhausted',
+		        PREG_RECURSION_LIMIT_ERROR  => 'Code 3 : Recursion limit was exhausted',
+		        PREG_BAD_UTF8_ERROR         => 'Code 4 : The offset did not correspond to the begin of a valid UTF-8 code point',
+		        PREG_BAD_UTF8_OFFSET_ERROR  => 'Code 5 : Malformed UTF-8 data',
+		        PREG_JIT_STACKLIMIT_ERROR   => 'Code 6 : Just-in-time compiler stack limit reached',
+		);
+
+		return $errors[\preg_last_error()];
+	}
+
+	/**
 	* Check if the directory path / file name contains a Blacklisted or Excluded name
 	* config.php parameter arrays can contain file names to be blacklisted or directory names to be excluded
 	* Blacklist ... files that may harm the owncloud environment like a foreign .htaccess file
@@ -635,6 +654,7 @@ class Filesystem {
 	* @param string $FileOrDir
 	* @param array $ed
 	* @return boolean
+	* @see https://www.php.net/manual/function.preg-last-error.php
 	*/
 	public static function isForbiddenFileOrDir($FileOrDir, $ed = []) {
 		$excluded = [];
@@ -655,12 +675,15 @@ class Filesystem {
 			// only add an array element if strlen != 0
 			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
 		}
+
 		if ($excluded) {
 			$excluded = \array_map('trim', $excluded);
 			$excluded = \array_map('strtolower', $excluded);
 			foreach($excluded as $blackitem) {
 				if(@\preg_match($blackitem, null) === false) {
-					\OC::$server->getLogger()->error('Malformed exclude regex: '.$blackitem.' - Check excluded_directories variable in config file.', ['app' => __CLASS__]);
+					\OC::$server->getLogger()->error('Exclude regex error: '.$blackitem
+									 .' - Check excluded_directories variable in config file: '.is_preg_error(),
+									 ['app' => __CLASS__]);
 				} else {
 					foreach($path_parts as $path_part) {
 						if(\preg_match('/'.$blackitem.'/i', $path_part)) {
@@ -670,11 +693,14 @@ class Filesystem {
 				}
 			}
 		}
+
 		$blacklist = \array_map('trim', $blacklist);
 		$blacklist = \array_map('strtolower', $blacklist);
 		foreach($blacklist as $blackitem) {
 			if(@\preg_match($blackitem, null) === false) {
-				\OC::$server->getLogger()->error('Malformed blacklist regex: '.$blackitem.' - Check blacklisted_files variable in config file.', ['app' => __CLASS__]);
+				\OC::$server->getLogger()->error('Blacklist regex error: '.$blackitem
+								 .' - Check blacklisted_files variable in config file: '.is_preg_error(),
+								 ['app' => __CLASS__]);
 			} else {
 				foreach($path_parts as $path_part) {
 					if(\preg_match('/'.$blackitem.'/i', $path_part)) {
@@ -683,6 +709,7 @@ class Filesystem {
 				}
 			}
 		}
+
 		return false;
 	}
 
