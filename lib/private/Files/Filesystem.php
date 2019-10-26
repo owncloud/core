@@ -631,7 +631,7 @@ class Filesystem {
 	* @see https://www.php.net/manual/function.preg-last-error.php
 	*/
 	private static function is_preg_error() {
-		$errors = array(
+		$errors = [
 			PREG_NO_ERROR               => 'Code 0 : No errors',
 			PREG_INTERNAL_ERROR         => 'Code 1 : Internal PCRE error, most likely a syntax error',
 			PREG_BACKTRACK_LIMIT_ERROR  => 'Code 2 : Backtrack limit was exhausted',
@@ -639,7 +639,7 @@ class Filesystem {
 			PREG_BAD_UTF8_ERROR         => 'Code 4 : The offset did not correspond to the begin of a valid UTF-8 code point',
 			PREG_BAD_UTF8_OFFSET_ERROR  => 'Code 5 : Malformed UTF-8 data',
 			PREG_JIT_STACKLIMIT_ERROR   => 'Code 6 : Just-in-time compiler stack limit reached',
-		);
+		];
 
 		return $errors[\preg_last_error()];
 	}
