@@ -1210,10 +1210,10 @@ $CONFIG = array(
  * WARNING: String case is systematicaly lowered
  */
 'blacklisted_files' => array(
-    '^\.htaccess$', // disallow .htaccess file
-//  '.*\.pst$',     // disallow *.pst (MS Outlook) file
-//  '.*dummy.*',    // disallow file with name contaning 'dummy'
-//  '^sample.*',	// disallow file with name beginning by 'sample'
+        '^\.htaccess$', // disallow .htaccess file
+//      '.*\.pst$',     // disallow *.pst (MS Outlook) file
+//      '.*dummy.*',    // disallow file with name contaning the string 'dummy'
+//      '^sample.*',	// disallow file with name beginning by 'sample'
 ),
 
 /**
@@ -1231,7 +1231,7 @@ $CONFIG = array(
         '^\.snapshot$',  // exclude '.snapshot' folder
         '^~snapshot$',   // exclude '~snapshot' folder
 //      '.*backup.*',    // exclude folder with name containing the string 'backup'
-//      'Thomas.*',      // exclude folder with name beginning by the string 'Thomas'
+//      'Thomas.*',      // exclude folder with name beginning by 'Thomas'
     ),
 /**
  * Exclude files from the integrity checker command
