@@ -684,7 +684,7 @@ class Filesystem {
 				if (\preg_last_error() !== PREG_NO_ERROR) {
 					\OC::$server->getLogger()->error(
 						'Exclude regex error: '.$blackitem
-						 .' - Check excluded_directories variable in config file: '.is_preg_error(),
+						 .' - Check excluded_directories variable in config file: '.self::is_preg_error(),
 						['app' => __CLASS__]);
 				} else {
 					foreach ($path_parts as $path_part) {
@@ -703,7 +703,7 @@ class Filesystem {
 			if (\preg_last_error() !== PREG_NO_ERROR) {
 				\OC::$server->getLogger()->error(
 					'Blacklist regex error: '.$blackitem
-					 .' - Check blacklisted_files variable in config file: '.is_preg_error(),
+					 .' - Check blacklisted_files variable in config file: '.self::is_preg_error(),
 					['app' => __CLASS__]);
 			} else {
 				foreach ($path_parts as $path_part) {
