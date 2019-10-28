@@ -527,11 +527,14 @@ table td.filename .uploadtext {
 	bottom: 0px;
 	right: -5px;
 	z-index: 10;
-	background-image: url(../img/shareinfo.svg);
+	background-image: url(../../../core/img/actions/shared.svg);
 	width: 14px;
 	height: 14px;
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: 10px;
+	background-color: #bfbfbf;
+	border-radius: 50%;
 }
 
 .shareTree {
