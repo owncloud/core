@@ -29,7 +29,6 @@ use OC\Files\Cache\CacheEntry;
 use OC\Files\Cache\Updater;
 use OC\Files\ObjectStore\NoopScanner;
 use OC\Files\ObjectStore\ObjectStoreStorage;
-use OCP\Files\Cache\ICache;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
@@ -139,36 +138,14 @@ class ObjectStoreTest extends TestCase {
 	}
 
 	public function testMoveFromStorageWithObjectStore() {
-		$sourceStorage = $this->getMockBuilder(ObjectStoreStorage::class)
-			->setMethods(['getCache'])
-			->setConstructorArgs(['objectstore' => $this->impl])
-			->getMock();
-		$sourceObjectStoreCache = $this->createMock(ICache::class);
-		$sourceObjectStoreCache->expects($this->never())->method('put');
-		$sourceObjectStoreCache->expects($this->never())->method('remove');
-		$sourceObjectStoreCache->expects($this->never())->method('move');
-		$sourceObjectStoreCache->expects($this->never())->method('update');
-		$sourceStorage->method('getCache')->willReturn($sourceObjectStoreCache);
+		$sourceStorage = new ObjectStoreStorage([
+			'objectstore' => $this->impl
+		]);
 
 		$this->objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
-			->setMethods(['getUpdater', 'getCache'])
+			->setMethods(['getUpdater'])
 			->setConstructorArgs([['objectstore' => $this->impl]])
 			->getMock();
-
-		// only one "moveFromCache" operation is expected to hit the cache
-		$objectStoreCache = $this->createMock(ICache::class);
-		$objectStoreCache->expects($this->never())->method('put');
-		$objectStoreCache->expects($this->never())->method('remove');
-		$objectStoreCache->expects($this->never())->method('move');
-		$objectStoreCache->expects($this->never())->method('update');
-		$objectStoreCache->expects($this->once())
-			->method('moveFromCache')
-			->with(
-				$this->equalTo($sourceStorage),
-				$this->equalTo('text.txt'),
-				$this->equalTo('foo/bar.txt')
-			);
-		$this->objectstore->method('getCache')->willReturn($objectStoreCache);
 
 		$updater = $this->createMock(Updater::class);
 		$this->objectStore->expects($this->once())->method('getUpdater')->willReturn($updater);
