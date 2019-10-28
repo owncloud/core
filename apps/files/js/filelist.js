@@ -173,7 +173,7 @@
 		 * 
 		 * @type Array
 		 */
-		_shareTree: [],
+		_shareTree: {},
 
 		/**
 		 * Whether to do a client side sort.
@@ -1508,7 +1508,7 @@
 				}
 			});
 
-			$('#filestable').on('shareTreeUpdated', function() {
+			$('#filestable').one('shareTreeUpdated', function() {
 				self._setShareTreeIcons();
 			})
 		},
@@ -1789,15 +1789,13 @@
 				return Promise.reject('getDirShareInfo(). param must be typeof string and can not be empty!')
 			}
 
-			// Shareinfo may already exist
-			var fromTree = this._shareTree.filter(function(item) {
-				return item.path === (dir !== '/') ?  dir.replace(/\/$/, "") : '/'
-			})
+			if (dir !== '/')
+				dir = dir.replace(/\/$/, "")
 
 			// Return existing data
 			// avoiding a new API call
-			if (fromTree.length) {
-				return Promise.resolve(fromTree[0])
+			if (typeof this._shareTree[dir] !== 'undefined') {
+				return Promise.resolve(this._shareTree[dir])
 			}
 
 			var self       = this;
@@ -1820,9 +1818,8 @@
 					else {
 						// Fetch all shares for directory in question
 						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: (dir.path + '/' + dir.name)}), function(e) {
-							shareInfo.shares = e.ocs.data
-							self._shareTree.push(shareInfo)
-							resolve(shareInfo)
+							self._shareTree[e.ocs.data[0].path] = e.ocs.data
+							resolve(e.ocs.data)
 						})
 					}
 				}).fail(function(error) {
@@ -1856,18 +1853,31 @@
 			return Promise.all(crumbs)
 		},
 
-		_updateShareTree: function() {
-			let self = this;
+		/**
+		 * Check if dir is (sub)shared
+		 * @param {String} dir to check
+		 * @return {Boolen}
+		 */
 
-			return this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
-				self._shareTree = _.filter(path, function(dir) {
-					return dir.shares.length > 0
-				})
-			})
+		partOfSharePath: function(dir) {
+			var highShare = Object.keys(this._shareTree)[0]
+			var dir = (dir) ? dir : this.getCurrentDirectory()
+
+			// Don't check root as
+			// it can't be shared
+			if (dir === '/')
+				return false
+
+			return dir.indexOf(highShare) > -1
+		},
+
+		_updateShareTree: function() {
+			return this.getPathShareInfo(this.getCurrentDirectory())
 		},
 
 		_setShareTreeIcons: function() {
-			if (!this._shareTree.length)
+
+			if (!this.partOfSharePath())
 				return
 
 			// Add share-tree icon to files and folders
@@ -1876,27 +1886,33 @@
 		},
 
 		_setShareTreeView: function() {
-			var self           = this;
-			var $shareTabView  = $('#shareTabView .dialogContainer');
-			var $shareTreeView = $('<div>', { class : 'shareTreeView' , html : '<ul></ul>'});
+			var self                      = this;
+			var $shareTabView             = $('#shareTabView .dialogContainer');
+			var $shareTreeView            = $('<div>', { class : 'shareTreeView' , html : '<ul></ul>'});
+			var $shareTreeViewDescription = $('<p>', { class: 'shareTree-description', text : t('core', 'This item is part of the following shares:')})
 
 			$shareTabView.ready( function() {
 
-				if (!self._shareTree.length)
+				if (!self.partOfSharePath())
 					return
 
-				// Add items to the shareview in the sidebar ... if it's open
 				if (OC.Apps.AppSidebarVisible()) {
 
-					$shareTabView.append($shareTreeView)
+					$shareTabView.append($shareTreeViewDescription,  $shareTreeView)
 
 					// Shared folders
-					self._shareTree.forEach( function(folder) {
+					_.each(self._shareTree, function(folder) {
 
 						// Shares by folder
-						folder.shares.forEach( function(share) {
+						_.each(folder, function(share) {
 
-							let $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
+							// Do not display shares deeper
+							// in the shareTree than current dir
+							if(share.path.length > self.getCurrentDirectory().length)
+								return
+
+							let dirName = share.path.substr(_.lastIndexOf(share.path, '/') + 1)
+							let $path   = $('<span>',   { class : 'shareTree-item-path', text : dirName })
 
 							// user/group shares
 							if (share.share_type === 0) {
