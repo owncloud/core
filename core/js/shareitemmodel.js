@@ -443,6 +443,15 @@
 			return share.share_type;
 		},
 
+		getExpirationDate: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return (share.expiration !== null) ? moment(share.expiration).format('YYYY-MM-DD') : null;
+		},
+
 		/**
 		 * whether permission is in permission bitmap
 		 *

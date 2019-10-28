@@ -74,6 +74,8 @@
 			'</span>' +
 			'{{/each}}' +
 			'</div>' +
+			'<label for="share-expiration">Expire share on: {{expiration}}</label>' +
+			'<input type="date" ref="share-expiration" value="{{expires}}" class="expiration" placeholder="Expiration date" />' +
 			'</li>' +
 			'{{/each}}' +
 			'</ul>'
@@ -188,6 +190,7 @@
 				hasUpdatePermission: this.model.hasUpdatePermission(shareIndex),
 				hasDeletePermission: this.model.hasDeletePermission(shareIndex),
 				shareAttributesV1: this.getAttributesObject(shareIndex),
+				expires: this.model.getExpirationDate(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
