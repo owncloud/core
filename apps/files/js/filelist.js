@@ -1896,7 +1896,7 @@
 				if (!self.partOfSharePath())
 					return
 
-				if (OC.Apps.AppSidebarVisible()) {
+				if (OC.Apps.AppSidebarVisible() && !$shareTabView.find('.shareTreeView').length) {
 
 					$shareTabView.append($shareTreeViewDescription,  $shareTreeView)
 
