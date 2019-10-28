@@ -41,6 +41,8 @@
 namespace OC;
 
 use bantu\IniGetWrapper\IniGetWrapper;
+use OC\App\AppAccessService;
+use OC\App\DummyAppAccessService;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
@@ -586,17 +588,31 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
 				$appConfig = $c->getAppConfig();
 				$groupManager = $c->getGroupManager();
+				$connection = $c->getDatabaseConnection();
+				$appAccessService = new AppAccessService($c->getLogger(), $connection, $groupManager);
+				//Listen to the event which causes the deletion of group and hence deletion of group form appaccess table.
+				$c->getEventDispatcher()->addListener('group.postDelete', function (GenericEvent $event) use ($appAccessService) {
+					$appAccessService->wipeWhitelistedAppsForGroup($event->getSubject()->getGID());
+				});
+
+				//Listen to the hook which causes the deletion of user and hence deletion of user form appaccess table.
+				$c->getEventDispatcher()->addListener('user.afterdelete', function (GenericEvent $event) use ($appAccessService) {
+					$appAccessService->wipeWhitelistedAppsForUser($event->getArgument('uid'));
+				});
 			} else {
 				$appConfig = null;
 				$groupManager = null;
+				$appAccessService = new DummyAppAccessService();
 			}
+
 			return new \OC\App\AppManager(
 				$c->getUserSession(),
 				$appConfig,
 				$groupManager,
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				$appAccessService
 			);
 		});
 		$this->registerService('DateTimeZone', function (Server $c) {

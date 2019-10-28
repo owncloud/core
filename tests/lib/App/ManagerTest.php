@@ -9,6 +9,7 @@
 
 namespace Test\App;
 
+use OC\App\AppAccessService;
 use OC\App\AppManager;
 use OC\Group\Group;
 use OCP\App\IAppManager;
@@ -47,6 +48,8 @@ class ManagerTest extends TestCase {
 	protected $eventDispatcher;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
+
+	private $appAccessService;
 
 	/**
 	 * @return IAppConfig | \PHPUnit\Framework\MockObject\MockObject
@@ -99,13 +102,14 @@ class ManagerTest extends TestCase {
 		$this->cacheFactory = $this->createMock(ICacheFactory::class);
 		$this->cache = $this->createMock(ICache::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+		$this->appAccessService = $this->createMock(AppAccessService::class);
 		$this->cacheFactory->expects($this->any())
 			->method('create')
 			->with('settings')
 			->willReturn($this->cache);
 		$this->manager = new AppManager($this->userSession, $this->appConfig,
 			$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
-			$this->config);
+			$this->config, $this->appAccessService);
 	}
 
 	protected function expectClearCache() {
@@ -133,7 +137,7 @@ class ManagerTest extends TestCase {
 			->setMethods(['isTheme', 'getAppInfo', 'getAppPath'])
 			->setConstructorArgs([$this->userSession, $this->appConfig,
 				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
-				$this->config])
+				$this->config, $this->appAccessService])
 			->getMock();
 
 		$manager->expects($this->once())
@@ -158,7 +162,7 @@ class ManagerTest extends TestCase {
 			->setMethods(['isTheme', 'getAppInfo', 'getAppPath', 'getInstalledApps'])
 			->setConstructorArgs([$this->userSession, $this->appConfig,
 				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
-				$this->config])
+				$this->config, $this->appAccessService])
 			->getMock();
 
 		$manager->expects($this->once())
@@ -240,7 +244,8 @@ class ManagerTest extends TestCase {
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
-				$this->cacheFactory, $this->eventDispatcher, $this->config
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->appAccessService
 			])
 			->setMethods([
 				'getAppInfo'
@@ -284,7 +289,8 @@ class ManagerTest extends TestCase {
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
-				$this->cacheFactory, $this->eventDispatcher, $this->config
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->appAccessService
 			])
 			->setMethods([
 				'getAppInfo'
@@ -390,6 +396,9 @@ class ManagerTest extends TestCase {
 			->method('getUserGroupIds')
 			->with($user)
 			->will($this->returnValue(['foo', 'bar']));
+		$this->appAccessService->method('getWhitelistedAppsForUser')
+			->with($user)
+			->willReturn(false);
 
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
@@ -405,10 +414,27 @@ class ManagerTest extends TestCase {
 		], $this->manager->getEnabledAppsForUser($user));
 	}
 
+	public function testGetEnabledAppsForUserWithWhitelist() {
+		$user = $this->createMock(IUser::class);
+		$this->appAccessService->method('getComputedWhitelistedAppsForUser')
+			->with($user)
+			->willReturn(['dav', 'files', 'test1']);
+		//test1 is not enabled by default.
+		$result = $this->manager->getEnabledAppsForUser($user);
+		$this->assertEquals(['dav', 'files'], $result);
+
+		//Now enable test1.
+		$this->appConfig->setValue('test1', 'enabled', 'yes');
+		//Reset the installedAppsCache so that test1 is part of the cache now.
+		$this->invokePrivate($this->manager, 'installedAppsCache', [null]);
+		$result = $this->manager->getEnabledAppsForUser($user);
+		$this->assertSame(['dav', 'files', 'test1'], $result);
+	}
+
 	public function testGetAppsNeedingUpgrade() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
 			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config, $this->appAccessService])
 			->setMethods(['getAppInfo'])
 			->getMock();
 
@@ -451,7 +477,8 @@ class ManagerTest extends TestCase {
 	public function testGetIncompatibleApps() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
 			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
+				$this->config, $this->appAccessService])
 			->setMethods(['getAppInfo'])
 			->getMock();
 

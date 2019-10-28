@@ -8,6 +8,7 @@
  */
 
 namespace Test;
+use OC\App\AppAccessService;
 use OCP\IAppConfig;
 use Test\Traits\UserTrait;
 
@@ -507,7 +508,8 @@ class AppTest extends \Test\TestCase {
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
 			return new \OC\App\AppManager($c->getUserSession(), $appConfig,
 				$c->getGroupManager(), $c->getMemCacheFactory(),
-				$c->getEventDispatcher(), $c->getConfig());
+				$c->getEventDispatcher(), $c->getConfig(),
+				new AppAccessService($c->getLogger(), $c->getDatabaseConnection(), $c->getGroupManager()));
 		});
 	}
 
@@ -521,7 +523,8 @@ class AppTest extends \Test\TestCase {
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
 			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(),
 				$c->getGroupManager(), $c->getMemCacheFactory(),
-				$c->getEventDispatcher(), $c->getConfig());
+				$c->getEventDispatcher(), $c->getConfig(),
+				new AppAccessService($c->getLogger(), $c->getDatabaseConnection(), $c->getGroupManager()));
 		});
 
 		// Remove the cache of the mocked apps list with a forceRefresh

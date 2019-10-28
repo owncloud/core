@@ -35,6 +35,7 @@ use OC\Memcache\ArrayCache;
 use OC\Memcache\NullCache;
 use OC\Installer;
 use OCP\App\AppNotFoundException;
+use OCP\App\IAppAccessService;
 use OCP\App\IAppManager;
 use OCP\App\AppManagerException;
 use OCP\App\ManagerEvent;
@@ -46,6 +47,7 @@ use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AppManager implements IAppManager {
 
@@ -82,6 +84,8 @@ class AppManager implements IAppManager {
 	private $dispatcher;
 	/** @var IConfig */
 	private $config;
+	/** @var AppAccessService */
+	private $appAccessService;
 
 	/**
 	 * Apps as 'appId' => [
@@ -99,13 +103,15 @@ class AppManager implements IAppManager {
 	 * @param ICacheFactory $memCacheFactory
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IConfig $config
+	 * @param AppAccessService|DummyAppAccessService $regulateAppAccess
 	 */
 	public function __construct(IUserSession $userSession = null,
 								IAppConfig $appConfig = null,
 								IGroupManager $groupManager = null,
 								ICacheFactory $memCacheFactory,
 								EventDispatcherInterface $dispatcher,
-								IConfig $config) {
+								IConfig $config,
+								$appAccessService) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;
@@ -121,6 +127,7 @@ class AppManager implements IAppManager {
 		if ($this->appInfo === null || $this->appInfo instanceof NullCache) {
 			$this->appInfo = new ArrayCache('app-info');
 		}
+		$this->appAccessService = $appAccessService;
 	}
 
 	/**
@@ -160,9 +167,13 @@ class AppManager implements IAppManager {
 	 */
 	public function getEnabledAppsForUser(IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
-		$appsForUser = \array_filter($apps, function ($enabled) use ($user) {
-			return $this->checkAppForUser($enabled, $user);
-		});
+		$regulatedAppForUser = false;
+		if ($user !== null) {
+			$regulatedAppForUser = $this->getAppsAccessService()->getComputedWhitelistedAppsForUser($user);
+		}
+		$appsForUser = \array_filter($apps, function ($enabled, $appName) use ($user, $regulatedAppForUser) {
+			return $this->checkAppForUser($enabled, $appName, $user, $regulatedAppForUser);
+		}, ARRAY_FILTER_USE_BOTH);
 		return \array_keys($appsForUser);
 	}
 
@@ -182,7 +193,7 @@ class AppManager implements IAppManager {
 		}
 		$installedApps = $this->getInstalledAppsValues();
 		if (isset($installedApps[$appId])) {
-			return $this->checkAppForUser($installedApps[$appId], $user);
+			return $this->checkAppForUser($installedApps[$appId], $appId, $user);
 		} else {
 			return false;
 		}
@@ -190,10 +201,17 @@ class AppManager implements IAppManager {
 
 	/**
 	 * @param string $enabled
+	 * @param string $appName
 	 * @param IUser $user
+	 * @param bool|array $regulatedAppsForUser
 	 * @return bool
 	 */
-	private function checkAppForUser($enabled, $user) {
+	private function checkAppForUser($enabled, $appName, $user, $regulatedAppsForUser = false) {
+		if (\is_array($regulatedAppsForUser)) {
+			if (!\in_array($appName, $regulatedAppsForUser)) {
+				return false;
+			}
+		}
 		if ($enabled === 'yes') {
 			return true;
 		} elseif ($user === null) {
@@ -767,5 +785,15 @@ class AppManager implements IAppManager {
 		$infoFile = "{$path}/appinfo/info.xml";
 		$appData = $this->getAppInfoByPath($infoFile);
 		return isset($appData['version']) ? $appData['version'] : '';
+	}
+
+	/**
+	 * Get appAccess service
+	 *
+	 * @return IAppAccessService
+	 * @since 10.3.1
+	 */
+	public function getAppsAccessService() {
+		return $this->appAccessService;
 	}
 }

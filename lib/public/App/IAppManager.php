@@ -188,4 +188,12 @@ interface IAppManager {
 	 * @since 10.0.5
 	 */
 	public function getAppWebPath($appId);
+
+	/**
+	 * Get the regulated app access for each user
+	 *
+	 * @return IAppAccessService
+	 * @since 10.3.1
+	 */
+	public function getAppsAccessService();
 }
