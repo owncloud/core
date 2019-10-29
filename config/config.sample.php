@@ -1201,38 +1201,78 @@ $CONFIG = array(
  */
 'hashingCost' => 10,
 
+
 /**
- * Blacklist a specific file or files and disallow the upload of files
- * with this name. `.htaccess` is blocked by default.
+ * Blacklist a specific filename and disallow the upload/rename of files with this name.
+ * `.htaccess` is blocked by default that may harm the owncloud environment.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
- * Blacklist is based on regex expression. 
- * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
- * WARNING: String case is systematicaly lowered
  */
-'blacklisted_files' => array(
-        '^\.htaccess$', // disallow .htaccess file
-//      '.*\.pst$',     // disallow *.pst (MS Outlook) file
-//      '.*dummy.*',    // disallow file with name contaning the string 'dummy'
-//      '^sample.*',	// disallow file with name beginning by 'sample'
+'blacklist_files' => array (
+	'.htaccess',	// disallow .htaccess file
 ),
 
 /**
- * Exclude specific directory names and disallow scanning, creating and renaming
+ * Blacklist filenames based on regex expression.
+ * Use of blacklist_files variable have precedence (evaluated before) on blacklist_files_regex.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE.
+ * WARNING: String case is systematicaly lowered.
+ */
+'blacklist_files_regex' => array (
+//	'.*\.pst$',		// disallow *.pst (MS Outlook) file
+//	'.*dummy.*',	// disallow file with name contaning the string 'dummy'
+//	'^sample.*',	// disallow file with name beginning by 'sample'
+),
+
+/**
+ * Blacklist a specific file or files and disallow the upload of files
+ * with this name. `.htaccess` is blocked by default.
+ * WARNING: excluded_directories directive is deprecated now.
+ * DEPRECATED
+ */
+'blacklisted_files' => array(
+	'.htaccess',
+),
+
+
+/**
+ * Blacklist specific directory names and disallow scanning, creating and renaming
  * using these names. Case insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
  * in the middle or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
  * Use when the storage backend supports eg snapshot directories to be excluded.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ */
+'blacklist_folders' => array (
+	'.snapshot',	// exclude '.snapshot' folder
+	'~snapshot',	// exclude '~snapshot' folder
+),
+
+/**
+ * Blacklist specific directory names based on regex expression. Scanning, creating and renaming
+ * is disabled when folder match one of the regex.
+ * Use of blacklist_folders variable have precedence (evaluated before) on blacklist_folders_regex.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
  * WARNING: String case is systematicaly lowered
  */
-'excluded_directories' => array(
-        '^\.snapshot$',  // exclude '.snapshot' folder
-        '^~snapshot$',   // exclude '~snapshot' folder
-//      '.*backup.*',    // exclude folder with name containing the string 'backup'
-//      'Thomas.*',      // exclude folder with name beginning by 'Thomas'
-    ),
+'blacklist_folders_regex' => array (
+//	'.*backup.*',	// exclude folder with name containing the string 'backup'
+//	'Thomas.*',		// exclude folder with name beginning by 'Thomas'
+),
+
+/**
+ * Exclude specific directory names and disallow scanning, creating and renaming
+ * WARNING: excluded_directories directive is deprecated now.
+ * DEPRECATED
+ */
+'excluded_directories' => array (
+		'.snapshot',
+		'~snapshot',
+),
+
+
 /**
  * Exclude files from the integrity checker command
  */
