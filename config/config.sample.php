@@ -1207,31 +1207,21 @@ $CONFIG = array(
  * `.htaccess` is blocked by default that may harm the owncloud environment.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
-'blacklist_files' => array (
+'blacklisted_files' => array (
 	'.htaccess',	// disallow .htaccess file
 ),
 
 /**
  * Blacklist filenames based on regex expression.
- * Use of blacklist_files variable have precedence (evaluated before) on blacklist_files_regex.
+ * Use of blacklisted_files variable have precedence (evaluated before) on blacklisted_files_regex variable.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE.
  * WARNING: String case is systematicaly lowered.
  */
-'blacklist_files_regex' => array (
+'blacklisted_files_regex' => array (
 //	'.*\.pst$',		// disallow *.pst (MS Outlook) file
 //	'.*dummy.*',	// disallow file with name contaning the string 'dummy'
 //	'^sample.*',	// disallow file with name beginning by 'sample'
-),
-
-/**
- * Blacklist a specific file or files and disallow the upload of files
- * with this name. `.htaccess` is blocked by default.
- * WARNING: excluded_directories directive is deprecated now.
- * DEPRECATED
- */
-'blacklisted_files' => array(
-	'.htaccess',
 ),
 
 
@@ -1244,7 +1234,7 @@ $CONFIG = array(
  * Use when the storage backend supports eg snapshot directories to be excluded.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
-'blacklist_folders' => array (
+'excluded_directories' => array (
 	'.snapshot',	// exclude '.snapshot' folder
 	'~snapshot',	// exclude '~snapshot' folder
 ),
@@ -1252,12 +1242,12 @@ $CONFIG = array(
 /**
  * Blacklist specific directory names based on regex expression. Scanning, creating and renaming
  * is disabled when folder match one of the regex.
- * Use of blacklist_folders variable have precedence (evaluated before) on blacklist_folders_regex.
+ * Use of excluded_directories variable have precedence (evaluated before) on excluded_directories_regex variable.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
  * WARNING: String case is systematicaly lowered
  */
-'blacklist_folders_regex' => array (
+'excluded_directories_regex' => array (
 //	'.*backup.*',	// exclude folder with name containing the string 'backup'
 //	'Thomas.*',		// exclude folder with name beginning by 'Thomas'
 ),

@@ -660,7 +660,7 @@ class Filesystem {
 
 		return true;
 	}
-	
+
 	/**
 	 * Manage regex blacklist against Folder of File.
 	 * @param blacklist Blacklist regex array as defined in Config file
@@ -704,12 +704,12 @@ class Filesystem {
 		if ($ed) {
 			$blacklist_folders = $ed;
 		} else {
-			$blacklist_folders   = \OC::$server->getSystemConfig()->getValue('$blacklist_folders', $ed);
+			$blacklist_folders   = \OC::$server->getSystemConfig()->getValue('$excluded_directories', $ed);
 		}
-		$blacklist_folders_regex = \OC::$server->getSystemConfig()->getValue('$blacklist_folders_regex', []);
-		$blacklist_files         = \OC::$server->getSystemConfig()->getValue('$blacklist_files', ['.htaccess']);
-		$blacklist_files_regex   = \OC::$server->getSystemConfig()->getValue('$blacklist_files_regex', []);
-		
+		$blacklist_folders_regex = \OC::$server->getSystemConfig()->getValue('$excluded_directories_regex', []);
+		$blacklist_files         = \OC::$server->getSystemConfig()->getValue('$blacklisted_files', ['.htaccess']);
+		$blacklist_files_regex   = \OC::$server->getSystemConfig()->getValue('$blacklisted_files_regex', []);
+
 		// explode '/'
 		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
 		$ppx = \array_map('strtolower', $ppx);
