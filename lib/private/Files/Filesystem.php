@@ -646,8 +646,8 @@ class Filesystem {
 
 	/**
 	 * Regex validy check.
-	 * @param
-	 * @return
+	 * @param regexToBeChecked regex to be checked
+	 * @return boolean
 	 */
 	private static function regex_validy_check($regexToBeChecked) {
 		if (self::is_preg_error() !== PREG_NO_ERROR) {
@@ -665,9 +665,9 @@ class Filesystem {
 	 * Manage regex blacklist against Folder of File.
 	 * @param blacklist Blacklist regex array as defined in Config file
 	 * @param path Folder of File complete path contained in an array
-	 * @return folder of file forbudden status
+	 * @return boolean folder of file forbudden status
 	 */
-	 private static function blacklistRegexAgainstFolderOrFile($blacklist, $path) {
+	private static function blacklistRegexAgainstFolderOrFile($blacklist, $path) {
 		foreach ($blacklist as $item) {                         // foreach given regex
 			\preg_match($item, null);                           // regex validy check
 			if (self::regex_validy_check($item)) {                    // check if regex error occur
@@ -678,7 +678,6 @@ class Filesystem {
 						return true;
 					}
 				}
-
 			}
 		}
 
@@ -734,12 +733,12 @@ class Filesystem {
 		}
 
 		if ($blacklist_files) {
-			if (\array_intersect($blacklist_files, end($path_parts))) {
+			if (\array_intersect($blacklist_files, \end($path_parts))) {
 				return true;
 			}
 		}
 		if ($blacklist_files_regex) {
-			if (self::blacklistRegexAgainstFolderOrFile($blacklist_files_regex, end($path_parts))) {
+			if (self::blacklistRegexAgainstFolderOrFile($blacklist_files_regex, \end($path_parts))) {
 				return true;
 			}
 		}

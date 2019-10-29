@@ -43,7 +43,7 @@
 			</a>
 		</li>
 	<?php
-	} ?>
+} ?>
 
 		<li>
 			<a href="https://owncloud.com/subscriptions/" target="_blank" rel="noreferrer">
