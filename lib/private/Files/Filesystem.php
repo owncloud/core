@@ -656,9 +656,9 @@ class Filesystem {
 								.self::is_preg_error(),
 								['app' => __CLASS__]);
 			return false;
-		} else {
-			return true;
 		}
+
+		return true;
 	}
 	
 	/**
@@ -668,21 +668,21 @@ class Filesystem {
 	 * @return folder of file forbudden status
 	 */
 	 private static function blacklistRegexAgainstFolderOrFile($blacklist, $path) {
-//		$blacklist = \array_map('trim', $blacklist);
-//		$blacklist = \array_map('strtolower', $blacklist);
 		foreach ($blacklist as $item) {                         // foreach given regex
 			\preg_match($item, null);                           // regex validy check
-			if (regex_validy_check($item)) {                    // check if regex error occur
+			if (self::regex_validy_check($item)) {                    // check if regex error occur
 
 				foreach ($path as $path_part) {           // foreach folder or file in given path
 					if (\preg_match('/'.$item.'/i', $path_part) // regex match item
-							&& regex_validy_check($item)) {     // check if regex error occur
+							&& self::regex_validy_check($item)) {     // check if regex error occur
 						return true;
 					}
 				}
 
 			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -723,23 +723,23 @@ class Filesystem {
 		if ($blacklist_folders) {
 			$blacklist_folders= \array_map('trim', $blacklist_folders);
 			$blacklist_folders= \array_map('strtolower', $blacklist_folders);
-			if (\array_intersect($path_parts, $blacklist_folders)) {
+			if (\array_intersect($blacklist_folders, $path_parts)) {
 				return true;
 			}
 		}
 		if ($blacklist_folders_regex) {
-			if (blacklistRegexAgainstFolderOrFile($blacklist_folders_regex, $path_parts)) {
+			if (self::blacklistRegexAgainstFolderOrFile($blacklist_folders_regex, $path_parts)) {
 				return true;
 			}
 		}
 
 		if ($blacklist_files) {
-			if (\array_intersect($path_parts, $blacklist_files)) {
+			if (\array_intersect($blacklist_files, end($path_parts))) {
 				return true;
 			}
 		}
 		if ($blacklist_files_regex) {
-			if (blacklistRegexAgainstFolderOrFile($blacklist_files_regex, $path_parts)) {
+			if (self::blacklistRegexAgainstFolderOrFile($blacklist_files_regex, end($path_parts))) {
 				return true;
 			}
 		}
