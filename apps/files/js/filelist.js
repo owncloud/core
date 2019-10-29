@@ -363,42 +363,6 @@
 			OC.Plugins.attach('OCA.Files.FileList', this);
 		},
 
-		/*
-
-		---------------------------------------------------
-		Keep the code, since final descision about
-		sharing indicator on the top right is still pending
-		---------------------------------------------------
-
-		dirShareInfoIndicator: function () {
-			var $el = $('#shareinfo_indicator')
-
-			if ( !$el.length ) {
-
-				var $el        = $('<div>', { id : 'shareinfo_indicator' });
-				var $textbox   = $('<span>', { class : "text", text : t('core', 'shared') })
-				var $sharelist = $('<div>', { class : 'list', html : '<ul></ul>' })
-
-				$el.append($textbox, $sharelist).appendTo($('#controls')).hide()
-			}
-
-			this.getPathShareInfo(this.getCurrentDirectory()).then(function(path) {
-				var shares = path.filter( function(dir) {
-					return dir.shareTypes.length > 0
-				})
-
-				// Stop if there are no shares present
-				if (shares.length === 0) {
-					$el.fadeOut('fast')
-					return
-				}
-
-				$el.fadeIn('fast')
-				$el.find('.list ul').append('<li>Hallo</li>')
-			});
-		},
-		*/
-
 		/**
 		 * Destroy / uninitialize this instance.
 		 */
