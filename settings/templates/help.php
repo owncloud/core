@@ -21,7 +21,7 @@
 			</a>
 		</li>
 	<?php
-	} ?>
+} ?>
 
 		<li>
 			<a href="https://owncloud.org/support" target="_blank" rel="noreferrer">
@@ -43,7 +43,7 @@
 			</a>
 		</li>
 	<?php
-} ?>
+	} ?>
 
 		<li>
 			<a href="https://owncloud.com/subscriptions/" target="_blank" rel="noreferrer">
