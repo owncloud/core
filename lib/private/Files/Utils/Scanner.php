@@ -170,7 +170,7 @@ class Scanner extends PublicEmitter {
 	/**
 	 * Returns whether the given mount point should be scanned
 	 *
-	 * @param mount mount point
+	 * @param $mount mount point
 	 * @return bool true to scan, false to skip
 	 */
 	private function shouldScan($mount) {
