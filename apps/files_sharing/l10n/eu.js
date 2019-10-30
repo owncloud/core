@@ -16,6 +16,7 @@ OC.L10N.register(
     "Files and folders you share will show up here" : "Partekatzen dituzun fitxategi eta karpetak hemen agertuko dira",
     "No shared links" : "Ez dago partekatutako loturarik",
     "Files and folders you share by link will show up here" : "Lotura bidez partekatzen dituzun fitxategi eta karpetak hemen agertuko dira",
+    "Decline Share" : "Partekatzeari uko egin",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Nahi duzu gehitzea  {name}  urrutiko partekatzea honengandik  {owner}@{remote}?",
     "Remote share" : "Urrutiko parte hartzea",
     "Remote share password" : "Urrutiko parte hartzeen pasahitza",

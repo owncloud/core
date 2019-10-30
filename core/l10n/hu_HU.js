@@ -323,6 +323,7 @@ OC.L10N.register(
     "Password changed successfully" : "A jelszó sikeresen megváltozott",
     "New password" : "Új jelszó",
     "New Password" : "Új jelszó",
+    "Confirm Password" : "Jelszó megerősítése",
     "Reset password" : "Jelszó-visszaállítás",
     "Personal note from the sender: <br> %s." : "A küldő személyes megjegyzése: <br> %s.",
     "This ownCloud instance is currently in single user mode." : "Ez az ownCloud szolgáltatás jelenleg egyfelhasználós üzemmódban működik.",

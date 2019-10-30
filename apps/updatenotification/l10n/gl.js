@@ -15,6 +15,6 @@ OC.L10N.register(
     "Update channel:" : "Canle de actualización:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Sempre poderá actualizar a unha versión máis recente / canle experimental. Mais nunca poderá reverter a unha canle máis estábel.",
     "Notify members of the following groups about available updates:" : "Notificar aos membros dos seguintes grupos sobre as actualizacións dispoñíbeis:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Só está dispoñíbel a notificación das actualizacións de aplicativos, porque a canle de actualización seleccionada para ownCloud non permite notificacións."
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Só está dispoñíbel a notificación das actualizacións de aplicacións, porque a canle de actualización seleccionada para ownCloud non permite notificacións."
 },
 "nplurals=2; plural=(n != 1);");

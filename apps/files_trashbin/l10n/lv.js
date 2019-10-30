@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Couldn't delete %s permanently" : "Nevarēja pilnībā izdzēst %s",
     "Couldn't restore %s" : "Nevarēja atjaunot %s",
-    "Deleted files" : "Dzēstās datnes",
+    "Deleted files" : "Dzēstie faili",
     "Restore" : "Atjaunot",
     "Delete" : "Dzēst",
     "Delete permanently" : "Dzēst pavisam",

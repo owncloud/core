@@ -7,16 +7,20 @@
     "last year" : "gājušajā gadā",
     "seconds ago" : "sekundes atpakaļ",
     "None" : "Nav",
+    "Username and password" : "Lietotājvārds un parole",
     "Username" : "Lietotājvārds",
     "Password" : "Parole",
+    "File name is too long" : "Faila nosaukums ir pārāk garš",
     "__language_name__" : "__valodas_nosaukums__",
     "Apps" : "Lietotnes",
     "General" : "Vispārīgi",
     "Storage" : "Krātuve",
     "Security" : "Drošība",
+    "User Authentication" : "Lietotāja autentifikācija",
     "Encryption" : "Šifrēšana",
     "Sharing" : "Dalīšanās",
     "Search" : "Meklēt",
+    "Help & Tips" : "Palīdzība un padomi",
     "%s enter the database username." : "%s ievadiet datubāzes lietotājvārdu.",
     "%s enter the database name." : "%s ievadiet datubāzes nosaukumu.",
     "%s you may not use dots in the database name" : "%s datubāžu nosaukumos nedrīkst izmantot punktus",
@@ -36,8 +40,10 @@
     "The username is already being used" : "Šāds lietotājvārds jau tiek izmantots",
     "Settings" : "Iestatījumi",
     "Users" : "Lietotāji",
+    "Privacy Policy" : "Privātuma politika",
     "Application is not enabled" : "Lietotne nav aktivēta",
     "Authentication error" : "Autentifikācijas kļūda",
-    "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu."
+    "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu.",
+    "Unknown user" : "Nezināms lietotājs"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"
 }

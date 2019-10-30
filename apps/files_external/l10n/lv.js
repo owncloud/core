@@ -16,6 +16,7 @@ OC.L10N.register(
     "Share" : "Dalīties",
     "Name" : "Nosaukums",
     "Enable encryption" : "Ieslēgt šifrēšanu",
+    "Never" : "Nekad",
     "External Storage" : "Ārējā krātuve",
     "Folder name" : "Mapes nosaukums",
     "Configuration" : "Konfigurācija",
