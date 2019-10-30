@@ -1879,7 +1879,7 @@
 							let $path   = $('<span>',   { class : 'shareTree-item-path', text : dirName })
 
 							// user/group shares
-							if (share.share_type === 0) {
+							if (share.share_type === OC.Share.SHARE_TYPE_USER || share.share_type === OC.Share.SHARE_TYPE_GROUP) {
 								let $name   = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
 								let $avatar = $('<div>',    { class : 'shareTree-item-avatar' })
 
@@ -1888,7 +1888,7 @@
 							}
 
 							// link shares
-							else if (share.share_type === 3) {
+							else if (share.share_type === OC.Share.SHARE_TYPE_LINK) {
 								let $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
 								let $icon = $('<span>',    { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
 
