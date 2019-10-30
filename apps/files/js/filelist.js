@@ -1347,7 +1347,6 @@
 				this.updateEmptyContent();
 			}
 
-			this._setShareTreeIcons()
 			this._setShareTreeView()
 
 			return $tr;
@@ -1402,6 +1401,10 @@
 
 			if (this._isHiddenFile(fileData)) {
 				tr.addClass('hidden-file');
+			}
+
+			if(this.partOfSharePath()) {
+				filenameTd.find('.thumbnail:not(.sharetree-item)').addClass('sharetree-item');
 			}
 
 			// display actions
@@ -1840,13 +1843,13 @@
 		},
 
 		_setShareTreeIcons: function() {
-
 			if (!this.partOfSharePath())
 				return
 
 			// Add share-tree icon to files and folders
 			// each per <tr> in the table
-			this.$el.find('#fileList tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
+			this.$fileList.find('tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
+
 		},
 
 		_setShareTreeView: function() {
