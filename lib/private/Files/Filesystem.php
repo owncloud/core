@@ -705,11 +705,11 @@ class Filesystem {
 		if ($ed) {
 			$exclude_folders = $ed;
 		} else {
-			$exclude_folders   = \OC::$server->getSystemConfig()->getValue('$excluded_directories',       []);
+			$exclude_folders   = \OC::$server->getSystemConfig()->getValue('$excluded_directories', []);
 		}
 		$exclude_folders_regex = \OC::$server->getSystemConfig()->getValue('$excluded_directories_regex', []);
-		$blacklist_files       = \OC::$server->getSystemConfig()->getValue('$blacklisted_files',          ['.htaccess']);
-		$blacklist_files_regex = \OC::$server->getSystemConfig()->getValue('$blacklisted_files_regex',    []);
+		$blacklist_files       = \OC::$server->getSystemConfig()->getValue('$blacklisted_files', ['.htaccess']);
+		$blacklist_files_regex = \OC::$server->getSystemConfig()->getValue('$blacklisted_files_regex', []);
 
 		// explode '/'
 		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
