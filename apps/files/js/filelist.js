@@ -173,7 +173,7 @@
 		 * 
 		 * @type Array
 		 */
-		_shareTree: {},
+		_shareTreeCache: {},
 
 		/**
 		 * Whether to do a client side sort.
@@ -1056,10 +1056,6 @@
 
 			this.$fileList.trigger(jQuery.Event('updated'));
 			
-			this._updateShareTree().then(function() {
-				$('#filestable').trigger(jQuery.Event('shareTreeUpdated'));
-			});
-			
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
@@ -1403,7 +1399,7 @@
 				tr.addClass('hidden-file');
 			}
 
-			if(this.partOfSharePath()) {
+			if(_.keys(this._shareTreeCache).length) {
 				filenameTd.find('.thumbnail:not(.sharetree-item)').addClass('sharetree-item');
 			}
 
@@ -1475,7 +1471,7 @@
 				}
 			});
 
-			$('#filestable').one('shareTreeUpdated', function() {
+			this._updateShareTree().then(function() {
 				self._setShareTreeIcons();
 			})
 		},
@@ -1756,14 +1752,13 @@
 				return Promise.reject('getDirShareInfo(). param must be typeof string and can not be empty!')
 			}
 
-			if (dir !== '/')
-				dir = dir.replace(/\/$/, "")
-
-			// Return existing data
-			// avoiding a new API call
-			if (typeof this._shareTree[dir] !== 'undefined') {
-				return Promise.resolve(this._shareTree[dir])
+			// avoiding a unnessesary API calls
+			if (typeof this._shareTreeCache[dir] !== 'undefined' || dir === '/') {
+				return Promise.resolve()
 			}
+
+			// trim trailing slashes
+			dir = dir.replace(/\/$/, "")
 
 			var self       = this;
 			var client     = this.filesClient;
@@ -1773,20 +1768,18 @@
 
 			return new Promise( function(resolve, reject) {
 				client.getFileInfo(dir, options).done(function(s, dir) {
-					var shareInfo = {
-						name : dir.name,
-						path : dir.path
-					}
 
-					if (dir.shareTypes === undefined) {
-						shareInfo.shares = []
-						resolve(shareInfo)
-					}
-					else {
+					var glue = (dir.path === '/') ? '' : '/'
+					var path = dir.path + glue + dir.name
+
+					if (dir.shareTypes !== undefined) {
 						// Fetch all shares for directory in question
-						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: (dir.path + '/' + dir.name)}), function(e) {
-							self._shareTree[e.ocs.data[0].path] = e.ocs.data
-							resolve(e.ocs.data)
+						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: path }), function(e) {
+							self._shareTreeCache[path] = {
+								name : dir.name,
+								shares : e.ocs.data
+							}
+							resolve()
 						})
 					}
 				}).fail(function(error) {
@@ -1814,42 +1807,39 @@
 			for (var i = 0; i < parts.length; i++) {
 				var part = parts[i];
 				pathToHere += part + '/';
+
 				crumbs.push(this.getDirShareInfo(pathToHere))
 			}
 
 			return Promise.all(crumbs)
 		},
 
-		/**
-		 * Check if dir is (sub)shared
-		 * @param {String} dir to check
-		 * @return {Boolen}
-		 */
-
-		partOfSharePath: function(dir) {
-			var highShare = Object.keys(this._shareTree)[0]
-			var dir = (dir) ? dir : this.getCurrentDirectory()
-
-			// Don't check root as
-			// it can't be shared
-			if (dir === '/')
-				return false
-
-			return dir.indexOf(highShare) > -1
-		},
-
 		_updateShareTree: function() {
-			return this.getPathShareInfo(this.getCurrentDirectory())
+			var self = this;
+			var dir  = this.getCurrentDirectory();
+
+			// Purge shareTreeCache in root dir
+			if (dir === '/') {
+				this._shareTreeCache = {}
+				return Promise.resolve()
+			}
+
+			return this.getPathShareInfo(dir).then(() => {
+
+				// Purge deeper children
+				_.each(self._shareTreeCache, function(path, key) {
+					if (key > dir) {
+						console.log('Removing', key)
+						delete self._shareTreeCache[key]
+					}
+				})
+			})
 		},
 
 		_setShareTreeIcons: function() {
-			if (!this.partOfSharePath())
-				return
-
 			// Add share-tree icon to files and folders
 			// each per <tr> in the table
 			this.$fileList.find('tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
-
 		},
 
 		_setShareTreeView: function() {
@@ -1860,26 +1850,20 @@
 
 			$shareTabView.ready( function() {
 
-				if (!self.partOfSharePath())
-					return
+				if (! _.keys(self._shareTreeCache).length > 0)
+				 	return
 
 				if (OC.Apps.AppSidebarVisible() && !$shareTabView.find('.shareTreeView').length) {
 
 					$shareTabView.append($shareTreeViewDescription,  $shareTreeView)
 
 					// Shared folders
-					_.each(self._shareTree, function(folder) {
+					_.each(self._shareTreeCache, function(folder) {
 
 						// Shares by folder
-						_.each(folder, function(share) {
+						_.each(folder.shares, function(share) {
 
-							// Do not display shares deeper
-							// in the shareTree than current dir
-							if(share.path.length > self.getCurrentDirectory().length)
-								return
-
-							let dirName = share.path.substr(_.lastIndexOf(share.path, '/') + 1)
-							let $path   = $('<span>',   { class : 'shareTree-item-path', text : dirName })
+							let $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
 
 							// user/group shares
 							if (share.share_type === OC.Share.SHARE_TYPE_USER || share.share_type === OC.Share.SHARE_TYPE_GROUP) {
