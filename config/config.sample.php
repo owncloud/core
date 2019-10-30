@@ -1226,7 +1226,7 @@ $CONFIG = array(
 
 
 /**
- * Blacklist specific directory names and disallow scanning, creating and renaming
+ * Exclude specific directory names and disallow scanning, creating and renaming
  * using these names. Case insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
  * in the middle or at the end and will not be further processed if found.
@@ -1240,7 +1240,7 @@ $CONFIG = array(
 ),
 
 /**
- * Blacklist specific directory names based on regex expression. Scanning, creating and renaming
+ * Exclude specific directory names based on regex expression. Scanning, creating and renaming
  * is disabled when folder match one of the regex.
  * Use of excluded_directories variable have precedence (evaluated before) on excluded_directories_regex variable.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
@@ -1250,16 +1250,6 @@ $CONFIG = array(
 'excluded_directories_regex' => array (
 //	'.*backup.*',	// exclude folder with name containing the string 'backup'
 //	'Thomas.*',		// exclude folder with name beginning by 'Thomas'
-),
-
-/**
- * Exclude specific directory names and disallow scanning, creating and renaming
- * WARNING: excluded_directories directive is deprecated now.
- * DEPRECATED
- */
-'excluded_directories' => array (
-		'.snapshot',
-		'~snapshot',
 ),
 
 
@@ -1275,6 +1265,7 @@ $CONFIG = array(
 		'.htaccess',
 		'.user.ini',
 	),
+
 /**
  * The list of apps that are allowed to have no signature.json. Besides
  * ownCloud apps, this is particularly useful when creating ownCloud themes,

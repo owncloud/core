@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<info>
+<info
 	<id>files_encryption</id>
 	<name>Server-side Encryption</name>
 	<description>

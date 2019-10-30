@@ -646,14 +646,14 @@ class Filesystem {
 
 	/**
 	 * Regex validy check.
-	 * @param regexToBeChecked regex to be checked
+	 * @param string $regexToBeChecked regex to be checked
+	 * @param string $message message given in log in case of invalid regex
 	 * @return boolean
 	 */
-	private static function regex_validy_check($regexToBeChecked) {
+	private static function regexValidyCheck($regexToBeChecked, $message="") {
 		if (self::is_preg_error() !== PREG_NO_ERROR) {
-			\OC::$server->getLogger()->error('Exclude regex error: '.$regexToBeChecked
-								.' - Check excluded_directories variable in config file: '
-								.self::is_preg_error(),
+			\OC::$server->getLogger()->error('Regex error: '.$regexToBeChecked
+								.' - '.$message.': '.self::is_preg_error(),
 								['app' => __CLASS__]);
 			return false;
 		}
@@ -662,19 +662,20 @@ class Filesystem {
 	}
 
 	/**
-	 * Manage regex blacklist against Folder of File.
-	 * @param blacklist Blacklist regex array as defined in Config file
-	 * @param path Folder of File complete path contained in an array
-	 * @return boolean folder of file forbudden status
+	 * Manage regex against Folder of File.
+	 * @param array $regexList Regex array as defined in Config file
+	 * @param array $path Folder of File complete path contained in an array
+	 * @param string $message message given in log in case of invalid regex
+	 * @return boolean folder of file regex status
 	 */
-	private static function blacklistRegexAgainstFolderOrFile($blacklist, $path) {
-		foreach ($blacklist as $item) {                         // foreach given regex
-			\preg_match($item, null);                           // regex validy check
-			if (self::regex_validy_check($item)) {                    // check if regex error occur
+	private static function checkRegexAgainstFolderOrFile($regexList, $path, $message="") {
+		foreach ($regexList as $item) {                               // foreach given regex
+			\preg_match($item, null);                                 // regex validy check
+			if (self::regexValidyCheck($item, $message)) {            // check if regex error occur
 
-				foreach ($path as $path_part) {           // foreach folder or file in given path
-					if (\preg_match('/'.$item.'/i', $path_part) // regex match item
-							&& self::regex_validy_check($item)) {     // check if regex error occur
+				foreach ($path as $path_part) {                       // foreach folder or file in given path
+					if (\preg_match('/'.$item.'/i', $path_part)       // regex match item
+							&& self::regexValidyCheck($item)) {       // check if regex error occur
 						return true;
 					}
 				}
@@ -694,21 +695,21 @@ class Filesystem {
 	* @return boolean
 	*/
 	public static function isForbiddenFileOrDir($FileOrDir, $ed = []) {
-		$blacklist_folders = [];
-		$blacklist_folders_regex = [];
+		$exclude_folders = [];
+		$exclude_folders_regex = [];
 		$blacklist_files = [];
 		$blacklist_files_regex = [];
 		$path_parts = [];
 		$ppx = [];
 
 		if ($ed) {
-			$blacklist_folders = $ed;
+			$exclude_folders = $ed;
 		} else {
-			$blacklist_folders   = \OC::$server->getSystemConfig()->getValue('$excluded_directories', $ed);
+			$exclude_folders   = \OC::$server->getSystemConfig()->getValue('$excluded_directories',       []);
 		}
-		$blacklist_folders_regex = \OC::$server->getSystemConfig()->getValue('$excluded_directories_regex', []);
-		$blacklist_files         = \OC::$server->getSystemConfig()->getValue('$blacklisted_files', ['.htaccess']);
-		$blacklist_files_regex   = \OC::$server->getSystemConfig()->getValue('$blacklisted_files_regex', []);
+		$exclude_folders_regex = \OC::$server->getSystemConfig()->getValue('$excluded_directories_regex', []);
+		$blacklist_files       = \OC::$server->getSystemConfig()->getValue('$blacklisted_files',          ['.htaccess']);
+		$blacklist_files_regex = \OC::$server->getSystemConfig()->getValue('$blacklisted_files_regex',    []);
 
 		// explode '/'
 		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
@@ -719,26 +720,27 @@ class Filesystem {
 			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
 		}
 
-		if ($blacklist_folders) {
-			$blacklist_folders= \array_map('trim', $blacklist_folders);
-			$blacklist_folders= \array_map('strtolower', $blacklist_folders);
-			if (\array_intersect($blacklist_folders, $path_parts)) {
+		if ($exclude_folders) {
+			$exclude_folders= \array_map('trim', $exclude_folders);
+			$exclude_folders= \array_map('strtolower', $exclude_folders);
+			if (\array_intersect($exclude_folders, $path_parts)) {
 				return true;
 			}
 		}
-		if ($blacklist_folders_regex) {
-			if (self::blacklistRegexAgainstFolderOrFile($blacklist_folders_regex, $path_parts)) {
+		if ($exclude_folders_regex) {
+			if (self::checkRegexAgainstFolderOrFile($exclude_folders_regex, $path_parts,
+													"Check excluded_directories_regex variable in config file")) {
 				return true;
 			}
 		}
-
 		if ($blacklist_files) {
 			if (\array_intersect($blacklist_files, \end($path_parts))) {
 				return true;
 			}
 		}
 		if ($blacklist_files_regex) {
-			if (self::blacklistRegexAgainstFolderOrFile($blacklist_files_regex, \end($path_parts))) {
+			if (self::checkRegexAgainstFolderOrFile($blacklist_files_regex, \end($path_parts),
+													"Check blacklisted_files_regex variable in config file")) {
 				return true;
 			}
 		}
