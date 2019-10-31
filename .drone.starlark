@@ -35,6 +35,32 @@ config = {
 				'windows',
 			],
 			'coverage': True,
+			'extraSetup': [
+				{
+					'name': 'setup-before-samba',
+					'image': 'owncloudci/php:7.2',
+					'pull': 'always',
+					'commands': [
+						'pwd',
+						'ls -l /drone',
+						'mkdir /drone/sambacache'
+					]
+				},
+				{
+					'name': 'samba',
+					'image': 'owncloudci/samba:latest',
+					'pull': 'always',
+					'detach': True,
+					'command': [
+						'-g cache directory = /drone/sambacache',
+						'-u',
+						'test;test',
+						'-s',
+						'public;/tmp;yes;no;no;test;none;test',
+						'-S',
+					]
+				}
+			],
 			'extraCommandsBeforeTestRun': [
 				'ls -l /drone',
 				'ls -l /drone/sambacache',
@@ -922,6 +948,7 @@ def phptests(testType):
 							installServer(phpVersion, db, params['logLevel']) +
 							installExtraApps(phpVersion, extraAppsDict) +
 							setupScality(phpVersion, needScality) +
+							params['extraSetup'] +
 							fixPermissions(phpVersion, False) +
 							owncloudLog('server', 'src') +
 						[
@@ -945,7 +972,7 @@ def phptests(testType):
 							cephService(params['cephS3']) +
 							scalityService(needScality) +
 							webdavService(externalType == 'webdav') +
-							sambaService(externalType == 'samba') +
+							#sambaService(externalType == 'samba') +
 							sftpService(externalType == 'sftp') +
 							params['extraServices'],
 						'depends_on': [],

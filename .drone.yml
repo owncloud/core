@@ -240,6 +240,26 @@ steps:
   environment:
     DB_TYPE: sqlite
 
+- name: setup-before-samba
+  pull: always
+  image: owncloudci/php:7.2
+  commands:
+  - pwd
+  - ls -l /drone
+  - mkdir /drone/sambacache
+
+- name: samba
+  pull: always
+  image: owncloudci/samba:latest
+  detach: true
+  command:
+  - -g cache directory = /drone/sambacache
+  - -u
+  - test;test
+  - -s
+  - public;/tmp;yes;no;no;test;none;test
+  - -S
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.1
@@ -291,18 +311,6 @@ steps:
     instance:
     - drone.owncloud.services
     - drone.owncloud.com
-
-services:
-- name: samba
-  pull: always
-  image: owncloudci/samba:latest
-  command:
-  - -g cache directory = /drone/sambacache
-  - -u
-  - test;test
-  - -s
-  - public;/tmp;yes;no;no;test;none;test
-  - -S
 
 trigger:
   ref:
@@ -382,6 +390,26 @@ steps:
   - php occ security:certificates
   environment:
     DB_TYPE: sqlite
+
+- name: setup-before-samba
+  pull: always
+  image: owncloudci/php:7.2
+  commands:
+  - pwd
+  - ls -l /drone
+  - mkdir /drone/sambacache
+
+- name: samba
+  pull: always
+  image: owncloudci/samba:latest
+  detach: true
+  command:
+  - -g cache directory = /drone/sambacache
+  - -u
+  - test;test
+  - -s
+  - public;/tmp;yes;no;no;test;none;test
+  - -S
 
 - name: fix-permissions
   pull: always
