@@ -677,8 +677,9 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function restoreTrustedServersAfterScenario() {
+		$this->restoreTrustedServers('LOCAL');
 		if ($this->federatedServerExists()) {
-			$this->runFunctionOnEveryServer([$this, 'restoreTrustedServers']);
+			$this->restoreTrustedServers('REMOTE');
 		}
 	}
 
