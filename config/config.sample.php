@@ -1201,12 +1201,30 @@ $CONFIG = array(
  */
 'hashingCost' => 10,
 
+
 /**
- * Blacklist a specific file or files and disallow the upload of files
- * with this name. `.htaccess` is blocked by default.
+ * Blacklist a specific filename and disallow the upload/rename of files with this name.
+ * INFO: `.htaccess` is blocked by default that may harm the owncloud environment.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: String case is systematicaly lowered.
  */
-'blacklisted_files' => array('.htaccess'),
+'blacklisted_files' => array (
+	'.htaccess',	// disallow .htaccess file
+),
+
+/**
+ * Blacklist filenames based on regex expression.
+ * INFO: Use of blacklisted_files variable have precedence (evaluated before) on blacklisted_files_regex variable.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE.
+ * WARNING: Regex match is case incensitive.
+ */
+'blacklisted_files_regex' => array (
+//	'.*\.pst$',		// disallow *.pst (MS Outlook) file
+//	'.*dummy.*',	// disallow file with name contaning the string 'dummy'
+//	'^sample.*',	// disallow file with name beginning by 'sample'
+),
+
 
 /**
  * Exclude specific directory names and disallow scanning, creating and renaming
@@ -1215,13 +1233,28 @@ $CONFIG = array(
  * in the middle or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
  * Use when the storage backend supports eg snapshot directories to be excluded.
+ * INFO: .snapshot and ~snapshot are excluded by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
-'excluded_directories' =>
-	array (
-		'.snapshot',
-		'~snapshot',
-	),
+'excluded_directories' => array (
+	'.snapshot',	// exclude '.snapshot' folder
+	'~snapshot',	// exclude '~snapshot' folder
+),
+
+/**
+ * Exclude specific directory names based on regex expression.
+ * Scanning, creating and renaming is disabled when folder match one of the regex.
+ * INFO: Use of excluded_directories variable have precedence (evaluated before) on excluded_directories_regex variable.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
+ * WARNING: Regex match is case incensitive.
+ */
+'excluded_directories_regex' => array (
+//	'.*backup.*',	// exclude folder with name containing the string 'backup'
+//	'Thomas.*',		// exclude folder with name beginning by 'Thomas'
+),
+
+
 /**
  * Exclude files from the integrity checker command
  */
@@ -1234,6 +1267,7 @@ $CONFIG = array(
 		'.htaccess',
 		'.user.ini',
 	),
+
 /**
  * The list of apps that are allowed to have no signature.json. Besides
  * ownCloud apps, this is particularly useful when creating ownCloud themes,

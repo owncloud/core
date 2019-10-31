@@ -625,28 +625,102 @@ class Filesystem {
 	}
 
 	/**
-	* Check if the directory path / file name contains a Blacklisted or Excluded name
+	* Regex error explanation.
+	* Check last regex validation error origin. Return a string describing error cause.
+	* @return string
+	* @see https://www.php.net/manual/function.preg-last-error.php
+	*/
+	private static function is_preg_error() {
+		$errors = [
+			PREG_NO_ERROR               => 'Code 0 : No errors',
+			PREG_INTERNAL_ERROR         => 'Code 1 : Internal PCRE error, most likely a syntax error',
+			PREG_BACKTRACK_LIMIT_ERROR  => 'Code 2 : Backtrack limit was exhausted',
+			PREG_RECURSION_LIMIT_ERROR  => 'Code 3 : Recursion limit was exhausted',
+			PREG_BAD_UTF8_ERROR         => 'Code 4 : The offset did not correspond to the begin of a valid UTF-8 code point',
+			PREG_BAD_UTF8_OFFSET_ERROR  => 'Code 5 : Malformed UTF-8 data',
+			PREG_JIT_STACKLIMIT_ERROR   => 'Code 6 : Just-in-time compiler stack limit reached',
+		];
+
+		return $errors[\preg_last_error()];
+	}
+
+	/**
+	 * Regex validy check.
+	 * @param string $regexToBeChecked regex to be checked
+	 * @param string $msgInvalidRegex message given in log in case of invalid regex
+	 * @return boolean
+	 */
+	private static function regexValidyCheck($regexToBeChecked, $msgInvalidRegex="") {
+		if (\preg_last_error() !== PREG_NO_ERROR) {
+			\OC::$server->getLogger()->error('Regex error: '.$regexToBeChecked
+					.' - '.$msgInvalidRegex.': '.self::is_preg_error(),
+					['app' => __CLASS__]);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Manage regex against Folder of File.
+	 * @param array $regexList Regex array as defined in Config file
+	 * @param array $path Folder of File complete path contained in an array
+	 * @param string $msgInvalidRegex message given in log in case of invalid regex
+	 * @param string $msgRegexMatchError message given in log in case of invalid regex
+	 * @return boolean folder of file regex status
+	 */
+	private static function checkRegexAgainstFolderOrFile($regexList, $path, $msgInvalidRegex="") {
+		foreach ($regexList as $item) {                               // foreach given regex
+			\preg_match($item, null);                                 // regex validy check
+			if (self::regexValidyCheck($item, $msgInvalidRegex)) {    // check if regex error occur
+
+				foreach ($path as $path_part) {                       // foreach folder or file in given path
+					if (\preg_match('/'.$item.'/i', $path_part)       // regex match item
+							&& self::regexValidyCheck($item,
+									'Checked string: '.$path_part)) { // check if regex error occur
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	*
+	* Check if the directory path / file name contains a Blacklisted or Excluded name as defined in config.
 	* config.php parameter arrays can contain file names to be blacklisted or directory names to be excluded
-	* Blacklist ... files that may harm the owncloud environment like a foreign .htaccess file
+	* Blacklist ... files that may harm the owncloud environment like a foreign `.htaccess` file or other unwanted files
 	* Excluded  ... directories that are excluded from beeing further processed, like snapshot directories
-	* The parameter $ed is only used in conjunction with unit tests as we handover here the excluded
-	* directory name to be tested against. $ed and the query with can be redesigned if filesystem.php will get
+	* $ed and the query with can be redesigned if filesystem.php will get
 	* a constructor where it is then possible to define the excluded directory names for unit tests.
-	* @param string $FileOrDir
-	* @param array $ed
+	* @param string $FileOrDir is an array describing full folder path or full filename
+	* @param array $ed is only used in conjunction with unit tests as we handover here the blacklisted / excluded
+	* directory name to be tested against
 	* @return boolean
 	*/
 	public static function isForbiddenFileOrDir($FileOrDir, $ed = []) {
-		$excluded = [];
-		$blacklist = [];
+		$exclude_folders = [];
+		$exclude_folders_regex = [];
+		$blacklist_files = [];
+		$blacklist_files_regex = [];
 		$path_parts = [];
 		$ppx = [];
-		$blacklist = \OC::$server->getSystemConfig()->getValue('blacklisted_files', ['.htaccess']);
+
+		// force blacklist/exclude arraylist/arrayRegex for unit tests
 		if ($ed) {
-			$excluded = $ed;
+			$exclude_folders = $ed;
+			$exclude_folders_regex = $ed;
+			$blacklist_files = $ed;
+			$blacklist_files_regex = $ed;
 		} else {
-			$excluded = \OC::$server->getSystemConfig()->getValue('excluded_directories', $ed);
+			$exclude_folders       = \OC::$server->getSystemConfig()->getValue('$excluded_directories', []);
+			$exclude_folders_regex = \OC::$server->getSystemConfig()->getValue('$excluded_directories_regex', []);
+			$blacklist_files       = \OC::$server->getSystemConfig()->getValue('$blacklisted_files', ['.htaccess']);
+			$blacklist_files_regex = \OC::$server->getSystemConfig()->getValue('$blacklisted_files_regex', []);
 		}
+
 		// explode '/'
 		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
 		$ppx = \array_map('strtolower', $ppx);
@@ -655,20 +729,32 @@ class Filesystem {
 			// only add an array element if strlen != 0
 			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
 		}
-		if ($excluded) {
-			$excluded = \array_map('trim', $excluded);
-			$excluded = \array_map('strtolower', $excluded);
-			$match = \array_intersect($path_parts, $excluded);
-			if ($match) {
+
+		if ($exclude_folders) {
+			$exclude_folders= \array_map('trim', $exclude_folders);
+			$exclude_folders= \array_map('strtolower', $exclude_folders);
+			if (\array_intersect($exclude_folders, $path_parts)) {
 				return true;
 			}
 		}
-		$blacklist = \array_map('trim', $blacklist);
-		$blacklist = \array_map('strtolower', $blacklist);
-		$match = \array_intersect($path_parts, $blacklist);
-		if ($match) {
-			return true;
+		if ($exclude_folders_regex) {
+			if (self::checkRegexAgainstFolderOrFile($exclude_folders_regex, $path_parts,
+					"Check excluded_directories_regex variable in config file")) {
+				return true;
+			}
 		}
+		if ($blacklist_files) {
+			if (\array_intersect($blacklist_files, \end($path_parts))) {
+				return true;
+			}
+		}
+		if ($blacklist_files_regex) {
+			if (self::checkRegexAgainstFolderOrFile($blacklist_files_regex, \end($path_parts),
+					"Check blacklisted_files_regex variable in config file")) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
