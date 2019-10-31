@@ -1220,9 +1220,9 @@ $CONFIG = array(
  * WARNING: Regex match is case incensitive.
  */
 'blacklisted_files_regex' => array (
-//	'.*\.pst$',		// disallow *.pst (MS Outlook) file
-//	'.*dummy.*',	// disallow file with name contaning the string 'dummy'
-//	'^sample.*',	// disallow file with name beginning by 'sample'
+	'.*\.pst$',		// disallow *.pst (MS Outlook) file
+	'.*dummy.*',	// disallow file with name contaning the string 'dummy'
+	'^sample.*',	// disallow file with name beginning by 'sample'
 ),
 
 
@@ -1250,8 +1250,8 @@ $CONFIG = array(
  * WARNING: Regex match is case incensitive.
  */
 'excluded_directories_regex' => array (
-//	'.*backup.*',	// exclude folder with name containing the string 'backup'
-//	'Thomas.*',		// exclude folder with name beginning by 'Thomas'
+	'.*backup.*',	// exclude folder with name containing the string 'backup'
+	'Thomas.*',		// exclude folder with name beginning by 'Thomas'
 ),
 
 
