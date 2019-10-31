@@ -440,7 +440,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
 
   @smokeTest @public_link_share-feature-required
-  Scenario: Uploading to a public upload-read-write and no edit and no overwrite share
+  Scenario: Uploading to a public upload-write and no edit and no overwrite share
     Given as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER          |
@@ -449,7 +449,7 @@ Feature: sharing
     Then the content of file "/FOLDER/test-old.txt" for user "user0" should be "test-old"
 
   @smokeTest @public_link_share-feature-required
-  Scenario: Uploading to a public upload-read-write and no edit and no overwrite share
+  Scenario: Uploading to a public upload-write and no edit and no overwrite share
     Given the administrator has enabled DAV tech_preview
     And as user "user0"
     And the user has created a public link share with settings
@@ -458,21 +458,37 @@ Feature: sharing
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
     Then the content of file "/FOLDER/test-new.txt" for user "user0" should be "test-new"
 
-  @smokeTest @public_link_share-feature-required
-  Scenario Outline: Uploading same file to a public upload-read-write and no edit and no overwrite share multiple times
+  @smokeTest @public_link_share-feature-required @issue-36356
+  Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times
     Given the administrator has enabled DAV tech_preview
     And as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
-    When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    When the public uploads file "test.txt" with content "test2" using the <public-webdav-api-version> public WebDAV API
+    When the public uploads file "test.txt" with content "test2" using the old public WebDAV API
+    # Uncomment these once the issue is fixed
+    # Then the HTTP status code should be "201"
+    # And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+    # And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
     Then the HTTP status code should be "403"
     And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
-    Examples:
-      | public-webdav-api-version |
-      | old                       |
-      | new                       |
+
+  @smokeTest @public_link_share-feature-required
+  Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times
+    Given the administrator has enabled DAV tech_preview
+    And as user "user0"
+    And the user has created a public link share with settings
+      | path        | FOLDER          |
+      | permissions | uploadwriteonly |
+    When the public uploads file "test.txt" with content "test" using the new public WebDAV API
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions
+      | ETag | /^"[a-f0-9]{1,32}"$/ |
+    When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+    And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
