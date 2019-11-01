@@ -111,7 +111,7 @@ trait Sharing {
 		if (\in_array('uploadwriteonly', $permissions, true)) {
 			// remove 'uploadwriteonly' from $permissions
 			$permissions = \array_diff($permissions, ['uploadwriteonly']);
-			$permissions = \array_merge($permissions, ['create', 'read']);
+			$permissions = \array_merge($permissions, ['create']);
 		}
 		if (\in_array('change', $permissions, true)) {
 			// remove 'change' from $permissions
@@ -172,7 +172,7 @@ trait Sharing {
 	 *       |                 |     1 = read; 2 = update; 4 = create;               |
 	 *       |                 |     8 = delete; 16 = share; 31 = all                |
 	 *       |                 |     15 = change                                     |
-	 *       |                 |     5 = uploadwriteonly                             |
+	 *       |                 |     4 = uploadwriteonly                             |
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
