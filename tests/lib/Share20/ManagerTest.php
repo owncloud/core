@@ -785,7 +785,7 @@ class ManagerTest extends \Test\TestCase {
 			[$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK, $file, $user1, $user0, $user0, 31, null, null), 'SharedWith should be empty', true],
 			[$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK, $file, $group0, $user0, $user0, 31, null, null), 'SharedWith should be empty', true],
 			[$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK, $file, 'foo@bar.com', $user0, $user0, 31, null, null), 'SharedWith should be empty', true],
-			[$this->createShare(null, -1, $file, null, $user0, $user0, 31, null, null), 'unkown share type', true],
+			[$this->createShare(null, -1, $file, null, $user0, $user0, 31, null, null), 'Unknown share type', true],
 
 			[$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $file, $user1, null, $user0, 31, null, null), 'SharedBy should be set', true],
 			[$this->createShare(null, \OCP\Share::SHARE_TYPE_GROUP, $file, $group0, null, $user0, 31, null, null), 'SharedBy should be set', true],
@@ -1205,14 +1205,15 @@ class ManagerTest extends \Test\TestCase {
 		$share  = $this->manager->newShare();
 		$share2 = $this->manager->newShare();
 
-		$sharedWith = $this->createMock('\OCP\IUser');
 		$path = $this->createMock('\OCP\Files\Node');
 
 		$share->setSharedWith('sharedWith')->setNode($path)
-			->setProviderId('foo')->setId('bar');
+			->setProviderId('foo')->setId('bar')
+			->setShareType(\OCP\Share::SHARE_TYPE_USER);
 
 		$share2->setSharedWith('sharedWith')->setNode($path)
-			->setProviderId('foo')->setId('baz');
+			->setProviderId('foo')->setId('baz')
+			->setShareType(\OCP\Share::SHARE_TYPE_USER);
 
 		$this->defaultProvider
 			->method('getSharesByPath')
@@ -1439,12 +1440,14 @@ class ManagerTest extends \Test\TestCase {
 
 		$path = $this->createMock('\OCP\Files\Node');
 		$share->setSharedWith('sharedWith')
+			->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
 			->setNode($path)
 			->setProviderId('foo')
 			->setId('bar');
 
 		$share2 = $this->manager->newShare();
 		$share2->setSharedWith('sharedWith')
+			->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
 			->setProviderId('foo')
 			->setId('baz');
 
