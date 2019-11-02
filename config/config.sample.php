@@ -1204,9 +1204,26 @@ $CONFIG = array(
 /**
  * Blacklist a specific file or files and disallow the upload of files
  * with this name. `.htaccess` is blocked by default.
+ * INFO: Compare pairs are converted to lowercase by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
 'blacklisted_files' => array('.htaccess'),
+
+/**
+ * Blacklist filenames based on a regex expression
+ * Scanning, creating and renaming is disabled when file matches a given regex.
+ * INFO: `blacklisted_files` has evaluation match precedence over this regex evaluation.
+ * INFO: regex matching is forced case insensitive.
+ * INFO: Leading and trailing slashes `/` must not be manually added.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE.
+ * WARNING: Regex match is case insensitive.
+ */
+'blacklisted_files_regex' => [
+	'.*\.pst$',		// disallow *.pst (MS Outlook) file
+	'.*dummy.*',	// disallow file with name contaning the string 'dummy'
+	'^sample.*',	// disallow file with name beginning by 'sample'
+  ],
 
 /**
  * Exclude specific directory names and disallow scanning, creating and renaming
@@ -1215,6 +1232,7 @@ $CONFIG = array(
  * in the middle or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
  * Use when the storage backend supports eg snapshot directories to be excluded.
+ * INFO: Compare pairs are converted to lowercase by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
 'excluded_directories' =>
@@ -1222,6 +1240,21 @@ $CONFIG = array(
 		'.snapshot',
 		'~snapshot',
 	),
+
+/**
+ * Exclude specific directory names based on a regex expression
+ * Scanning, creating and renaming is disabled when folder matches a given regex.
+ * INFO: `excluded_directories` has evaluation match precedence over this regex evaluation.
+ * INFO: regex matching is forced case insensitive.
+ * INFO: Leading and trailing slashes `/` must not be manually added.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * WARNING: COMPLEX REGEX MAY SIGNIFICANT IMPACT YOUR SCANNING PERFORMANCE
+ */
+'excluded_directories_regex' => [
+	'.*backup.*',	// exclude folders with name containing the string 'backup'
+	'thomas.*',		// exclude folders with name beginning by 'thomas'
+  ],
+
 /**
  * Exclude files from the integrity checker command
  */
