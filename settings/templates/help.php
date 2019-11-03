@@ -45,11 +45,12 @@
 	<?php
 	} ?>
 
-	<li>
-		<a href="https://owncloud.com/subscriptions/" target="_blank" rel="noreferrer">
-			<?php p($l->t('Commercial support')); ?> ↗
-		</a>
-	</li>
+		<li>
+			<a href="https://owncloud.com/subscriptions/" target="_blank" rel="noreferrer">
+				<?php p($l->t('Commercial support')); ?> ↗
+			</a>
+		</li>
+	</ul>
 </div>
 
 <div id="app-content" class="help-includes">

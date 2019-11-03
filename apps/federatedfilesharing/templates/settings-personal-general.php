@@ -25,11 +25,11 @@ if ($_['showShareIT']) {
 		<p>
 			<?php p($l->t('Share it:')); ?>
 			<div class="gs-share">
-			<button data-url="<?php p(\urlencode($_['reference'])); ?>"
-				data-title='<?php p(\urlencode($_['message_without_URL'])); ?>'
-				class='js-gs-share social-gnu'>
-				GNU Social
-			</button>
+				<button data-url="<?php p(\urlencode($_['reference'])); ?>"
+					data-title='<?php p(\urlencode($_['message_without_URL'])); ?>'
+					class='js-gs-share social-gnu'>
+					GNU Social
+				</button>
 			</div>
 			<button class="social-diaspora pop-up"
 				data-url='https://sharetodiaspora.github.io/?title=<?php p($_['message_without_URL']); ?>&url=<?php p(\urlencode($_['reference'])); ?>'>
@@ -44,7 +44,7 @@ if ($_['showShareIT']) {
 				Facebook
 			</button>
 			<button class="social-googleplus pop-up"
-				data-url='https://plus.google.com/share?url=<?php p(\urlencode($_['reference'])); ?>'/>
+				data-url='https://plus.google.com/share?url=<?php p(\urlencode($_['reference'])); ?>'>
 				Google+
 			</button>
 			<button id="oca-files-sharing-add-to-your-website">
@@ -57,7 +57,7 @@ if ($_['showShareIT']) {
 			<a target="_blank" rel="noreferrer" href="<?php p($_['reference']); ?>"
 				style="padding:10px;background-color:#1d2d44;color:#fff;border-radius:3px;padding-left:4px;">
 				<img src="<?php p($_['owncloud_logo_path']); ?>"
-					style="width:50px;position:relative;top:8px;">
+					style="width:50px;position:relative;top:8px;" />
 				<?php p($l->t('Share with me via ownCloud')); ?>
 			</a>
 		</p>
@@ -67,7 +67,7 @@ if ($_['showShareIT']) {
 			<xmp><a target="_blank" rel="noreferrer" href="<?php p($_['reference']); ?>"
 	style="padding:10px;background-color:#1d2d44;color:#fff;border-radius:3px;padding-left:4px;">
 	<img src="<?php  p($_['urlGenerator']->getAbsoluteURL($_['owncloud_logo_path'])); ?>"
-		style="width:50px;position:relative;top:8px;">
+		style="width:50px;position:relative;top:8px;" />
 	<?php p($l->t('Share with me via ownCloud')); ?>
 
 </a></xmp>
