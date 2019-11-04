@@ -48,3 +48,17 @@ Feature: the new public WebDAV API is not available when the tech preview settin
     When the public uploads file "lorem.txt" with content "test" using the new public WebDAV API
     Then the HTTP status code should be "401"
     And as "user0" file "/PARENT/lorem.txt" should not exist
+
+  @public_link_share-feature-required
+  Scenario: Public cannot upload file when the public WebDAV API is disabled
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT                   |
+      | permissions | read,update,create,delete |
+    When the public uploads file "lorem.txt" with content "test" using the new public WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "/PARENT/lorem.txt" should exist
+    When the administrator disables DAV tech_preview
+    And the public uploads file "lorem-big.txt" with content "test" using the new public WebDAV API
+    Then the HTTP status code should be "401"
+    And as "user0" file "/PARENT/lorem-big.txt" should not exist

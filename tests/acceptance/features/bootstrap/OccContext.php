@@ -70,6 +70,7 @@ class OccContext implements Context {
 
 	/**
 	 * @Given the administrator has enabled DAV tech_preview
+	 * @When the administrator enables DAV tech_preview
 	 *
 	 * @return bool true if DAV Tech Preview was disabled and had to be enabled
 	 */
@@ -86,6 +87,7 @@ class OccContext implements Context {
 
 	/**
 	 * @Given the administrator has disabled DAV tech_preview
+	 * @When the administrator disables DAV tech_preview
 	 *
 	 * @return void
 	 */

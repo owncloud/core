@@ -65,6 +65,26 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @When /^the public downloads the last public shared file with range "([^"]*)" and password "([^"]*)" using the (old|new) public WebDAV API$/
+	 *
+	 * @param string $range ignore if empty
+	 * @param string $password
+	 * @param string $publicWebDAVAPIVersion
+	 *
+	 * @return void
+	 */
+	public function downloadPublicFileWithRangeAndPassword($range, $password, $publicWebDAVAPIVersion) {
+		if ($publicWebDAVAPIVersion === "new") {
+			$path = $this->featureContext->getLastShareData()->data->file_target;
+		} else {
+			$path = "";
+		}
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
+			$path, $password, $range, $publicWebDAVAPIVersion
+		);
+	}
+
+	/**
 	 * @When /^the public downloads the last public shared file using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
@@ -92,24 +112,38 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @param string $fileName
 	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function deleteFileFromPublicShare($fileName, $publicWebDAVAPIVersion) {
-		$token = $this->featureContext->getLastShareData()->data->token;
+	public function deleteFileFromPublicShare($fileName, $publicWebDAVAPIVersion, $password = "") {
+		$token = (string)$this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token, 0, "public-files-$publicWebDAVAPIVersion"
 		);
 		$fullUrl = $this->featureContext->getBaseUrl() . "/$davPath$fileName";
 		$userName = $this->getUsernameForPublicWebdavApi(
-			$token, "", $publicWebDAVAPIVersion
+			$token, $password, $publicWebDAVAPIVersion
 		);
 		$headers = [
 			'X-Requested-With' => 'XMLHttpRequest'
 		];
 		$this->featureContext->setResponse(
-			HttpRequestHelper::delete($fullUrl, $userName, "", $headers)
+			HttpRequestHelper::delete($fullUrl, $userName, $password, $headers)
 		);
+	}
+
+	/**
+	 * @When /^the public deletes file "([^"]*)" from the last public share using the password "([^"]*)" and (old|new) public WebDAV API$/
+	 *
+	 * @param string $file
+	 * @param string $password
+	 * @param string $publicWebDAVAPIVersion
+	 *
+	 * @return void
+	 */
+	public function thePublicDeletesFileFromTheLastPublicShareUsingThePasswordPasswordAndOldPublicWebdavApi($file, $password, $publicWebDAVAPIVersion) {
+		$this->deleteFileFromPublicShare($file, $publicWebDAVAPIVersion, $password);
 	}
 
 	/**
@@ -118,10 +152,11 @@ class PublicWebDavContext implements Context {
 	 * @param string $fileName
 	 * @param string $toFileName
 	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function renameFileFromPublicShare($fileName, $toFileName, $publicWebDAVAPIVersion) {
+	public function renameFileFromPublicShare($fileName, $toFileName, $publicWebDAVAPIVersion, $password = "") {
 		$token = $this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token, 0, "public-files-$publicWebDAVAPIVersion"
@@ -129,15 +164,29 @@ class PublicWebDavContext implements Context {
 		$fullUrl = $this->featureContext->getBaseUrl() . "/$davPath$fileName";
 		$destination = $this->featureContext->getBaseUrl() . "/$davPath$toFileName";
 		$userName = $this->getUsernameForPublicWebdavApi(
-			$token, "", $publicWebDAVAPIVersion
+			$token, $password, $publicWebDAVAPIVersion
 		);
 		$headers = [
 			'X-Requested-With' => 'XMLHttpRequest',
 			'Destination' => $destination
 		];
 		$this->featureContext->setResponse(
-			HttpRequestHelper::sendRequest($fullUrl, "MOVE", $userName, "", $headers)
+			HttpRequestHelper::sendRequest($fullUrl, "MOVE", $userName, $password, $headers)
 		);
+	}
+
+	/**
+	 * @When /^the public renames file "([^"]*)" to "([^"]*)" from the last public share using the password "([^"]*)" and (old|new) public WebDAV API$/
+	 *
+	 * @param string $fileName
+	 * @param string $toName
+	 * @param string $password
+	 * @param string $publicWebDAVAPIVersion
+	 *
+	 * @return void
+	 */
+	public function thePublicRenamesFileFromTheLastPublicShareUsingThePasswordPasswordAndOldPublicWebdavApi($fileName, $toName, $password, $publicWebDAVAPIVersion) {
+		$this->renameFileFromPublicShare($fileName, $toName, $publicWebDAVAPIVersion, $password);
 	}
 
 	/**
@@ -240,7 +289,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * This only works with the old API, autorename is not suported in the new API
+	 * This only works with the old API, autorename is not supported in the new API
 	 * auto renaming is handled on files drop folders implicitly
 	 *
 	 * @When the public uploads file :filename with content :body with autorename mode using the old public WebDAV API
