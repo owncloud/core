@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [10.3.1] - 2019-11-08
+
+### Changed
+
+- Code Improvements [#36368](https://github.com/owncloud/core/pull/36368)
+
 ## [10.3.0] - 2019-10-15
 
 ### Added
@@ -1166,6 +1172,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
+
+[10.3.1]: https://github.com/owncloud/core/compare/v10.3.0...v10.3.1
 [10.3.0]: https://github.com/owncloud/core/compare/v10.2.1...v10.3.0
 [10.2.1]: https://github.com/owncloud/core/compare/v10.2.0...v10.2.1
 [10.2.0]: https://github.com/owncloud/core/compare/v10.1.1...v10.2.0
