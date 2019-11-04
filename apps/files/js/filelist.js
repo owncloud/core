@@ -1856,7 +1856,7 @@
 			var $shareTabView             = $('#shareTabView .dialogContainer');
 			var $shareTreeView            = $('<div>', { class : 'shareTreeView' , html : '<ul></ul>'});
 			var $shareTreeViewDescription = $('<p>', { class: 'shareTree-description', text : t('core', 'This item is part of the following shares:')})
-			var $shareTreeViewInfobox     = $('<a>', { class : 'icon icon-info',  title : t('core', 'This items i accessible to others via shares listed below. Click on the item to navigate to the share.')}).tooltip()
+			var $shareTreeViewInfobox     = $('<a>', { class : 'icon icon-info',  title : t('core', 'This item is accessible to others via shares listed below. Click on the item to navigate to the share.')}).tooltip()
 
 			$shareTabView.ready( function() {
 
