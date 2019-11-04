@@ -383,7 +383,8 @@ class Root extends Folder implements IRootFolder {
 		}
 		\array_shift($pieces);
 		\array_shift($pieces);
-		$node = new MetaRootNode($this);
+		$userSession = \OC::$server->getUserSession();
+		$node = new MetaRootNode($this, $userSession);
 		if (empty($pieces)) {
 			return $node;
 		}
