@@ -1776,8 +1776,7 @@
 			return new Promise( function(resolve, reject) {
 				client.getFileInfo(dir, options).done(function(s, dir) {
 
-					var glue = (dir.path === '/') ? '' : '/'
-					var path = dir.path + glue + dir.name
+					var path = OC.joinPaths(dir.path, dir.name)
 
 					if (dir.shareTypes !== undefined) {
 						// Fetch all shares for directory in question
