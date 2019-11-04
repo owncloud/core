@@ -2,6 +2,7 @@ OC.L10N.register(
     "systemtags",
     {
     "Tags" : "Birkas",
+    "No files in here" : "Šeit nav failu",
     "No entries found in this folder" : "Šajā mapē nekas nav atrasts",
     "Name" : "Nosaukums",
     "Size" : "Izmērs",

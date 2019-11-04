@@ -57,6 +57,7 @@
     "Shared via public link" : "Kopīgots ar publisku saiti",
     "Shared by %2$s" : "%2$s kopīgoja",
     "Shares" : "Koplietotie",
+    "Public link" : "Publiska saite",
     "Share API is disabled" : "Koplietošanas API ir atslēgta",
     "Wrong share ID, share doesn't exist" : "Nepareizs koplietošanas ID, koplietotne neeksistē",
     "Could not delete share" : "Neizdevās dzēst koplietotni",

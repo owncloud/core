@@ -47,6 +47,7 @@ OC.L10N.register(
     "Uninstalling ...." : "Atinstalē ....",
     "Error while uninstalling app" : "Kļūda, atinstalējot lietotni",
     "Uninstall" : "Atinstalēt",
+    "Experimental" : "Eksperimentāls",
     "Valid until {date}" : "Valīds līdz {date}",
     "Sending..." : "Sūta...",
     "Email changed successfully for {user}." : "Lietotājam {user} ir veiksmīgi nomainīts e-pasts",
