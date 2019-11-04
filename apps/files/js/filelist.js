@@ -1459,20 +1459,27 @@
 			var self = this;
 			var currentDir = this.getCurrentDirectory();
 			targetDir = targetDir || '/';
-			if (!force && currentDir === targetDir) {
-				return;
-			}
-			this._setCurrentDir(targetDir, changeUrl, fileId);
-			// discard finished uploads list, we'll get it through a regular reload
-			this._uploads = {};
-			this.reload().then(function(success){
-				if (!success) {
-					self.changeDirectory(currentDir, true);
-				}
-			});
 
-			this._updateShareTree().then(function() {
-				self._setShareTreeIcons();
+			return new Promise(function(resolve, reject) {
+
+				if (!force && currentDir === targetDir) {
+					resolve()
+					return
+				}
+				self._setCurrentDir(targetDir, changeUrl, fileId);
+				// discard finished uploads list, we'll get it through a regular reload
+				self._uploads = {};
+				self.reload().then(function(success){
+					if (!success) {
+						self.changeDirectory(currentDir, true);
+						reject()
+					}
+					resolve()
+				});
+
+				self._updateShareTree().then(function() {
+					self._setShareTreeIcons();
+				})
 			})
 		},
 		linkTo: function(dir) {
@@ -1829,7 +1836,6 @@
 				// Purge deeper children
 				_.each(self._shareTreeCache, function(path, key) {
 					if (key > dir) {
-						console.log('Removing', key)
 						delete self._shareTreeCache[key]
 					}
 				})
@@ -1847,6 +1853,7 @@
 			var $shareTabView             = $('#shareTabView .dialogContainer');
 			var $shareTreeView            = $('<div>', { class : 'shareTreeView' , html : '<ul></ul>'});
 			var $shareTreeViewDescription = $('<p>', { class: 'shareTree-description', text : t('core', 'This item is part of the following shares:')})
+			var $shareTreeViewInfobox     = $('<a>', { class : 'icon icon-info',  title : t('core', 'This items i accessible to others via shares listed below. Click on the item to navigate to the share.')}).tooltip()
 
 			$shareTabView.ready( function() {
 
@@ -1855,7 +1862,7 @@
 
 				if (OC.Apps.AppSidebarVisible() && !$shareTabView.find('.shareTreeView').length) {
 
-					$shareTabView.append($shareTreeViewDescription,  $shareTreeView)
+					$shareTabView.append($shareTreeViewDescription.append($shareTreeViewInfobox),  $shareTreeView)
 
 					// Shared folders
 					_.each(self._shareTreeCache, function(folder) {
@@ -1863,24 +1870,27 @@
 						// Shares by folder
 						_.each(folder.shares, function(share) {
 
-							let $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
+							var $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
 
 							// user/group shares
 							if (share.share_type === OC.Share.SHARE_TYPE_USER || share.share_type === OC.Share.SHARE_TYPE_GROUP) {
-								let $name   = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
-								let $avatar = $('<div>',    { class : 'shareTree-item-avatar' })
+								var $name = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
+								var $icon = $('<div>',    { class : 'shareTree-item-avatar' })
 
-								$('<li class="shareTree-item">').append( $avatar, $name, $path).appendTo($shareTreeView.find('> ul'))
-								$avatar.avatar(share.share_with, 32)
+								$icon.avatar(share.share_with, 32)
 							}
 
 							// link shares
 							else if (share.share_type === OC.Share.SHARE_TYPE_LINK) {
-								let $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
-								let $icon = $('<span>',    { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
-
-								$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($shareTreeView.find('> ul'))
+								var $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
+								var $icon = $('<span>',    { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
 							}
+
+							$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($shareTreeView.find('> ul')).click(() => {
+								self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
+									self._updateDetailsView(folder.name, true)
+								}).catch(e => console.error(e))
+							})
 						})
 					})
 				}
