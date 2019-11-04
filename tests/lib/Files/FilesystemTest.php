@@ -284,7 +284,7 @@ class FilesystemTest extends TestCase {
 			['/toto.txt',                 [ '.*\.pst$', '.*dummy.*', '^sample.*', ], false],
 			['/etc/toto.txt',             [ '.*\.pst$', '.*dummy.*', '^sample.*', ], false],
 			['/etc/foo/machin.txt',       [ '.*\.pst$', '.*dummy.*', '^sample.*', ], false],
-			['/etc/dummy/machin.chose',   [ '.*\.pst$', '.*dummy.*', '^sample.*', ], false],
+			['/etc/dummy/machin.chose',   [ '.*\.pst$', '.*dummy.*', '^sample.*', ], true],
 			['/etc/foo/dummy_machin.txt', [ '.*\.pst$', '.*dummy.*', '^sample.*', ], true],
 			['/etc/foo/dUMMy_machin.txt', [ '.*\.pst$', '.*dummy.*', '^sample.*', ], true],
 			['/etc/foo/sample.txt',       [ '.*\.pst$', '.*dummy.*', '^sample.*', ], true],
@@ -332,9 +332,9 @@ class FilesystemTest extends TestCase {
 			['/foo/bac.kup/bar',      [ '.*backup.*', 'Thomas.*', ], false],
 			['/ThomasFolder',         [ '.*backup.*', 'Thomas.*', ], true],
 			['/thomasFolder',         [ '.*backup.*', 'Thomas.*', ], true],
-			['/foo/_Thomas/Files',    [ '.*backup.*', 'Thomas.*', ], false],
+			['/foo/hThomas/Files',    [ '.*backup.*', 'Thomas.*', ], false],
 			['/foo/ThomasFoo/Files',  [ '.*backup.*', 'Thomas.*', ], true],
-			['/foo/_ThomasFoo/Files', [ '.*backup.*', 'Thomas.*', ], false],
+			['/foo/zThomasFoo/Files', [ '.*backup.*', 'Thomas.*', ], false],
 		];
 	}
 
