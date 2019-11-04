@@ -568,6 +568,10 @@ table td.filename .uploadtext {
 	display: block;
 }
 
+.shareTree-description .icon.icon-info {
+	transform: translate(5px, 3px);
+}
+
 .shareTree-item-path {
 	display: block;
 }
