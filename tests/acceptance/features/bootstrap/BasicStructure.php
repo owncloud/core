@@ -190,7 +190,7 @@ trait BasicStructure {
 	 * @var string|null
 	 */
 	private $sourceIpAddress = null;
-	
+
 	private $guzzleClientHeaders = [];
 
 	/**
@@ -635,7 +635,7 @@ trait BasicStructure {
 	public function getGuzzleClientHeaders() {
 		return $this->guzzleClientHeaders;
 	}
-	
+
 	/**
 	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
 	 *
@@ -941,7 +941,7 @@ trait BasicStructure {
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
 		}
-		
+
 		$headers = $this->guzzleClientHeaders;
 
 		$config = null;
@@ -952,7 +952,7 @@ trait BasicStructure {
 				]
 			];
 		}
-		
+
 		$cookies = null;
 		if (!empty($this->cookieJar->toArray())) {
 			$cookies = $this->cookieJar;
@@ -1183,7 +1183,7 @@ trait BasicStructure {
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
 		$loginUrl = $this->getBaseUrl() . '/login';
 		// Request a new session and extract CSRF token
-		
+
 		$config = null;
 		if ($this->sourceIpAddress !== null) {
 			$config = [
@@ -1223,7 +1223,7 @@ trait BasicStructure {
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
 		$headers = $this->guzzleClientHeaders;
-		
+
 		$config = null;
 		if ($this->sourceIpAddress !== null) {
 			$config = [
