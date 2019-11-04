@@ -1788,6 +1788,9 @@
 							resolve()
 						})
 					}
+					else {
+						resolve()
+					}
 				}).fail(function(error) {
 					reject(error)
 				})
@@ -1831,13 +1834,14 @@
 			}
 
 			return this.getPathShareInfo(dir).then(() => {
+				var breadcrumbs = dir.split('/')
 
-				// Purge deeper children
-				_.each(self._shareTreeCache, function(path, key) {
-					if (key > dir) {
-						delete self._shareTreeCache[key]
-					}
-				})
+				// Diff keys in shareTreeCache agains the current dir
+				// removing deeper nested shares
+				self._shareTreeCache = _.omit(self._shareTreeCache, function(value, key) {
+					var diffs = _.difference(key.split('/'), breadcrumbs)
+					return diffs.length > 0
+				});
 			})
 		},
 
