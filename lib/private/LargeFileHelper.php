@@ -114,7 +114,9 @@ class LargeFileHelper {
 	*/
 	public function getFileSizeViaCurl($fileName) {
 		if (\OC::$server->getIniWrapper()->getString('open_basedir') === '') {
-			$encodedFileName = \rawurlencode($fileName);
+			$pathParts = \explode('/', $fileName);
+			$encodedPathParts = \array_map('rawurlencode', $pathParts);
+			$encodedFileName = \implode('/', $encodedPathParts);
 			$ch = \curl_init("file://$encodedFileName");
 			\curl_setopt($ch, CURLOPT_NOBODY, true);
 			\curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
