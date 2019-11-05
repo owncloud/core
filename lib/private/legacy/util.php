@@ -278,6 +278,7 @@ class OC_Util {
 
 		//check if we are using an object storage
 		$objectStore = \OC::$server->getSystemConfig()->getValue('objectstore', null);
+		$objectStore = \OC::$server->getSystemConfig()->getValue('objectstore_multibucket', $objectStore);
 		if (isset($objectStore)) {
 			self::initObjectStoreRootFS($objectStore);
 		} else {
