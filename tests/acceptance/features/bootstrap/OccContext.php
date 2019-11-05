@@ -62,6 +62,11 @@ class OccContext implements Context {
 	private $techPreviewEnabled = false;
 
 	/**
+	 * @var string initialTechPreviewStatus
+	 */
+	private $initialTechPreviewStatus;
+
+	/**
 	 * @return boolean
 	 */
 	public function isTechPreviewEnabled() {
@@ -994,7 +999,11 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function resetDAVTechPreview() {
-		if ($this->isTechPreviewEnabled()) {
+		if ($this->initialTechPreviewStatus === "") {
+			$this->featureContext->deleteSystemConfig('dav.enable.tech_preview');
+		} elseif ($this->initialTechPreviewStatus === 'true' && !$this->techPreviewEnabled) {
+			$this->enableDAVTechPreview();
+		} elseif ($this->initialTechPreviewStatus === 'false' && $this->techPreviewEnabled) {
 			$this->disableDAVTechPreview();
 		}
 	}
@@ -1014,5 +1023,8 @@ class OccContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$techPreviewEnabled = \trim($this->featureContext->getSystemConfigValue('dav.enable.tech_preview'));
+		$this->initialTechPreviewStatus = $techPreviewEnabled;
+		$this->techPreviewEnabled = $techPreviewEnabled === 'true';
 	}
 }
