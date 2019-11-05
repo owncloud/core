@@ -254,7 +254,7 @@ class SyncService {
 		}
 		// Home is handled differently, it should only be set on account creation, when there is no home already set
 		// Otherwise it could change on a sync and result in a new user folder being created
-		if ($a->getHome() === null) {
+		if ($a->getHome() === '') {
 			$home = false;
 			if ($proividesHome) {
 				$home = $backend->getHome($uid);
