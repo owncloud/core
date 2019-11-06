@@ -31,7 +31,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "doctrine/dbal": "~2.6.0",
+        "doctrine/dbal": "~2.5.0",
         "phpseclib/phpseclib": "^2.0",
         "jeremeamia/superclosure": "^2.4",
         "bantu/ini-get-wrapper": "v1.0.1",
