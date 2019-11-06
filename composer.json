@@ -7,7 +7,7 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.0.8"
+            "php": "7.1"
         }
     },
     "autoload" : {
@@ -30,7 +30,7 @@
         "roave/security-advisories": "dev-master"
     },
     "require": {
-        "php": ">=7.0.8",
+        "php": ">=7.1",
         "doctrine/dbal": "^2.5",
         "phpseclib/phpseclib": "^2.0",
         "jeremeamia/superclosure": "^2.4",
