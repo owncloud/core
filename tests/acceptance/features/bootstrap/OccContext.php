@@ -1023,7 +1023,15 @@ class OccContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$techPreviewEnabled = \trim($this->featureContext->getSystemConfigValue('dav.enable.tech_preview'));
+		SetupHelper::init(
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$techPreviewEnabled = \trim(
+			$this->featureContext->getSystemConfigValue('dav.enable.tech_preview')
+		);
 		$this->initialTechPreviewStatus = $techPreviewEnabled;
 		$this->techPreviewEnabled = $techPreviewEnabled === 'true';
 	}
