@@ -161,8 +161,16 @@ class DbHandlerTest extends TestCase {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
+		$resultToken = $result[0]['token'];
+		// MySQL and sqLite support inline column comments in doctrine/dbal
+		// When the result is null, and the database has been created with column comments,
+		// then dbal can return a string like:
+		// 'NULL --token used to exchange the shared secret'
+		if (\is_string($resultToken) && (\substr($resultToken, 0, 4) === 'NULL')) {
+			$resultToken = null;
+		}
 		$this->assertCount(1, $result);
-		$this->assertNull($result[0]['token']);
+		$this->assertNull($resultToken);
 		$this->dbHandler->addToken('http://server1', 'token');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
@@ -182,8 +190,16 @@ class DbHandlerTest extends TestCase {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
+		$resultToken = $result[0]['shared_secret'];
+		// MySQL and sqLite support inline column comments in doctrine/dbal
+		// When the result is null, and the database has been created with column comments,
+		// then dbal can return a string like:
+		// 'NULL --shared secret used to authenticate'
+		if (\is_string($resultToken) && (\substr($resultToken, 0, 4) === 'NULL')) {
+			$resultToken = null;
+		}
 		$this->assertCount(1, $result);
-		$this->assertNull($result[0]['shared_secret']);
+		$this->assertNull($resultToken);
 		$this->dbHandler->addSharedSecret('http://server1', 'secret');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
