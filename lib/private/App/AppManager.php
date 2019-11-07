@@ -78,6 +78,8 @@ class AppManager implements IAppManager {
 	private $shippedApps;
 	/** @var string[] */
 	private $alwaysEnabled;
+	/** @var string[] */
+	private $appsInTar;
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
 	/** @var IConfig */
@@ -555,6 +557,7 @@ class AppManager implements IAppManager {
 			$content = \json_decode(\file_get_contents($shippedJson), true);
 			$this->shippedApps = $content['shippedApps'];
 			$this->alwaysEnabled = $content['alwaysEnabled'];
+			$this->appsInTar = $content['appsInTar'];
 		}
 	}
 
@@ -564,6 +567,14 @@ class AppManager implements IAppManager {
 	public function getAlwaysEnabledApps() {
 		$this->loadShippedJson();
 		return $this->alwaysEnabled;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getAppsInTar() {
+		$this->loadShippedJson();
+		return $this->appsInTar;
 	}
 
 	/**
