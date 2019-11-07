@@ -95,12 +95,14 @@ class OCDialog extends OwncloudPage {
 		$contentElement = $this->dialogElement->find(
 			"xpath", $this->contentClassXpath
 		);
-		$this->assertElementNotNull(
-			$contentElement,
-			__METHOD__ .
-			" xpath $this->contentClassXpath " .
-			"could not find content element"
-		);
+		// Some dialogs (e.g. create link share) are not "ordinary" dialogs that
+		// just display a message. Those may not have any element matching
+		// contentClassXpath. We want to be able to iterate past those when
+		// looking for an "ordinary" message/error dialog. So in that case just
+		// return an empty string as the message.
+		if ($contentElement === null) {
+			return '';
+		}
 		return $this->getTrimmedText($contentElement);
 	}
 
