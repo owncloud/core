@@ -53,3 +53,45 @@ Feature: files and folders can be deleted from the trashbin
       And as "user0" the file with original path "/PARENT/CHILD/child.txt" should not exist in trash
       But as "user0" the file with original path "/textfile0.txt" should exist in trash
       And as "user0" the file with original path "/PARENT/child.txt" should exist in trash
+
+    Scenario: User tries to delete another user's trashbin
+      Given user "user0" has been created with default attributes and skeleton files
+      Given user "user1" has been created with default attributes and skeleton files
+      And user "user0" has deleted file "/textfile0.txt"
+      And user "user0" has deleted file "/textfile1.txt"
+      And user "user0" has deleted file "/PARENT/parent.txt"
+      And user "user0" has deleted file "/PARENT/CHILD/child.txt"
+      When user "user1" tries to delete the file with original path "textfile1.txt" from the trashbin of user "user0" using the trashbin API
+      Then the HTTP status code should be "404"
+      And as "user0" the file with original path "/textfile1.txt" should exist in trash
+      And as "user0" the file with original path "/textfile0.txt" should exist in trash
+      And as "user0" the file with original path "/PARENT/parent.txt" should exist in trash
+      And as "user0" the file with original path "/PARENT/CHILD/child.txt" should exist in trash
+
+    Scenario: User tries to delete trashbin file using invalid password
+      Given user "user0" has been created with default attributes and skeleton files
+      Given user "user1" has been created with default attributes and skeleton files
+      And user "user0" has deleted file "/textfile0.txt"
+      And user "user0" has deleted file "/textfile1.txt"
+      And user "user0" has deleted file "/PARENT/parent.txt"
+      And user "user0" has deleted file "/PARENT/CHILD/child.txt"
+      When user "user1" tries to delete the file with original path "textfile1.txt" from the trashbin of user "user0" using the password "invalid" and the trashbin API
+      Then the HTTP status code should be "401"
+      And as "user0" the file with original path "/textfile1.txt" should exist in trash
+      And as "user0" the file with original path "/textfile0.txt" should exist in trash
+      And as "user0" the file with original path "/PARENT/parent.txt" should exist in trash
+      And as "user0" the file with original path "/PARENT/CHILD/child.txt" should exist in trash
+
+    Scenario: User tries to delete trashbin file using no password
+      Given user "user0" has been created with default attributes and skeleton files
+      Given user "user1" has been created with default attributes and skeleton files
+      And user "user0" has deleted file "/textfile0.txt"
+      And user "user0" has deleted file "/textfile1.txt"
+      And user "user0" has deleted file "/PARENT/parent.txt"
+      And user "user0" has deleted file "/PARENT/CHILD/child.txt"
+      When user "user1" tries to delete the file with original path "textfile1.txt" from the trashbin of user "user0" using the password "" and the trashbin API
+      Then the HTTP status code should be "401"
+      And as "user0" the file with original path "/textfile1.txt" should exist in trash
+      And as "user0" the file with original path "/textfile0.txt" should exist in trash
+      And as "user0" the file with original path "/PARENT/parent.txt" should exist in trash
+      And as "user0" the file with original path "/PARENT/CHILD/child.txt" should exist in trash

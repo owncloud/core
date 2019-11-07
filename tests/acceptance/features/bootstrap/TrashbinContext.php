@@ -21,8 +21,10 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use GuzzleHttp\Message\ResponseInterface;
+use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -83,32 +85,14 @@ class TrashbinContext implements Context {
 			204, $response->getStatusCode()
 		);
 	}
-
 	/**
-	 * List trashbin folder
+	 * Get files list from the response from trashbin api
 	 *
-	 * @param string $user user
-	 * @param string $path path
+	 * @param SimpleXMLElement $responseXml
 	 *
-	 * @return array response
+	 * @return array
 	 */
-	public function listTrashbinFolder($user, $path) {
-		$path = $path ?? '/';
-		$responseXml = WebDavHelper::listFolder(
-			$this->featureContext->getBaseUrl(),
-			$user,
-			$this->featureContext->getPasswordForUser($user),
-			"/trash-bin/$user/$path",
-			1,
-			[
-				'oc:trashbin-original-filename',
-				'oc:trashbin-original-location',
-				'oc:trashbin-delete-timestamp',
-				'd:getlastmodified'
-			],
-			'trash-bin'
-		);
-
+	public function getTrashbinContentFromResponseXml($responseXml) {
 		$xmlElements = $responseXml->xpath('//d:response');
 		$files = \array_map(
 			static function (SimpleXMLElement $element) {
@@ -134,14 +118,47 @@ class TrashbinContext implements Context {
 				}
 
 				return [
-				'href' => (string)$href,
-				'name' => isset($name[0]) ? (string)$name[0] : null,
-				'mtime' => isset($mtime[0]) ? (string)$mtime[0] : null,
-				'original-location' => isset($originalLocation[0]) ? (string)$originalLocation[0] : null
+					'href' => (string)$href,
+					'name' => isset($name[0]) ? (string)$name[0] : null,
+					'mtime' => isset($mtime[0]) ? (string)$mtime[0] : null,
+					'original-location' => isset($originalLocation[0]) ? (string)$originalLocation[0] : null
 				];
 			}, $xmlElements
 		);
 
+		return $files;
+	}
+	/**
+	 * List trashbin folder
+	 *
+	 * @param string $user user
+	 * @param string $path path
+	 * @param string $asUser - To send request as another user
+	 * @param string $password
+	 *
+	 * @return array response
+	 */
+	public function listTrashbinFolder($user, $path, $asUser = null, $password = null) {
+		$asUser = $asUser ?? $user;
+		$path = $path ?? '/';
+		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
+		$responseXml = WebDavHelper::listFolder(
+			$this->featureContext->getBaseUrl(),
+			$asUser,
+			$password,
+			"/trash-bin/$user/$path",
+			1,
+			[
+				'oc:trashbin-original-filename',
+				'oc:trashbin-original-location',
+				'oc:trashbin-delete-timestamp',
+				'd:getlastmodified'
+			],
+			'trash-bin'
+		);
+
+		$this->featureContext->setResponseXmlObject($responseXml);
+		$files = $this->getTrashbinContentFromResponseXml($responseXml);
 		// filter root element
 		$files = \array_filter(
 			$files, static function ($element) use ($user, $path) {
@@ -153,6 +170,180 @@ class TrashbinContext implements Context {
 			}
 		);
 		return $files;
+	}
+
+	/**
+	 * Send a webdav request to list the trashbin content
+	 *
+	 * @param string $user user
+	 * @param string $asUser - To send request as another user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function sendTrashbinListRequest($user, $asUser = null, $password = null) {
+		$asUser = $asUser ?? $user;
+		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
+		$response = WebDavHelper::propfind(
+			$this->featureContext->getBaseUrl(),
+			$asUser,
+			$password,
+			"/trash-bin/$user/",
+			[
+				'oc:trashbin-original-filename',
+				'oc:trashbin-original-location',
+				'oc:trashbin-delete-timestamp',
+				'd:getlastmodified'
+			],
+			1,
+			'trash-bin',
+			2
+		);
+		$this->featureContext->setResponse($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
+		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
+		$responseXmlObject->registerXPathNamespace(
+			'ocs', 'http://open-collaboration-services.org/ns'
+		);
+		$this->featureContext->setResponseXmlObject($responseXmlObject);
+	}
+
+	/**
+	 * @When user :asUser tries to list the trashbin content for user :user
+	 *
+	 * @param string $asUser
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userTriesToListTheTrashbinContentForUser($asUser, $user) {
+		$this->sendTrashbinListRequest($user, $asUser);
+	}
+
+	/**
+	 * @When user :asUser tries to list the trashbin content for user :user using password :password
+	 *
+	 * @param string $asUser
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userTriesToListTheTrashbinContentForUserUsingPassword($asUser, $user, $password) {
+		$this->sendTrashbinListRequest($user, $asUser, $password);
+	}
+
+	/**
+	 * @Then the last webdav response should contain the following elements
+	 *
+	 * @param TableNode $elements
+	 *
+	 * @return void
+	 */
+	public function theLastWebdavResponseShouldContainFollowingElements(TableNode $elements) {
+		$files = $this->getTrashbinContentFromResponseXml($this->featureContext->getResponseXmlObject());
+		if (!($elements instanceof TableNode)) {
+			throw new InvalidArgumentException(
+				'$expectedElements has to be an instance of TableNode'
+			);
+		}
+		$elementRows = $elements->getHash();
+		foreach ($elementRows as $expectedElement) {
+			$found = false;
+			$expectedPath = $expectedElement['path'];
+			foreach ($files as $file) {
+				if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
+					$found = true;
+					break;
+				}
+			}
+			Assert::assertTrue($found, "$expectedPath expected to be listed in response but not found");
+		}
+	}
+
+	/**
+	 * @Then the last webdav response should not contain the following elements
+	 *
+	 * @param TableNode $elements
+	 *
+	 * @return void
+	 */
+	public function theLastWebdavResponseShouldNotContainFollowingElements(TableNode $elements) {
+		$files = $this->getTrashbinContentFromResponseXml($this->featureContext->getResponseXmlObject());
+		if (!($elements instanceof TableNode)) {
+			throw new InvalidArgumentException(
+				'$expectedElements has to be an instance of TableNode'
+			);
+		}
+		$elementRows = $elements->getHash();
+		foreach ($elementRows as $expectedElement) {
+			$notFound = true;
+			$expectedPath = "/" . \ltrim($expectedElement['path'], "/");
+			foreach ($files as $file) {
+				// Allow the table of expected elements to have entries that do
+				// not have to specify the "implied" leading slash, or have multiple
+				// leading slashes, to make scenario outlines more flexible
+				if ($expectedPath === $file['original-location']) {
+					$notFound = false;
+				}
+			}
+			Assert::assertTrue($notFound, "$expectedPath expected not to be listed in response but found");
+		}
+	}
+
+	/**
+	 * @When user :asUser tries to delete the file with original path :path from the trashbin of user :user using the trashbin API
+	 *
+	 * @param string $asUser
+	 * @param string $path
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userTriesToDeleteFromTrashbinOfUser($asUser, $path, $user) {
+		$numItemsDeleted = $this->tryToDeleteFileFromTrashbin($user, $path, $asUser);
+	}
+
+	/**
+	 * @When user :asUser tries to delete the file with original path :path from the trashbin of user :user using the password :password and the trashbin API
+	 *
+	 * @param string $asUser
+	 * @param string $path
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userTriesToDeleteFromTrashbinOfUserUsingPassword($asUser, $path, $user, $password) {
+		$numItemsDeleted = $this->tryToDeleteFileFromTrashbin($user, $path, $asUser, $password);
+	}
+
+	/**
+	 * @When user :asUser tries to restore the file with original path :path from the trashbin of user :user using the trashbin API
+	 *
+	 * @param string $asUser
+	 * @param string $path
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userTriesToRestoreFromTrashbinOfUser($asUser, $path, $user) {
+		$this->restoreElement($user, $path, null, true, $asUser);
+	}
+
+	/**
+	 * @When user :asUser tries to restore the file with original path :path from the trashbin of user :user using the password :password and the trashbin API
+	 *
+	 * @param string $asUser
+	 * @param string $path
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userTriesToRestoreFromTrashbinOfUserUsingPassword($asUser, $path, $user, $password) {
+		$this->restoreElement($user, $path, null, true, $asUser, $password);
 	}
 
 	/**
@@ -173,10 +364,13 @@ class TrashbinContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $originalPath
+	 * @param string $asUser
+	 * @param string $password
 	 *
 	 * @return int the number of items that were matched and requested for delete
 	 */
-	public function tryToDeleteFileFromTrashbin($user, $originalPath) {
+	public function tryToDeleteFileFromTrashbin($user, $originalPath, $asUser=null, $password=null) {
+		$asUser = $asUser ?? $user;
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
 		$numItemsDeleted = 0;
@@ -185,7 +379,7 @@ class TrashbinContext implements Context {
 			if ($entry['original-location'] === $originalPath) {
 				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
 				$response = $this->featureContext->makeDavRequest(
-					$user, 'DELETE', $trashItemHRef, [], null, 'trash-bin', null, 2
+					$asUser, 'DELETE', $trashItemHRef, [], null, 'trash-bin', null, 2, false, $password
 				);
 				$this->featureContext->setResponse($response);
 				$numItemsDeleted++;
@@ -287,19 +481,23 @@ class TrashbinContext implements Context {
 	 * @param string $user
 	 * @param string $trashItemHRef
 	 * @param string $destinationPath
+	 * @param string $asUser - To send request as another user
+	 * @param string $password
 	 *
-	 * @return void
+	 * @return ResponseInterface
 	 */
-	private function sendUndeleteRequest($user, $trashItemHRef, $destinationPath) {
+	private function sendUndeleteRequest($user, $trashItemHRef, $destinationPath, $asUser = null, $password = null) {
+		$asUser = $asUser ?? $user;
 		$destinationPath = \trim($destinationPath, '/');
 		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$destinationPath";
 
 		$trashItemHRef = $this->convertTrashbinHref($trashItemHRef);
 		$headers['Destination'] = $destinationValue;
 		$response = $this->featureContext->makeDavRequest(
-			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
+			$asUser, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2, false, $password
 		);
 		$this->featureContext->setResponse($response);
+		return $response;
 	}
 
 	/**
@@ -307,11 +505,14 @@ class TrashbinContext implements Context {
 	 * @param string $originalPath
 	 * @param string $destinationPath
 	 * @param bool $throwExceptionIfNotFound
+	 * @param string $asUser - To send request as another user
+	 * @param string $password
 	 *
-	 * @return void
+	 * @return ResponseInterface|null
 	 * @throws Exception
 	 */
-	private function restoreElement($user, $originalPath, $destinationPath = null, $throwExceptionIfNotFound = true) {
+	private function restoreElement($user, $originalPath, $destinationPath = null, $throwExceptionIfNotFound = true, $asUser = null, $password = null) {
+		$asUser = $asUser ?? $user;
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
 		if ($destinationPath === null) {
@@ -319,12 +520,13 @@ class TrashbinContext implements Context {
 		}
 		foreach ($listing as $entry) {
 			if ($entry['original-location'] === $originalPath) {
-				$this->sendUndeleteRequest(
+				return $this->sendUndeleteRequest(
 					$user,
 					$entry['href'],
-					$destinationPath
+					$destinationPath,
+					$asUser,
+					$password
 				);
-				return;
 			}
 		}
 		// The requested element to restore was not even in the trashbin.
@@ -336,6 +538,7 @@ class TrashbinContext implements Context {
 				. " cannot restore from trashbin because no element was found for user $user at original path $originalPath"
 			);
 		}
+		return null;
 	}
 
 	/**

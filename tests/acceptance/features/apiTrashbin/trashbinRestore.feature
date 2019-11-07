@@ -264,3 +264,51 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
+
+  @smokeTest
+  Scenario Outline: A deleted file cannot be restored by a different user
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user1" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the trashbin API
+    Then the HTTP status code should be "404"
+    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And user "user0" should not see the following elements
+      | /textfile0.txt     |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @smokeTest
+  Scenario Outline: A deleted file cannot be restored with invalid password
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "invalid" and the trashbin API
+    Then the HTTP status code should be "401"
+    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And user "user0" should not see the following elements
+      | /textfile0.txt     |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @smokeTest
+  Scenario Outline: A deleted file cannot be restored without using a password
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "" and the trashbin API
+    Then the HTTP status code should be "401"
+    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And user "user0" should not see the following elements
+      | /textfile0.txt     |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
