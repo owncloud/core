@@ -241,7 +241,7 @@ class Manager implements IManager {
 			}
 		} else {
 			// We can't handle other types yet
-			throw new \InvalidArgumentException('unkown share type');
+			throw new \InvalidArgumentException('Unknown share type');
 		}
 
 		// Verify the initiator of the share is set
@@ -481,8 +481,7 @@ class Manager implements IManager {
 		 *
 		 * Also this is not what we want in the future.. then we want to squash identical shares.
 		 */
-		$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_USER);
-		$existingShares = $provider->getSharesByPath($share->getNode());
+		$existingShares = $this->getSharesByPath($share->getNode());
 		foreach ($existingShares as $existingShare) {
 			// Ignore if it is the same share
 			try {
@@ -493,13 +492,12 @@ class Manager implements IManager {
 				//Shares are not identical
 			}
 
-			// Identical share already existst
-			if ($existingShare->getSharedWith() === $share->getSharedWith()) {
-				throw new \Exception('Path already shared with this user');
-			}
-
-			// The share is already shared with this user via a group share
-			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			// Identical share already exist
+			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+				if ($existingShare->getSharedWith() === $share->getSharedWith()) {
+					throw new \Exception('Path already shared with this user');
+				}
+			} elseif ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 				$group = $this->groupManager->get($existingShare->getSharedWith());
 				if ($group !== null) {
 					$user = $this->userManager->get($share->getSharedWith());
@@ -538,8 +536,7 @@ class Manager implements IManager {
 		 *
 		 * Also this is not what we want in the future.. then we want to squash identical shares.
 		 */
-		$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_GROUP);
-		$existingShares = $provider->getSharesByPath($share->getNode());
+		$existingShares = $this->getSharesByPath($share->getNode());
 		foreach ($existingShares as $existingShare) {
 			try {
 				if ($existingShare->getFullId() === $share->getFullId()) {
@@ -549,7 +546,7 @@ class Manager implements IManager {
 				//It is a new share so just continue
 			}
 
-			if ($existingShare->getSharedWith() === $share->getSharedWith()) {
+			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP && $existingShare->getSharedWith() === $share->getSharedWith()) {
 				throw new \Exception('Path already shared with this group');
 			}
 		}

@@ -1347,7 +1347,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-35488 @skipOnLDAP
+  @skipOnLDAP
   Scenario: creating a new share with user and a group having same name
     Given these users have been created without skeleton files:
       | username |
@@ -1358,23 +1358,16 @@ Feature: sharing
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     And user "user0" has shared file "randomfile.txt" with group "user1"
     When user "user0" shares file "randomfile.txt" with user "user1" using the sharing API
-    # Replace these lines when issue is fixed
-    # Then the OCS status code should be "100"
-    # And the HTTP status code should be "200"
-    Then the OCS status message should be:
-      """
-      Path already shared with this user
-      """
-    Then the OCS status code should be "403"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    # And user "user1" should see the following elements
-    #  | /randomfile.txt |
+    And user "user1" should see the following elements
+      | /randomfile.txt |
     And user "user2" should see the following elements
       | /randomfile.txt |
-    # And the content of file "randomfile.txt" for user "user1" should be "user0 file"
+    And the content of file "randomfile.txt" for user "user1" should be "user0 file"
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
 
-  @issue-35488 @skipOnLDAP
+  @skipOnLDAP
   Scenario: creating a new share with group and a user having same name
     Given these users have been created without skeleton files:
       | username |
@@ -1385,21 +1378,14 @@ Feature: sharing
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     And user "user0" has shared file "randomfile.txt" with user "user1"
     When user "user0" shares file "randomfile.txt" with group "user1" using the sharing API
-    # Replace these lines when issue is fixed
-    # Then the OCS status code should be "100"
-    # And the HTTP status code should be "200"
-    Then the OCS status message should be:
-      """
-      Path already shared with this group
-      """
-    Then the OCS status code should be "403"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    # And user "user2" should see the following elements
-    #  | /randomfile.txt |
     And user "user1" should see the following elements
       | /randomfile.txt |
-    # And the content of file "randomfile.txt" for user "user2" should be "user0 file"
+    And user "user2" should see the following elements
+      | /randomfile.txt |
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
+    And the content of file "randomfile.txt" for user "user2" should be "user0 file"
 
   @skipOnLDAP
   Scenario: creating a new share with user and a group having same name but different case
