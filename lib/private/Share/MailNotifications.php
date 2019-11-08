@@ -229,7 +229,7 @@ class MailNotifications {
 		$token = \array_pop($linkParts);
 		try {
 			$share = $this->shareManager->getShareByToken($token);
-			if ($share->getShareOwner() !== $currentUser) {
+			if ($share->getShareOwner() !== $currentUser && $share->getSharedBy() !== $currentUser) {
 				return $recipients;
 			}
 		} catch (ShareNotFound $e) {
