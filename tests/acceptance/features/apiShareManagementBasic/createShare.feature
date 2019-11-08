@@ -1347,7 +1347,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: creating a new share with user and a group having same name
     Given these users have been created without skeleton files:
       | username |
@@ -1367,7 +1367,7 @@ Feature: sharing
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: creating a new share with group and a user having same name
     Given these users have been created without skeleton files:
       | username |
