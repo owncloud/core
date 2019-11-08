@@ -29,6 +29,7 @@ namespace OC\Share20;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
+use OC\Helper\UserTypeHelper;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -462,8 +463,11 @@ class Manager implements IManager {
 	 * @throws \Exception
 	 */
 	protected function userCreateChecks(\OCP\Share\IShare $share) {
+		$userTypeHelper = new UserTypeHelper();
+		$isGuestUser = $userTypeHelper->isGuestUser($share->getSharedWith());
 		// Check if we can share with group members only
-		if ($this->shareWithGroupMembersOnly()) {
+		// We still should be able to share with guest user even when it's not a group member
+		if (!$isGuestUser && $this->shareWithGroupMembersOnly()) {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			// Verify we can share with this user
@@ -471,6 +475,7 @@ class Manager implements IManager {
 					$this->groupManager->getUserGroupIds($sharedBy),
 					$this->groupManager->getUserGroupIds($sharedWith)
 			);
+
 			if (empty($groups)) {
 				throw new \Exception('Only sharing with group members is allowed');
 			}

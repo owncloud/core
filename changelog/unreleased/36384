@@ -1,0 +1,6 @@
+Bugfix: Allow sharing with guests when group restriction is active
+
+It was not possible to share with guest users when
+'Restrict users to only share with users in their groups' is enabled.
+
+https://github.com/owncloud/core/pull/36384
