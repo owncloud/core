@@ -252,6 +252,9 @@ interface IShareProvider {
 	 * ]
 	 * Supported share types by this provider should have the corresponding entry even if
 	 * it doesn't support extra capabilities
+	 *
+	 * @return array
+	 * @since 10.3.2
 	 */
 	public function getProviderCapabilities();
 }

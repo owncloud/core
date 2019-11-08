@@ -202,7 +202,9 @@ interface IManager {
 	 *     \OCP\Share::SHARE_TYPE_* => [IShareProvider::CAPABILITY_*, ...]
 	 *   ]
 	 * ]
+	 *
 	 * @return array
+	 * @since 10.3.2
 	 */
 	public function getProvidersCapabilities();
 
