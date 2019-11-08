@@ -68,20 +68,17 @@ class AddTest extends TestCase {
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains($expectedOutput, $output);
 	}
-
-	/**
-	 * @TODO Drone is failing for interactive tests cases, remove commented code after fix of drone
-	 */
+	
 	public function inputProvider() {
 		return [
 			[['uid' => 'user1', ''],[], 'already exists.'],
 			[['uid' => 'user2', '--email' => 'invalidemail'], [], 'Invalid email address supplied'],
 			[['uid' => 'user2', '--password-from-env' => null], [], '--password-from-env given, but OC_PASS is empty!'],
-			/*[['uid' => 'user2'], ['p@ssw0rd', 'password'], 'Passwords did not match'],
+			[['uid' => 'user2'], ['p@ssw0rd', 'password'], 'Passwords did not match'],
 			[['uid' => 'user2'], ['p@ssw0rd', 'p@ssw0rd'], 'was created successfully'],
 			[['uid' => 'user2', '--display-name' => 'John Doe'], ['p@ssw0rd', 'p@ssw0rd'], 'Display name set to '],
 			[['uid' => 'user2', '--email' => 'user1@example.com'], ['p@ssw0rd', 'p@ssw0rd'], 'Email address set to '],
-			[['uid' => 'user2', '--group' => ['admin']], ['p@ssw0rd', 'p@ssw0rd'], 'added to group '],*/
+			[['uid' => 'user2', '--group' => ['admin']], ['p@ssw0rd', 'p@ssw0rd'], 'added to group ']
 		];
 	}
 }
