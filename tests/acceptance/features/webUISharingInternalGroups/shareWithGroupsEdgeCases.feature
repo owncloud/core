@@ -33,6 +33,7 @@ Feature: Sharing files and folders with internal groups
       | ?\?@#%@,; |
       | नेपाली    |
 
+  @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: Share file with a user and a group with same name
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -52,6 +53,7 @@ Feature: Sharing files and folders with internal groups
     When the user re-logs in as "user2" using the webUI
     Then folder "simple-folder" should be marked as shared with "user1" by "User Three" on the webUI
 
+  @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: Share file with a group and a user with same name
     Given these users have been created with default attributes and without skeleton files:
       | username |
