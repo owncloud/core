@@ -14,6 +14,7 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Host" : "Resursdators",
     "Share" : "Dalīties",
+    "<b>Note:</b> " : "<b>Piezīme:</b>",
     "Name" : "Nosaukums",
     "Enable encryption" : "Ieslēgt šifrēšanu",
     "Never" : "Nekad",

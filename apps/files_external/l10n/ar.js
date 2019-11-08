@@ -19,6 +19,7 @@ OC.L10N.register(
     "Name" : "اسم",
     "Never" : "أبدا",
     "Folder name" : "اسم المجلد",
+    "Authentication" : "مصادقة",
     "Configuration" : "إعداد",
     "Delete" : "إلغاء"
 },

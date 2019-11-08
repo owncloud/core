@@ -52,6 +52,7 @@
     "_%n folder_::_%n folders_" : ["%n mapes","%n mape","%n mapes"],
     "_%n file_::_%n files_" : ["%n faili","%n fails","%n faili"],
     "{dirs} and {files}" : "{dirs} un {files}",
+    "_including %n hidden_::_including %n hidden_" : ["%n paslēpti","ieskaitot %n paslēptu","ieskaitot %n paslēptos"],
     "You don’t have permission to upload or create files here" : "Jums nav tiesību, augšupielādēt vai veidot, šeit datnes",
     "_Uploading %n file_::_Uploading %n files_" : ["%n","Augšupielāde %n failu","Augšupielāde %n failus"],
     "New" : "Jauna",

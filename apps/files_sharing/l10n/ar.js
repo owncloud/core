@@ -1,7 +1,10 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Shared with you" : "تمت المشاركة معك",
+    "Shared with others" : "تمت المشاركة مع الآخرين",
     "Uploading..." : "تحميل",
+    "Decline Share" : "رفض المشاركة",
     "Cancel" : "إلغاء",
     "Share" : "شارك",
     "Declined" : "رفض",
@@ -15,6 +18,7 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s شارك %1$s معك",
     "Shares" : "المشاركات",
     "Accept" : "قبول",
+    "Decline" : "رفض",
     "This share is password-protected" : "هذه المشاركة محمية بكلمة مرور",
     "The password is wrong. Try again." : "كلمة المرور خاطئة. حاول مرة أخرى",
     "Password" : "كلمة المرور",
