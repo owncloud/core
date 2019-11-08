@@ -250,3 +250,20 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user2" should be "user0 content"
+
+  Scenario: Receiver tries to get file versions of unshared file from the sharer
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has shared file "textfile0.txt" with user "user1"
+    When user "user1" tries to get versions of file "textfile1.txt" from "user0"
+    Then the HTTP status code should be "404"
+    Then the value of the item "//s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+
+  Scenario: Receiver tries get file versions of shared file from the sharer
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "user0" has uploaded file with content "version 2" to "textfile0.txt"
+    And user "user0" has uploaded file with content "version 3" to "textfile0.txt"
+    And user "user0" has shared file "textfile0.txt" with user "user1"
+    When user "user1" tries to get versions of file "textfile0.txt" from "user0"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
