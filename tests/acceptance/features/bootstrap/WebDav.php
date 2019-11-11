@@ -353,6 +353,49 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user tries to get versions of file :file from :fileOwner
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param string $fileOwner
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userTriesToGetFileVersions($user, $file, $fileOwner) {
+		$fileId = $this->getFileIdForPath($fileOwner, $file);
+		$path = "/meta/" . $fileId . "/v";
+		$response = $this->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$path,
+			null,
+			null,
+			null,
+			null,
+			2
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then the number of versions should be :arg1
+	 *
+	 * @param int $number
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theNumberOfVersionShouldBe($number) {
+		$resXml = $this->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml($this->getResponse());
+		}
+		$xmlPart = $resXml->xpath("//d:getlastmodified");
+		Assert::assertEquals(\count($xmlPart), $number);
+	}
+
+	/**
 	 * @Given /^the administrator has (enabled|disabled) async operations$/
 	 *
 	 * @param string $enabledOrDisabled
