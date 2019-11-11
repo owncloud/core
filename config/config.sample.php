@@ -464,7 +464,7 @@ $CONFIG = array(
 'overwrite.cli.url' => '',
 
 /**
- * Define phoenix base URL
+ * Define the Phoenix base URL
  * If phoenix.baseUrl is set, public and private links will be redirected to this url.
  * Phoenix will handle these links accordingly.
  *
@@ -631,7 +631,7 @@ $CONFIG = array(
 
 /**
  * Check for a `.well-known` setup
- * Allows ownCloud to verify a working .well-known URL redirects.
+ * Allows ownCloud to verify a working .well-known URL redirect.
  * This is done by attempting to make a request from JS to
  * `https://your-domain.com/.well-known/caldav/`
  */
@@ -756,13 +756,13 @@ $CONFIG = array(
 'logtimezone' => 'Europe/Berlin',
 
 /**
- * Define logging if cron ran successfully
+ * Define logging if Cron ran successfully
  * Log successful cron runs.
  */
 'cron_log' => true,
 
 /**
- * Define the log rotations size
+ * Define the maximum log rotation file size
  * Enables log rotation and limits the total size of the logfiles.
  * The default is 0 or false which disables log rotation.
  * Specify a size in bytes, for example 104857600
@@ -987,7 +987,7 @@ $CONFIG = array(
 'maintenance' => false,
 
 /**
- * Enable or disable single user mode
+ * Enable or disable `single user mode`
  * When set to `true`, the ownCloud instance will be unavailable for all users
  * who are not in the `admin` group.
  */
@@ -1044,8 +1044,8 @@ $CONFIG = array(
 'memcache.distributed' => '\OC\Memcache\Memcached',
 
 /**
- * Define redis connection details
- * Connection details for redis to use for memory caching in a single server configuration.
+ * Define Redis connection details
+ * Connection details for Redis to use for memory caching in a single server configuration.
  *
  * For enhanced security it is recommended to configure Redis to require a password.
  * See http://redis.io/topics/security for more information.
@@ -1473,7 +1473,7 @@ $CONFIG = array(
 'upgrade.automatic-app-update' => true,
 
 /**
- * Set this ownCloud instance into debugging mode
+ * Place this ownCloud instance into debugging mode
  *
  * Only enable this for local development and not in production environments
  * This will disable the minifier and outputs some additional debug information

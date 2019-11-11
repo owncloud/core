@@ -97,7 +97,7 @@ $CONFIG = array(
  */
 
 /**
- * Define the group name for users allowed to use collabora.
+ * Define the group name for users allowed to use Collabora.
  */
 
 'collabora_group' => '',
