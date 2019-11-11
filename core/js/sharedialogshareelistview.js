@@ -16,7 +16,7 @@
 	var TEMPLATE =
 			'<ul id="shareWithList" class="shareWithList">' +
 			'{{#each sharees}}' +
-			'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
+			'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}" data-share-permissions-mask="{{sharePermissionsMask}}">' +
 			'<a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
 			'{{#if avatarEnabled}}' +
 			'<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
@@ -74,8 +74,11 @@
 			'</span>' +
 			'{{/each}}' +
 			'</div>' +
-			'<label for="share-expiration">Expire share on: {{expiration}}</label>' +
-			'<input type="date" ref="share-expiration" value="{{expires}}" class="expiration" placeholder="Expiration date" />' +
+			'{{#if defaultExpireDateUserEnabled}}' +
+			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
+			'<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration" placeholder="{{expirationDate}}" />' +
+			'</label>' +
+			'{{/if}}' +
 			'</li>' +
 			'{{/each}}' +
 			'</ul>'
@@ -190,7 +193,7 @@
 				hasUpdatePermission: this.model.hasUpdatePermission(shareIndex),
 				hasDeletePermission: this.model.hasDeletePermission(shareIndex),
 				shareAttributesV1: this.getAttributesObject(shareIndex),
-				expires: this.model.getExpirationDate(shareIndex),
+				expirationDate: this.model.getExpirationDate(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
@@ -221,6 +224,8 @@
 				createPermissionPossible: this.model.createPermissionPossible(),
 				updatePermissionPossible: this.model.updatePermissionPossible(),
 				deletePermissionPossible: this.model.deletePermissionPossible(),
+				defaultExpireDateUserEnabled: this.model.isDefaultExpireDateUserEnabled(),
+				defaultExpireDateUser: moment().add(this.model.defaultExpireDateUser(), 'days').format('YYYY-MM-DD'),
 				sharePermission: OC.PERMISSION_SHARE,
 				createPermission: OC.PERMISSION_CREATE,
 				updatePermission: OC.PERMISSION_UPDATE,
@@ -243,6 +248,8 @@
 		},
 
 		render: function() {
+			var self =this;
+
 			this.$el.html(this.template({
 				cid: this.cid,
 				sharees: this.getShareeList()
@@ -264,6 +271,13 @@
 			this.$el.find('.has-tooltip').tooltip({
 				placement: 'bottom'
 			});
+
+
+			if (this.model.isDefaultExpireDateUserEnabled()) {
+				this.$el.find('.expiration:not(.hasDatepicker)').each(function(){
+					self._setDatepicker(this)
+				})
+			}
 
 			this.delegateEvents();
 
@@ -387,6 +401,33 @@
 				$target.removeClass('hidden');
 				$loading.addClass('hidden');
 			});
+		},
+
+		_onExpirationChange: function(el) {
+			var $el        = $(el)
+			var shareId    = $el.closest('li').data('share-id');
+			var expiration = moment($el.val(), 'DD-MM-YYYY').format()
+
+			this.model.updateShare( shareId, {
+				expireDate: expiration
+			});
+		},
+
+		_setDatepicker: function(el) {
+			var self = this;
+			var $el = $(el);
+			var defaultExpireDate = "+" + this.model.defaultExpireDateUser() + 'd'
+
+			$el.datepicker({
+				minDate: "+1d",
+				dateFormat : 'dd-mm-yy',
+				onSelect : function() {
+					self._onExpirationChange(el)
+				}
+			});
+
+			if (this.model.isDefaultExpireDateUserEnforced() !== '')
+				$el.datepicker( "option", "maxDate", defaultExpireDate );
 		}
 	});
 

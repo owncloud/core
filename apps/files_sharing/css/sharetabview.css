@@ -76,6 +76,12 @@
 	margin-right: 8px;
 }
 
+#shareWithList li .expiration {
+	max-width: 90px;
+	text-align: left;
+	margin: 0 0 0 5px;
+}
+
 .shareTabView .icon-loading-small {
 	display         : inline-block;
 	z-index         : 1;

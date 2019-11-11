@@ -593,6 +593,18 @@
 				   || this.hasDeletePermission(shareIndex);
 		},
 
+		isDefaultExpireDateUserEnabled: function() {
+			return this.configModel.get('defaultExpireDateUserEnabled')
+		},
+
+		defaultExpireDateUser: function() {
+			return this.configModel.get('defaultExpireDateUser')
+		},
+
+		isDefaultExpireDateUserEnforced: function() {
+			return this.configModel.get('enforceDefaultExpireDateUser')
+		},
+
 		_getUrl: function(base, params) {
 			params = _.extend({format: 'json'}, params || {});
 			return OC.linkToOCS('apps/files_sharing/api/v1', 2) + base + '?' + OC.buildQueryString(params);
