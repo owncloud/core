@@ -597,8 +597,15 @@
 			return this.configModel.get('defaultExpireDateUserEnabled')
 		},
 
-		defaultExpireDateUser: function() {
-			return this.configModel.get('defaultExpireDateUser')
+		defaultExpireDateUser: function(formated) {
+			formated = formated || false;
+			defaultExpireDateUser = parseInt(this.configModel.get('defaultExpireDateUser'), 10)
+
+			if (formated) {
+				return moment().add(defaultExpireDateUser, 'days').format('YYYY-MM-DD')
+			}
+
+			return defaultExpireDateUser
 		},
 
 		isDefaultExpireDateUserEnforced: function() {
