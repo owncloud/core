@@ -39,9 +39,6 @@ use OC\Core\Controller\RolesController;
 use OC\Core\Controller\TokenController;
 use OC\Core\Controller\TwoFactorChallengeController;
 use OC\Core\Controller\UserController;
-use OC\Core\Controller\UserSyncController;
-use OC\User\AccountMapper;
-use OC\User\SyncService;
 use OC_Defaults;
 use OCP\AppFramework\App;
 use OCP\BackgroundJob\IJobList;
@@ -154,19 +151,6 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('L10N'),
 				$serverContainer->getEventDispatcher()
-			);
-		});
-		$container->registerService('UserSyncController', static function (SimpleContainer $c) {
-			$syncService = new SyncService(
-				$c->query(IConfig::class),
-				$c->query(ILogger::class),
-				$c->query(AccountMapper::class)
-			);
-			return new UserSyncController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$syncService,
-				$c->query('UserManager')
 			);
 		});
 		$container->registerService('CronController', static function (SimpleContainer $c) {

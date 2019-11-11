@@ -122,7 +122,7 @@ class SyncService {
 	 * @param \Traversable $userIds of users
 	 * @param \Closure $callback is called for every user to progress display
 	 */
-	public function run(UserInterface $backend, \Traversable $userIds, \Closure $callback = null) {
+	public function run(UserInterface $backend, \Traversable $userIds, \Closure $callback) {
 		// update existing and insert new users
 		foreach ($userIds as $uid) {
 			try {
@@ -138,9 +138,7 @@ class SyncService {
 			}
 
 			// call the callback
-			if ($callback) {
-				$callback($uid);
-			}
+			$callback($uid);
 		}
 	}
 
