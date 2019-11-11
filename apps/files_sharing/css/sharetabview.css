@@ -77,9 +77,19 @@
 }
 
 #shareWithList li .expiration {
-	max-width: 90px;
+	max-width: 100px;
 	text-align: left;
 	margin: 0 0 0 5px;
+}
+
+#shareWithList li .removeExpiration {
+	text-indent: -9999px;
+	border: 0 none;
+	transform: translate(calc(-100% - 2px), -1px);
+	background-color: #F8F8F8;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('../../../core/img/actions/close.svg');
 }
 
 .shareTabView .icon-loading-small {

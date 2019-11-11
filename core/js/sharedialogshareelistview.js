@@ -77,6 +77,7 @@
 			'{{#if defaultExpireDateUserEnabled}}' +
 			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
 			'<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration" placeholder="{{expirationDate}}" />' +
+			'<button class="removeExpiration">Remove</button>' +
 			'</label>' +
 			'{{/if}}' +
 			'</li>' +
@@ -109,7 +110,8 @@
 			'click .permissions': 'onPermissionChange',
 			'click .attributes': 'onPermissionChange',
 			'click .showCruds': 'onCrudsToggle',
-			'click .mailNotification': 'onSendMailNotification'
+			'click .mailNotification': 'onSendMailNotification',
+			'click .removeExpiration' : 'onRemoveExpiration'
 		},
 
 		initialize: function(options) {
@@ -225,7 +227,6 @@
 				updatePermissionPossible: this.model.updatePermissionPossible(),
 				deletePermissionPossible: this.model.deletePermissionPossible(),
 				defaultExpireDateUserEnabled: this.model.isDefaultExpireDateUserEnabled(),
-				defaultExpireDateUser: moment().add(this.model.defaultExpireDateUser(), 'days').format('YYYY-MM-DD'),
 				sharePermission: OC.PERMISSION_SHARE,
 				createPermission: OC.PERMISSION_CREATE,
 				updatePermission: OC.PERMISSION_UPDATE,
@@ -400,6 +401,14 @@
 
 				$target.removeClass('hidden');
 				$loading.addClass('hidden');
+			});
+		},
+
+		onRemoveExpiration: function(event) {
+			var shareId = $(event.target).closest('li').data('share-id');
+
+			this.model.updateShare( shareId, {
+				expireDate: null
 			});
 		},
 
