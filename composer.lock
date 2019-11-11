@@ -3019,16 +3019,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v3.4.33",
+            "version": "v3.4.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "ebc745e728f7a9fb571e7c116a14245c00b8f366"
+                "reference": "afc10b9c6b5196e0fecbc3bd373c7b4482e5b6b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/ebc745e728f7a9fb571e7c116a14245c00b8f366",
-                "reference": "ebc745e728f7a9fb571e7c116a14245c00b8f366",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/afc10b9c6b5196e0fecbc3bd373c7b4482e5b6b5",
+                "reference": "afc10b9c6b5196e0fecbc3bd373c7b4482e5b6b5",
                 "shasum": ""
             },
             "require": {
@@ -3091,7 +3091,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-10-24T15:33:53+00:00"
+            "time": "2019-11-08T17:25:00+00:00"
         },
         {
             "name": "symfony/translation",
@@ -4460,12 +4460,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "f8c8349a4b12a26edfa8b21d07d3dbeb6dcedcfa"
+                "reference": "15eb463aecc9e315b89b744ee0feb0bb1b4c6787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f8c8349a4b12a26edfa8b21d07d3dbeb6dcedcfa",
-                "reference": "f8c8349a4b12a26edfa8b21d07d3dbeb6dcedcfa",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/15eb463aecc9e315b89b744ee0feb0bb1b4c6787",
+                "reference": "15eb463aecc9e315b89b744ee0feb0bb1b4c6787",
                 "shasum": ""
             },
             "conflict": {
@@ -4554,7 +4554,7 @@
                 "propel/propel": ">=2-alpha.1,<=2-alpha.7",
                 "propel/propel1": ">=1,<=1.7.1",
                 "pusher/pusher-php-server": "<2.2.1",
-                "robrichards/xmlseclibs": ">=1,<3.0.2",
+                "robrichards/xmlseclibs": ">=1,<3.0.4",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
@@ -4668,7 +4668,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-10-29T22:11:03+00:00"
+            "time": "2019-11-07T10:12:47+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
