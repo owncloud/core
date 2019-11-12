@@ -76,6 +76,37 @@
 	margin-right: 8px;
 }
 
+#shareDialogLinkList .link-shares + #shareTreeUserGroupList {
+	margin-top: -20px;
+}
+
+#shareWithList + #shareTreeUserGroupList {
+	margin-top: -16px;
+}
+
+#shareTreeUserGroupList .shareTree-item {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.shareTree-item * {
+	cursor: pointer;
+}
+
+.shareTree-item-avatar {
+	border-radius: 50%;
+	float: left;
+}
+
+.shareTree-item-avatar + .shareTree-item-name,
+.shareTree-item-name + .shareTree-item-path {
+	margin-left: 8px;
+}
+
 .shareTabView .icon-loading-small {
 	display         : inline-block;
 	z-index         : 1;

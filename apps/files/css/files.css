@@ -537,45 +537,6 @@ table td.filename .uploadtext {
 	border-radius: 50%;
 }
 
-.shareTree {
-	border-top: 1px solid #eee;
-}
-
-.shareTree-item {
-	margin: 10px 0;
-	position: relative;
-	cursor: pointer;
-}
-
-.shareTree-item * {
-	cursor: pointer;
-}
-
-.shareTree-item-avatar {
-	border-radius: 50%;
-	float: left;
-	margin-right: 10px;
-	margin-top: 5px;
-}
-
-.shareTree-item-icon {
-	display: block;
-	float: left;
-	transform: translateY(5px);
-}
-
-.shareTree-item-name {
-	display: block;
-}
-
-.shareTree-description .icon.icon-info {
-	transform: translate(5px, 3px);
-}
-
-.shareTree-item-path {
-	display: block;
-}
-
 /* Show checkbox when hovering, checked, or selected */
 html.ie8 #fileList tr td.filename > .selectCheckBox:checked,
 html.ie8 #fileList tr.selected td.filename > .selectCheckBox,
