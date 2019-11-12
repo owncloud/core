@@ -18,7 +18,8 @@ Feature: Reshare by public link
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
 
-  Scenario: user shares a public link via email
+  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  Scenario: user reshares a public link of a received share via email
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has shared folder "/simple-folder" with user "user2" with permissions "share,read"
     And parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"

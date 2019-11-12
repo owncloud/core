@@ -251,6 +251,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user2" should be "user0 content"
 
+  @skipOnOcV10.3.0
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
