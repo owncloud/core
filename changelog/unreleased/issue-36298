@@ -4,3 +4,4 @@ occ system:cron will only output the progess bar if the newly introduced option 
 When being executed from crontab occ system::cron shall only print out in case of error.
 
 https://github.com/owncloud/core/issues/36298
+https://github.com/owncloud/core/pull/36304
