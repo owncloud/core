@@ -1,0 +1,6 @@
+Change: Update swiftmailer/swiftmailer (v6.2.1 => v6.2.3)
+
+swiftmailer/swiftmailer v6.2.3 was released. It provides changes for PHP  7.4 compatibility.
+
+https://github.com/owncloud/core/pull/36417
+https://github.com/swiftmailer/swiftmailer/releases/tag/v6.2.3
