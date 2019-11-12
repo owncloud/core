@@ -1453,7 +1453,6 @@ Feature: sharing
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
 
-  @skipOnLDAP @user_ldap-issue-461 @skipOnEncryption @encryption-issue-157
   Scenario Outline: Do not allow sharing of the entire share_folder
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
