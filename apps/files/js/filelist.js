@@ -360,6 +360,15 @@
 				}
 			}
 
+			// Setup event listeners
+			OCE.on('linkShareViewRendered', setShareTreeLinkView = function() {
+				self._setShareTreeLinkView()
+			});
+
+			OCE.on('shareeListViewRendered', setShareTreeLinkView = function() {
+				self._setShareTreeUserGroupView()
+			});
+
 			OC.Plugins.attach('OCA.Files.FileList', this);
 		},
 
@@ -386,6 +395,7 @@
 			// remove summary
 			this.$el.find('tfoot tr.summary').remove();
 			this.$fileList.empty();
+
 		},
 
 		/**
@@ -1343,8 +1353,6 @@
 				this.updateEmptyContent();
 			}
 
-			this._setShareTreeView()
-
 			return $tr;
 		},
 
@@ -1851,52 +1859,67 @@
 			this.$fileList.find('tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
 		},
 
-		_setShareTreeView: function() {
-			var self                      = this;
-			var $shareTabView             = $('#shareTabView .dialogContainer');
-			var $shareTreeView            = $('<div>', { class : 'shareTreeView' , html : '<ul></ul>'});
-			var $shareTreeViewDescription = $('<p>', { class: 'shareTree-description', text : t('core', 'This item is part of the following shares:')})
-			var $shareTreeViewInfobox     = $('<a>', { class : 'icon icon-info',  title : t('core', 'This item is accessible to others via shares listed below. Click on the item to navigate to the share.')}).tooltip()
+		_setShareTreeUserGroupView: function() {
+			var self  = this;
+			var $list = $('<ul>', { id : 'shareTreeUserGroupList' });
 
-			$shareTabView.ready( function() {
+			if (! _.keys(self._shareTreeCache).length > 0)
+				return
 
-				if (! _.keys(self._shareTreeCache).length > 0)
-				 	return
+			$('#shareWithList').after($list)
 
-				if (OC.Apps.AppSidebarVisible() && !$shareTabView.find('.shareTreeView').length) {
+			// Shared folders
+			_.each(self._shareTreeCache, function(folder) {
 
-					$shareTabView.append($shareTreeViewDescription.append($shareTreeViewInfobox),  $shareTreeView)
+				var shares = _.filter(folder.shares, function(share) {
+					return (share.share_type === OC.Share.SHARE_TYPE_USER || share.share_type === OC.Share.SHARE_TYPE_GROUP)
+				})
 
-					// Shared folders
-					_.each(self._shareTreeCache, function(folder) {
+				_.each(shares, function(share) {
 
-						// Shares by folder
-						_.each(folder.shares, function(share) {
+					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name })
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
+					var $icon = $('<div>',    { class : 'shareTree-item-avatar' })
 
-							var $path   = $('<span>',   { class : 'shareTree-item-path', text : folder.name })
+					$icon.avatar(share.share_with, 32)
 
-							// user/group shares
-							if (share.share_type === OC.Share.SHARE_TYPE_USER || share.share_type === OC.Share.SHARE_TYPE_GROUP) {
-								var $name = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
-								var $icon = $('<div>',    { class : 'shareTree-item-avatar' })
-
-								$icon.avatar(share.share_with, 32)
-							}
-
-							// link shares
-							else if (share.share_type === OC.Share.SHARE_TYPE_LINK) {
-								var $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
-								var $icon = $('<span>',    { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
-							}
-
-							$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($shareTreeView.find('> ul')).click(() => {
-								self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
-									self._updateDetailsView(folder.name, true)
-								}).catch(e => console.error(e))
-							})
-						})
+					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(() => {
+						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
+							self._updateDetailsView(folder.name, true)
+						}).catch(e => console.error(e))
 					})
-				}
+				})
+			})
+		},
+
+		_setShareTreeLinkView: function() {
+			var self  = this;
+			var $list = $('<ul>', { id : 'shareTreeUserGroupList' });
+
+			if (! _.keys(self._shareTreeCache).length > 0)
+				return
+
+			$('#shareDialogLinkList').find('ul.link-shares').after($list)
+
+			// Shared folders
+			_.each(self._shareTreeCache, function(folder) {
+
+				var shares = _.filter(folder.shares, function(share) {
+					return share.share_type === OC.Share.SHARE_TYPE_LINK
+				})
+
+				_.each(shares, function(share) {
+
+					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name })
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
+					var $icon = $('<span>',   { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
+
+					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(() => {
+						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
+							self._updateDetailsView(folder.name, true)
+						}).catch(e => console.error(e))
+					})
+				})
 			})
 		},
 
