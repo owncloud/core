@@ -77,6 +77,9 @@ try {
 	} catch (\Exception $ex2) {
 		// with some env issues, it can happen that the logger couldn't log properly,
 		// so print out the exception directly
+		// NOTE: If we've reached this point, something has gone really wrong because
+		// we couldn't even get the logger, so don't rely on ownCloud here.
+		\http_response_code(500);
 		echo('<html><body>');
 		echo('Exception occurred while logging exception: ' . $ex->getMessage() . '<br/>');
 		echo(\str_replace("\n", '<br/>', $ex->getTraceAsString()));
