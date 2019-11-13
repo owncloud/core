@@ -40,7 +40,26 @@ config = {
 			],
 			'coverage': False
 		},
-		'external' : {
+		'external-samba-windows' : {
+			'phpVersions': [
+				'7.1',
+			],
+			'databases': [
+				'sqlite',
+			],
+			'externalTypes': [
+				'samba',
+				'windows',
+			],
+			'coverage': True,
+			'extraCommandsBeforeTestRun': [
+				'ls -l /var/cache',
+				'mkdir /var/cache/samba',
+				'ls -l /var/cache',
+				'ls -l /var/cache/samba',
+			]
+		},
+		'external-other' : {
 			'phpVersions': [
 				'7.1',
 			],
@@ -49,11 +68,7 @@ config = {
 			],
 			'externalTypes': [
 				'webdav',
-				# disable - see https://github.com/owncloud/core/issues/36322
-				# 'samba',
 				'sftp',
-				# disable - see https://github.com/owncloud/core/issues/36322
-				# 'windows',
 				'scality'
 			],
 			'coverage': True
@@ -1062,6 +1077,7 @@ def phptests(testType):
 							installServer(phpVersion, db, params['logLevel']) +
 							installExtraApps(phpVersion, extraAppsDict) +
 							setupScality(phpVersion, needScality) +
+							params['extraSetup'] +
 							fixPermissions(phpVersion, False) +
 							owncloudLog('server', 'src') +
 						[
@@ -1075,7 +1091,7 @@ def phptests(testType):
 									'FILES_EXTERNAL_TYPE': filesExternalType,
 									'PRIMARY_OBJECTSTORE': primaryObjectstore
 								},
-								'commands': [
+								'commands': params['extraCommandsBeforeTestRun'] + [
 									command
 								]
 							}
