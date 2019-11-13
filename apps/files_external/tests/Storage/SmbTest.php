@@ -70,7 +70,7 @@ class SmbTest extends \Test\Files\Storage\Storage {
 
 	public function testRenameWithSpaces() {
 		$this->instance->mkdir('with spaces');
-		$this->assertTrue($this->instance->is_dir('foo bar'), 'Failed to create directory with spaces');
+		$this->assertTrue($this->instance->is_dir('with spaces'), 'Failed to create directory with spaces');
 		$result = $this->instance->rename('with spaces', 'foo bar');
 		$this->assertTrue($result, 'Failed to rename dir');
 		$this->assertTrue($this->instance->is_dir('foo bar'), 'Failed to locate the dir with a new name');
