@@ -1,4 +1,4 @@
-Bugfix: Fix sharing behavior to distinguish user and group having the same name.
+Bugfix: Fix sharing behavior to distinguish user and group having the same name
 
 Sharing a node with user and group having the same name was impossible.
 This bug was resolved by adding a share type check for share creation controls.

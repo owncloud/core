@@ -1,4 +1,4 @@
-Bugfix: Avoid unnecessary "Avatar not found" logs by initializing ViewOnlyPlugin only for files
+Bugfix: Avoid unnecessary "Avatar not found" logs
 
 ViewOnlyPlugin was producing too many warning logs for users who do not have an avatar. This problem has been resolved by registering ViewOnlyPlugin only for files.
 

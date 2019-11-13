@@ -1,4 +1,4 @@
-Bugfix: Prevent Forbidden errors in the logs while scanning the home storages of guest users
+Bugfix: Prevent Forbidden errors in the logs during file scan
 
 When running files:scan exceptions were logged for guest users. This has been corrected.
 

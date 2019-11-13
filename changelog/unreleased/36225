@@ -1,4 +1,4 @@
-Bugfix: Respect accounts.enable_medial_search while searching for remote users in share autocomplete
+Bugfix: Respect accounts.enable_medial_search setting for remote search
 
 Users taken from a federated instance were always searched with medial search
 in the share autocomplete box. Config option accounts.enable_medial_search
