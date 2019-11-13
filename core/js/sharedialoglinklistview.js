@@ -285,6 +285,8 @@
 				}, 3000);
 			});
 
+			OC.Share.trigger('linkShareViewRendered')
+
 			this.delegateEvents();
 
 			return this;

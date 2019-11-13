@@ -1894,7 +1894,7 @@
 
 		_setShareTreeLinkView: function() {
 			var self  = this;
-			var $list = $('<ul>', { id : 'shareTreeUserGroupList' });
+			var $list = $('<ul>', { id : 'shareTreeLinkList' });
 
 			if (! _.keys(self._shareTreeCache).length > 0)
 				return
