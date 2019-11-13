@@ -281,7 +281,7 @@ $CONFIG = array(
  * If your user backend does not allow password resets (e.g. when it's a read-only
  * user backend like LDAP), you can specify a custom link, where the user is
  * redirected to, when clicking the "reset password" link after a failed login-attempt.
- * In case you do not want to provide any link, replace the URL with 'disabled'.
+ * If you do not want to provide any link, replace the URL with 'disabled'.
  */
 'lost_password_link' => 'https://example.org/link/to/password/reset',
 
