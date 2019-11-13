@@ -167,7 +167,7 @@
 					});
 					this.linkShareView.render();
 					$linkShareView.append(this.linkShareView.$el);
-					OCE.emit('linkShareViewRendered')
+					OC.Share.trigger('linkShareViewRendered')
 				}
 			}
 		},
@@ -438,7 +438,7 @@
 			this.shareeListView.$el = this.$el.find('.shareeListView');
 			this.shareeListView.render();
 
-			OCE.emit('shareeListViewRendered')
+			OC.Share.trigger('shareeListViewRendered')
 
 			this.$el.find('.hasTooltip').tooltip();
 

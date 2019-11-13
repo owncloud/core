@@ -361,13 +361,13 @@
 			}
 
 			// Setup event listeners
-			OCE.on('linkShareViewRendered', setShareTreeLinkView = function() {
+			OC.Share.on('linkShareViewRendered', function() {
 				self._setShareTreeLinkView()
-			});
+			})
 
-			OCE.on('shareeListViewRendered', setShareTreeLinkView = function() {
+			OC.Share.on('shareeListViewRendered', function() {
 				self._setShareTreeUserGroupView()
-			});
+			})
 
 			OC.Plugins.attach('OCA.Files.FileList', this);
 		},
