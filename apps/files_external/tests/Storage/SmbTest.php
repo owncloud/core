@@ -39,7 +39,6 @@ use OCA\Files_External\Lib\Storage\SMB;
 class SmbTest extends \Test\Files\Storage\Storage {
 	protected function setUp() {
 		parent::setUp();
-		\OC::$server->getConfig()->setSystemValue('smb.logging.enable', true);
 		$id = $this->getUniqueID();
 		$config = include 'files_external/tests/config.smb.php';
 		if (!\is_array($config) or !$config['run']) {
