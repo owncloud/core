@@ -6,5 +6,4 @@ return [
 	'password'=>'Password123!',
 	'root'=>'',
 	'share'=>'test100',
-	'domain'=>'WORKGROUP',
 ];
