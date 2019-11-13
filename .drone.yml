@@ -257,10 +257,6 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - ls -l /var/cache
-  - mkdir /var/cache/samba
-  - ls -l /var/cache
-  - ls -l /var/cache/samba
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
@@ -392,10 +388,6 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - ls -l /var/cache
-  - mkdir /var/cache/samba
-  - ls -l /var/cache
-  - ls -l /var/cache/samba
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true

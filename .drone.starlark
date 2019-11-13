@@ -34,13 +34,7 @@ config = {
 				'samba',
 				'windows',
 			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
+			'coverage': True
 		},
 		'external-other' : {
 			'phpVersions': [
@@ -915,7 +909,6 @@ def phptests(testType):
 							installServer(phpVersion, db, params['logLevel']) +
 							installExtraApps(phpVersion, extraAppsDict) +
 							setupScality(phpVersion, needScality) +
-							params['extraSetup'] +
 							fixPermissions(phpVersion, False) +
 							owncloudLog('server', 'src') +
 						[
@@ -929,7 +922,7 @@ def phptests(testType):
 									'FILES_EXTERNAL_TYPE': filesExternalType,
 									'PRIMARY_OBJECTSTORE': primaryObjectstore
 								},
-								'commands': params['extraCommandsBeforeTestRun'] + [
+								'commands': [
 									command
 								]
 							}
