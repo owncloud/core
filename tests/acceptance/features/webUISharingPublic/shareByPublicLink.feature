@@ -266,23 +266,6 @@ Feature: Share by public link
     And the public tries to access the last created public link with wrong password "qwertyui" using the webUI
     Then the public should not get access to the publicly shared file
 
-  Scenario: user shares a public link via email with a personal message
-    Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
-    And user "user1" has created folder "/simple-folder"
-    And user "user1" has logged in using the webUI
-    When the user creates a new public link for folder "simple-folder" using the webUI with
-      | email           | foo@bar.co  |
-      | personalMessage | lorem ipsum |
-    Then the email address "foo@bar.co" should have received an email with the body containing
-			"""
-			User One shared simple-folder with you
-			"""
-    And the email address "foo@bar.co" should have received an email with the body containing
-			"""
-			lorem ipsum
-			"""
-    And the email address "foo@bar.co" should have received an email containing the last shared public link
-
   Scenario: user edits a name of an already existing public link
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
