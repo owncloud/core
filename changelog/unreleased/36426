@@ -1,0 +1,12 @@
+Change: Update Symfony components to 3.4.35
+
+The following Symfony components have been updated to version 3.4.35:
+- console
+- debug
+- event-dispatcher
+- process
+- routing
+- translation
+
+https://symfony.com/blog/symfony-3-4-35-released
+https://github.com/owncloud/core/pull/36426
