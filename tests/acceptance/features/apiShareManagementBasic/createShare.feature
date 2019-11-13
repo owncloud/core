@@ -1453,6 +1453,7 @@ Feature: sharing
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
 
+  @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario Outline: Do not allow sharing of the entire share_folder
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
