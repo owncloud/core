@@ -1,5 +1,0 @@
-Change: Update Bootstrap library
-
-We updated the bootstrap library to version 3.4.1 to get the latest security updates.
-
-https://github.com/owncloud/core/pull/36344
