@@ -73,18 +73,20 @@ try {
 	$baseuri = OC::$WEBROOT . '/public.php/' . $service . '/';
 
 	require_once OC_App::getAppPath($app) . '/' . $parts[1];
-} catch (Exception $ex) {
-	if ($ex instanceof \OC\ServiceUnavailableException) {
-		OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
-	} else {
-		OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+} catch (\Throwable $ex) {
+	try {
+		if ($ex instanceof \OC\ServiceUnavailableException) {
+			OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
+		} else {
+			OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+		}
+		//show the user a detailed error page
+		\OC::$server->getLogger()->logException($ex, ['app' => 'public']);
+		OC_Template::printExceptionErrorPage($ex);
+	} catch (\Throwable $ex2) {
+		// log through the crashLog
+		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		\OC::crashLog($ex);
+		\OC::crashLog($ex2);
 	}
-	//show the user a detailed error page
-	\OC::$server->getLogger()->logException($ex, ['app' => 'public']);
-	OC_Template::printExceptionErrorPage($ex);
-} catch (Error $ex) {
-	//show the user a detailed error page
-	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-	\OC::$server->getLogger()->logException($ex, ['app' => 'public']);
-	OC_Template::printExceptionErrorPage($ex);
 }

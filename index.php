@@ -67,26 +67,20 @@ try {
 } catch (\OCP\Files\ForbiddenException $ex) {
 	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
 	OC_Template::printErrorPage($ex->getMessage());
-} catch (Exception $ex) {
+} catch (\Throwable $ex) {
 	try {
 		\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
 		//show the user a detailed error page
 		OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 		OC_Template::printExceptionErrorPage($ex);
-	} catch (\Exception $ex2) {
+	} catch (\Throwable $ex2) {
 		// with some env issues, it can happen that the logger couldn't log properly,
 		// so print out the exception directly
 		// NOTE: If we've reached this point, something has gone really wrong because
 		// we couldn't even get the logger, so don't rely on ownCloud here.
-		\http_response_code(500);
-		echo('<html><body>');
-		echo('Exception occurred while logging exception: ' . $ex->getMessage() . '<br/>');
-		echo(\str_replace("\n", '<br/>', $ex->getTraceAsString()));
-		echo('</body></html>');
+		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		\OC::crashLog($ex);
+		\OC::crashLog($ex2);
 	}
-} catch (Error $ex) {
-	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
-	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-	OC_Template::printExceptionErrorPage($ex);
 }

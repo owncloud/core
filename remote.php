@@ -163,8 +163,13 @@ try {
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
 	require_once $file;
-} catch (Exception $ex) {
-	handleException($ex);
-} catch (Error $e) {
-	handleException($e);
+} catch (\Throwable $ex) {
+	try {
+		handleException($ex);
+	} catch (\Throwable $ex2) {
+		// log through the crashLog
+		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		\OC::crashLog($ex);
+		\OC::crashLog($ex2);
+	}
 }

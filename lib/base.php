@@ -1000,6 +1000,59 @@ class OC {
 			}
 		}
 	}
+
+	/**
+	 * Log an ownCloud's crash. This means that ownCloud isn't usable and can't log through
+	 * normal ownCloud's logger facilities.
+	 * This crash log can't use the normal "owncloud.log" file because the ownCloud's logger
+	 * requires additional context that can't be easily replicated. We'll use a different file.
+	 * The crash log will create a "crash-Y-m-d.log" file in the ownCloud's data directory, unless
+	 * the "crashdirectory" is set in the config.php file (make sure the "crashdirectory" exists and
+	 * it's writeable for the web server). The filename will be reused for all the crashes that happen
+	 * during the same day, and a new one will be used the next day.
+	 * The crash file will be created only if needed.
+	 *
+	 * Note: This is mainly for internal purposes. You're encouraged to use the ownCloud's logger
+	 * for anything you need to log.
+	 */
+	public static function crashLog(\Throwable $ex) {
+		$dataDir = self::$config->getValue('datadirectory', self::$SERVERROOT . '/data');
+		$crashDir = self::$config->getValue('crashdirectory', $dataDir);
+
+		$filename = "${crashDir}/crash-" . \date('Y-m-d') . '.log';
+
+		$date = \date('c');
+		$currentEntryId = \uniqid(\md5($date), true);
+		$entry = [
+			'date' => $date,
+			'parentId' => null,
+			'id' => $currentEntryId,
+			'class' => \get_class($ex),
+			'message' => $ex->getMessage(),
+			'stacktrace' => \array_map(function ($elem) {
+				unset($elem['args'], $elem['type']);
+				return $elem;
+			}, $ex->getTrace()),
+		];
+		\file_put_contents($filename, \json_encode($entry, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+		while (($ex = $ex->getPrevious()) !== null) {
+			$previousEntryId = $currentEntryId;
+			$currentEntryId = \uniqid(\md5($date), true);
+			$entry = [
+				'date' => $date,
+				'parentId' => $previousEntryId,
+				'id' => $currentEntryId,
+				'class' => \get_class($ex),
+				'message' => $ex->getMessage(),
+				'stacktrace' => \array_map(function ($elem) {
+					unset($elem['args'], $elem['type']);
+					return $elem;
+				}, $ex->getTrace()),
+			];
+			\file_put_contents($filename, \json_encode($entry, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND | LOCK_EX);
+		}
+	}
 }
 
 OC::init();
