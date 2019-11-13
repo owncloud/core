@@ -55,7 +55,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump league/flysystem from 1.0.51 to 1.0.55 [#35275](https://github.com/owncloud/core/pull/35275) [#35644](https://github.com/owncloud/core/pull/35644) [#36099](https://github.com/owncloud/core/issues/36099)
 - Bump nikic/php-parser from 4.2.1 to 4.2.4 [#35337](https://github.com/owncloud/core/pull/35337) [#36015](https://github.com/owncloud/core/pull/36015) [#36015](https://github.com/owncloud/core/issues/36015) [#36132](https://github.com/owncloud/core/issues/36132)
 - Bump phan to 1.3.5 and enable on PHP 7.2 7.3 - [#35818](https://github.com/owncloud/core/issues/35818)
-- Bump phpseclib/phpseclib from 2.0.15 to 2.0.21 [#35336](https://github.com/owncloud/core/pull/35336) [#35565](https://github.com/owncloud/core/pull/35565) [#35643](https://github.com/owncloud/core/pull/35643) [#35827](https://github.com/owncloud/core/pull/35827)
+- Bump phpseclib/phpseclib from 2.0.15 to 2.0.23 [#35336](https://github.com/owncloud/core/pull/35336) [#35565](https://github.com/owncloud/core/pull/35565) [#35643](https://github.com/owncloud/core/pull/35643) [#35827](https://github.com/owncloud/core/pull/35827) [#36196](https://github.com/owncloud/core/pull/36196) [#36200](https://github.com/owncloud/core/pull/36200)
 - Bump sabre/dav from 3.2 to 4.0.1 [#34559](https://github.com/owncloud/core/pull/34559) [#36094](https://github.com/owncloud/core/issues/36094)
 - Bump sabre/xml 2.1.2 from to 2.1.3 [#36036](https://github.com/owncloud/core/pull/36036) [#36036](https://github.com/owncloud/core/issues/36036)
 - Bump sabre/uri from 2.1.2 to 2.1.3 [#36189](https://github.com/owncloud/core/issues/36189)

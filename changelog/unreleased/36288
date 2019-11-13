@@ -1,0 +1,5 @@
+Bugfix: Prevent Forbidden errors in the logs while scanning the home storages of guest users
+
+When running files:scan exceptions were logged for guest users. This has been corrected.
+
+https://github.com/owncloud/core/pull/3288

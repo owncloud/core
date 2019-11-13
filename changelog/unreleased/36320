@@ -1,0 +1,6 @@
+Bugfix: Do not try to set null parent Id in the file cache
+
+In some cases when the parent Id of a resource was null, it was still being stored. That was causing database constraint errors. The issue has been fixed.
+
+https://github.com/owncloud/core/issues/36305
+https://github.com/owncloud/core/pull/36320
