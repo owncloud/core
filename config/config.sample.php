@@ -197,7 +197,7 @@ $CONFIG = array(
  * Enables or disables avatars or user profile photos
  * `true` enables avatars, or user profile photos, `false` disables them.
  * These appear on the User page, on user's Personal pages and are used by some apps
- * (contacts, mail, etc). 
+ * (contacts, mail, etc).
  */
 'enable_avatars' => true,
 
@@ -281,7 +281,7 @@ $CONFIG = array(
  * If your user backend does not allow password resets (e.g. when it's a read-only
  * user backend like LDAP), you can specify a custom link, where the user is
  * redirected to, when clicking the "reset password" link after a failed login-attempt.
- * In case you do not want to provide any link, replace the URL with 'disabled'.
+ * If you do not want to provide any link, replace the URL with 'disabled'.
  */
 'lost_password_link' => 'https://example.org/link/to/password/reset',
 
@@ -505,7 +505,7 @@ $CONFIG = array(
 'proxy' => '',
 
 /**
- * Define proxy authentication 
+ * Define proxy authentication
  * The optional authentication for the proxy to use to connect to the internet.
  * The format is: `username:password`.
  *
@@ -986,7 +986,7 @@ $CONFIG = array(
 'maintenance' => false,
 
 /**
- * Enable or disable `single user mode`
+ * Enable or disable `single user mode`.
  * When set to `true`, the ownCloud instance will be unavailable for all users
  * who are not in the `admin` group.
  */
@@ -1269,7 +1269,7 @@ $CONFIG = array(
  * Define blacklisted files
  * Blacklist a specific file or files and disallow the upload of files
  * with this name. `.htaccess` is blocked by default.
- * 
+ *
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
 'blacklisted_files' => [
