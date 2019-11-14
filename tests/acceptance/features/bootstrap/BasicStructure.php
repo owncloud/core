@@ -2281,6 +2281,63 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $asUser
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function sendUserSyncRequest($user, $asUser = null, $password = null) {
+		$asUser = $asUser ?? $this->getAdminUsername();
+		$password = $password ?? $this->getPasswordForUser($asUser);
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$asUser,
+			$password,
+			'POST',
+			"/cloud/user-sync/{$user}",
+			[],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @When the administrator tries to sync user :user using the OCS API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorTriesToSyncUserUsingTheOcsApi($user) {
+		$this->sendUserSyncRequest($user);
+	}
+
+	/**
+	 * @When user :asUser tries to sync user :user using the OCS API
+	 *
+	 * @param string $asUser
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userTriesToSyncUserUsingTheOcsApi($asUser, $user) {
+		$this->sendUserSyncRequest($user, $asUser);
+	}
+
+	/**
+	 * @When the administrator tries to sync user :user using password :password and the OCS API
+	 *
+	 * @param string $user
+	 * @param password $password
+	 *
+	 * @return void
+	 */
+	public function theAdministratorTriesToSyncUserUsingPasswordAndTheOcsApi($user, $password) {
+		$this->sendUserSyncRequest($user, null, $password);
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
