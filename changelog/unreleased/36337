@@ -1,4 +1,4 @@
-Bugfix: Disallow sharing share_folder or it's parents, show share folder permission correctly.
+Bugfix: Disallow sharing share_folder or it's parents
 
 share_folder had share permission so it was possible for the user to share it along with some received shares.
 It caused weird behavior. So sharing share_folder (or any of it's parent folders) was prohibited.
