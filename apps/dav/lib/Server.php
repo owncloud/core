@@ -157,9 +157,9 @@ class Server {
 
 		$this->server->addPlugin(new ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
+		$this->server->addPlugin(new LockPlugin());
 		if (!$this->isRequestForSubtree(['public-files'])) {
 			// public files won't have locks
-			$this->server->addPlugin(new LockPlugin());
 			$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory())));
 		}
 
