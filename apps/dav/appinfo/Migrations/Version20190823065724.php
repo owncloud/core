@@ -42,6 +42,15 @@ class Version20190823065724 implements ISchemaMigration {
 
 		$table = $schema->getTable("${prefix}properties");
 		$column = $table->getColumn('fileid');
+
+		/**
+		 * Doctrine DBAL does not have provision to drop default
+		 * value NULL from the column. Hence we have to execute an
+		 * SQL query to do this.
+		 */
+		$dropQuery = "ALTER TABLE oc_properties ALTER fileid DROP Default ";
+		$this->dbConnection->executeQuery($dropQuery);
+
 		/**
 		 * If the fileid column's notnull is set to false then
 		 * make sure before altering the column, that no entry
