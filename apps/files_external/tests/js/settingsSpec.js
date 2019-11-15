@@ -371,6 +371,7 @@ describe('OCA.External.Settings tests', function() {
 				expect(JSON.parse($tr.find('input.mountOptions').val())).toEqual({
 					encrypt: true,
 					previews: true,
+					read_only: false,
 					enable_sharing: false,
 					filesystem_check_changes: 0,
 					encoding_compatibility: false
