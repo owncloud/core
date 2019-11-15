@@ -59,7 +59,7 @@ class StorageConfigTest extends \Test\TestCase {
 		$storageConfig->setPriority(128);
 		$storageConfig->setApplicableUsers(['user1', 'user2']);
 		$storageConfig->setApplicableGroups(['group1', 'group2']);
-		$storageConfig->setMountOptions(['preview' => false]);
+		$storageConfig->setMountOptions(['preview' => false, 'read_only' => true]);
 
 		$json = $storageConfig->jsonSerialize();
 
@@ -74,6 +74,6 @@ class StorageConfigTest extends \Test\TestCase {
 		$this->assertSame(128, $json['priority']);
 		$this->assertSame(['user1', 'user2'], $json['applicableUsers']);
 		$this->assertSame(['group1', 'group2'], $json['applicableGroups']);
-		$this->assertSame(['preview' => false], $json['mountOptions']);
+		$this->assertSame(['preview' => false, 'read_only' => true], $json['mountOptions']);
 	}
 }
