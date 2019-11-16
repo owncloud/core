@@ -177,10 +177,7 @@ var UserList = {
 		 */
 		$tr.appendTo($userList);
 		if(UserList.isEmpty === true) {
-			//when the list was emptied, one row was left, necessary to keep
-			//add working and the layout unbroken. We need to remove this item
 			$tr.show();
-			$userListBody.find('tr:first').remove();
 			UserList.isEmpty = false;
 			UserList.checkUsersToLoad();
 		}
@@ -407,7 +404,6 @@ var UserList = {
 			OC.generateUrl('/settings/users/users'),
 			{ offset: UserList.offset, limit: limit, gid: gid, pattern: pattern },
 			function (result) {
-				var loadedUsers = 0;
 				var trs = [];
 				//The offset does not mirror the amount of users available,
 				//because it is backend-dependent. For correct retrieval,
@@ -418,7 +414,6 @@ var UserList = {
 					}
 					var $tr = UserList.add(user, false);
 					trs.push($tr);
-					loadedUsers++;
 				});
 				if (result.length > 0) {
 					UserList.doSort();
