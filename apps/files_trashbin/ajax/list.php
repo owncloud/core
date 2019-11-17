@@ -32,7 +32,7 @@ $data = [];
 
 // make filelist
 try {
-	$files = \OCA\Files_Trashbin\Helper::getTrashFiles($dir, \OCP\User::getUser(), $sortAttribute, $sortDirection);
+	$files = \OCA\Files_Trashbin\Helper::getTrashFiles($dir, \OCP\User::getUser(), $sortAttribute, $sortDirection, true);
 } catch (Exception $e) {
 	\http_response_code(404);
 	exit();
