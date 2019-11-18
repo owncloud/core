@@ -160,8 +160,10 @@ class VersioningTest extends TestCase {
 		$v1 = $versionsFolder2 . '/test.txt.v' . $t1;
 		$v2 = $versionsFolder2 . '/test.txt.v' . $t2;
 
-		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
+		// do not write both files in the same second
+		\sleep(1);
+		$this->rootView->file_put_contents($v1, 'version1');
 
 		// move file into the shared folder as recipient
 		\OC\Files\Filesystem::rename('/test.txt', '/folder1/test.txt');
