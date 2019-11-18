@@ -149,7 +149,8 @@ class VersioningTest extends TestCase {
 		$versionsFolder2 = '/' . $this->user2 . '/files_versions';
 		\OC\Files\Filesystem::file_put_contents('test.txt', 'test file');
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -330,7 +331,8 @@ class VersioningTest extends TestCase {
 	public function testRename() {
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -361,7 +363,8 @@ class VersioningTest extends TestCase {
 		\OC\Files\Filesystem::mkdir('folder1/folder2');
 		\OC\Files\Filesystem::file_put_contents("folder1/test.txt", "test file");
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -410,7 +413,8 @@ class VersioningTest extends TestCase {
 		\OC\Files\Filesystem::mkdir('folder2');
 		\OC\Files\Filesystem::file_put_contents('folder1/test.txt', 'test file');
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -454,7 +458,8 @@ class VersioningTest extends TestCase {
 		\OC\Files\Filesystem::mkdir('folder2');
 		\OC\Files\Filesystem::file_put_contents('folder2/test.txt', 'test file');
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -490,7 +495,8 @@ class VersioningTest extends TestCase {
 	public function testRenameSharedFile() {
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -538,7 +544,8 @@ class VersioningTest extends TestCase {
 	public function testCopy() {
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -569,7 +576,8 @@ class VersioningTest extends TestCase {
 	 * the correct 'path' and 'name'
 	 */
 	public function testGetVersions() {
-		$t1 = \time();
+		// not exactly the same timestamp as the file
+		$t1 = \time() - 60;
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
