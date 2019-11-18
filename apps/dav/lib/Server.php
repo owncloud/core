@@ -158,10 +158,10 @@ class Server {
 		$this->server->addPlugin(new ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 		$this->server->addPlugin(new LockPlugin());
-		if (!$this->isRequestForSubtree(['public-files'])) {
+		//if (!$this->isRequestForSubtree(['public-files'])) {
 			// public files won't have locks
-			$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory())));
-		}
+			$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin(new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory()), $this->isRequestForSubtree(['public-files'])));
+		//}
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
