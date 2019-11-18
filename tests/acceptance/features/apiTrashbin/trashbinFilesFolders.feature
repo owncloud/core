@@ -184,7 +184,7 @@ Feature: files and folders exist in the trashbin after being deleted
 
   # This issue makes this scenario behave differently based on previously created users.
   # So we use user that has not been created in any other scenarios.
-  @issue-36378 @skipOnLDAP
+  @issue-36378 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user40" has been created with default attributes and skeleton files
@@ -195,7 +195,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And the last webdav response should contain the following elements
     # Then the HTTP status code should be "401"
     # And the last webdav response should not contain following elements
-      | path           | user  |
+      | path          | user   |
       | textfile1.txt | user40 |
     Examples:
       | dav-path |
@@ -204,7 +204,7 @@ Feature: files and folders exist in the trashbin after being deleted
 
   # This issue makes this scenario behave differently based on previously created users.
   # So we use user that has not been created in any other scenarios.
-  @issue-36378 @skipOnLDAP
+  @issue-36378 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user60" has been created with default attributes and skeleton files
@@ -216,9 +216,9 @@ Feature: files and folders exist in the trashbin after being deleted
     And the last webdav response should contain the following elements
     # Then the HTTP status code should be "401"
     # And the last webdav response should not contain the following elements
-      | path           | user   |
-      | textfile0.txt  | user60 |
-      | textfile2.txt  | user60 |
+      | path          | user   |
+      | textfile0.txt | user60 |
+      | textfile2.txt | user60 |
     Examples:
       | dav-path |
       | old      |
@@ -226,7 +226,7 @@ Feature: files and folders exist in the trashbin after being deleted
 
   # This issue makes this scenario behave differently based on previously created users.
   # So we use user that has not been created in any other scenarios.
-  @issue-36378 @skipOnLDAP
+  @issue-36378 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user504" has been created with default attributes and skeleton files
@@ -235,19 +235,19 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user504" has deleted file "/textfile2.txt"
     And the administrator deletes user "user504" using the provisioning API
     Given these users have been created with default attributes and skeleton files but not initialized:
-    | username    |
-    | user504     |
+      | username |
+      | user504  |
     And user "user504" has deleted file "/textfile3.txt"
     When user "user1" tries to list the trashbin content for user "user504"
     Then the HTTP status code should be "207"
     # Then the HTTP status code should be "401"
     And the last webdav response should contain the following elements
-      | path           | user    |
-      | textfile3.txt  | user504 |
+      | path          | user    |
+      | textfile3.txt | user504 |
     And the last webdav response should not contain the following elements
-      | path           | user    |
-      | textfile0.txt  | user504 |
-      | textfile2.txt  | user504 |
+      | path          | user    |
+      | textfile0.txt | user504 |
+      | textfile2.txt | user504 |
       # | textfile3.txt  | user504 |
     Examples:
       | dav-path |
