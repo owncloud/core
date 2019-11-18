@@ -172,3 +172,12 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Do a PROPFIND to a non-existing URL
+    And user "user0" requests "<url>" with "PROPFIND" using basic auth
+    Then the value of the item "/d:error/s:message" in the response should be "<message>"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    Examples:
+      | url                                  | message                                      |
+      | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
+      | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |
