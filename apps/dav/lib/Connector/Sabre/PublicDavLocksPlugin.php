@@ -68,7 +68,7 @@ class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
 		} else {
 			$existingLocks = $this->getLocks($uri);
 			if (empty($existingLocks)) {
-				throw new MethodNotAllowed('Lock not allowed in public requests');
+				throw new MethodNotAllowed('Locking not allowed from public endpoint');
 			} else {
 				throw new Locked(\reset($existingLocks));
 			}
@@ -81,7 +81,7 @@ class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
 		if (!\call_user_func_array($this->publicRequestMatcher, [$uri])) {
 			return parent::httpUnlock($request, $response);
 		} else {
-			throw new MethodNotAllowed('Lock not allowed in public requests');
+			throw new MethodNotAllowed('Locking not allowed from public endpoint');
 		}
 	}
 }
