@@ -121,9 +121,11 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
-		//if (!$isPublicAccess) {
-		$server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin(new FileLocksBackend($server->tree, true, $this->timeFactory, $isPublicAccess), $isPublicAccess));
-		//}
+
+		$fileLocksBackend = new FileLocksBackend($server->tree, true, $this->timeFactory, $isPublicAccess);
+		$server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) use ($isPublicAccess) {
+			return $isPublicAccess;
+		}));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());

@@ -30,10 +30,22 @@ use Sabre\HTTP\ResponseInterface;
 use Sabre\DAV\Xml\Property\LockDiscovery;
 
 class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
-	protected $isPublicRequest;
-	public function __construct(BackendInterface $locksBackend, $isPublicRequest) {
+	protected $publicRequestMatcher;
+
+	/**
+	 * The callable must return true if the target uri is a public one or false otherwise
+	 * function ($uri) {
+	 *   if (isPublicResource($uri)) {
+	 *     return true;
+	 *   }
+	 *   return false;
+	 * }
+	 * @param BackendInterface $locksBackend
+	 * @param callable $publicRequestMatcher
+	 */
+	public function __construct(BackendInterface $locksBackend, callable $publicRequestMatcher) {
 		parent::__construct($locksBackend);
-		$this->isPublicRequest = $isPublicRequest;
+		$this->publicRequestMatcher = $publicRequestMatcher;
 	}
 
 	public function getPluginName() {
@@ -41,7 +53,7 @@ class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
 	}
 
 	public function getHTTPMethods($uri) {
-		if (!$this->isPublicRequest) {
+		if (!\call_user_func_array($this->publicRequestMatcher, [$uri])) {
 			return parent::getHTTPMethods($uri);
 		} else {
 			return [];
@@ -49,21 +61,24 @@ class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
 	}
 
 	public function httpLock(RequestInterface $request, ResponseInterface $response) {
-		if (!$this->isPublicRequest) {
+		$uri = $request->getPath();
+
+		if (!\call_user_func_array($this->publicRequestMatcher, [$uri])) {
 			return parent::httpLock($request, $response);
 		} else {
-			$uri = $request->getPath();
 			$existingLocks = $this->getLocks($uri);
 			if (empty($existingLocks)) {
 				throw new MethodNotAllowed('Lock not allowed in public requests');
 			} else {
-				throw new Locked(reset($existingLocks));
+				throw new Locked(\reset($existingLocks));
 			}
 		}
 	}
 
 	public function httpUnlock(RequestInterface $request, ResponseInterface $response) {
-		if (!$this->isPublicRequest) {
+		$uri = $request->getPath();
+
+		if (!\call_user_func_array($this->publicRequestMatcher, [$uri])) {
 			return parent::httpUnlock($request, $response);
 		} else {
 			throw new MethodNotAllowed('Lock not allowed in public requests');
