@@ -251,6 +251,57 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user2" should be "user0 content"
 
+  Scenario Outline: Moving a file (with versions) into a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    And user "<mover>" has uploaded file with content "test data 1" to "/testfile.txt"
+    And user "<mover>" has uploaded file with content "test data 2" to "/testfile.txt"
+    And user "<mover>" has uploaded file with content "test data 3" to "/testfile.txt"
+    When user "<mover>" moves file "/testfile.txt" to "/testshare/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testshare/testfile.txt" for user "user0" should be "test data 3"
+    And the content of file "/testshare/testfile.txt" for user "user1" should be "test data 3"
+    And as "<mover>" file "/testfile.txt" should not exist
+    And the version folder of file "/testshare/testfile.txt" for user "user0" should contain "2" elements
+    And the version folder of file "/testshare/testfile.txt" for user "user1" should contain "2" elements
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  Scenario Outline: Moving a file (with versions) out of a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has uploaded file with content "test data 1" to "/testshare/testfile.txt"
+    And user "user1" has uploaded file with content "test data 2" to "/testshare/testfile.txt"
+    And user "user1" has uploaded file with content "test data 3" to "/testshare/testfile.txt"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    When user "<mover>" moves file "/testshare/testfile.txt" to "/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testfile.txt" for user "<mover>" should be "test data 3"
+    And as "user0" file "/testshare/testfile.txt" should not exist
+    And as "user1" file "/testshare/testfile.txt" should not exist
+    And the version folder of file "/testfile.txt" for user "<mover>" should contain "2" elements
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
   @skipOnOcV10.3.0
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "user1" has been created with default attributes and without skeleton files
