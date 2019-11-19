@@ -68,7 +68,97 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  Scenario Outline: Moving a file to a folder with no permissions
+  Scenario Outline: Moving a file into a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    And user "<mover>" has uploaded file with content "test data" to "/testfile.txt"
+    When user "<mover>" moves file "/testfile.txt" to "/testshare/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testshare/testfile.txt" for user "user0" should be "test data"
+    And the content of file "/testshare/testfile.txt" for user "user1" should be "test data"
+    And as "<mover>" file "/testfile.txt" should not exist
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  Scenario Outline: Moving a file out of a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has uploaded file with content "test data" to "/testshare/testfile.txt"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    When user "<mover>" moves file "/testshare/testfile.txt" to "/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testfile.txt" for user "<mover>" should be "test data"
+    And as "user0" file "/testshare/testfile.txt" should not exist
+    And as "user1" file "/testshare/testfile.txt" should not exist
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    And user "<mover>" has created folder "/testsubfolder"
+    And user "<mover>" has uploaded file with content "test data" to "/testsubfolder/testfile.txt"
+    When user "<mover>" moves folder "/testsubfolder" to "/testshare/testsubfolder" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testshare/testsubfolder/testfile.txt" for user "user0" should be "test data"
+    And the content of file "/testshare/testsubfolder/testfile.txt" for user "user1" should be "test data"
+    And as "<mover>" file "/testsubfolder" should not exist
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has created folder "/testshare/testsubfolder"
+    And user "user1" has uploaded file with content "test data" to "/testshare/testsubfolder/testfile.txt"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    When user "<mover>" moves folder "/testshare/testsubfolder" to "/testsubfolder" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testsubfolder/testfile.txt" for user "<mover>" should be "test data"
+    And as "user0" folder "/testshare/testsubfolder" should not exist
+    And as "user1" folder "/testshare/testsubfolder" should not exist
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  Scenario Outline: Moving a file to a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
@@ -86,7 +176,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  Scenario Outline: Moving a file to overwrite a file in a folder with no permissions
+  Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
