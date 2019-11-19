@@ -82,6 +82,11 @@ class ListCommand extends Base {
 				InputOption::VALUE_NONE,
 				'Show passwords and secrets'
 			)->addOption(
+				'mount-options',
+				null,
+				InputOption::VALUE_NONE,
+				'Show all mount options independent if they are set to their default value or not'
+			)->addOption(
 				'full',
 				null,
 				InputOption::VALUE_NONE,
@@ -158,10 +163,6 @@ class ListCommand extends Base {
 				$headers[] = 'Applicable Groups';
 			}
 
-			if ($userId === self::ALL) {
-				$headers[] = 'Type';
-			}
-
 			if (!$input->getOption('show-password')) {
 				$hideKeys = ['password', 'refresh_token', 'token', 'client_secret', 'public_key', 'private_key'];
 				foreach ($mounts as $mount) {
@@ -177,6 +178,8 @@ class ListCommand extends Base {
 
 		// default output style
 		$full = $input->getOption('full');
+		$showMountOptions = $input->getOption('mount-options');
+		
 		$defaultMountOptions = [
 			'encrypt' => true,
 			'previews' => true,
@@ -187,7 +190,7 @@ class ListCommand extends Base {
 		$countInvalid = 0;
 		// In case adding array elements, add them only after the first two (Mount ID / Mount Point)
 		// and before the last one entry (Type). Necessary for option -s
-		$rows = \array_map(function (IStorageConfig $config) use ($shortView, $userId, $defaultMountOptions, $full, &$countInvalid) {
+		$rows = \array_map(function (IStorageConfig $config) use ($shortView, $userId, $defaultMountOptions, $full, $showMountOptions, &$countInvalid) {
 			if ($config->getBackend() instanceof InvalidBackend || $config->getAuthMechanism() instanceof InvalidAuth) {
 				$countInvalid++;
 			}
@@ -211,10 +214,13 @@ class ListCommand extends Base {
 			$configString = \implode(', ', $configStrings);
 
 			$mountOptions = $config->getMountOptions();
+			$mountOptions = \array_intersect($defaultMountOptions, $mountOptions);
 			// hide defaults
-			foreach ($mountOptions as $key => $value) {
-				if ($value === $defaultMountOptions[$key]) {
-					unset($mountOptions[$key]);
+			if (!$showMountOptions) {
+				foreach ($mountOptions as $key => $value) {
+					if ($value === $defaultMountOptions[$key]) {
+						unset($mountOptions[$key]);
+					}
 				}
 			}
 			$keys = \array_keys($mountOptions);
@@ -253,7 +259,7 @@ class ListCommand extends Base {
 				$values[] = $applicableGroups;
 			}
 			// This MUST stay the last entry
-			if ($shortView || $userId === self::ALL) {
+			if ($shortView) {
 				// query the auth type
 				if (\stristr($config->getBackend()->getText(), 'session') === true) {
 					$values[] =  'Session';
