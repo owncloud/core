@@ -39,7 +39,7 @@ class PersistentLocking implements ISettings {
 	}
 
 	public function getSectionID() {
-		return 'storage';
+		return 'additional';
 	}
 
 	public function getPanel() {

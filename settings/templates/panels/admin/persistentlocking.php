@@ -2,7 +2,7 @@
 script('settings', 'panels/persistentlocking');
 ?>
 <div class="section" id="persistentlocking">
-	<h2 class="app-name"><?php p($l->t('Persistent Locking')); ?></h2>
+	<h2 class="app-name"><?php p($l->t('Manual File Locking')); ?></h2>
 	<label for="lockTimeoutDefault"><?php p($l->t('Default timeout for the locks if not specified (in seconds)'));?></label>
 	<input type="number"
 		name="lock_timeout_default"
