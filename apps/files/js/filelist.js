@@ -1832,7 +1832,7 @@
 				return Promise.resolve()
 			}
 
-			return this.getPathShareInfo(dir).then(() => {
+			return this.getPathShareInfo(dir).then(function () {
 				var breadcrumbs = dir.split('/')
 
 				// Diff keys in shareTreeCache agains the current dir
@@ -1876,10 +1876,12 @@
 
 					$icon.avatar(share.share_with, 32)
 
-					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(() => {
+					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(function() {
 						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
 							self._updateDetailsView(folder.name, true)
-						}).catch(e => console.error(e))
+						}).catch(function(e) {
+							console.error(e)
+						})
 					})
 				})
 			})
@@ -1907,10 +1909,12 @@
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
 					var $icon = $('<span>',   { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
 
-					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(() => {
+					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(function() {
 						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
 							self._updateDetailsView(folder.name, true)
-						}).catch(e => console.error(e))
+						}).catch(function(e) {
+							console.error(e)
+						})
 					})
 				})
 			})
