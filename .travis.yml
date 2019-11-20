@@ -22,7 +22,6 @@ env:
 branches:
   only:
     - master
-    - /^stable\d+(\.\d+)?$/
 
 addons:
   apt: &common_apt
