@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Juan Pablo Villafañez <jvillafanez@solidgear.es>
  *
  * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
