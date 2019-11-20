@@ -360,15 +360,6 @@
 				}
 			}
 
-			// Setup event listeners
-			OC.Share.on('linkShareViewRendered', function() {
-				self._setShareTreeLinkView()
-			})
-
-			OC.Share.on('shareeListViewRendered', function() {
-				self._setShareTreeUserGroupView()
-			})
-
 			OC.Plugins.attach('OCA.Files.FileList', this);
 		},
 
@@ -1860,13 +1851,15 @@
 		},
 
 		_setShareTreeUserGroupView: function() {
+			console.log('lümmel')
+
 			var self  = this;
 			var $list = $('<ul>', { id : 'shareTreeUserGroupList' });
 
 			if (! _.keys(self._shareTreeCache).length > 0)
 				return
 
-			$('#shareWithList').after($list)
+			$('.shareeTreeUserGroupListView').html($list)
 
 			// Shared folders
 			_.each(self._shareTreeCache, function(folder) {
@@ -1899,7 +1892,7 @@
 			if (! _.keys(self._shareTreeCache).length > 0)
 				return
 
-			$('#shareDialogLinkList').find('ul.link-shares').after($list)
+			$('.shareeTreeLinkListView').html($list)
 
 			// Shared folders
 			_.each(self._shareTreeCache, function(folder) {
