@@ -404,7 +404,7 @@ OC.Share = _.extend(OC.Share || {}, {
 	dirname:function(path) {
 		return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
 	}
-}, OC.Backbone.Events);
+});
 
 $(document).ready(function() {
 

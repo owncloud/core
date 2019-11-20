@@ -262,8 +262,6 @@
 				placement: 'bottom'
 			});
 
-			OC.Share.trigger('shareeListViewRendered')
-
 			this.delegateEvents();
 
 			return this;

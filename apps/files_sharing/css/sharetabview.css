@@ -84,6 +84,7 @@
 	margin-top: -16px;
 }
 
+#shareTreeLinkList .shareTree-item,
 #shareTreeUserGroupList .shareTree-item {
 	display: flex;
 	justify-content: flex-start;
