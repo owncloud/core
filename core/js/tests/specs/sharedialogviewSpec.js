@@ -963,11 +963,11 @@ describe('OC.Share.ShareDialogView', function() {
 			expect(dialog.$('.tabsContainer>.tab:eq(1)').hasClass('hidden')).toEqual(false);
 		});
 		it('creates link share view only after selecting tab', function() {
-			expect(dialog.$('.linkShareView').is(':empty')).toEqual(true);
+			expect(dialog.$('.linkListView').is(':empty')).toEqual(true);
 			
 			dialog.$('.subTabHeaders>.subTabHeader:eq(1)').click();
 
-			expect(dialog.$('.linkShareView').is(':empty')).toEqual(false);
+			expect(dialog.$('.linkListView').is(':empty')).toEqual(false);
 		});
 	});
 });

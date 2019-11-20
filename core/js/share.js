@@ -432,6 +432,4 @@ $(document).ready(function() {
 		}
 	});
 
-
-
 });
