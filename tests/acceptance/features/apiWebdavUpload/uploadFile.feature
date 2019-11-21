@@ -26,16 +26,20 @@ Feature: upload file
 
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
-    When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
-    Then the content of file "<file_name>" for user "user0" should be "uploaded content"
+    When user "user0" uploads file with content "uploaded content" to <file_name> using the WebDAV API
+    Then the content of file <file_name> for user "user0" should be "uploaded content"
     Examples:
-      | dav_version | file_name     |
-      | old         | /C++ file.cpp |
-      | old         | /file #2.txt  |
-      | old         | /file ?2.txt  |
-      | new         | /C++ file.cpp |
-      | new         | /file #2.txt  |
-      | new         | /file ?2.txt  |
+      | dav_version | file_name           |
+      | old         | "C++ file.cpp"      |
+      | old         | "file #2.txt"       |
+      | old         | "file ?2.txt"       |
+      | old         | " ?fi=le&%#2 . txt" |
+      | old         | " # %ab ab?=ed "    |
+      | new         | "C++ file.cpp"      |
+      | new         | "file #2.txt"       |
+      | new         | "file ?2.txt"       |
+      | new         | " ?fi=le&%#2 . txt" |
+      | new         | " # %ab ab?=ed "    |
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
@@ -50,12 +54,14 @@ Feature: upload file
       | old         | /नेपाली                          | नेपाली                        |
       | old         | /folder #2.txt                   | file #2.txt                   |
       | old         | /folder ?2.txt                   | file ?2.txt                   |
+      | old         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
       | new         | /upload                          | abc.txt                       |
       | new         | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
       | new         | /C++ folder                      | C++ file.cpp                  |
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
       | new         | /folder ?2.txt                   | file ?2.txt                   |
+      | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
 
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path

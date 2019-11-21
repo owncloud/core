@@ -186,7 +186,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: rename a file in a received share - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
-    When user "user1" on "REMOTE" moves file "/simple-folder%20(2)/lorem.txt" to "/simple-folder%20(2)/renamed%20file.txt" using the WebDAV API
+    When user "user1" on "REMOTE" moves file "/simple-folder (2)/lorem.txt" to "/simple-folder (2)/renamed file.txt" using the WebDAV API
     And user "user1" re-logs in to "%local_server%" using the webUI
     And the user opens folder "simple-folder" using the webUI
     Then file "renamed file.txt" should be listed on the webUI

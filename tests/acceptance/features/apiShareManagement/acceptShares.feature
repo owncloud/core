@@ -566,8 +566,8 @@ Feature: accept/decline shares coming from internal users
     And user "user1" should not see the following elements
       | /FOLDER/abc.txt |
       | /PARENT/abc.txt |
-    And the content of file "/PARENT%20(2)/abc.txt" for user "user1" should be "uploaded content"
-    And the content of file "/FOLDER%20(2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/PARENT (2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/FOLDER (2)/abc.txt" for user "user1" should be "uploaded content"
 
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "user0" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
@@ -596,10 +596,10 @@ Feature: accept/decline shares coming from internal users
     And user "user2" should not see the following elements
       | /FOLDER/abc.txt |
       | /PARENT/abc.txt |
-    And the content of file "/PARENT%20(2)/abc.txt" for user "user1" should be "uploaded content"
-    And the content of file "/FOLDER%20(2)/abc.txt" for user "user1" should be "uploaded content"
-    And the content of file "/PARENT%20(2)/abc.txt" for user "user2" should be "uploaded content"
-    And the content of file "/FOLDER%20(2)/abc.txt" for user "user2" should be "uploaded content"
+    And the content of file "/PARENT (2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/FOLDER (2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/PARENT (2)/abc.txt" for user "user2" should be "uploaded content"
+    And the content of file "/FOLDER (2)/abc.txt" for user "user2" should be "uploaded content"
 
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
     When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API

@@ -69,7 +69,9 @@ Feature: upload file using old chunking
       | app |
       | dav |
     Examples:
-      | file-name |
-      | &#?       |
-      | TIÄFÜ     |
-      | 0         |
+      | file-name   |
+      | &#?         |
+      | TIÄFÜ       |
+      | 0           |
+      | @a#8a=b?c=d |
+      | ?abc=oc #   |

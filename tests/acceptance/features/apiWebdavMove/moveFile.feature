@@ -271,3 +271,13 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: renaming to a file with special characters
+    When user "user0" moves file "/welcome.txt" to "/<renamed_file>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the downloaded content when downloading file "/<renamed_file>" for user "user0" with range "bytes=0-6" should be "Welcome"
+    Examples:
+      | renamed_file  |
+      | #oc ab?cd=ef# |
+      | *a@b#c$e%f&g* |
+      | 1 2 3##.##    |
