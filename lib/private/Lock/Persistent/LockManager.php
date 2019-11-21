@@ -57,13 +57,15 @@ class LockManager {
 		// default to 30 minutes if nothing is specified
 		$timeout = $this->config->getAppValue('core', 'lock_timeout_default', self::LOCK_TIMEOUT_DEFAULT);
 		if (isset($lockInfo['timeout'])) {
-			$maxTimeout = $this->config->getAppValue('core', 'lock_timeout_max', self::LOCK_TIMEOUT_MAX);
+			// set the requested timeout
 			$timeout = $lockInfo['timeout'];
-			// max one day, not infinie
-			if ($timeout < 0 || $timeout > $maxTimeout) {
-				$timeout = $maxTimeout;
-			}
 		}
+		$maxTimeout = $this->config->getAppValue('core', 'lock_timeout_max', self::LOCK_TIMEOUT_MAX);
+		if ($timeout < 0 || $timeout > $maxTimeout) {
+			// ensure the timeout isn't greater than the one configured as maximum
+			$timeout = $maxTimeout;
+		}
+
 		$owner = isset($lockInfo['owner']) ? $lockInfo['owner'] : null;
 		if ($owner === null && $this->userSession->isLoggedIn()) {
 			$user = $this->userSession->getUser();
