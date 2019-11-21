@@ -528,23 +528,122 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/testfile (2).txt" for user "user2" should be "file from user1"
     And the content of file "/testfile (2) (2).txt" for user "user2" should be "file from user0"
 
-   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
-     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-     And user "user3" has been created with default attributes and skeleton files
-     And user "user1" has shared folder "/PARENT" with user "user0"
-     And user "user2" has shared folder "/PARENT" with user "user0"
-     When user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
-     And user "user0" declines the share "/PARENT (2)" offered by user "user1" using the sharing API
-     And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
-     And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
-     And user "user0" declines the share "/PARENT (2)" offered by user "user2" using the sharing API
-     And user "user0" declines the share "/PARENT (2) (2)" offered by user "user1" using the sharing API
-     And user "user3" shares folder "/PARENT" with user "user0" using the sharing API
-     And user "user0" accepts the share "/PARENT" offered by user "user3" using the sharing API
-     And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
-     And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
-     Then the sharing API should report to user "user0" that these shares are in the accepted state
-       | path               | uid_owner |
-       | /PARENT (2)/         | user3     |
-       | /PARENT (2) (2)/     | user2     |
-       | /PARENT (2) (2) (2)/ | user1     |
+  Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "user3" has been created with default attributes and skeleton files
+    And user "user1" has shared folder "/PARENT" with user "user0"
+    And user "user2" has shared folder "/PARENT" with user "user0"
+    When user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+    And user "user0" declines the share "/PARENT (2)" offered by user "user1" using the sharing API
+    And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
+    And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+    And user "user0" declines the share "/PARENT (2)" offered by user "user2" using the sharing API
+    And user "user0" declines the share "/PARENT (2) (2)" offered by user "user1" using the sharing API
+    And user "user3" shares folder "/PARENT" with user "user0" using the sharing API
+    And user "user0" accepts the share "/PARENT" offered by user "user3" using the sharing API
+    And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
+    And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+    Then the sharing API should report to user "user0" that these shares are in the accepted state
+      | path                 | uid_owner |
+      | /PARENT (2)/         | user3     |
+      | /PARENT (2) (2)/     | user2     |
+      | /PARENT (2) (2) (2)/ | user1     |
+
+  Scenario: user shares folder with matching name
+    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+    And user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /FOLDER/                 |
+      | /PARENT/                 |
+      | /PARENT%20(2)/           |
+      | /FOLDER%20(2)/           |
+
+  Scenario: user shares folder with matching name in a group
+    Given user "user3" has been created with default attributes and skeleton files
+    When user "user3" shares folder "/PARENT" with group "grp1" using the sharing API
+    And user "user3" shares folder "/FOLDER" with group "grp1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /FOLDER/                 |
+      | /PARENT/                 |
+      | /PARENT%20(2)/           |
+      | /FOLDER%20(2)/           |
+    And user "user2" should see the following elements
+      | /FOLDER/                 |
+      | /PARENT/                 |
+      | /PARENT%20(2)/           |
+      | /FOLDER%20(2)/           |
+
+  Scenario: user shares file with matching name in a group
+    When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
+    And user "user0" shares file "/textfile1.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /textfile0.txt                 |
+      | /textfile1.txt                 |
+      | /textfile0%20(2).txt           |
+      | /textfile1%20(2).txt           |
+    And user "user2" should see the following elements
+      | /textfile0.txt                 |
+      | /textfile1.txt                 |
+      | /textfile0%20(2).txt           |
+      | /textfile1%20(2).txt           |
+
+  Scenario: user shares resource with matching name with another user when auto accept is disabled
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+    And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /PARENT/                 |
+      | /textfile0.txt           |
+    But user "user1" should not see the following elements
+      | /textfile0%20(2).txt     |
+      | /PARENT%20(2)/           |
+    When user "user1" accepts the share "/textfile0.txt" offered by user "user0" using the sharing API
+    And user "user1" accepts the share "/PARENT" offered by user "user0" using the sharing API
+    Then user "user1" should see the following elements
+      | /PARENT/                 |
+      | /textfile0.txt           |
+      | /PARENT%20(2)/           |
+      | /textfile0%20(2).txt     |
+
+  Scenario: user shares file with matching name in a group when auto accept is disabled
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /textfile0.txt                 |
+    But user "user1" should not see the following elements
+      | /textfile0%20(2).txt           |
+    And user "user2" should see the following elements
+      | /textfile0.txt                 |
+    But user "user2" should not see the following elements
+      | /textfile0%20(2).txt           |
+    When user "user1" accepts the share "/textfile0.txt" offered by user "user0" using the sharing API
+    Then user "user1" should see the following elements
+      | /textfile0.txt                 |
+      | /textfile0%20(2).txt           |
+    When user "user2" accepts the share "/textfile0.txt" offered by user "user0" using the sharing API
+    Then user "user2" should see the following elements
+      | /textfile0.txt                 |
+      | /textfile0%20(2).txt           |
+
+  Scenario: user shares matching folder with a user before that user has logged in
+    Given these users have been created with skeleton files but not initialized:
+      | username     |
+      | user3        |
+    And user "user0" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
+    When user "user0" shares folder "/PARENT" with user "user3" using the sharing API
+    Then user "user3" should see the following elements
+      | /PARENT/          |
+      | /PARENT/abc.txt   |
+    And user "user3" should not see the following elements
+      | /PARENT%20(2)/          |
+    And the content of file "/PARENT/abc.txt" for user "user3" should be "uploaded content"
