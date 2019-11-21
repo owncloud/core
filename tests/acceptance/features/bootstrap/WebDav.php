@@ -2839,10 +2839,11 @@ trait WebDav {
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
 		}
-		$fullWebDavPath = \ltrim(
-			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH) . "/",
+		$fullWebDavPath = \trim(
+			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH),
 			"/"
-		);
+		) . "/" ;
+
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {
