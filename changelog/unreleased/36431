@@ -1,0 +1,5 @@
+Bugfix: Fix user search problem happening after user deletion
+
+After a user search in user management web-UI, if the search result has a single user entry and afterward the user was deleted from the interface, the search was no longer work until refreshing the page. This bug has been fixed.
+
+https://github.com/owncloud/core/pull/36431
