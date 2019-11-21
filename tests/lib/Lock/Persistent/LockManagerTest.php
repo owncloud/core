@@ -27,6 +27,7 @@ use OC\Lock\Persistent\LockMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\IConfig;
 use OCP\Lock\Persistent\ILock;
 use Test\TestCase;
 
@@ -45,6 +46,8 @@ class LockManagerTest extends TestCase {
 	private $manager;
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;
+	/** @var IConfig */
+	private $config;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -52,7 +55,8 @@ class LockManagerTest extends TestCase {
 		$this->lockMapper = $this->createMock(LockMapper::class);
 		$this->userSession = $this->createMock(IUserSession::class);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
-		$this->manager = new LockManager($this->lockMapper, $this->userSession, $this->timeFactory);
+		$this->config = $this->createMock(IConfig::class);
+		$this->manager = new LockManager($this->lockMapper, $this->userSession, $this->timeFactory, $this->config);
 
 		$user = $this->createMock(IUser::class);
 		$user->method('getDisplayName')->willReturn('Alice');
@@ -71,6 +75,12 @@ class LockManagerTest extends TestCase {
 		$this->expectException(\InvalidArgumentException::class);
 		$this->expectExceptionMessage('No token provided in $lockInfo');
 
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, 120],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, 150],
+			]));
+
 		$this->manager->lock(6, '/foo/bar', 123, []);
 	}
 
@@ -80,10 +90,22 @@ class LockManagerTest extends TestCase {
 		$this->expectException(\InvalidArgumentException::class);
 		$this->expectExceptionMessage('Invalid file id');
 
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, 120],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, 150],
+			]));
+
 		$this->manager->lock(6, '/foo/bar', -1, []);
 	}
 
 	public function testLockInsert() {
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
+			]));
+
 		$this->lockMapper->method('getLocksByPath')->willReturn([]);
 		$this->lockMapper->expects($this->once())
 			->method('insert')
@@ -110,6 +132,12 @@ class LockManagerTest extends TestCase {
 	}
 
 	public function testLockUpdate() {
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
+			]));
+
 		$this->lockMapper->expects($this->once())
 			->method('getLocksByPath')
 			->with(6, '/foo/bar', false)
@@ -167,6 +195,12 @@ class LockManagerTest extends TestCase {
 	 * @dataProvider lockTimeoutProvider
 	 */
 	public function testLockTimeout($givenTimeout, $expectedTimeout) {
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
+			]));
+
 		$this->lockMapper->method('getLocksByPath')->willReturn([]);
 		$lockInfo = [
 			'token' => 'qwertzuiopü',
