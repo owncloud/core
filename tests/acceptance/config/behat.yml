@@ -508,6 +508,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - LoggingContext:
 
     webUITags:
       paths:
