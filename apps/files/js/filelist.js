@@ -1851,8 +1851,6 @@
 		},
 
 		_setShareTreeUserGroupView: function() {
-			console.log('lümmel')
-
 			var self  = this;
 			var $list = $('<ul>', { id : 'shareTreeUserGroupList' });
 
