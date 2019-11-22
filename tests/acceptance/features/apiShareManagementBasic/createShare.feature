@@ -425,6 +425,50 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @issue-36442 @public_link_share-feature-required
+  Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder    |
+      | permissions | read,create |
+    # And the fields of the last response should include
+    #  | id          | A_NUMBER    |
+    #  | share_type  | public_link |
+    #  | permissions | read        |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "401"
+    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "401"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 403             | 200              |
+      #| 1               | 100             | 200              |
+      | 2               | 403             | 403              |
+      #| 2               | 200             | 200              |
+
+  @public_link_share-feature-required
+  Scenario Outline: Creating a link share with read+update+create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder           |
+      | permissions | read,update,create |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id          | A_NUMBER    |
+      | share_type  | public_link |
+      | permissions | read        |
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
