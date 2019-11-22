@@ -456,7 +456,7 @@ Feature: sharing
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /afolder    |
-      | permissions | create |
+      | permissions | create      |
     # And the fields of the last response should include
     #  | id          | A_NUMBER    |
     #  | share_type  | public_link |
@@ -532,7 +532,7 @@ Feature: sharing
       #| 1               | 100             | 200              | read,create,update,delete  |
       | 2               | 403             | 403              | read,create,update,delete  |
       #| 2               | 200             | 200              | read,create,update,delete  |
-z
+
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with read+update+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
