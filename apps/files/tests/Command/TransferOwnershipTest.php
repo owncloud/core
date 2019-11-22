@@ -163,15 +163,6 @@ class TransferOwnershipTest extends TestCase {
 			->setShareType(Share::SHARE_TYPE_USER)
 			->setPermissions(19);
 		$this->shareManager->createShare($share);
-
-		$subFolder = $userFolder->get('transfer/sub_folder');
-		$share = $this->shareManager->newShare();
-		$share->setNode($subFolder)
-			->setSharedBy('source-user')
-			->setSharedWith('share-receiver')
-			->setShareType(Share::SHARE_TYPE_USER)
-			->setPermissions(19);
-		$this->shareManager->createShare($share);
 	}
 
 	public function testTransferAllFiles() {
@@ -187,13 +178,13 @@ class TransferOwnershipTest extends TestCase {
 		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount(0, $sourceShares);
-		$this->assertCount(4, $targetShares);
+		$this->assertCount(3, $targetShares);
 	}
 
 	public function folderPathProvider() {
 		return [
-			['transfer', 1, 3],
-			['transfer/sub_folder', 2, 2]
+			['transfer', 1, 2],
+			['transfer/sub_folder', 2, 1]
 		];
 	}
 
