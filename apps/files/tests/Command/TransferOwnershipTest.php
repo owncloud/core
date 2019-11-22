@@ -22,9 +22,12 @@
 namespace OCA\Files\Tests\Command;
 
 use OC\Encryption\Manager;
+use OC\Files\ObjectStore\ObjectStoreStorage;
+use OC\Files\View;
 use OC\Share20\ProviderFactory;
 use OCA\Files\Command\TransferOwnership;
 use OCP\Files\Mount\IMountManager;
+use OCP\Files\Storage;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share;
@@ -166,6 +169,7 @@ class TransferOwnershipTest extends TestCase {
 	}
 
 	public function testTransferAllFiles() {
+		$this->markTestSkippedIfMultiBucketObjectStorage();
 		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
 		$input = [
 			'source-user' => $this->sourceUser->getUID(),
@@ -210,5 +214,13 @@ class TransferOwnershipTest extends TestCase {
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount($expectedSourceShareCount, $sourceShares);
 		$this->assertCount($expectedTargetShareCount, $targetShares);
+	}
+	private function markTestSkippedIfMultiBucketObjectStorage() {
+		$sourceUserView = new View('/source-user/files/');
+		/** @var Storage $storage */
+		list($storage, $internalPath) = $sourceUserView->resolvePath('transfer/test_file1');
+		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
+			$this->markTestSkipped('transfer ownership may not work in a multi-bucket object store setup');
+		}
 	}
 }
