@@ -550,6 +550,8 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2) (2) (2)/ | user1     |
 
   Scenario: user shares folder with matching name
+    Given user "user0" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
+    And user "user0" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
     When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
     And user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
     Then the OCS status code should be "100"
@@ -558,12 +560,20 @@ Feature: accept/decline shares coming from internal users
       | /FOLDER/                 |
       | /PARENT/                 |
       | /PARENT%20(2)/           |
+      | /PARENT%20(2)/abc.txt    |
       | /FOLDER%20(2)/           |
+      | /FOLDER%20(2)/abc.txt    |
+    And user "user1" should not see the following elements
+      | /FOLDER/abc.txt |
+      | /PARENT/abc.txt |
+    And the content of file "/PARENT%20(2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/FOLDER%20(2)/abc.txt" for user "user1" should be "uploaded content"
 
   Scenario: user shares folder with matching name in a group
-    Given user "user3" has been created with default attributes and skeleton files
-    When user "user3" shares folder "/PARENT" with group "grp1" using the sharing API
-    And user "user3" shares folder "/FOLDER" with group "grp1" using the sharing API
+    Given user "user0" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
+    And user "user0" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
+    When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
+    And user "user0" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "user1" should see the following elements
@@ -571,11 +581,25 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/                 |
       | /PARENT%20(2)/           |
       | /FOLDER%20(2)/           |
+      | /PARENT%20(2)/abc.txt    |
+      | /FOLDER%20(2)/abc.txt    |
+    And user "user1" should not see the following elements
+      | /FOLDER/abc.txt |
+      | /PARENT/abc.txt |
     And user "user2" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
       | /PARENT%20(2)/           |
       | /FOLDER%20(2)/           |
+      | /PARENT%20(2)/abc.txt    |
+      | /FOLDER%20(2)/abc.txt    |
+    And user "user2" should not see the following elements
+      | /FOLDER/abc.txt |
+      | /PARENT/abc.txt |
+    And the content of file "/PARENT%20(2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/FOLDER%20(2)/abc.txt" for user "user1" should be "uploaded content"
+    And the content of file "/PARENT%20(2)/abc.txt" for user "user2" should be "uploaded content"
+    And the content of file "/FOLDER%20(2)/abc.txt" for user "user2" should be "uploaded content"
 
   Scenario: user shares file with matching name in a group
     When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
