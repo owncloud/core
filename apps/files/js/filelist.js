@@ -1828,7 +1828,7 @@
 
 			// Purge shareTreeCache in root dir
 			if (dir === '/') {
-				this._shareTreeCache = {}
+				this._purgeShareTreeCache()
 				return Promise.resolve()
 			}
 
@@ -1837,17 +1837,33 @@
 
 				// Diff keys in shareTreeCache agains the current dir
 				// removing deeper nested shares
-				self._shareTreeCache = _.omit(self._shareTreeCache, function(value, key) {
+				var cache = _.omit(self._shareTreeCache, function(value, key) {
 					var diffs = _.difference(key.split('/'), breadcrumbs)
 					return diffs.length > 0
 				});
+
+				self._setShareTreeCache(cache)
 			})
+
+		},
+
+		_setShareTreeCache: function(data) {
+			this._shareTreeCache = data;
+		},
+
+		_purgeShareTreeCache: function() {
+			this._setShareTreeCache({});
 		},
 
 		_setShareTreeIcons: function() {
 			// Add share-tree icon to files and folders
 			// each per <tr> in the table
-			this.$fileList.find('tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
+
+			if (_.keys(this._shareTreeCache).length > 0)
+				this.$fileList.find('tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item')
+			else
+				this.$fileList.find('tr td.filename .thumbnail.sharetree-item').removeClass('sharetree-item')
+
 		},
 
 		_setShareTreeUserGroupView: function() {
@@ -1863,7 +1879,11 @@
 			_.each(self._shareTreeCache, function(folder) {
 
 				var shares = _.filter(folder.shares, function(share) {
-					return (share.share_type === OC.Share.SHARE_TYPE_USER || share.share_type === OC.Share.SHARE_TYPE_GROUP)
+					return (
+						share.share_type === OC.Share.SHARE_TYPE_USER ||
+						share.share_type === OC.Share.SHARE_TYPE_GROUP ||
+						share.share_type === OC.Share.SHARE_TYPE_GUEST ||
+						share.share_type === OC.Share.SHARE_TYPE_REMOTE )
 				})
 
 				_.each(shares, function(share) {
