@@ -386,13 +386,13 @@ trait WebDav {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theNumberOfVersionShouldBe($number) {
+	public function theNumberOfVersionsShouldBe($number) {
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml($this->getResponse());
 		}
 		$xmlPart = $resXml->xpath("//d:getlastmodified");
-		Assert::assertEquals(\count($xmlPart), $number);
+		Assert::assertEquals($number, \count($xmlPart));
 	}
 
 	/**
