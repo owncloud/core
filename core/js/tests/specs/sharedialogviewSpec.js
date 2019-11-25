@@ -35,6 +35,7 @@ describe('OC.Share.ShareDialogView', function() {
 	var configModel;
 	var shareModel;
 	var fileInfoModel;
+	var fileList;
 	var dialog;
 
 	beforeEach(function() {
@@ -969,5 +970,49 @@ describe('OC.Share.ShareDialogView', function() {
 
 			expect(dialog.$('.linkListView').is(':empty')).toEqual(false);
 		});
+	});
+	describe('shareTree', function() {
+		beforeEach(function() {
+			dialog.render();
+
+			$('#testArea').append('<div id="filelist"></div>')
+			fileList = new OCA.Files.FileList($('#filelist'));
+			fileList._setShareTreeCache({
+				'/folder' : {
+					name: "folder",
+					shares : [{
+						share_type: 0,
+						share_with_displayname: "Demo user",
+					}, {
+						share_type: 1,
+						share_with_displayname: "Demo group",
+					}, {
+						share_type: 3,
+						share_with_displayname: "Demo link #1",
+					}, {
+						share_type: 3,
+						share_with_displayname: "Demo link #2",
+					}, {
+						share_type: 4,
+						share_with_displayname: "Demo guest",
+					}, {
+						share_type: 6,
+						share_with_displayname: "Demo remote user",
+					}]
+				}
+			});
+		})
+		afterEach(function() {
+			fileList.destroy();
+			$('#filelist').remove()
+		});
+		it('renders parent user/groups shares', function() {
+			fileList._setShareTreeUserGroupView()
+			expect(dialog.$el.find('#shareTreeUserGroupList li').length).toEqual(4);
+		})
+		it('renders parent link shares', function() {
+			fileList._setShareTreeLinkView()
+			expect(dialog.$el.find('#shareTreeLinkList li').length).toEqual(2);
+		})
 	});
 });
