@@ -310,6 +310,7 @@ Feature: dav-versions
     Then the HTTP status code should be "404"
     Then the value of the item "//s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
+  @skipOnStorage:ceph @files_primary_s3-issue-161
   Scenario: Receiver tries get file versions of shared file from the sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "version 1" to "textfile0.txt"
