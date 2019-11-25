@@ -47,11 +47,13 @@ class RootCollection extends AbstractPrincipalCollection {
 			// in the future this could be considered to be used for accessing shared files
 			return new SimpleCollection($name);
 		}
-		$view = \OC\Files\Filesystem::getView();
 		$home = new FilesHome($principalInfo);
-		$rootInfo = $view->getFileInfo('');
-		$rootNode = new Directory($view, $rootInfo, $home);
-		$home->init($rootNode, $view, \OC::$server->getMountManager());
+		$view = \OC\Files\Filesystem::getView();
+		if ($view) {
+			$rootInfo = $view->getFileInfo('');
+			$rootNode = new Directory($view, $rootInfo, $home);
+			$home->init($rootNode, $view, \OC::$server->getMountManager());
+		}
 
 		return $home;
 	}

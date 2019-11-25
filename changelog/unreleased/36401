@@ -1,0 +1,5 @@
+Bugfix: handling null properly in dav files endpoint
+
+ Only if the files system is properly setup FileHome can properly be initialized
+
+https://github.com/owncloud/core/pull/36401
