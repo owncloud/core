@@ -257,3 +257,40 @@ Feature: sharing
       | public-webdav-api-version |
       | old                       |
       | new                       |
+
+  Scenario: Move files between shares by same user
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created folder "share1"
+    And user "user0" has created folder "share2"
+    And user "user0" has moved file "welcome.txt" to "share1/welcome.txt"
+    And user "user0" has shared folder "/share1" with user "user1"
+    And user "user0" has shared folder "/share2" with user "user1"
+    When user "user1" moves file "share1/welcome.txt" to "share2/welcome.txt" using the WebDAV API
+    Then as "user1" file "share1/welcome.txt" should not exist
+    But as "user1" file "share2/welcome.txt" should exist
+    And as "user0" file "share1/welcome.txt" should not exist
+    But as "user0" file "share2/welcome.txt" should exist
+
+  Scenario: Move files between shares by same user added by sharee
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created folder "share1"
+    And user "user0" has created folder "share2"
+    And user "user0" has shared folder "/share1" with user "user1"
+    And user "user0" has shared folder "/share2" with user "user1"
+    When user "user1" moves file "welcome.txt" to "share1/welcome.txt" using the WebDAV API
+    Then as "user1" file "share1/welcome.txt" should exist
+    And as "user0" file "share1/welcome.txt" should exist
+    When user "user1" moves file "share1/welcome.txt" to "share2/welcome.txt" using the WebDAV API
+    Then as "user1" file "share2/welcome.txt" should exist
+    And as "user0" file "share2/welcome.txt" should exist
+
+  Scenario: Move files between shares by different users
+    Given the administrator has enabled DAV tech_preview
+    And user "user3" has been created with default attributes and skeleton files
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has shared folder "/PARENT" with user "user3"
+    And user "user1" has shared folder "/PARENT" with user "user3"
+    When user "user3" moves file "PARENT (2)/welcome.txt" to "PARENT (3)/welcome.txt" using the WebDAV API
+    Then as "user3" file "PARENT (3)/welcome.txt" should exist
+    And as "user1" file "PARENT/welcome.txt" should exist
+    But as "user0" file "PARENT/welcome.txt" should not exist
