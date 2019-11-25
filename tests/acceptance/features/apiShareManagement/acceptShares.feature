@@ -549,7 +549,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2) (2)/     | user2     |
       | /PARENT (2) (2) (2)/ | user1     |
 
-  Scenario: user shares folder with matching name
+  Scenario: user shares folder with matching folder-name for both user involved in sharing
     Given user "user0" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
     And user "user0" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
     When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
@@ -569,7 +569,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/PARENT%20(2)/abc.txt" for user "user1" should be "uploaded content"
     And the content of file "/FOLDER%20(2)/abc.txt" for user "user1" should be "uploaded content"
 
-  Scenario: user shares folder with matching name in a group
+  Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "user0" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
     And user "user0" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -601,7 +601,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/PARENT%20(2)/abc.txt" for user "user2" should be "uploaded content"
     And the content of file "/FOLDER%20(2)/abc.txt" for user "user2" should be "uploaded content"
 
-  Scenario: user shares file with matching name in a group
+  Scenario: user shares files in a group with matching file-names for every users involved in sharing
     When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "user0" shares file "/textfile1.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -617,7 +617,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile0%20(2).txt           |
       | /textfile1%20(2).txt           |
 
-  Scenario: user shares resource with matching name with another user when auto accept is disabled
+  Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
     And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
@@ -637,7 +637,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT%20(2)/           |
       | /textfile0%20(2).txt     |
 
-  Scenario: user shares file with matching name in a group when auto accept is disabled
+  Scenario: user shares file in a group with matching filename when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -659,7 +659,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile0.txt                 |
       | /textfile0%20(2).txt           |
 
-  Scenario: user shares matching folder with a user before that user has logged in
+  Scenario: user shares folder with matching folder name a user before that user has logged in
     Given these users have been created with skeleton files but not initialized:
       | username     |
       | user3        |
@@ -668,6 +668,11 @@ Feature: accept/decline shares coming from internal users
     Then user "user3" should see the following elements
       | /PARENT/          |
       | /PARENT/abc.txt   |
+      | /FOLDER/          |
+      | /textfile0.txt    |
+      | /textfile1.txt    |
+      | /textfile2.txt    |
+      | /textfile3.txt    |
     And user "user3" should not see the following elements
-      | /PARENT%20(2)/          |
+      | /PARENT%20(2)/    |
     And the content of file "/PARENT/abc.txt" for user "user3" should be "uploaded content"
