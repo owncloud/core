@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "799c8f05c3591ff31c33e75da588a2e5",
+    "content-hash": "c40ce033557c7f9b6dfd5976bbf43b4a",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2111,16 +2111,16 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.0.4",
+            "version": "5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "73e2fa1ef894eddff145b698b6b0e2e2c5bf1d72"
+                "reference": "c9833073175bf02c8550695860fe375e26b68709"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/73e2fa1ef894eddff145b698b6b0e2e2c5bf1d72",
-                "reference": "73e2fa1ef894eddff145b698b6b0e2e2c5bf1d72",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/c9833073175bf02c8550695860fe375e26b68709",
+                "reference": "c9833073175bf02c8550695860fe375e26b68709",
                 "shasum": ""
             },
             "require": {
@@ -2163,7 +2163,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2019-10-09T20:27:43+00:00"
+            "time": "2019-09-12T15:36:08+00:00"
         },
         {
             "name": "sabre/uri",
