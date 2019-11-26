@@ -16,7 +16,7 @@
 	var TEMPLATE =
 			'<ul id="shareWithList" class="shareWithList">' +
 			'{{#each sharees}}' +
-			'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}" data-share-permissions-mask="{{sharePermissionsMask}}">' +
+			'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
 			'<a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
 			'{{#if avatarEnabled}}' +
 			'<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
@@ -226,7 +226,7 @@
 				createPermissionPossible: this.model.createPermissionPossible(),
 				updatePermissionPossible: this.model.updatePermissionPossible(),
 				deletePermissionPossible: this.model.deletePermissionPossible(),
-				defaultExpireDateUserEnabled: this.model.isDefaultExpireDateUserEnabled(),
+				defaultExpireDateUserEnabled: this.configModel.isDefaultExpireDateUserEnabled(),
 				sharePermission: OC.PERMISSION_SHARE,
 				createPermission: OC.PERMISSION_CREATE,
 				updatePermission: OC.PERMISSION_UPDATE,
@@ -274,7 +274,7 @@
 			});
 
 
-			if (this.model.isDefaultExpireDateUserEnabled()) {
+			if (this.configModel.isDefaultExpireDateUserEnabled()) {
 				this.$el.find('.expiration:not(.hasDatepicker)').each(function(){
 					self._setDatepicker(this)
 				})
@@ -425,7 +425,7 @@
 		_setDatepicker: function(el) {
 			var self = this;
 			var $el = $(el);
-			var defaultExpireDate = "+" + this.model.defaultExpireDateUser() + 'd'
+			var defaultExpireDate = "+" + this.configModel.getDefaultExpireDateUser() + 'd'
 
 			$el.datepicker({
 				minDate: "+1d",
@@ -435,7 +435,7 @@
 				}
 			});
 
-			if (this.model.isDefaultExpireDateUserEnforced() !== '')
+			if (this.configModel.isDefaultExpireDateUserEnforced())
 				$el.datepicker( "option", "maxDate", defaultExpireDate );
 		}
 	});

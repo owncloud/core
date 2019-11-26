@@ -449,7 +449,7 @@
 			if(!_.isObject(share)) {
 				throw "Unknown Share";
 			}
-			return (share.expiration !== null) ? moment(share.expiration).format('YYYY-MM-DD') : null;
+			return (share.expiration !== null) ? moment(share.expiration).format('DD-MM-YYYY') : null;
 		},
 
 		/**
@@ -591,25 +591,6 @@
 			return    this.hasCreatePermission(shareIndex)
 				   || this.hasUpdatePermission(shareIndex)
 				   || this.hasDeletePermission(shareIndex);
-		},
-
-		isDefaultExpireDateUserEnabled: function() {
-			return this.configModel.get('defaultExpireDateUserEnabled')
-		},
-
-		defaultExpireDateUser: function(formated) {
-			formated = formated || false;
-			defaultExpireDateUser = parseInt(this.configModel.get('defaultExpireDateUser'), 10)
-
-			if (formated) {
-				return moment().add(defaultExpireDateUser, 'days').format('YYYY-MM-DD')
-			}
-
-			return defaultExpireDateUser
-		},
-
-		isDefaultExpireDateUserEnforced: function() {
-			return this.configModel.get('enforceDefaultExpireDateUser')
 		},
 
 		_getUrl: function(base, params) {

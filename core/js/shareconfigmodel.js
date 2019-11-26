@@ -25,12 +25,12 @@
 			enforceLinkPasswordReadWrite: oc_appconfig.core.enforceLinkPasswordReadWrite,
 			enforceLinkPasswordReadWriteDelete: oc_appconfig.core.enforceLinkPasswordReadWriteDelete,
 			enforceLinkPasswordWriteOnly: oc_appconfig.core.enforceLinkPasswordWriteOnly,
-			defaultExpireDateUserEnabled: oc_appconfig.core.defaultExpireDateUserEnabled,
 			defaultExpireDateUser: oc_appconfig.core.defaultExpireDateUser,
-			enforceDefaultExpireDateUser: oc_appconfig.core.enforceDefaultExpireDateUser,
-			defaultExpireDateGroupEnabled: oc_appconfig.core.defaultExpireDateGroupEnabled,
+			isDefaultExpireDateUserEnabled: oc_appconfig.core.defaultExpireDateUserEnabled,
+			isDefaultExpireDateUserEnforces: oc_appconfig.core.enforceDefaultExpireDateUser,
 			defaultExpireDateGroup: oc_appconfig.core.defaultExpireDateGroup,
-			enforceDefaultExpireDateGroup: oc_appconfig.core.enforceDefaultExpireDateGroup,
+			isDefaultExpireDateGroupEnabled: oc_appconfig.core.defaultExpireDateGroupEnabled,
+			isDefaultExpireDateGroupEnforced: oc_appconfig.core.enforceDefaultExpireDateGroup,
 			isDefaultExpireDateEnforced: oc_appconfig.core.defaultExpireDateEnforced === true,
 			isDefaultExpireDateEnabled: oc_appconfig.core.defaultExpireDateEnabled === true,
 			isRemoteShareAllowed: oc_appconfig.core.remoteShareAllowed,
@@ -98,7 +98,56 @@
 				expireDateString = date.format('YYYY-MM-DD 00:00:00');
 			}
 			return expireDateString;
-		}
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDefaultExpireDateUserEnabled: function() {
+			return this.get('isDefaultExpireDateUserEnabled')
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDefaultExpireDateUserEnforced: function() {
+			return this.get('isDefaultExpireDateUserEnforced')
+		},
+
+		/**
+		 * @returns {number/string}
+		 */
+		getDefaultExpireDateUser: function(format) {
+			format = format || false;
+			defaultExpireDateUser = parseInt(this.get('defaultExpireDateUser'), 10)
+
+			if (format) {
+				return moment().add(defaultExpireDateUser, 'days').format(format)
+			}
+
+			return defaultExpireDateUser
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDefaultExpireDateGroupEnabled: function() {
+			return this.get('isDefaultExpireDateGroupEnabled')
+		},
+
+		/**
+		 * @returns {number/string}
+		 */
+		getDefaultExpireDateGroup: function(format) {
+			format = format || false;
+			defaultExpireDateGroup = parseInt(this.get('defaultExpireDateGroup'), 10)
+
+			if (format) {
+				return moment().add(defaultExpireDateGroup, 'days').format(format)
+			}
+
+			return defaultExpireDateGroup
+		},
 	});
 
 
