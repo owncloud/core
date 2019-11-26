@@ -155,6 +155,7 @@ OC.L10N.register(
     "Done" : "Pabeigts",
     "Version" : "Versija",
     "New Password" : "Jauna parole",
+    "Confirm Password" : "Atkārtot Paroli",
     "Personal" : "Personīgi",
     "Admin" : "Administratori",
     "Error" : "Kļūda",

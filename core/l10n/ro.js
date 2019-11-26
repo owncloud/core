@@ -13,6 +13,8 @@ OC.L10N.register(
     "%s password changed successfully" : "parola %s a fost schimbată cu succes",
     "%s password reset" : "%s resetare parola",
     "Couldn't send reset email. Please contact your administrator." : "Expedierea email-ului de resetare a eşuat. Vă rugăm să contactaţi administratorul dvs.",
+    "Download / View" : "Descarcă / Vizualizează",
+    "Download / View / Upload" : "Descarcă / Vizualizează / Încarcă",
     "Preparing update" : "Se pregătește actualizarea",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Alerte reparare:",

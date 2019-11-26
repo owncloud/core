@@ -101,6 +101,7 @@ OC.L10N.register(
     "Unknown share type" : "Tipo di condivisione sconosciuto",
     "Not a directory" : "Non è una cartella",
     "Could not lock path" : "Impossibile bloccare il percorso",
+    "Could not update share" : "Impossibile aggiornare la condivisione",
     "Can't change permissions for public share links" : "Impossibile cambiare i permessi per i collegamenti di condivisione pubblici",
     "Wrong or no update parameter given" : "Parametro fornito non valido o non di aggiornamento",
     "Only recipient can change accepted state" : "Solo il destinatario può cambiare lo stato di accettazione",

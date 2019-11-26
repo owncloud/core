@@ -37,7 +37,7 @@ OC.L10N.register(
     "Declined" : "Hedhur Poshtë",
     "Pending" : "Në pritje",
     "Shared by" : "Ndarë nga",
-    "Sharing" : "Ndarje",
+    "Sharing" : "Ndarje me të tjerë",
     "A file or folder has been <strong>shared</strong>" : "U <strong>nda me të tjerë</strong> një kartelë ose dosje",
     "A file or folder was shared from <strong>another server</strong>" : "Një kartelë ose dosje u nda prej një <strong>shërbyesi tjetër</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "<strong>U shkarkua</strong> një kartelë ose dosje e ndarë me të tjerët publikisht",
