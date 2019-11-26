@@ -970,7 +970,7 @@ describe('OC.Share.ShareDialogView', function() {
 			expect(dialog.$('.linkShareView').is(':empty')).toEqual(false);
 		});
 	});
-	describe('share expiration input', function() {
+	describe('share expiration', function() {
 		beforeEach(function() {
 			configModel.set({
 				isDefaultExpireDateUserEnabled: true
@@ -988,7 +988,7 @@ describe('OC.Share.ShareDialogView', function() {
 			});
 			dialog.render();
 		})
-		it('shows set expiration date', function() {
+		it('input shows set expiration date', function() {
 			expect(dialog.$('input.expiration').val()).toBe('02-12-2019')
 		})
 	})
