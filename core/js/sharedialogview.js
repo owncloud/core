@@ -351,37 +351,24 @@
 
 		_onSelectRecipient: function(e, s) {
 			e.preventDefault();
-
-			// Set default expiration date
-			if (this.configModel.isDefaultExpireDateUserEnabled()) {
-				switch (s.item.value.shareType) {
-					case OC.Share.SHARE_TYPE_USER:
-					case OC.Share.SHARE_TYPE_GROUP:
-					case OC.Share.SHARE_TYPE_GUEST:
-					case OC.Share.SHARE_TYPE_REMOTE:
-						s.item.value.expireDate = this.configModel.getDefaultExpireDateUser('YYYY-MM-DD')
-						break;
-					case OC.Share.SHARE_TYPE_LINK:
-						s.item.value.expireDate = this.configModel.defaultExpireDateGroup('YYYY-MM-DD')
-						break;
-				}
-			}
-
-			$(e.target).attr('disabled', true).val(s.item.label);
+			$(e.target).attr('disabled', true)
+				.val(s.item.label);
 			var $loading = this.$el.find('.shareWithLoading');
-			$loading.removeClass('hidden').addClass('inlineblock');
+			$loading.removeClass('hidden')
+				.addClass('inlineblock');
 
-			this.model.addShare(s.item.value, {
-				success: function() {
-					$(e.target).val('').attr('disabled', false);
-					$loading.addClass('hidden').removeClass('inlineblock');
-				},
-				error: function(obj, msg) {
-					OC.Notification.showTemporary(msg);
-					$(e.target).attr('disabled', false).autocomplete('search', $(e.target).val());
-					$loading.addClass('hidden').removeClass('inlineblock');
-				}
-			});
+			this.model.addShare(s.item.value, {success: function() {
+				$(e.target).val('')
+					.attr('disabled', false);
+				$loading.addClass('hidden')
+					.removeClass('inlineblock');
+			}, error: function(obj, msg) {
+				OC.Notification.showTemporary(msg);
+				$(e.target).attr('disabled', false)
+					.autocomplete('search', $(e.target).val());
+				$loading.addClass('hidden')
+					.removeClass('inlineblock');
+			}});
 		},
 
 		_toggleLoading: function(state) {
