@@ -17,7 +17,7 @@ Summary
 * Fix [#36225](https://github.com/owncloud/core/pull/36225): Respect accounts.enable_medial_search setting for remote search
 * Fix [#36242](https://github.com/owncloud/core/pull/36242): Fix SMB access denied error while listing the contents of the folder
 * Fix [#36281](https://github.com/owncloud/core/pull/36281): Avoid unnecessary "Avatar not found" logs
-* Fix [#3288](https://github.com/owncloud/core/pull/3288): Prevent Forbidden errors in the logs during file scan
+* Fix [#3288](https://github.com/owncloud/core/pull/36288): Prevent Forbidden errors in the logs during file scan
 * Fix [#36319](https://github.com/owncloud/core/pull/36319): LargeFileHelper::getFileSizeViaCurl is broken with newer libcurl
 * Fix [#36305](https://github.com/owncloud/core/issues/36305): Do not try to set null parent Id in the file cache
 * Fix [#36329](https://github.com/owncloud/core/pull/36329): Follow single-bucket initialization for multi-bucket setup
@@ -84,11 +84,11 @@ problem has been resolved by registering ViewOnlyPlugin only for files.
 
 https://github.com/owncloud/core/pull/36281
 
-* Bugfix [#3288](https://github.com/owncloud/core/pull/3288): Prevent Forbidden errors in the logs during file scan
+* Bugfix [#36288](https://github.com/owncloud/core/pull/36288): Prevent Forbidden errors in the logs during file scan
 
 When running files:scan exceptions were logged for guest users. This has been corrected.
 
-https://github.com/owncloud/core/pull/3288
+https://github.com/owncloud/core/pull/36288
 
 * Bugfix [#36319](https://github.com/owncloud/core/pull/36319): LargeFileHelper::getFileSizeViaCurl is broken with newer libcurl
 
