@@ -751,7 +751,7 @@ class Share20OcsController extends OCSController {
 		 * expirationdate, password and publicUpload only make sense for link shares
 		 */
 		if ($share->getShareType() === Share::SHARE_TYPE_LINK) {
-			if ($password === null && $publicUpload === null && $name === null) {
+			if ($permissions === null && $password === null && $publicUpload === null && $expireDate === null && $name === null) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 400, 'Wrong or no update parameter given');
 			}

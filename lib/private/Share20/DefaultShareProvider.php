@@ -405,6 +405,12 @@ class DefaultShareProvider implements IShareProvider {
 				$share->getAttributes()
 			);
 
+			// shareExpiration is either null or a formatted date
+			$shareExpiration = $share->getExpirationDate();
+			if ($shareExpiration !== null) {
+				$shareExpiration = $shareExpiration->format('Y-m-d 00:00:00');
+			}
+
 			// Check if there is a usergroup share
 			$this->dbConn->upsert(
 				'*PREFIX*share',
@@ -420,7 +426,7 @@ class DefaultShareProvider implements IShareProvider {
 					'file_target' => $share->getTarget(),
 					'attributes' => $shareAttributes,
 					'permissions' => $share->getPermissions(),
-					'expiration' => $share->getExpirationDate()->format('Y-m-d 00:00:00'),
+					'expiration' => $shareExpiration,
 					'stime' => $share->getShareTime()->getTimestamp(),
 					'accepted' => $share->getState(),
 				],

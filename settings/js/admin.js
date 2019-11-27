@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 	$('#shareapiExpireAfterNDays').change(function() {
 		var value = $(this).val();
-		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
+		if (isNaN(value) || (parseInt(value, 10) <= 0) || parseInt(value, 10).toString() !== value) {
 			$(this).val('7');
 		}
 	});
