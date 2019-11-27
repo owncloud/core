@@ -441,10 +441,16 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
 				$prefix = \md5($instanceId . '-' . $version . '-' . $path);
-				return new \OC\Memcache\Factory($prefix, $c->getLogger(),
+				$locking = $config->getSystemValue('memcache.locking', null);
+				$logger = $c->getLogger();
+				if ($locking !== null && \strpos($locking, 'Redis') === false) {
+					#$logger->warning('Only \OC\Memcache\Redis is supported by memcache.locking. See: ' . \OC::$server->getURLGenerator()->linkToDocs('admin-transactional-locking'), ['app' => 'core']);
+					$locking = null;
+				}
+				return new \OC\Memcache\Factory($prefix, $logger,
 					$config->getSystemValue('memcache.local', null),
 					$config->getSystemValue('memcache.distributed', null),
-					$config->getSystemValue('memcache.locking', null)
+					$locking
 				);
 			}
 
