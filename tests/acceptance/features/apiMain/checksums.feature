@@ -306,3 +306,17 @@ Feature: checksums
     And user "user0" moves new chunk file with id "chunking-42" to "/textfile0.txt" with checksum "SHA1:f005ba11" using the WebDAV API
     Then the HTTP status code should be "400"
     And the content of file "/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+
+  Scenario Outline: Uploading a file with checksum should work for file with special characters
+    When user "user0" uploads file "filesForUpload/textfile.txt" to <renamed_file> with checksum "MD5:d70b40f177b14b470d1756a3c12b963a" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file <renamed_file> for user "user0" should be:
+      """
+      This is a testfile.
+
+      Cheers.
+      """
+    Examples:
+      | renamed_file      |
+      | " oc?test=ab&cd " |
+      | "# %ab ab?=ed"    |

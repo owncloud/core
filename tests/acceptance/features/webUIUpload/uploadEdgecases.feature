@@ -98,9 +98,11 @@ Feature: File Upload
     Then file <file-name> should be listed on the webUI
     And the content of <file-name> should be the same as the local <file-name>
     Examples:
-      | file-name |
-      | "&#"      |
-      | "TIÄFÜ"   |
+      | file-name      |
+      | "&#"           |
+      | "TIÄFÜ"        |
+      | "?Qa=oc&2"     |
+      | "# %ab ab?=ed" |
 		
   # upload into "simple-folder" because there is already a folder called "0" in the root
   Scenario: Upload a file called "0" using chunking
@@ -111,3 +113,16 @@ Feature: File Upload
     And the user uploads file "0" using the webUI
     Then file "0" should be listed on the webUI
     And the content of "0" should be the same as the local "0"
+
+  Scenario Outline: upload a file with special characters into a folder with special characters using chunking and verify its content
+    Given a file with the size of "30000000" bytes and the name "<file-name>" has been created locally
+    And user "user1" has created folder <folder-to-upload-to>
+    And user "user1" has logged in using the webUI
+    When the user opens folder <folder-to-upload-to> using the webUI
+    And the user uploads file "<file-name>" using the webUI
+    Then file "<file-name>" should be listed on the webUI
+    And the content of "<file-name>" should be the same as the local "<file-name>"
+    Examples:
+      | file-name     | folder-to-upload-to |
+      | oc?test=ab&cd | " #  abc   "        |
+      | # %ab ab?=ed  | "oc?test=ab&$co"    |

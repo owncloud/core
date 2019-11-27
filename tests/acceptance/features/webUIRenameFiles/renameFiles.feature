@@ -17,9 +17,10 @@ Feature: rename files
     Then file <to_file_name> should be listed on the webUI
     Examples:
       | to_file_name           |
-      | 'लोरेम।तयक्स्त? $%#&@'     |
+      | 'लोरेम।तयक्स्त? $%#&@' |
       | '"quotes1"'            |
       | "'quotes2'"            |
+      | "?quot=OC&OC2 #OC%  3" |
 
   Scenario Outline: Rename a file that has special characters in its name
     Given user "user1" has uploaded file with content "some content" to <from_name>
@@ -28,10 +29,12 @@ Feature: rename files
     Then file <to_name> should be listed on the webUI
     When the user reloads the current page of the webUI
     Then file <to_name> should be listed on the webUI
+    And the content of file <to_name> for user "user1" should be "some content"
     Examples:
       | from_name                               | to_name                               |
       | "strängé filename (duplicate #2 &).txt" | "strängé filename (duplicate #3).txt" |
       | "'single'quotes.txt"                    | "single-quotes.txt"                   |
+      | "?quot=OC&OC2 #OC%  3   "               | "sin#gle-qu&%%%%otes=.txt "           |
 
   @smokeTest
   Scenario: Rename a file using special characters and check its existence after page reload
