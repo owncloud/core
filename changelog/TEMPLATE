@@ -1,4 +1,4 @@
-Bugfix: Fix behavior for foobar (in present tense)
+Bugfix: Fix behavior for foobar (in present tense, max length 80 chars)
 
 We've fixed the behavior for foobar, a long-standing annoyance for ownCloud
 users.
