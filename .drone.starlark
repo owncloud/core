@@ -245,7 +245,7 @@ def initialPipelines():
 	return dependencies()
 
 def beforePipelines():
-	return codestyle() + phpstan() + phan()
+	return codestyle() + changelog() + phpstan() + phan()
 
 def stagePipelines():
 	jsPipelines = javascript()
@@ -461,6 +461,68 @@ def codestyle():
 			pipelines.append(result)
 
 	return pipelines
+
+def changelog(ctx):
+  return {
+    'kind': 'pipeline',
+    'type': 'docker',
+    'name': 'changelog',
+    'steps': [
+      {
+        'name': 'generate',
+        'image': 'toolhippie/calens:latest',
+        'pull': 'always',
+        'commands': [
+          'make changelog',
+        ],
+      },
+      {
+        'name': 'output',
+        'image': 'toolhippie/calens:latest',
+        'pull': 'always',
+        'commands': [
+          'cat CHANGELOG.md',
+        ],
+      },
+      {
+        'name': 'publish',
+        'image': 'plugins/git-action:1',
+        'pull': 'always',
+        'settings': {
+          'actions': [
+            'commit',
+            'push',
+          ],
+          'message': 'Automated changelog update [skip ci]',
+          'branch': 'master',
+          'author_email': 'devops@owncloud.com',
+          'author_name': 'ownClouders',
+          'netrc_machine': 'github.com',
+          'netrc_username': {
+            'from_secret': 'github_username',
+          },
+          'netrc_password': {
+            'from_secret': 'github_token',
+          },
+        },
+        'when': {
+          'ref': {
+            'exclude': [
+              'refs/pull/**',
+            ],
+          },
+        },
+      },
+    ],
+    'depends_on': [],
+    'trigger': {
+      'ref': [
+        'refs/heads/master',
+        'refs/pull/**',
+        'refs/tags/**',
+      ],
+    },
+  }
 
 def phpstan():
 	pipelines = []
