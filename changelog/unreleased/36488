@@ -1,4 +1,4 @@
-Bugfix: Fix Trash-bin api to not allow users to see trash-bin content of other users
+Bugfix: Fix Trash-bin api access
 
 Trash-bin API had allowed users to see the trash-bin content of other users.
 

@@ -173,6 +173,104 @@ depends_on:
 ---
 kind: pipeline
 type: docker
+name: changelog
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  disable: true
+
+steps:
+- name: clone-master
+  pull: always
+  image: plugins/git-action:1
+  settings:
+    actions:
+    - clone
+    branch: master
+    netrc_machine: github.com
+    netrc_password:
+      from_secret: github_token
+    netrc_username:
+      from_secret: github_username
+    path: /drone/src
+    remote: https://github.com/owncloud/core.git
+  when:
+    ref:
+      exclude:
+      - refs/pull/**
+
+- name: clone-branch
+  pull: always
+  image: plugins/git-action:1
+  settings:
+    actions:
+    - clone
+    branch: ${DRONE_SOURCE_BRANCH}
+    netrc_machine: github.com
+    netrc_password:
+      from_secret: github_token
+    netrc_username:
+      from_secret: github_username
+    path: /drone/src
+    remote: https://github.com/owncloud/core.git
+  when:
+    ref:
+      exclude:
+      - refs/heads/master
+
+- name: generate
+  pull: always
+  image: toolhippie/calens:latest
+  commands:
+  - calens >| CHANGELOG.md
+
+- name: diff
+  pull: always
+  image: owncloud/alpine:latest
+  commands:
+  - git diff
+
+- name: output
+  pull: always
+  image: toolhippie/calens:latest
+  commands:
+  - cat CHANGELOG.md
+
+- name: publish
+  pull: always
+  image: plugins/git-action:1
+  settings:
+    actions:
+    - commit
+    - push
+    author_email: devops@owncloud.com
+    author_name: ownClouders
+    branch: master
+    message: Automated changelog update [skip ci]
+    netrc_machine: github.com
+    netrc_password:
+      from_secret: github_token
+    netrc_username:
+      from_secret: github_username
+  when:
+    ref:
+      exclude:
+      - refs/pull/**
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/pull/**
+
+depends_on:
+- install-dependencies-php7.1
+
+---
+kind: pipeline
+type: docker
 name: phpstan-php7.1
 
 platform:
@@ -598,6 +696,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -832,6 +931,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -950,6 +1050,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1068,6 +1169,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1186,6 +1288,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1304,6 +1407,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1427,6 +1531,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1560,6 +1665,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1693,6 +1799,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1826,6 +1933,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -1959,6 +2067,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2094,6 +2203,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2226,6 +2336,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2358,6 +2469,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2491,6 +2603,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2596,6 +2709,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2711,6 +2825,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2816,6 +2931,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -2931,6 +3047,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3070,6 +3187,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3198,6 +3316,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3333,6 +3452,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3464,6 +3584,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3615,6 +3736,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3761,6 +3883,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -3907,6 +4030,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4053,6 +4177,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4199,6 +4324,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4345,6 +4471,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4491,6 +4618,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4637,6 +4765,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4783,6 +4912,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -4929,6 +5059,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5075,6 +5206,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5221,6 +5353,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5367,6 +5500,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5513,6 +5647,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5659,6 +5794,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5805,6 +5941,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -5951,6 +6088,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6097,6 +6235,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6243,6 +6382,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6389,6 +6529,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6535,6 +6676,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6681,6 +6823,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6827,6 +6970,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -6973,6 +7117,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -7119,6 +7264,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -7265,6 +7411,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -7418,6 +7565,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -7614,6 +7762,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -7810,6 +7959,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -7961,6 +8111,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -8112,6 +8263,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -8263,6 +8415,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -8414,6 +8567,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -8560,6 +8714,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -8717,6 +8872,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -8874,6 +9030,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9031,6 +9188,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9188,6 +9346,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9345,6 +9504,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9502,6 +9662,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9659,6 +9820,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9816,6 +9978,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -9973,6 +10136,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -10130,6 +10294,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -10287,6 +10452,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -10444,6 +10610,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -10601,6 +10768,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -10758,6 +10926,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -10915,6 +11084,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -11072,6 +11242,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -11229,6 +11400,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -11386,6 +11558,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -11543,6 +11716,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -11700,6 +11874,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -11857,6 +12032,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -12014,6 +12190,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -12171,6 +12348,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -12328,6 +12506,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -12485,6 +12664,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -12649,6 +12829,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -12855,6 +13036,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -13061,6 +13243,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -13221,6 +13404,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -13381,6 +13565,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -13541,6 +13726,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -13707,6 +13893,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -13873,6 +14060,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -14039,6 +14227,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -14190,6 +14379,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -14341,6 +14531,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
@@ -14492,6 +14683,7 @@ trigger:
 
 depends_on:
 - coding-standard-php7.3
+- changelog
 - phpstan-php7.1
 - phan-php7.1
 - phan-php7.2
