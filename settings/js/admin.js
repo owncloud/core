@@ -75,9 +75,10 @@ $(document).ready(function(){
 
 
 	$('#shareapiExpireAfterNDaysUserShare').change(function() {
-		var value = $(this).val();
-		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
-			$(this).val('7');
+		var value = parseInt($(this).val(), 10)
+
+		if (value <= 0 || isNaN(value)) {
+			$(this).val(7);
 		}
 	});
 
@@ -86,9 +87,10 @@ $(document).ready(function(){
 	});
 
 	$('#shareapiExpireAfterNDaysGroupShare').change(function() {
-		var value = $(this).val();
-		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
-			$(this).val('7');
+		var value = parseInt($(this).val(), 10)
+
+		if (value <= 0 || isNaN(value)) {
+			$(this).val(7);
 		}
 	});
 
