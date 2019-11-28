@@ -3555,7 +3555,7 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - wait-for-it -t 60 scality:8000
+  - wait-for-it -t 120 scality:8000
   - cp /drone/src/apps/files_primary_s3/tests/drone/scality.config.php /drone/src/config
   - php occ s3:create-bucket owncloud --accept-warning
 
