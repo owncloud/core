@@ -62,7 +62,7 @@ Feature: files and folders can be deleted from the trashbin
       And user "user0" has deleted file "/PARENT/parent.txt"
       And user "user0" has deleted file "/PARENT/CHILD/child.txt"
       When user "user1" tries to delete the file with original path "textfile1.txt" from the trashbin of user "user0" using the trashbin API
-      Then the HTTP status code should be "404"
+      Then the HTTP status code should be "401"
       And as "user0" the file with original path "/textfile1.txt" should exist in trash
       And as "user0" the file with original path "/textfile0.txt" should exist in trash
       And as "user0" the file with original path "/PARENT/parent.txt" should exist in trash

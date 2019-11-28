@@ -273,7 +273,7 @@ Feature: Restore deleted files/folders
     And user "user1" has been created with default attributes and skeleton files
     And user "user0" has deleted file "/textfile0.txt"
     When user "user1" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the trashbin API
-    Then the HTTP status code should be "404"
+    Then the HTTP status code should be "401"
     And as "user0" the folder with original path "/textfile0.txt" should exist in trash
     And user "user0" should not see the following elements
       | /textfile0.txt     |
