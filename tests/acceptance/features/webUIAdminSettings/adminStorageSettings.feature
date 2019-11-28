@@ -40,6 +40,7 @@ Feature: admin storage settings
     And folder "local_storage1" should not be listed on the webUI
     And folder "local_storage2" should be listed on the webUI
 
+  @files_sharing-app-required
   Scenario: user should get access if the user is removed from the applicable user and the user was the only applicable user
     Given these users have been created with default attributes and without skeleton files:
       | username |

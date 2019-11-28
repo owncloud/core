@@ -1,4 +1,4 @@
-@api @federation-app-required @TestAlsoOnExternalUserBackend
+@api @federation-app-required @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: federated
 
   Background:

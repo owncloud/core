@@ -43,7 +43,7 @@ Feature: Creation of tags for the files and folders
     And file "a-folder/randomfile-big.txt" should have the following tags for user "user1"
       | randomfile | normal |
 
-  @skipOnFIREFOX
+  @skipOnFIREFOX @files_sharing-app-required
   Scenario: Create and add tag on a shared file
     Given user "user2" has been created with default attributes and without skeleton files
     And user "user1" has uploaded file with content "some content" to "/randomfile.txt"
@@ -60,6 +60,7 @@ Feature: Creation of tags for the files and folders
       | tag1 | normal |
       | tag2 | normal |
 
+  @files_sharing-app-required
    Scenario: Add tags on skeleton file before sharing
      Given these users have been created with skeleton files:
        | username |
@@ -72,6 +73,7 @@ Feature: Creation of tags for the files and folders
      Then file "lorem (2).txt" should have the following tags for user "user3"
        | skeleton | normal |
 
+  @files_sharing-app-required
   Scenario: Check for existence of tags in shared file
     Given user "user2" has been created with default attributes and without skeleton files
     And user "user1" has uploaded file with content "some content" to "/randomfile.txt"

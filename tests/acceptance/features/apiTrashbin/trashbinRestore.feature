@@ -9,6 +9,7 @@ Feature: Restore deleted files/folders
     And using OCS API version "1"
     And as the administrator
 
+  @files_sharing-app-required
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -135,7 +136,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @issue-35900
+  @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only folder
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -160,7 +161,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @issue-35900
+  @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only sub-folder
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:

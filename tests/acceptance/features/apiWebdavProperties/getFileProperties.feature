@@ -69,6 +69,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -87,6 +88,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
@@ -105,7 +107,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test"
@@ -121,7 +123,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required
+  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files

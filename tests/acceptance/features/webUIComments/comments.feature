@@ -26,7 +26,7 @@ Feature: Add, delete and edit comments in files and folders
       | 😀 🤖       |
       | नेपालि      |
 
-  @skipOnFIREFOX
+  @skipOnFIREFOX @files_sharing-app-required
   Scenario Outline: Add comment on a shared file and check it is shown in other user's UI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"

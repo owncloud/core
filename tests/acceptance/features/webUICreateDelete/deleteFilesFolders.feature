@@ -116,6 +116,7 @@ Feature: deleting files and folders
     Then as "user1" file "zzzz-must-be-last-file-in-folder.txt" should not exist
     And file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
 
+  @files_sharing-app-required
   Scenario: delete files from shared with others page
     Given user "user2" has been created with default attributes and without skeleton files
     Given the user has shared file "lorem.txt" with user "User Two" using the webUI
@@ -131,7 +132,7 @@ Feature: deleting files and folders
     Then file "lorem.txt" should not be listed on the webUI
     And folder "simple-folder" should not be listed on the webUI
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: delete files from shared by link page
     Given the user has created a new public link for file "lorem.txt" using the webUI
     And the user has browsed to the shared-by-link page
@@ -155,6 +156,7 @@ Feature: deleting files and folders
     When the user browses to the files page
     Then file "lorem.txt" should not be listed on the webUI
 
+  @files_sharing-app-required
   Scenario: delete a file on a public share
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
@@ -170,7 +172,7 @@ Feature: deleting files and folders
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
-  @skipOnFIREFOX
+  @skipOnFIREFOX @files_sharing-app-required
   Scenario: delete a file on a public share with problematic characters
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
@@ -201,7 +203,7 @@ Feature: deleting files and folders
       | question?       |
       | &and#hash       |
 
-  @skipOnEncryption @encryption-issue-74
+  @skipOnEncryption @encryption-issue-74 @files_sharing-app-required
   Scenario: Delete multiple files at once on a public share
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
@@ -217,6 +219,7 @@ Feature: deleting files and folders
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
+  @files_sharing-app-required
   Scenario Outline: delete a folder when there is a default folder for received shares
     Given the administrator has set the default folder for received shares to "<share_folder>"
     And user "user0" has been created with default attributes and without skeleton files

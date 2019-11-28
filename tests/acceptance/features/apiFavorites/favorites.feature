@@ -81,6 +81,7 @@ Feature: favorite
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -146,6 +147,7 @@ Feature: favorite
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -158,6 +160,7 @@ Feature: favorite
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files

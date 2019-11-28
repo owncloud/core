@@ -3,6 +3,7 @@ Feature: CORS headers
   Background:
     Given user "user0" has been created with default attributes and skeleton files
 
+  @files_sharing-app-required
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has added "https://aphno.badal" to the list of personal CORS domains
@@ -77,6 +78,7 @@ Feature: CORS headers
       | 1               |/cloud/users  | 100      | 200       |
       | 2               |/cloud/users  | 200      | 200       |
 
+  @files_sharing-app-required
   Scenario Outline: no CORS headers should be returned when CORS domain does not match Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has added "https://mero.badal" to the list of personal CORS domains
@@ -133,7 +135,7 @@ Feature: CORS headers
       | 1               |/cloud/users  | 100      | 200       |
       | 2               |/cloud/users  | 200      | 200       |
 
-  @issue-34679
+  @issue-34679 @files_sharing-app-required
   Scenario Outline: CORS headers should be returned when invalid password is used
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has added "https://aphno.badal" to the list of personal CORS domains

@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @app-required @notifications-app-required
+@webUI @insulated @disablePreviews @app-required @notifications-app-required @files_sharing-app-required
 Feature: Display notifications when receiving a share and follow embedded links
   As a user
   I want to use the notification header as a link

@@ -107,6 +107,7 @@ Feature: checksums
     And user "user0" downloads file "/myChecksumFileCopy.txt" using the WebDAV API
     Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
 
+  @files_sharing-app-required
   Scenario: Sharing a file with checksum should return the checksum in the propfind using new DAV path
     Given using new DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -115,6 +116,7 @@ Feature: checksums
     And user "user1" requests the checksum of "/myChecksumFile.txt" via propfind
     Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
 
+  @files_sharing-app-required
   Scenario: Sharing and modifying a file should return correct checksum in the propfind using new DAV path
     Given using new DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -235,7 +237,7 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-    
+
 
   ## Validation Plugin or Old Endpoint Specific
 
@@ -254,7 +256,7 @@ Feature: checksums
     And the content of file "/textfile0.txt" for user "user0" should be:
       """
       This is a testfile.
-      
+
       Cheers.
       """
     Examples:
@@ -269,7 +271,7 @@ Feature: checksums
     And the content of file "/textfile0.txt" for user "user0" should be:
       """
       This is a testfile.
-      
+
       Cheers.
       """
     Examples:

@@ -1,4 +1,4 @@
-@api @skipOnOcV10.0
+@api @skipOnOcV10.0 @files_sharing-app-required
 Feature: lock should propagate correctly if a share is reshared
 
   Background:

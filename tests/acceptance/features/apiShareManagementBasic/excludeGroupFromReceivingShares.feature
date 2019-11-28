@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: Exclude groups from receiving shares
   As an admin
   I want to exclude groups from receiving shares

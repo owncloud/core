@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @admin_settings-feature-required
+@webUI @insulated @disablePreviews @admin_settings-feature-required @files_sharing-app-required
 Feature: admin sharing settings
   As an admin
   I want to be able to manage sharing settings on the ownCloud server

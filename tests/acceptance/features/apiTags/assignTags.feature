@@ -1,4 +1,4 @@
-@api @systemtags-app-required @TestAlsoOnExternalUserBackend
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: Assign tags to file/folder
   I want to assign tags to the file/folder
   So that I can organize the files/folders easily

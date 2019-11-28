@@ -10,7 +10,7 @@ Feature: the new public WebDAV API is not available when the tech preview settin
       | username |
       | user0    |
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: Public cannot download file using the public WebDAV API when it is disabled
     Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
@@ -20,7 +20,7 @@ Feature: the new public WebDAV API is not available when the tech preview settin
     Then the HTTP status code should be "401"
     And as "user0" file "PARENT/welcome.txt" should exist
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: Public cannot delete file using the public WebDAV API when it is disabled
     Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
@@ -30,7 +30,7 @@ Feature: the new public WebDAV API is not available when the tech preview settin
     Then the HTTP status code should be "401"
     And as "user0" file "PARENT/welcome.txt" should exist
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: Public cannot rename file using the public WebDAV API when it is disabled
     Given user "user0" has created a public link share with settings
       | path        | /PARENT                   |
@@ -40,7 +40,7 @@ Feature: the new public WebDAV API is not available when the tech preview settin
     And as "user0" file "/PARENT/parent.txt" should exist
     And as "user0" file "/PARENT/newparent.txt" should not exist
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: Public cannot upload file using the public WebDAV API when it is disabled
     Given user "user0" has created a public link share with settings
       | path        | /PARENT                   |
@@ -49,7 +49,7 @@ Feature: the new public WebDAV API is not available when the tech preview settin
     Then the HTTP status code should be "401"
     And as "user0" file "/PARENT/lorem.txt" should not exist
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: Public cannot upload file when the public WebDAV API is disabled
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings

@@ -12,6 +12,7 @@ Feature: Edit tags for files and folders
     And the user has browsed to the login page
     And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
+  @files_sharing-app-required
   Scenario: Change the name of a tag that already exists for a file
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
@@ -22,6 +23,7 @@ Feature: Edit tags for files and folders
       | random-big  | normal |
     And tag "random" should not exist for the user
 
+  @files_sharing-app-required
   Scenario: Change the name of multiple tags that exist for a file
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"

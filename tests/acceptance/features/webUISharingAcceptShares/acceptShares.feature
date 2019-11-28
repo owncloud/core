@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @files_sharing-app-required
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept

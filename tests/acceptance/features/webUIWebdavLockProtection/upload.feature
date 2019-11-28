@@ -62,6 +62,7 @@ Feature: Locks
       | exclusive |
       | shared    |
 
+  @files_sharing-app-required
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder in a public share
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file with content "original content" to "/simple-folder/lorem.txt"

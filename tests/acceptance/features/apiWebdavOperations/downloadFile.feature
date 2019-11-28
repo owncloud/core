@@ -38,7 +38,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: download a public shared file with range
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings
@@ -48,7 +48,7 @@ Feature: download file
     When the public downloads the last public shared file with range "bytes=59-77" using the new public WebDAV API
     Then the downloaded content should be "file for developers"
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: download a public shared file inside a folder with range
     Given the administrator has enabled DAV tech_preview
     When user "user0" creates a public link share using the sharing API with settings
@@ -99,7 +99,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: download a public shared file with correct password
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings
@@ -112,7 +112,7 @@ Feature: download file
     Then the downloaded content should be "example file for developers"
     And the HTTP status code should be "206"
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: download a public shared file with wrong password
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings
@@ -125,7 +125,7 @@ Feature: download file
     Then the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
     And the HTTP status code should be "401"
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: download a public shared file without password
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings
@@ -138,7 +138,7 @@ Feature: download file
     Then the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
     And the HTTP status code should be "401"
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: try to download from a public share that has upload only permissions
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings

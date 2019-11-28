@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: auth
 
   @issue-32068

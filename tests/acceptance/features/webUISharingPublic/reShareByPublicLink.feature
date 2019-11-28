@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required
+@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
 Feature: Reshare by public link
   As a user
   I want to create public link shares from files/folders shared with me

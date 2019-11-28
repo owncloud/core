@@ -51,7 +51,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @issue-34338
+  @issue-34338 @files_sharing-app-required
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -73,6 +73,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
+  @files_sharing-app-required
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share of folder "PARENT" with change permission
@@ -88,7 +89,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | shared     |
       | exclusive  |
 
-  @issue-34360
+  @issue-34360 @files_sharing-app-required
   Scenario Outline: two users having both a shared lock can use the resource
     Given using <dav-path> DAV path
     And user "user1" has been created with default attributes and skeleton files

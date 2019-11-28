@@ -35,6 +35,7 @@ Feature: create folders
     When the user creates a folder with the invalid name "simple-folder" using the webUI
     Then near the folder input field a tooltip with the text 'simple-folder already exists' should be displayed on the webUI
 
+  @files_sharing-app-required
   Scenario: Create a folder in a public share
     Given user "user1" has created folder "/simple-empty-folder"
     And the user has reloaded the current page of the webUI

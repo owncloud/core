@@ -68,6 +68,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Moving a file into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -90,6 +91,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
+  @files_sharing-app-required
   Scenario Outline: Moving a file out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -112,6 +114,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
+  @files_sharing-app-required
   Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -135,6 +138,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
+  @files_sharing-app-required
   Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -158,6 +162,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
+  @files_sharing-app-required
   Scenario Outline: Moving a file to a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -176,6 +181,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -233,6 +239,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
