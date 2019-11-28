@@ -29,6 +29,7 @@ OC.L10N.register(
     "Never" : "Nekad",
     "External Storage" : "Ārējā krātuve",
     "Folder name" : "Mapes nosaukums",
+    "Authentication" : "Autentifikācija",
     "Configuration" : "Konfigurācija",
     "Add storage" : "Pievienot krātuvi",
     "Delete" : "Dzēst"

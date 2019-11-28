@@ -1,6 +1,8 @@
 { "translations": {
     "Please select a file." : "Izvēlieties failu.",
     "File is too big" : "Fails ir pārāk liels",
+    "Invalid file provided" : "Sniegts nederīgs fails",
+    "No image or file provided" : "Nav sniegts attēls vai fails",
     "Unknown filetype" : "Nezināms datnes tips",
     "Invalid image" : "Nederīgs attēls",
     "An error occurred. Please contact your admin." : "Radās kļūda. Lūdzu, sazinieties ar savu sistēmas administratoru.",
@@ -156,6 +158,7 @@
     "User and Groups" : "Lietotājs un Grupas",
     "Public Links" : "Publiskas saites",
     "Sharing is not allowed" : "Kopīgošana ir aizliegta",
+    "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Kopīgojiet saturu ar cilvēkiem, kas izmanto citu ownCloud, izmantojot sintaksi - lietotājvārds@example.com/owncloud",
     "Share with users…" : "Kopīgot ar lietotājiem...",
     "Share with users or groups…" : "Kopīgot ar lietotājiem vai grupām...",
     "Delete" : "Dzēst",

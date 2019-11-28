@@ -53,6 +53,7 @@ OC.L10N.register(
     "Uninstall" : "Atinstalēt",
     "Experimental" : "Eksperimentāls",
     "Valid until {date}" : "Valīds līdz {date}",
+    "Disconnect" : "Atvienoties",
     "Sending..." : "Sūta...",
     "Email changed successfully for {user}." : "Lietotājam {user} ir veiksmīgi nomainīts e-pasts",
     "An error occurred: {message}" : "Notika kļūda: {message}",
