@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @comments-app-required
+@api @TestAlsoOnExternalUserBackend @comments-app-required @files_sharing-app-required
 Feature: Comments
 
   Background:

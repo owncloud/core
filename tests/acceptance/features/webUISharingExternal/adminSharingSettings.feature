@@ -1,4 +1,4 @@
-@webUI @insulated @federation-app-required @disablePreviews @TestAlsoOnExternalUserBackend
+@webUI @insulated @federation-app-required @disablePreviews @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: Manage Trusted servers from the webUI
   As an administrator
   I want to add, view, delete and edit trusted servers from the webUI

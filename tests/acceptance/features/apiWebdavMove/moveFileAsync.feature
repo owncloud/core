@@ -83,6 +83,7 @@ Feature: move (rename) file
     And user "user0" should not see the following elements
       | /textfile1.txt |
 
+  @files_sharing-app-required
   Scenario: Moving a file to a folder with no permissions
     Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
@@ -101,6 +102,7 @@ Feature: move (rename) file
     And user "user0" should see the following elements
       | /textfile0.txt |
 
+  @files_sharing-app-required
   Scenario: Moving a file to overwrite a file in a folder with no permissions
     Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
@@ -186,6 +188,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: enabling async operations does no difference to normal MOVE - Moving a file to a folder with no permissions
     Given the administrator has enabled async operations
     And using <dav_version> DAV path

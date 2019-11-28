@@ -1,4 +1,4 @@
-@webUI @insulated @enablePreviews
+@webUI @insulated @enablePreviews @files_sharing-app-required
 Feature: browse directly to details tab
   As a user
   I want to be able to browse directly to display the details about a file

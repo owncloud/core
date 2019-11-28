@@ -42,6 +42,7 @@ Feature: copy file
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -60,6 +61,7 @@ Feature: copy file
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files

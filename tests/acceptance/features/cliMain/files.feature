@@ -44,6 +44,7 @@ Feature: Files Operations command
     Then the propfind result should not contain these entries:
       | /hello2.txt |
 
+  @files_sharing-app-required
   Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
     Given using new DAV path
     And these users have been created with default attributes and skeleton files:

@@ -152,6 +152,7 @@ Feature: rename files
     When the user renames file "randomfile.txt" to "randomfile.part" using the webUI
     Then near file "randomfile.txt" a tooltip with the text '"randomfile.part" has a forbidden file type/extension.' should be displayed on the webUI
 
+  @files_sharing-app-required
   Scenario: rename a file on a public share
     Given user "user1" has created folder "/FOLDER_TO_SHARE"
     And user "user1" has uploaded file with content "some content" to "/FOLDER_TO_SHARE/randomfile.txt"

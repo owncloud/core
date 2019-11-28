@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: capabilities
 
   Background:
@@ -84,7 +84,6 @@ Feature: capabilities
       | capability | path_to_element | value |
       | async      |                 | 1.0   |
 
-	#feature added in #32414 will be released in 10.0.10
   @skipOnOcV10.0.9
   Scenario: getting async capabilites when async operations are disabled
     Given the administrator has disabled async operations

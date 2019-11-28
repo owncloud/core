@@ -76,6 +76,7 @@ Feature: Search
     And file "lorem.txt" with path "" should be listed in the tags page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the tags page on the webUI
 
+  @files_sharing-app-required
   Scenario: Search for a shared file
     Given user "user0" has been created with default attributes and skeleton files
     When user "user0" shares file "/lorem.txt" with user "user1" using the sharing API
@@ -83,6 +84,7 @@ Feature: Search
     And the user searches for "lorem" using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
 
+  @files_sharing-app-required
   Scenario: Search for a re-shared file
     Given user "user2" has been created with default attributes and skeleton files
     And user "user0" has been created with default attributes and skeleton files
@@ -92,6 +94,7 @@ Feature: Search
     And the user searches for "lorem" using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
 
+  @files_sharing-app-required
   Scenario: Search for a shared folder
     Given user "user0" has been created with default attributes and skeleton files
     When user "user0" shares folder "simple-folder" with user "user1" using the sharing API

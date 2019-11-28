@@ -39,6 +39,7 @@ Feature: Removal of already existing tags from files and folders
     And the user toggles a tag "Confidential" on the file using the webUI
     Then file "randomfile.txt" should have no tags for user "user1"
 
+  @files_sharing-app-required
   Scenario: Shared user removes a tag in shared file
     Given user "user2" has been created with default attributes and without skeleton files
     And the user has created a "normal" tag with name "tag1"
@@ -53,6 +54,7 @@ Feature: Removal of already existing tags from files and folders
     Then file "coolnewfile.txt" should have no tags for user "user2"
     And file "coolnewfile.txt" should have no tags for user "user1"
 
+  @files_sharing-app-required
   Scenario: Sharer removes a tag in shared file
     Given user "user2" has been created with default attributes and without skeleton files
     And the user has created a "normal" tag with name "tag1"

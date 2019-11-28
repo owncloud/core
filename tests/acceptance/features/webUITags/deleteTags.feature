@@ -11,7 +11,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has browsed to the login page
     And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
-@skipOnFIREFOX
+@skipOnFIREFOX @files_sharing-app-required
   Scenario: Delete a tag in a shared file
     Given user "user2" has been created with default attributes and without skeleton files
     And user "user1" has uploaded file with content "some content" to "/randomfile.txt"

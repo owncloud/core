@@ -37,6 +37,7 @@ Feature: quota
 
 	# Received shared folder
 
+  @files_sharing-app-required
   Scenario: Uploading a file in received folder having enough quota
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -49,6 +50,7 @@ Feature: quota
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
+  @files_sharing-app-required
   Scenario: Uploading a file in received folder having insufficient quota
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -62,6 +64,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     Then as "user0" the files uploaded to "/testquota.txt" with all mechanisms should not exist
 
+  @files_sharing-app-required
   Scenario: Overwriting a file in received folder having enough quota
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -75,6 +78,7 @@ Feature: quota
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
+  @files_sharing-app-required
   Scenario: Overwriting a file in received folder having insufficient quota
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -91,6 +95,7 @@ Feature: quota
 
 	# Received shared file
 
+  @files_sharing-app-required
   Scenario: Overwriting a received file having enough quota
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -103,6 +108,7 @@ Feature: quota
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
+  @files_sharing-app-required
   Scenario: Overwriting a received file having insufficient quota
     Given these users have been created with default attributes and skeleton files:
       | username |

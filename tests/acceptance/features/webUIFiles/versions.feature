@@ -31,6 +31,7 @@ Feature: Versions of a file
     And the user restores the file to last version using the webUI
     Then the content of file "randomfile.txt" for user "user0" should be "lorem content"
 
+  @files_sharing-app-required
   Scenario: sharee can see the versions of a file
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "lorem content" to "/randomfile.txt"

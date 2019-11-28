@@ -45,6 +45,7 @@ Feature: set file properties
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files

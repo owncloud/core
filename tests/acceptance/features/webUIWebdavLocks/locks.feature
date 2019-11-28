@@ -93,7 +93,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @issue-33867
+  @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
     Given these users have been created with skeleton files:
       | username |
@@ -118,7 +118,7 @@ Feature: Locks
     #And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @issue-33867
+  @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
     Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
@@ -144,7 +144,7 @@ Feature: Locks
     #And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @issue-33867
+  @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
     Given these users have been created with skeleton files:
       | username |
@@ -169,10 +169,12 @@ Feature: Locks
     #And file "data (2).zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar (2).gz" should not be marked as locked on the webUI
 
+  @files_sharing-app-required
   Scenario: clicking other tabs does not change the lock symbol
     When the user opens the share dialog for folder "simple-folder"
     Then folder "simple-folder" should not be marked as locked on the webUI
 
+  @files_sharing-app-required
   Scenario: lock set on a shared file shows the lock information for all involved users
     Given these users have been created with skeleton files:
       | username  |
@@ -227,6 +229,7 @@ Feature: Locks
     Then folder "simple-empty-folder" should not be marked as locked on the webUI
     And file "data.zip" should not be marked as locked on the webUI
 
+  @files_sharing-app-required
   Scenario Outline: decline locked folder
     Given these users have been created with skeleton files:
       | username |
@@ -245,6 +248,7 @@ Feature: Locks
       | exclusive |
       | shared    |
 
+  @files_sharing-app-required
   Scenario Outline: accept previously declined locked folder
     Given these users have been created with skeleton files:
       | username |
@@ -265,6 +269,7 @@ Feature: Locks
       | exclusive |
       | shared    |
 
+  @files_sharing-app-required
   Scenario Outline: accept previously declined locked folder but create a folder with same name in between
     Given these users have been created with skeleton files:
       | username |
@@ -287,6 +292,7 @@ Feature: Locks
       | exclusive |
       | shared    |
 
+  @files_sharing-app-required
   Scenario Outline: creating a subfolder structure that is the same as the structure of a declined & locked share
     Given these users have been created with skeleton files:
       | username |
@@ -310,6 +316,7 @@ Feature: Locks
       | exclusive |
       | shared    |
 
+  @files_sharing-app-required
   Scenario Outline: unsharing a locked file/folder
     Given these users have been created with skeleton files:
       | username |

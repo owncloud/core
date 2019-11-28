@@ -32,6 +32,7 @@ Feature: Comments
     Then the HTTP status code should be "204"
     And the user should have 3 comments on file "/myFileToComment.txt"
 
+  @files_sharing-app-required
   Scenario: Deleting my own comments on a file shared by somebody else
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"
@@ -61,6 +62,7 @@ Feature: Comments
     Then the HTTP status code should be "204"
     And the user should have 3 comments on folder "/FOLDER_TO_COMMENT"
 
+  @files_sharing-app-required
   Scenario: Deleting my own comments on a file shared by somebody else
     Given the user has created folder "/FOLDER_TO_COMMENT"
     And the user has shared folder "/FOLDER_TO_COMMENT" with user "user1"
@@ -80,6 +82,7 @@ Feature: Comments
     And the user has created folder "/FOLDER_TO_DELETE"
     Then the user should have 0 comments on folder "/FOLDER_TO_DELETE"
 
+  @files_sharing-app-required
   Scenario: deleting a user does not remove the comment
     Given the user has created folder "/FOLDER_TO_COMMENT"
     And the user has shared folder "/FOLDER_TO_COMMENT" with user "user1"

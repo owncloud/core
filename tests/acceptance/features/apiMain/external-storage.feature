@@ -5,7 +5,7 @@ Feature: external-storage
     Given using OCS API version "1"
     And using old DAV path
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario: Share by public link a file inside a local external storage
     Given these users have been created with default attributes and skeleton files:
       | username |

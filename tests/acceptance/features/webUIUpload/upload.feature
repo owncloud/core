@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @files_sharing-app-required
 Feature: File Upload
 
   As a user
@@ -106,6 +106,7 @@ Feature: File Upload
     And file "lorem (2).txt" should be listed on the webUI
     And the content of "lorem (2).txt" should be the same as the local "lorem.txt"
 
+  @files_sharing-app-required
   Scenario: upload a file into a public share
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has logged in using the webUI
@@ -116,6 +117,7 @@ Feature: File Upload
     Then file "new-lorem.txt" should be listed on the webUI
     And the content of "simple-folder/new-lorem.txt" should be the same as the local "new-lorem.txt"
 
+  @files_sharing-app-required
   Scenario: upload overwriting a file into a public share
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
@@ -127,6 +129,7 @@ Feature: File Upload
     Then file "lorem.txt" should be listed on the webUI
     And the content of "simple-folder/lorem.txt" should be the same as the local "lorem.txt"
 
+  @files_sharing-app-required
   Scenario: upload a file into files_drop share
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has logged in using the webUI

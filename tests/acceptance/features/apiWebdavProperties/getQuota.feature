@@ -27,6 +27,7 @@ Feature: get quota
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Retrieving folder quota of shared folder with quota when no quota is set for recipient
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -58,6 +59,7 @@ Feature: get quota
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: Retrieving folder quota when quota is set and a file was recieved
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files

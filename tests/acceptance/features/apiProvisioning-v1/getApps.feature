@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required
+@api @provisioning_api-app-required @files_sharing-app-required
 Feature: get apps
   As an admin
   I want to be able to get the list of apps on my ownCloud
