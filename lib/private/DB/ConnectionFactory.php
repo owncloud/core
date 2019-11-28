@@ -117,10 +117,6 @@ class ConnectionFactory {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
 					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
-				$eventManager->addEventListener(
-					Events::onSchemaColumnDefinition,
-					new MySqlSchemaColumnDefinitionListener()
-				);
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);
@@ -131,11 +127,7 @@ class ConnectionFactory {
 				break;
 			case 'sqlite3':
 				$journalMode = $additionalConnectionParams['sqlite.journal_mode'];
-				$additionalConnectionParams['platform'] = new OCSqlitePlatform();
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
-				break;
-			case 'pgsql':
-				$additionalConnectionParams['platform'] = new OCPostgreSqlPlatform();
 				break;
 		}
 		/** @var Connection $connection */

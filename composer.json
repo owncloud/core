@@ -7,7 +7,7 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.0.8"
+            "php": "7.1"
         }
     },
     "autoload" : {
@@ -26,12 +26,12 @@
         "bamarni/composer-bin-plugin": "^1.2",
         "jakub-onderka/php-console-highlighter": "^0.4",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^6.5",
+        "phpunit/phpunit": "^7.5",
         "roave/security-advisories": "dev-master"
     },
     "require": {
-        "php": ">=7.0.8",
-        "doctrine/dbal": "^2.5",
+        "php": ">=7.1",
+        "doctrine/dbal": "^2.8",
         "phpseclib/phpseclib": "^2.0",
         "jeremeamia/superclosure": "^2.4",
         "bantu/ini-get-wrapper": "v1.0.1",
@@ -68,6 +68,9 @@
     "extra": {
         "bamarni-bin": {
             "bin-links": false
+        },
+        "cleaner-ignore": {
+            "phpunit/phpunit": ["phpunit.xsd"]
         }
     }
 }
