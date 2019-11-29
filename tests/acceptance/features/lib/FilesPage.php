@@ -407,11 +407,12 @@ class FilesPage extends FilesPageBasic {
 	 * checks whether given resource is marked as shared or not
 	 *
 	 * @param $fileName
+	 *
 	 * @return bool
 	 */
 	public function isResourceMarkedShared($fileName) {
 		try {
-			$resourceMarkedSharedXpath = sprintf($this->resourceSharedMarkXpath, $fileName);
+			$resourceMarkedSharedXpath = \sprintf($this->resourceSharedMarkXpath, $fileName);
 			$markedElement = $this->find("xpath", $resourceMarkedSharedXpath);
 			$this->assertElementNotNull(
 				$markedElement,
@@ -431,7 +432,7 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function countAllResourcesPresent() {
 		$allResources =  $this->findAll("xpath", $this->resourceElementsNameXpath);
-		return count($allResources);
+		return \count($allResources);
 	}
 
 	/**
@@ -441,6 +442,6 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function countAllResourcesMarkedShared() {
 		$markedResources = $this->findAll("xpath", $this->sharedMarkXpath);
-		return count($markedResources);
+		return \count($markedResources);
 	}
 }
