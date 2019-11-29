@@ -45,7 +45,11 @@ class AddressTest extends \Test\TestCase {
 		return [
 			['john@domain.com', 'john'],
 			['john@domain.com@some.host', 'john@domain.com'],
-			['john@domain.com@http://some.host', 'john@domain.com']
+			['john@domain.com@http://some.host', 'john@domain.com'],
+			['john@domain.com@http://some.host?app=files', 'john@domain.com'],
+			['john@domain.com@http://some.host?app=files?garbage', 'john@domain.com'],
+			['john@domain.com@http://some.host#content', 'john@domain.com'],
+			['john@domain.com@http://some.host?app=files#content', 'john@domain.com']
 		];
 	}
 

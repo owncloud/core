@@ -160,6 +160,8 @@ class ExternalSharesController extends Controller {
 	 * @return DataResponse
 	 */
 	public function testRemote($remote) {
+		// cut query and|or anchor part off
+		$remote = \strtok($remote, '?#');
 		if (
 			$this->testUrl('https://' . $remote . '/ocs-provider/') ||
 			$this->testUrl('https://' . $remote . '/ocs-provider/index.php') ||
