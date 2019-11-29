@@ -36,10 +36,13 @@
 namespace OC\Files\Cache;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\Cache\ICacheIterator;
 use \OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
+use OCP\ILogger;
 
 /**
  * Metadata cache for a storage
@@ -80,6 +83,11 @@ class Cache implements ICache {
 	protected $connection;
 
 	/**
+	 * @var ILogger
+	 */
+	protected $logger;
+
+	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
 	 */
 	public function __construct($storage) {
@@ -95,6 +103,7 @@ class Cache implements ICache {
 		$this->storageCache = new Storage($storage);
 		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
 		$this->connection = \OC::$server->getDatabaseConnection();
+		$this->logger = \OC::$server->getLogger();
 	}
 
 	/**
@@ -189,10 +198,16 @@ class Cache implements ICache {
 	 */
 	public function getFolderContentsById($fileId) {
 		if ($fileId > -1) {
-			$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`,
-						   `storage_mtime`, `encrypted`, `etag`, `permissions`, `checksum`
-					FROM `*PREFIX*filecache` WHERE `parent` = ? ORDER BY `name` ASC';
-			$result = $this->connection->executeQuery($sql, [$fileId]);
+			$qb = $this->connection->getQueryBuilder();
+			$qb->select('fileid', 'storage', 'path', 'parent', 'name', 'mimetype', 'mimepart', 'size', 'mtime',
+				'storage_mtime', 'encrypted', 'etag', 'permissions', 'checksum')
+				->from('filecache')
+				->where(
+					$qb->expr()->eq('parent', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+				);
+			$qb->orderBy('name', 'ASC');
+
+			$result = $qb->execute();
 			$files = $result->fetchAll();
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->mimetypeLoader->getMimetypeById($file['mimetype']);
@@ -211,6 +226,23 @@ class Cache implements ICache {
 		} else {
 			return [];
 		}
+	}
+
+	/**
+	 * get the metadata of all files stored in $folder using
+	 * const memory iterator
+	 *
+	 * @param int $fileId the file id of the folder
+	 *
+	 * @return ICacheIterator
+	 */
+	public function getChildren($fileId) {
+		return new CacheChildrenIterator(
+			$fileId,
+			$this->mimetypeLoader,
+			$this->connection,
+			$this->logger
+		);
 	}
 
 	/**
