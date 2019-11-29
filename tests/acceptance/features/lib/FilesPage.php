@@ -43,6 +43,7 @@ class FilesPage extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
+	protected $resourceSharedIndicatorXpath = "//table[@id='filestable']//span[normalize-space(.)='%s']/../..//div[contains(@class, 'sharetree-item')]";
 
 	/**
 	 *
@@ -398,5 +399,18 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function waitForUploadProgressbarToFinish() {
 		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();
+	}
+
+	/**
+	 * checks whether given resource is marked as shared or not
+	 *
+	 * @param $fileName
+	 *
+	 * @return bool
+	 */
+	public function isShareIndicatorPresent($fileName) {
+		$resourceMarkedSharedXpath = \sprintf($this->resourceSharedIndicatorXpath, $fileName);
+		$markedElement = $this->find("xpath", $resourceMarkedSharedXpath);
+		return $markedElement !== null;
 	}
 }

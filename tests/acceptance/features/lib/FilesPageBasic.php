@@ -533,7 +533,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 					);
 					$fileListIsVisible = false;
 				}
-				
+
 				if ($fileListIsVisible
 					&& $fileList->has("xpath", "//a")
 				) {
@@ -638,7 +638,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
-		
+
 		$showHiddenFilesCheckBox = $this->find(
 			'xpath', $this->showHiddenFilesCheckboxXpath
 		);

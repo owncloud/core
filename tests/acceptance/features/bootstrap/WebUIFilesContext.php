@@ -32,6 +32,7 @@ use Page\SharedWithOthersPage;
 use Page\SharedWithYouPage;
 use Page\TagsPage;
 use Page\TrashbinPage;
+use Page\PublicLinkFilesPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\GeneralExceptionPage;
@@ -82,6 +83,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var SharedWithOthersPage
 	 */
 	private $sharedWithOthersPage;
+
+	/**
+	 * @var PublicLinkFilesPage
+	 */
+	private $publicLinkFilesPage;
 
 	/**
 	 *
@@ -165,6 +171,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param SharedByLinkPage $sharedByLinkPage
 	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 * @param GeneralExceptionPage $generalExceptionPage
+	 * @param PublicLinkFilesPage $publicLinkFilesPage
 	 *
 	 * @return void
 	 */
@@ -177,7 +184,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		TagsPage $tagsPage,
 		SharedByLinkPage $sharedByLinkPage,
 		SharedWithOthersPage $sharedWithOthersPage,
-		GeneralExceptionPage $generalExceptionPage
+		GeneralExceptionPage $generalExceptionPage,
+		PublicLinkFilesPage $publicLinkFilesPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
@@ -188,6 +196,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->sharedWithOthersPage = $sharedWithOthersPage;
 		$this->generalExceptionPage = $generalExceptionPage;
+		$this->publicLinkFilesPage = $publicLinkFilesPage;
 	}
 
 	/**
@@ -1121,7 +1130,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|public link files page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $path
@@ -1289,6 +1298,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$failed = false;
 		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
 			$pageObject->openFile($breadCrumb, $this->getSession());
+			if ($pageObject instanceof $this->trashbinPage) {
+				$pageObject = $this->trashbinPage;
+			} elseif ($pageObject instanceof $this->publicLinkFilesPage) {
+				$pageObject = $this->publicLinkFilesPage;
+			} else {
+				$pageObject = $this->filesPage;
+			}
 			try {
 				$pageObject->waitTillPageIsLoaded($this->getSession());
 			} catch (\Exception $e) {
@@ -1418,7 +1434,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			case "shared-by-link page":
 				$this->theUserBrowsesToThePage($this->sharedByLinkPage);
 				break;
-			case "shared with others page":
 			case "shared-with-others page":
 				$this->theUserBrowsesToThePage($this->sharedWithOthersPage);
 				break;
