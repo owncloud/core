@@ -659,3 +659,14 @@ Feature: Sharing files and folders with internal users
     And the option to delete file "lorem.txt" should not be available on the webUI
     When the user shares file "lorem.txt" with user "User Three" using the webUI
     Then as "user3" file "lorem.txt" should exist
+
+  Scenario: share a folder with another user
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
+    Then folder "simple-folder" should not be marked shared on the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then all resources should be marked shared on the webUI
