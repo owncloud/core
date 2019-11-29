@@ -56,11 +56,19 @@ Feature: dav-versions
 
   @smokeTest
   Scenario: Restore a file and check, if the content is now in the current file
-    Given user "user0" has uploaded file with content "123" to "/davtest.txt"
-    And user "user0" has uploaded file with content "12345" to "/davtest.txt"
+    Given user "user0" has uploaded file with content "Test Content." to "/davtest.txt"
+    And user "user0" has uploaded file with content "Content Test Updated." to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the content of file "/davtest.txt" for user "user0" should be "123"
+    Then the content of file "/davtest.txt" for user "user0" should be "Test Content."
+
+  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-278
+  Scenario: Restore a file back to bigger content and check, if the content is now in the current file
+    Given user "user0" has uploaded file with content "Back To The Future." to "/davtest.txt"
+    And user "user0" has uploaded file with content "Update Content." to "/davtest.txt"
+    And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
+    When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
+    Then the content of file "/davtest.txt" for user "user0" should be "Back To The Future."
 
   @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
   Scenario Outline: Uploading a chunked file does create the correct version that can be restored
