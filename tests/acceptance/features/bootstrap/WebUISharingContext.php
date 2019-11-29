@@ -1601,4 +1601,41 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 		}
 	}
+
+	/**
+	 * @Then (file|folder) :arg1 should be marked shared on the webUI
+	 *
+	 * @param string $fileName name of resource
+	 */
+	public function fileShouldBeMarkedSharedOnTheWebUI($fileName)
+	{
+		$isMarked = $this->filesPage->isResourceMarkedShared(
+			$fileName
+		);
+		Assert::assertEquals(true, $isMarked, 'Expected resource is not marked shared');
+	}
+
+	/**
+	 * @Then folder :arg1 should not be marked shared on the webUI
+	 *
+	 * @param string $fileName name of resource
+	 */
+	public function folderShouldNotBeMarkedSharedOnTheWebUI($fileName)
+	{
+		$isMarked = $this->filesPage->isResourceMarkedShared(
+			$fileName
+		);
+		print $isMarked;
+		Assert::assertEquals(false, $isMarked, 'Expected resource is marked shared');
+	}
+
+	/**
+	 * @Then all resources should be marked shared on the webUI
+	 */
+	public function allResourcesShouldBeMarkedSharedOnTheWebUI()
+	{
+		$shareMarkedResources = $this->filesPage->countAllResourcesMarkedShared();
+		$resourcesPresent = $this->filesPage->countAllResourcesPresent();
+		Assert::assertEquals($shareMarkedResources, $resourcesPresent);
+	}
 }
