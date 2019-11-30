@@ -25,12 +25,11 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.1',
+				'7.2',
 			]
 		},
 		'reducedDatabases' : {
 			'phpVersions': [
-				'7.2',
 				'7.3',
 			],
 			'databases': [
@@ -41,7 +40,7 @@ config = {
 		},
 		'external-samba-windows' : {
 			'phpVersions': [
-				'7.1',
+				'7.2',
 			],
 			'databases': [
 				'sqlite',
@@ -60,7 +59,7 @@ config = {
 		},
 		'external-other' : {
 			'phpVersions': [
-				'7.1',
+				'7.2',
 			],
 			'databases': [
 				'sqlite',
@@ -284,7 +283,7 @@ def dependencies():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.1'],
+		'phpVersions': ['7.2'],
 	}
 
 	if 'defaults' in config:
@@ -582,7 +581,7 @@ def phpstan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.1'],
+		'phpVersions': ['7.2'],
 		'logLevel': '2',
 	}
 
@@ -659,7 +658,7 @@ def phan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.1', '7.2', '7.3'],
+		'phpVersions': ['7.2', '7.3'],
 		'logLevel': '2',
 	}
 
@@ -736,7 +735,7 @@ def litmus():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.1'],
+		'phpVersions': ['7.2'],
 		'logLevel': '2'
 	}
 
@@ -901,7 +900,7 @@ def dav():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.1'],
+		'phpVersions': ['7.2'],
 		'logLevel': '2'
 	}
 
@@ -999,7 +998,7 @@ def javascript():
 	default = {
 		'coverage': True,
 		'logLevel': '2',
-		'phpVersion': '7.1'
+		'phpVersion': '7.2'
 	}
 
 	if 'defaults' in config:
@@ -1095,7 +1094,7 @@ def phptests(testType):
 	errorFound = False
 
 	default = {
-		'phpVersions': ['7.1', '7.2', '7.3'],
+		'phpVersions': ['7.2', '7.3'],
 		'databases': [
 			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mariadb:10.4', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
 		],
@@ -1279,7 +1278,7 @@ def acceptance():
 	default = {
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
-		'phpVersions': ['7.1'],
+		'phpVersions': ['7.2'],
 		'databases': ['mariadb:10.2'],
 		'federatedServerNeeded': False,
 		'filterTags': '',
