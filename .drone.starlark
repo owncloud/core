@@ -26,7 +26,10 @@ config = {
 		'allDatabases' : {
 			'phpVersions': [
 				'7.1',
-			]
+			],
+			'databases': [
+				'postgres:10.3',
+			],
 		},
 		'reducedDatabases' : {
 			'phpVersions': [
@@ -35,7 +38,7 @@ config = {
 			],
 			'databases': [
 				'sqlite',
-				'mariadb:10.2',
+				'postgres:10.3',
 			],
 			'coverage': False
 		},
@@ -44,7 +47,7 @@ config = {
 				'7.1',
 			],
 			'databases': [
-				'sqlite',
+				'postgres:10.3',
 			],
 			'externalTypes': [
 				'samba',
@@ -63,7 +66,7 @@ config = {
 				'7.1',
 			],
 			'databases': [
-				'sqlite',
+				'postgres:10.3',
 			],
 			'externalTypes': [
 				'webdav',
@@ -103,10 +106,16 @@ config = {
 				'apiWebdavProperties',
 				'apiWebdavUpload',
 			],
+			'databases': [
+				'postgres:10.3',
+			],
 		},
 		'apiNotifications': {
 			'suites': [
 				'apiSharingNotifications',
+			],
+			'databases': [
+				'postgres:10.3',
 			],
 			'extraApps': {
 				'notifications': 'composer install'
@@ -115,6 +124,9 @@ config = {
 		'apiFederation': {
 			'suites': [
 				'apiFederation',
+			],
+			'databases': [
+				'postgres:10.3',
 			],
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['daily-master-qa', '10.2.1']
@@ -126,11 +138,17 @@ config = {
 				'cliProvisioning',
 				'cliTrashbin',
 			],
+			'databases': [
+				'postgres:10.3',
+			],
 			'emailNeeded': True,
 		},
 		'cliAppManagement': {
 			'suites': [
 				'cliAppManagement',
+			],
+			'databases': [
+				'postgres:10.3',
 			],
 			'testingRemoteSystem': False
 		},
@@ -162,6 +180,9 @@ config = {
 				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
 				'webUIWebdavLocks': '',
 			},
+			'databases': [
+				'postgres:10.3',
+			],
 			'emailNeeded': True,
 			'useHttps': False,
 		},
@@ -169,6 +190,9 @@ config = {
 			'suites': {
 				'webUISharingNotifications': 'webUISharingNotify',
 			},
+			'databases': [
+				'postgres:10.3',
+			],
 			'emailNeeded': True,
 			'useHttps': False,
 			'extraApps': {
@@ -179,6 +203,9 @@ config = {
 			'suites': {
 				'webUISharingExternal': 'webUISharingExt',
 			},
+			'databases': [
+				'postgres:10.3',
+			],
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['daily-master-qa', '10.2.1']
 		},
@@ -186,6 +213,9 @@ config = {
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
+			'databases': [
+				'postgres:10.3',
+			],
 			'browsers': [
 				'firefox'
 			],
@@ -199,6 +229,9 @@ config = {
 			'suites': {
 				'webUIProxySmoketest': 'webUIProxySmoke',
 			},
+			'databases': [
+				'postgres:10.3',
+			],
 			'browsers': [
 				'chrome'
 			],
@@ -213,6 +246,9 @@ config = {
 			'suites': {
 				'apiProxySmoketest': 'apiProxySmoke',
 			},
+			'databases': [
+				'postgres:10.3',
+			],
 			'proxyNeeded': True,
 			'useHttps': False,
 			'filterTags': '@smokeTest&&~@notifications-app-required',

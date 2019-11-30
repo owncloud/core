@@ -1312,928 +1312,6 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-sqlite
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: sqlite
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: sqlite
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.1-mariadb10.2
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: mariadb
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: mariadb
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: mariadb
-  pull: always
-  image: mariadb:10.2
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.1-mariadb10.3
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: mariadb
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: mariadb
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: mariadb
-  pull: always
-  image: mariadb:10.3
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.1-mysql5.5
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: mysql
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: mysql
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: mysql
-  pull: always
-  image: mysql:5.5
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.1-mysql5.7
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: mysql
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: mysql
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: mysql
-  pull: always
-  image: mysql:5.7
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.1-mysql8.0
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: mysql
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: mysql
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: mysql
-  pull: always
-  image: mysql:8.0
-  command:
-  - --default-authentication-plugin=mysql_native_password
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.1-postgres9.4
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: postgres
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: postgres
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: postgres
-  pull: always
-  image: postgres:9.4
-  environment:
-    POSTGRES_DB: owncloud
-    POSTGRES_PASSWORD: owncloud
-    POSTGRES_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
 name: phpunit-php7.1-postgres10.3
 
 platform:
@@ -2366,139 +1444,6 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-oracle
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: oracle
-
-- name: fix-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown -R www-data /drone/src
-
-- name: owncloud-log-server
-  pull: always
-  image: owncloud/ubuntu:18.04
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: oracle
-
-- name: coverage-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    files:
-    - "*.xml"
-    flags:
-    - phpunit
-    paths:
-    - tests/output/coverage
-  environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-services:
-- name: oracle
-  pull: always
-  image: deepdiver/docker-oracle-xe-11g:latest
-  environment:
-    ORACLE_DB: XE
-    ORACLE_DISABLE_ASYNCH_IO: true
-    ORACLE_PASSWORD: oracle
-    ORACLE_USER: system
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.3
-- phpstan-php7.1
-- phan-php7.1
-- phan-php7.2
-- phan-php7.3
-
----
-kind: pipeline
-type: docker
 name: phpunit-php7.2-sqlite
 
 platform:
@@ -2604,7 +1549,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.2-mariadb10.2
+name: phpunit-php7.2-postgres10.3
 
 platform:
   os: linux
@@ -2669,7 +1614,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: fix-permissions
   pull: always
@@ -2691,17 +1636,16 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: false
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 trigger:
   ref:
@@ -2824,7 +1768,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.3-mariadb10.2
+name: phpunit-php7.3-postgres10.3
 
 platform:
   os: linux
@@ -2889,7 +1833,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: fix-permissions
   pull: always
@@ -2911,17 +1855,16 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: false
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 trigger:
   ref:
@@ -2939,7 +1882,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-sqlite-samba
+name: phpunit-php7.1-postgres10.3-samba
 
 platform:
   os: linux
@@ -3004,7 +1947,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
 
 - name: fix-permissions
   pull: always
@@ -3030,7 +1973,7 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
     FILES_EXTERNAL_TYPE: samba
 
 - name: coverage-upload
@@ -3052,6 +1995,14 @@ steps:
     - drone.owncloud.com
 
 services:
+- name: postgres
+  pull: always
+  image: postgres:10.3
+  environment:
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
+
 - name: samba
   pull: always
   image: owncloudci/samba:latest
@@ -3078,7 +2029,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-sqlite-windows
+name: phpunit-php7.1-postgres10.3-windows
 
 platform:
   os: linux
@@ -3143,7 +2094,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
 
 - name: fix-permissions
   pull: always
@@ -3169,7 +2120,7 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
     FILES_EXTERNAL_TYPE: windows
 
 - name: coverage-upload
@@ -3190,6 +2141,15 @@ steps:
     - drone.owncloud.services
     - drone.owncloud.com
 
+services:
+- name: postgres
+  pull: always
+  image: postgres:10.3
+  environment:
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
+
 trigger:
   ref:
   - refs/pull/**
@@ -3206,7 +2166,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-sqlite-webdav
+name: phpunit-php7.1-postgres10.3-webdav
 
 platform:
   os: linux
@@ -3271,7 +2231,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
 
 - name: fix-permissions
   pull: always
@@ -3293,7 +2253,7 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
     FILES_EXTERNAL_TYPE: webdav
 
 - name: coverage-upload
@@ -3315,6 +2275,14 @@ steps:
     - drone.owncloud.com
 
 services:
+- name: postgres
+  pull: always
+  image: postgres:10.3
+  environment:
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
+
 - name: webdav
   pull: always
   image: owncloudci/php:latest
@@ -3341,7 +2309,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-sqlite-sftp
+name: phpunit-php7.1-postgres10.3-sftp
 
 platform:
   os: linux
@@ -3406,7 +2374,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
 
 - name: fix-permissions
   pull: always
@@ -3428,7 +2396,7 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
     FILES_EXTERNAL_TYPE: sftp
 
 - name: coverage-upload
@@ -3450,6 +2418,14 @@ steps:
     - drone.owncloud.com
 
 services:
+- name: postgres
+  pull: always
+  image: postgres:10.3
+  environment:
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
+
 - name: sftp
   pull: always
   image: atmoz/sftp
@@ -3472,7 +2448,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.1-sqlite-scality
+name: phpunit-php7.1-postgres10.3-scality
 
 platform:
   os: linux
@@ -3537,7 +2513,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -3579,7 +2555,7 @@ steps:
   - su-exec www-data bash tests/drone/test-phpunit.sh
   environment:
     COVERAGE: true
-    DB_TYPE: sqlite
+    DB_TYPE: postgres
     PRIMARY_OBJECTSTORE: files_primary_s3
 
 - name: coverage-upload
@@ -3601,6 +2577,14 @@ steps:
     - drone.owncloud.com
 
 services:
+- name: postgres
+  pull: always
+  image: postgres:10.3
+  environment:
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
+
 - name: scality
   pull: always
   image: owncloudci/scality-s3server:latest
@@ -3623,7 +2607,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiAuth-mariadb10.2-php7.1
+name: apiAuth-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -3688,7 +2672,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -3728,14 +2712,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -3769,7 +2752,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiAuthOcs-mariadb10.2-php7.1
+name: apiAuthOcs-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -3834,7 +2817,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -3874,14 +2857,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -3915,7 +2897,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiCapabilities-mariadb10.2-php7.1
+name: apiCapabilities-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -3980,7 +2962,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4020,14 +3002,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4061,7 +3042,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiComments-mariadb10.2-php7.1
+name: apiComments-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -4126,7 +3107,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4166,14 +3147,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4207,7 +3187,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiFavorites-mariadb10.2-php7.1
+name: apiFavorites-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -4272,7 +3252,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4312,14 +3292,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4353,7 +3332,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiMain-mariadb10.2-php7.1
+name: apiMain-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -4418,7 +3397,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4458,14 +3437,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4499,7 +3477,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioning-v1-mariadb10.2-php7.1
+name: apiProvisioning-v1-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -4564,7 +3542,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4604,14 +3582,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4645,7 +3622,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioning-v2-mariadb10.2-php7.1
+name: apiProvisioning-v2-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -4710,7 +3687,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4750,14 +3727,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4791,7 +3767,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioningGroups-v1-mariadb10.2-php7.1
+name: apiProvisioningGroups-v1-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -4856,7 +3832,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -4896,14 +3872,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -4937,7 +3912,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioningGroups-v2-mariadb10.2-php7.1
+name: apiProvisioningGroups-v2-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5002,7 +3977,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5042,14 +4017,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5083,7 +4057,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiSharees-mariadb10.2-php7.1
+name: apiSharees-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5148,7 +4122,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5188,14 +4162,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5229,7 +4202,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareManagement-mariadb10.2-php7.1
+name: apiShareManagement-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5294,7 +4267,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5334,14 +4307,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5375,7 +4347,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareManagementBasic-mariadb10.2-php7.1
+name: apiShareManagementBasic-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5440,7 +4412,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5480,14 +4452,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5521,7 +4492,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareOperations-mariadb10.2-php7.1
+name: apiShareOperations-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5586,7 +4557,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5626,14 +4597,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5667,7 +4637,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareReshare-mariadb10.2-php7.1
+name: apiShareReshare-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5732,7 +4702,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5772,14 +4742,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5813,7 +4782,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareUpdate-mariadb10.2-php7.1
+name: apiShareUpdate-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -5878,7 +4847,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -5918,14 +4887,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -5959,7 +4927,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiTags-mariadb10.2-php7.1
+name: apiTags-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6024,7 +4992,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6064,14 +5032,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6105,7 +5072,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiTrashbin-mariadb10.2-php7.1
+name: apiTrashbin-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6170,7 +5137,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6210,14 +5177,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6251,7 +5217,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiVersions-mariadb10.2-php7.1
+name: apiVersions-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6316,7 +5282,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6356,14 +5322,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6397,7 +5362,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavLocks-mariadb10.2-php7.1
+name: apiWebdavLocks-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6462,7 +5427,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6502,14 +5467,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6543,7 +5507,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavLocks2-mariadb10.2-php7.1
+name: apiWebdavLocks2-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6608,7 +5572,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6648,14 +5612,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6689,7 +5652,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavMove-mariadb10.2-php7.1
+name: apiWebdavMove-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6754,7 +5717,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6794,14 +5757,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6835,7 +5797,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavOperations-mariadb10.2-php7.1
+name: apiWebdavOperations-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -6900,7 +5862,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -6940,14 +5902,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -6981,7 +5942,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavProperties-mariadb10.2-php7.1
+name: apiWebdavProperties-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -7046,7 +6007,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -7086,14 +6047,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -7127,7 +6087,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavUpload-mariadb10.2-php7.1
+name: apiWebdavUpload-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -7192,7 +6152,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -7232,14 +6192,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -7273,7 +6232,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiSharingNotifications-mariadb10.2-php7.1
+name: apiSharingNotifications-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -7338,7 +6297,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -7385,14 +6344,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -7426,7 +6384,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiFederation-master-mariadb10.2-php7.1
+name: apiFederation-master-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -7493,7 +6451,7 @@ steps:
   - php occ security:certificates:import /drone/federated.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-federated
   pull: always
@@ -7565,14 +6523,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -7622,7 +6579,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiFederation-10.2.1-mariadb10.2-php7.1
+name: apiFederation-10.2.1-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -7689,7 +6646,7 @@ steps:
   - php occ security:certificates:import /drone/federated.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-federated
   pull: always
@@ -7761,14 +6718,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -7818,7 +6774,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliBackground-mariadb10.2-php7.1
+name: cliBackground-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -7883,7 +6839,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -7924,14 +6880,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: email
   pull: always
@@ -7969,7 +6924,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliMain-mariadb10.2-php7.1
+name: cliMain-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8034,7 +6989,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8075,14 +7030,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: email
   pull: always
@@ -8120,7 +7074,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliProvisioning-mariadb10.2-php7.1
+name: cliProvisioning-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8185,7 +7139,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8226,14 +7180,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: email
   pull: always
@@ -8271,7 +7224,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliTrashbin-mariadb10.2-php7.1
+name: cliTrashbin-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8336,7 +7289,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8377,14 +7330,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: email
   pull: always
@@ -8422,7 +7374,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliAppManagement-mariadb10.2-php7.1
+name: cliAppManagement-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8487,7 +7439,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8527,14 +7479,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: server
   pull: always
@@ -8568,7 +7519,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIAddUsers-chrome-mariadb10.2-php7.1
+name: webUIAddUsers-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8633,7 +7584,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8678,14 +7629,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -8725,7 +7675,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIAdminSettings-chrome-mariadb10.2-php7.1
+name: webUIAdminSettings-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8790,7 +7740,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8835,14 +7785,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -8882,7 +7831,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIComments-chrome-mariadb10.2-php7.1
+name: webUIComments-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -8947,7 +7896,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -8992,14 +7941,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9039,7 +7987,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUICreateDelete-chrome-mariadb10.2-php7.1
+name: webUICreateDelete-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -9104,7 +8052,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -9149,14 +8097,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9196,7 +8143,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFavorites-chrome-mariadb10.2-php7.1
+name: webUIFavorites-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -9261,7 +8208,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -9306,14 +8253,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9353,7 +8299,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFiles-chrome-mariadb10.2-php7.1
+name: webUIFiles-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -9418,7 +8364,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -9463,14 +8409,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9510,7 +8455,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUILogin-chrome-mariadb10.2-php7.1
+name: webUILogin-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -9575,7 +8520,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -9620,14 +8565,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9667,7 +8611,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIManageQuota-chrome-mariadb10.2-php7.1
+name: webUIManageQuota-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -9732,7 +8676,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -9777,14 +8721,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9824,7 +8767,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIManageUsersGrps-chrome-mariadb10.2-php7.1
+name: webUIManageUsersGrps-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -9889,7 +8832,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -9934,14 +8877,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -9981,7 +8923,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIMoveFilesFolder-chrome-mariadb10.2-php7.1
+name: webUIMoveFilesFolder-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10046,7 +8988,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -10091,14 +9033,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -10138,7 +9079,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIPersonalSetting-chrome-mariadb10.2-php7.1
+name: webUIPersonalSetting-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10203,7 +9144,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -10248,14 +9189,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -10295,7 +9235,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIRenameFiles-chrome-mariadb10.2-php7.1
+name: webUIRenameFiles-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10360,7 +9300,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -10405,14 +9345,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -10452,7 +9391,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIRenameFolders-chrome-mariadb10.2-php7.1
+name: webUIRenameFolders-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10517,7 +9456,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -10562,14 +9501,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -10609,7 +9547,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIRestrictSharing-chrome-mariadb10.2-php7.1
+name: webUIRestrictSharing-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10674,7 +9612,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -10719,14 +9657,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -10766,7 +9703,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISettingsMenu-chrome-mariadb10.2-php7.1
+name: webUISettingsMenu-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10831,7 +9768,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -10876,14 +9813,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -10923,7 +9859,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingAcceptSh-chrome-mariadb10.2-php7.1
+name: webUISharingAcceptSh-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -10988,7 +9924,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11033,14 +9969,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -11080,7 +10015,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingAutocomp-chrome-mariadb10.2-php7.1
+name: webUISharingAutocomp-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -11145,7 +10080,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11190,14 +10125,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -11237,7 +10171,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingIntGroup-chrome-mariadb10.2-php7.1
+name: webUISharingIntGroup-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -11302,7 +10236,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11347,14 +10281,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -11394,7 +10327,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingIntUsers-chrome-mariadb10.2-php7.1
+name: webUISharingIntUsers-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -11459,7 +10392,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11504,14 +10437,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -11551,7 +10483,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingPublic-chrome-mariadb10.2-php7.1
+name: webUISharingPublic-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -11616,7 +10548,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11661,14 +10593,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -11708,7 +10639,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUITags-chrome-mariadb10.2-php7.1
+name: webUITags-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -11773,7 +10704,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11818,14 +10749,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -11865,7 +10795,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUITrashbin-chrome-mariadb10.2-php7.1
+name: webUITrashbin-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -11930,7 +10860,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -11975,14 +10905,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -12022,7 +10951,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIUpload-chrome-mariadb10.2-php7.1
+name: webUIUpload-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -12087,7 +11016,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -12132,14 +11061,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -12179,7 +11107,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIWebdavLockProt-chrome-mariadb10.2-php7.1
+name: webUIWebdavLockProt-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -12244,7 +11172,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -12289,14 +11217,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -12336,7 +11263,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIWebdavLocks-chrome-mariadb10.2-php7.1
+name: webUIWebdavLocks-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -12401,7 +11328,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -12446,14 +11373,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -12493,7 +11419,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingNotify-chrome-mariadb10.2-php7.1
+name: webUISharingNotify-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -12558,7 +11484,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -12610,14 +11536,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -12657,7 +11582,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingExt-master-chrome-mariadb10.2-php7.1
+name: webUISharingExt-master-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -12724,7 +11649,7 @@ steps:
   - php occ security:certificates:import /drone/federated.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-federated
   pull: always
@@ -12800,14 +11725,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -12863,7 +11787,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingExt-10.2.1-chrome-mariadb10.2-php7.1
+name: webUISharingExt-10.2.1-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -12930,7 +11854,7 @@ steps:
   - php occ security:certificates:import /drone/federated.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-federated
   pull: always
@@ -13006,14 +11930,13 @@ steps:
     TEST_SERVER_URL: https://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -13069,7 +11992,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFfSmoke-3-1-firefox-mariadb10.2-php7.1
+name: webUIFfSmoke-3-1-firefox-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -13134,7 +12057,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -13181,14 +12104,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -13229,7 +12151,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFfSmoke-3-2-firefox-mariadb10.2-php7.1
+name: webUIFfSmoke-3-2-firefox-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -13294,7 +12216,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -13341,14 +12263,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -13389,7 +12310,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFfSmoke-3-3-firefox-mariadb10.2-php7.1
+name: webUIFfSmoke-3-3-firefox-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -13454,7 +12375,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -13501,14 +12422,13 @@ steps:
     TEST_SERVER_URL: http://server
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -13549,7 +12469,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIProxySmoke-3-1-chrome-mariadb10.2-php7.1
+name: webUIProxySmoke-3-1-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -13615,7 +12535,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -13662,14 +12582,13 @@ steps:
     TEST_SERVER_URL: http://proxy
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -13715,7 +12634,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIProxySmoke-3-2-chrome-mariadb10.2-php7.1
+name: webUIProxySmoke-3-2-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -13781,7 +12700,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -13828,14 +12747,13 @@ steps:
     TEST_SERVER_URL: http://proxy
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -13881,7 +12799,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIProxySmoke-3-3-chrome-mariadb10.2-php7.1
+name: webUIProxySmoke-3-3-chrome-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -13947,7 +12865,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -13994,14 +12912,13 @@ steps:
     TEST_SERVER_URL: http://proxy
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: selenium
   pull: always
@@ -14047,7 +12964,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProxySmoke-3-1-mariadb10.2-php7.1
+name: apiProxySmoke-3-1-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -14113,7 +13030,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -14155,14 +13072,13 @@ steps:
     TEST_SERVER_URL: http://proxy
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: proxy
   pull: always
@@ -14198,7 +13114,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProxySmoke-3-2-mariadb10.2-php7.1
+name: apiProxySmoke-3-2-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -14264,7 +13180,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -14306,14 +13222,13 @@ steps:
     TEST_SERVER_URL: http://proxy
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: proxy
   pull: always
@@ -14349,7 +13264,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProxySmoke-3-3-mariadb10.2-php7.1
+name: apiProxySmoke-3-3-postgres10.3-php7.1
 
 platform:
   os: linux
@@ -14415,7 +13330,7 @@ steps:
   - php occ security:certificates:import /drone/server.crt
   - php occ security:certificates
   environment:
-    DB_TYPE: mariadb
+    DB_TYPE: postgres
 
 - name: install-extra-apps
   pull: always
@@ -14457,14 +13372,13 @@ steps:
     TEST_SERVER_URL: http://proxy
 
 services:
-- name: mariadb
+- name: postgres
   pull: always
-  image: mariadb:10.2
+  image: postgres:10.3
   environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
 
 - name: proxy
   pull: always
@@ -14533,93 +13447,85 @@ depends_on:
 - caldav-old-php7.1
 - carddav-new-php7.1
 - carddav-old-php7.1
-- phpunit-php7.1-sqlite
-- phpunit-php7.1-mariadb10.2
-- phpunit-php7.1-mariadb10.3
-- phpunit-php7.1-mysql5.5
-- phpunit-php7.1-mysql5.7
-- phpunit-php7.1-mysql8.0
-- phpunit-php7.1-postgres9.4
 - phpunit-php7.1-postgres10.3
-- phpunit-php7.1-oracle
 - phpunit-php7.2-sqlite
-- phpunit-php7.2-mariadb10.2
+- phpunit-php7.2-postgres10.3
 - phpunit-php7.3-sqlite
-- phpunit-php7.3-mariadb10.2
-- phpunit-php7.1-sqlite-samba
-- phpunit-php7.1-sqlite-windows
-- phpunit-php7.1-sqlite-webdav
-- phpunit-php7.1-sqlite-sftp
-- phpunit-php7.1-sqlite-scality
-- apiAuth-mariadb10.2-php7.1
-- apiAuthOcs-mariadb10.2-php7.1
-- apiCapabilities-mariadb10.2-php7.1
-- apiComments-mariadb10.2-php7.1
-- apiFavorites-mariadb10.2-php7.1
-- apiMain-mariadb10.2-php7.1
-- apiProvisioning-v1-mariadb10.2-php7.1
-- apiProvisioning-v2-mariadb10.2-php7.1
-- apiProvisioningGroups-v1-mariadb10.2-php7.1
-- apiProvisioningGroups-v2-mariadb10.2-php7.1
-- apiSharees-mariadb10.2-php7.1
-- apiShareManagement-mariadb10.2-php7.1
-- apiShareManagementBasic-mariadb10.2-php7.1
-- apiShareOperations-mariadb10.2-php7.1
-- apiShareReshare-mariadb10.2-php7.1
-- apiShareUpdate-mariadb10.2-php7.1
-- apiTags-mariadb10.2-php7.1
-- apiTrashbin-mariadb10.2-php7.1
-- apiVersions-mariadb10.2-php7.1
-- apiWebdavLocks-mariadb10.2-php7.1
-- apiWebdavLocks2-mariadb10.2-php7.1
-- apiWebdavMove-mariadb10.2-php7.1
-- apiWebdavOperations-mariadb10.2-php7.1
-- apiWebdavProperties-mariadb10.2-php7.1
-- apiWebdavUpload-mariadb10.2-php7.1
-- apiSharingNotifications-mariadb10.2-php7.1
-- apiFederation-master-mariadb10.2-php7.1
-- apiFederation-10.2.1-mariadb10.2-php7.1
-- cliBackground-mariadb10.2-php7.1
-- cliMain-mariadb10.2-php7.1
-- cliProvisioning-mariadb10.2-php7.1
-- cliTrashbin-mariadb10.2-php7.1
-- cliAppManagement-mariadb10.2-php7.1
-- webUIAddUsers-chrome-mariadb10.2-php7.1
-- webUIAdminSettings-chrome-mariadb10.2-php7.1
-- webUIComments-chrome-mariadb10.2-php7.1
-- webUICreateDelete-chrome-mariadb10.2-php7.1
-- webUIFavorites-chrome-mariadb10.2-php7.1
-- webUIFiles-chrome-mariadb10.2-php7.1
-- webUILogin-chrome-mariadb10.2-php7.1
-- webUIManageQuota-chrome-mariadb10.2-php7.1
-- webUIManageUsersGrps-chrome-mariadb10.2-php7.1
-- webUIMoveFilesFolder-chrome-mariadb10.2-php7.1
-- webUIPersonalSetting-chrome-mariadb10.2-php7.1
-- webUIRenameFiles-chrome-mariadb10.2-php7.1
-- webUIRenameFolders-chrome-mariadb10.2-php7.1
-- webUIRestrictSharing-chrome-mariadb10.2-php7.1
-- webUISettingsMenu-chrome-mariadb10.2-php7.1
-- webUISharingAcceptSh-chrome-mariadb10.2-php7.1
-- webUISharingAutocomp-chrome-mariadb10.2-php7.1
-- webUISharingIntGroup-chrome-mariadb10.2-php7.1
-- webUISharingIntUsers-chrome-mariadb10.2-php7.1
-- webUISharingPublic-chrome-mariadb10.2-php7.1
-- webUITags-chrome-mariadb10.2-php7.1
-- webUITrashbin-chrome-mariadb10.2-php7.1
-- webUIUpload-chrome-mariadb10.2-php7.1
-- webUIWebdavLockProt-chrome-mariadb10.2-php7.1
-- webUIWebdavLocks-chrome-mariadb10.2-php7.1
-- webUISharingNotify-chrome-mariadb10.2-php7.1
-- webUISharingExt-master-chrome-mariadb10.2-php7.1
-- webUISharingExt-10.2.1-chrome-mariadb10.2-php7.1
-- webUIFfSmoke-3-1-firefox-mariadb10.2-php7.1
-- webUIFfSmoke-3-2-firefox-mariadb10.2-php7.1
-- webUIFfSmoke-3-3-firefox-mariadb10.2-php7.1
-- webUIProxySmoke-3-1-chrome-mariadb10.2-php7.1
-- webUIProxySmoke-3-2-chrome-mariadb10.2-php7.1
-- webUIProxySmoke-3-3-chrome-mariadb10.2-php7.1
-- apiProxySmoke-3-1-mariadb10.2-php7.1
-- apiProxySmoke-3-2-mariadb10.2-php7.1
-- apiProxySmoke-3-3-mariadb10.2-php7.1
+- phpunit-php7.3-postgres10.3
+- phpunit-php7.1-postgres10.3-samba
+- phpunit-php7.1-postgres10.3-windows
+- phpunit-php7.1-postgres10.3-webdav
+- phpunit-php7.1-postgres10.3-sftp
+- phpunit-php7.1-postgres10.3-scality
+- apiAuth-postgres10.3-php7.1
+- apiAuthOcs-postgres10.3-php7.1
+- apiCapabilities-postgres10.3-php7.1
+- apiComments-postgres10.3-php7.1
+- apiFavorites-postgres10.3-php7.1
+- apiMain-postgres10.3-php7.1
+- apiProvisioning-v1-postgres10.3-php7.1
+- apiProvisioning-v2-postgres10.3-php7.1
+- apiProvisioningGroups-v1-postgres10.3-php7.1
+- apiProvisioningGroups-v2-postgres10.3-php7.1
+- apiSharees-postgres10.3-php7.1
+- apiShareManagement-postgres10.3-php7.1
+- apiShareManagementBasic-postgres10.3-php7.1
+- apiShareOperations-postgres10.3-php7.1
+- apiShareReshare-postgres10.3-php7.1
+- apiShareUpdate-postgres10.3-php7.1
+- apiTags-postgres10.3-php7.1
+- apiTrashbin-postgres10.3-php7.1
+- apiVersions-postgres10.3-php7.1
+- apiWebdavLocks-postgres10.3-php7.1
+- apiWebdavLocks2-postgres10.3-php7.1
+- apiWebdavMove-postgres10.3-php7.1
+- apiWebdavOperations-postgres10.3-php7.1
+- apiWebdavProperties-postgres10.3-php7.1
+- apiWebdavUpload-postgres10.3-php7.1
+- apiSharingNotifications-postgres10.3-php7.1
+- apiFederation-master-postgres10.3-php7.1
+- apiFederation-10.2.1-postgres10.3-php7.1
+- cliBackground-postgres10.3-php7.1
+- cliMain-postgres10.3-php7.1
+- cliProvisioning-postgres10.3-php7.1
+- cliTrashbin-postgres10.3-php7.1
+- cliAppManagement-postgres10.3-php7.1
+- webUIAddUsers-chrome-postgres10.3-php7.1
+- webUIAdminSettings-chrome-postgres10.3-php7.1
+- webUIComments-chrome-postgres10.3-php7.1
+- webUICreateDelete-chrome-postgres10.3-php7.1
+- webUIFavorites-chrome-postgres10.3-php7.1
+- webUIFiles-chrome-postgres10.3-php7.1
+- webUILogin-chrome-postgres10.3-php7.1
+- webUIManageQuota-chrome-postgres10.3-php7.1
+- webUIManageUsersGrps-chrome-postgres10.3-php7.1
+- webUIMoveFilesFolder-chrome-postgres10.3-php7.1
+- webUIPersonalSetting-chrome-postgres10.3-php7.1
+- webUIRenameFiles-chrome-postgres10.3-php7.1
+- webUIRenameFolders-chrome-postgres10.3-php7.1
+- webUIRestrictSharing-chrome-postgres10.3-php7.1
+- webUISettingsMenu-chrome-postgres10.3-php7.1
+- webUISharingAcceptSh-chrome-postgres10.3-php7.1
+- webUISharingAutocomp-chrome-postgres10.3-php7.1
+- webUISharingIntGroup-chrome-postgres10.3-php7.1
+- webUISharingIntUsers-chrome-postgres10.3-php7.1
+- webUISharingPublic-chrome-postgres10.3-php7.1
+- webUITags-chrome-postgres10.3-php7.1
+- webUITrashbin-chrome-postgres10.3-php7.1
+- webUIUpload-chrome-postgres10.3-php7.1
+- webUIWebdavLockProt-chrome-postgres10.3-php7.1
+- webUIWebdavLocks-chrome-postgres10.3-php7.1
+- webUISharingNotify-chrome-postgres10.3-php7.1
+- webUISharingExt-master-chrome-postgres10.3-php7.1
+- webUISharingExt-10.2.1-chrome-postgres10.3-php7.1
+- webUIFfSmoke-3-1-firefox-postgres10.3-php7.1
+- webUIFfSmoke-3-2-firefox-postgres10.3-php7.1
+- webUIFfSmoke-3-3-firefox-postgres10.3-php7.1
+- webUIProxySmoke-3-1-chrome-postgres10.3-php7.1
+- webUIProxySmoke-3-2-chrome-postgres10.3-php7.1
+- webUIProxySmoke-3-3-chrome-postgres10.3-php7.1
+- apiProxySmoke-3-1-postgres10.3-php7.1
+- apiProxySmoke-3-2-postgres10.3-php7.1
+- apiProxySmoke-3-3-postgres10.3-php7.1
 
 ...
