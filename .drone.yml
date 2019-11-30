@@ -611,91 +611,6 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phan-php7.4
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /drone
-  path: src
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.4
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.4
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.4
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.4
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: sqlite
-
-- name: phan
-  pull: always
-  image: owncloudci/php:7.4
-  commands:
-  - make test-php-phan
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- install-dependencies-php7.1
-
----
-kind: pipeline
-type: docker
 name: test-javascript
 
 platform:
@@ -786,7 +701,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1022,7 +936,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1142,7 +1055,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1262,7 +1174,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1382,7 +1293,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1502,7 +1412,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1627,7 +1536,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1762,7 +1670,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -1897,7 +1804,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2032,7 +1938,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2167,7 +2072,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2304,7 +2208,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2438,7 +2341,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2572,7 +2474,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2707,7 +2608,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2832,7 +2732,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -2967,7 +2866,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3102,7 +3000,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3237,7 +3134,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3372,7 +3268,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3509,7 +3404,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3643,7 +3537,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3777,7 +3670,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -3912,7 +3804,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4019,7 +3910,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4136,7 +4026,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4243,7 +4132,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4360,7 +4248,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4501,7 +4388,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4631,7 +4517,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4768,7 +4653,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -4901,7 +4785,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5054,7 +4937,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5202,7 +5084,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5350,7 +5231,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5498,7 +5378,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5646,7 +5525,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5794,7 +5672,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -5942,7 +5819,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6090,7 +5966,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6238,7 +6113,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6386,7 +6260,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6534,7 +6407,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6682,7 +6554,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6830,7 +6701,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -6978,7 +6848,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -7126,7 +6995,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -7274,7 +7142,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -7422,7 +7289,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -7570,7 +7436,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -7718,7 +7583,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -7866,7 +7730,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8014,7 +7877,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8162,7 +8024,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8310,7 +8171,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8458,7 +8318,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8606,7 +8465,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8754,7 +8612,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -8902,7 +8759,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -9050,7 +8906,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -9198,7 +9053,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -9494,7 +9348,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -9649,7 +9502,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -9847,7 +9699,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10045,7 +9896,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10198,7 +10048,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10351,7 +10200,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10504,7 +10352,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10657,7 +10504,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10805,7 +10651,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -10964,7 +10809,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -11123,7 +10967,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -11282,7 +11125,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -11441,7 +11283,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -11600,7 +11441,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -11759,7 +11599,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -11918,7 +11757,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -12077,7 +11915,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -12236,7 +12073,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -12395,7 +12231,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -12554,7 +12389,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -12713,7 +12547,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -12872,7 +12705,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13031,7 +12863,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13190,7 +13021,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13349,7 +13179,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13508,7 +13337,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13667,7 +13495,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13826,7 +13653,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -13985,7 +13811,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -14144,7 +13969,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -14303,7 +14127,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -14462,7 +14285,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -14621,7 +14443,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -14780,7 +14601,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -14946,7 +14766,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -15154,7 +14973,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -15362,7 +15180,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -15524,7 +15341,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -15686,7 +15502,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -15848,7 +15663,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -16016,7 +15830,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
@@ -16184,7 +15997,6 @@ depends_on:
 - phan-php7.1
 - phan-php7.2
 - phan-php7.3
-- phan-php7.4
 
 ---
 kind: pipeline
