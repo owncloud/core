@@ -46,7 +46,7 @@ class AccountMapperTest extends TestCase {
 	/** @var AccountMapper */
 	protected $mapper;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		$mapper = \OC::$server->getAccountMapper();
 

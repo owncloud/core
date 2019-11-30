@@ -69,7 +69,7 @@ class TrashbinTest extends TestCase {
 	 */
 	private $rootView;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		$appManager = \OC::$server->getAppManager();

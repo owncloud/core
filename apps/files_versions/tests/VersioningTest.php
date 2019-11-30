@@ -61,7 +61,7 @@ class VersioningTest extends TestCase {
 	 */
 	private $rootView;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		$application = new \OCA\Files_Sharing\AppInfo\Application();

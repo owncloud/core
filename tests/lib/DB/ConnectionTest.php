@@ -27,7 +27,7 @@ class ConnectionTest extends \Test\TestCase {
 	 */
 	private $connection;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		self::dropTestTable();
 		parent::setUpBeforeClass();
 	}

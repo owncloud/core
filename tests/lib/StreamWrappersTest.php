@@ -30,7 +30,7 @@ namespace Test;
 class StreamWrappersTest extends \Test\TestCase {
 	private static $trashBinStatus;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		self::$trashBinStatus = \OC_App::isEnabled('files_trashbin');
 		\OC_App::disable('files_trashbin');
 	}

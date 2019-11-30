@@ -37,7 +37,7 @@ use OCP\Share\Exceptions\ShareNotFound;
 class UpdaterTest extends TestCase {
 	const TEST_FOLDER_NAME = '/folder_share_updater_test';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		\OCA\Files_Sharing\Helper::registerHooks();
 	}

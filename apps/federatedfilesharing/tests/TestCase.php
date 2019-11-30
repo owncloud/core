@@ -39,7 +39,7 @@ abstract class TestCase extends \Test\TestCase {
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
 	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// reset backend

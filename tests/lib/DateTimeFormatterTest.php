@@ -18,7 +18,7 @@ class DateTimeFormatterTest extends TestCase {
 
 	protected static $defaultTimeZone;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		self::$defaultTimeZone = \date_default_timezone_get();
 		\date_default_timezone_set('UTC');

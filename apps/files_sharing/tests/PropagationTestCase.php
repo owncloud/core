@@ -30,7 +30,7 @@ abstract class PropagationTestCase extends TestCase {
 	protected $fileIds = []; // [$user=>[$path=>$id]]
 	protected $fileEtags = []; // [$id=>$etag]
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		\OCA\Files_Sharing\Helper::registerHooks();
 	}

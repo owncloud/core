@@ -71,7 +71,7 @@ abstract class TestCase extends \Test\TestCase {
 
 	private static $alreadyRegistered = false;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		if (!self::$alreadyRegistered) {
