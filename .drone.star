@@ -660,7 +660,7 @@ def phan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.1', '7.2', '7.3', '7.4'],
+		'phpVersions': ['7.1', '7.2', '7.3'],
 		'logLevel': '2',
 	}
 
