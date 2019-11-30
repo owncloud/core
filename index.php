@@ -35,9 +35,9 @@ if (\version_compare(PHP_VERSION, '7.1.0') === -1) {
 	return;
 }
 
-// Show warning if PHP 7.4 or later is used as ownCloud is not compatible with PHP 7.4
-if (\version_compare(PHP_VERSION, '7.4.0alpha1') !== -1) {
-	echo 'This version of ownCloud is not compatible with PHP 7.4<br/>';
+// Show warning if PHP 7.5 or later is used as ownCloud is not compatible with PHP 7.5
+if (\version_compare(PHP_VERSION, '7.5.0alpha1') !== -1) {
+	echo 'This version of ownCloud is not compatible with PHP 7.5<br/>';
 	echo 'You are currently running PHP ' . PHP_VERSION . '.';
 	return;
 }
