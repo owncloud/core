@@ -59,26 +59,29 @@ class TrashBinFileTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Permission denied to write this file
 	 */
 	public function testPut() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+		$this->expectExceptionMessage('Permission denied to write this file');
+
 		$this->trashBinFile->put('');
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Permission denied to read this file
 	 */
 	public function testGet() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+		$this->expectExceptionMessage('Permission denied to read this file');
+
 		$this->trashBinFile->get();
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Permission denied to rename this resource
 	 */
 	public function testSetName() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+		$this->expectExceptionMessage('Permission denied to rename this resource');
+
 		$this->trashBinFile->setName('');
 	}
 

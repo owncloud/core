@@ -86,9 +86,10 @@ class CheckerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testWriteAppSignatureOfNotExistingApp() {
+		$this->expectException(\Exception::class);
+
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
 		$rsa = new RSA();
@@ -99,9 +100,10 @@ class CheckerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testWriteAppSignatureWrongPermissions() {
+		$this->expectException(\Exception::class);
+
 		$this->fileAccessHelper
 			->expects($this->once())
 			->method('file_put_contents')

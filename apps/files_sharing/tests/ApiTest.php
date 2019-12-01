@@ -1361,9 +1361,10 @@ class ApiTest extends TestCase {
 		\OC_Hook::clear('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\Tests\ApiTest', 'initTestMountPointsHook');
 	}
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testShareNonExisting() {
+		$this->expectException(\Exception::class);
+
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
 		$id = PHP_INT_MAX - 1;
@@ -1371,9 +1372,10 @@ class ApiTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testShareNotOwner() {
+		$this->expectException(\Exception::class);
+
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 		\OC\Files\Filesystem::file_put_contents('foo.txt', 'bar');
 		$info = \OC\Files\Filesystem::getFileInfo('foo.txt');

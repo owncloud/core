@@ -835,9 +835,10 @@ class ShareTest extends \Test\TestCase {
 	 * @dataProvider dataShareWithRemoteUserAndRemoteIsInvalid
 	 *
 	 * @param string $remoteId
-	 * @expectedException \OC\HintException
 	 */
 	public function testShareWithRemoteUserAndRemoteIsInvalid($remoteId) {
+		$this->expectException(\OC\HintException::class);
+
 		\OC_User::setUserId($this->user1);
 		\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, $remoteId, \OCP\Constants::PERMISSION_ALL);
 	}
@@ -1146,10 +1147,11 @@ class ShareTest extends \Test\TestCase {
 	/**
 	 * Cannot set password is there is no user
 	 *
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage User not logged in
 	 */
 	public function testSetPasswordNoUser() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('User not logged in');
+
 		$userSession = $this->getMockBuilder('\OCP\IUserSession')
 							->disableOriginalConstructor()
 							->getMock();
@@ -1269,12 +1271,11 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Cannot remove password
-	 *
-	 * Test removing a password when password is enforced
 	 */
 	public function testSetPasswordRemove() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Cannot remove password * Test removing a password when password is enforced');
+
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
 					 ->getMock();
@@ -1320,12 +1321,11 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Share not found
-	 *
-	 * Test modification of invaid share
 	 */
 	public function testSetPasswordInvalidShare() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Share not found * Test modification of invaid share');
+
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
 					 ->getMock();
@@ -1370,12 +1370,11 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Cannot update share of a different user
-	 *
-	 * Test modification of share of another user
 	 */
 	public function testSetPasswordShareOtherUser() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Cannot update share of a different user * Test modification of share of another user');
+
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
 					 ->getMock();

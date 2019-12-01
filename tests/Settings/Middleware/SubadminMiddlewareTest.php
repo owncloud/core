@@ -43,9 +43,10 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\AppFramework\Middleware\Security\Exceptions\NotSubadminException
 	 */
 	public function testBeforeControllerAsUserWithExemption() {
+		$this->expectException(\OC\AppFramework\Middleware\Security\Exceptions\NotSubadminException::class);
+
 		$this->reflector
 			->expects($this->once())
 			->method('hasAnnotation')
@@ -88,9 +89,10 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testAfterRegularException() {
+		$this->expectException(\Exception::class);
+
 		$expectedResponse = new TemplateResponse('core', '403', [], 'guest');
 		$expectedResponse->setStatus(403);
 		$this->subadminMiddleware->afterException($this->controller, 'foo', new \Exception());

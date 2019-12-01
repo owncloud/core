@@ -49,9 +49,10 @@ class AvailabilityTest extends \Test\TestCase {
 	/**
 	 * Storage marked unavailable, TTL not expired
 	 *
-	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testUnavailable() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
 		list($storage, $wrapper) = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
@@ -90,9 +91,10 @@ class AvailabilityTest extends \Test\TestCase {
 	/**
 	 * Storage marked available, but throws StorageNotAvailableException
 	 *
-	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testAvailableThrowStorageNotAvailable() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
 		list($storage, $wrapper) = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
@@ -133,9 +135,10 @@ class AvailabilityTest extends \Test\TestCase {
 	 * Storage available, but throws exception
 	 * Standard exception does not indicate storage unavailability
 	 *
-	 * @expectedException \Exception
 	 */
 	public function testAvailableThrow() {
+		$this->expectException(\Exception::class);
+
 		list($storage, $wrapper) = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')

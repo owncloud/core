@@ -88,9 +88,10 @@ class NotifierTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareInvalidApp() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$notification = $this->createMock(INotification::class);
 		$notification->method('getApp')->willReturn('another');
 		$notification->method('getObjectType')->willReturn('local_share');
@@ -98,9 +99,10 @@ class NotifierTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareInvalidSubject() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$notification = $this->createMock(INotification::class);
 		$notification->method('getApp')->willReturn('files_sharing');
 		$notification->method('getObjectType')->willReturn('invalid_object');
@@ -366,9 +368,10 @@ class NotifierTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareShareWithGroupNotMemberAnyLonger() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$share = $this->createMock(IShare::class);
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('big group 1');
@@ -396,9 +399,10 @@ class NotifierTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareMissingShare() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$this->shareManager->method('getShareById')
 			->will($this->throwException(new ShareNotFound()));
 

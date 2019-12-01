@@ -175,11 +175,12 @@ class UserTest extends TestCase {
 	/**
 	 * @param string $password
 	 * @dataProvider getEmptyValues
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Password cannot be empty
 	 * @throws \InvalidArgumentException
 	 */
 	public function testSetEmptyPasswordNotPermitted($password) {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Password cannot be empty');
+
 		(new User(
 			$this->createMock(Account::class),
 			$this->accountMapper

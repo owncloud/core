@@ -32,17 +32,19 @@ class InfoParserTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\App\AppNotFoundException
 	 */
 	public function testParsingMissingXml() {
+		$this->expectException(\OCP\App\AppNotFoundException::class);
+
 		$this->parser->parse('none');
 	}
 
 	/**
 	 * @dataProvider invalidXmlProvider
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testParsingInvalidXml($xmlFile) {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$this->parser->parse(OC::$SERVERROOT. '/tests/data/app/' . $xmlFile);
 	}
 

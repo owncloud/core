@@ -89,9 +89,10 @@ abstract class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \UnexpectedValueException
 	 */
 	public function testGetTypeUnexpected() {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$this->storage->expects($this->once())
 			->method('filetype')
 			->willReturn('link');
@@ -115,49 +116,55 @@ abstract class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testIsMounted() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->isMounted();
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetMountPoint() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->getMountPoint();
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetOwner() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->getOwner();
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetChecksum() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->getChecksum();
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testMove() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->move('/target');
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testCopy() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->copy('/target');
 	}
@@ -177,9 +184,10 @@ abstract class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetPath() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->getPath();
 	}
@@ -190,9 +198,10 @@ abstract class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetId() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->getId();
 	}
@@ -292,9 +301,10 @@ abstract class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetParentNotExisting() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$root = $this->createTestNode('');
 		$root->getParent();
 	}
@@ -305,25 +315,28 @@ abstract class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testLock() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->lock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testChangeLock() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->changeLock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testUnlock() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/path')
 			->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 	}

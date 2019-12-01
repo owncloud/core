@@ -119,10 +119,11 @@ class CopyPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCA\DAV\Connector\Sabre\Exception\Forbidden
-	 * @expectedExceptionMessage Test exception
 	 */
 	public function testCopyPluginRethrowForbidden() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+		$this->expectExceptionMessage('Test exception');
+
 		$destinationNode = $this->createMock(File::class);
 		$sourceNode = $this->createMock([ICopySource::class, IFile::class]);
 

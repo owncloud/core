@@ -160,9 +160,10 @@ class SyncServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testTrySyncExistingUserWithOtherBackend() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$uid = 'myTestUser';
 
 		$wrongBackend = new Database();

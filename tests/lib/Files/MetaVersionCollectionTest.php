@@ -138,9 +138,10 @@ class MetaVersionCollectionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\NotFoundException
 	 */
 	public function testGetNonVersionedStorageFails() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$this->node->method('getInternalPath')->willReturn('/abc');
 		$this->node->method('getMimetype')->willReturn('application/json');
 
@@ -155,9 +156,10 @@ class MetaVersionCollectionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\NotFoundException
 	 */
 	public function testGetSubEntryFails() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$this->storage->expects($this->never())
 			->method('instanceOfStorage');
 

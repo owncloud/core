@@ -438,9 +438,10 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testShowShareInvalid() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$owner = $this->createMock('OCP\IUser');
 		$owner->method('getDisplayName')->willReturn('ownerDisplay');
 		$owner->method('getUID')->willReturn('ownerUID');
@@ -507,9 +508,10 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testDownloadShareNoReadPermission() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$share = $this->createMock('\OCP\Share\IShare');
 		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_CREATE);
 

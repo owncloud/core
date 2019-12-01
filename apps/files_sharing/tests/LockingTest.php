@@ -69,9 +69,10 @@ class LockingTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testLockAsRecipient() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->loginAsUser($this->ownerUid);
 
 		Filesystem::initMountPoints($this->recipientUid);

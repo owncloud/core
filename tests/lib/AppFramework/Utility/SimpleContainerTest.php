@@ -72,16 +72,18 @@ class SimpleContainerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\AppFramework\QueryException
 	 */
 	public function testNothingRegistered() {
+		$this->expectException(\OCP\AppFramework\QueryException::class);
+
 		$this->container->query('something really hard');
 	}
 
 	/**
-	 * @expectedException \OCP\AppFramework\QueryException
 	 */
 	public function testNotAClass() {
+		$this->expectException(\OCP\AppFramework\QueryException::class);
+
 		$this->container->query('Test\AppFramework\Utility\TestInterface');
 	}
 
@@ -183,9 +185,10 @@ class SimpleContainerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\AppFramework\QueryException
 	 */
 	public function testConstructorComplexNoTestParameterFound() {
+		$this->expectException(\OCP\AppFramework\QueryException::class);
+
 		$object = $this->container->query(
 			'Test\AppFramework\Utility\ClassComplexConstructor'
 		);

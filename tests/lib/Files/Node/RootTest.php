@@ -55,9 +55,10 @@ class RootTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetNotFound() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$manager = new Manager();
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
@@ -79,9 +80,10 @@ class RootTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetInvalidPath() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$manager = new Manager();
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
@@ -93,9 +95,10 @@ class RootTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetNoStorages() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$manager = new Manager();
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
@@ -107,9 +110,10 @@ class RootTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\User\NoUserException
 	 */
 	public function testGetUserFolder() {
+		$this->expectException(\OC\User\NoUserException::class);
+
 		$this->logout();
 		$manager = new Manager();
 		/**
