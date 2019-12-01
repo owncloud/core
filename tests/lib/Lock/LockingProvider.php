@@ -91,14 +91,15 @@ abstract class LockingProvider extends TestCase {
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 	}
 
-	/**
-	 */
-	public function testExclusiveLockAfterShared() {
-		$this->expectException(\OCP\Lock\LockedException::class);
-
+	private function tryToAcquireExclusiveLockAfterShared() {
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 		$this->assertTrue($this->instance->isLocked('foo', ILockingProvider::LOCK_SHARED));
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+	}
+
+	public function testExclusiveLockAfterShared() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+		$this->tryToAcquireExclusiveLockAfterShared();
 	}
 
 	public function testExclusiveLockAfterSharedReleased() {
@@ -165,19 +166,22 @@ abstract class LockingProvider extends TestCase {
 		$this->instance->releaseLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
-	/**
-	 */
-	public function testSharedLockAfterExclusive() {
-		$this->expectException(\OCP\Lock\LockedException::class);
-
+	private function tryToAcquireSharedLockAfterExclusive() {
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 		$this->assertTrue($this->instance->isLocked('foo', ILockingProvider::LOCK_EXCLUSIVE));
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
+	/**
+	 */
+	public function testSharedLockAfterExclusive() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+		$this->tryToAcquireSharedLockAfterExclusive();
+	}
+
 	public function testLockedExceptionHasPathForShared() {
 		try {
-			$this->testSharedLockAfterExclusive();
+			$this->tryToAcquireSharedLockAfterExclusive();
 			$this->fail('Expected locked exception');
 		} catch (LockedException $e) {
 			$this->assertEquals('foo', $e->getPath());
@@ -186,7 +190,7 @@ abstract class LockingProvider extends TestCase {
 
 	public function testLockedExceptionHasPathForExclusive() {
 		try {
-			$this->testExclusiveLockAfterShared();
+			$this->tryToAcquireExclusiveLockAfterShared();
 			$this->fail('Expected locked exception');
 		} catch (LockedException $e) {
 			$this->assertEquals('foo', $e->getPath());
