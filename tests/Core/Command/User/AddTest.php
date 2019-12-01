@@ -66,7 +66,7 @@ class AddTest extends TestCase {
 		$this->commandTester->setInputs($answers);
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	/**

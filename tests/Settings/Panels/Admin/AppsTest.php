@@ -39,6 +39,6 @@ class AppsTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="apps-list" class="icon-loading"></div>', $templateHtml);
+		$this->assertStringContainsString('<div id="apps-list" class="icon-loading"></div>', $templateHtml);
 	}
 }

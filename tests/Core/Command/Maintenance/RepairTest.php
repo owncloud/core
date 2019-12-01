@@ -71,7 +71,7 @@ class RepairTest extends TestCase {
 		$result = $this->commandTester->execute($input);
 		$this->assertEquals($result, $returnValue);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function inputProvider() {

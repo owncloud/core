@@ -52,7 +52,7 @@ class AppsListTest extends TestCase {
 	public function testCommandInput($input, $expectedOutput) {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function providesAppIds() {

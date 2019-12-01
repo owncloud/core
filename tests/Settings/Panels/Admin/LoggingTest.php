@@ -53,7 +53,7 @@ class LoggingTest extends \Test\TestCase {
 			->method('getLogFilePath')
 			->willReturn('/var/log/file/doesnt/exist.log');
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertNotContains('<div class="section">', $templateHtml);
+		$this->assertStringNotContainsString('<div class="section">', $templateHtml);
 	}
 
 	public function testGetPanelWithLogFile() {
@@ -66,6 +66,6 @@ class LoggingTest extends \Test\TestCase {
 			['log_type', 'owncloud', 'owncloud'],
 		]));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div class="section">', $templateHtml);
+		$this->assertStringContainsString('<div class="section">', $templateHtml);
 	}
 }

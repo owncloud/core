@@ -86,6 +86,6 @@ class SharingPersonalPanelTest extends \Test\TestCase {
 			->willReturn($globalConfigs['auto_accept_trusted']);
 		
 		$templateHtml = $this->sharingPersonalPanel->getPanel()->fetchPage();
-		$this->assertContains($expectedString, $templateHtml);
+		$this->assertStringContainsString($expectedString, $templateHtml);
 	}
 }

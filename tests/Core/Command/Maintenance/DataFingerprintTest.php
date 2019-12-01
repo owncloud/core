@@ -84,6 +84,9 @@ class DataFingerprintTest extends TestCase {
 		$this->commandTester->setInputs([$answer]);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains("Do you want to set the data fingerprint?", $output);
+		$this->assertStringContainsString(
+			"Do you want to set the data fingerprint?",
+			$output
+		);
 	}
 }

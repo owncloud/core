@@ -178,7 +178,7 @@ class TransferOwnershipTest extends TestCase {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 
-		$this->assertContains('Transferring files to target-user', $output);
+		$this->assertStringContainsString('Transferring files to target-user', $output);
 		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount(0, $sourceShares);
@@ -209,7 +209,7 @@ class TransferOwnershipTest extends TestCase {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 
-		$this->assertContains('Transferring files to target-user', $output);
+		$this->assertStringContainsString('Transferring files to target-user', $output);
 		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount($expectedSourceShareCount, $sourceShares);

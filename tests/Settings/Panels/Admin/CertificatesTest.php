@@ -64,10 +64,10 @@ class CertificatesTest extends \Test\TestCase {
 		$this->certManager->expects($this->once())->method('listCertificates')->willReturn([$mockCert]);
 		$this->urlGenerator->expects($this->once())->method('linkToRoute');
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('issueOrg', $templateHtml);
-		$this->assertContains('issuer', $templateHtml);
-		$this->assertContains('commonname', $templateHtml);
-		$this->assertContains('org', $templateHtml);
+		$this->assertStringContainsString('issueOrg', $templateHtml);
+		$this->assertStringContainsString('issuer', $templateHtml);
+		$this->assertStringContainsString('commonname', $templateHtml);
+		$this->assertStringContainsString('org', $templateHtml);
 	}
 
 	public function testGetPanelNotEnabled() {

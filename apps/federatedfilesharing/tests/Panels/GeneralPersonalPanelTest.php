@@ -79,6 +79,6 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 		$this->userSession->expects($this->once())->method('getUser')->willReturn($mockUser);
 		$this->shareProvider->expects($this->once())->method('isOutgoingServer2serverShareEnabled')->willReturn(true);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="fileSharingSettings"', $templateHtml);
+		$this->assertStringContainsString('<div id="fileSharingSettings"', $templateHtml);
 	}
 }

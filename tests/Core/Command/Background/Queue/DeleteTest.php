@@ -60,7 +60,7 @@ class DeleteTest extends TestCase {
 		$input = ['Job ID' => $jobId];
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function providesJobIds() {

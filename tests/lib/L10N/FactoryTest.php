@@ -360,7 +360,7 @@ class FactoryTest extends TestCase {
 
 		$themeTranslations = $factory->getL10nFilesForApp($app, $lang);
 		$this->assertCount(1, $themeTranslations);
-		$this->assertContains('zz.json', $themeTranslations[0]);
+		$this->assertStringContainsString('zz.json', $themeTranslations[0]);
 	}
 
 	/**

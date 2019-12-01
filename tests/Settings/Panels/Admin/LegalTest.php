@@ -51,7 +51,7 @@ class LegalTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<input type="text" name="legal_imprint" id="legal_imprint"',
 			$templateHtml
 		);

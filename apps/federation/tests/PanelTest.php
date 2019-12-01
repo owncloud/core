@@ -99,6 +99,9 @@ class PanelTest extends \Test\TestCase {
 		$statement->expects($this->once())->method('fetchAll')->willReturn([]);
 		$this->connection->expects($this->once())->method('getQueryBuilder')->willReturn($queryBuilder);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="ocFederationSettings" class="section">', $templateHtml);
+		$this->assertStringContainsString(
+			'<div id="ocFederationSettings" class="section">',
+			$templateHtml
+		);
 	}
 }

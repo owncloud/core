@@ -61,6 +61,9 @@ class SecurityWarningTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="security-warning" class="section">', $templateHtml);
+		$this->assertStringContainsString(
+			'<div id="security-warning" class="section">',
+			$templateHtml
+		);
 	}
 }

@@ -88,7 +88,7 @@ class DeleteTest extends TestCase {
 
 		$this->commandTester->execute(['uid' => 'user']);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function testInvalidUser() {
@@ -99,6 +99,9 @@ class DeleteTest extends TestCase {
 
 		$this->commandTester->execute(['uid' => 'user']);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains("User with uid 'user' does not exist", $output);
+		$this->assertStringContainsString(
+			"User with uid 'user' does not exist",
+			$output
+		);
 	}
 }

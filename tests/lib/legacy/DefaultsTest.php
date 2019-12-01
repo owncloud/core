@@ -41,8 +41,8 @@ class DefaultsTest extends TestCase {
 			->method('getPrivacyPolicyUrl')
 			->willReturn($privacyPolicyUrl);
 		$footer = $defaults->getShortFooter();
-		$this->assertContains($privacyPolicyUrl, $footer);
-		$this->assertContains($imprintUrl, $footer);
+		$this->assertStringContainsString($privacyPolicyUrl, $footer);
+		$this->assertStringContainsString($imprintUrl, $footer);
 	}
 
 	public function testGetImprintWhenNotInstalled() {
@@ -56,8 +56,8 @@ class DefaultsTest extends TestCase {
 		$defaults->setConfig($config);
 
 		$footer = $defaults->getShortFooter();
-		$this->assertNotContains('Privacy Policy', $footer);
-		$this->assertNotContains('Imprint', $footer);
+		$this->assertStringNotContainsString('Privacy Policy', $footer);
+		$this->assertStringNotContainsString('Imprint', $footer);
 	}
 
 	protected function getDefaultsMock($mockedMethods) {

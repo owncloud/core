@@ -198,6 +198,9 @@ class SetupTest extends \Test\TestCase {
 		}
 		$content = \file_get_contents($htaccessFile);
 		@\unlink($htaccessFile);
-		$this->assertContains('#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####', $content);
+		$this->assertStringContainsString(
+			'#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####',
+			$content
+		);
 	}
 }
