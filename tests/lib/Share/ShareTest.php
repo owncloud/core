@@ -1263,10 +1263,11 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
+	 * Test removing a password when password is enforced
 	 */
 	public function testSetPasswordRemove() {
 		$this->expectException(\Exception::class);
-		$this->expectExceptionMessage('Cannot remove password * Test removing a password when password is enforced');
+		$this->expectExceptionMessage('Cannot remove password');
 
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
@@ -1313,10 +1314,11 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
+	 * Test modification of invalid share
 	 */
 	public function testSetPasswordInvalidShare() {
 		$this->expectException(\Exception::class);
-		$this->expectExceptionMessage('Share not found * Test modification of invaid share');
+		$this->expectExceptionMessage('Share not found');
 
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
@@ -1362,10 +1364,11 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
+	 * Test modification of share of another user
 	 */
 	public function testSetPasswordShareOtherUser() {
 		$this->expectException(\Exception::class);
-		$this->expectExceptionMessage('Cannot update share of a different user * Test modification of share of another user');
+		$this->expectExceptionMessage('Cannot update share of a different user');
 
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
