@@ -62,9 +62,10 @@ class FileTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetContentNotPermitted() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->createMock(View::class);
 		/** @var Root | \PHPUnit\Framework\MockObject\MockObject $root */
@@ -108,9 +109,10 @@ class FileTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testPutContentNotPermitted() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->createMock(View::class);
 		/** @var Root | \PHPUnit\Framework\MockObject\MockObject $root */
@@ -219,9 +221,10 @@ class FileTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testFOpenReadNotPermitted() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/**
 		 * @var Manager $manager
 		 */
@@ -246,9 +249,10 @@ class FileTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testFOpenReadWriteNoReadPermissions() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/**
 		 * @var Manager $manager
 		 */
@@ -273,9 +277,10 @@ class FileTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testFOpenReadWriteNoWritePermissions() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/**
 		 * @var Manager $manager
 		 */

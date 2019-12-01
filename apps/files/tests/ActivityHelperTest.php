@@ -73,19 +73,21 @@ class ActivityHelperTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage No favorites
 	 */
 	public function testGetFavoriteFilePathsNoFavorites() {
+		$this->expectException(\RuntimeException::class);
+		$this->expectExceptionMessage('No favorites');
+
 		$this->tags->method('getFavorites')->willReturn([]);
 		$this->helper->getFavoriteFilePaths($this->user);
 	}
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage Too many favorites
 	 */
 	public function testGetFavoriteFilePathsTooManyFavorites() {
+		$this->expectException(\RuntimeException::class);
+		$this->expectExceptionMessage('Too many favorites');
+
 		$tooManyFavorites = [];
 		for ($i = 0; $i < ActivityHelper::FAVORITE_LIMIT + 1; $i++) {
 			$tooManyFavorites[] = [];
@@ -118,10 +120,11 @@ class ActivityHelperTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage No favorites
 	 */
 	public function testGetFavoriteFilePathsMissingFolder() {
+		$this->expectException(\RuntimeException::class);
+		$this->expectExceptionMessage('No favorites');
+
 		$userFolder = \OC::$server->getUserFolder();
 		$aFolder = $userFolder->newFolder('x');
 

@@ -200,9 +200,10 @@ class BasicAuthModuleTest extends TestCase {
 
 	/**
 	 * @dataProvider invalidUserIdProvider
-	 * @expectedException \UnexpectedValueException
 	 */
 	public function testInvalidUserId($userId) {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$this->session->method('exists')->will($this->returnValueMap([
 			['app_password', false],
 			['last_check_timeout', true]

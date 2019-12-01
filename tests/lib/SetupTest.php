@@ -123,10 +123,11 @@ class SetupTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Supported databases are not properly configured.
 	 */
 	public function testGetSupportedDatabaseException() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Supported databases are not properly configured.');
+
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
@@ -135,10 +136,11 @@ class SetupTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Can't update
 	 */
 	public function testCannotUpdateHtaccess() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Can\'t update');
+
 		if ($this->getCurrentUser() === 'root') {
 			$this->markTestSkipped(
 				'You are running tests as root - this test will not work in this case.'
@@ -160,10 +162,11 @@ class SetupTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Can't update
 	 */
 	public function testHtaccessIsFolder() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Can\'t update');
+
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
 		@\unlink($htaccessFile);

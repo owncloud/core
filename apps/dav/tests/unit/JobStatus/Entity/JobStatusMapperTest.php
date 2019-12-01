@@ -62,9 +62,10 @@ class JobStatusMapperTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Doctrine\DBAL\Exception\UniqueConstraintViolationException
 	 */
 	public function testInsert() {
+		$this->expectException(\Doctrine\DBAL\Exception\UniqueConstraintViolationException::class);
+
 		$this->mapper->insert($this->testJobStatus);
 		$this->assertNotNull($this->testJobStatus->getId());
 		// below throws exception due to unique constraint violation

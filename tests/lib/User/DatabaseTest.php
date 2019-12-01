@@ -59,10 +59,11 @@ class DatabaseTest extends BackendTestCase {
 	 *
 	 * @param string $password
 	 * @dataProvider getEmptyValues
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Password cannot be empty
 	 */
 	public function testCannotSetEmptyPassword($password) {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Password cannot be empty');
+
 		$user1 = $this->getUser();
 		$this->backend->createUser($this->getUser(), 'pw');
 		$this->backend->setPassword($user1, $password);

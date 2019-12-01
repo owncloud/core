@@ -315,9 +315,10 @@ class FileLocksBackendTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testLockPublic() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$lockInfo = new LockInfo();
 		$lockInfo->token = '123-456-7890';
 		$lockInfo->scope = LockInfo::SHARED;
@@ -337,9 +338,10 @@ class FileLocksBackendTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testUnlockPublic() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$lockInfo = new LockInfo();
 		$lockInfo->token = '123-456-7890';
 		$lockInfo->scope = LockInfo::SHARED;

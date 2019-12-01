@@ -156,9 +156,10 @@ class ObjectStoreTest extends TestCase {
 
 	/**
 	 * @dataProvider providesMethods
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetVersionsOfUnknownFile($method, $ignore = false) {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		if ($ignore) {
 			throw new NotFoundException();
 		}

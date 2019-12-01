@@ -30,9 +30,10 @@ use Test\TestCase;
 
 class PublicSharedRootNodeTest extends TestCase {
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testNoLongerExistingResource() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$share = $this->createMock(IShare::class);
 		$request = $this->createMock(IRequest::class);
 		$share->method('getNode')->willThrowException(new NotFoundException());

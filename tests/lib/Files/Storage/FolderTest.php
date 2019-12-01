@@ -45,25 +45,28 @@ class FolderTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetFullPath() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->getFullPath('/');
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetRelativePath() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->getRelativePath('/');
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testIsSubNode() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->isSubNode(new Folder($this->storage, '/foo'));
 	}
@@ -148,33 +151,37 @@ class FolderTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testSearch() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->search('/foo');
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testSearchByMime() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->searchByMime('text/plain');
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testSearchByTag() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->searchByMime('text/plain');
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetById() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->getById(1);
 	}
@@ -190,9 +197,10 @@ class FolderTest extends NodeTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetNonExistingName() {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		$this->createTestNode('/')
 			->getNonExistingName('name');
 	}

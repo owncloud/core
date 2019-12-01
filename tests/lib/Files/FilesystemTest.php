@@ -340,18 +340,20 @@ class FilesystemTest extends TestCase {
 	/**
 	 * Tests that an exception is thrown when passed user does not exist.
 	 *
-	 * @expectedException \OC\User\NoUserException
 	 */
 	public function testLocalMountWhenUserDoesNotExist() {
+		$this->expectException(\OC\User\NoUserException::class);
+
 		$userId = $this->getUniqueID('user_');
 
 		Filesystem::initMountPoints($userId);
 	}
 
 	/**
-	 * @expectedException \OC\User\NoUserException
 	 */
 	public function testNullUserThrows() {
+		$this->expectException(\OC\User\NoUserException::class);
+
 		Filesystem::initMountPoints(null);
 	}
 

@@ -36,9 +36,10 @@ class CheckCodeTest extends TestCase {
 	private $commandTester;
 
 	/**
-	 * @expectedException \RuntimeException
 	 */
 	public function testWrongAppId() {
+		$this->expectException(\RuntimeException::class);
+
 		$command = new CheckCode(new InfoParser, \OC::$server->getAppManager());
 		$this->commandTester = new CommandTester($command);
 		$this->commandTester->execute(['app-id' => 'hui-buh']);

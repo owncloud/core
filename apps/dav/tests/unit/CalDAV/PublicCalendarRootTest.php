@@ -112,9 +112,10 @@ class PublicCalendarRootTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testGetChildren() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		$this->createPublicCalendar();
 
 		$this->publicCalendarRoot->disableListing = true;

@@ -241,11 +241,12 @@ class LegacyDBTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider insertIfNotExistsViolatingThrows
-	 * @expectedException \Doctrine\DBAL\Exception\UniqueConstraintViolationException
 	 *
 	 * @param array $compareKeys
 	 */
 	public function testInsertIfNotExistsViolatingThrows($compareKeys) {
+		$this->expectException(\Doctrine\DBAL\Exception\UniqueConstraintViolationException::class);
+
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,

@@ -38,10 +38,11 @@ class AppLocatorTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage App not found
 	 */
 	public function testGetAppPathNotExistentApp() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('App not found');
+
 		$this->locator->getAppPath('aTotallyNotExistingApp');
 	}
 

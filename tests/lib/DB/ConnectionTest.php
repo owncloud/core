@@ -159,9 +159,10 @@ class ConnectionTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\PreConditionNotMetException
 	 */
 	public function testSetValuesOverWritePreconditionFailed() {
+		$this->expectException(\OCP\PreConditionNotMetException::class);
+
 		$this->makeTestTable();
 		$this->connection->setValues('table', [
 			'integerfield' => 1

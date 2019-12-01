@@ -107,9 +107,10 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotImplemented
 	 */
 	public function testOnReportNotRoot() {
+		$this->expectException(\Sabre\DAV\Exception\NotImplemented::class);
+
 		$base = '/remote.php/dav/files/user';
 		$nodePath = '/totally/unrelated/13';
 		$path = "{$base}{$nodePath}";
@@ -136,9 +137,10 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider onReportNoSearchPatternProvider
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testOnReportNoSearchPattern($properties, $searchInfo) {
+		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+
 		$base = '/remote.php/dav/files/user';
 		$nodePath = '/';
 		$path = "{$base}{$nodePath}";

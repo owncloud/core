@@ -153,9 +153,10 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 */
 	public function testAddStorage($storageParams = null) {
+		$this->expectException(\DomainException::class);
+
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
 		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
 
@@ -169,9 +170,10 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 */
 	public function testUpdateStorage($storageParams = null) {
+		$this->expectException(\DomainException::class);
+
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
 		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
 
@@ -189,17 +191,19 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 */
 	public function testNonExistingStorage() {
+		$this->expectException(\DomainException::class);
+
 		parent::testNonExistingStorage();
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 * @dataProvider deleteStorageDataProvider
 	 */
 	public function testDeleteStorage($backendOptions, $rustyStorageId, $expectedCountAfterDeletion) {
+		$this->expectException(\DomainException::class);
+
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
 		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
 
@@ -216,9 +220,10 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 */
 	public function testDeleteUnexistingStorage() {
+		$this->expectException(\DomainException::class);
+
 		parent::testDeleteUnexistingStorage();
 	}
 
