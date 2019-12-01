@@ -231,7 +231,7 @@ class ShareTest extends \Test\TestCase {
 	protected function shareUserTestFileAsLink() {
 		\OC_User::setUserId($this->user1);
 		$result = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType('string', $result);
+		$this->assertIsString($result);
 	}
 
 	/**
@@ -612,9 +612,7 @@ class ShareTest extends \Test\TestCase {
 	 */
 	protected function getShareByValidToken($token) {
 		$row = \OCP\Share::getShareByToken($token);
-		$this->assertInternalType(
-			'array',
-			$row,
+		$this->assertIsArray($row,
 			"Failed asserting that a share for token $token exists."
 		);
 		return $row;
@@ -747,9 +745,7 @@ class ShareTest extends \Test\TestCase {
 	public function testShareItemWithLink() {
 		\OC_User::setUserId($this->user1);
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'string',
-			$token,
+		$this->assertIsString($token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -795,9 +791,7 @@ class ShareTest extends \Test\TestCase {
 		$config->setAppValue('core', 'shareapi_expire_after_n_days', '2');
 
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'string',
-			$token,
+		$this->assertIsString($token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -1121,9 +1115,7 @@ class ShareTest extends \Test\TestCase {
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_enforce_expire_date', 'yes');
 
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'string',
-			$token,
+		$this->assertIsString($token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -1474,7 +1466,7 @@ class ShareTest extends \Test\TestCase {
 		//User 2 shares as link
 		\OC_User::setUserId($this->user2);
 		$result = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType('string', $result);
+		$this->assertIsString($result);
 
 		//Check if expire date is correct
 		$result = \OCP\Share::getItemShared('test', 'test.txt');

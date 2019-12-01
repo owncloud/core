@@ -137,7 +137,7 @@ class SharedStorageTest extends TestCase {
 		// create part file
 		$result = $user2View->file_put_contents($this->folder . '/foo.txt.part', 'some test data');
 
-		$this->assertInternalType('int', $result);
+		$this->assertIsInt($result);
 		// rename part file to real file
 		$result = $user2View->rename($this->folder . '/foo.txt.part', $this->folder . '/foo.txt');
 

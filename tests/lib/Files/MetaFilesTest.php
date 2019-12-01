@@ -127,7 +127,7 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals([], $metaNodeOfFile->getHeaders());
 		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
-		$this->assertInternalType('string', $metaNodeOfFile->getEtag());
+		$this->assertIsString($metaNodeOfFile->getEtag());
 		$this->assertGreaterThan(0, \strlen($metaNodeOfFile->getEtag()));
 		$this->assertInstanceOf(IMountPoint::class, $metaNodeOfFile->getMountPoint());
 		$thumbnail = $metaNodeOfFile->getThumbnail([]);

@@ -178,10 +178,10 @@ class UpdaterTest extends TestCase {
 		$afterShareDir = \OC\Files\Filesystem::getFileInfo($shareFolder);
 		$etagAfterShareDir = $afterShareDir->getEtag();
 
-		$this->assertInternalType('string', $etagBeforeShareRoot);
-		$this->assertInternalType('string', $etagBeforeShareDir);
-		$this->assertInternalType('string', $etagAfterShareRoot);
-		$this->assertInternalType('string', $etagAfterShareDir);
+		$this->assertIsString($etagBeforeShareRoot);
+		$this->assertIsString($etagBeforeShareDir);
+		$this->assertIsString($etagAfterShareRoot);
+		$this->assertIsString($etagAfterShareDir);
 		$this->assertNotSame($etagBeforeShareRoot, $etagAfterShareRoot);
 		$this->assertNotSame($etagBeforeShareDir, $etagAfterShareDir);
 
