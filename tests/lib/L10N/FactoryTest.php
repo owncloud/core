@@ -286,7 +286,10 @@ class FactoryTest extends TestCase {
 			->with($app)
 			->willReturn(\OC::$SERVERROOT . '/tests/data/l10n/');
 
-		$this->assertEquals(['cs', 'de', 'en', 'ru'], $factory->findAvailableLanguages($app), '', 0.0, 10, true);
+		$this->assertEqualsCanonicalizing(
+			['cs', 'de', 'en', 'ru'],
+			$factory->findAvailableLanguages($app)
+		);
 	}
 
 	public function dataLanguageExists() {
