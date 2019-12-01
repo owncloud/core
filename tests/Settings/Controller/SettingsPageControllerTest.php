@@ -102,7 +102,7 @@ class SettingsPageControllerTest extends TestCase {
 		$this->assertArrayHasKey('adminNav', $response->getParams());
 		$this->assertEmpty($response->getParams()['adminNav']);
 		$this->assertArrayHasKey('panels', $response->getParams());
-		$this->assertContains('testSectionID', $response->getParams()['personalNav'][0]['id']);
+		$this->assertStringContainsString('testSectionID', $response->getParams()['personalNav'][0]['id']);
 	}
 
 	public function testGetPersonalAsAdmin() {
@@ -148,7 +148,7 @@ class SettingsPageControllerTest extends TestCase {
 		$this->assertArrayHasKey('icon', $response->getParams()['personalNav'][0]);
 		$this->assertArrayHasKey('link', $response->getParams()['personalNav'][0]);
 		$this->assertArrayHasKey('id', $response->getParams()['personalNav'][0]);
-		$this->assertContains('testSectionID', $response->getParams()['personalNav'][0]['id']);
-		$this->assertContains('testAdminSectionID', $response->getParams()['adminNav'][0]['id']);
+		$this->assertStringContainsString('testSectionID', $response->getParams()['personalNav'][0]['id']);
+		$this->assertStringContainsString('testAdminSectionID', $response->getParams()['adminNav'][0]['id']);
 	}
 }

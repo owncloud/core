@@ -45,6 +45,9 @@ class MailTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<form id="mail_general_settings_form"', $templateHtml);
+		$this->assertStringContainsString(
+			'<form id="mail_general_settings_form"',
+			$templateHtml
+		);
 	}
 }

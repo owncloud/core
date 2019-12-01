@@ -57,6 +57,6 @@ class ExpireTrashTest extends TestCase {
 			->willReturn(false);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains('Auto expiration is configured', $output);
+		$this->assertStringContainsString('Auto expiration is configured', $output);
 	}
 }

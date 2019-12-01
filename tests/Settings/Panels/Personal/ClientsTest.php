@@ -63,8 +63,8 @@ class ClientsTest extends \Test\TestCase {
 		];
 		$this->config->expects($this->exactly(3))->method('getSystemValue')->will($this->returnValueMap($map));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('/custom_desktop', $templateHtml);
-		$this->assertContains('/custom_ios', $templateHtml);
-		$this->assertContains('custom_android', $templateHtml);
+		$this->assertStringContainsString('/custom_desktop', $templateHtml);
+		$this->assertStringContainsString('/custom_ios', $templateHtml);
+		$this->assertStringContainsString('custom_android', $templateHtml);
 	}
 }

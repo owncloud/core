@@ -56,7 +56,7 @@ class ListUsersTest extends TestCase {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 		foreach ($expectedOutputs as $expectedOutput) {
-			$this->assertContains($expectedOutput, $output);
+			$this->assertStringContainsString($expectedOutput, $output);
 		}
 	}
 

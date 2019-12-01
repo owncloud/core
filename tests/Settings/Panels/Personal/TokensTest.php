@@ -37,6 +37,6 @@ class TokensTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('id="sessions"', $templateHtml);
+		$this->assertStringContainsString('id="sessions"', $templateHtml);
 	}
 }

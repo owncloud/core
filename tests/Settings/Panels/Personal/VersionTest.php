@@ -37,6 +37,6 @@ class VersionTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<a href="', $templateHtml);
+		$this->assertStringContainsString('<a href="', $templateHtml);
 	}
 }

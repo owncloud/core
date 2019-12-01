@@ -67,7 +67,7 @@ class StatusTest extends TestCase {
 +--------+------------------------------------+---------------------------+---------------+
 EOS;
 
-		$this->assertContains($expected, $output);
+		$this->assertStringContainsString($expected, $output);
 	}
 
 	public function testJobWithArray() {
@@ -88,6 +88,6 @@ EOS;
 +--------+------------------------------------+---------------------------+-----------------------+
 EOS;
 
-		$this->assertContains($expected, $output);
+		$this->assertStringContainsString($expected, $output);
 	}
 }

@@ -49,7 +49,7 @@ class LegacyTest extends \Test\TestCase {
 			]
 		]);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('form 1', $templateHtml);
-		$this->assertContains('form 2', $templateHtml);
+		$this->assertStringContainsString('form 1', $templateHtml);
+		$this->assertStringContainsString('form 2', $templateHtml);
 	}
 }

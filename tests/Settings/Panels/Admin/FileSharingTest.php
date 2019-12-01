@@ -47,6 +47,9 @@ class FileSharingTest extends \Test\TestCase {
 
 	public function testGetPanelEnabled() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<label for="shareAPIEnabled">', $templateHtml);
+		$this->assertStringContainsString(
+			'<label for="shareAPIEnabled">',
+			$templateHtml
+		);
 	}
 }

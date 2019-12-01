@@ -37,6 +37,9 @@ class TipsTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="admin-tips" class="section">', $templateHtml);
+		$this->assertStringContainsString(
+			'<div id="admin-tips" class="section">',
+			$templateHtml
+		);
 	}
 }

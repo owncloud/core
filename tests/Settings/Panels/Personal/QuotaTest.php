@@ -46,7 +46,7 @@ class QuotaTest extends \Test\TestCase {
 			'quota' => 1000
 		]));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="quota"', $templateHtml);
-		$this->assertContains('You are using', $templateHtml);
+		$this->assertStringContainsString('<div id="quota"', $templateHtml);
+		$this->assertStringContainsString('You are using', $templateHtml);
 	}
 }
