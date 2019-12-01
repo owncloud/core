@@ -876,11 +876,11 @@ class ViewTest extends TestCase {
 		$longPath = $folderName;
 		foreach (\range(0, $depth - 1) as $i) {
 			$cachedFolder = $cache->get($longPath);
-			$this->assertInternalType('array', $cachedFolder, "No cache entry for folder at $i");
+			$this->assertIsArray($cachedFolder, "No cache entry for folder at $i");
 			$this->assertEquals($folderName, $cachedFolder['name'], "Wrong cache entry for folder at $i");
 
 			$cachedFile = $cache->get($longPath . '/test.txt');
-			$this->assertInternalType('array', $cachedFile, "No cache entry for file at $i");
+			$this->assertIsArray($cachedFile, "No cache entry for file at $i");
 			$this->assertEquals('test.txt', $cachedFile['name'], "Wrong cache entry for file at $i");
 
 			$longPath .= $ds . $folderName;

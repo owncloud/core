@@ -538,7 +538,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertCount(2, $groups);
 
 		foreach ($groups as $group) {
-			$this->assertInternalType('string', $group);
+			$this->assertIsString($group);
 		}
 	}
 

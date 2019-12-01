@@ -202,7 +202,7 @@ class AdminControllerTest extends TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->adminController->getPriority());
+		$this->assertIsInt($this->adminController->getPriority());
 	}
 
 	public function testGetSectionID() {

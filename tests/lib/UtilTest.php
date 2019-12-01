@@ -18,15 +18,15 @@ use OCP\App\IAppManager;
 class UtilTest extends \Test\TestCase {
 	public function testGetVersion() {
 		$version = \OCP\Util::getVersion();
-		$this->assertInternalType('array', $version);
+		$this->assertIsArray($version);
 		foreach ($version as $num) {
-			$this->assertInternalType('int', $num);
+			$this->assertIsInt($num);
 		}
 	}
 
 	public function testGetVersionString() {
 		$version = \OC_Util::getVersionString();
-		$this->assertInternalType('string', $version);
+		$this->assertIsString($version);
 	}
 
 	/**
@@ -34,7 +34,7 @@ class UtilTest extends \Test\TestCase {
 	*/
 	public function testGetEditionString() {
 		$edition = \OC_Util::getEditionString();
-		$this->assertInternalType('string', $edition);
+		$this->assertIsString($edition);
 	}
 
 	public function testFormatDate() {

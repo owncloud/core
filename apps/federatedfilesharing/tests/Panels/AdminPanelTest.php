@@ -51,7 +51,7 @@ class AdminPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 	}
 
 	public function testGetPanel() {

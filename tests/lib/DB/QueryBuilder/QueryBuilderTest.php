@@ -1135,7 +1135,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		$actual = $qB->getLastInsertId();
 
 		$this->assertNotNull($actual);
-		$this->assertInternalType('int', $actual);
+		$this->assertIsInt($actual);
 		$this->assertEquals($this->connection->lastInsertId('*PREFIX*properties'), $actual);
 
 		$qB->delete('properties')

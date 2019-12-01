@@ -188,7 +188,7 @@ class SyncServiceTest extends TestCase {
 		$backend = $this->createMock(UserInterface::class);
 		$result = $s->analyzeExistingUsers($backend, function () {
 		});
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(2, $result);
 	}
 

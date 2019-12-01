@@ -166,7 +166,7 @@ class PrivatedataTest extends \Test\TestCase {
 	public function assertOcsResult($expectedArraySize, $result) {
 		$this->assertEquals(100, $result->getStatusCode());
 		$data = $result->getData();
-		$this->assertInternalType('array', $data);
+		$this->assertIsArray($data);
 		$this->assertCount($expectedArraySize, $data);
 	}
 }
