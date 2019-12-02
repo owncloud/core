@@ -1326,6 +1326,7 @@ def acceptance():
 		'includeKeyInMatrixName': False,
 		'runAllSuites': False,
 		'numberOfParts': 1,
+		'federatedPhpVersion': '7.3',
 	}
 
 	if 'defaults' in config:
@@ -1463,7 +1464,7 @@ def acceptance():
 										yarnInstall(phpVersion) +
 										installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
-											installFederated(federatedServerVersion, phpVersion, params['logLevel'], protocol) +
+											installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
 										) +
 										installExtraApps(phpVersion, extraAppsDict) +
@@ -1495,7 +1496,7 @@ def acceptance():
 										scalityService(params['scalityS3']) +
 										params['extraServices'] +
 										owncloudService(phpVersion, 'server', '/drone/src', params['useHttps']) +
-										(owncloudService(phpVersion, 'federated', '/drone/federated', params['useHttps']) if params['federatedServerNeeded'] else []),
+										(owncloudService(params['federatedPhpVersion'], 'federated', '/drone/federated', params['useHttps']) if params['federatedServerNeeded'] else []),
 									'depends_on': [],
 									'trigger': {
 										'ref': [
