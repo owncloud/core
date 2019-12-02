@@ -799,4 +799,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 		return null;
 	}
+
+	public function isPhoenix() {
+		return (isset($this->get['phoenix']) && $this->get['phoenix'] === 'true' && $this->config->getSystemValue('phoenix.baseUrl', '') !== '');
+	}	
 }

@@ -35,9 +35,17 @@
 			<script src="<?php print_unescaped($jsfile); ?>"></script>
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
+		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
+			<base target="_parent" />
+		<?php endif ?>
 	</head>
-	<body id="<?php p($_['bodyid']);?>">
+	<body id="<?php p($_['bodyid']);?>"
+		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
+		class="phoenix"
+		<?php endif ?>
+	>
 		<?php include('layout.noscript.warning.php'); ?>
+		<?php if (!isset($_['isPhoenix']) || !$_['isPhoenix']): ?>
 		<div id="notification-container">
 			<div id="notification"></div>
 		</div>
@@ -127,7 +135,7 @@
 				</div>
 			</div>
 		</nav>
-
+		<?php endif ?>
 		<div id="content-wrapper">
 			<div id="content" class="app-<?php p($_['appid']) ?>" role="main">
 				<?php print_unescaped($_['content']); ?>

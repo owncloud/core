@@ -253,18 +253,25 @@ class OC_Response {
 			. 'font-src \'self\' data:; '
 			. 'media-src *; '
 			. 'connect-src *';
-		\header('Content-Security-Policy:' . $policy);
 
 		// Send fallback headers for installations that don't have the possibility to send
 		// custom headers on the webserver side
 		if (\getenv('modHeadersAvailable') !== 'true') {
 			\header('X-XSS-Protection: 1; mode=block'); // Enforce browser based XSS filters
 			\header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
-			\header('X-Frame-Options: SAMEORIGIN'); // Disallow iFraming from other domains
+			$config = \OC::$server->getConfig();
+			$phoenixUrl = $config->getSystemValue('phoenix.baseUrl', '');
+			if ($phoenixUrl !== '') {
+				// TODO: double check if this is correct
+				$policy .= '; frame-ancestors \'self\' ' . $phoenixUrl;
+			} else {
+				\header('X-Frame-Options: SAMEORIGIN'); // Disallow iFraming from other domains
+			}
 			\header('X-Robots-Tag: none'); // https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
 			\header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
 			\header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
 		}
+		\header('Content-Security-Policy:' . $policy);
 	}
 
 	/**

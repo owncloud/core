@@ -73,7 +73,8 @@ class Application extends App {
 				$c->query('SettingsManager'),
 				$c->query('ServerContainer')->getURLGenerator(),
 				$c->query('GroupManager'),
-				$c->query('UserSession')
+				$c->query('UserSession'),
+				$c->query('Config')
 			);
 		});
 		$container->registerService('MailSettingsController', function (IContainer $c) {

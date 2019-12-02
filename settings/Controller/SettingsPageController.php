@@ -30,6 +30,7 @@ use OCP\Template;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IGroupManager;
 use OCP\IUserSession;
+use OCP\IConfig;
 
 /**
  * @package OC\Settings\Controller
@@ -44,6 +45,8 @@ class SettingsPageController extends Controller {
 	protected $groupManager;
 	/** @var IUserSession */
 	protected $userSession;
+	/** @var IConfig */
+	protected $config;
 
 	/**
 	 * @param string $appName
@@ -58,12 +61,14 @@ class SettingsPageController extends Controller {
 								ISettingsManager $settingsManager,
 								IURLGenerator $urlGenerator,
 								IGroupManager $groupManager,
-								IUserSession $userSession) {
+								IUserSession $userSession,
+								IConfig $config) {
 		parent::__construct($appName, $request);
 		$this->settingsManager = $settingsManager;
 		$this->urlGenerator = $urlGenerator;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
+		$this->config = $config;
 	}
 
 	/**
@@ -142,12 +147,19 @@ class SettingsPageController extends Controller {
 		foreach ($sections as $section) {
 			$icon = $this->getIconForSettingsPanel($section);
 
-			$nav[] = [
-				'id' => $section->getID(),
-				'link' => $this->urlGenerator->linkToRoute(
+			if ($this->request->isPhoenix()) {
+				$url = rtrim($this->config->getSystemValue('phoenix.baseUrl'), '/') . '/index.html#/compat-settings?'
+					. \http_build_query(['sectionid' => $type . '/' . $section->getID()], '', '&');
+			} else {
+				$url = $this->urlGenerator->linkToRoute(
 					'settings.SettingsPage.get'.\ucwords($type),
 					['sectionid' => $section->getID()]
-				),
+				);
+			}
+
+			$nav[] = [
+				'id' => $section->getID(),
+				'link' => $url,
 				'name' => \ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
 				'icon' => $icon

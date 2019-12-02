@@ -238,4 +238,13 @@ interface IRequest {
 	 * @since 8.1.0
 	 */
 	public function getServerHost();
+
+	/**
+	 * Returns true if the current page has been called within the context
+	 * of the Phoenix frontend.
+	 *
+	 * @return bool
+	 * @since 10.4.0
+	 */
+	public function isPhoenix();
 }

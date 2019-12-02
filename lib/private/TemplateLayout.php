@@ -152,6 +152,10 @@ class TemplateLayout extends \OC_Template {
 				$this->append('cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			}
 		}
+
+		if (\OC::$server->getRequest()->isPhoenix()) {
+			$this->assign('isPhoenix', true);
+		}
 	}
 
 	/**
