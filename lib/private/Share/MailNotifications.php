@@ -183,6 +183,7 @@ class MailNotifications {
 				'internal',
 				$recipientL10N
 			);
+			$replyTo = $this->getReplyTo($sender->getEMailAddress());
 
 			// send it out now
 			try {
@@ -192,7 +193,7 @@ class MailNotifications {
 				$message->setHtmlBody($htmlBody);
 				$message->setPlainBody($textBody);
 				$message->setFrom($this->getFrom($this->l, $filter->getSenderDisplayName()));
-				$message->setReplyTo([$sender->getEMailAddress()]);
+				$message->setReplyTo([$replyTo]);
 
 				$this->mailer->send($message);
 			} catch (\Exception $e) {
@@ -263,7 +264,7 @@ class MailNotifications {
 			$l10n
 		);
 		$from = $this->getFrom($l10n, $filter->getSenderDisplayName());
-		$replyTo = $sender->getEMailAddress();
+		$replyTo = $this->getReplyTo($sender->getEMailAddress());
 
 		$event = new GenericEvent(null, ['link' => $link, 'to' => $recipientsAsString]);
 		$this->eventDispatcher->dispatch('share.sendmail', $event);
@@ -402,5 +403,16 @@ class MailNotifications {
 				]
 			)
 		];
+	}
+		
+	/**
+	 * @param string $senderMailAddress
+	 * @return string
+	 */
+	protected function getReplyTo($senderMailAddress) {
+		if (empty($senderMailAddress)) {
+			return Util::getDefaultEmailAddress('sharing-noreply');
+		}
+		return $senderMailAddress;
 	}
 }

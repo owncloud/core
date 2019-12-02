@@ -1,0 +1,5 @@
+Bugfix: enhance validation for sender e-mail address for e-mail notifications
+
+If a user wanted to use the e-mail notification mechanism in order to notify other users when creating public links as well as internal shares, an error was triggered if the e-mail address for this user was not set. The behavior has now been fixed.
+
+https://github.com/owncloud/core/pull/36505
