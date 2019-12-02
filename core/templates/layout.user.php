@@ -35,9 +35,25 @@
 			<script src="<?php print_unescaped($jsfile); ?>"></script>
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
+		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
+		<script src="<?php p($_['phoenixBaseUrl'] . '/dist/phoenix-top-bar.js') ?>"></script>
+		<?php endif ?>
 	</head>
-	<body id="<?php p($_['bodyid']);?>">
+	<body id="<?php p($_['bodyid']);?>"
+		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
+		class="phoenix"
+		<?php endif ?>
+	>
 		<?php include('layout.noscript.warning.php'); ?>
+		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
+		<header role="banner">
+		<phoenix-top-bar user-id="<?php p($_['user_uid']); ?>"
+			user-display-name="<?php p($_['user_displayname']); ?>"
+			css-url="<?php p($_['phoenixBaseUrl'] . '/dist/system.css') ?>"
+			applications-list-url="<?php p($_['phoenixBaseUrl'] . '/navigation.json') ?>"
+		/>
+		</header>
+		<?php else: ?>
 		<div id="notification-container">
 			<div id="notification"></div>
 		</div>
@@ -127,7 +143,7 @@
 				</div>
 			</div>
 		</nav>
-
+		<?php endif ?>
 		<div id="content-wrapper">
 			<div id="content" class="app-<?php p($_['appid']) ?>" role="main">
 				<?php print_unescaped($_['content']); ?>

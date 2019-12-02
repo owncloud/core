@@ -139,6 +139,7 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addVendorScript('core', 'select2/select2', true);
 			OC_Util::addVendorStyle('select2/select2', null, true);
 			OC_Util::addVendorScript('snapjs/dist/latest/snap', null, true);
+			OC_Util::addVendorScript('vue/dist/vue.min', null, true);
 			OC_Util::addScript('mimetypelist', null, true);
 			OC_Util::addScript('mimetype', null, true);
 			OC_Util::addScript("apps", null, true);

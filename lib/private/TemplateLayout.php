@@ -152,6 +152,12 @@ class TemplateLayout extends \OC_Template {
 				$this->append('cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			}
 		}
+
+		$phoenixBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', '');
+		if ($phoenixBaseUrl !== '') {
+			$this->assign('isPhoenix', true);
+			$this->assign('phoenixBaseUrl', rtrim($phoenixBaseUrl), '/');
+		}
 	}
 
 	/**

@@ -28,6 +28,16 @@ namespace OC\Security\CSP;
  * @package OC\Security\CSP
  */
 class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy {
+	public function __construct() {
+		// FIXME: better location / injection
+		$phoenixBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', '');
+		if ($phoenixBaseUrl !== '') {
+			$this->allowedConnectDomains[] = $phoenixBaseUrl;
+			$this->allowedStyleDomains[] = $phoenixBaseUrl;
+			$this->allowedScriptDomains[] = $phoenixBaseUrl;
+		}
+	}
+
 	/**
 	 * @return boolean
 	 */

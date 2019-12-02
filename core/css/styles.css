@@ -121,6 +121,9 @@ a.two-factor-cancel {
 }
 
 /* CONTENT ------------------------------------------------------------------ */
+.phoenix #controls {
+	top: 60px;
+}
 #controls {
 	box-sizing: border-box;
 	position: fixed;
@@ -169,6 +172,12 @@ a.two-factor-cancel {
 }
 #content .hascontrols {
 	margin-top: 45px;
+}
+body.phoenix {
+	overflow: hidden;
+}
+.phoenix #content-wrapper {
+	padding-top: 0px;
 }
 #content-wrapper {
 	position: absolute;
