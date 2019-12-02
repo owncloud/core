@@ -308,7 +308,7 @@ class Encryption extends Wrapper {
 	/**
 	* stream_read wrapper to read a block of the requested size
 	* There is a problem with the underlying php functions not returning the requested amount of data in any case.
-	* Thus, this function will call the read mechanism of its parent until it has read the currect amount.
+	* Thus, this function will call the read mechanism of its parent until it has read the correct amount.
 	*/
 	private function stream_read_block($blockSize) {
 		$remaining = $blockSize;
