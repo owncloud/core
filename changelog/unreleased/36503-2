@@ -1,0 +1,21 @@
+Change: Update Symfony components to 3.4.36
+
+The following Symfony components have been updated to version 3.4.36:
+- console
+- debug
+- event-dispatcher
+- polyfill-mbstring
+- process
+- translation
+- routing
+
+The following Symfony polyfill components have been updated to 1.31.1:
+- polyfill-util
+- polyfill-php56
+- polyfill-iconv
+- polyfill-php72
+- polyfill-intl-idn
+- polyfill-ctype
+
+https://symfony.com/blog/symfony-3-4-36-released
+https://github.com/owncloud/core/pull/36503
