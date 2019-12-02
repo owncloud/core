@@ -170,6 +170,9 @@ a.two-factor-cancel {
 #content .hascontrols {
 	margin-top: 45px;
 }
+.phoenix #content-wrapper {
+	padding-top: 0px;
+}
 #content-wrapper {
 	position: absolute;
 	height: 100%;
