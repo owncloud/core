@@ -678,6 +678,11 @@ if [ -z "${BEHAT_FILTER_TAGS}" ]
 then
 	BEHAT_FILTER_TAGS="${TEST_TYPE_TAG}"
 else
+	# Be nice to the caller
+	# Remove any extra "&&" at the end of their tags list
+	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS%&&}"
+	# Remove any extra "&&" at the beginning of their tags list
+	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS#&&}"
 	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&${TEST_TYPE_TAG}"
 fi
 
