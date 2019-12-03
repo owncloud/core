@@ -1676,16 +1676,16 @@
         },
         {
             "name": "punic/punic",
-            "version": "3.4.0",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/punic/punic.git",
-                "reference": "0fd7772bb494a11aec50d779b738611e164a33ee"
+                "reference": "fd8f0b6e3f2cdebc3ad9bfce8ecdba091a827621"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/punic/punic/zipball/0fd7772bb494a11aec50d779b738611e164a33ee",
-                "reference": "0fd7772bb494a11aec50d779b738611e164a33ee",
+                "url": "https://api.github.com/repos/punic/punic/zipball/fd8f0b6e3f2cdebc3ad9bfce8ecdba091a827621",
+                "reference": "fd8f0b6e3f2cdebc3ad9bfce8ecdba091a827621",
                 "shasum": ""
             },
             "require": {
@@ -1746,7 +1746,7 @@
                 "translations",
                 "unicode"
             ],
-            "time": "2019-05-22T08:47:32+00:00"
+            "time": "2019-12-02T15:03:02+00:00"
         },
         {
             "name": "react/promise",
@@ -4233,12 +4233,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9986511fcd47e8b8ec491884cc18beee1773548a"
+                "reference": "e4ee2c8e4ccd908debc64069faf023c684a76760"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9986511fcd47e8b8ec491884cc18beee1773548a",
-                "reference": "9986511fcd47e8b8ec491884cc18beee1773548a",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/e4ee2c8e4ccd908debc64069faf023c684a76760",
+                "reference": "e4ee2c8e4ccd908debc64069faf023c684a76760",
                 "shasum": ""
             },
             "conflict": {
@@ -4443,7 +4443,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-11-29T17:22:08+00:00"
+            "time": "2019-12-02T13:03:15+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
