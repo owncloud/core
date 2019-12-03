@@ -69,6 +69,19 @@ Feature: capabilities
       | capability | path_to_element | value |
       | files      | versioning      | 1     |
 
+  Scenario: getting default_permissions capability with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element     | value |
+      | files_sharing | default_permissions | 31    |
+
+  Scenario: default_permissions capability can be changed
+    Given parameter "shareapi_default_permissions" of app "core" has been set to "7"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element     | value |
+      | files_sharing | default_permissions | 7     |
+
 	#feature added in #31824 will be released in 10.0.10
   @smokeTest @skipOnOcV10.0.9
   Scenario: getting capabilities with admin user
