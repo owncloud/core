@@ -55,14 +55,8 @@ class Quota {
 		if ($userObject === null) {
 			return 0;
 		}
-		$quota = $this->getUserQuota($userObject);
 
-		$userFolder = \OC::$server->getUserFolder($user);
-		if ($userFolder === null) {
-			return 0;
-		}
-
-		$free = $quota - $userFolder->getSize(); // remaining free space for user
+		$free = $this->getFreeSpace($userObject);
 		if ($free > 0) {
 			// does trashbin size hit purge limit with the current free space
 			$availableSpace = ($free * $this->getPurgeLimit() / 100) - $trashbinSize;
@@ -84,21 +78,27 @@ class Quota {
 	}
 
 	/**
-	 * Get user quota or free space when there is no quota set
+	 * Get free space for the current user
+	 * or free disk space if the current user has no quota set
 	 *
 	 * @param IUser $user
-	 * @return int|mixed
+	 * @return int
 	 */
-	protected function getUserQuota(IUser $user) {
+	protected function getFreeSpace(IUser $user) {
+		$free = 0;
 		$quota = \OC_Util::getUserQuota($user);
 		if ($quota === FileInfo::SPACE_UNLIMITED) {
-			$quota = Filesystem::free_space('/');
+			$free = Filesystem::free_space('/');
 			// inf or unknown free space
-			if ($quota < 0) {
-				$quota = PHP_INT_MAX;
+			if ($free < 0) {
+				$free = PHP_INT_MAX;
+			}
+		} else {
+			$userFolder = \OC::$server->getUserFolder($user->getUID());
+			if ($userFolder !== null) {
+				$free = $userFolder->getFreeSpace();
 			}
 		}
-
-		return $quota;
+		return $free;
 	}
 }
