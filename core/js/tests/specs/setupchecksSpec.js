@@ -114,7 +114,7 @@ describe('OC.SetupChecks tests', function() {
 				done();
 			});
 		});
-		
+
 		it('should not return an error if data directory is protected', function(done) {
 			var async = OC.SetupChecks.checkDataProtected();
 
@@ -391,7 +391,7 @@ describe('OC.SetupChecks tests', function() {
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
-					msg: 'Error occurred while checking server setup', 
+					msg: 'Error occurred while checking server setup',
 					type: OC.SetupChecks.MESSAGE_TYPE_ERROR
 				},{
 					msg: 'Error occurred while checking server setup',
@@ -457,7 +457,7 @@ describe('OC.SetupChecks tests', function() {
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
-					msg: 'The "X-XSS-Protection" HTTP header is not configured to equal to "1; mode=block". This is a potential security or privacy risk and we recommend adjusting this setting.', 
+					msg: 'The "X-XSS-Protection" HTTP header is not configured to equal to "1; mode=block". This is a potential security or privacy risk and we recommend adjusting this setting.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING,
 				}, {
 					msg: 'The "X-Content-Type-Options" HTTP header is not configured to equal to "nosniff". This is a potential security or privacy risk and we recommend adjusting this setting.',
@@ -508,7 +508,7 @@ describe('OC.SetupChecks tests', function() {
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([{
-				msg: 'You are accessing this site via HTTP. We strongly suggest you configure your server to require using HTTPS instead as described in our <a href="#admin-tips">security tips</a>.',
+				msg: 'You are accessing this site via HTTP. We strongly suggest you configure your server to require using HTTPS instead as described in our <a href="">security tips</a>.',
 				type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 			}]);
 			done();
@@ -527,7 +527,7 @@ describe('OC.SetupChecks tests', function() {
 		);
 		async.done(function( data, s, x ){
 			expect(data).toEqual([{
-				msg: 'Error occurred while checking server setup', 
+				msg: 'Error occurred while checking server setup',
 				type: OC.SetupChecks.MESSAGE_TYPE_ERROR
 			}, {
 				msg: 'Error occurred while checking server setup',
@@ -554,7 +554,7 @@ describe('OC.SetupChecks tests', function() {
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([{
-				msg: 'The "Strict-Transport-Security" HTTP header is not configured to at least "15552000" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="#admin-tips" rel="noreferrer">security tips</a>.',
+				msg: 'The "Strict-Transport-Security" HTTP header is not configured to at least "15552000" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="" rel="noreferrer">security tips</a>.',
 				type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 			}]);
 			done();
@@ -579,7 +579,7 @@ describe('OC.SetupChecks tests', function() {
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([{
-				msg: 'The "Strict-Transport-Security" HTTP header is not configured to at least "15552000" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="#admin-tips" rel="noreferrer">security tips</a>.',
+				msg: 'The "Strict-Transport-Security" HTTP header is not configured to at least "15552000" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="" rel="noreferrer">security tips</a>.',
 				type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 			}]);
 			done();
@@ -604,7 +604,7 @@ describe('OC.SetupChecks tests', function() {
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([{
-				msg: 'The "Strict-Transport-Security" HTTP header is not configured to at least "15552000" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="#admin-tips" rel="noreferrer">security tips</a>.',
+				msg: 'The "Strict-Transport-Security" HTTP header is not configured to at least "15552000" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="" rel="noreferrer">security tips</a>.',
 				type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 			}]);
 			done();
