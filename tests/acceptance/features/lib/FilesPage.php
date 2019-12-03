@@ -43,9 +43,7 @@ class FilesPage extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
-	protected $resourceElementsNameXpath = "//table[@id='filestable']//span[@class='nametext']";
-	protected $sharedMarkXpath = "//table[@id='filestable']//*[contains(@class,'sharetree-item')]";
-	protected $resourceSharedMarkXpath = "//table[@id='filestable']//span[normalize-space(.)='%s']/../..//div[contains(@class, 'sharetree-item')]";
+	protected $resourceSharedIndicatorXpath = "//table[@id='filestable']//span[normalize-space(.)='%s']/../..//div[contains(@class, 'sharetree-item')]";
 
 	/**
 	 *
@@ -410,38 +408,9 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return bool
 	 */
-	public function isResourceMarkedShared($fileName) {
-		try {
-			$resourceMarkedSharedXpath = \sprintf($this->resourceSharedMarkXpath, $fileName);
-			$markedElement = $this->find("xpath", $resourceMarkedSharedXpath);
-			$this->assertElementNotNull(
-				$markedElement,
-				__METHOD__ .
-				"Resource not marked!"
-			);
-			return true;
-		} catch (ElementNotFoundException $e) {
-			return false;
-		}
-	}
-
-	/**
-	 * counts number of resources present in filesPage
-	 *
-	 * @return int
-	 */
-	public function countAllResourcesPresent() {
-		$allResources =  $this->findAll("xpath", $this->resourceElementsNameXpath);
-		return \count($allResources);
-	}
-
-	/**
-	 * counts number of resources marked as shared in filesPage
-	 *
-	 * @return int
-	 */
-	public function countAllResourcesMarkedShared() {
-		$markedResources = $this->findAll("xpath", $this->sharedMarkXpath);
-		return \count($markedResources);
+	public function isShareIndicatorPresent($fileName) {
+		$resourceMarkedSharedXpath = \sprintf($this->resourceSharedIndicatorXpath, $fileName);
+		$markedElement = $this->find("xpath", $resourceMarkedSharedXpath);
+		return $markedElement !== null;
 	}
 }
