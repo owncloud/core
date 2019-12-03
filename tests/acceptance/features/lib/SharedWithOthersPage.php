@@ -39,7 +39,7 @@ class SharedWithOthersPage extends FilesPageBasic {
 	protected $path = '/index.php/apps/files/?view=sharingout';
 	protected $fileNamesXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
-	protected $fileListXpath = ".//div[@id='app-content-sharingout']//tbody[@id='fileList']";
+	protected $fileListXpath = ".//div[contains(@id, 'app-content')]//tbody[@id='fileList' and count(*) >= 1]";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharingout']//div[@id='emptycontent']";
 	protected $filePathInRowXpath = ".//div[@id='app-content-sharingout']//tbody[@id='fileList']//tr";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";

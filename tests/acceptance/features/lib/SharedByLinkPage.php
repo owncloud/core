@@ -37,7 +37,7 @@ class SharedByLinkPage extends FilesPageCRUD {
 	protected $path = '/index.php/apps/files/?view=sharinglinks';
 	protected $fileNamesXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
-	protected $fileListXpath = ".//div[@id='app-content-sharinglinks']//tbody[@id='fileList']";
+	protected $fileListXpath = ".//div[@id='app-content']//tbody[@id='fileList' and count(*) >= 1]";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharinglinks']//div[@id='emptycontent']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	/**

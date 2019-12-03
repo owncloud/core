@@ -1603,45 +1603,66 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then (file|folder) :arg1 should be marked shared on the webUI
+	 * @Then /^(file|folder) "([^"]*)" should have share indicator on the webUI$/
 	 *
-	 * @param string $fileName name of resource
-	 *
-	 * @return void
-	 */
-	public function fileShouldBeMarkedSharedOnTheWebUI($fileName) {
-		$isMarked = $this->filesPage->isResourceMarkedShared(
-			$fileName
-		);
-		Assert::assertEquals(true, $isMarked, 'Expected resource is not marked shared');
-	}
-
-	/**
-	 * @Then folder :arg1 should not be marked shared on the webUI
-	 *
-	 * @param string $fileName name of resource
+	 * @param string $fileOrFolder
+	 * @param string $filename name of resource
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function folderShouldNotBeMarkedSharedOnTheWebUI($fileName) {
-		$isMarked = $this->filesPage->isResourceMarkedShared(
-			$fileName
+	public function folderShouldHaveShareIndicatorOnTheWebUI($fileOrFolder, $filename) {
+		$isMarked = $this->filesPage->isShareIndicatorPresent(
+			$filename
 		);
-		print $isMarked;
-		Assert::assertEquals(false, $isMarked, 'Expected resource is marked shared');
+		Assert::assertEquals(true, $isMarked, "Expected: " . $fileOrFolder . " to be marked as shared but found: " . \strval($isMarked));
 	}
 
 	/**
-	 * @Then all resources should be marked shared on the webUI
+	 * @Then /^(file|folder) "([^"]*)" should not have share indicator on the webUI$/
+	 *
+	 * @param string $fileOrFolder
+	 * @param string $filename name of resource
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function allResourcesShouldBeMarkedSharedOnTheWebUI() {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$shareMarkedResources = $this->filesPage->countAllResourcesMarkedShared();
-		$resourcesPresent = $this->filesPage->countAllResourcesPresent();
-		Assert::assertEquals($shareMarkedResources, $resourcesPresent);
+	public function folderShouldNotHaveShareIndicatorOnTheWebUI($fileOrFolder, $filename) {
+		$isMarked = $this->filesPage->isShareIndicatorPresent(
+			$filename
+		);
+		Assert::assertEquals(false, $isMarked, "Expected: " . $fileOrFolder . " not to be marked as shared but found: " . \strval($isMarked));
+	}
+
+	/**
+	 * @Then following resources should have share indicators on the webUI
+	 *
+	 * @param TableNode $resourceTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function followingResourcesShouldHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+		$elementRows = $resourceTable->getRows();
+		$elements = $this->featureContext->simplifyArray($elementRows);
+		foreach ($elements as $element) {
+			$this->folderShouldHaveShareIndicatorOnTheWebUI(null, $element);
+		}
+	}
+
+	/**
+	 * @Then following resources should not have share indicators on the webUI
+	 *
+	 * @param TableNode $resourceTable table headings: must be: |name|
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function followingResourcesShouldNotHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+		$elementRows = $resourceTable->getRows();
+		$elements = $this->featureContext->simplifyArray($elementRows);
+		foreach ($elements as $element) {
+			$this->folderShouldNotHaveShareIndicatorOnTheWebUI(null, $element);
+		}
 	}
 }
