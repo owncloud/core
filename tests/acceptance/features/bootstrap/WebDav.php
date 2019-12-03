@@ -33,8 +33,6 @@ use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * WebDav functions
  */

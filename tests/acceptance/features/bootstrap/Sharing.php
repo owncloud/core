@@ -29,8 +29,6 @@ use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Sharing trait
  */

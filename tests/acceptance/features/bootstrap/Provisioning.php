@@ -28,8 +28,6 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Functions for provisioning of users and groups
  */
