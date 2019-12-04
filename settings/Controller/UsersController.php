@@ -186,6 +186,9 @@ class UsersController extends Controller {
 					// user also has recovery mode enabled
 					$restorePossible = true;
 				}
+			} else {
+				// masterkey encryption is active
+				$restorePossible = true;
 			}
 		} else {
 			// recovery is possible if encryption is disabled (plain files are
