@@ -150,6 +150,7 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addTranslations("core", null, true);
 			OC_Util::addScript("l10n", null, true);
 			OC_Util::addScript("js", null, true);
+			OC_Util::addScript("phoenix-integration", null, true);
 			OC_Util::addScript("oc-dialogs", null, true);
 			OC_Util::addScript("jquery.ocdialog", null, true);
 			OC_Util::addStyle("jquery.ocdialog");

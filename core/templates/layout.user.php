@@ -35,9 +35,6 @@
 			<script src="<?php print_unescaped($jsfile); ?>"></script>
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
-		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
-			<base target="_parent" />
-		<?php endif ?>
 	</head>
 	<body id="<?php p($_['bodyid']);?>"
 		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
@@ -45,7 +42,14 @@
 		<?php endif ?>
 	>
 		<?php include('layout.noscript.warning.php'); ?>
-		<?php if (!isset($_['isPhoenix']) || !$_['isPhoenix']): ?>
+		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
+		<header role="banner">
+			<iframe id="phoenixHeader" src="<?php p($_['phoenixBaseUrl'] . '/index.html#/components/header') ?>"></iframe>
+		</header>
+		<nav role="navigation">
+			<iframe id="phoenixMenu" src="<?php p($_['phoenixBaseUrl'] . '/index.html#/components/menu') ?>"></iframe>
+		</nav>
+		<?php else: ?>
 		<div id="notification-container">
 			<div id="notification"></div>
 		</div>

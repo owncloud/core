@@ -801,6 +801,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	}
 
 	public function isPhoenix() {
-		return (isset($this->get['phoenix']) && $this->get['phoenix'] === 'true' && $this->config->getSystemValue('phoenix.baseUrl', '') !== '');
+		// FIXME: move this to another service
+		return $this->config->getSystemValue('phoenix.baseUrl', '') !== '';
 	}	
 }

@@ -23,6 +23,7 @@
 		"jquery.ocdialog.js",
 		"oc-dialogs.js",
 		"js.js",
+		"phoenix-integration.js",
 		"oc-backbone.js",
 		"oc-backbone-webdav.js",
 		"l10n.js",

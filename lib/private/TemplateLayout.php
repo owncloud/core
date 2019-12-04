@@ -155,6 +155,7 @@ class TemplateLayout extends \OC_Template {
 
 		if (\OC::$server->getRequest()->isPhoenix()) {
 			$this->assign('isPhoenix', true);
+			$this->assign('phoenixBaseUrl', rtrim(\OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', ''), '/'));
 		}
 	}
 
