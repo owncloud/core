@@ -1635,14 +1635,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then following resources should have share indicators on the webUI
+	 * @Then the following resources should have share indicators on the webUI
 	 *
 	 * @param TableNode $resourceTable
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function followingResourcesShouldHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+	public function theFollowingResourcesShouldHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
 		$elementRows = $resourceTable->getRows();
 		$elements = $this->featureContext->simplifyArray($elementRows);
 		foreach ($elements as $element) {
@@ -1651,14 +1651,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then following resources should not have share indicators on the webUI
+	 * @Then the following resources should not have share indicators on the webUI
 	 *
 	 * @param TableNode $resourceTable table headings: must be: |name|
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function followingResourcesShouldNotHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+	public function theFollowingResourcesShouldNotHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
 		$elementRows = $resourceTable->getRows();
 		$elements = $this->featureContext->simplifyArray($elementRows);
 		foreach ($elements as $element) {
