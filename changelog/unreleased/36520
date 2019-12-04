@@ -1,0 +1,14 @@
+Enhancement: Add enabled and disabled filter options to occ app:list command
+
+The occ app:list command now supports the --enabled and --disabled options
+
+occ app:list --enabled
+Displays just the enabled apps.
+
+occ app:list --disabled
+Displays just the disabled apps.
+
+If a disabled app was enabled in the past, then the previously-enabled version
+of the app is now displayed in the disabled apps list.
+
+https://github.com/owncloud/core/pull/36520

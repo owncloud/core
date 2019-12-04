@@ -160,6 +160,152 @@ class AppManagementContext implements Context {
 	}
 
 	/**
+	 * @When the administrator lists the apps using the occ command
+	 *
+	 * @return void
+	 */
+	public function adminListsTheApps() {
+		$occStatus = $this->featureContext->runOcc(
+			['app:list', '--no-ansi']
+		);
+	}
+
+	/**
+	 * @When the administrator lists the enabled apps using the occ command
+	 *
+	 * @return void
+	 */
+	public function adminListsTheEnabledApps() {
+		$occStatus = $this->featureContext->runOcc(
+			['app:list', '--enabled', '--no-ansi']
+		);
+	}
+
+	/**
+	 * @When the administrator lists the disabled apps using the occ command
+	 *
+	 * @return void
+	 */
+	public function adminListsTheDisabledApps() {
+		$occStatus = $this->featureContext->runOcc(
+			['app:list', '--disabled', '--no-ansi']
+		);
+	}
+
+	/**
+	 * @When the administrator lists the enabled and disabled apps using the occ command
+	 *
+	 * @return void
+	 */
+	public function adminListsTheEnabledAndDisabledApps() {
+		$occStatus = $this->featureContext->runOcc(
+			['app:list', '--enabled', '--disabled', '--no-ansi']
+		);
+	}
+
+	/**
+	 * @Then app :appId with version :appVersion should have been listed in the enabled apps section
+	 *
+	 * @param string $appId
+	 * @param string $appVersion
+	 *
+	 * @return void
+	 */
+	public function appWithVersionShouldHaveBeenListedInTheEnabledAppsSection(
+		$appId, $appVersion
+	) {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$expectedStartOfOutput = "Enabled:";
+		Assert::assertEquals(
+			$expectedStartOfOutput,
+			\substr($commandOutput, 0, 8),
+			"app:list command output did not start with '$expectedStartOfOutput'"
+		);
+		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		if ($startOfDisabledSection) {
+			$commandOutput = \substr($commandOutput, 0, $startOfDisabledSection);
+		}
+		$expectedString = "- $appId: $appVersion";
+		Assert::assertNotFalse(
+			\strpos($commandOutput, $expectedString),
+			"app:list output did not contain '$expectedString' in the enabled section"
+		);
+	}
+
+	/**
+	 * @Then app :appId with version :appVersion should have been listed in the disabled apps section
+	 *
+	 * @param string $appId
+	 * @param string $appVersion
+	 *
+	 * @return void
+	 */
+	public function appWithVersionShouldHaveBeenListedInTheDisabledAppsSection(
+		$appId, $appVersion
+	) {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		Assert::assertNotFalse(
+			$startOfDisabledSection,
+			"app:list output did not contain the disabled section"
+		);
+		$commandOutput = \substr($commandOutput, $startOfDisabledSection);
+		$expectedString = "- $appId: $appVersion";
+		Assert::assertNotFalse(
+			\strpos($commandOutput, $expectedString),
+			"app:list output did not contain '$expectedString' in the disabled section"
+		);
+	}
+
+	/**
+	 * @Then app :appId should have been listed in the disabled apps section
+	 *
+	 * @param string $appId
+	 *
+	 * @return void
+	 */
+	public function appShouldHaveBeenListedInTheDisabledAppsSection($appId) {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		Assert::assertNotFalse(
+			$startOfDisabledSection,
+			"app:list output did not contain the disabled section"
+		);
+		$commandOutput = \substr($commandOutput, $startOfDisabledSection);
+		$expectedString = "- $appId";
+		Assert::assertNotFalse(
+			\strpos($commandOutput, $expectedString),
+			"app:list output did not contain '$expectedString' in the disabled section"
+		);
+	}
+
+	/**
+	 * @Then the enabled apps section should not exist
+	 *
+	 * @return void
+	 */
+	public function theEnabledAppsSectionShouldNotExist() {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		Assert::assertFalse(
+			\strpos($commandOutput, "Enabled:"),
+			"app:list output contains the enabled section but it should not"
+		);
+	}
+
+	/**
+	 * @Then the disabled apps section should not exist
+	 *
+	 * @return void
+	 */
+	public function theDisabledAppsSectionShouldNotExist() {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		Assert::assertFalse(
+			\strpos($commandOutput, "Disabled:"),
+			"app:list output contains the disabled section but it should not"
+		);
+	}
+
+	/**
 	 * @Then the path to :appId should be :dir
 	 *
 	 * @param string $appId
