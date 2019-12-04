@@ -83,6 +83,17 @@ $CONFIG = array(
 'datadirectory' => '/var/www/owncloud/data',
 
 /**
+ * Define the directory where the crash logs will be stored.
+ * By default, this will be the same as the one configured as "datadirectory".
+ * The directory MUST EXIST and be WRITABLE by the web server.
+ * Note that crashes are extremely rare (although they can come in burst due to
+ * multiple requests), so the default location is usually fine.
+ * Also note that the log can contain sensitive information, but it should be useful
+ * to pinpoint where is the problem.
+ */
+'crashdirectory' => '/var/www/owncloud/data',
+
+/**
  * Current version number of your ownCloud installation
  * This is set up during installation and update, so you shouldn't need to change it.
  */

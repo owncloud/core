@@ -56,9 +56,19 @@ if (\stripos(PHP_OS, 'WIN') === 0) {
 }
 
 function exceptionHandler($exception) {
-	echo 'An unhandled exception has been thrown:' . PHP_EOL;
-	echo $exception;
-	exit(1);
+	try {
+		// try to log the exception
+		\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
+	} catch (\Throwable $ex) {
+		// if we can't log normally, use the crashLog
+		\OC::crashLog($exception);
+		\OC::crashLog($ex);
+	} finally {
+		// always show the exception in the console
+		echo 'An unhandled exception has been thrown:' . PHP_EOL;
+		echo $exception;
+		exit(1);
+	}
 }
 try {
 	require_once __DIR__ . '/lib/base.php';
@@ -104,8 +114,6 @@ try {
 	$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
 	$application->loadCommands(new ArgvInput(), new ConsoleOutput());
 	$application->run();
-} catch (Exception $ex) {
-	exceptionHandler($ex);
-} catch (Error $ex) {
+} catch (\Throwable $ex) {
 	exceptionHandler($ex);
 }

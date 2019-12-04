@@ -50,24 +50,11 @@ class ErrorHandler {
 		} else {
 			\set_error_handler([$handler, 'onError']);
 		}
-		\OC::$server->getShutdownHandler()->register(function () use ($handler) {
-			$handler->onShutdown();
-		});
 		\set_exception_handler([$handler, 'onException']);
 	}
 
 	public static function setLogger(ILogger $logger) {
 		self::$logger = $logger;
-	}
-
-	//Fatal errors handler
-	public static function onShutdown() {
-		$error = \error_get_last();
-		if ($error && self::$logger) {
-			//ob_end_clean();
-			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
-			self::$logger->critical(self::removePassword($msg), ['app' => 'PHP']);
-		}
 	}
 
 	/**
