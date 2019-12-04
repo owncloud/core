@@ -307,6 +307,22 @@ Feature: Sharing files and folders with internal users
       | Email notification not sent | Couldn't send mail to following recipient(s): user0 |
 
   @mailhog
+  Scenario: user who has not set up the email should get an error message when trying to send notification by email
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And these users have been created without skeleton files:
+      | username | password |
+      | user0    | 1234     |
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/FOLDER_TO_SHARE"
+    And user "user0" has logged in using the webUI
+    And user "user0" has shared folder "FOLDER_TO_SHARE" with user "user1"
+    And the user has opened the share dialog for folder "FOLDER_TO_SHARE"
+    When the user sends the share notification by email using the webUI
+    Then dialog should be displayed on the webUI
+      | title                       | content                                                |
+      | Email notification not sent | Couldn't send mail to following recipient(s): User One |
+
+  @mailhog
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
