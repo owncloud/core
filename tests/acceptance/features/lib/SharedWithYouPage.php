@@ -36,7 +36,7 @@ class SharedWithYouPage extends FilesPageBasic {
 	protected $path = '/index.php/apps/files/?view=sharingin';
 	protected $fileNamesXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
-	protected $fileListXpath = ".//div[@id='app-content']//tbody[@id='fileList' and count(*) >= 1]";
+	protected $fileListXpath = ".//div[@id='app-content-sharingin']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharingin']//div[@id='emptycontent']";
 
 	/**

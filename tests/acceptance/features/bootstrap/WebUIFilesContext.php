@@ -1289,6 +1289,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$failed = false;
 		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
 			$pageObject->openFile($breadCrumb, $this->getSession());
+			$pageObject = $this->filesPage;
 			try {
 				$pageObject->waitTillPageIsLoaded($this->getSession());
 			} catch (\Exception $e) {
@@ -1418,7 +1419,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			case "shared-by-link page":
 				$this->theUserBrowsesToThePage($this->sharedByLinkPage);
 				break;
-			case "shared with others page":
 			case "shared-with-others page":
 				$this->theUserBrowsesToThePage($this->sharedWithOthersPage);
 				break;
