@@ -152,3 +152,38 @@ Feature: admin sharing settings
     And the administrator has browsed to the admin sharing settings page
     When the administrator disables add server automatically once a federation share was created successfully using the webUI
     Then the config key "autoAddServers" of app "federation" should have value "0"
+
+  Scenario: enable default expiration date for user shares
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables default expiration date for user shares using the webUI
+    Then the config key "shareapi_default_expire_date_user_share" of app "core" should have value "yes"
+
+  Scenario: enable default expiration date for group shares
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables default expiration date for group shares using the webUI
+    Then the config key "shareapi_default_expire_date_group_share" of app "core" should have value "yes"
+
+  Scenario: set expiration date for user shares
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables default expiration date for user shares using the webUI
+    And the administrator updates the user share expiration date to "4" days using the webUI
+    Then the config key "shareapi_expire_after_n_days_user_share" of app "core" should have value "4"
+
+  Scenario: set expiration date for group shares
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables default expiration date for group shares using the webUI
+    And the administrator updates the group share expiration date to "11" days using the webUI
+    Then the config key "shareapi_expire_after_n_days_group_share" of app "core" should have value "11"
+
+  Scenario: set expiration date for user shares and enforce as maximum expiration date
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables default expiration date for user shares using the webUI
+    And the administrator enforces maximum expiration date for user shares using the webUI
+    Then the config key "shareapi_enforce_expire_date_user_share" of app "core" should have value "yes"
+
+  Scenario: set expiration date for group shares and enforce as maximum expiration date
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator enables default expiration date for group shares using the webUI
+    And the administrator enforces maximum expiration date for group shares using the webUI
+    Then the config key "shareapi_enforce_expire_date_group_share" of app "core" should have value "yes"
+

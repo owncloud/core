@@ -22,7 +22,9 @@
  */
 namespace Page;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use function GuzzleHttp\Psr7\str;
 
 /**
  * Admin Sharing Settings page.
@@ -81,6 +83,17 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $changeSharePermissionXpath = "//p[@id='shareApiDefaultPermissionsSection']//label[contains(text(),'Change')]";
 	protected $deleteSharePermissionXpath = "//p[@id='shareApiDefaultPermissionsSection']//label[contains(text(),'Delete')]";
 	protected $shareSharePermissionXpath = "//p[@id='shareApiDefaultPermissionsSection']//label[contains(text(),'Share')]";
+
+	protected $defaultExpirationDateForUserCheckboxXpath = '//label[@for="shareapiDefaultExpireDateUserShare"]';
+	protected $defaultExpirationDateForUserCheckboxId = 'shareapiDefaultExpireDateUserShare';
+	protected $defaultExpirationDateForGroupCheckboxXpath = '//label[@for="shareapiDefaultExpireDateGroupShare"]';
+	protected $defaultExpirationDateForGroupCheckboxId = 'shareapiDefaultExpireDateGroupShare';
+	protected $userShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysUserShare"]';
+	protected $groupShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysGroupShare"]';
+	protected $enforceExpirationDateUserShareCheckboxXpath = '//span[@id="setDefaultExpireDateUserShare"]//label[contains(text(),"expiration date")]';
+	protected $enforceExpirationDateUserShareCheckboxId = 'setDefaultExpireDateUserShare';
+	protected $enforceExpirationDateGroupShareCheckboxXpath = '//span[@id="setDefaultExpireDateGroupShare"]//label[contains(text(),"expiration date")]';
+	protected $enforceExpirationDateGroupShareCheckboxId = 'setDefaultExpireDateGroupShare';
 	/**
 	 * toggle the Share API
 	 *
@@ -336,6 +349,132 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			"enables",
 			$this->excludeGroupFromSharingCheckboxXpath,
 			$this->excludeGroupFromSharingCheckboxId
+		);
+	}
+
+	/**
+	 * enable default expiration date for user share
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enableDefaultExpirationDateForUserShares(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->defaultExpirationDateForUserCheckboxXpath,
+			$this->defaultExpirationDateForUserCheckboxId
+		);
+	}
+
+	/**
+	 * enforce maximum expiration date for user share
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enforceMaximumExpirationDateForUserShares(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->enforceExpirationDateUserShareCheckboxXpath,
+			$this->enforceExpirationDateUserShareCheckboxId
+		);
+	}
+
+	/**
+	 * enforce mamixum expiration date for group share
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enforceMaximumExpirationDateForGroupShares(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->enforceExpirationDateGroupShareCheckboxXpath,
+			$this->enforceExpirationDateGroupShareCheckboxId
+		);
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement|NULL
+	 */
+	private function findUserShareExpirationField() {
+		$expirationDateField = $this->find("xpath", $this->userShareExpirationDateFieldXpath);
+		$this->assertElementNotNull(
+			$expirationDateField,
+			__METHOD__ .
+			" xpath $this->userShareExpirationDateFieldXpath could not find set-user-share-expiration-field"
+		);
+		return $expirationDateField;
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement|NULL
+	 */
+	private function findGroupShareExpirationField() {
+		$expirationDateField = $this->find("xpath", $this->groupShareExpirationDateFieldXpath);
+		$this->assertElementNotNull(
+			$expirationDateField,
+			__METHOD__ .
+			" xpath $this->groupShareExpirationDateFieldXpath could not find set-group-share-expiration-field"
+		);
+		return $expirationDateField;
+	}
+
+	/**
+	 * set expiration date for user share
+	 *
+	 * @param int $date
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function setExpirationDaysForUserShare(
+		$date, Session $session
+	) {
+		$expirationDateField = $this->findUserShareExpirationField();
+		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * set expiration date for group share
+	 *
+	 * @param int $date
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function setExpirationDaysForGroupShare(
+		$date, Session $session
+	) {
+		$expirationDateField = $this->findGroupShareExpirationField();
+		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * enable default expiration date for group share
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enableDefaultExpirationDateForGroupShares(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->defaultExpirationDateForGroupCheckboxXpath,
+			$this->defaultExpirationDateForGroupCheckboxId
 		);
 	}
 
