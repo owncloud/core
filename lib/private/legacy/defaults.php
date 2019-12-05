@@ -58,7 +58,6 @@ class OC_Defaults {
 	public function __construct() {
 		$this->l = \OC::$server->getL10N('lib');
 		$this->config = \OC::$server->getConfig();
-		$version = \OCP\Util::getVersion();
 
 		$this->defaultEntity = 'ownCloud'; /* e.g. company name, used for footers and copyright notices */
 		$this->defaultName = 'ownCloud'; /* short name, used when referring to the software */
@@ -69,7 +68,7 @@ class OC_Defaults {
 		$this->defaultiTunesAppId = '1359583808';
 		$this->defaultAndroidClientUrl = 'https://play.google.com/store/apps/details?id=com.owncloud.android';
 		$this->defaultDocBaseUrl = 'https://doc.owncloud.org';
-		$this->defaultDocVersion = $version[0] . '.' . $version[1]; // used to generate doc links
+		$this->defaultDocVersion = 'latest'; // used to generate doc links
 		$this->defaultSlogan = $this->l->t('A safe home for all your data');
 		$this->defaultLogoClaim = '';
 		$this->defaultMailHeaderColor = '#1d2d44'; /* header color of mail notifications */
