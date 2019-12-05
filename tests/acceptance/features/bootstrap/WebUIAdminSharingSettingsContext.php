@@ -241,6 +241,72 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator enables default expiration date for user shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnablesDefaultExpirationDateForUserShares() {
+		$this->adminSharingSettingsPage->enableDefaultExpirationDateForUserShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator enforces maximum expiration date for user shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnforcesMaximumExpirationDateForUserShares() {
+		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForUserShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator enforces maximum expiration date for group shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnforcesMaximumExpirationDateForGroupShares() {
+		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForGroupShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator updates the user share expiration date to :days days using the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function administratorUpdatesUserShareExpirationTo($days) {
+		$this->adminSharingSettingsPage->setExpirationDaysForUserShare($days, $this->getSession());
+	}
+
+	/**
+	 * @When the administrator updates the group share expiration date to :days days using the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function administratorUpdatesGroupShareExpirationTo($days) {
+		$this->adminSharingSettingsPage->setExpirationDaysForGroupShare($days, $this->getSession());
+	}
+
+	/**
+	 * @When the administrator enables default expiration date for group shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesDefaultExpirationDateForGroupShares() {
+		$this->adminSharingSettingsPage->enableDefaultExpirationDateForGroupShares(
+			$this->getSession()
+		);
+	}
+
+	/**
 	 * @When the administrator enables restrict users to only share with groups they are member of using the webUI
 	 *
 	 * @return void
