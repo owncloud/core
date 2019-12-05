@@ -22,12 +22,9 @@
 namespace OCA\Files\Tests\Command;
 
 use OC\Encryption\Manager;
-use OC\Files\ObjectStore\ObjectStoreStorage;
-use OC\Files\View;
 use OC\Share20\ProviderFactory;
 use OCA\Files\Command\TransferOwnership;
 use OCP\Files\Mount\IMountManager;
-use OCP\Files\Storage;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share;
@@ -166,10 +163,18 @@ class TransferOwnershipTest extends TestCase {
 			->setShareType(Share::SHARE_TYPE_USER)
 			->setPermissions(19);
 		$this->shareManager->createShare($share);
+
+		$subFolder = $userFolder->get('transfer/sub_folder');
+		$share = $this->shareManager->newShare();
+		$share->setNode($subFolder)
+			->setSharedBy('source-user')
+			->setSharedWith('share-receiver')
+			->setShareType(Share::SHARE_TYPE_USER)
+			->setPermissions(19);
+		$this->shareManager->createShare($share);
 	}
 
 	public function testTransferAllFiles() {
-		$this->markTestSkippedIfMultiBucketObjectStorage();
 		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
 		$input = [
 			'source-user' => $this->sourceUser->getUID(),
@@ -182,13 +187,13 @@ class TransferOwnershipTest extends TestCase {
 		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount(0, $sourceShares);
-		$this->assertCount(3, $targetShares);
+		$this->assertCount(4, $targetShares);
 	}
 
 	public function folderPathProvider() {
 		return [
-			['transfer', 1, 2],
-			['transfer/sub_folder', 2, 1]
+			['transfer', 1, 3],
+			['transfer/sub_folder', 2, 2]
 		];
 	}
 
@@ -214,13 +219,5 @@ class TransferOwnershipTest extends TestCase {
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount($expectedSourceShareCount, $sourceShares);
 		$this->assertCount($expectedTargetShareCount, $targetShares);
-	}
-	private function markTestSkippedIfMultiBucketObjectStorage() {
-		$sourceUserView = new View('/source-user/files/');
-		/** @var Storage $storage */
-		list($storage, $internalPath) = $sourceUserView->resolvePath('transfer/test_file1');
-		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
-			$this->markTestSkipped('transfer ownership may not work in a multi-bucket object store setup');
-		}
 	}
 }

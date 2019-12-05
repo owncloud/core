@@ -1,0 +1,9 @@
+Bugfix: Fix "files:transfer-ownership" in S3 multibucket setups
+
+There were problems using the files:transfer-ownership in setups using files_primary_s3
+against S3 storage with multibucket configuration, when some of the transferred files
+were shared with other people. This PR fixes that problem with the shares while
+transferring the files, allowing the files:transfer-ownership to finish correctly
+
+https://github.com/owncloud/core/pull/36464
+

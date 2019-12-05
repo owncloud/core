@@ -37,6 +37,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @var array
 	 */
 	private static $tmpFiles = [];
+	/** @var array */
+	private $movingBetweenBuckets = [];
 	/**
 	 * @var \OCP\Files\ObjectStore\IObjectStore $objectStore
 	 */
@@ -72,6 +74,27 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
+	/**
+	 * This is intended to be used during the moveFromStorage call. While moving, this is needed
+	 * for the sourceStorage to know we're moving stuff and it shouldn't change the cache
+	 * until it's finished.
+	 * DO NOT USE OUTSIDE OF THIS CLASS
+	 */
+	public function setMovingBetweenBucketsInfo(array $info) {
+		$this->movingBetweenBuckets = $info;
+	}
+
+	/**
+	 * This is intended to be used during the moveFromStorage call. While moving, this is needed
+	 * for the sourceStorage to know we're moving stuff and it shouldn't change the cache
+	 * until it's finished. This will be called when we finish moving all the files, in order
+	 * for the sourceStorage to operate normally.
+	 * DO NOT USE OUTSIDE OF THIS CLASS
+	 */
+	public function clearMovingBetweenBucketsInfo() {
+		$this->movingBetweenBuckets = [];
+	}
+
 	public function mkdir($path) {
 		$path = $this->normalizePath($path);
 
@@ -90,7 +113,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if ($path === '') {
 			//create root on the fly
 			$data['etag'] = $this->getETag('');
-			$this->getCache()->put('', $data);
+			if (empty($this->movingBetweenBuckets)) {
+				$this->getCache()->put('', $data);
+			}
 			return true;
 		} else {
 			// if parent does not exist, create it
@@ -105,12 +130,14 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				// parent is a file
 				return false;
 			}
-			// finally create the new dir
-			$mTime = \time(); // update mtime
-			$data['mtime'] = $mTime;
-			$data['storage_mtime'] = $mTime;
-			$data['etag'] = $this->getETag($path);
-			$this->getCache()->put($path, $data);
+			if (empty($this->movingBetweenBuckets)) {
+				// finally create the new dir
+				$mTime = \time(); // update mtime
+				$data['mtime'] = $mTime;
+				$data['storage_mtime'] = $mTime;
+				$data['etag'] = $this->getETag($path);
+				$this->getCache()->put($path, $data);
+			}
 			return true;
 		}
 	}
@@ -168,7 +195,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 		$this->rmObjects($path);
 
-		$this->getCache()->remove($path);
+		if (empty($this->movingBetweenBuckets)) {
+			$this->getCache()->remove($path);
+		}
 
 		return true;
 	}
@@ -202,7 +231,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					//removing from cache is ok as it does not exist in the objectstore anyway
 				}
 			}
-			$this->getCache()->remove($path);
+			if (empty($this->movingBetweenBuckets)) {
+				$this->getCache()->remove($path);
+			}
 			return true;
 		}
 		return false;
@@ -305,6 +336,12 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					\file_put_contents($tmpFile, $source);
 				}
 				self::$tmpFiles[$tmpFile] = $path;
+				if (isset($this->movingBetweenBuckets[$this->getBucket()])) {
+					// if we're moving files, mark the path we're moving. This is needed because
+					// we need to know the fileid of the file we're moving in order to create
+					// the new file with the same name in the other bucket
+					$this->movingBetweenBuckets[$this->getBucket()]['paths'][$path] = true;
+				}
 
 				return \fopen('close://' . $tmpFile, $mode);
 		}
@@ -320,7 +357,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$source = $this->normalizePath($source);
 		$target = $this->normalizePath($target);
 		$this->remove($target);
-		$this->getCache()->move($source, $target);
+		if (empty($this->movingBetweenBuckets)) {
+			$this->getCache()->move($source, $target);
+		}
 		$this->touch(\dirname($target));
 		return true;
 	}
@@ -340,7 +379,22 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		/** @var ObjectStoreStorage $sourceStorage */
 		'@phan-var ObjectStoreStorage $sourceStorage';
 		if ($this->getBucket() !== $sourceStorage->getBucket()) {
-			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+			$this->movingBetweenBuckets[$this->getBucket()] = [
+				'sourceStorage' => $sourceStorage,
+				'sourceBase' => $sourceInternalPath,
+				'targetBase' => $targetInternalPath,
+				'paths' => [],
+			];
+			$sourceStorage->setMovingBetweenBucketsInfo($this->movingBetweenBuckets);
+			try {
+				$result = parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+				$this->getCache()->moveFromCache($sourceStorage->getCache(), $sourceInternalPath, $targetInternalPath);
+			} finally {
+				// ensure we restore the normal behaviour in both storages
+				$sourceStorage->clearMovingBetweenBucketsInfo();
+				unset($this->movingBetweenBuckets[$this->getBucket()]);
+			}
+			return $result;
 		}
 
 		// source and target live on the same object store and we can simply rename
@@ -377,24 +431,27 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			$stat['mtime'] = $mtime;
 			$this->getCache()->update($stat['fileid'], $stat);
 		} else {
-			$mimeType = \OC::$server->getMimeTypeDetector()->detectPath($path);
-			// create new file
-			$stat = [
-				'etag' => $this->getETag($path),
-				'mimetype' => $mimeType,
-				'size' => 0,
-				'mtime' => $mtime,
-				'storage_mtime' => $mtime,
-				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
-			];
-			$fileId = $this->getCache()->put($path, $stat);
-			try {
-				//read an empty file from memory
-				$this->objectStore->writeObject($this->getURN($fileId), \fopen('php://memory', 'r'));
-			} catch (\Exception $ex) {
-				$this->getCache()->remove($path);
-				\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
-				return false;
+			if (!isset($this->movingBetweenBuckets[$this->getBucket()]['paths'][$path])) {
+				$mimeType = \OC::$server->getMimeTypeDetector()->detectPath($path);
+				// create new file
+				$stat = [
+					'etag' => $this->getETag($path),
+					'mimetype' => $mimeType,
+					'size' => 0,
+					'mtime' => $mtime,
+					'storage_mtime' => $mtime,
+					'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
+				];
+
+				$fileId = $this->getCache()->put($path, $stat);
+				try {
+					//read an empty file from memory
+					$this->objectStore->writeObject($this->getURN($fileId), \fopen('php://memory', 'r'));
+				} catch (\Exception $ex) {
+					$this->getCache()->remove($path);
+					\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+					return false;
+				}
 			}
 		}
 		return true;
@@ -421,7 +478,25 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 		$stat['etag'] = $this->getETag($path);
 
-		$fileId = $this->getCache()->put($path, $stat);
+		if (isset($this->movingBetweenBuckets[$this->getBucket()]['paths'][$path])) {
+			// if we're moving, we need the fileid of the old entry in order to create the new
+			// file with the same name. The "movingBetweenBuckets" should contain enough
+			// information to get the fileid of the old entry from the filecache.
+			$targetBase = $this->movingBetweenBuckets[$this->getBucket()]['targetBase'];
+			$sourceBase = $this->movingBetweenBuckets[$this->getBucket()]['sourceBase'];
+			if (\substr($path, 0, \strlen($targetBase)) === $targetBase) {
+				$movingPath = \substr($path, \strlen($targetBase));
+				$originalSource = $sourceBase . $movingPath;
+				$originalStorage = $this->movingBetweenBuckets[$this->getBucket()]['sourceStorage'];
+				$fileId = $originalStorage->stat($originalSource)['fileid'];
+			} else {
+				// if the target path is outside the base... this shouldn't happen, but fallback to normal behaviour
+				$fileId = $this->getCache()->put($path, $stat);
+			}
+			unset($this->movingBetweenBuckets[$this->getBucket()]['paths'][$path]);
+		} else {
+			$fileId = $this->getCache()->put($path, $stat);
+		}
 		try {
 			//upload to object storage
 			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
