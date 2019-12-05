@@ -405,7 +405,7 @@ class FileRow extends OwncloudPage {
 		$this->findFileLink()->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
-	
+
 	/**
 	 * restore the current deleted file and folder by clicking on the restore link
 	 *
@@ -446,14 +446,14 @@ class FileRow extends OwncloudPage {
 		$checkFavorite = $this->rowElement->find(
 			"xpath", $this->markedFavoriteXpath
 		);
-		
+
 		if ($checkFavorite === null) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * unmarks the current file or folder off favorite by clicking the star icon
 	 *
