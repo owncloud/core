@@ -312,7 +312,7 @@ Details
 
    https://github.com/owncloud/core/pull/36420
 
-)
+
 ## [10.3.1] - 2019-11-05
 
 ### Changed
