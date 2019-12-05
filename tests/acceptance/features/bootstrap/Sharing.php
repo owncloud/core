@@ -1394,6 +1394,32 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the information of the last share of user :user should include
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function informationOfLastShareShouldInclude(
+		$user, $body
+	) {
+		$this->getListOfShares($user);
+		$share_id = $this->extractLastSharedIdFromLastResponse();
+		if ($share_id === null) {
+			throw new Exception("Could not find id in the last response.");
+		}
+		$this->getShareData($user, $share_id);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Error getting info of last share for user $user"
+		);
+		$this->checkFields($body);
+	}
+
+	/**
 	 * @Then /^the last share_id should be included in the response/
 	 *
 	 * @return void
