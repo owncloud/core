@@ -659,3 +659,21 @@ Feature: Sharing files and folders with internal users
     And the option to delete file "lorem.txt" should not be available on the webUI
     When the user shares file "lorem.txt" with user "User Three" using the webUI
     Then as "user3" file "lorem.txt" should exist
+
+  @mailhog
+  Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And these users have been created without skeleton files:
+      | username | password |
+      | user0    | 1234     |
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/simple-folder"
+    And user "user0" has logged in using the webUI
+    And user "user0" has shared folder "simple-folder" with user "user1"
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user sends the share notification by email using the webUI
+    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+    And the email address "user1@example.org" should have received an email with the body containing
+      """
+      just letting you know that user0 shared simple-folder with you.
+      """

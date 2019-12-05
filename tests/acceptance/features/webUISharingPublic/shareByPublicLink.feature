@@ -647,3 +647,19 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "original content"
     And all the links to download the public share should be the same
+
+  @mailhog
+  Scenario: user without email shares a public link via email
+    Given these users have been created without skeleton files:
+      | username | password |
+      | user0    | 1234     |
+    And user "user0" has created folder "/simple-folder"
+    And parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+    And user "user0" has logged in using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI with
+      | email           | foo@bar.co  |
+    Then the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			user0 shared simple-folder with you
+			"""
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
