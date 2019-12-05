@@ -1394,6 +1394,32 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the response when user "([^"]*)" gets the info of their last share should include$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function theResponseWhenUserGetsInfoOfTheirLastShareShouldInclude(
+		$user, $body
+	) {
+		$this->getListOfShares($user);
+		$share_id = $this->extractLastSharedIdFromLastResponse();
+		if ($share_id === null) {
+			throw new Exception("Could not find id in the last response.");
+		}
+		$this->getShareData($user, $share_id);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Error getting info of last share for user $user"
+		);
+		$this->checkFields($body);
+	}
+
+	/**
 	 * @Then /^the last share_id should be included in the response/
 	 *
 	 * @return void
@@ -2014,6 +2040,34 @@ trait Sharing {
 	 */
 	protected function getCommonSharingConfigs() {
 		return [
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_group_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_group_share',
+				'testingState' => false
+			],
 			[
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'auto_accept_share',

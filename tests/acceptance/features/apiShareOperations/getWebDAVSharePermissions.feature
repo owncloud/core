@@ -37,11 +37,6 @@ Feature: sharing
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
-    And user "user0" has created a share with settings
-      | path        | /tmp.txt          |
-      | shareType   | group             |
-      | permissions | share,update,read |
-      | shareWith   | grp1              |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "19"
