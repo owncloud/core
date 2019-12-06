@@ -2159,6 +2159,34 @@ trait Sharing {
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_group_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_group_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'federation@@@outgoing',
 				'testingApp' => 'files_sharing',
 				'testingParameter' => 'outgoing_server2server_share_enabled',
