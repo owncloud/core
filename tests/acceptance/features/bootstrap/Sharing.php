@@ -1394,7 +1394,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the response when user "([^"]*)" gets the info of their last share should include$/
+	 * @Then the information of the last share of user :user should include
 	 *
 	 * @param string $user
 	 * @param TableNode|null $body
@@ -1403,7 +1403,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function theResponseWhenUserGetsInfoOfTheirLastShareShouldInclude(
+	public function informationOfLastShareShouldInclude(
 		$user, $body
 	) {
 		$this->getListOfShares($user);

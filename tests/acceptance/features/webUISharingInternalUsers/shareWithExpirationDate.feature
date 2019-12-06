@@ -18,8 +18,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "User Two" in the share dialog
     And the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
-    When user "user1" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | expiration        | +7 days              |
@@ -34,8 +33,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "User Two" in the share dialog
     And the expiration date input field should be "+3 days" for the user "User Two" in the share dialog
-    When user "user1" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | expiration        | +3 days              |
@@ -52,7 +50,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     Then dialog should be displayed on the webUI
     | title               | content                                                   |
     | Error while sharing | Cannot set expiration date more than 3 days in the future |
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | expiration        | +3 days              |
@@ -67,7 +65,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "User Two" in the share dialog
     And the expiration date input field should be "+3 days" for the user "User Two" in the share dialog
-    Then the response when user "user1" gets the info of their last share should include
+    Then the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | expiration        | +3 days              |
@@ -81,7 +79,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "User Two" in the share dialog
     And the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
-    Then the response when user "user1" gets the info of their last share should include
+    Then the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | expiration        | +7 days              |
@@ -95,12 +93,11 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     And the user clears the expiration date input field for share of user "User Two" in the share dialog
     Then the expiration date input field should be empty for the user "User Two" in the share dialog
-    And the response when user "user1" gets the info of their last share should include
-    | share_type        | user                 |
-    | file_target       | /lorem.txt           |
-    | uid_owner         | user1                |
-    And the fields of the last response should not include
-    | expiration | ANY_VALUE |
+    And the information of the last share of user "user1" should include
+      | share_type  | user       |
+      | file_target | /lorem.txt |
+      | uid_owner   | user1      |
+      | expiration  |            |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user, but changes expiration date
     Given user "user3" has shared file "lorem.txt" with user "user1"
@@ -110,7 +107,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     And the user changes expiration date for share of user "User Two" to "+15 days" in the share dialog
     Then the expiration date input field should be "+15 days" for the user "User Two" in the share dialog
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | uid_owner         | user1                |
@@ -143,7 +140,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     Then the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
     When the user changes expiration date for share of user "User Two" to "+10 days" in the share dialog
     Then the expiration date input field should be "+10 days" for the user "User Two" in the share dialog
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | uid_owner         | user1                |
@@ -163,7 +160,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     Then the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
     When the user changes expiration date for share of user "User Two" to "+20 days" in the share dialog
     Then the expiration date input field should be "+20 days" for the user "User Two" in the share dialog
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | uid_owner         | user1                |
@@ -184,7 +181,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     Then the expiration date input field should be "+30 days" for the user "User Two" in the share dialog
     When the user changes expiration date for share of user "User Two" to "+20 days" in the share dialog
     Then the expiration date input field should be "+20 days" for the user "User Two" in the share dialog
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | uid_owner         | user1                |
@@ -207,7 +204,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     Then dialog should be displayed on the webUI
     | title               | content                                                    |
     | Error while sharing | Cannot set expiration date more than 30 days in the future |
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
     | share_type        | user                 |
     | file_target       | /lorem.txt           |
     | uid_owner         | user1                |
@@ -228,7 +225,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the user shares file "simple-empty-folder" with user "User Two" using the webUI without closing the share dialog
     Then the expiration date input field should be "+30 days" for the user "User Two" in the share dialog
     When the user changes expiration date for share of user "User Two" to "+20 days" in the share dialog
-    And the response when user "user1" gets the info of their last share should include
+    And the information of the last share of user "user1" should include
       | share_type  | user                 |
       | file_target | /simple-empty-folder |
       | uid_owner   | user1                |
