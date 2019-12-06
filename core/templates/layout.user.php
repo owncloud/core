@@ -36,7 +36,7 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 		<?php if (isset($_['isPhoenix']) && $_['isPhoenix']): ?>
-		<script src="<?php p($_['phoenixBaseUrl'] . '/dist/phoenix-top-bar.js') ?>"></script>
+		<script src="<?php p($_['phoenixBaseUrl'] . '/dist-wc/phoenix-top-bar.js') ?>"></script>
 		<?php endif ?>
 	</head>
 	<body id="<?php p($_['bodyid']);?>"
@@ -49,7 +49,7 @@
 		<header role="banner">
 		<phoenix-top-bar user-id="<?php p($_['user_uid']); ?>"
 			user-display-name="<?php p($_['user_displayname']); ?>"
-			css-url="<?php p($_['phoenixBaseUrl'] . '/dist/system.css') ?>"
+			phoenix-url="<?php p($_['phoenixBaseUrl']) ?>"
 			applications-list-url="<?php p($_['phoenixBaseUrl'] . '/navigation.json') ?>"
 		/>
 		</header>
