@@ -204,7 +204,7 @@ Feature: UNLOCK locked items
     And user "user0" has locked file "PARENT/parent.txt" setting following properties
       | lockscope | <lock-scope> |
     When the public unlocks file "/parent.txt" with the last created lock of file "PARENT/parent.txt" of user "user0" using the WebDAV API
-    Then the HTTP status code should be "409"
+    Then the HTTP status code should be "405"
     #Then the HTTP status code should be "403"
     And 1 locks should be reported for file "PARENT/parent.txt" of user "user0" by the WebDAV API
     Examples:
