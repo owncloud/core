@@ -92,7 +92,7 @@ class CreateUserService {
 	 * @throws UserAlreadyExistsException
 	 */
 	public function createUser($arguments) {
-		$username = $password = $email = '';
+		$password = $email = '';
 		if (\array_key_exists('username', $arguments)) {
 			$username = $arguments['username'];
 		} else {
@@ -125,7 +125,7 @@ class CreateUserService {
 			}
 			$user = $this->userManager->createUser($username, $password);
 		} catch (\Exception $exception) {
-			throw new CannotCreateUserException("Unable to create user due to exception: {$exception->getMessage()}");
+			throw new CannotCreateUserException($exception->getMessage());
 		}
 
 		if ($user === false) {
@@ -160,13 +160,13 @@ class CreateUserService {
 	 *  $groups = ['group1', 'group2']
 	 *
 	 * This function returns the list of group(s) which failed to add user to the group(s)
+	 * If the user is already in the group, function assumes the add operation successful.
 	 *
 	 * @param IUser $user
 	 * @param array $groups list of group names, example ['group1', 'group2']
-	 * @param bool $checkInGroup
 	 * @return array Returns an array of groups which failed to add user
 	 */
-	public function addUserToGroups(IUser $user, array $groups, $checkInGroup = true) {
+	public function addUserToGroups(IUser $user, array $groups) {
 		$failedToAdd = [];
 
 		if (\is_array($groups) && \count($groups) > 0) {
@@ -177,7 +177,7 @@ class CreateUserService {
 					$groupObject = $this->groupManager->createGroup($groupName);
 				}
 				$groupObject->addUser($user);
-				if ($checkInGroup && !$this->groupManager->isInGroup($user->getUID(), $groupName)) {
+				if (!$this->groupManager->isInGroup($user->getUID(), $groupName)) {
 					$failedToAdd[] = $groupName;
 				} else {
 					$this->logger->info('Added userid ' . $user->getUID() . ' to group ' . $groupName, ['app' => 'ocs_api']);
@@ -190,7 +190,7 @@ class CreateUserService {
 	/**
 	 * Check if the user exist
 	 *
-	 * This function is for convinience. It helps to use this service to check if user exist,
+	 * This function is for convenience. It helps to use this service to check if user exist,
 	 * instead of adding dependency userManager. Kindly do not delete this method.
 	 *
 	 * @param string $uid

@@ -32,6 +32,7 @@ use OCP\User\Exceptions\UserAlreadyExistsException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\Question;
@@ -91,7 +92,17 @@ class Add extends Command {
 			);
 	}
 
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @return int
+	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		$stdErr = $output;
+		if ($output instanceof ConsoleOutputInterface) {
+			// If it's available, get stdErr output
+			$stdErr = $output->getErrorOutput();
+		}
 		$uid = $input->getArgument('uid');
 		$email = $input->getOption('email');
 		$displayName = $input->getOption('display-name');
@@ -134,20 +145,20 @@ class Add extends Command {
 		try {
 			$user = $this->createUserService->createUser(['username' => $uid, 'password' => $password, 'email' => $email]);
 		} catch (InvalidEmailException $e) {
-			$output->writeln('<error>Invalid email address supplied</error>');
+			$stdErr->writeln('<error>Invalid email address supplied</error>');
 			return 1;
 		} catch (CannotCreateUserException $e) {
-			$output->writeln("<error>" . $e->getMessage() .  "</error>");
+			$stdErr->writeln("<error>" . $e->getMessage() .  "</error>");
 			return 1;
 		} catch (UserAlreadyExistsException $e) {
-			$output->writeln("<error>" . $e->getMessage() .  "</error>");
+			$stdErr->writeln("<error>" . $e->getMessage() .  "</error>");
 			return 1;
 		}
 
 		if ($user instanceof IUser) {
 			$output->writeln('<info>The user "' . $user->getUID() . '" was created successfully</info>');
 		} else {
-			$output->writeln('<error>An error occurred while creating the user</error>');
+			$stdErr->writeln('<error>An error occurred while creating the user</error>');
 			return 1;
 		}
 

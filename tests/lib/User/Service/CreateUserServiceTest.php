@@ -116,20 +116,22 @@ class CreateUserServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedExceptionMessage Invalid mail address
-	 * @expectedException  \OCP\User\Exceptions\InvalidEmailException
 	 */
 	public function testInvalidEmail() {
+		$this->expectException(\OCP\User\Exceptions\InvalidEmailException::class);
+		$this->expectExceptionMessage('Invalid mail address');
+
 		$this->mailer->method('validateMailAddress')
 			->willReturn(false);
 		$this->createUserService->createUser(['username' => 'foo', 'password' => '', 'email' => 'foo@bar']);
 	}
 
 	/**
-	 * @expectedExceptionMessage A user with that name already exists.
-	 * @expectedException  \OCP\User\Exceptions\UserAlreadyExistsException
 	 */
 	public function testAlreadyExistingUser() {
+		$this->expectException(\OCP\User\Exceptions\UserAlreadyExistsException::class);
+		$this->expectExceptionMessage('A user with that name already exists.');
+
 		$this->userSendMailService->method('validateEmailAddress')
 			->willReturn(true);
 
@@ -140,10 +142,11 @@ class CreateUserServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedExceptionMessage Unable to create user due to exception:
-	 * @expectedException  \OCP\User\Exceptions\CannotCreateUserException
 	 */
 	public function testUserCreateException() {
+		$this->expectException(\OCP\User\Exceptions\CannotCreateUserException::class);
+		$this->expectExceptionMessage('Exception Message');
+
 		$this->userSendMailService->method('validateEmailAddress')
 			->willReturn(true);
 
@@ -151,15 +154,16 @@ class CreateUserServiceTest extends TestCase {
 			->willReturn(false);
 
 		$this->userManager->method('createUser')
-			->willThrowException(new \Exception());
+			->willThrowException(new \Exception("Exception Message"));
 		$this->createUserService->createUser(['username' => 'foo', 'password' => '', 'email' => 'foo@bar.com']);
 	}
 
 	/**
-	 * @expectedExceptionMessage Unable to create user.
-	 * @expectedException  \OCP\User\Exceptions\CannotCreateUserException
 	 */
 	public function testUserCreateFailed() {
+		$this->expectException(\OCP\User\Exceptions\CannotCreateUserException::class);
+		$this->expectExceptionMessage('Unable to create user.');
+
 		$this->userSendMailService->method('validateEmailAddress')
 			->willReturn(true);
 

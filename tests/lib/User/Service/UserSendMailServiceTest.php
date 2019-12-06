@@ -99,10 +99,11 @@ class UserSendMailServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\User\Exceptions\InvalidUserTokenException
-	 * @expectedExceptionMessage The token provided is invalid.
 	 */
 	public function testcheckPasswordSetInvalidToken() {
+		$this->expectException(\OCP\User\Exceptions\InvalidUserTokenException::class);
+		$this->expectExceptionMessage('The token provided is invalid.');
+
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')
 			->willReturn('foo');
@@ -113,10 +114,11 @@ class UserSendMailServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException  \OCP\User\Exceptions\UserTokenExpiredException
-	 * @expectedExceptionMessage The token provided had expired.
 	 */
 	public function testCheckPasswordSetTokenExpired() {
+		$this->expectException(\OCP\User\Exceptions\UserTokenExpiredException::class);
+		$this->expectExceptionMessage('The token provided had expired.');
+
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')
 			->willReturn('foo');
@@ -133,10 +135,11 @@ class UserSendMailServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException  \OCP\User\Exceptions\UserTokenMismatchException
-	 * @expectedExceptionMessage The token provided is invalid.
 	 */
 	public function testCheckPasswordSetTokenMismatch() {
+		$this->expectException(\OCP\User\Exceptions\UserTokenMismatchException::class);
+		$this->expectExceptionMessage('The token provided is invalid.');
+
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')
 			->willReturn('foo');
@@ -187,10 +190,11 @@ class UserSendMailServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException  \OCP\User\Exceptions\EmailSendFailedException
-	 * @expectedExceptionMessage Email could not be sent.
 	 */
 	public function testSendNotificationMailSendFail() {
+		$this->expectException(\OCP\User\Exceptions\EmailSendFailedException::class);
+		$this->expectExceptionMessage('Email could not be sent.');
+
 		$user = $this->createMock(IUser::class);
 		$user->method('getEMailAddress')
 			->willReturn('foo@barr.com');
