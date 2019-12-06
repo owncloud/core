@@ -187,7 +187,6 @@ trait Sharing {
 	public function userCreatesAShareWithSettings($user, $body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			$fd['expireDate'] = \array_key_exists('expireDate', $fd) ? $fd['expireDate'] : null;
 			$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
 			$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
 			$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
@@ -209,8 +208,15 @@ trait Sharing {
 			} else {
 				$fd['shareType'] = null;
 			}
-		}
 
+			Assert::assertFalse(
+				isset($fd['expireDate'], $fd['expireDateAsString']),
+				'expireDate and expireDateAsString cannot be set at the same time.'
+			);
+			$needToParse = \array_key_exists('expireDate', $fd);
+			$expireDate = $fd['expireDate'] ?? $fd['expireDateAsString'] ?? null;
+			$fd['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
+		}
 		$this->createShare(
 			$user,
 			$fd['path'],
@@ -658,14 +664,15 @@ trait Sharing {
 		}
 		//do not try to convert empty date
 		if ((string) $field === 'expiration' && !empty($contentExpected)) {
-			$contentExpected
-				= \date(
-					'Y-m-d',
-					\strtotime(
-						$contentExpected,
-						$this->getServerShareTimeFromLastResponse()
-					)
-				) . " 00:00:00";
+			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
+			// strtotime returns false if it failed to parse, just leave it as it is in that condition
+			if ($timestamp !== false) {
+				$contentExpected
+					= \date(
+						'Y-m-d',
+						$timestamp
+					) . " 00:00:00";
+			}
 		}
 
 		$contentExpected = (string) $contentExpected;
@@ -1199,7 +1206,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function getLastShareIdOf($user) {
-		if ($this->lastShareData !== null) {
+		if (isset($this->lastShareData->data[0]->id)) {
 			return (int)$this->lastShareData->data[0]->id;
 		}
 
@@ -1392,6 +1399,32 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the information of the last share of user :user should include
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function informationOfLastShareShouldInclude(
+		$user, $body
+	) {
+		$this->getListOfShares($user);
+		$share_id = $this->extractLastSharedIdFromLastResponse();
+		if ($share_id === null) {
+			throw new Exception("Could not find id in the last response.");
+		}
+		$this->getShareData($user, $share_id);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Error getting info of last share for user $user"
+		);
+		$this->checkFields($body);
+	}
+
+	/**
 	 * @Then /^the last share_id should be included in the response/
 	 *
 	 * @return void
@@ -1453,7 +1486,6 @@ trait Sharing {
 	public function checkFields($body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
 				Assert::assertTrue(
@@ -2149,6 +2181,34 @@ trait Sharing {
 				'capabilitiesParameter' => 'public@@@expire_date@@@enforced',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_enforce_expire_date',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_group_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_group_share',
 				'testingState' => false
 			],
 			[

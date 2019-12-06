@@ -99,6 +99,81 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 *
+	 * @param NodeElement|null $checkbox
+	 *
+	 * @return void
+	 */
+	private function assertCheckBoxIsChecked($checkbox) {
+		Assert::assertNotNull($checkbox, "checkbox does not exist");
+		Assert::assertTrue($checkbox->isChecked(), "checkbox is not checked");
+	}
+
+	/**
+	 * @Then the default expiration date checkbox for user shares should be enabled on the webUI
+	 *
+	 * @return void
+	 */
+	public function setDefaultExpirationDateForUserSharesCheckboxShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForUserShareElement();
+		$this->assertCheckBoxIsChecked($checkboxElement);
+	}
+
+	/**
+	 * @Then the default expiration date checkbox for group shares should be enabled on the webUI
+	 *
+	 * @return void
+	 */
+	public function setDefaultExpirationDateForGroupCheckboxSharesShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForGroupShareElement();
+		$this->assertCheckBoxIsChecked($checkboxElement);
+	}
+
+	/**
+	 * @Then the enforce maximum expiration date checkbox for user shares should be enabled on the webUI
+	 *
+	 * @return void
+	 */
+	public function enforceMaximumExpirationDateForUserSharesCheckboxShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateUserShareElement();
+		$this->assertCheckBoxIsChecked($checkboxElement);
+	}
+
+	/**
+	 * @Then the enforce maximum expiration date checkbox for group shares should be enabled on the webUI
+	 *
+	 * @return void
+	 */
+	public function enforceMaximumExpirationDateForGroupSharesCheckboxShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateGroupShareElement();
+		$this->assertCheckBoxIsChecked($checkboxElement);
+	}
+
+	/**
+	 * @Then the expiration date for user shares should set to :days days on the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function expirationDateForUserSharesShouldBeSetToXDays($days) {
+		$expectedDays = $this->adminSharingSettingsPage->getUserShareExpirationDays();
+		Assert::assertEquals($days, $expectedDays);
+	}
+
+	/**
+	 * @Then the expiration date for group shares should set to :days days on the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function expirationDateForGroupSharesShouldBeSetToXDays($days) {
+		$expectedDays = $this->adminSharingSettingsPage->getGroupShareExpirationDays();
+		Assert::assertEquals($days, $expectedDays);
+	}
+
+	/**
 	 * @When /^the administrator (enables|disables) public uploads using the webUI$/
 	 *
 	 * @param string $action
@@ -236,6 +311,72 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theAdministratorEnablesExcludeGroupsFromSharingUsingTheWebui() {
 		$this->adminSharingSettingsPage->enableExcludeGroupFromSharing(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator enables default expiration date for user shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnablesDefaultExpirationDateForUserShares() {
+		$this->adminSharingSettingsPage->enableDefaultExpirationDateForUserShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator enforces maximum expiration date for user shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnforcesMaximumExpirationDateForUserShares() {
+		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForUserShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator enforces maximum expiration date for group shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnforcesMaximumExpirationDateForGroupShares() {
+		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForGroupShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator updates the user share expiration date to :days days using the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function administratorUpdatesUserShareExpirationTo($days) {
+		$this->adminSharingSettingsPage->setExpirationDaysForUserShare($days, $this->getSession());
+	}
+
+	/**
+	 * @When the administrator updates the group share expiration date to :days days using the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function administratorUpdatesGroupShareExpirationTo($days) {
+		$this->adminSharingSettingsPage->setExpirationDaysForGroupShare($days, $this->getSession());
+	}
+
+	/**
+	 * @When the administrator enables default expiration date for group shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesDefaultExpirationDateForGroupShares() {
+		$this->adminSharingSettingsPage->enableDefaultExpirationDateForGroupShares(
 			$this->getSession()
 		);
 	}

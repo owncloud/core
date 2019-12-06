@@ -74,12 +74,18 @@
 			'</span>' +
 			'{{/each}}' +
 			'</div>' +
-			'{{#if defaultExpireDateUserEnabled}}' +
+			'{{#if defaultExpireDateUserEnabled}} {{#if isUserShare}}' +
 			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
-			'<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration" placeholder="{{expirationDate}}" />' +
-			'<button class="removeExpiration">Remove</button>' +
+			'   <input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-user"/>' +
+			'   <button class="removeExpiration">Remove</button>' +
 			'</label>' +
-			'{{/if}}' +
+			'{{/if}} {{/if}}' +
+			'{{#if defaultExpireDateGroupEnabled}} {{#if isGroupShare}}' +
+			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
+			'   <input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-group"/>' +
+			'   <button class="removeExpiration">Remove</button>' +
+			'</label>' +
+			'{{/if}} {{/if}}' +
 			'</li>' +
 			'{{/each}}' +
 			'</ul>'
@@ -203,7 +209,9 @@
 				shareType: shareType,
 				shareId: this.model.get('shares')[shareIndex].id,
 				modSeed: shareType !== OC.Share.SHARE_TYPE_USER,
-				isRemoteShare: shareType === OC.Share.SHARE_TYPE_REMOTE
+				isRemoteShare: shareType === OC.Share.SHARE_TYPE_REMOTE,
+				isUserShare: shareType === OC.Share.SHARE_TYPE_USER,
+				isGroupShare: shareType === OC.Share.SHARE_TYPE_GROUP
 			});
 		},
 
@@ -227,6 +235,7 @@
 				updatePermissionPossible: this.model.updatePermissionPossible(),
 				deletePermissionPossible: this.model.deletePermissionPossible(),
 				defaultExpireDateUserEnabled: this.configModel.isDefaultExpireDateUserEnabled(),
+				defaultExpireDateGroupEnabled: this.configModel.isDefaultExpireDateGroupEnabled(),
 				sharePermission: OC.PERMISSION_SHARE,
 				createPermission: OC.PERMISSION_CREATE,
 				updatePermission: OC.PERMISSION_UPDATE,
@@ -273,10 +282,21 @@
 				placement: 'bottom'
 			});
 
-
 			if (this.configModel.isDefaultExpireDateUserEnabled()) {
-				this.$el.find('.expiration:not(.hasDatepicker)').each(function(){
-					self._setDatepicker(this)
+				this.$el.find('.expiration-user:not(.hasDatepicker)').each(function(){
+					self._setDatepicker(this, {
+						maxDate  : self.configModel.getDefaultExpireDateUser(),
+						enforced : self.configModel.isDefaultExpireDateUserEnforced()
+					})
+				})
+			}
+
+			if (this.configModel.isDefaultExpireDateGroupEnabled()) {
+				this.$el.find('.expiration-group:not(.hasDatepicker)').each(function(){
+					self._setDatepicker(this, {
+						maxDate  : self.configModel.getDefaultExpireDateGroup(),
+						enforced : self.configModel.isDefaultExpireDateGroupEnforced()
+					})
 				})
 			}
 
@@ -422,10 +442,9 @@
 			});
 		},
 
-		_setDatepicker: function(el) {
+		_setDatepicker: function(el, params) {
 			var self = this;
 			var $el = $(el);
-			var defaultExpireDate = "+" + this.configModel.getDefaultExpireDateUser() + 'd'
 
 			$el.datepicker({
 				minDate: "+1d",
@@ -435,8 +454,8 @@
 				}
 			});
 
-			if (this.configModel.isDefaultExpireDateUserEnforced())
-				$el.datepicker( "option", "maxDate", defaultExpireDate );
+			if (params.enforced)
+				$el.datepicker( "option", "maxDate", "+" + params.maxDate + 'd' );
 		}
 	});
 
