@@ -40,7 +40,6 @@ class SharedByLinkPage extends FilesPageCRUD {
 	protected $fileNamesXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-sharinglinks']//tbody[@id='fileList']";
-	protected $filePathInRowXpath = "//span[@class='nametext extra-data']";
 	protected $fileByPathAndNameXpath = "//div[@id='app-content-sharinglinks']//tr[@data-file=%s and @data-path=%s]";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharinglinks']//div[@id='emptycontent']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
@@ -125,7 +124,7 @@ class SharedByLinkPage extends FilesPageCRUD {
 	 * @throws ElementNotFoundException
 	 */
 	public function findFileRowByNameAndPath($name, $path, Session $session) {
-		$elementXpath = \sprintf($this->getFileByNameAndPathXpath(), $name, $path);
+		$elementXpath = \sprintf($this->getFileByNameAndPathXpath(), $this->quotedText($name), $this->quotedText($path));
 		$element = $this->find("xpath", $elementXpath);
 		if ($element !== null) {
 			return $element;
