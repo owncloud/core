@@ -190,6 +190,8 @@ class SecurityMiddleware extends Middleware {
 		if ($controller instanceof OCSController) {
 			if ($exception instanceof NotLoggedInException) {
 				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'));
+			} elseif ($exception instanceof  NotAdminException) {
+				return $controller->buildResponse(new Result(null, $exception->getCode(), $exception->getMessage()));
 			}
 			return $controller->buildResponse(new Result(null, API::RESPOND_SERVER_ERROR, $exception->getMessage()));
 		}

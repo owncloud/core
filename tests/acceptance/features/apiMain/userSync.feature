@@ -51,8 +51,8 @@ Feature: Users sync
     And the OCS status message should be "Logged in user must be an admin"
     Examples:
       | ocs-api-version | ocs-status-code | http-status-code |
-      | 1               | 996             | 200              |
-      | 2               | 500             | 500              |
+      | 1               | 403             | 200              |
+      | 2               | 403             | 403              |
 
   @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user by admin using an incorrect password

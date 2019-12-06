@@ -51,14 +51,14 @@ class UserSyncControllerTest extends TestCase {
 	 */
 	private $syncService;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		/** @var IRequest $request */
 		$request = $this->createMock(IRequest::class);
 		$this->syncService = $this->createMock(SyncService::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->controller = new UserSyncController('core', $request, $this->syncService, $this->userManager);
 
-		return parent::setUp();
+		parent::setUp();
 	}
 
 	public function testSimpleSync() {
