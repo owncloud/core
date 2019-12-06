@@ -34,8 +34,10 @@ Feature: capabilities
     When the administrator updates system config key "user.search_min_length" with value "4" using the occ command
     Then the capabilities setting of "files_sharing" path "search_min_length" should be "4"
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.4
   Scenario: getting default capabilities with admin user
+    # These are the capabilities that existed in 10.3
+    # Delete this scenario when testing on 10.3 is no longer required
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                           | value             |
@@ -73,6 +75,53 @@ Feature: capabilities
       | files_sharing | user@@@send_mail                          | EMPTY             |
       | files         | bigfilechunking                           | 1                 |
 
+  @smokeTest @skipOnOcV10.3
+  Scenario: getting default capabilities with admin user
+    # These are the capabilities that exist in 10.4
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                                          | value             |
+      | core          | pollinterval                                             | 60                |
+      | core          | webdav-root                                              | remote.php/webdav |
+      | core          | status@@@edition                                         | %edition%         |
+      | core          | status@@@productname                                     | %productname%     |
+      | core          | status@@@version                                         | %version%         |
+      | core          | status@@@versionstring                                   | %versionstring%   |
+      | files_sharing | api_enabled                                              | 1                 |
+      | files_sharing | default_permissions                                      | 31                |
+      | files_sharing | search_min_length                                        | 2                 |
+      | files_sharing | public@@@enabled                                         | 1                 |
+      | files_sharing | public@@@multiple                                        | 1                 |
+      | files_sharing | public@@@upload                                          | 1                 |
+      | files_sharing | public@@@supports_upload_only                            | 1                 |
+      | files_sharing | public@@@send_mail                                       | EMPTY             |
+      | files_sharing | public@@@social_share                                    | 1                 |
+      | files_sharing | public@@@enforced                                        | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@read_only                        | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@read_write                       | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@upload_only                      | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@read_write_delete                | EMPTY             |
+      | files_sharing | public@@@expire_date@@@enabled                           | EMPTY             |
+      | files_sharing | public@@@defaultPublicLinkShareName                      | Public link       |
+      | files_sharing | resharing                                                | 1                 |
+      | files_sharing | federation@@@outgoing                                    | 1                 |
+      | files_sharing | federation@@@incoming                                    | 1                 |
+      | files_sharing | group_sharing                                            | 1                 |
+      | files_sharing | share_with_group_members_only                            | EMPTY             |
+      | files_sharing | share_with_membership_groups_only                        | EMPTY             |
+      | files_sharing | auto_accept_share                                        | 1                 |
+      | files_sharing | user_enumeration@@@enabled                               | 1                 |
+      | files_sharing | user_enumeration@@@group_members_only                    | EMPTY             |
+      | files_sharing | user@@@send_mail                                         | EMPTY             |
+      | files_sharing | user@@@expire_date@@@enabled                             | EMPTY             |
+      | files_sharing | group@@@expire_date@@@enabled                            | EMPTY             |
+      | files_sharing | providers_capabilities@@@ocinternal@@@user@@@element[0]  | shareExpiration   |
+      | files_sharing | providers_capabilities@@@ocinternal@@@group@@@element[0] | shareExpiration   |
+      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]  | shareExpiration   |
+      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
+      | files_sharing | providers_capabilities@@@ocFederatedSharing@@@remote     | EMPTY             |
+      | files         | bigfilechunking                                          | 1                 |
+
   @files_trashbin-app-required
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
@@ -99,6 +148,70 @@ Feature: capabilities
     Then the capabilities should contain
       | capability    | path_to_element     | value |
       | files_sharing | default_permissions | 7     |
+
+  @skipOnOcV10.3
+  Scenario: user expire date can be enabled
+    Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | user@@@expire_date@@@enabled  | 1     |
+      | files_sharing | user@@@expire_date@@@days     | 7     |
+      | files_sharing | user@@@expire_date@@@enforced | EMPTY |
+
+  @skipOnOcV10.3
+  Scenario: user expire date can be enforced
+    Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | user@@@expire_date@@@enabled  | 1     |
+      | files_sharing | user@@@expire_date@@@days     | 7     |
+      | files_sharing | user@@@expire_date@@@enforced | 1     |
+
+  @skipOnOcV10.3
+  Scenario: user expire date days can be set
+    Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "14"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | user@@@expire_date@@@enabled  | 1     |
+      | files_sharing | user@@@expire_date@@@days     | 14    |
+      | files_sharing | user@@@expire_date@@@enforced | EMPTY |
+
+  @skipOnOcV10.3
+  Scenario: group expire date can be enabled
+    Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                | value |
+      | files_sharing | group@@@expire_date@@@enabled  | 1     |
+      | files_sharing | group@@@expire_date@@@days     | 7     |
+      | files_sharing | group@@@expire_date@@@enforced | EMPTY |
+
+  @skipOnOcV10.3
+  Scenario: group expire date can be enforced
+    Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element               | value |
+      | files_sharing | group@@@expire_date@@@enabled  | 1     |
+      | files_sharing | group@@@expire_date@@@days     | 7     |
+      | files_sharing | group@@@expire_date@@@enforced | 1     |
+
+  @skipOnOcV10.3
+  Scenario: group expire date days can be set
+    Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "14"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                | value |
+      | files_sharing | group@@@expire_date@@@enabled  | 1     |
+      | files_sharing | group@@@expire_date@@@days     | 14    |
+      | files_sharing | group@@@expire_date@@@enforced | EMPTY |
 
 	#feature added in #31824 will be released in 10.0.10
   @smokeTest @skipOnOcV10.0.9
