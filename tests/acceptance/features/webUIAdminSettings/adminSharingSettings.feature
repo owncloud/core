@@ -191,13 +191,13 @@ Feature: admin sharing settings
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     When the administrator browses to the admin sharing settings page
     Then the default expiration date checkbox for user shares should be enabled on the webUI
-    And settings for expiration date for user shares should be "7" days in the webUI
+    And the expiration date for user shares should set to "7" days on the webUI
 
   Scenario: check previously set default expiration date for group shares
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     When the administrator browses to the admin sharing settings page
     Then the default expiration date checkbox for group shares should be enabled on the webUI
-    And settings for expiration date for group shares should be "7" days in the webUI
+    And the expiration date for group shares should set to "7" days on the webUI
 
   Scenario: check previously enforced maximum expiration date for user shares
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
