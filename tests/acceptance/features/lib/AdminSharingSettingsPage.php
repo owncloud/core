@@ -91,9 +91,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $userShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysUserShare"]';
 	protected $groupShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysGroupShare"]';
 	protected $enforceExpirationDateUserShareCheckboxXpath = '//span[@id="setDefaultExpireDateUserShare"]//label[contains(text(),"expiration date")]';
-	protected $enforceExpirationDateUserShareCheckboxId = 'setDefaultExpireDateUserShare';
+	protected $enforceExpirationDateUserShareCheckboxId = 'shareapiEnforceExpireDateUserShare';
 	protected $enforceExpirationDateGroupShareCheckboxXpath = '//span[@id="setDefaultExpireDateGroupShare"]//label[contains(text(),"expiration date")]';
-	protected $enforceExpirationDateGroupShareCheckboxId = 'setDefaultExpireDateGroupShare';
+	protected $enforceExpirationDateGroupShareCheckboxId = 'shareapiEnforceExpireDateGroupShare';
 	/**
 	 * toggle the Share API
 	 *
@@ -350,6 +350,60 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			$this->excludeGroupFromSharingCheckboxXpath,
 			$this->excludeGroupFromSharingCheckboxId
 		);
+	}
+
+	/**
+	 * @return NodeElement|null
+	 */
+	public function getDefaultExpirationForUserShareElement() {
+		return $this->findById($this->defaultExpirationDateForUserCheckboxId);
+	}
+
+	/**
+	 * @return NodeElement|null
+	 */
+	public function getDefaultExpirationForGroupShareElement() {
+		return $this->findById($this->defaultExpirationDateForGroupCheckboxId);
+	}
+
+	/**
+	 * @return NodeElement|null
+	 */
+	public function getEnforceExpireDateUserShareElement() {
+		return $this->findById($this->enforceExpirationDateUserShareCheckboxId);
+	}
+
+	/**
+	 * @return NodeElement|null
+	 */
+	public function getEnforceExpireDateGroupShareElement() {
+		return $this->findById($this->enforceExpirationDateGroupShareCheckboxId);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUserShareExpirationDays() {
+		$expirationDay = $this->find("xpath", $this->userShareExpirationDateFieldXpath);
+		$this->assertElementNotNull(
+			$expirationDay,
+			__METHOD__ .
+			"could not find user share expiration day field"
+		);
+		return $expirationDay->getValue($expirationDay);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGroupShareExpirationDays() {
+		$expirationDay = $this->find("xpath", $this->groupShareExpirationDateFieldXpath);
+		$this->assertElementNotNull(
+			$expirationDay,
+			__METHOD__ .
+			"could not find group share expiration day field"
+		);
+		return $expirationDay->getValue($expirationDay);
 	}
 
 	/**
