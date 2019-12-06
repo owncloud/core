@@ -27,7 +27,7 @@
 			enforceLinkPasswordWriteOnly: oc_appconfig.core.enforceLinkPasswordWriteOnly,
 			defaultExpireDateUser: oc_appconfig.core.defaultExpireDateUser,
 			isDefaultExpireDateUserEnabled: oc_appconfig.core.defaultExpireDateUserEnabled,
-			isDefaultExpireDateUserEnforces: oc_appconfig.core.enforceDefaultExpireDateUser,
+			isDefaultExpireDateUserEnforced: oc_appconfig.core.enforceDefaultExpireDateUser,
 			defaultExpireDateGroup: oc_appconfig.core.defaultExpireDateGroup,
 			isDefaultExpireDateGroupEnabled: oc_appconfig.core.defaultExpireDateGroupEnabled,
 			isDefaultExpireDateGroupEnforced: oc_appconfig.core.enforceDefaultExpireDateGroup,
@@ -133,6 +133,13 @@
 		 */
 		isDefaultExpireDateGroupEnabled: function() {
 			return this.get('isDefaultExpireDateGroupEnabled')
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDefaultExpireDateGroupEnforced: function() {
+			return this.get('isDefaultExpireDateGroupEnforced')
 		},
 
 		/**
