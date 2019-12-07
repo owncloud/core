@@ -62,7 +62,7 @@ class AuthTest extends TestCase {
 	/** @var AccountModuleManager | MockObject */
 	private $accountModuleManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->session = $this->createMock(ISession::class);
 		$this->userSession = $this->createMock(Session::class);
@@ -228,9 +228,10 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden
 	 */
 	public function testValidateUserPassWithPasswordLoginForbidden() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden::class);
+
 		$this->userSession
 			->expects($this->once())
 			->method('isLoggedIn')
@@ -332,10 +333,11 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotAuthenticated
-	 * @expectedExceptionMessage 2FA challenge not passed.
 	 */
 	public function testAuthenticateAlreadyLoggedInWithoutTwoFactorChallengePassed() {
+		$this->expectException(\Sabre\DAV\Exception\NotAuthenticated::class);
+		$this->expectExceptionMessage('2FA challenge not passed.');
+
 		/** @var RequestInterface | MockObject $request */
 		$request = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()
@@ -493,9 +495,10 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotAuthenticated
 	 */
 	public function testAutenticateWithLoggedInUserButLoginExceptionThrown() {
+		$this->expectException(\Sabre\DAV\Exception\NotAuthenticated::class);
+
 		/** @var RequestInterface | MockObject $request */
 		$request = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()

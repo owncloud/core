@@ -48,7 +48,7 @@ class MetaFilesTest extends TestCase {
 	 */
 	private $userId;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		// workaround: re-setup versions hooks
@@ -59,7 +59,7 @@ class MetaFilesTest extends TestCase {
 		$this->loginAsUser($this->userId);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		self::logout();
 		parent::tearDown();
 	}
@@ -127,7 +127,7 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals([], $metaNodeOfFile->getHeaders());
 		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
-		$this->assertInternalType('string', $metaNodeOfFile->getEtag());
+		$this->assertIsString($metaNodeOfFile->getEtag());
 		$this->assertGreaterThan(0, \strlen($metaNodeOfFile->getEtag()));
 		$this->assertInstanceOf(IMountPoint::class, $metaNodeOfFile->getMountPoint());
 		$thumbnail = $metaNodeOfFile->getThumbnail([]);
@@ -155,9 +155,10 @@ class MetaFilesTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\NotFoundException
 	 */
 	public function testMetaRootGetNotFound() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$info = $this->createFile();
 
 		$metaRoot = \OC::$server->getRootFolder();

@@ -36,7 +36,7 @@ abstract class LockingProvider extends TestCase {
 	 */
 	abstract protected function getInstance();
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->instance = $this->getInstance();
 	}
@@ -74,9 +74,10 @@ abstract class LockingProvider extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testDoubleExclusiveLock() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 		$this->assertTrue($this->instance->isLocked('foo', ILockingProvider::LOCK_EXCLUSIVE));
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
@@ -90,13 +91,15 @@ abstract class LockingProvider extends TestCase {
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 	}
 
-	/**
-	 * @expectedException \OCP\Lock\LockedException
-	 */
-	public function testExclusiveLockAfterShared() {
+	private function tryToAcquireExclusiveLockAfterShared() {
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 		$this->assertTrue($this->instance->isLocked('foo', ILockingProvider::LOCK_SHARED));
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+	}
+
+	public function testExclusiveLockAfterShared() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+		$this->tryToAcquireExclusiveLockAfterShared();
 	}
 
 	public function testExclusiveLockAfterSharedReleased() {
@@ -163,18 +166,22 @@ abstract class LockingProvider extends TestCase {
 		$this->instance->releaseLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
-	/**
-	 * @expectedException \OCP\Lock\LockedException
-	 */
-	public function testSharedLockAfterExclusive() {
+	private function tryToAcquireSharedLockAfterExclusive() {
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 		$this->assertTrue($this->instance->isLocked('foo', ILockingProvider::LOCK_EXCLUSIVE));
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
+	/**
+	 */
+	public function testSharedLockAfterExclusive() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+		$this->tryToAcquireSharedLockAfterExclusive();
+	}
+
 	public function testLockedExceptionHasPathForShared() {
 		try {
-			$this->testSharedLockAfterExclusive();
+			$this->tryToAcquireSharedLockAfterExclusive();
 			$this->fail('Expected locked exception');
 		} catch (LockedException $e) {
 			$this->assertEquals('foo', $e->getPath());
@@ -183,7 +190,7 @@ abstract class LockingProvider extends TestCase {
 
 	public function testLockedExceptionHasPathForExclusive() {
 		try {
-			$this->testExclusiveLockAfterShared();
+			$this->tryToAcquireExclusiveLockAfterShared();
 			$this->fail('Expected locked exception');
 		} catch (LockedException $e) {
 			$this->assertEquals('foo', $e->getPath());
@@ -205,48 +212,54 @@ abstract class LockingProvider extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testChangeLockToExclusiveDoubleShared() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 		$this->instance->changeLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testChangeLockToExclusiveNoShared() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->instance->changeLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testChangeLockToExclusiveFromExclusive() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 		$this->instance->changeLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testChangeLockToSharedNoExclusive() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->instance->changeLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testChangeLockToSharedFromShared() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
 		$this->instance->changeLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testTooLongLockName() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$this->instance->acquireLock(\str_repeat("x", 250), ILockingProvider::LOCK_EXCLUSIVE);
 	}
 }

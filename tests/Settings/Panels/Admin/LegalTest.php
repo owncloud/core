@@ -33,7 +33,7 @@ class LegalTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->panel = new Legal($this->config);
@@ -44,14 +44,14 @@ class LegalTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(-100, $this->panel->getPriority());
 		$this->assertLessThan(100, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<input type="text" name="legal_imprint" id="legal_imprint"',
 			$templateHtml
 		);

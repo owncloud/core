@@ -37,7 +37,7 @@ class PublicLinkEventsPluginTest extends TestCase {
 	/** @var PublicLinkEventsPlugin */
 	private $publicLinkEventsPlugin;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->dispatcher = $this->createMock(EventDispatcherInterface::class);
 		$this->server = $this->createMock(Server::class);
 

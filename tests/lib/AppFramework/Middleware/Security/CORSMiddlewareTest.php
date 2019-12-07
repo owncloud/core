@@ -43,7 +43,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		];
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);
@@ -177,9 +177,10 @@ class CORSMiddlewareTest extends \Test\TestCase {
 
 	/**
 	 * @CORS
-	 * @expectedException \OC\AppFramework\Middleware\Security\Exceptions\SecurityException
 	 */
 	public function testCorsIgnoredIfWithCredentialsHeaderPresent() {
+		$this->expectException(\OC\AppFramework\Middleware\Security\Exceptions\SecurityException::class);
+
 		$this->config->method('getSystemValue')->willReturn([]);
 		$request = new Request(
 			[
@@ -246,10 +247,11 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage A regular exception
 	 */
 	public function testAfterExceptionWithRegularException() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('A regular exception');
+
 		$request = new Request(
 			['server' => [
 				'PHP_AUTH_USER' => 'user',

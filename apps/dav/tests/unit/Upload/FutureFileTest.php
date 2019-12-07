@@ -51,7 +51,7 @@ class FutureFileTest extends \Test\TestCase {
 	public function testGet() {
 		$f = $this->mockFutureFile();
 		$stream = $f->get();
-		$this->assertInternalType('resource', $stream);
+		$this->assertIsResource($stream);
 	}
 
 	public function testDelete() {
@@ -68,17 +68,19 @@ class FutureFileTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException Sabre\DAV\Exception\Forbidden
 	 */
 	public function testPut() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$f = $this->mockFutureFile();
 		$f->put('');
 	}
 
 	/**
-	 * @expectedException Sabre\DAV\Exception\Forbidden
 	 */
 	public function testSetName() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$f = $this->mockFutureFile();
 		$f->setName('');
 	}

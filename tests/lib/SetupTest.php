@@ -27,7 +27,7 @@ class SetupTest extends \Test\TestCase {
 	/** @var \OCP\Security\ISecureRandom | \PHPUnit\Framework\MockObject\MockObject */
 	protected $random;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock('\OCP\IConfig');
@@ -123,10 +123,11 @@ class SetupTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Supported databases are not properly configured.
 	 */
 	public function testGetSupportedDatabaseException() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Supported databases are not properly configured.');
+
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
@@ -135,10 +136,11 @@ class SetupTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Can't update
 	 */
 	public function testCannotUpdateHtaccess() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Can\'t update');
+
 		if ($this->getCurrentUser() === 'root') {
 			$this->markTestSkipped(
 				'You are running tests as root - this test will not work in this case.'
@@ -160,10 +162,11 @@ class SetupTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Can't update
 	 */
 	public function testHtaccessIsFolder() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Can\'t update');
+
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
 		@\unlink($htaccessFile);
@@ -195,6 +198,9 @@ class SetupTest extends \Test\TestCase {
 		}
 		$content = \file_get_contents($htaccessFile);
 		@\unlink($htaccessFile);
-		$this->assertContains('#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####', $content);
+		$this->assertStringContainsString(
+			'#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####',
+			$content
+		);
 	}
 }

@@ -84,7 +84,7 @@ class TransferOwnershipTest extends TestCase {
 	 */
 	private $commandTester;
 
-	protected function setup() {
+	protected function setup(): void {
 		parent::setUp();
 		$this->userManager = \OC::$server->getUserManager();
 		$this->shareManager = \OC::$server->getShareManager();
@@ -110,7 +110,7 @@ class TransferOwnershipTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 	}
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->tearDownUserTrait();
 		$this->shareManager->userDeleted('share-receiver');
 		$this->shareManager->userDeleted($this->sourceUser->getUID());
@@ -183,7 +183,7 @@ class TransferOwnershipTest extends TestCase {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 
-		$this->assertContains('Transferring files to target-user', $output);
+		$this->assertStringContainsString('Transferring files to target-user', $output);
 		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount(0, $sourceShares);
@@ -214,7 +214,7 @@ class TransferOwnershipTest extends TestCase {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 
-		$this->assertContains('Transferring files to target-user', $output);
+		$this->assertStringContainsString('Transferring files to target-user', $output);
 		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount($expectedSourceShareCount, $sourceShares);

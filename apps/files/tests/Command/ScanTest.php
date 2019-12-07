@@ -94,7 +94,7 @@ class ScanTest extends TestCase {
 	 */
 	private $groupsCreated = [];
 
-	protected function setUp() {
+	protected function setUp(): void {
 		if ($this->runsWithPrimaryObjectstorage()) {
 			$this->markTestSkipped('not testing scanner as it does not make sense for primary object store');
 		}
@@ -131,7 +131,7 @@ class ScanTest extends TestCase {
 		@\mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		foreach ($this->groupsCreated as $group) {
 			$this->groupManager->get($group)->delete();
 		}
@@ -156,7 +156,7 @@ class ScanTest extends TestCase {
 	public function testCommandInput($input, $expectedOutput) {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function userInputData() {
@@ -181,9 +181,12 @@ class ScanTest extends TestCase {
 
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 		//If pagination works then below assert shouldn't fail
-		$this->assertNotContains("Starting scan for user 1 out of $numberOfUsersInGroup", $output);
+		$this->assertStringNotContainsString(
+			"Starting scan for user 1 out of $numberOfUsersInGroup",
+			$output
+		);
 	}
 
 	public function multipleGroupTest() {
@@ -237,18 +240,18 @@ class ScanTest extends TestCase {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 		if (\count($groups) === 2) {
-			$this->assertContains('Starting scan for user 1 out of 10 (user1)', $output);
-			$this->assertContains('Starting scan for user 1 out of 10 (user11)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 10 (user1)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 10 (user11)', $output);
 		} elseif (\count($groups) === 3) {
-			$this->assertContains('Starting scan for user 1 out of 10 (user1)', $output);
-			$this->assertContains('Starting scan for user 1 out of 10 (user11)', $output);
-			$this->assertContains('Starting scan for user 1 out of 10 (user21)', $output);
-			$this->assertContains('Starting scan for user 10 out of 10 (user30)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 10 (user1)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 10 (user11)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 10 (user21)', $output);
+			$this->assertStringContainsString('Starting scan for user 10 out of 10 (user30)', $output);
 		} elseif (\count($groups) === 4) {
-			$this->assertContains('Starting scan for user 1 out of 10 (user1)', $output);
-			$this->assertContains('Starting scan for user 1 out of 20 (user11)', $output);
-			$this->assertContains('Starting scan for user 11 out of 20 (user21)', $output);
-			$this->assertContains('Starting scan for user 10 out of 10 (user40)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 10 (user1)', $output);
+			$this->assertStringContainsString('Starting scan for user 1 out of 20 (user11)', $output);
+			$this->assertStringContainsString('Starting scan for user 11 out of 20 (user21)', $output);
+			$this->assertStringContainsString('Starting scan for user 10 out of 10 (user40)', $output);
 		} else {
 			$this->fail(
 				"testMultipleGroups supports testing with 2,3, or 4 groups but the input has $groups groups"
@@ -402,8 +405,8 @@ class ScanTest extends TestCase {
 
 		$output = $this->commandTester->getDisplay();
 
-		$this->assertContains('Please switch to single user mode', $output);
-		$this->assertContains('specify a user to repair', $output);
+		$this->assertStringContainsString('Please switch to single user mode', $output);
+		$this->assertStringContainsString('specify a user to repair', $output);
 
 		$storageId = $this->getStorageId('home::' . $this->scanUser1->getUID());
 		$this->assertFalse($this->getFileCacheEntry($storageId, 'files/toscan'));

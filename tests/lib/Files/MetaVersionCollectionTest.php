@@ -57,7 +57,7 @@ class MetaVersionCollectionTest extends TestCase {
 	 */
 	private $storage;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->rootFolder = $this->createMock(IRootFolder::class);
@@ -67,7 +67,7 @@ class MetaVersionCollectionTest extends TestCase {
 		$this->collection = new MetaVersionCollection($this->rootFolder, $this->node);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
@@ -138,9 +138,10 @@ class MetaVersionCollectionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\NotFoundException
 	 */
 	public function testGetNonVersionedStorageFails() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$this->node->method('getInternalPath')->willReturn('/abc');
 		$this->node->method('getMimetype')->willReturn('application/json');
 
@@ -155,9 +156,10 @@ class MetaVersionCollectionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\NotFoundException
 	 */
 	public function testGetSubEntryFails() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$this->storage->expects($this->never())
 			->method('instanceOfStorage');
 

@@ -45,7 +45,7 @@ class UsersControllerTest extends \Test\TestCase {
 	/** @var \OCP\AppFramework\IAppContainer */
 	private $container;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$app = new Application();
 		$this->container = $app->getContainer();
 		$this->container['AppName'] = 'settings';

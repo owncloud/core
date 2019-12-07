@@ -18,15 +18,15 @@ use OCP\App\IAppManager;
 class UtilTest extends \Test\TestCase {
 	public function testGetVersion() {
 		$version = \OCP\Util::getVersion();
-		$this->assertInternalType('array', $version);
+		$this->assertIsArray($version);
 		foreach ($version as $num) {
-			$this->assertInternalType('int', $num);
+			$this->assertIsInt($num);
 		}
 	}
 
 	public function testGetVersionString() {
 		$version = \OC_Util::getVersionString();
-		$this->assertInternalType('string', $version);
+		$this->assertIsString($version);
 	}
 
 	/**
@@ -34,7 +34,7 @@ class UtilTest extends \Test\TestCase {
 	*/
 	public function testGetEditionString() {
 		$edition = \OC_Util::getEditionString();
-		$this->assertInternalType('string', $edition);
+		$this->assertIsString($edition);
 	}
 
 	public function testFormatDate() {
@@ -58,9 +58,10 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testFormatDateWithInvalidTZ() {
+		$this->expectException(\Exception::class);
+
 		OC_Util::formatDate(1350129205, false, 'Mordor/Barad-dûr');
 	}
 
@@ -369,10 +370,11 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\HintException
-	 * @expectedExceptionMessage The skeleton folder /not/existing/Directory is not accessible
 	 */
 	public function testCopySkeletonDirectoryDoesNotExist() {
+		$this->expectException(\OC\HintException::class);
+		$this->expectExceptionMessage('The skeleton folder /not/existing/Directory is not accessible');
+
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
 		$userFolder = $this->createMock(Folder::class);
@@ -382,10 +384,11 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NoReadAccessException
-	 * @expectedExceptionMessage No read permission for folder
 	 */
 	public function testCopySkeletonDirectoryNoReadAccess() {
+		$this->expectException(\OCP\Files\NoReadAccessException::class);
+		$this->expectExceptionMessage('No read permission for folder');
+
 		if ($this->getCurrentUser() === 'root') {
 			// root can still read folders with protection mask 0
 			$this->markTestSkipped(
@@ -404,10 +407,11 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NoReadAccessException
-	 * @expectedExceptionMessage No read permission for file
 	 */
 	public function testCopySkeletonDirectoryNoReadAccessToFile() {
+		$this->expectException(\OCP\Files\NoReadAccessException::class);
+		$this->expectExceptionMessage('No read permission for file');
+
 		if ($this->getCurrentUser() === 'root') {
 			// root can still read files with protection mask 0
 			$this->markTestSkipped(
@@ -425,13 +429,13 @@ class UtilTest extends \Test\TestCase {
 		$config->deleteSystemValue('skeletondirectory');
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC_Util::$scripts = [];
 		\OC_Util::$styles = [];
 	}
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 
 		\OC_Util::$scripts = [];

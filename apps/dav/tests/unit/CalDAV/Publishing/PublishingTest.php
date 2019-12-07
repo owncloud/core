@@ -44,7 +44,7 @@ class PluginTest extends TestCase {
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->

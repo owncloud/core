@@ -23,7 +23,7 @@ class LegacyTest extends \Test\TestCase {
 	/** @var Helper */
 	private $helper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->panel = new Legacy($this->helper);
@@ -34,7 +34,7 @@ class LegacyTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertLessThan(50, $this->panel->getPriority());
 		$this->assertGreaterThan(-50, $this->panel->getPriority());
 	}
@@ -49,7 +49,7 @@ class LegacyTest extends \Test\TestCase {
 			]
 		]);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('form 1', $templateHtml);
-		$this->assertContains('form 2', $templateHtml);
+		$this->assertStringContainsString('form 1', $templateHtml);
+		$this->assertStringContainsString('form 2', $templateHtml);
 	}
 }

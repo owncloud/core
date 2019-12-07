@@ -48,7 +48,7 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $dispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->commentsManager = $this->createMock(ICommentsManager::class);
@@ -89,16 +89,18 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetChildException() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$this->collection->getChild('17');
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testGetChildren() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		$this->collection->getChildren();
 	}
 }

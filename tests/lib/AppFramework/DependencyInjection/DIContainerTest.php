@@ -31,7 +31,7 @@ class DIContainerTest extends \Test\TestCase {
 	private $container;
 	private $api;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->container = $this->getMockBuilder('OC\AppFramework\DependencyInjection\DIContainer')
 			->setMethods(['isAdminUser'])

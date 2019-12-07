@@ -37,7 +37,7 @@ class BackendTest extends TestCase {
 	public $subfolder;
 	public $subsubfolder;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->folder = self::TEST_FOLDER_NAME;
@@ -56,7 +56,7 @@ class BackendTest extends TestCase {
 		$this->view->file_put_contents($this->folder . $this->subfolder . $this->subsubfolder . $this->filename, $this->data);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->view) {
 			$this->view->unlink($this->filename);
 			$this->view->deleteAll($this->folder);

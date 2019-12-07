@@ -81,7 +81,7 @@ class ShareesTest extends TestCase {
 	/** @var UserSearch|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSearch;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->userManager = $this->getMockBuilder(IUserManager::class)
@@ -1912,9 +1912,10 @@ class ShareesTest extends TestCase {
 	 * @dataProvider dataTestSplitUserRemoteError
 	 *
 	 * @param string $id
-	 * @expectedException \Exception
 	 */
 	public function testSplitUserRemoteError($id) {
+		$this->expectException(\Exception::class);
+
 		$this->sharees->splitUserRemote($id);
 	}
 

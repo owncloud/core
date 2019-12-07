@@ -67,9 +67,10 @@ class UploadTest extends RequestTest {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\FileLocked
 	 */
 	public function testUploadOverWriteReadLocked() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
+
 		$user = $this->getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
@@ -81,9 +82,10 @@ class UploadTest extends RequestTest {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\FileLocked
 	 */
 	public function testUploadOverWriteWriteLocked() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
+
 		$user = $this->getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 		$this->loginAsUser($user);
@@ -161,9 +163,10 @@ class UploadTest extends RequestTest {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\FileLocked
 	 */
 	public function testChunkedUploadOutOfOrderReadLocked() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
+
 		$user = $this->getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
@@ -186,9 +189,10 @@ class UploadTest extends RequestTest {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\FileLocked
 	 */
 	public function testChunkedUploadOutOfOrderWriteLocked() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
+
 		$user = $this->getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 

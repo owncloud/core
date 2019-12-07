@@ -51,7 +51,7 @@ class LegacyDBTest extends \Test\TestCase {
 	 */
 	private $text_table;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$dbFile = \OC::$SERVERROOT.'/tests/data/db_structure.xml';
@@ -71,7 +71,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$this->text_table = $this->test_prefix.'text_table';
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		OC_DB::removeDBStructure(self::$schema_file);
 		\unlink(self::$schema_file);
 
@@ -241,11 +241,12 @@ class LegacyDBTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider insertIfNotExistsViolatingThrows
-	 * @expectedException \Doctrine\DBAL\Exception\UniqueConstraintViolationException
 	 *
 	 * @param array $compareKeys
 	 */
 	public function testInsertIfNotExistsViolatingThrows($compareKeys) {
+		$this->expectException(\Doctrine\DBAL\Exception\UniqueConstraintViolationException::class);
+
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,

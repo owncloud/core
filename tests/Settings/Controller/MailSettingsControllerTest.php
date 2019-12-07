@@ -18,7 +18,7 @@ use OC\Settings\Application;
 class MailSettingsControllerTest extends \Test\TestCase {
 	private $container;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$app = new Application();

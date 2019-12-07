@@ -46,7 +46,7 @@ class EntityCollectionTest extends \Test\TestCase {
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $dispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->commentsManager = $this->createMock(ICommentsManager::class);
@@ -81,9 +81,10 @@ class EntityCollectionTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetChildException(): void {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('55')

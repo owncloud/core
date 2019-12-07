@@ -39,7 +39,7 @@ class AddTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
@@ -49,7 +49,7 @@ class AddTest extends TestCase {
 		$this->createUser('user1');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		if (\OC::$server->getUserManager()->get('user2') instanceof User) {
 			\OC::$server->getUserManager()->get('user2')->delete();
@@ -66,7 +66,7 @@ class AddTest extends TestCase {
 		$this->commandTester->setInputs($answers);
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	/**

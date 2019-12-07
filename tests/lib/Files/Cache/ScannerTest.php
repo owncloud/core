@@ -37,7 +37,7 @@ class ScannerTest extends \Test\TestCase {
 	 */
 	private $cache;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->storage = new \OC\Files\Storage\Temporary([]);
@@ -45,7 +45,7 @@ class ScannerTest extends \Test\TestCase {
 		$this->cache = new \OC\Files\Cache\Cache($this->storage);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->cache) {
 			$this->cache->clear();
 		}
@@ -190,8 +190,8 @@ class ScannerTest extends \Test\TestCase {
 		$this->cache->put('folder', ['mtime' => $this->storage->filemtime('folder'), 'storage_mtime' => $this->storage->filemtime('folder')]);
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
-		$this->assertInternalType('string', $oldData['etag']);
-		$this->assertInternalType('string', $newData['etag']);
+		$this->assertIsString($oldData['etag']);
+		$this->assertIsString($newData['etag']);
 		$this->assertNotSame($oldData['etag'], $newData['etag']);
 		$this->assertEquals($oldData['size'], $newData['size']);
 
@@ -260,11 +260,11 @@ class ScannerTest extends \Test\TestCase {
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
 		/** @var CacheEntry $data0 */
 		$data0 = $this->cache->get('folder/bar.txt');
-		$this->assertInternalType('string', $data0['etag']);
+		$this->assertIsString($data0['etag']);
 		$data1 = $this->cache->get('folder');
-		$this->assertInternalType('string', $data1['etag']);
+		$this->assertIsString($data1['etag']);
 		$data2 = $this->cache->get('');
-		$this->assertInternalType('string', $data2['etag']);
+		$this->assertIsString($data2['etag']);
 		$data0['etag'] = '';
 		$this->cache->put('folder/bar.txt', $data0->getData());
 
@@ -273,7 +273,7 @@ class ScannerTest extends \Test\TestCase {
 
 		// verify cache content
 		$newData0 = $this->cache->get('folder/bar.txt');
-		$this->assertInternalType('string', $newData0['etag']);
+		$this->assertIsString($newData0['etag']);
 		$this->assertNotEmpty($newData0['etag']);
 	}
 
@@ -399,8 +399,6 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage No MetaData
 	 *
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 * @throws \OCP\Lock\LockedException
@@ -408,6 +406,9 @@ class ScannerTest extends \Test\TestCase {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function testUnLockInCaseOfExceptionInScanFile() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('No MetaData');
+
 		/** @var Storage | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->createMock(Storage::class);
 		$storage->expects($this->any())
@@ -424,8 +425,6 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage No MetaData
 	 *
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 * @throws \OCP\Lock\LockedException
@@ -433,6 +432,9 @@ class ScannerTest extends \Test\TestCase {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function testUnLockInCaseOfExceptionInScan() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('No MetaData');
+
 		/** @var Storage | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->createMock(Storage::class);
 		$storage->expects($this->any())

@@ -56,9 +56,10 @@ class RoutingTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \UnexpectedValueException
 	 */
 	public function testSimpleRouteWithBrokenName() {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$routes = ['routes' => [
 			['name' => 'folders_open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
 		]];

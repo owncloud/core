@@ -49,7 +49,7 @@ class DirMaskTest extends TestCase {
 		);
 	}
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->sourceStorage = new Temporary([]);
 	}
@@ -134,13 +134,11 @@ class DirMaskTest extends TestCase {
 
 	public function testFopen() {
 		$storage = $this->getStorage(Constants::PERMISSION_ALL);
-		$this->assertInternalType(
-			'resource', $storage->fopen('masked/test.txt', 'r+')
+		$this->assertIsResource($storage->fopen('masked/test.txt', 'r+')
 		);
 
 		$storage = $this->getStorage(Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'resource', $storage->fopen('masked/test.txt', 'r')
+		$this->assertIsResource($storage->fopen('masked/test.txt', 'r')
 		);
 
 		$storage = $this->getStorage(Constants::PERMISSION_READ);

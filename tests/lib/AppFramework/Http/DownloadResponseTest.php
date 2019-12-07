@@ -35,7 +35,7 @@ class DownloadResponseTest extends \Test\TestCase {
 	 */
 	protected $response;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->response = new ChildDownloadResponse('file', 'content');
 	}
@@ -43,7 +43,7 @@ class DownloadResponseTest extends \Test\TestCase {
 	public function testHeaders() {
 		$headers = $this->response->getHeaders();
 
-		$this->assertContains('attachment; filename="file"', $headers['Content-Disposition']);
-		$this->assertContains('content', $headers['Content-Type']);
+		$this->assertStringContainsString('attachment; filename="file"', $headers['Content-Disposition']);
+		$this->assertStringContainsString('content', $headers['Content-Type']);
 	}
 }

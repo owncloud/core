@@ -24,7 +24,7 @@ class BackgroundJobsTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config =$this->getMockBuilder(IConfig::class)->getMock();
 		$this->panel = new BackgroundJobs($this->config);
@@ -35,7 +35,7 @@ class BackgroundJobsTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(-100, $this->panel->getPriority());
 		$this->assertLessThan(100, $this->panel->getPriority());
 	}
@@ -46,6 +46,6 @@ class BackgroundJobsTest extends \Test\TestCase {
 		// Set cron to 10 mins ago, ajax mode
 		$this->config->expects($this->exactly(2))->method('getAppValue')->willReturn(\time()-10*60, 'ajax');
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<span class="status success"></span>', $templateHtml);
+		$this->assertStringContainsString('<span class="status success"></span>', $templateHtml);
 	}
 }

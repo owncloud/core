@@ -20,7 +20,7 @@ class EncryptionTest extends \Test\TestCase {
 	/** @var Encryption */
 	private $panel;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->panel = new Encryption();
 	}
@@ -30,13 +30,13 @@ class EncryptionTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(-100, $this->panel->getPriority());
 		$this->assertLessThan(100, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('org', $templateHtml);
+		$this->assertStringContainsString('org', $templateHtml);
 	}
 }

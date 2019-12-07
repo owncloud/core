@@ -32,7 +32,7 @@ class UpdateCheckerTest extends TestCase {
 	/** @var UpdateChecker */
 	private $updateChecker;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->updater = $this->getMockBuilder('\OC\Updater\VersionCheck')

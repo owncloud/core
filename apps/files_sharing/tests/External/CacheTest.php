@@ -49,7 +49,7 @@ class CacheTest extends TestCase {
 	 */
 	private $remoteUser;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->remoteUser = $this->getUniqueID('remoteuser');
@@ -76,7 +76,7 @@ class CacheTest extends TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->cache) {
 			$this->cache->clear();
 		}

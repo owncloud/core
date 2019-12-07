@@ -56,7 +56,7 @@ class OCSAuthAPITest extends TestCase {
 	/** @var  OCSAuthAPIController */
 	private $ocsAuthApi;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->createMock(IRequest::class);

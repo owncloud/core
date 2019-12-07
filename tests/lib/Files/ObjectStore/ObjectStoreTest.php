@@ -48,7 +48,7 @@ class ObjectStoreTest extends TestCase {
 	/** @var ObjectStoreStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $objectStore;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->impl = $this->createMock([IObjectStore::class, IVersionedObjectStorage::class]);
 		$this->impl->expects($this->any())
@@ -156,9 +156,10 @@ class ObjectStoreTest extends TestCase {
 
 	/**
 	 * @dataProvider providesMethods
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetVersionsOfUnknownFile($method, $ignore = false) {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		if ($ignore) {
 			throw new NotFoundException();
 		}

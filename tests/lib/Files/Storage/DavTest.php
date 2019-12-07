@@ -84,7 +84,7 @@ class DavTest extends TestCase {
 	 */
 	private $cache;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->httpClientService = $this->createMock(IClientService::class);
@@ -117,7 +117,7 @@ class DavTest extends TestCase {
 		$this->instance->method('getCache')->willReturn($this->cache);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('HttpClientService');
 		$this->restoreService('WebDavClientService');
 		$this->restoreService('TimeFactory');
@@ -185,9 +185,10 @@ class DavTest extends TestCase {
 
 	/**
 	 * @dataProvider invalidConfigDataProvider
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testInstantiateWebDavClientInvalidConfig($params) {
+		$this->expectException(\InvalidArgumentException::class);
+
 		new \OC\Files\Storage\DAV($params);
 	}
 
@@ -284,9 +285,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testMkdirException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('request')
 			->with('MKCOL', 'new%25dir', null)
@@ -314,9 +316,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testRmdirException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('request')
 			->with('DELETE', 'old%25dir', null)
@@ -375,9 +378,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testOpenDirException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->with('some%25dir', [], 1)
@@ -430,9 +434,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testFileTypeException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->with('some%25dir/file%25type', $this->contains('{DAV:}resourcetype'))
@@ -466,9 +471,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testFileExistsException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->with('some%25dir/file%25.txt')
@@ -505,9 +511,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testUnlinkException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('request')
 			->with('DELETE', 'old%25file.txt', null)
@@ -567,9 +574,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testFopenReadException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->httpClient->expects($this->once())
 			->method('get')
 			->with(
@@ -591,9 +599,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testFopenReadLockedException() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_LOCKED);
 		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
@@ -715,9 +724,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testFopenWriteExceptionEarly() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		// file_exists, and cached response for isUpdatable / getPermissions
 		$this->davClient->expects($this->once())
 			->method('propfind')
@@ -731,9 +741,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testFopenWriteExceptionLate() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		// file_exists, and cached response for isUpdatable / getPermissions
 		$this->davClient->expects($this->once())
 			->method('propfind')
@@ -859,9 +870,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testTouchException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		// file_exists
 		$this->davClient->expects($this->at(0))
 			->method('propfind')
@@ -977,9 +989,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testStatException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
@@ -1029,9 +1042,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testMimeTypeException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
@@ -1111,9 +1125,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testGetPermissionsException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
@@ -1140,7 +1155,7 @@ class DavTest extends TestCase {
 			->willReturn([]);
 
 		// unique id
-		$this->assertInternalType('string', $this->instance->getETag('some%dir'));
+		$this->assertIsString($this->instance->getETag('some%dir'));
 	}
 
 	public function testGetEtagUnexist() {
@@ -1153,9 +1168,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testGetEtagException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->with('some%25dir', $this->contains('{DAV:}getetag'))
@@ -1299,9 +1315,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testHasUpdatedRootPathNotfound() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willReturn(false);
@@ -1310,9 +1327,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testHasUpdatedRootPathMethodNotAllowed() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_METHOD_NOT_ALLOWED));
@@ -1321,9 +1339,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testHasUpdatedMethodNotAllowed() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_METHOD_NOT_ALLOWED));
@@ -1332,9 +1351,10 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testHasUpdatedException() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		$this->davClient->expects($this->once())
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));

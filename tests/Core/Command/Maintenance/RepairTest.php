@@ -36,7 +36,7 @@ class RepairTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$application = new Application(
@@ -54,7 +54,7 @@ class RepairTest extends TestCase {
 		$this->commandTester = new CommandTester($command);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		\OC::$server->getConfig()->setSystemValue('maintenance', false);
 	}
@@ -71,7 +71,7 @@ class RepairTest extends TestCase {
 		$result = $this->commandTester->execute($input);
 		$this->assertEquals($result, $returnValue);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function inputProvider() {

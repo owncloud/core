@@ -40,7 +40,7 @@ class StatusTest extends TestCase {
 	/** @var IJobList */
 	private $jobList;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->jobList = $this->createMock(IJobList::class);
@@ -67,7 +67,7 @@ class StatusTest extends TestCase {
 +--------+------------------------------------+---------------------------+---------------+
 EOS;
 
-		$this->assertContains($expected, $output);
+		$this->assertStringContainsString($expected, $output);
 	}
 
 	public function testJobWithArray() {
@@ -88,6 +88,6 @@ EOS;
 +--------+------------------------------------+---------------------------+-----------------------+
 EOS;
 
-		$this->assertContains($expected, $output);
+		$this->assertStringContainsString($expected, $output);
 	}
 }

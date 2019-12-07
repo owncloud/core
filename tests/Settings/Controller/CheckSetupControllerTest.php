@@ -60,7 +60,7 @@ class CheckSetupControllerTest extends TestCase {
 	/** @var Checker | \PHPUnit\Framework\MockObject\MockObject */
 	private $checker;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder('\OCP\IRequest')

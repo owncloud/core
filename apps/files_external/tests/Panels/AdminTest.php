@@ -43,7 +43,7 @@ class AdminTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->backendService = $this->createMock(IStoragesBackendService::class);
 		$this->storagesService = $this->createMock(IGlobalStoragesService::class);
@@ -62,7 +62,7 @@ class AdminTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertTrue($this->panel->getPriority() > -100);
 		$this->assertTrue($this->panel->getPriority() < 100);
 	}

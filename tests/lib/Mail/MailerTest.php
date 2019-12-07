@@ -25,7 +25,7 @@ class MailerTest extends TestCase {
 	/** @var Mailer */
 	private $mailer;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->getMockBuilder(IConfig::class)
@@ -77,9 +77,10 @@ class MailerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testSendInvalidMailException(): void {
+		$this->expectException(\Exception::class);
+
 		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();

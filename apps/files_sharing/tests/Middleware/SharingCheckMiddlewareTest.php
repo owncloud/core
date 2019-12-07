@@ -45,7 +45,7 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 	/** @var IControllerMethodReflector */
 	private $reflector;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()->getMock();
 		$this->appManager = $this->getMockBuilder('\OCP\App\IAppManager')
@@ -234,10 +234,11 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
-	 * @expectedExceptionMessage Link sharing is disabled
 	 */
 	public function testBeforeControllerWithShareControllerWithSharingEnabledAPIDisabled() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+		$this->expectExceptionMessage('Link sharing is disabled');
+
 		$this->appManager
 			->expects($this->once())
 			->method('isEnabledForUser')
@@ -251,10 +252,11 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
-	 * @expectedExceptionMessage Sharing is disabled.
 	 */
 	public function testBeforeControllerWithSharingDisabled() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+		$this->expectExceptionMessage('Sharing is disabled.');
+
 		$this->appManager
 			->expects($this->once())
 			->method('isEnabledForUser')
@@ -265,10 +267,11 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage My Exception message
 	 */
 	public function testAfterExceptionWithRegularException() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('My Exception message');
+
 		$this->sharingCheckMiddleware->afterException($this->controllerMock, 'myMethod', new \Exception('My Exception message'));
 	}
 

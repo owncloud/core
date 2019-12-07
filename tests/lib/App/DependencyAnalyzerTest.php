@@ -25,7 +25,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/** @var DependencyAnalyzer */
 	private $analyser;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->platformMock = $this->getMockBuilder(Platform::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +95,7 @@ class DependencyAnalyzerTest extends TestCase {
 		}
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -114,7 +114,7 @@ class DependencyAnalyzerTest extends TestCase {
 		}
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -134,7 +134,7 @@ class DependencyAnalyzerTest extends TestCase {
 		}
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -154,7 +154,7 @@ class DependencyAnalyzerTest extends TestCase {
 
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -173,7 +173,7 @@ class DependencyAnalyzerTest extends TestCase {
 
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -192,7 +192,7 @@ class DependencyAnalyzerTest extends TestCase {
 
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 

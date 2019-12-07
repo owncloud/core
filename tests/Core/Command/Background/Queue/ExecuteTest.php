@@ -45,7 +45,7 @@ class ExecuteTest extends TestCase {
 	/** @var IJob[] */
 	private $jobById = [];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$normalJob = $this->createMock(IJob::class);

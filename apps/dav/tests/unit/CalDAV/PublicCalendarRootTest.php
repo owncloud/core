@@ -61,7 +61,7 @@ class PublicCalendarRootTest extends TestCase {
 	/** @var ISecureRandom */
 	private $random;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$db = \OC::$server->getDatabaseConnection();
@@ -81,7 +81,7 @@ class PublicCalendarRootTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		if ($this->backend === null) {
@@ -112,9 +112,10 @@ class PublicCalendarRootTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testGetChildren() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		$this->createPublicCalendar();
 
 		$this->publicCalendarRoot->disableListing = true;

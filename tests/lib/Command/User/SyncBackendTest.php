@@ -50,7 +50,7 @@ class SyncBackendTest extends TestCase {
 	/** @var UserInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $dummyBackend;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);
@@ -268,9 +268,10 @@ class SyncBackendTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \LengthException
 	 */
 	public function testSingleUserSyncExistingUserException() {
+		$this->expectException(\LengthException::class);
+
 		$inputInterface = $this->createMock(InputInterface::class);
 		$outputInterface = $this->createMock(OutputInterface::class);
 		$syncService = $this->createMock(SyncService::class);

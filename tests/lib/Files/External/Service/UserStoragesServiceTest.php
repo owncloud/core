@@ -50,7 +50,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 	 */
 	protected $globalStoragesService;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->globalStoragesService = new GlobalStoragesService($this->backendService, $this->dbConfig, $this->mountCache);
@@ -189,9 +189,10 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\External\NotFoundException
 	 */
 	public function testGetAdminStorage() {
+		$this->expectException(\OCP\Files\External\NotFoundException::class);
+
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
 		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
 
