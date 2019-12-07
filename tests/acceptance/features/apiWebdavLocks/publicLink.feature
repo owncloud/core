@@ -118,6 +118,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
+  @skipOnOcV10.3
   Scenario Outline: Public locking is not supported
     Given user "user0" has created a public link share of folder "PARENT" with change permission
     When the public locks "/CHILD" in the last public shared folder using the <public-webdav-api-version> public WebDAV API setting following properties

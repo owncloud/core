@@ -266,7 +266,7 @@ Feature: Restore deleted files/folders
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.3
   Scenario Outline: A deleted file cannot be restored by a different user
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes and skeleton files
