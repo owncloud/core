@@ -648,7 +648,7 @@ Feature: Share by public link
     Then the text preview of the public link should contain "original content"
     And all the links to download the public share should be the same
 
-  @mailhog
+  @mailhog @skipOnOcV10.3
   Scenario: user without email shares a public link via email
     Given these users have been created without skeleton files:
       | username | password |

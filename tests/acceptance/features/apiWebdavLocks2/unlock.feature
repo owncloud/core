@@ -198,7 +198,7 @@ Feature: UNLOCK locked items
       | new      | shared     |
       | new      | exclusive  |
 
-  @issue-34302 @files_sharing-app-required
+  @issue-34302 @files_sharing-app-required @skipOnOcV10.3
   Scenario Outline: as public unlocking a file in a share that was locked by the file owner is not possible. To unlock use the owners locktoken
     Given user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked file "PARENT/parent.txt" setting following properties

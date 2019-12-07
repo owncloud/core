@@ -54,6 +54,7 @@ Feature: files and folders can be deleted from the trashbin
       But as "user0" the file with original path "/textfile0.txt" should exist in trash
       And as "user0" the file with original path "/PARENT/child.txt" should exist in trash
 
+    @skipOnOcV10.3
     Scenario: User tries to delete another user's trashbin
       Given user "user0" has been created with default attributes and skeleton files
       Given user "user1" has been created with default attributes and skeleton files
