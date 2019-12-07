@@ -1318,11 +1318,11 @@ $CONFIG = array(
 
 /**
  * Define apps or themes that are excluded from integrity checking
- * The list of apps that are allowed to have no signature.json. Besides
- * ownCloud apps, this is particularly useful when creating ownCloud themes,
+ * The list of apps that are allowed and must not have a signature.json file present.
+ * Besides ownCloud apps, this is particularly useful when creating ownCloud themes,
  * because themes are treated as apps. The app is identified with it´s app-id.
  * The app-id can be identified by the foldername of the app in your apps directory.
- * The following example allows app-1 and theme-2 to have no signature.
+ * The following example allows app-1 and theme-2 to have no signature.json file.
  */
 'integrity.ignore.missing.app.signature' => [
 	'app-id of app-1',
