@@ -229,7 +229,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function expirationFieldValueForUser($type, $receiver) {
+	public function expirationFieldEmptyForUser($type, $receiver) {
 		Assert::assertEquals($this->sharingDialog->getExpirationDateFor($receiver, $type), "");
 	}
 

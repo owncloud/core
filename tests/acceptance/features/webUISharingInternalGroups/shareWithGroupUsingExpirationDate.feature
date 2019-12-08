@@ -41,7 +41,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
     And user "user1" has logged in using the webUI
     When the user shares file "lorem.txt" with group "grp1" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the group "grp1" in the share dialog
-    Then the expiration date input field should be "+7 days" for the group "grp1" in the share dialog
+    And the expiration date input field should be "+7 days" for the group "grp1" in the share dialog
     When the user changes expiration date for share of group "grp1" to "+3 days" in the share dialog
     Then the expiration date input field should be "+3 days" for the group "grp1" in the share dialog
     And the information of the last share of user "user1" should include
@@ -59,7 +59,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
     When the user shares file "lorem.txt" with group "grp1" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the group "grp1" in the share dialog
     And the expiration date input field should be "+3 days" for the group "grp1" in the share dialog
-    Then the information of the last share of user "user1" should include
+    And the information of the last share of user "user1" should include
       | share_type  | group      |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
@@ -89,7 +89,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
     When the user shares file "lorem.txt" with group "grp1" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the group "grp1" in the share dialog
     And the expiration date input field should be "+3 days" for the group "grp1" in the share dialog
-    Then the information of the last share of user "user1" should include
+    And the information of the last share of user "user1" should include
       | share_type  | group      |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
@@ -103,7 +103,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
     When the user shares file "lorem.txt" with group "grp1" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the group "grp1" in the share dialog
     And the expiration date input field should be "+7 days" for the group "grp1" in the share dialog
-    Then the information of the last share of user "user1" should include
+    And the information of the last share of user "user1" should include
       | share_type  | group      |
       | file_target | /lorem.txt |
       | expiration  | +7 days    |
