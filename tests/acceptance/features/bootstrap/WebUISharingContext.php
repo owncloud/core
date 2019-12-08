@@ -234,7 +234,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the user changes expiration date for share of (user|group) "([^"]*)" to "([^"]*)" in the share dialog$/
+	 * @When /^the user changes expiration date for share of (user|group) "([^"]*)" to "([^"]*)" in the share dialog$/
 	 *
 	 * @param string $type
 	 * @param string $receiver
