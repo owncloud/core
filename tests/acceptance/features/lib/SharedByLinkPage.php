@@ -23,9 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
-use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Shared By Link page.
@@ -40,7 +38,6 @@ class SharedByLinkPage extends FilesPageCRUD {
 	protected $fileNamesXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-sharinglinks']//tbody[@id='fileList']";
-	protected $fileByPathAndNameXpath = "//div[@id='app-content-sharinglinks']//tr[@data-file=%s and @data-path=%s]";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharinglinks']//div[@id='emptycontent']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	/**
@@ -89,13 +86,6 @@ class SharedByLinkPage extends FilesPageCRUD {
 	}
 
 	/**
-	 * @return string
-	 */
-	protected function getFileByNameAndPathXpath() {
-		return $this->fileByPathAndNameXpath;
-	}
-
-	/**
 	 * @param Session $session
 	 * @param Factory $factory
 	 * @param array   $parameters
@@ -112,25 +102,6 @@ class SharedByLinkPage extends FilesPageCRUD {
 			$this->fileNamesXpath,
 			$this->deleteAllSelectedBtnXpath
 		);
-	}
-
-	/**
-	 * @param string $name
-	 * @param string $path
-	 * @param Session $session
-	 *
-	 * @return NodeElement
-	 *
-	 * @throws ElementNotFoundException
-	 */
-	public function findFileRowByNameAndPath($name, $path, Session $session) {
-		$elementXpath = \sprintf($this->getFileByNameAndPathXpath(), $this->quotedText($name), $this->quotedText($path));
-		$element = $this->find("xpath", $elementXpath);
-		if ($element !== null) {
-			return $element;
-		} else {
-			throw new ElementNotFoundException('Expected: element with xpath' . $elementXpath . 'to be not null but found: null');
-		}
 	}
 
 	/**

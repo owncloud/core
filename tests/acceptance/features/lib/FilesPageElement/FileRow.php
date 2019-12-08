@@ -62,6 +62,7 @@ class FileRow extends OwncloudPage {
 	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
 	protected $lockDialogId = "lockTabView";
 	protected $highlightsXpath = "//div[@class='highlights']";
+	protected $sharedIndicatorXpath = "//div[contains(@class, 'sharetree-item')]";
 
 	/**
 	 *
@@ -584,5 +585,18 @@ class FileRow extends OwncloudPage {
 	public function isActionLabelAvailable($actionLabel, Session $session) {
 		$actionMenu = $this->openFileActionsMenu($session);
 		return $actionMenu->isActionLabelVisible($actionLabel);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSharedIndicatorPresent() {
+		if ($this->rowElement->find(
+			"xpath", $this->sharedIndicatorXpath
+		) === null
+		) {
+			return false;
+		}
+		return true;
 	}
 }

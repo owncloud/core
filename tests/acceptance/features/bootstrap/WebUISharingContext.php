@@ -1603,66 +1603,46 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(file|folder) "([^"]*)" should have share indicator on the webUI$/
-	 *
-	 * @param string $fileOrFolder
-	 * @param string $filename name of resource
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function folderShouldHaveShareIndicatorOnTheWebUI($fileOrFolder, $filename) {
-		$isMarked = $this->filesPage->isShareIndicatorPresent(
-			$filename
-		);
-		Assert::assertEquals(true, $isMarked, "Expected: " . $fileOrFolder . " to be marked as shared but found: " . \strval($isMarked));
-	}
-
-	/**
-	 * @Then /^(file|folder) "([^"]*)" should not have share indicator on the webUI$/
-	 *
-	 * @param string $fileOrFolder
-	 * @param string $filename name of resource
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function folderShouldNotHaveShareIndicatorOnTheWebUI($fileOrFolder, $filename) {
-		$isMarked = $this->filesPage->isShareIndicatorPresent(
-			$filename
-		);
-		Assert::assertEquals(false, $isMarked, "Expected: " . $fileOrFolder . " not to be marked as shared but found: " . \strval($isMarked));
-	}
-
-	/**
 	 * @Then the following resources should have share indicators on the webUI
 	 *
 	 * @param TableNode $resourceTable
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theFollowingResourcesShouldHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
 		$elementRows = $resourceTable->getRows();
 		$elements = $this->featureContext->simplifyArray($elementRows);
-		foreach ($elements as $element) {
-			$this->folderShouldHaveShareIndicatorOnTheWebUI(null, $element);
+		foreach ($elements as $filename) {
+			$isMarked = $this->filesPage->isSharedIndicatorPresent(
+				$filename, $this->getSession()
+			);
+			Assert::assertTrue(
+				$isMarked,
+				"Expected: " . $filename . " to be marked as shared but it's not"
+			);
 		}
 	}
 
 	/**
 	 * @Then the following resources should not have share indicators on the webUI
 	 *
-	 * @param TableNode $resourceTable table headings: must be: |name|
+	 * @param TableNode $resourceTable
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theFollowingResourcesShouldNotHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
 		$elementRows = $resourceTable->getRows();
 		$elements = $this->featureContext->simplifyArray($elementRows);
-		foreach ($elements as $element) {
-			$this->folderShouldNotHaveShareIndicatorOnTheWebUI(null, $element);
+		foreach ($elements as $filename) {
+			$isMarked = $this->filesPage->isSharedIndicatorPresent(
+				$filename, $this->getSession()
+			);
+			Assert::assertFalse(
+				$isMarked,
+				"Expected: " . $filename . " not to be marked as shared but it is"
+			);
 		}
 	}
 }

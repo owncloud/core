@@ -43,7 +43,6 @@ class FilesPage extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
-	protected $resourceSharedIndicatorXpath = "//table[@id='filestable']//span[normalize-space(.)='%s']/../..//div[contains(@class, 'sharetree-item')]";
 
 	/**
 	 *
@@ -404,13 +403,13 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * checks whether given resource is marked as shared or not
 	 *
-	 * @param $fileName
+	 * @param string $fileName
+	 * @param Session $session
 	 *
 	 * @return bool
 	 */
-	public function isShareIndicatorPresent($fileName) {
-		$resourceMarkedSharedXpath = \sprintf($this->resourceSharedIndicatorXpath, $fileName);
-		$markedElement = $this->find("xpath", $resourceMarkedSharedXpath);
-		return $markedElement !== null;
+	public function isSharedIndicatorPresent($fileName, $session) {
+		$fileRow = $this->findFileRowByName($fileName, $session);
+		return $fileRow->isSharedIndicatorPresent();
 	}
 }

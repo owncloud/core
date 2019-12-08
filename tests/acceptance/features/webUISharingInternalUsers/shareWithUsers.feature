@@ -678,191 +678,55 @@ Feature: Sharing files and folders with internal users
       just letting you know that user0 shared simple-folder with you.
       """
 
-  Scenario: Create share with internal users and view those shared resources in files page and shared-with-others page
+  Scenario: sharing indicator of items inside a shared folder
     Given these users have been created with default attributes and skeleton files:
-      | username |
-      | user1    |
-      | user2    |
-    And user "user2" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user shares file "lorem.txt" with user "User One" using the webUI
-    Then folder "simple-folder" should not have share indicator on the webUI
-    And file "lorem.txt" should not have share indicator on the webUI
-    When the user opens folder "simple-folder" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user opens folder "simple-empty-folder" using the webUI
-    And the user uploads file "new-lorem.txt" using the webUI
-    And the user creates a folder with the name "XYZ" using the webUI
-    Then file "new-lorem.txt" should have share indicator on the webUI
-    And folder "XYZ" should have share indicator on the webUI
-    When the user browses to the shared-with-others page
-    Then the following resources should not have share indicators on the webUI
-      | simple-folder                   |
-      | lorem.txt                       |
-    When the user opens folder "simple-folder" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-
-  Scenario: Create share for a folder within a group and view the shared folder in files page and shared-with-others page
-    Given these users have been created with default attributes and skeleton files:
-      | username |
-      | user1    |
-      | user2    |
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    And user "user2" has shared folder "simple-folder" with group "grp1"
-    And user "user2" has logged in using the webUI
-    When the user opens folder "simple-folder" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user opens folder "simple-empty-folder" using the webUI
-    And the user uploads file "new-lorem.txt" using the webUI
-    And the user creates a folder with the name "XYZ" using the webUI
-    Then file "new-lorem.txt" should have share indicator on the webUI
-    And folder "XYZ" should have share indicator on the webUI
-    When the user browses to the shared-with-others page
-    Then the following resources should not have share indicators on the webUI
-      | simple-folder                   |
-
-  Scenario: user receives a share from another user and views that received share in files page and shared-wih-you page when auto-accept-share is enabled
-    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
-    And these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
     And user "user1" has shared folder "simple-folder" with user "user2"
-    And user "user2" has logged in using the webUI
-    When the user opens folder "simple-folder (2)" using the webUI
-    Then the following resources should not have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user browses to the shared-with-you page
-    Then the following resources should not have share indicators on the webUI
-      | simple-folder (2)                     |
-    When the user opens folder "simple-folder (2)" using the webUI
-    Then the following resources should not have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-
-  Scenario: user creates a public link for a folder and views the shared folder from files page, shared-with-others page
-    and shared-by-link page
-    Given these users have been created with default attributes and skeleton files:
-      | username |
-      | user1    |
-    And user "user1" has logged in using the webUI
-    When the user creates a new public link for folder "simple-folder" using the webUI
-    And the user closes the share dialog
-    And the user opens folder "simple-folder" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user browses to the shared-with-others page
-    And the user opens folder "simple-folder" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user browses to the shared-by-link page
-    And the user opens folder "simple-folder" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-
-  Scenario: resharing by public link and view the shared resource from different pages
-    Given these users have been created with default attributes and skeleton files:
-      | username |
-      | user1    |
-      | user2    |
-    And user "user1" has shared folder "/simple-folder" with user "user2" with permissions "share,read"
-    And user "user2" has logged in using the webUI
-    When the user creates a new public link for folder "simple-folder (2)" using the webUI with
-      | name | Public link |
-    And the user closes the share dialog
-    And the user opens folder "simple-folder (2)" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user browses to the shared-with-you page
-    And the user opens folder "simple-folder (2)" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user browses to the shared-by-link page
-    And the user opens folder "simple-folder (2)" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-    When the user browses to the shared-with-others page
-    And the user opens folder "simple-folder (2)" using the webUI
-    Then the following resources should have share indicators on the webUI
-      | simple-empty-folder                   |
-      | lorem.txt                             |
-      | block-aligned.txt                     |
-      | testavatar.png                        |
-      | testapp.zip                           |
-
-  Scenario: share a sub folder and view the received share from files page and shared-with-you page
-    Given these users have been created with default attributes and skeleton files:
-      | username |
-      | user1    |
-      | user2    |
-    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/simple-empty-folder/lorem.txt"
-    And user "user1" has shared folder "/simple-folder/simple-empty-folder" with user "user2"
-    And user "user2" has logged in using the webUI
-    When the user opens folder "simple-empty-folder (2)" using the webUI
-    Then file "lorem.txt" should not have share indicator on the webUI
-    When the user browses to the shared-with-you page
-    And the user opens folder "simple-empty-folder (2)" using the webUI
-    Then file "lorem.txt" should not have share indicator on the webUI
-
-  Scenario: share a sub folder and view the shared resource from files page and shared-with-others page
-    Given these users have been created with default attributes and skeleton files:
-      | username |
-      | user1    |
-      | user2    |
-    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/simple-empty-folder/lorem.txt"
-    And user "user1" has shared folder "/simple-folder/simple-empty-folder" with user "user2" with permissions "share,read"
     And user "user1" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
-    Then folder "simple-empty-folder" should not have share indicator on the webUI
-    When the user opens folder "simple-empty-folder" using the webUI
-    Then file "lorem.txt" should have share indicator on the webUI
-    When the user browses to the shared-with-others page
+    Then the following resources should have share indicators on the webUI
+      | simple-empty-folder |
+      | lorem.txt           |
+
+  Scenario: sharing indicator of items inside a shared folder two levels down
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user1" has created folder "/simple-folder/simple-empty-folder/new-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/simple-empty-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with user "user2"
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
     And the user opens folder "simple-empty-folder" using the webUI
-    Then file "lorem.txt" should have share indicator on the webUI
+    Then the following resources should have share indicators on the webUI
+      | new-folder |
+      | lorem.txt  |
+
+  Scenario: sharing indicator of items inside a re-shared folder
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+    And these users have been created without skeleton files:
+      | username |
+      | user2    |
+      | user3    |
+    And user "user1" has shared folder "simple-folder" with user "user2"
+    And user "user2" has shared folder "simple-folder" with user "user3"
+    And user "user2" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | simple-empty-folder |
+      | lorem.txt           |
+
+  Scenario: no sharing indicator of items inside a not shared folder
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should not have share indicators on the webUI
+      | simple-empty-folder |
+      | lorem.txt           |
