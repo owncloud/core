@@ -91,7 +91,7 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * @param $user
+	 * @param string $user
 	 * @param string $type
 	 *
 	 * @return null|NodeElement
@@ -102,7 +102,7 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * @param $user
+	 * @param string $user
 	 * @param string $type
 	 *
 	 * @return bool
@@ -113,7 +113,7 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * @param $user
+	 * @param string $user
 	 * @param string $type
 	 *
 	 * @throws \Exception
@@ -130,7 +130,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * @param Session $session
-	 * @param $user
+	 * @param string $user
 	 * @param string $type
 	 * @param string $value
 	 *
@@ -148,7 +148,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * @param Session $session
-	 * @param $user
+	 * @param string $user
 	 * @param string $type
 	 *
 	 * @return void

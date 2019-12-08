@@ -172,9 +172,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	/**
 	 * @When /^the user shares (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI without closing the share dialog$/
 	 *
-	 * @param $folder
-	 * @param $remote
-	 * @param $name
+	 * @param string $folder
+	 * @param string $remote (remote|federated|)
+	 * @param string $name
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
@@ -274,10 +274,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @param $folder
-	 * @param $userOrGroup
-	 * @param $remote
-	 * @param $name
+	 * @param string $folder
+	 * @param string $userOrGroup (user|group)
+	 * @param string $remote (remote|federated|)
+	 * @param string $name
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
