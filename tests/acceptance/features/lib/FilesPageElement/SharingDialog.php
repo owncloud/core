@@ -62,7 +62,8 @@ class SharingDialog extends OwncloudPage {
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
 	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
-
+	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/..//input[contains(@class, 'expiration')]";
+	private $shareWithClearExpirationFieldXpath = "/following-sibling::button[@class='removeExpiration']"; // in relation to $shareWithExpirationFieldXpath
 	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
 	private $userOrGroupNameSpanXpath = "//span[contains(@class,'username')]";
 	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
@@ -87,6 +88,86 @@ class SharingDialog extends OwncloudPage {
 			" xpath $this->shareWithFieldXpath could not find share-with-field"
 		);
 		return $shareWithField;
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @return null|NodeElement
+	 */
+	private function getExpirationFieldFor($user, $type = 'user') {
+		if ($type === "group") {
+			$user = \sprintf($this->groupFramework, $user);
+		}
+		return $this->find("xpath", \sprintf($this->shareWithExpirationFieldXpath, $user));
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @return bool
+	 */
+	public function isExpirationFieldVisible($user, $type = 'user') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		return $field and $field->isVisible();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @throws \Exception
+	 * @return string
+	 */
+	public function getExpirationDateFor($user, $type = 'user') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$this->assertElementNotNull(
+			$field,
+			"Could not find expiration field for " . $type . " '$user'"
+		);
+		return $field->getValue();
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $type
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function setExpirationDateFor(Session $session, $user, $type = 'user', $value = '') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$this->assertElementNotNull(
+			$field,
+			"Could not find expiration field for " . $type . " '$user'"
+		);
+		$field->setValue($value . "\n");
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $type
+	 *
+	 * @return void
+	 */
+	public function clearExpirationDateFor(Session $session, $user, $type = 'user') {
+		$field = $this->getExpirationFieldFor($user, $type);
+		$this->assertElementNotNull(
+			$field,
+			"Could not find expiration field for " . $type . " '$user'"
+		);
+		$removeBtn = $field->find("xpath", $this->shareWithClearExpirationFieldXpath);
+		$this->assertElementNotNull(
+			$removeBtn,
+			"Could not find expiration field remove button for " . $type . " '$user'"
+		);
+		$removeBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
