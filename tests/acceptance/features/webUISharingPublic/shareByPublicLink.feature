@@ -368,8 +368,8 @@ Feature: Share by public link
     And the user opens folder "simple-folder" using the webUI
     And the user creates a new public link for file "lorem.txt" using the webUI
     And the user browses to the shared-by-link page
-    Then file "lorem.txt" with path "" should be listed in the public link files page on the webUI
-    And file "lorem.txt" with path "/simple-folder" should be listed in the public link files page on the webUI
+    Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
+    And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
 
   Scenario: user removes the public link of a file
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
