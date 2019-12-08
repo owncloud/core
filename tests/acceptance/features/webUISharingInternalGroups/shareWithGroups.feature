@@ -316,6 +316,7 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for file "lorem.txt"
     Then the group "grp1" should not be in share with group list
 
+  @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created folder "/simple-folder/simple-empty-folder"
@@ -327,6 +328,7 @@ Feature: Sharing files and folders with internal groups
       | simple-empty-folder |
       | lorem.txt           |
 
+  @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder two levels down
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created folder "/simple-folder/simple-empty-folder/"
@@ -340,6 +342,7 @@ Feature: Sharing files and folders with internal groups
       | new-folder |
       | lorem.txt  |
 
+  @skipOnOcV10.3
   Scenario: sharing indicator of items inside a re-shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created folder "/simple-folder/simple-empty-folder"
@@ -352,6 +355,7 @@ Feature: Sharing files and folders with internal groups
       | simple-empty-folder |
       | lorem.txt           |
 
+  @skipOnOcV10.3
   Scenario: no sharing indicator of items inside a not shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"

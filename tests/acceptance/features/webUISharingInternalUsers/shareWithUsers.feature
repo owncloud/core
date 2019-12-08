@@ -678,6 +678,7 @@ Feature: Sharing files and folders with internal users
       just letting you know that user0 shared simple-folder with you.
       """
 
+  @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -690,6 +691,7 @@ Feature: Sharing files and folders with internal users
       | simple-empty-folder |
       | lorem.txt           |
 
+  @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder two levels down
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -705,6 +707,7 @@ Feature: Sharing files and folders with internal users
       | new-folder |
       | lorem.txt  |
 
+  @skipOnOcV10.3
   Scenario: sharing indicator of items inside a re-shared folder
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -721,6 +724,7 @@ Feature: Sharing files and folders with internal users
       | simple-empty-folder |
       | lorem.txt           |
 
+  @skipOnOcV10.3
   Scenario: no sharing indicator of items inside a not shared folder
     Given these users have been created with default attributes and skeleton files:
       | username |
