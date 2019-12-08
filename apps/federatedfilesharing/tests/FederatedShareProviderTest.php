@@ -79,7 +79,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	/** @var FederatedShareProvider */
 	protected $provider;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -121,10 +121,10 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->shareManager = \OC::$server->getShareManager();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->connection->getQueryBuilder()->delete('share')->execute();
 
-		return parent::tearDown();
+		parent::tearDown();
 	}
 
 	public function testCreate() {
@@ -172,10 +172,10 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
+		$fetchedData = $stmt->fetch();
 		$stmt->closeCursor();
 
-		$expected = [
+		$expectedSubset = [
 			'share_type' => \OCP\Share::SHARE_TYPE_REMOTE,
 			'share_with' => 'user@server.com',
 			'uid_owner' => 'shareOwner',
@@ -187,9 +187,12 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			'accepted' => 0,
 			'token' => 'token',
 		];
-		$this->assertArraySubset($expected, $data);
+		foreach ($expectedSubset as $key => $value) {
+			$this->assertArrayHasKey($key, $fetchedData);
+			$this->assertEquals($value, $fetchedData[$key]);
+		}
 
-		$this->assertEquals($data['id'], $share->getId());
+		$this->assertEquals($fetchedData['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
 		$this->assertEquals('user@server.com', $share->getSharedWith());
 		$this->assertEquals('sharedBy', $share->getSharedBy());
@@ -256,10 +259,10 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
+		$fetchedData = $stmt->fetch();
 		$stmt->closeCursor();
 
-		$expected = [
+		$expectedSubset = [
 			'share_type' => \OCP\Share::SHARE_TYPE_REMOTE,
 			'share_with' => 'user@server.com',
 			'uid_owner' => 'shareOwner',
@@ -271,9 +274,12 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			'accepted' => 0,
 			'token' => 'token',
 		];
-		$this->assertArraySubset($expected, $data);
+		foreach ($expectedSubset as $key => $value) {
+			$this->assertArrayHasKey($key, $fetchedData);
+			$this->assertEquals($value, $fetchedData[$key]);
+		}
 
-		$this->assertEquals($data['id'], $share->getId());
+		$this->assertEquals($fetchedData['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
 		$this->assertEquals('user@server.com', $share->getSharedWith());
 		$this->assertEquals('shareOwner', $share->getSharedBy());

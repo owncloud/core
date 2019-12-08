@@ -123,9 +123,10 @@ class FactoryTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider cacheUnavailableProvider
-	 * @expectedException \OC\HintException
 	 */
 	public function testCacheNotAvailableException($localCache, $distributedCache) {
+		$this->expectException(\OC\HintException::class);
+
 		$logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
 		new \OC\Memcache\Factory('abc', $logger, $localCache, $distributedCache);
 	}

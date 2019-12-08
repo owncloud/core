@@ -60,7 +60,7 @@ class AvatarManagerTest extends TestCase {
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->userManager = $this->createMock(IUserManager::class);
@@ -79,10 +79,11 @@ class AvatarManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage user does not exist
 	 */
 	public function testGetAvatarInvalidUser() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('user does not exist');
+
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->rootFolder->expects(self::never())
 			->method('get');

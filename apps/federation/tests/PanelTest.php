@@ -57,7 +57,7 @@ class PanelTest extends \Test\TestCase {
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->connection = $this->getMockBuilder(IDBConnection::class)->getMock();
 		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
@@ -85,7 +85,7 @@ class PanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertTrue($this->panel->getPriority() > -100);
 		$this->assertTrue($this->panel->getPriority() < 100);
 	}
@@ -99,6 +99,9 @@ class PanelTest extends \Test\TestCase {
 		$statement->expects($this->once())->method('fetchAll')->willReturn([]);
 		$this->connection->expects($this->once())->method('getQueryBuilder')->willReturn($queryBuilder);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="ocFederationSettings" class="section">', $templateHtml);
+		$this->assertStringContainsString(
+			'<div id="ocFederationSettings" class="section">',
+			$templateHtml
+		);
 	}
 }

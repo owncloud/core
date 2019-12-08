@@ -55,7 +55,7 @@ class UserTest extends TestCase {
 	/** @var  Session | \PHPUnit\Framework\MockObject\MockObject */
 	private $sessionUser;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->accountMapper = $this->createMock(AccountMapper::class);
 		$this->config = $this->createMock(IConfig::class);
@@ -175,11 +175,12 @@ class UserTest extends TestCase {
 	/**
 	 * @param string $password
 	 * @dataProvider getEmptyValues
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Password cannot be empty
 	 * @throws \InvalidArgumentException
 	 */
 	public function testSetEmptyPasswordNotPermitted($password) {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Password cannot be empty');
+
 		(new User(
 			$this->createMock(Account::class),
 			$this->accountMapper

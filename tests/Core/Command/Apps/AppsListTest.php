@@ -35,7 +35,7 @@ class AppsListTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$command = new ListApps(\OC::$server->getAppManager());
@@ -52,7 +52,7 @@ class AppsListTest extends TestCase {
 	public function testCommandInput($input, $expectedOutput) {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function providesAppIds() {

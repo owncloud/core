@@ -660,7 +660,7 @@ Feature: Sharing files and folders with internal users
     When the user shares file "lorem.txt" with user "User Three" using the webUI
     Then as "user3" file "lorem.txt" should exist
 
-  @mailhog
+  @mailhog @skipOnOcV10.3
   Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:

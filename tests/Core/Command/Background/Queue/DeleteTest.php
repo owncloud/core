@@ -38,7 +38,7 @@ class DeleteTest extends TestCase {
 	/** @var IJobList */
 	private $jobList;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->jobList = $this->createMock(IJobList::class);
@@ -60,7 +60,7 @@ class DeleteTest extends TestCase {
 		$input = ['Job ID' => $jobId];
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function providesJobIds() {

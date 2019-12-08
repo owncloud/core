@@ -36,7 +36,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 	 */
 	private $oldAllowedBackends;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->service = $this->createMock('\OCP\Files\External\Service\IUserStoragesService');
 

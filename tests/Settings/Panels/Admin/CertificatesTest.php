@@ -30,7 +30,7 @@ class CertificatesTest extends \Test\TestCase {
 	/** @var ICertificateManager */
 	private $certManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->urlGenerator =$this->getMockBuilder(IURLGenerator::class)->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
@@ -43,7 +43,7 @@ class CertificatesTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(-100, $this->panel->getPriority());
 		$this->assertLessThan(100, $this->panel->getPriority());
 	}
@@ -64,10 +64,10 @@ class CertificatesTest extends \Test\TestCase {
 		$this->certManager->expects($this->once())->method('listCertificates')->willReturn([$mockCert]);
 		$this->urlGenerator->expects($this->once())->method('linkToRoute');
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('issueOrg', $templateHtml);
-		$this->assertContains('issuer', $templateHtml);
-		$this->assertContains('commonname', $templateHtml);
-		$this->assertContains('org', $templateHtml);
+		$this->assertStringContainsString('issueOrg', $templateHtml);
+		$this->assertStringContainsString('issuer', $templateHtml);
+		$this->assertStringContainsString('commonname', $templateHtml);
+		$this->assertStringContainsString('org', $templateHtml);
 	}
 
 	public function testGetPanelNotEnabled() {

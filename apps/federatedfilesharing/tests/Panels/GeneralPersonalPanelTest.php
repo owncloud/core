@@ -47,7 +47,7 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 	/** @var IRequest */
 	private $request;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
 		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)->getMock();
@@ -68,7 +68,7 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertTrue($this->panel->getPriority() < 50);
 	}
 
@@ -79,6 +79,6 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 		$this->userSession->expects($this->once())->method('getUser')->willReturn($mockUser);
 		$this->shareProvider->expects($this->once())->method('isOutgoingServer2serverShareEnabled')->willReturn(true);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="fileSharingSettings"', $templateHtml);
+		$this->assertStringContainsString('<div id="fileSharingSettings"', $templateHtml);
 	}
 }

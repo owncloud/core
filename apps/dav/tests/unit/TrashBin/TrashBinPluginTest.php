@@ -22,14 +22,10 @@
 namespace OCA\DAV\Tests\Unit\TrashBin;
 
 use OCA\DAV\TrashBin\ITrashBinNode;
-use OCA\DAV\TrashBin\RootCollection;
-use OCA\DAV\TrashBin\TrashBinHome;
 use OCA\DAV\TrashBin\TrashBinPlugin;
-use phpDocumentor\Reflection\Types\This;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\Xml\Property\GetLastModified;
-use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 use Test\TestCase;
 
 class TrashBinPluginTest extends TestCase {

@@ -42,7 +42,7 @@ class CleanupChunksTest extends TestCase {
 	/** @var IUser */
 	private $user;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$command = new CleanupChunks(\OC::$server->getUserManager());
@@ -59,7 +59,10 @@ class CleanupChunksTest extends TestCase {
 			'age-in-days' => $inputDays
 		]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains("Cleaning chunks older than $expectedDays days", $output);
+		$this->assertStringContainsString(
+			"Cleaning chunks older than $expectedDays days",
+			$output
+		);
 	}
 
 	public function testCommand() {
@@ -77,8 +80,8 @@ class CleanupChunksTest extends TestCase {
 
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains("Cleaning chunks older than 2 days", $output);
-		$this->assertContains("Cleaning chunks for $userId", $output);
+		$this->assertStringContainsString("Cleaning chunks older than 2 days", $output);
+		$this->assertStringContainsString("Cleaning chunks for $userId", $output);
 
 		$this->assertFalse($view->file_exists($uploadId));
 	}

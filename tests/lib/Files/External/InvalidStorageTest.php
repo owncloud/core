@@ -26,9 +26,10 @@ use OC\Files\External\InvalidStorage;
 class InvalidStorageTest extends TestCase {
 
 	/**
-	 * @expectedException OCP\Files\StorageNotAvailableException
 	 */
 	public function testCannotInstantiate() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
 		new InvalidStorage([]);
 	}
 }

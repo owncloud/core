@@ -50,7 +50,7 @@ class ConvertTypeTest extends TestCase {
 	/** @var \Doctrine\DBAL\Connection */
 	private $connection;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->config = $this->getMockBuilder(IConfig::class)
@@ -64,9 +64,10 @@ class ConvertTypeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Doctrine\DBAL\DBALException
 	 */
 	public function testWrongConnectionParams() {
+		$this->expectException(\Doctrine\DBAL\DBALException::class);
+
 		if (!$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
 			$this->markTestSkipped("Test only relevant on Sqlite");
 		}

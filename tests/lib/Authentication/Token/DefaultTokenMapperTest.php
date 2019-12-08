@@ -45,7 +45,7 @@ class DefaultTokenMapperTest extends TestCase {
 	private $dbConnection;
 	private $time;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dbConnection = OC::$server->getDatabaseConnection();
@@ -143,9 +143,10 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\AppFramework\Db\DoesNotExistException
 	 */
 	public function testGetInvalidToken() {
+		$this->expectException(\OCP\AppFramework\Db\DoesNotExistException::class);
+
 		$token = 'thisisaninvalidtokenthatisnotinthedatabase';
 
 		$this->mapper->getToken($token);
@@ -200,9 +201,10 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testEmptyName() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$token = new DefaultToken();
 		$token->setUid('user01');
 		$token->setName('');
@@ -210,9 +212,10 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testEmptyLoginName() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$token = new DefaultToken();
 		$token->setUid('user01');
 		$token->setLoginName('');

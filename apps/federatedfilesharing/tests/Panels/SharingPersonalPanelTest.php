@@ -36,7 +36,7 @@ class SharingPersonalPanelTest extends \Test\TestCase {
 	/** @var SharingPersonalPanel $personalPanel */
 	private $sharingPersonalPanel;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -86,6 +86,6 @@ class SharingPersonalPanelTest extends \Test\TestCase {
 			->willReturn($globalConfigs['auto_accept_trusted']);
 		
 		$templateHtml = $this->sharingPersonalPanel->getPanel()->fetchPage();
-		$this->assertContains($expectedString, $templateHtml);
+		$this->assertStringContainsString($expectedString, $templateHtml);
 	}
 }

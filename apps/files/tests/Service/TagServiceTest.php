@@ -58,7 +58,7 @@ class TagServiceTest extends \Test\TestCase {
 	 */
 	private $tagManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->user = $this->getUniqueID('user');
 		$user = $this->createUser($this->user, 'test');
@@ -81,7 +81,7 @@ class TagServiceTest extends \Test\TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_User::setUserId('');
 		parent::tearDown();
 	}

@@ -43,7 +43,7 @@ class ExpireVersionsTest extends TestCase {
 
 	private $expiration;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->userManager = $this->createMock(IUserManager::class);
@@ -57,6 +57,6 @@ class ExpireVersionsTest extends TestCase {
 			->willReturn(false);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains('Auto expiration is configured', $output);
+		$this->assertStringContainsString('Auto expiration is configured', $output);
 	}
 }

@@ -57,13 +57,13 @@ class UsersTest extends OriginalTest {
 	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit\Framework\MockObject\MockObject */
 	private $twoFactorAuthManager;
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$_GET = null;
 		$_POST = null;
 		parent::tearDown();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->userManager = $this->createMock(IUserManager::class);

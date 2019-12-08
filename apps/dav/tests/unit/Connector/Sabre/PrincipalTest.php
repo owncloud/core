@@ -37,7 +37,7 @@ class PrincipalTest extends TestCase {
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
 			->disableOriginalConstructor()->getMock();
 		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')
@@ -187,10 +187,11 @@ class PrincipalTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception
-	 * @expectedExceptionMessage Principal not found
 	 */
 	public function testGetGroupMemberSetEmpty() {
+		$this->expectException(\Sabre\DAV\Exception::class);
+		$this->expectExceptionMessage('Principal not found');
+
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -228,10 +229,11 @@ class PrincipalTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception
-	 * @expectedExceptionMessage Principal not found
 	 */
 	public function testGetGroupMembershipEmpty() {
+		$this->expectException(\Sabre\DAV\Exception::class);
+		$this->expectExceptionMessage('Principal not found');
+
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -242,10 +244,11 @@ class PrincipalTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception
-	 * @expectedExceptionMessage Setting members of the group is not supported yet
 	 */
 	public function testSetGroupMembership() {
+		$this->expectException(\Sabre\DAV\Exception::class);
+		$this->expectExceptionMessage('Setting members of the group is not supported yet');
+
 		$this->connector->setGroupMemberSet('principals/users/foo', ['foo']);
 	}
 

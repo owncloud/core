@@ -74,7 +74,7 @@ abstract class StoragesServiceTest extends TestCase {
 	 */
 	protected $backends;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->dbConfig = new CleaningDBConfig(\OC::$server->getDatabaseConnection(), \OC::$server->getCrypto());
 		self::$hookCalls = [];
@@ -152,7 +152,7 @@ abstract class StoragesServiceTest extends TestCase {
 			}));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		self::$hookCalls = [];
 		if ($this->dbConfig) {
 			$this->dbConfig->clean();
@@ -233,9 +233,12 @@ abstract class StoragesServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\External\NotFoundException
 	 */
 	public function testNonExistingStorage() {
+		if ($this->getExpectedException() === null) {
+			$this->expectException(\OCP\Files\External\NotFoundException::class);
+		}
+
 		$backend = $this->backendService->getBackend('identifier:\OCA\Files_External\Lib\Backend\SMB');
 		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
 		$storage = new StorageConfig(255);
@@ -317,9 +320,12 @@ abstract class StoragesServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\External\NotFoundException
 	 */
 	public function testDeleteUnexistingStorage() {
+		if ($this->getExpectedException() === null) {
+			$this->expectException(\OCP\Files\External\NotFoundException::class);
+		}
+
 		$this->service->removeStorage(255);
 	}
 
@@ -498,9 +504,10 @@ abstract class StoragesServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\External\NotFoundException
 	 */
 	public function testCannotEditInvalidBackend() {
+		$this->expectException(\OCP\Files\External\NotFoundException::class);
+
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
 		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
 

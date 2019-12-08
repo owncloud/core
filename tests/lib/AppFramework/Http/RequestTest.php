@@ -33,7 +33,7 @@ class RequestTest extends TestCase {
 	/** @var CsrfTokenManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $csrfTokenManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if (\in_array('fakeinput', \stream_get_wrappers())) {
@@ -47,7 +47,7 @@ class RequestTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\stream_wrapper_unregister('fakeinput');
 		parent::tearDown();
 	}
@@ -104,9 +104,10 @@ class RequestTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \RuntimeException
 	 */
 	public function testImmutableArrayAccess() {
+		$this->expectException(\RuntimeException::class);
+
 		$vars = [
 			'get' => ['name' => 'John Q. Public', 'nickname' => 'Joey'],
 			'method' => 'GET'
@@ -124,9 +125,10 @@ class RequestTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \RuntimeException
 	 */
 	public function testImmutableMagicAccess() {
+		$this->expectException(\RuntimeException::class);
+
 		$vars = [
 			'get' => ['name' => 'John Q. Public', 'nickname' => 'Joey'],
 			'method' => 'GET'
@@ -144,9 +146,10 @@ class RequestTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \LogicException
 	 */
 	public function testGetTheMethodRight() {
+		$this->expectException(\LogicException::class);
+
 		$vars = [
 			'get' => ['name' => 'John Q. Public', 'nickname' => 'Joey'],
 			'method' => 'GET',
@@ -421,9 +424,10 @@ class RequestTest extends TestCase {
 
 	/**
 	 * @dataProvider providesGetIdWithInvalidXRequestID
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testGetIdWithInvalidXRequestID($xRequestID) {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$vars = [
 			'server' => [
 				'HTTP_X_REQUEST_ID' => $xRequestID
@@ -1167,10 +1171,11 @@ class RequestTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/var/www/index.php')
 	 */
 	public function testGetPathInfoNotProcessible() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('The requested uri(/foo.php) cannot be processed by the script \'/var/www/index.php\')');
+
 		$request = new Request(
 			[
 				'server' => [
@@ -1188,10 +1193,11 @@ class RequestTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/var/www/index.php')
 	 */
 	public function testGetRawPathInfoNotProcessible() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('The requested uri(/foo.php) cannot be processed by the script \'/var/www/index.php\')');
+
 		$request = new Request(
 			[
 				'server' => [

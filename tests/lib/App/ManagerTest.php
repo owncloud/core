@@ -89,7 +89,7 @@ class ManagerTest extends TestCase {
 		return $config;
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->userSession = $this->createMock(IUserSession::class);
@@ -125,9 +125,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\App\AppManagerException
 	 */
 	public function testEnableSecondAppTheme() {
+		$this->expectException(\OCP\App\AppManagerException::class);
+
 		$appThemeName = 'theme-one';
 		$manager = $this->getMockBuilder(AppManager::class)
 			->setMethods(['isTheme', 'getAppInfo', 'getAppPath'])
@@ -193,9 +194,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testNotEnableIfNotInstalled() {
+		$this->expectException(\Exception::class);
+
 		$this->manager->enableApp('some_random_name_which_i_hope_is_not_an_app');
 		$this->assertEquals('no', $this->appConfig->getValue(
 			'some_random_name_which_i_hope_is_not_an_app', 'enabled', 'no'
@@ -271,10 +273,11 @@ class ManagerTest extends TestCase {
 	 *
 	 * @param string $type
 	 *
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage test can't be enabled for groups.
 	 */
 	public function testEnableAppForGroupsForbiddenTypes($type) {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('test can\'t be enabled for groups.');
+
 		$groups = [
 			new Group('group1', [], null, $this->eventDispatcher),
 			new Group('group2', [], null, $this->eventDispatcher)

@@ -69,7 +69,7 @@ class MailNotificationsTest extends TestCase {
 	/** @var MailNotifications */
 	private $mailNotifications;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->shareManager = $this->createMock(IManager::class);
@@ -620,9 +620,10 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Share\Exceptions\GenericShareException
 	 */
 	public function testSendLinkShareMailIfObeysConfig() {
+		$this->expectException(\OCP\Share\Exceptions\GenericShareException::class);
+
 		$this->config
 			->method('getAppValue')
 			->with('core', 'shareapi_allow_public_notification', 'no')
@@ -635,9 +636,10 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Share\Exceptions\GenericShareException
 	 */
 	public function testSendInternalShareMailIfObeysConfig() {
+		$this->expectException(\OCP\Share\Exceptions\GenericShareException::class);
+
 		$this->config
 			->method('getAppValue')
 			->with('core', 'shareapi_allow_mail_notification', 'no')

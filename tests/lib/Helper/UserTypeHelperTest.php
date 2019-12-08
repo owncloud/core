@@ -37,7 +37,7 @@ class UserTypeHelperTest extends TestCase {
 	/** @var UserTypeHelper | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userTypeHelper;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->config = $this->createMock(IConfig::class);

@@ -21,9 +21,34 @@
 
 namespace OCA\DAV\TrashBin;
 
+use OCP\IUserSession;
+use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAVACL\AbstractPrincipalCollection;
+use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
 class RootCollection extends AbstractPrincipalCollection {
+	/**
+	 * @var IUserSession
+	 */
+	protected $userSession;
+
+	/**
+	 * Creates the object.
+	 *
+	 * This object must be passed the principal backend. This object will
+	 * filter all principals from a specified prefix ($principalPrefix). The
+	 * default is 'principals', if your principals are stored in a different
+	 * collection, override $principalPrefix
+	 *
+	 *
+	 * @param BackendInterface $principalBackend
+	 * @param IUserSession $userSession
+	 * @param string $principalPrefix
+	 */
+	public function __construct(BackendInterface $principalBackend, IUserSession $userSession, $principalPrefix = 'principals') {
+		parent::__construct($principalBackend, $principalPrefix);
+		$this->userSession = $userSession;
+	}
 
 	/**
 	 * This method returns a node for a principal.
@@ -34,9 +59,15 @@ class RootCollection extends AbstractPrincipalCollection {
 	 *
 	 * @param array $principalInfo
 	 * @return TrashBinHome
+	 * @throws NotAuthenticated
 	 */
 	public function getChildForPrincipal(array $principalInfo) {
-		return new TrashBinHome($principalInfo, new TrashBinManager());
+		list(, $name) = \Sabre\Uri\split($principalInfo['uri']);
+		$sessionUser = $this->userSession->getUser();
+		if ($sessionUser === null || $name !== $sessionUser->getUID()) {
+			throw new NotAuthenticated();
+		}
+		return new TrashBinHome(new TrashBinManager(), $name);
 	}
 
 	public function getName() {

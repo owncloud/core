@@ -52,7 +52,7 @@ class ApiTest extends TestCase {
 	/** @var string */
 	private $subsubfolder;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_exclude_groups', 'no');
@@ -75,7 +75,7 @@ class ApiTest extends TestCase {
 		$this->userFolder = \OC::$server->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->view instanceof \OC\Files\View) {
 			$this->view->unlink($this->filename);
 			$this->view->deleteAll($this->folder);
@@ -245,7 +245,7 @@ class ApiTest extends TestCase {
 		$data = $result->getData();
 		$this->assertEquals(1, $data['permissions']);
 		$this->assertEmpty($data['expiration']);
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
@@ -281,7 +281,7 @@ class ApiTest extends TestCase {
 			$data['permissions']
 		);
 		$this->assertEmpty($data['expiration']);
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
@@ -497,7 +497,7 @@ class ApiTest extends TestCase {
 		$data = $result->getData();
 
 		// check if we have a token
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 		$id = $data['id'];
 
 		// check for correct link
@@ -1361,9 +1361,10 @@ class ApiTest extends TestCase {
 		\OC_Hook::clear('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\Tests\ApiTest', 'initTestMountPointsHook');
 	}
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testShareNonExisting() {
+		$this->expectException(\Exception::class);
+
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
 		$id = PHP_INT_MAX - 1;
@@ -1371,9 +1372,10 @@ class ApiTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
 	 */
 	public function testShareNotOwner() {
+		$this->expectException(\Exception::class);
+
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 		\OC\Files\Filesystem::file_put_contents('foo.txt', 'bar');
 		$info = \OC\Files\Filesystem::getFileInfo('foo.txt');
@@ -1413,7 +1415,7 @@ class ApiTest extends TestCase {
 		$this->assertInstanceOf(\OC\Files\FileInfo::class, $info);
 
 		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_LINK, null, Constants::PERMISSION_READ);
-		$this->assertInternalType('string', $result);
+		$this->assertIsString($result);
 
 		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2, 31);
 		$this->assertTrue($result);
@@ -1433,7 +1435,7 @@ class ApiTest extends TestCase {
 		// now the link share should expire because of enforced default expire date
 		// the user share should still exist
 		$result = Share::getItemShared('file', $info->getId());
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(1, $result);
 		$share = \reset($result);
 		$this->assertSame(Share::SHARE_TYPE_USER, $share['share_type']);
@@ -1480,7 +1482,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 		$this->assertEquals($date, \substr($data['expiration'], 0, 10));
 
 		// check for correct link
@@ -1514,7 +1516,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 		$this->assertEquals($date->format('Y-m-d') . ' 00:00:00', $data['expiration']);
 
 		// check for correct link

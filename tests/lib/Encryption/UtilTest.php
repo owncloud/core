@@ -29,7 +29,7 @@ class UtilTest extends TestCase {
 	/** @var  \OC\Encryption\Util */
 	private $util;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->view = $this->getMockBuilder('OC\Files\View')
 			->disableOriginalConstructor()
@@ -92,9 +92,10 @@ class UtilTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException
 	 */
 	public function testCreateHeaderFailed() {
+		$this->expectException(\OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException::class);
+
 		$header = ['header1' => 1, 'header2' => 2, 'oc_encryption_module' => 'foo'];
 
 		$em = $this->createMock('\OCP\Encryption\IEncryptionModule');

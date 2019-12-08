@@ -65,7 +65,7 @@ class PollIncomingSharesTest extends TestCase {
 	 */
 	private $externalManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->userManager = $this->createMock(IUserManager::class);
@@ -106,7 +106,10 @@ class PollIncomingSharesTest extends TestCase {
 		$this->commandTester = new CommandTester($command);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains("Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'", $output);
+		$this->assertStringContainsString(
+			"Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'",
+			$output
+		);
 	}
 
 	public function testUnavailableStorage() {
@@ -143,7 +146,7 @@ class PollIncomingSharesTest extends TestCase {
 		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Skipping external share with id "50" from remote "example.org". Reason: "Ooops"',
 			$output
 		);
@@ -166,7 +169,7 @@ class PollIncomingSharesTest extends TestCase {
 		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Skipping user "foo". Reason: user manager was unable to resolve the uid into the user object',
 			$output
 		);
@@ -207,7 +210,7 @@ class PollIncomingSharesTest extends TestCase {
 		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Remote "example.org" reports that external share with id "50" no longer exists. Removing it..',
 			$output
 		);

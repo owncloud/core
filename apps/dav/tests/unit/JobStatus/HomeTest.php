@@ -42,9 +42,10 @@ class HomeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testGetChildren() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);
 		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
@@ -64,9 +65,10 @@ class HomeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetChildNotFound() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);
 

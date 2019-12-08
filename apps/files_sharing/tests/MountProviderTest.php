@@ -54,7 +54,7 @@ class MountProviderTest extends \Test\TestCase {
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock('OCP\IConfig');

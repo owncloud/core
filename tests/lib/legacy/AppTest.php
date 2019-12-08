@@ -28,7 +28,7 @@ use Test\TestCase;
 class AppTest extends TestCase {
 	private $appPath;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->appPath = __DIR__ . '/../../../apps/appinfotestapp';
@@ -43,7 +43,7 @@ class AppTest extends TestCase {
 		\file_put_contents($infoXmlPath, $xml);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('NavigationManager');
 		\OC::$server->getAppManager()->clearAppsCache();
 		if (\is_dir($this->appPath)) {
@@ -207,9 +207,10 @@ class AppTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\App\AppNotFoundException
 	 */
 	public function testGetAppInfoDeleted() {
+		$this->expectException(\OCP\App\AppNotFoundException::class);
+
 		$info = \OC_App::getAppInfo('appinfotestapp');
 		$this->assertEqualsAppInfo($info);
 

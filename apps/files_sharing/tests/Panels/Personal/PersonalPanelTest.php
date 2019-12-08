@@ -36,7 +36,7 @@ class PersonalPanelTest extends \Test\TestCase {
 	/** @var PersonalPanel $personalPanel */
 	private $personalPanel;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -80,7 +80,10 @@ class PersonalPanelTest extends \Test\TestCase {
 			->willReturn('no');
 
 		$templateHtml = $this->personalPanel->getPanel()->fetchPage();
-		$this->assertContains('<p>Nothing to configure.</p>', $templateHtml);
+		$this->assertStringContainsString(
+			'<p>Nothing to configure.</p>',
+			$templateHtml
+		);
 	}
 
 	public function testGetPanelNotEmpty() {
@@ -100,6 +103,9 @@ class PersonalPanelTest extends \Test\TestCase {
 			->willReturn('yes');
 
 		$templateHtml = $this->personalPanel->getPanel()->fetchPage();
-		$this->assertContains('<form class="section" id="files_sharing_settings">', $templateHtml);
+		$this->assertStringContainsString(
+			'<form class="section" id="files_sharing_settings">',
+			$templateHtml
+		);
 	}
 }

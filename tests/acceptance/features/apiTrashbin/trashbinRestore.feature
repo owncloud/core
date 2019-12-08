@@ -266,14 +266,14 @@ Feature: Restore deleted files/folders
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.3
   Scenario Outline: A deleted file cannot be restored by a different user
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
     And user "user0" has deleted file "/textfile0.txt"
     When user "user1" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the trashbin API
-    Then the HTTP status code should be "404"
+    Then the HTTP status code should be "401"
     And as "user0" the folder with original path "/textfile0.txt" should exist in trash
     And user "user0" should not see the following elements
       | /textfile0.txt     |

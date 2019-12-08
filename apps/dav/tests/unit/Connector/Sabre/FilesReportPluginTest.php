@@ -66,7 +66,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 	/** @var Folder|\PHPUnit\Framework\MockObject\MockObject **/
 	private $userFolder;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
 			->disableOriginalConstructor()
@@ -594,9 +594,10 @@ class FilesReportPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\SystemTag\TagNotFoundException
 	 */
 	public function testProcessFilterRulesInvisibleTagAsUser() {
+		$this->expectException(\OCP\SystemTag\TagNotFoundException::class);
+
 		$this->groupManager->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(false));

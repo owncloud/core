@@ -60,7 +60,11 @@ class RootCollection extends SimpleCollection {
 		$filesCollection->disableListing = $disableListing;
 
 		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
-			$trashBinCollection = new TrashBin\RootCollection($userPrincipalBackend, 'principals/users');
+			$trashBinCollection = new TrashBin\RootCollection(
+				$userPrincipalBackend,
+				\OC::$server->getUserSession(),
+				'principals/users'
+			);
 			$trashBinCollection->disableListing = $disableListing;
 		}
 

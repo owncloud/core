@@ -23,22 +23,46 @@ namespace OCA\DAV\Tests\Unit\TrashBin;
 
 use OCA\DAV\TrashBin\RootCollection;
 use OCA\DAV\TrashBin\TrashBinHome;
+use OCP\IUser;
+use OCP\IUserSession;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 use Test\TestCase;
 
 class RootCollectionTest extends TestCase {
 	public function testGetName() {
 		$backEnd = $this->createMock(BackendInterface::class);
-		$collection = new RootCollection($backEnd);
+		$userSession = $this->createMock(IUserSession::class);
+		$collection = new RootCollection($backEnd, $userSession);
 		self::assertEquals('trash-bin', $collection->getName());
 	}
 
 	public function testGetChildForPrincipal() {
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('alice');
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn($user);
+
 		$backEnd = $this->createMock(BackendInterface::class);
-		$collection = new RootCollection($backEnd);
+		$collection = new RootCollection($backEnd, $userSession);
 		$child = $collection->getChildForPrincipal([
 			'uri' => 'principals/alice'
 		]);
 		self::assertInstanceOf(TrashBinHome::class, $child);
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\NotAuthenticated
+	 */
+	public function testGetChildForPrincipalWithUnauthorizedUser() {
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('john');
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn($user);
+
+		$backEnd = $this->createMock(BackendInterface::class);
+		$collection = new RootCollection($backEnd, $userSession);
+		$collection->getChildForPrincipal([
+			'uri' => 'principals/alice'
+		]);
 	}
 }

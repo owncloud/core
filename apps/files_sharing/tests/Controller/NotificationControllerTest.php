@@ -51,7 +51,7 @@ class NotificationControllerTest extends TestCase {
 	/** @var NotificationController $notificationController */
 	private $notificationController;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->request = $this->createMock(IRequest::class);
 		$this->mailNotifications = $this->createMock(MailNotifications::class);

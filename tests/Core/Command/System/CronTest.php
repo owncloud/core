@@ -51,7 +51,7 @@ class CronTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);
@@ -68,7 +68,10 @@ class CronTest extends TestCase {
 
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains('We are in maintenance mode, skipping cron', $output);
+		$this->assertStringContainsString(
+			'We are in maintenance mode, skipping cron',
+			$output
+		);
 	}
 
 	public function testSingleuser() {
@@ -80,7 +83,10 @@ class CronTest extends TestCase {
 
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains('We are in admin only mode, skipping cron', $output);
+		$this->assertStringContainsString(
+			'We are in admin only mode, skipping cron',
+			$output
+		);
 	}
 
 	public function testCronDisabled() {
@@ -93,7 +99,10 @@ class CronTest extends TestCase {
 
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains('Background Jobs are disabled!', $output);
+		$this->assertStringContainsString(
+			'Background Jobs are disabled!',
+			$output
+		);
 	}
 
 	public function testCronRun() {
@@ -113,6 +122,9 @@ class CronTest extends TestCase {
 
 		$this->commandTester->execute(['--progress' => true]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains('1 [->--------------------------]', $output);
+		$this->assertStringContainsString(
+			'1 [->--------------------------]',
+			$output
+		);
 	}
 }

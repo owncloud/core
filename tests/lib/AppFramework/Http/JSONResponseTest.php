@@ -35,7 +35,7 @@ class JSONResponseTest extends \Test\TestCase {
 	 */
 	private $json;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->json = new JSONResponse();
 	}
@@ -86,11 +86,12 @@ class JSONResponseTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Could not json_encode due to invalid non UTF-8 characters in the array: array (
 	 * @requires PHP 5.5
 	 */
 	public function testRenderWithNonUtf8Encoding() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Could not json_encode due to invalid non UTF-8 characters in the array: array (');
+
 		$params = ['test' => \hex2bin('e9')];
 		$this->json->setData($params);
 		$this->json->render();

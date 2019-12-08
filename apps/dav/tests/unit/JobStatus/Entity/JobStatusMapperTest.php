@@ -42,7 +42,7 @@ class JobStatusMapperTest extends TestCase {
 	/** @var JobStatus */
 	private $testJobStatus;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->database = \OC::$server->getDatabaseConnection();
 		$this->mapper = new JobStatusMapper($this->database);
@@ -54,7 +54,7 @@ class JobStatusMapperTest extends TestCase {
 		$this->testJobStatus->setStatusInfo(\json_encode([]));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		if ($this->mapper !== null && $this->testJobStatus !== null) {
 			$this->mapper->delete($this->testJobStatus);
@@ -62,9 +62,10 @@ class JobStatusMapperTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Doctrine\DBAL\Exception\UniqueConstraintViolationException
 	 */
 	public function testInsert() {
+		$this->expectException(\Doctrine\DBAL\Exception\UniqueConstraintViolationException::class);
+
 		$this->mapper->insert($this->testJobStatus);
 		$this->assertNotNull($this->testJobStatus->getId());
 		// below throws exception due to unique constraint violation

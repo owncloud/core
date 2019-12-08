@@ -34,7 +34,7 @@ class ProfileTest extends \Test\TestCase {
 	/** @var IUserSession */
 	private $userSession;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->groupManager = $this->getMockBuilder(IGroupManager::class)->getMock();
@@ -54,7 +54,7 @@ class ProfileTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(90, $this->panel->getPriority());
 	}
 
@@ -67,9 +67,9 @@ class ProfileTest extends \Test\TestCase {
 		$this->config->expects($this->once())->method('getUserValue')->will($this->returnValue(''));
 		$this->lfactory->expects($this->once())->method('findAvailableLanguages')->will($this->returnValue([]));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('test@example.com', $templateHtml);
-		$this->assertContains('<div id="groups" class="section">', $templateHtml);
-		$this->assertContains('group2', $templateHtml);
-		$this->assertContains('<select id="languageinput" name="lang"', $templateHtml);
+		$this->assertStringContainsString('test@example.com', $templateHtml);
+		$this->assertStringContainsString('<div id="groups" class="section">', $templateHtml);
+		$this->assertStringContainsString('group2', $templateHtml);
+		$this->assertStringContainsString('<select id="languageinput" name="lang"', $templateHtml);
 	}
 }
