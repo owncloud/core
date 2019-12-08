@@ -68,6 +68,7 @@ class SharingDialog extends OwncloudPage {
 	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
 	private $sharedWithGroupAndSharerName = null;
 	private $publicLinkRemoveDeclineMsg = "No";
+	private $shareTreeItemByNameAndPathXpath = "//li[@class='shareTree-item' and strong/text()='%s' and span/text()='via %s']";
 
 	/**
 	 * @var string
@@ -763,6 +764,23 @@ class SharingDialog extends OwncloudPage {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
+	/**
+	 * @param string $name user or group name
+	 * @param string $path
+	 *
+	 * @return NodeElement
+	 */
+	public function getShareTreeItem($name, $path) {
+		$fullXpath = \sprintf($this->shareTreeItemByNameAndPathXpath, $name, $path);
+		$item = $this->find("xpath", $fullXpath);
+		$this->assertElementNotNull(
+			$item,
+			__METHOD__ .
+			"\ncannot find item with name '$name' and path '$path'"
+		);
+		return $item;
+	}
+	
 	/**
 	 * waits for the dialog to appear
 	 *

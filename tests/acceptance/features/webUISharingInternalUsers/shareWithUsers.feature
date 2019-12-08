@@ -734,3 +734,39 @@ Feature: Sharing files and folders with internal users
     Then the following resources should not have share indicators on the webUI
       | simple-empty-folder |
       | lorem.txt           |
+
+  @skipOnOcV10.3
+  Scenario: sharing details of items inside a shared folder
+    Given these users have been created without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-empty-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with user "user2"
+    And user "user1" has logged in using the webUI
+    And the user has opened folder "simple-folder" using the webUI
+    When the user opens the sharing tab from the file action menu of folder "simple-empty-folder" using the webUI
+    Then user "user2" should be listed as share receiver via "simple-folder" on the webUI
+    When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
+    Then user "user2" should be listed as share receiver via "simple-folder" on the webUI
+
+  @skipOnOcV10.3
+  Scenario: sharing details of items inside a re-shared folder
+    Given these users have been created without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-empty-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with user "user2"
+    And user "user2" has shared folder "simple-folder" with user "user3"
+    And user "user2" has logged in using the webUI
+    And the user has opened folder "simple-folder" using the webUI
+    When the user opens the sharing tab from the file action menu of folder "simple-empty-folder" using the webUI
+    Then user "user3" should be listed as share receiver via "simple-folder" on the webUI
+    When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
+    Then user "user3" should be listed as share receiver via "simple-folder" on the webUI
