@@ -664,7 +664,8 @@ Feature: Share by public link
 			"""
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
-  Scenario: share indicator inside a shared folder
+  @skipOnOcV10.3
+  Scenario: sharing indicator inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created folder "/simple-folder/sub-folder"
     And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
@@ -676,22 +677,24 @@ Feature: Share by public link
       | sub-folder   |
       | textfile.txt |
 
-  Scenario: user uploads file inside a shared folder
+  @skipOnOcV10.3
+  Scenario: sharing indicator for file uploaded inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created a public link share with settings
-      | path         | /simple-folder |
+      | path | /simple-folder |
     And user "user1" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user uploads file "new-lorem.txt" using the webUI
     Then the following resources should have share indicators on the webUI
-      | new-lorem.txt           |
+      | new-lorem.txt |
 
-  Scenario: user creates folder inside a shared folder
+  @skipOnOcV10.3
+  Scenario: sharing indicator for folder created inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created a public link share with settings
-      | path         | /simple-folder |
+      | path | /simple-folder |
     And user "user1" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user creates a folder with the name "sub-folder" using the webUI
     Then the following resources should have share indicators on the webUI
-      | sub-folder           |
+      | sub-folder |

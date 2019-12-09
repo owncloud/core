@@ -771,7 +771,8 @@ Feature: Sharing files and folders with internal users
     When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
     Then user "user3" should be listed as share receiver via "simple-folder" on the webUI
 
-  Scenario: user uploads file inside a shared folder
+  @skipOnOcV10.3
+  Scenario: sharing indicator for file uploaded inside a shared folder
     Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
@@ -781,9 +782,10 @@ Feature: Sharing files and folders with internal users
     When the user opens folder "simple-empty-folder" using the webUI
     And the user uploads file "new-lorem.txt" using the webUI
     Then the following resources should have share indicators on the webUI
-      | new-lorem.txt           |
+      | new-lorem.txt |
 
-  Scenario: user creates folder inside a shared folder
+  @skipOnOcV10.3
+  Scenario: sharing indicator for folder created inside a shared folder
     Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
@@ -793,4 +795,4 @@ Feature: Sharing files and folders with internal users
     When the user opens folder "simple-empty-folder" using the webUI
     And the user creates a folder with the name "sub-folder" using the webUI
     Then the following resources should have share indicators on the webUI
-      | sub-folder           |
+      | sub-folder |
