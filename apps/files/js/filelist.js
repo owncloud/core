@@ -1779,7 +1779,7 @@
 
 					if (dir.shareTypes !== undefined) {
 						// Fetch all shares for directory in question
-						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: path }), function(e) {
+						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: path, reshares : true }), function(e) {
 							self._shareTreeCache[path] = {
 								name : dir.name,
 								shares : e.ocs.data
@@ -1888,9 +1888,16 @@
 
 				_.each(shares, function(share) {
 
+					var shareWith = share.share_with_displayname;
+
+					if (share.share_type === OC.Share.SHARE_TYPE_GROUP)
+						shareWith += ' (' + t('core', 'group') + ')';
+
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name })
-					var $name = $('<strong>', { class : 'shareTree-item-name', text : share.share_with_displayname })
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith })
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' })
+
+
 
 					$icon.avatar(share.share_with, 32)
 
