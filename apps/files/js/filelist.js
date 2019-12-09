@@ -1893,11 +1893,12 @@
 					if (share.share_type === OC.Share.SHARE_TYPE_GROUP)
 						shareWith += ' (' + t('core', 'group') + ')';
 
+					else if (share.share_type === OC.Share.SHARE_TYPE_REMOTE)
+						shareWith += ' (' + t('files_sharing', 'Remote share') + ')';
+
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name })
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith })
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' })
-
-
 
 					$icon.avatar(share.share_with, 32)
 
