@@ -1,0 +1,5 @@
+Change: Update league/flysystem (1.0.57 => 1.0.61)
+
+Includes changes to ensure emulating directories respects a directory named "0".
+
+https://github.com/owncloud/core/pull/36542
