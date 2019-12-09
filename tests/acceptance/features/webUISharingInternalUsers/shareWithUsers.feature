@@ -849,3 +849,25 @@ Feature: Sharing files and folders with internal users
     When the user browses to the shared-with-others page
     And the user opens folder "simple-empty-folder" using the webUI
     Then file "lorem.txt" should have share indicator on the webUI
+
+  Scenario: user uploads file inside a shared folder
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user1" has shared folder "/simple-empty-folder" with user "user2"
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    And the user uploads file "new-lorem.txt" using the webUI
+    Then file "new-lorem.txt" should have share indicator on the webUI
+
+  Scenario: user creates folder inside a shared folder
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user1" has shared folder "/simple-empty-folder" with user "user2"
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    And the user creates a folder with the name "sub-folder" using the webUI
+    Then folder "sub-folder" should have share indicator on the webUI
