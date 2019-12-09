@@ -664,6 +664,18 @@ Feature: Share by public link
 			"""
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
+  Scenario: share indicator inside a shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | sub-folder   |
+      | textfile.txt |
+
   Scenario: user uploads file inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created a public link share with settings
