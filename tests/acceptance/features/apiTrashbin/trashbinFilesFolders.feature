@@ -188,7 +188,7 @@ Feature: files and folders exist in the trashbin after being deleted
 
   # This issue makes this scenario behave differently based on previously created users.
   # So we use user that has not been created in any other scenarios.
-  @skipOnLDAP @skip_on_objectstore
+  @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user40" has been created with default attributes and skeleton files
@@ -206,7 +206,7 @@ Feature: files and folders exist in the trashbin after being deleted
 
   # This issue makes this scenario behave differently based on previously created users.
   # So we use user that has not been created in any other scenarios.
-  @skipOnLDAP @skip_on_objectstore
+  @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user60" has been created with default attributes and skeleton files
@@ -226,7 +226,7 @@ Feature: files and folders exist in the trashbin after being deleted
 
   # This issue makes this scenario behave differently based on previously created users.
   # So we use user that has not been created in any other scenarios.
-  @skipOnLDAP @skip_on_objectstore
+  @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user504" has been created with default attributes and skeleton files
