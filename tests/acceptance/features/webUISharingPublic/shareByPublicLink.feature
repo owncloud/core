@@ -710,4 +710,4 @@ Feature: Share by public link
     When the user opens folder "simple-folder" using the webUI
     And the user opens the share dialog for folder "sub-folder"
     And the user opens the public link share tab
-    Then public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+    Then public link with name "Public Link" should be listed as share receiver via "simple-folder" on the webUI
