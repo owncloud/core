@@ -87,6 +87,7 @@
     "Once every direct access" : "Her doğrudan erişimde bir kez",
     "External Storage" : "Harici Depolama",
     "Enable external storage" : "Harici depolamayı etkinleştir",
+    "External storage has been disabled by the administrator" : "Harici depolama yönetici tarafından devre dışı bırakıldı",
     "Folder name" : "Klasör ismi",
     "Authentication" : "Kimlik Doğrulama",
     "Configuration" : "Yapılandırma",

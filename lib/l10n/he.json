@@ -69,6 +69,7 @@
     "%s enter the database username." : "%s נכנס למסד נתוני שמות המשתמשים.",
     "%s enter the database name." : "%s נכנס למסד נתוני השמות.",
     "%s you may not use dots in the database name" : "%s לא ניתן להשתמש בנקודות בשם מסד הנתונים",
+    "%s enter the database name or connection string." : "%s יש להכניס את שם מסד הנתונים או את נתיב החיבור.",
     "Oracle connection could not be established" : "לא ניתן היה ליצור חיבור Oracle",
     "Oracle username and/or password not valid" : "שם משתמש ו/או סיסמת Oracle אינם תקפים",
     "DB Error: \"%s\"" : "שגיאת מסד נתונים: \"%s\"",

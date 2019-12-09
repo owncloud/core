@@ -19,6 +19,8 @@ OC.L10N.register(
     "Files and folders you share will show up here" : "Paylaştığınız dosya ve klasörler burada gösterilecek",
     "No shared links" : "Paylaşılan bağlantı yok",
     "Files and folders you share by link will show up here" : "Bağlantı ile paylaştığınız dosya ve klasörler burada gösterilecek",
+    "Accept Share" : "Paylaşımı Kabul Et",
+    "Decline Share" : "Paylaşımı Reddet",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "{owner}@{remote} konumundan {name} uzak paylaşımını eklemek istiyor musunuz?",
     "Remote share" : "Uzak paylaşım",
     "Remote share password" : "Uzak paylaşım parolası",
@@ -76,6 +78,8 @@ OC.L10N.register(
     "Public link of %2$s expired" : "%2$s için paylaşım bağlantısı süresi doldu",
     "Shared by %2$s" : "%2$s tarafından paylaşıldı",
     "Shares" : "Paylaşımlar",
+    "File sharing" : "Dosya paylaşımı",
+    "Public link" : "Herkese açık bağlantı",
     "Share API is disabled" : "API paylaşımı devre dışı",
     "Wrong share ID, share doesn't exist" : "Yanlış kimlik paylaşımı, paylaşım mevcut değil",
     "Could not delete share" : "Paylaşım silinemedi",
@@ -101,6 +105,7 @@ OC.L10N.register(
     "Password" : "Parola",
     "No entries found in this folder" : "Bu klasörde hiçbir girdi bulunamadı",
     "Name" : "Ad",
+    "State" : "Durum",
     "Share time" : "Paylaşma zamanı",
     "Expiration date" : "Son kullanım tarihi",
     "Sorry, this link doesn’t seem to work anymore." : "Üzgünüz, bu bağlantı artık çalışıyor gibi görünmüyor.",
@@ -112,6 +117,8 @@ OC.L10N.register(
     "%s is publicly shared" : "%s herkesle paylaşılmaktadır. ",
     "Download" : "İndir",
     "Download %s" : "İndir: %s",
-    "Direct link" : "Doğrudan bağlantı"
+    "Direct link" : "Doğrudan bağlantı",
+    "Nothing to configure." : "Konfigüre edilecek birşey yok.",
+    "Group Sharing Blacklist" : "Grup Paylaşımı Kara Liste"
 },
 "nplurals=2; plural=(n > 1);");

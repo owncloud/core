@@ -286,7 +286,7 @@ OC.L10N.register(
     "Line: %s" : "Zeile: %s",
     "Trace" : "Ablauf",
     "Imprint" : "Impressum",
-    "Privacy Policy" : "Datenschutzerkärung",
+    "Privacy Policy" : "Datenschutzerklärung",
     "Create an <strong>admin account</strong>" : "<strong>Administrator-Konto</strong> anlegen",
     "Username" : "Benutzername",
     "Storage & database" : "Speicher & Datenbank",
