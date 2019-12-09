@@ -316,7 +316,6 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for file "lorem.txt"
     Then the group "grp1" should not be in share with group list
 
-<<<<<<< HEAD
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder
     Given user "user1" has created folder "/simple-folder"

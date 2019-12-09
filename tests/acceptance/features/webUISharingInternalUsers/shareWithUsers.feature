@@ -746,7 +746,6 @@ Feature: Sharing files and folders with internal users
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "user1" has shared folder "simple-folder" with user "user2"
     And user "user1" has logged in using the webUI
-<<<<<<< HEAD
     And the user has opened folder "simple-folder" using the webUI
     When the user opens the sharing tab from the file action menu of folder "simple-empty-folder" using the webUI
     Then user "user2" should be listed as share receiver via "simple-folder" on the webUI
