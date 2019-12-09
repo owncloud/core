@@ -1,5 +1,7 @@
 Bugfix: Files shared with user cause purge of the trashbin content
 
-Files_thrashbin app counted incoming shares on calculation of the occupied space. It caused purge of the trashbin content when trashbin_retention_obligation is auto, user has quota set and incoming shares exceed 50% of this quota.
+Files_trashbin app counted incoming shares on calculation of the occupied space.
+It caused purge of the trashbin content when trashbin_retention_obligation is auto,
+user has quota set and incoming shares exceed 50% of this quota.
 
 https://github.com/owncloud/core/pull/36494
