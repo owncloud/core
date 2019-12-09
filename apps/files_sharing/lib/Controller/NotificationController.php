@@ -32,6 +32,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCP\Share\Exceptions\GenericShareException;
 
 class NotificationController extends OCSController {
 	/** @var MailNotifications */
@@ -66,6 +67,7 @@ class NotificationController extends OCSController {
 	}
 
 	/**
+	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param string $link URL of the shared link
@@ -79,12 +81,17 @@ class NotificationController extends OCSController {
 		$sender = $this->userSession->getUser();
 		$result = $recipients;
 		if ($sender) {
-			$result = $this->mailNotifications->sendLinkShareMail(
-				$sender,
-				$recipients,
-				$link,
-				$personalNote
-			);
+			try {
+				$result = $this->mailNotifications->sendLinkShareMail(
+					$sender,
+					$recipients,
+					$link,
+					$personalNote
+				);
+			} catch (GenericShareException $e) {
+				$code = $e->getCode() === 0 ? 403 : $e->getCode();
+				return new Result(null, $code, $e->getHint());
+			}
 		}
 		if (!empty($result)) {
 			$message = $this->l->t("Couldn't send mail to following recipient(s): %s ",
@@ -126,7 +133,12 @@ class NotificationController extends OCSController {
 		$userFolder = $this->rootFolder->getUserFolder($sender->getUID());
 		$nodes = $userFolder->getById($itemSource, true);
 		$node = $nodes[0] ?? null;
-		$result = $this->mailNotifications->sendInternalShareMail($sender, $node, $shareType, $recipientList);
+		try {
+			$result = $this->mailNotifications->sendInternalShareMail($sender, $node, $shareType, $recipientList);
+		} catch (GenericShareException $e) {
+			$code = $e->getCode() === 0 ? 403 : $e->getCode();
+			return new Result(null, $code, $e->getHint());
+		}
 
 		// if we were able to send to at least one recipient, mark as sent
 		// allowing the user to resend would spam users who already got a notification

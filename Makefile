@@ -60,6 +60,7 @@ TEST_PHP_SUITE=
 TEST_SERVER_URL?=
 TEST_SERVER_FED_URL?=
 TEST_EXTERNAL_USER_BACKENDS?=
+TESTING_REMOTE_SYSTEM?=true
 BEHAT_FEATURE?=
 NORERUN?=
 BEHAT_RERUN_TIMES?=
@@ -199,15 +200,15 @@ test-js-debug: $(nodejs_deps)
 
 .PHONY: test-acceptance-api
 test-acceptance-api: $(acceptance_test_deps)
-	./tests/acceptance/run.sh --remote --type api
+	./tests/acceptance/run.sh --type api
 
 .PHONY: test-acceptance-cli
 test-acceptance-cli: $(acceptance_test_deps)
-	./tests/acceptance/run.sh --remote --type cli
+	./tests/acceptance/run.sh --type cli
 
 .PHONY: test-acceptance-webui
 test-acceptance-webui: $(acceptance_test_deps)
-	./tests/acceptance/run.sh --remote --type webUI
+	./tests/acceptance/run.sh --type webUI
 
 .PHONY: test-php-style
 test-php-style: vendor-bin/owncloud-codestyle/vendor vendor-bin/php_codesniffer/vendor
@@ -391,17 +392,8 @@ vendor-bin/phan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phan/compo
 vendor-bin/phan/composer.lock: vendor-bin/phan/composer.json
 	@echo phan composer.lock is not up to date.
 
-# The first line of "php --version" output looks like:
-# PHP 7.2.16-1+ubuntu18.04.1+deb.sury.org+1 (cli) (built: Mar  7 2019 20:23:29) ( NTS )
-# We want the 2nd "word", then the first 2 numbers separated by the dot
-PHP_MINOR_VERSION = $(shell php --version | head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2)
-
 vendor-bin/phpstan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phpstan/composer.lock
-ifeq "$(PHP_MINOR_VERSION)" "7.0"
-	@echo "phpstan is not supported on PHP 7.0 so it is not being installed"
-else
 	composer bin phpstan install --no-progress
-endif
 
 vendor-bin/phpstan/composer.lock: vendor-bin/phpstan/composer.json
 	@echo phpstan composer.lock is not up to date.

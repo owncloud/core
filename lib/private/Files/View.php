@@ -8,7 +8,7 @@
  * @author Jesús Macias <jmacias@solidgear.es>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author karakayasemi <karakayasemi@itu.edu.tr>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  * @author Klaas Freitag <freitag@owncloud.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Luke Policinski <lpolicinski@gmail.com>
@@ -352,10 +352,11 @@ class View {
 	 */
 	public function rmdir($path) {
 		return $this->emittingCall(function () use (&$path) {
-			if (($path !== '') &&
-				(\strpos($this->config->getSystemValue('share_folder', '/'), $path) !== false)) {
-				Util::writeLog("core", "The folder $path could not be deleted as it is configured as share_folder in config.", Util::WARN);
-				return false;
+			if ($path !== '') {
+				if ($this->isShareFolderOrShareFolderParent($path)) {
+					Util::writeLog("core", "The folder $path could not be deleted as it is configured as share_folder in config.", Util::WARN);
+					return false;
+				}
 			}
 			$absolutePath = $this->getAbsolutePath($path);
 			$mount = Filesystem::getMountManager()->find($absolutePath);
@@ -375,6 +376,24 @@ class View {
 			}
 			return $result;
 		}, ['before' => ['path' => $this->getAbsolutePath($path)], 'after' => ['path' => $this->getAbsolutePath($path)]], 'file', 'delete');
+	}
+
+	/**
+	 * Checks whether given path is a share folder or one of share folder parents
+	 *
+	 * @param $path - path relative to the files folder
+	 *
+	 * @return bool
+	 */
+	protected function isShareFolderOrShareFolderParent($path) {
+		$shareFolder = \trim($this->config->getSystemValue('share_folder', '/'), '/');
+		if ($shareFolder === '') {
+			return false;
+		}
+		$user = \OC_User::getUser();
+		$shareFolderAbsolutePath = "/$user/files/$shareFolder";
+		$trimmedAbsolutePath = $this->getAbsolutePath(\trim($path, '/'));
+		return $shareFolderAbsolutePath === $trimmedAbsolutePath || \strpos($shareFolderAbsolutePath, "$trimmedAbsolutePath/") === 0;
 	}
 
 	/**
@@ -1433,6 +1452,16 @@ class View {
 			if ($mount instanceof MoveableMount && $internalPath === '') {
 				$data['permissions'] |= \OCP\Constants::PERMISSION_DELETE;
 			}
+			try {
+				$itemPath = $this->getPath($data['fileid'], false);
+				$hasShareFolderInPath = $this->isShareFolderOrShareFolderParent($itemPath);
+			} catch (NotFoundException $e) {
+				$hasShareFolderInPath = false;
+			}
+			if ($hasShareFolderInPath) {
+				$data['permissions'] = $data['permissions'] & ~\OCP\Constants::PERMISSION_DELETE;
+				$data['permissions'] = $data['permissions'] & ~\OCP\Constants::PERMISSION_SHARE;
+			}
 
 			$owner = $this->getUserObjectForOwner($storage->getOwner($internalPath));
 			$info = new FileInfo($path, $storage, $internalPath, $data, $mount, $owner);
@@ -1501,8 +1530,18 @@ class View {
 				return (!\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
 			});
 			$files = \array_map(function (ICacheEntry $content) use ($path, $storage, $mount, $sharingDisabled) {
-				if ($sharingDisabled) {
+				try {
+					$itemPath = $this->getPath($content['fileid'], false);
+					$hasShareFolderInPath = $this->isShareFolderOrShareFolderParent($itemPath);
+				} catch (NotFoundException $e) {
+					$hasShareFolderInPath = false;
+				}
+
+				if ($sharingDisabled || $hasShareFolderInPath) {
 					$content['permissions'] = $content['permissions'] & ~\OCP\Constants::PERMISSION_SHARE;
+				}
+				if ($hasShareFolderInPath) {
+					$content['permissions'] = $content['permissions'] & ~\OCP\Constants::PERMISSION_DELETE;
 				}
 				$owner = $this->getUserObjectForOwner($storage->getOwner($content['path']));
 				return new FileInfo($path . '/' . $content['name'], $storage, $content['path'], $content, $mount, $owner);
@@ -1771,7 +1810,10 @@ class View {
 		$id = (int)$id;
 		$manager = Filesystem::getMountManager();
 		$mounts = $manager->findIn($this->fakeRoot);
-		$mounts[] = $manager->find($this->fakeRoot);
+		$findResult = $manager->find($this->fakeRoot);
+		if ($findResult) {
+			$mounts[] = $findResult;
+		}
 		// reverse the array so we start with the storage this view is in
 		// which is the most likely to contain the file we're looking for
 		$mounts = \array_reverse($mounts);

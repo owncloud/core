@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required
+@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
 Feature: Share by public link
   As a user
   I want to share files through a publicly accessible link
@@ -125,7 +125,7 @@ Feature: Share by public link
   Scenario: user tries to create a public link with read-write permission without entering share password while enforce password on read-write public share is enforced
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has logged in using the webUI
-    And parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_links_password_read_write_delete" of app "core" has been set to "yes"
     When the user tries to create a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
@@ -265,23 +265,6 @@ Feature: Share by public link
     And the user does not save any changes in the edit public link share popup
     And the public tries to access the last created public link with wrong password "qwertyui" using the webUI
     Then the public should not get access to the publicly shared file
-
-  Scenario: user shares a public link via email with a personal message
-    Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
-    And user "user1" has created folder "/simple-folder"
-    And user "user1" has logged in using the webUI
-    When the user creates a new public link for folder "simple-folder" using the webUI with
-      | email           | foo@bar.co  |
-      | personalMessage | lorem ipsum |
-    Then the email address "foo@bar.co" should have received an email with the body containing
-			"""
-			User One shared simple-folder with you
-			"""
-    And the email address "foo@bar.co" should have received an email with the body containing
-			"""
-			lorem ipsum
-			"""
-    And the email address "foo@bar.co" should have received an email containing the last shared public link
 
   Scenario: user edits a name of an already existing public link
     Given user "user1" has created folder "/simple-folder"
@@ -664,3 +647,19 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "original content"
     And all the links to download the public share should be the same
+
+  @mailhog @skipOnOcV10.3
+  Scenario: user without email shares a public link via email
+    Given these users have been created without skeleton files:
+      | username | password |
+      | user0    | 1234     |
+    And user "user0" has created folder "/simple-folder"
+    And parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+    And user "user0" has logged in using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI with
+      | email           | foo@bar.co  |
+    Then the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			user0 shared simple-folder with you
+			"""
+    And the email address "foo@bar.co" should have received an email containing the last shared public link

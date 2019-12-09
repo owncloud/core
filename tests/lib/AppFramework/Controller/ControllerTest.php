@@ -67,7 +67,7 @@ class ControllerTest extends TestCase {
 	/** @var DIContainer */
 	private $app;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$request = new Request(
@@ -152,9 +152,10 @@ class ControllerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 */
 	public function testFormatResonseInvalidFormat() {
+		$this->expectException(\DomainException::class);
+
 		$this->controller->buildResponse(null, 'test');
 	}
 

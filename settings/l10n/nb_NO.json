@@ -190,7 +190,6 @@
     "Allow users to share via link" : "Tillat brukere å dele via lenke",
     "Allow public uploads" : "Tillat offentlig opplasting",
     "Enforce password protection for read-only links" : "Krev passordbeskyttelse for skrivebeskyttede linker",
-    "Enforce password protection for read & write links" : "Krev passordbeskyttelse for les og skriv linker",
     "Enforce password protection for upload-only (File Drop) links" : "Krev passordbeskyttelse for bare opplasting (File Drop) linker",
     "Set default expiration date" : "Sett standard utløpsdato",
     "Expire after " : "Utløper etter",

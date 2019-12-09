@@ -76,23 +76,23 @@ rm -rf ${DATA_DIRECTORY} config/config.php
 echo "waiting for database to be ready"
 case "${DB_TYPE}" in
   mariadb)
-    wait-for-it mariadb:3306
+    wait-for-it -t 120 mariadb:3306
     DB=mysql
     ;;
   mysql)
-    wait-for-it mysql:3306
+    wait-for-it -t 120 mysql:3306
     DB=mysql
     ;;
-  mysqlmb4)
-    wait-for-it mysqlmb4:3306
+  mysql8)
+    wait-for-it -t 120 mysql8:3306
     DB=mysql
     ;;
   postgres)
-    wait-for-it postgres:5432
+    wait-for-it -t 120 postgres:5432
     DB=pgsql
     ;;
   oracle)
-    wait-for-it oracle:1521
+    wait-for-it -t 120 oracle:1521
     DB=oci
     DB_USERNAME=autotest
     DB_NAME='XE'
@@ -129,9 +129,15 @@ install_cmd="maintenance:install -vvv \
       --data-dir=${DATA_DIRECTORY} "
 
 if [[ "${DB_TYPE}" != "sqlite" ]]; then
-  install_cmd+=" --database-host=${DB_TYPE} \
-                 --database-user=${DB_USERNAME} \
-                 --database-pass=${DB_PASSWORD}"
+    if [[ "${DB_TYPE}" != "oracle" ]]; then
+      install_cmd+=" --database-host=${DB_TYPE} \
+                     --database-user=${DB_USERNAME} \
+                     --database-pass=${DB_PASSWORD}"
+    else
+      install_cmd+=" --database-connection-string=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${DB_TYPE})(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE))) \
+                     --database-user=${DB_USERNAME} \
+                     --database-pass=${DB_PASSWORD}"
+    fi
 fi
 
 

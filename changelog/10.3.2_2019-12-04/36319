@@ -1,0 +1,5 @@
+Bugfix: LargeFileHelper::getFileSizeViaCurl is broken with newer libcurl
+
+getFileSizeViaCurl is a workaround for 32 bit platforms. Path separator was encoded when encoding the path but newer libcurl doesn't support that.
+
+https://github.com/owncloud/core/pull/36319

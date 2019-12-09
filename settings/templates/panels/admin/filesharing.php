@@ -43,7 +43,13 @@
 			value="1" <?php if ($_['enforceLinkPasswordReadWrite'] === 'yes') {
 	print_unescaped('checked="checked"');
 } ?> />
-		<label for="enforceLinkPasswordReadWrite"><?php p($l->t('Enforce password protection for read & write links'));?></label><br/>
+		<label for="enforceLinkPasswordReadWrite"><?php p($l->t('Enforce password protection for read + write links'));?></label><br/>
+
+		<input type="checkbox" name="shareapi_enforce_links_password_read_write_delete" id="enforceLinkPasswordReadWriteDelete" class="checkbox"
+			   value="1" <?php if ($_['enforceLinkPasswordReadWriteDelete'] === 'yes') {
+	print_unescaped('checked="checked"');
+} ?> />
+		<label for="enforceLinkPasswordReadWriteDelete"><?php p($l->t('Enforce password protection for read + write + delete links'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_enforce_links_password_write_only" id="enforceLinkPasswordWriteOnly" class="checkbox"
 			value="1" <?php if ($_['enforceLinkPasswordWriteOnly'] === 'yes') {

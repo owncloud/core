@@ -40,7 +40,6 @@ use OCP\UserInterface;
  * @method void setState(integer $state)
  * @method string getQuota()
  * @method void setQuota(string $quota)
- * @method string getHome()
  * @method void setHome(string $home)
  *
  * @package OC\User
@@ -114,5 +113,12 @@ class Account extends Entity {
 	 */
 	public function getSearchTerms() {
 		return $this->terms;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getHome() {
+		return (string) $this->getter('home');
 	}
 }

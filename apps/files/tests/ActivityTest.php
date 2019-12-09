@@ -55,7 +55,7 @@ class ActivityTest extends TestCase {
 	/** @var \OCA\Files\Activity */
 	protected $activityExtension;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder('OCP\IRequest')
@@ -113,7 +113,7 @@ class ActivityTest extends TestCase {
 
 	public function testNotificationTypes() {
 		$result = $this->activityExtension->getNotificationTypes('en');
-		$this->assertInternalType('array', $result, 'Asserting getNotificationTypes() returns an array');
+		$this->assertIsArray($result, 'Asserting getNotificationTypes() returns an array');
 		$this->assertCount(5, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
@@ -124,7 +124,7 @@ class ActivityTest extends TestCase {
 
 	public function testDefaultTypes() {
 		$result = $this->activityExtension->getDefaultTypes('stream');
-		$this->assertInternalType('array', $result, 'Asserting getDefaultTypes(stream) returns an array');
+		$this->assertIsArray($result, 'Asserting getDefaultTypes(stream) returns an array');
 		$this->assertCount(4, $result);
 		$result = \array_flip($result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);

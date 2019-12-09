@@ -63,13 +63,10 @@ class SharingHelper {
 	 *                                   share with.
 	 * @param string|int|string[]|int[]|null $permissions The permissions to set on the share.
 	 *                                                    1 = read; 2 = update; 4 = create;
-	 *                                                    8 = delete; 16 = share; 31 = all
-	 *                                                    15 = change
-	 *                                                    5 = uploadwriteonly
+	 *                                                    8 = delete; 16 = share
 	 *                                                    (default: 31, for public shares: 1)
-	 *                                                    Pass either the (total) number,
-	 *                                                    or the keyword,
-	 *                                                    or an array of keywords or numbers.
+	 *                                                    Pass either the (total) number or array of numbers,
+	 *                                                    or any of the above keywords or array of keywords.
 	 * @param string|null $linkName A (human-readable) name for the share,
 	 *                              which can be up to 64 characters in length.
 	 * @param string|null $expireDate **NOT IMPLEMENTED**
@@ -156,9 +153,7 @@ class SharingHelper {
 	 * 'update' => 2
 	 * 'create' => 4
 	 * 'delete' => 8
-	 * 'change' => 15
 	 * 'share' => 16
-	 * 'all' => 31
 	 *
 	 * @param string[]|string|int|int[] $permissions
 	 *

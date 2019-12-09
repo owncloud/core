@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: capabilities
 
   Background:
@@ -30,42 +30,75 @@ Feature: capabilities
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
 
+  Scenario: Check that search_min_length can be changed
+    When the administrator updates system config key "user.search_min_length" with value "4" using the occ command
+    Then the capabilities setting of "files_sharing" path "search_min_length" should be "4"
+
   @smokeTest
-  Scenario: getting capabilities with admin user
+  Scenario: getting default capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
-      | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
-      | core          | webdav-root                           | remote.php/webdav |
-      | core          | status@@@edition                      | %edition%         |
-      | core          | status@@@productname                  | %productname%     |
-      | core          | status@@@version                      | %version%         |
-      | core          | status@@@versionstring                | %versionstring%   |
-      | files_sharing | api_enabled                           | 1                 |
-      | files_sharing | public@@@enabled                      | 1                 |
-      | files_sharing | public@@@upload                       | 1                 |
-      | files_sharing | public@@@send_mail                    | EMPTY             |
-      | files_sharing | public@@@social_share                 | 1                 |
-      | files_sharing | resharing                             | 1                 |
-      | files_sharing | federation@@@outgoing                 | 1                 |
-      | files_sharing | federation@@@incoming                 | 1                 |
-      | files_sharing | group_sharing                         | 1                 |
-      | files_sharing | share_with_group_members_only         | EMPTY             |
-      | files_sharing | user_enumeration@@@enabled            | 1                 |
-      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
-      | files         | bigfilechunking                       | 1                 |
+      | capability    | path_to_element                           | value             |
+      | core          | pollinterval                              | 60                |
+      | core          | webdav-root                               | remote.php/webdav |
+      | core          | status@@@edition                          | %edition%         |
+      | core          | status@@@productname                      | %productname%     |
+      | core          | status@@@version                          | %version%         |
+      | core          | status@@@versionstring                    | %versionstring%   |
+      | files_sharing | api_enabled                               | 1                 |
+      | files_sharing | default_permissions                       | 31                |
+      | files_sharing | search_min_length                         | 2                 |
+      | files_sharing | public@@@enabled                          | 1                 |
+      | files_sharing | public@@@multiple                         | 1                 |
+      | files_sharing | public@@@upload                           | 1                 |
+      | files_sharing | public@@@supports_upload_only             | 1                 |
+      | files_sharing | public@@@send_mail                        | EMPTY             |
+      | files_sharing | public@@@social_share                     | 1                 |
+      | files_sharing | public@@@enforced                         | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@read_only         | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@read_write        | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@upload_only       | EMPTY             |
+      | files_sharing | public@@@enforced_for@@@read_write_delete | EMPTY             |
+      | files_sharing | public@@@expire_date@@@enabled            | EMPTY             |
+      | files_sharing | public@@@defaultPublicLinkShareName       | Public link       |
+      | files_sharing | resharing                                 | 1                 |
+      | files_sharing | federation@@@outgoing                     | 1                 |
+      | files_sharing | federation@@@incoming                     | 1                 |
+      | files_sharing | group_sharing                             | 1                 |
+      | files_sharing | share_with_group_members_only             | EMPTY             |
+      | files_sharing | share_with_membership_groups_only         | EMPTY             |
+      | files_sharing | auto_accept_share                         | 1                 |
+      | files_sharing | user_enumeration@@@enabled                | 1                 |
+      | files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
+      | files_sharing | user@@@send_mail                          | EMPTY             |
+      | files         | bigfilechunking                           | 1                 |
 
   @files_trashbin-app-required
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
-      | files | undelete | 1 |
+      | capability | path_to_element | value |
+      | files      | undelete        | 1     |
 
   @files_versions-app-required
   Scenario: getting versions app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
-      | files | versioning | 1 |
+      | capability | path_to_element | value |
+      | files      | versioning      | 1     |
+
+  Scenario: getting default_permissions capability with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element     | value |
+      | files_sharing | default_permissions | 31    |
+
+  Scenario: default_permissions capability can be changed
+    Given parameter "shareapi_default_permissions" of app "core" has been set to "7"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element     | value |
+      | files_sharing | default_permissions | 7     |
 
 	#feature added in #31824 will be released in 10.0.10
   @smokeTest @skipOnOcV10.0.9
@@ -84,7 +117,6 @@ Feature: capabilities
       | capability | path_to_element | value |
       | async      |                 | 1.0   |
 
-	#feature added in #32414 will be released in 10.0.10
   @skipOnOcV10.0.9
   Scenario: getting async capabilites when async operations are disabled
     Given the administrator has disabled async operations
@@ -103,6 +135,7 @@ Feature: capabilities
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
       | files_sharing | public@@@enabled                      | 1                 |
+      | files_sharing | public@@@multiple                     | 1                 |
       | files_sharing | public@@@upload                       | EMPTY             |
       | files_sharing | public@@@send_mail                    | EMPTY             |
       | files_sharing | public@@@social_share                 | 1                 |
@@ -125,6 +158,7 @@ Feature: capabilities
       | files_sharing | api_enabled           | EMPTY             |
       | files_sharing | can_share             | EMPTY             |
       | files_sharing | public@@@enabled      | EMPTY             |
+      | files_sharing | public@@@multiple     | EMPTY             |
       | files_sharing | public@@@upload       | EMPTY             |
       | files_sharing | resharing             | EMPTY             |
       | files_sharing | federation@@@outgoing | 1                 |
@@ -141,6 +175,7 @@ Feature: capabilities
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
       | files_sharing | public@@@enabled                      | EMPTY             |
+      | files_sharing | public@@@multiple                     | EMPTY             |
       | files_sharing | public@@@upload                       | EMPTY             |
       | files_sharing | resharing                             | 1                 |
       | files_sharing | federation@@@outgoing                 | 1                 |
@@ -428,6 +463,53 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
+  Scenario: Changing only share with membership groups
+    Given parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                       | value             |
+      | core          | pollinterval                          | 60                |
+      | core          | webdav-root                           | remote.php/webdav |
+      | files_sharing | api_enabled                           | 1                 |
+      | files_sharing | can_share                             | 1                 |
+      | files_sharing | public@@@enabled                      | 1                 |
+      | files_sharing | public@@@upload                       | 1                 |
+      | files_sharing | public@@@send_mail                    | EMPTY             |
+      | files_sharing | public@@@social_share                 | 1                 |
+      | files_sharing | resharing                             | 1                 |
+      | files_sharing | federation@@@outgoing                 | 1                 |
+      | files_sharing | federation@@@incoming                 | 1                 |
+      | files_sharing | group_sharing                         | 1                 |
+      | files_sharing | share_with_group_members_only         | EMPTY             |
+      | files_sharing | share_with_membership_groups_only     | 1                 |
+      | files_sharing | user_enumeration@@@enabled            | 1                 |
+      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
+      | files         | bigfilechunking                       | 1                 |
+
+  Scenario: Changing auto accept share
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                       | value             |
+      | core          | pollinterval                          | 60                |
+      | core          | webdav-root                           | remote.php/webdav |
+      | files_sharing | api_enabled                           | 1                 |
+      | files_sharing | can_share                             | 1                 |
+      | files_sharing | public@@@enabled                      | 1                 |
+      | files_sharing | public@@@upload                       | 1                 |
+      | files_sharing | public@@@send_mail                    | EMPTY             |
+      | files_sharing | public@@@social_share                 | 1                 |
+      | files_sharing | resharing                             | 1                 |
+      | files_sharing | federation@@@outgoing                 | 1                 |
+      | files_sharing | federation@@@incoming                 | 1                 |
+      | files_sharing | group_sharing                         | 1                 |
+      | files_sharing | share_with_group_members_only         | EMPTY             |
+      | files_sharing | share_with_membership_groups_only     | EMPTY             |
+      | files_sharing | auto_accept_share                     | EMPTY             |
+      | files_sharing | user_enumeration@@@enabled            | 1                 |
+      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
+      | files         | bigfilechunking                       | 1                 |
+
   Scenario: Changing allow share dialog user enumeration
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -469,6 +551,29 @@ Feature: capabilities
       | files_sharing | share_with_group_members_only         | EMPTY             |
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | 1                 |
+      | files         | bigfilechunking                       | 1                 |
+
+  Scenario: Changing allow mail notification
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                       | value             |
+      | core          | pollinterval                          | 60                |
+      | core          | webdav-root                           | remote.php/webdav |
+      | files_sharing | api_enabled                           | 1                 |
+      | files_sharing | can_share                             | 1                 |
+      | files_sharing | public@@@enabled                      | 1                 |
+      | files_sharing | public@@@upload                       | 1                 |
+      | files_sharing | public@@@send_mail                    | EMPTY             |
+      | files_sharing | public@@@social_share                 | 1                 |
+      | files_sharing | resharing                             | 1                 |
+      | files_sharing | federation@@@outgoing                 | 1                 |
+      | files_sharing | federation@@@incoming                 | 1                 |
+      | files_sharing | group_sharing                         | 1                 |
+      | files_sharing | share_with_group_members_only         | EMPTY             |
+      | files_sharing | user_enumeration@@@enabled            | 1                 |
+      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
+      | files_sharing | user@@@send_mail                      | 1                 |
       | files         | bigfilechunking                       | 1                 |
 
   Scenario: Changing exclude groups from sharing

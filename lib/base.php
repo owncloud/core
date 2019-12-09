@@ -294,7 +294,7 @@ class OC {
 			&& !$isOccControllerRequested
 		) {
 			// send http status 503
-			\header('HTTP/1.1 503 Service Temporarily Unavailable');
+			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');
 			\header('Retry-After: 120');
 
@@ -322,7 +322,7 @@ class OC {
 			}
 		}
 		// send http status 503
-		\header('HTTP/1.1 503 Service Temporarily Unavailable');
+		\http_response_code(503);
 		\header('Status: 503 Service Temporarily Unavailable');
 		\header('Retry-After: 120');
 
@@ -369,7 +369,7 @@ class OC {
 		}
 		if ($disableWebUpdater || $tooBig) {
 			// send http status 503
-			\header('HTTP/1.1 503 Service Temporarily Unavailable');
+			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');
 			\header('Retry-After: 120');
 
@@ -445,7 +445,10 @@ class OC {
 			// if this is a new session, invalidate any previously stored auth token.
 			// this could happen if the session disappears / expires in the server but the user
 			// didn't log out explicitly
-			\OC::$server->getUserSession()->invalidateSessionToken();
+			if (\OC::$server->getUserSession() !== null) {
+				// web installer doesn't have a valid userSession at this point
+				\OC::$server->getUserSession()->invalidateSessionToken();
+			}
 		} else {
 			if (\time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime) {
 				// session timeout
@@ -684,7 +687,7 @@ class OC {
 		// Check whether the sample configuration has been copied
 		if ($systemConfig->getValue('copied_sample_config', false)) {
 			$l = \OC::$server->getL10N('lib');
-			\header('HTTP/1.1 503 Service Temporarily Unavailable');
+			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');
 			OC_Template::printErrorPage(
 				$l->t('Sample configuration detected'),
@@ -706,7 +709,7 @@ class OC {
 			&& !\OC::$server->getTrustedDomainHelper()->isTrustedDomain($host)
 			&& self::$server->getConfig()->getSystemValue('installed', false)
 		) {
-			\header('HTTP/1.1 400 Bad Request');
+			\http_response_code(400);
 			\header('Status: 400 Bad Request');
 
 			\OC::$server->getLogger()->warning(
@@ -923,7 +926,7 @@ class OC {
 				}
 				throw $e;
 			} catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
-				//header('HTTP/1.0 404 Not Found');
+				//http_response_code(404);
 			} catch (Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
 				OC_Response::setStatus(405);
 				return;
@@ -935,7 +938,7 @@ class OC {
 			// not allowed any more to prevent people
 			// mounting this root directly.
 			// Users need to mount remote.php/webdav instead.
-			\header('HTTP/1.1 405 Method Not Allowed');
+			\http_response_code(405);
 			\header('Status: 405 Method Not Allowed');
 			return;
 		}
@@ -995,6 +998,59 @@ class OC {
 				$_SERVER['PHP_AUTH_PW'] = $password;
 				break;
 			}
+		}
+	}
+
+	/**
+	 * Log an ownCloud's crash. This means that ownCloud isn't usable and can't log through
+	 * normal ownCloud's logger facilities.
+	 * This crash log can't use the normal "owncloud.log" file because the ownCloud's logger
+	 * requires additional context that can't be easily replicated. We'll use a different file.
+	 * The crash log will create a "crash-Y-m-d.log" file in the ownCloud's data directory, unless
+	 * the "crashdirectory" is set in the config.php file (make sure the "crashdirectory" exists and
+	 * it's writeable for the web server). The filename will be reused for all the crashes that happen
+	 * during the same day, and a new one will be used the next day.
+	 * The crash file will be created only if needed.
+	 *
+	 * Note: This is mainly for internal purposes. You're encouraged to use the ownCloud's logger
+	 * for anything you need to log.
+	 */
+	public static function crashLog(\Throwable $ex) {
+		$dataDir = self::$config->getValue('datadirectory', self::$SERVERROOT . '/data');
+		$crashDir = self::$config->getValue('crashdirectory', $dataDir);
+
+		$filename = "${crashDir}/crash-" . \date('Y-m-d') . '.log';
+
+		$date = \date('c');
+		$currentEntryId = \uniqid(\md5($date), true);
+		$entry = [
+			'date' => $date,
+			'parentId' => null,
+			'id' => $currentEntryId,
+			'class' => \get_class($ex),
+			'message' => $ex->getMessage(),
+			'stacktrace' => \array_map(function ($elem) {
+				unset($elem['args'], $elem['type']);
+				return $elem;
+			}, $ex->getTrace()),
+		];
+		\file_put_contents($filename, \json_encode($entry, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+		while (($ex = $ex->getPrevious()) !== null) {
+			$previousEntryId = $currentEntryId;
+			$currentEntryId = \uniqid(\md5($date), true);
+			$entry = [
+				'date' => $date,
+				'parentId' => $previousEntryId,
+				'id' => $currentEntryId,
+				'class' => \get_class($ex),
+				'message' => $ex->getMessage(),
+				'stacktrace' => \array_map(function ($elem) {
+					unset($elem['args'], $elem['type']);
+					return $elem;
+				}, $ex->getTrace()),
+			];
+			\file_put_contents($filename, \json_encode($entry, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND | LOCK_EX);
 		}
 	}
 }

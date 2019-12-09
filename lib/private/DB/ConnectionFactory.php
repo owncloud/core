@@ -29,7 +29,6 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
 use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
-use Doctrine\DBAL\Events;
 use OC\SystemConfig;
 
 /**
@@ -116,11 +115,7 @@ class ConnectionFactory {
 		switch ($normalizedType) {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
-					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
-				$eventManager->addEventListener(
-					Events::onSchemaColumnDefinition,
-					new MySqlSchemaColumnDefinitionListener()
-				);
+					new SQLSessionInit('SET SESSION AUTOCOMMIT=1'));
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);
@@ -131,11 +126,7 @@ class ConnectionFactory {
 				break;
 			case 'sqlite3':
 				$journalMode = $additionalConnectionParams['sqlite.journal_mode'];
-				$additionalConnectionParams['platform'] = new OCSqlitePlatform();
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
-				break;
-			case 'pgsql':
-				$additionalConnectionParams['platform'] = new OCPostgreSqlPlatform();
 				break;
 		}
 		/** @var Connection $connection */
@@ -180,10 +171,14 @@ class ConnectionFactory {
 			'password' => $this->config->getValue('dbpassword', ''),
 		];
 		$name = $this->config->getValue('dbname', 'owncloud');
+		$connectString = $this->config->getValue('dbconnectionstring', '');
 
 		if ($this->normalizeType($type) === 'sqlite3') {
-			$dataDir = $this->config->getValue("datadirectory", \OC::$SERVERROOT . '/data');
+			$dataDir = $this->config->getValue('datadirectory', \OC::$SERVERROOT . '/data');
 			$connectionParams['path'] = $dataDir . '/' . $name . '.db';
+		} elseif ($type === 'oci' && $connectString !== '') {
+			$connectionParams['connectstring'] = $connectString;
+			$connectionParams['dbname'] = $name;
 		} else {
 			$host = $this->config->getValue('dbhost', '');
 			if (\strpos($host, ':')) {

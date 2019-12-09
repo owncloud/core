@@ -1,4 +1,4 @@
-@api @federation-app-required @TestAlsoOnExternalUserBackend
+@api @federation-app-required @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: federated
 
   Background:
@@ -379,48 +379,34 @@ Feature: federated
       | 2               | 403         |
 
   @skipOnLDAP
-  Scenario Outline: Upload file to received federated share while quota is set on home storage
+  Scenario: Upload file to received federated share while quota is set on home storage
     Given user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    And using OCS API version "<ocs-api-version>"
     When user "user1" uploads file "filesForUpload/textfile.txt" to filenames based on "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
     And as user "user0" on server "REMOTE" the files uploaded to "/PARENT/testquota.txt" with all mechanisms should exist
-    Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
 
   @skipOnLDAP
-  Scenario Outline: Upload file to received federated share while quota is set on remote storage - local server shares - remote server receives
+  Scenario: Upload file to received federated share while quota is set on remote storage - local server shares - remote server receives
     Given using server "LOCAL"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" from server "LOCAL" has shared "/PARENT" with user "user0" from server "REMOTE"
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
-    And using OCS API version "<ocs-api-version>"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
 
   @skipOnLDAP
-  Scenario Outline: Upload file to received federated share while quota is set on remote storage - remote server shares - local server receives
+  Scenario: Upload file to received federated share while quota is set on remote storage - remote server shares - local server receives
     Given using server "REMOTE"
     And the quota of user "user0" has been set to "20 B"
     And user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    And using OCS API version "<ocs-api-version>"
     When user "user1" uploads file "filesForUpload/textfile.txt" to filenames based on "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+
 
   Scenario Outline: share of a folder to a remote user who already has a folder with the same name
     Given using server "REMOTE"

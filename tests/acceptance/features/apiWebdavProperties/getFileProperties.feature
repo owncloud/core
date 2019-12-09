@@ -69,6 +69,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -87,6 +88,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @files_sharing-app-required
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
@@ -105,7 +107,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @public_link_share-feature-required
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test"
@@ -121,7 +123,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required
+  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -172,3 +174,12 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Do a PROPFIND to a non-existing URL
+    And user "user0" requests "<url>" with "PROPFIND" using basic auth
+    Then the value of the item "/d:error/s:message" in the response should be "<message>"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    Examples:
+      | url                                  | message                                      |
+      | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
+      | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |

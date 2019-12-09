@@ -26,7 +26,7 @@ class ClientsTest extends \Test\TestCase {
 	/** @var Defaults */
 	private $defaults;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->defaults = $this->getMockBuilder(Defaults::class)->getMock();
@@ -38,7 +38,7 @@ class ClientsTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertLessThan(100, $this->panel->getPriority());
 		$this->assertGreaterThan(-100, $this->panel->getPriority());
 	}
@@ -63,8 +63,8 @@ class ClientsTest extends \Test\TestCase {
 		];
 		$this->config->expects($this->exactly(3))->method('getSystemValue')->will($this->returnValueMap($map));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('/custom_desktop', $templateHtml);
-		$this->assertContains('/custom_ios', $templateHtml);
-		$this->assertContains('custom_android', $templateHtml);
+		$this->assertStringContainsString('/custom_desktop', $templateHtml);
+		$this->assertStringContainsString('/custom_ios', $templateHtml);
+		$this->assertStringContainsString('custom_android', $templateHtml);
 	}
 }

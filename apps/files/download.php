@@ -32,7 +32,7 @@ OCP\User::checkLoggedIn();
 $filename = $_GET["file"];
 
 if (!\OC\Files\Filesystem::file_exists($filename)) {
-	\header("HTTP/1.0 404 Not Found");
+	\http_response_code(404);
 	$tmpl = new OCP\Template('', '404', 'guest');
 	$tmpl->assign('file', $filename);
 	$tmpl->printPage();
@@ -43,7 +43,7 @@ if (!\OC\Files\Filesystem::file_exists($filename)) {
 $event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
 OC::$server->getEventDispatcher()->dispatch('file.beforeGetDirect', $event);
 if ($event->hasArgument('errorMessage')) {
-	\header("HTTP/1.0 403 Forbidden");
+	\http_response_code(403);
 	$tmpl = new OCP\Template('', '403', 'guest');
 	$tmpl->assign('file', $filename);
 	$tmpl->printPage();

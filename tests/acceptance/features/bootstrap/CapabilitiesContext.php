@@ -49,6 +49,7 @@ class CapabilitiesContext implements Context {
 	 */
 	public function checkCapabilitiesResponse(TableNode $formData) {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		$assertedSomething = false;
 
 		foreach ($formData->getHash() as $row) {
 			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
@@ -61,7 +62,13 @@ class CapabilitiesContext implements Context {
 				),
 				"Failed field {$row['capability']} {$row['path_to_element']}"
 			);
+			$assertedSomething = true;
 		}
+
+		Assert::assertTrue(
+			$assertedSomething,
+			'there was nothing in the table of expected capabilities'
+		);
 	}
 
 	/**
@@ -98,6 +105,7 @@ class CapabilitiesContext implements Context {
 	 */
 	public function theCapabilitiesShouldNotContain(TableNode $formData) {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		$assertedSomething = false;
 
 		foreach ($formData->getHash() as $row) {
 			Assert::assertFalse(
@@ -108,7 +116,13 @@ class CapabilitiesContext implements Context {
 				),
 				"Capability {$row['capability']} {$row['path_to_element']} exists but it should not exist"
 			);
+			$assertedSomething = true;
 		}
+
+		Assert::assertTrue(
+			$assertedSomething,
+			'there was nothing in the table of not expected capabilities'
+		);
 	}
 
 	/**

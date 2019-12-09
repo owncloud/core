@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "Pobieranie / Podgląd",
     "Recipients can view or download contents." : "Odbiorcy mogą otwierać lub pobierać zawartość.",
     "Download / View / Upload" : "Pobieranie / Podgląd / Wysyłanie",
+    "Recipients can view, download, edit, delete and upload contents." : "Odbiorcy mogą otwierać, pobierać, zmieniać, kasować i wysyłać zawartość.",
     "Upload only" : "Tylko wysyłanie",
     "Preparing update" : "Przygotowuję aktualizację",
     "[%d / %d]: %s" : "[%d / %d]: %s",

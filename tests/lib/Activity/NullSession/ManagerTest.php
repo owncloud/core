@@ -27,7 +27,7 @@ class ManagerTest extends TestCase {
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder(IRequest::class)
@@ -69,9 +69,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testGetConsumersInvalidConsumer() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$this->activityManager->registerConsumer(function () {
 			return new \stdClass();
 		});
@@ -86,9 +87,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testGetExtensionsInvalidExtension() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$this->activityManager->registerExtension(function () {
 			return new \stdClass();
 		});
@@ -98,17 +100,17 @@ class ManagerTest extends TestCase {
 
 	public function testNotificationTypes() {
 		$result = $this->activityManager->getNotificationTypes('en');
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(2, $result);
 	}
 
 	public function testDefaultTypes() {
 		$result = $this->activityManager->getDefaultTypes('stream');
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(1, $result);
 
 		$result = $this->activityManager->getDefaultTypes('email');
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(0, $result);
 	}
 
@@ -157,11 +159,11 @@ class ManagerTest extends TestCase {
 
 	public function testFilterNotificationTypes() {
 		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'fv01');
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(3, $result);
 
 		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'InvalidFilter');
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(4, $result);
 	}
 
@@ -195,13 +197,14 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \UnexpectedValueException
 	 * @dataProvider getUserFromTokenThrowInvalidTokenData
 	 *
 	 * @param string $token
 	 * @param array $users
 	 */
 	public function testGetUserFromTokenThrowInvalidToken($token, $users) {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$this->mockRSSToken($token, $token, $users);
 		self::invokePrivate($this->activityManager, 'getUserFromToken');
 	}
@@ -239,32 +242,35 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage App not set
-	 * @expectedExceptionCode 10
 	 */
 	public function testPublishExceptionNoApp() {
+		$this->expectException(\BadMethodCallException::class);
+		$this->expectExceptionMessage('App not set');
+		$this->expectExceptionCode(10);
+
 		$event = new Event();
 		$this->activityManager->publish($event);
 	}
 
 	/**
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage Type not set
-	 * @expectedExceptionCode 11
 	 */
 	public function testPublishExceptionNoType() {
+		$this->expectException(\BadMethodCallException::class);
+		$this->expectExceptionMessage('Type not set');
+		$this->expectExceptionCode(11);
+
 		$event = new Event();
 		$event->setApp('test');
 		$this->activityManager->publish($event);
 	}
 
 	/**
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage Affected user not set
-	 * @expectedExceptionCode 12
 	 */
 	public function testPublishExceptionNoAffectedUser() {
+		$this->expectException(\BadMethodCallException::class);
+		$this->expectExceptionMessage('Affected user not set');
+		$this->expectExceptionCode(12);
+
 		$event = new Event();
 		$event->setApp('test')
 			->setType('test_type');
@@ -272,11 +278,12 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage Subject not set
-	 * @expectedExceptionCode 13
 	 */
 	public function testPublishExceptionNoSubject() {
+		$this->expectException(\BadMethodCallException::class);
+		$this->expectExceptionMessage('Subject not set');
+		$this->expectExceptionCode(13);
+
 		$event = new Event();
 		$event->setApp('test')
 			->setType('test_type')

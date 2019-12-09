@@ -35,7 +35,7 @@ class FactoryTest extends TestCase {
 	/** @var string */
 	protected $serverRoot;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		/** @var \OCP\IConfig $request */
@@ -286,7 +286,10 @@ class FactoryTest extends TestCase {
 			->with($app)
 			->willReturn(\OC::$SERVERROOT . '/tests/data/l10n/');
 
-		$this->assertEquals(['cs', 'de', 'en', 'ru'], $factory->findAvailableLanguages($app), '', 0.0, 10, true);
+		$this->assertEqualsCanonicalizing(
+			['cs', 'de', 'en', 'ru'],
+			$factory->findAvailableLanguages($app)
+		);
 	}
 
 	public function dataLanguageExists() {
@@ -360,7 +363,7 @@ class FactoryTest extends TestCase {
 
 		$themeTranslations = $factory->getL10nFilesForApp($app, $lang);
 		$this->assertCount(1, $themeTranslations);
-		$this->assertContains('zz.json', $themeTranslations[0]);
+		$this->assertStringContainsString('zz.json', $themeTranslations[0]);
 	}
 
 	/**

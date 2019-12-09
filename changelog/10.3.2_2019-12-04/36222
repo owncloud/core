@@ -1,0 +1,6 @@
+Bugfix: Fix share transfer in files:transfer-ownership command
+
+Even when the path argument was given, files:transfer-ownership command was trying to transfer all shares of sourceUser.
+This situation caused random errors. We fixed this unintended behavior.
+
+https://github.com/owncloud/core/pull/36222

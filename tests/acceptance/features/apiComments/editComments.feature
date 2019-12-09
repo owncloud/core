@@ -23,6 +23,7 @@ Feature: Comments
       | 😀 🤖             |
       | नेपालि            |
 
+  @files_sharing-app-required
   Scenario: Edit my own comments on a file shared by someone with me
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"
@@ -32,6 +33,7 @@ Feature: Comments
     And user "user1" should have the following comments on file "/myFileToComment.txt"
       | user1 | My edited comment |
 
+  @files_sharing-app-required
   Scenario: Editing comments of other users should not be possible
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"

@@ -45,7 +45,7 @@ class ManagerTest extends TestCase {
 	/** @var \OCP\Authentication\TwoFactorAuth\IProvider|\PHPUnit\Framework\MockObject\MockObject */
 	private $fakeProvider;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->user = $this->createMock('\OCP\IUser');
@@ -93,10 +93,11 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Could not load two-factor auth provider \OCA\MyFaulty2faApp\DoesNotExist
 	 */
 	public function testFailHardIfProviderCanNotBeLoaded() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Could not load two-factor auth provider \\OCA\\MyFaulty2faApp\\DoesNotExist');
+
 		$this->appManager->expects($this->once())
 			->method('getEnabledAppsForUser')
 			->with($this->user)

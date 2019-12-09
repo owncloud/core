@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: auth
   Background:
     Given user "user0" has been created with default attributes and skeleton files

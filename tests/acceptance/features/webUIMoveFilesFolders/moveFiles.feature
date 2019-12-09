@@ -80,6 +80,7 @@ Feature: move files
       | question?       | question?           |
       | &and#hash       | &and#hash           |
 
+  @files_sharing-app-required
   Scenario: move files on a public share
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |

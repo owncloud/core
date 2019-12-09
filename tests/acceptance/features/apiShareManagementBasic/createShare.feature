@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -62,6 +62,32 @@ Feature: sharing
       # Ask for just update. You get exactly update (you do not get read or anything else)
       | 1               | 2                     | 2                   | 100             |
       | 2               | 2                     | 2                   | 200             |
+
+  Scenario Outline: Creating a share of a file with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
+    When user "user0" shares file "randomfile.txt" with user "user1" with permissions "0" using the sharing API
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
+
+  Scenario Outline: Creating a share of a folder with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/afolder"
+    When user "user0" shares folder "afolder" with user "user1" with permissions "0" using the sharing API
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" folder "afolder" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
 
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
@@ -253,6 +279,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password
     Given using OCS API version "<ocs_api_version>"
+    And user "user0" has uploaded file with content "user0 file" to "/PARENT/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
     Then the OCS status code should be "<ocs_status_code>"
@@ -269,10 +296,10 @@ Feature: sharing
       | uid_file_owner         | user0                |
       | uid_owner              | user0                |
       | name                   |                      |
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%" and the content should be "wnCloud"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "user0 file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "user0 file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "user0 file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%" and the content should be "user0 file"
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
@@ -283,6 +310,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder, with a password
     Given using OCS API version "<ocs_api_version>"
+    And user "user0" has uploaded file with content "user0 file" to "/PARENT/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
       | password | %public% |
@@ -300,12 +328,12 @@ Feature: sharing
       | uid_file_owner         | user0                |
       | uid_owner              | user0                |
       | name                   |                      |
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "wnCloud"
-    But the public should not be able to download file "/parent.txt" from inside the last public shared folder using the old public WebDAV API without a password
-    And the public should not be able to download file "/parent.txt" from inside the last public shared folder using the new public WebDAV API without a password
-    And the public should not be able to download file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%"
-    And the public should not be able to download file "/parent.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user0 file"
+    But the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API without a password
+    And the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API without a password
+    And the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%"
+    And the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -384,6 +412,135 @@ Feature: sharing
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /afolder |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id          | A_NUMBER    |
+      | share_type  | public_link |
+      | permissions | read        |
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-36442 @public_link_share-feature-required
+  Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder    |
+      | permissions | read,create |
+    # And the fields of the last response should include
+    #  | id          | A_NUMBER    |
+    #  | share_type  | public_link |
+    #  | permissions | read        |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the OCS status message should be "Public upload not allowed"
+    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 403             | 200              |
+      #| 1               | 100             | 200              |
+      | 2               | 403             | 403              |
+      #| 2               | 200             | 200              |
+
+  @issue-36442 @public_link_share-feature-required
+  Scenario Outline: Creating a public link share with create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder    |
+      | permissions | create      |
+    # And the fields of the last response should include
+    #  | id          | A_NUMBER    |
+    #  | share_type  | public_link |
+    #  | permissions | read        |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the OCS status message should be "Public upload disabled by the administrator"
+    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 403             | 200              |
+      #| 1               | 100             | 200              |
+      | 2               | 403             | 403              |
+      #| 2               | 200             | 200              |
+
+  @issue-36442 @public_link_share-feature-required
+  Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created folder "/afolder"
+    And user "user0" has created a public link share with settings
+      | path        | /afolder |
+      | permissions | read     |
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    When user "user0" tries to update the last share using the sharing API with
+      | permissions | read,create |
+    # And the fields of the last response should include
+    #  | id          | A_NUMBER    |
+    #  | share_type  | public_link |
+    #  | permissions | read        |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the OCS status message should be "Public upload not allowed"
+    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 400             | 200              |
+      #| 1               | 100             | 200              |
+      | 2               | 400             | 400              |
+      #| 2               | 200             | 200              |
+
+  @issue-36442 @public_link_share-feature-required
+  Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created folder "/afolder"
+    And user "user0" has created a public link share with settings
+      | path        | /afolder |
+      | permissions | read     |
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    When user "user0" tries to update the last share using the sharing API with
+      | permissions | <permission> |
+    # And the fields of the last response should include
+    #  | id          | A_NUMBER    |
+    #  | share_type  | public_link |
+    #  | permissions | read        |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the OCS status message should be "Public upload disabled by the administrator"
+    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code | permission                 |
+      | 1               | 403             | 200              | create                     |
+      #| 1               | 100             | 200              | create                     |
+      | 2               | 403             | 403              | create                     |
+      #| 2               | 200             | 200              | create                     |
+      | 1               | 403             | 200              | create,read,update         |
+      #| 1               | 100             | 200              | create,read,update         |
+      | 2               | 403             | 403              | create,read,update         |
+      #| 2               | 200             | 200              | create,read,update         |
+      | 1               | 403             | 200              | read,create,update,delete  |
+      #| 1               | 100             | 200              | read,create,update,delete  |
+      | 2               | 403             | 403              | read,create,update,delete  |
+      #| 2               | 200             | 200              | read,create,update,delete  |
+
+  @public_link_share-feature-required
+  Scenario Outline: Creating a link share with read+update+create permissions defaults to read permissions when public upload disabled globally
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder           |
+      | permissions | read,update,create |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -879,13 +1036,13 @@ Feature: sharing
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
-    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
+    And user "user0" has uploaded file with content "user0 file" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the range "bytes=1-6" of file "/welcome.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "elcome"
-    And the public should be able to download the range "bytes=1-6" of file "/welcome.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "elcome"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "user0 file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "user0 file"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -1344,3 +1501,98 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  Scenario: creating a new share with user and a group having same name
+    Given these users have been created without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "user1" has been created
+    And user "user2" has been added to group "user1"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
+    And user "user0" has shared file "randomfile.txt" with group "user1"
+    When user "user0" shares file "randomfile.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /randomfile.txt |
+    And user "user2" should see the following elements
+      | /randomfile.txt |
+    And the content of file "randomfile.txt" for user "user1" should be "user0 file"
+    And the content of file "randomfile.txt" for user "user2" should be "user0 file"
+
+  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  Scenario: creating a new share with group and a user having same name
+    Given these users have been created without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "user1" has been created
+    And user "user2" has been added to group "user1"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
+    And user "user0" has shared file "randomfile.txt" with user "user1"
+    When user "user0" shares file "randomfile.txt" with group "user1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /randomfile.txt |
+    And user "user2" should see the following elements
+      | /randomfile.txt |
+    And the content of file "randomfile.txt" for user "user1" should be "user0 file"
+    And the content of file "randomfile.txt" for user "user2" should be "user0 file"
+
+  @skipOnLDAP
+  Scenario: creating a new share with user and a group having same name but different case
+    Given these users have been created without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "User1" has been created
+    And user "user2" has been added to group "User1"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
+    And user "user0" has shared file "randomfile.txt" with group "User1"
+    When user "user0" shares file "randomfile.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+     | /randomfile.txt |
+    And user "user2" should see the following elements
+      | /randomfile.txt |
+    And the content of file "randomfile.txt" for user "user1" should be "user0 file"
+    And the content of file "randomfile.txt" for user "user2" should be "user0 file"
+
+  @skipOnLDAP
+  Scenario: creating a new share with group and a user having same name but different case
+    Given these users have been created without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "User1" has been created
+    And user "user2" has been added to group "User1"
+    And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
+    And user "user0" has shared file "randomfile.txt" with user "user1"
+    When user "user0" shares file "randomfile.txt" with group "User1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user2" should see the following elements
+      | /randomfile.txt |
+    And user "user1" should see the following elements
+      | /randomfile.txt |
+    And the content of file "randomfile.txt" for user "user2" should be "user0 file"
+    And the content of file "randomfile.txt" for user "user1" should be "user0 file"
+
+  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  Scenario Outline: Do not allow sharing of the entire share_folder
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And the administrator has set the default folder for received shares to "<share_folder>"
+    When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
+    And user "user1" unshares folder "ReceivedShares/FOLDER" using the WebDAV API
+    And user "user1" shares folder "/ReceivedShares" with user "user0" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code | share_folder    |
+      | 1               | 404             | 200              | /ReceivedShares |
+      | 2               | 404             | 404              | /ReceivedShares |

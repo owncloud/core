@@ -353,6 +353,49 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user tries to get versions of file :file from :fileOwner
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param string $fileOwner
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userTriesToGetFileVersions($user, $file, $fileOwner) {
+		$fileId = $this->getFileIdForPath($fileOwner, $file);
+		$path = "/meta/" . $fileId . "/v";
+		$response = $this->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$path,
+			null,
+			null,
+			null,
+			null,
+			2
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then the number of versions should be :arg1
+	 *
+	 * @param int $number
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theNumberOfVersionsShouldBe($number) {
+		$resXml = $this->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml($this->getResponse());
+		}
+		$xmlPart = $resXml->xpath("//d:getlastmodified");
+		Assert::assertEquals($number, \count($xmlPart));
+	}
+
+	/**
 	 * @Given /^the administrator has (enabled|disabled) async operations$/
 	 *
 	 * @param string $enabledOrDisabled
@@ -652,6 +695,32 @@ trait WebDav {
 	public function userShouldBeAbleToAccessASkeletonFile($user) {
 		$this->contentOfFileForUserShouldBePlusEndOfLine(
 			"textfile0.txt", $user, "ownCloud test text file 0"
+		);
+	}
+
+	/**
+	 * @Then the size of the downloaded file should be :size bytes
+	 *
+	 * @param string $size
+	 *
+	 * @return void
+	 */
+	public function sizeOfDownloadedFileShouldBe($size) {
+		Assert::assertEquals(
+			$size, \strlen((string)$this->response->getBody())
+		);
+	}
+
+	/**
+	 * @Then /^the downloaded content should end with "([^"]*)"$/
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function downloadedContentShouldEndWith($content) {
+		Assert::assertEquals(
+			$content, \substr((string)$this->response->getBody(), -\strlen($content))
 		);
 	}
 
@@ -1171,10 +1240,14 @@ trait WebDav {
 				'$expectedElements has to be an instance of TableNode'
 			);
 		}
-		$responseXmlObject = $this->listFolder($user, "/", 3);
+		$responseXmlObject = $this->listFolder($user, "/", 5);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
+			// Allow the table of expected elements to have entries that do
+			// not have to specify the "implied" leading slash, or have multiple
+			// leading slashes, to make scenario outlines more flexible
+			$expectedElement = "/" . \ltrim($expectedElement, "/");
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			$element = $responseXmlObject->xpath(
 				"//d:response/d:href[text() = \"$webdavPath\"]"
@@ -1605,7 +1678,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user has uploaded file :destination of :bytes bytes
+	 * @Given user :user has uploaded file :destination of size :bytes bytes
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -1613,14 +1686,14 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userHasUploadedFileToOfBytes($user, $destination, $bytes) {
-		$this->userUploadsAFileToOfBytes($user, $destination, $bytes);
+	public function userHasUploadedFileToOfSizeBytes($user, $destination, $bytes) {
+		$this->userUploadsAFileToOfSizeBytes($user, $destination, $bytes);
 		$expectedElements = new TableNode([["$destination"]]);
 		$this->checkElementList($user, $expectedElements);
 	}
 
 	/**
-	 * @When user :user uploads file :destination of :bytes bytes
+	 * @When user :user uploads file :destination of size :bytes bytes
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -1628,9 +1701,39 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userUploadsAFileToOfBytes($user, $destination, $bytes) {
+	public function userUploadsAFileToOfSizeBytes($user, $destination, $bytes) {
+		$this->userUploadsAFileToEndingWithOfSizeBytes($user, $destination, 'a', $bytes);
+	}
+
+	/**
+	 * @Given user :user has uploaded file :destination ending with :text of size :bytes bytes
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $text
+	 * @param string $bytes
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedFileToEndingWithOfSizeBytes($user, $destination, $text, $bytes) {
+		$this->userUploadsAFileToEndingWithOfSizeBytes($user, $destination, $text, $bytes);
+		$expectedElements = new TableNode([["$destination"]]);
+		$this->checkElementList($user, $expectedElements);
+	}
+
+	/**
+	 * @When user :user uploads file :destination ending with :text of size :bytes bytes
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $text
+	 * @param string $bytes
+	 *
+	 * @return void
+	 */
+	public function userUploadsAFileToEndingWithOfSizeBytes($user, $destination, $text, $bytes) {
 		$filename = "filespecificSize.txt";
-		$this->createLocalFileOfSpecificSize($filename, $bytes);
+		$this->createLocalFileOfSpecificSize($filename, $bytes, $text);
 		Assert::assertFileExists($this->workStorageDirLocation() . $filename);
 		$this->userUploadsAFileTo(
 			$user,
@@ -1723,31 +1826,34 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then user :user should be able to delete file :source
+	 * @Then /^user "([^"]*)" should be able to delete (file|folder|entry) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $source
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBeAbleToDeleteFile($user, $source) {
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+	public function userShouldBeAbleToDeleteEntry($user, $entry, $source) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
-		$this->asFileOrFolderShouldNotExist($user, "file", $source);
+		$this->asFileOrFolderShouldNotExist($user, $entry, $source);
 	}
 
 	/**
-	 * @Then user :user should not be able to delete file :source
+	 * @Then /^user "([^"]*)" should not be able to delete (file|folder|entry) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $source
 	 *
 	 * @return void
 	 */
-	public function theUserShouldNotBeAbleToDeleteFile($user, $source) {
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+	public function theUserShouldNotBeAbleToDeleteEntry($user, $entry, $source) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
-		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
 	}
 
 	/**
@@ -2733,10 +2839,11 @@ trait WebDav {
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
 		}
-		$fullWebDavPath = \ltrim(
-			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH) . "/",
+		$fullWebDavPath = \trim(
+			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH),
 			"/"
-		);
+		) . "/" ;
+
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {

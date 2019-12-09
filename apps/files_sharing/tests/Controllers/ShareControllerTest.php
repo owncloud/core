@@ -74,7 +74,7 @@ class ShareControllerTest extends \Test\TestCase {
 	/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->appName = 'files_sharing';
 
@@ -112,7 +112,7 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->loginAsUser($this->user);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		Filesystem::tearDown();
@@ -438,9 +438,10 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testShowShareInvalid() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$owner = $this->createMock('OCP\IUser');
 		$owner->method('getDisplayName')->willReturn('ownerDisplay');
 		$owner->method('getUID')->willReturn('ownerUID');
@@ -507,9 +508,10 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testDownloadShareNoReadPermission() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$share = $this->createMock('\OCP\Share\IShare');
 		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_CREATE);
 

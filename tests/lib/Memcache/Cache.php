@@ -122,7 +122,7 @@ abstract class Cache extends \Test\Cache\TestCache {
 		$this->assertTrue($this->instance->hasKey('foo'));
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->instance) {
 			$this->instance->clear();
 		}

@@ -51,7 +51,7 @@ class LegacyDBTest extends \Test\TestCase {
 	 */
 	private $text_table;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$dbFile = \OC::$SERVERROOT.'/tests/data/db_structure.xml';
@@ -71,7 +71,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$this->text_table = $this->test_prefix.'text_table';
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		OC_DB::removeDBStructure(self::$schema_file);
 		\unlink(self::$schema_file);
 
@@ -241,11 +241,12 @@ class LegacyDBTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider insertIfNotExistsViolatingThrows
-	 * @expectedException \Doctrine\DBAL\Exception\UniqueConstraintViolationException
 	 *
 	 * @param array $compareKeys
 	 */
 	public function testInsertIfNotExistsViolatingThrows($compareKeys) {
+		$this->expectException(\Doctrine\DBAL\Exception\UniqueConstraintViolationException::class);
+
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
@@ -280,7 +281,7 @@ class LegacyDBTest extends \Test\TestCase {
 	 * Insert, select and delete decimal(12,2) values
 	 * @dataProvider decimalData
 	 */
-	public function testDecimal($insert, $expect) {
+	public function testDecimal($insert, $expect1, $expect2 = null) {
 		$table = "*PREFIX*" . $this->table4;
 		$rowname = 'decimaltest';
 
@@ -292,7 +293,17 @@ class LegacyDBTest extends \Test\TestCase {
 		$this->assertTrue((bool)$result);
 		$row = $result->fetchRow();
 		$this->assertArrayHasKey($rowname, $row);
-		$this->assertEquals($expect, $row[$rowname]);
+		if ($expect2 === null) {
+			$this->assertEquals($expect1, $row[$rowname]);
+		} else {
+			$this->assertThat(
+				$row[$rowname],
+				$this->logicalOr(
+					$this->equalTo($expect1),
+					$this->equalTo($expect2)
+				)
+			);
+		}
 		$query = OC_DB::prepare('DELETE FROM `' . $table . '`');
 		$result = $query->execute();
 		$this->assertTrue((bool)$result);
@@ -301,7 +312,7 @@ class LegacyDBTest extends \Test\TestCase {
 	public function decimalData() {
 		return [
 			['1337133713.37', '1337133713.37'],
-			['1234567890', '1234567890.00'],
+			['1234567890', '1234567890.00', '1234567890'],
 		];
 	}
 

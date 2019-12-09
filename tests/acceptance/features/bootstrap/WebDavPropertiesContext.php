@@ -62,7 +62,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->listFolder($user, $path, 0)
 		);
 	}
-	
+
 	/**
 	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
@@ -85,7 +85,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->listFolder($user, $path, 0, $properties)
 		);
 	}
-	
+
 	/**
 	 * @When /^the user gets the following properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
@@ -99,7 +99,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->getCurrentUser(), $path, $propertiesTable
 		);
 	}
-	
+
 	/**
 	 * @When user :user gets a custom property :propertyName with namespace :namespace of file :path
 	 *
@@ -170,7 +170,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->getDavPathVersion()
 		);
 	}
-	
+
 	/**
 	 * @Then /^the response should contain a custom "([^"]*)" property with namespace "([^"]*)" and value "([^"]*)"$/
 	 *
@@ -292,7 +292,11 @@ class WebDavPropertiesContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertValueOfItemInResponseIs($xpath, $expectedValue) {
-		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath($xpath);
+		$resXml = $this->featureContext->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
+		}
+		$xmlPart = $resXml->xpath($xpath);
 		Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
@@ -317,7 +321,11 @@ class WebDavPropertiesContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertValueOfItemInResponseRegExp($xpath, $pattern) {
-		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath($xpath);
+		$resXml = $this->featureContext->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
+		}
+		$xmlPart = $resXml->xpath($xpath);
 		Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
@@ -387,7 +395,7 @@ class WebDavPropertiesContext implements Context {
 			$user, $path, $property, $value, $value
 		);
 	}
-	
+
 	/**
 	 * @Then the single response should contain a property :key with value like :regex
 	 *
@@ -412,7 +420,7 @@ class WebDavPropertiesContext implements Context {
 			"Property \"$key\" found with value \"$value\", expected \"$regex\""
 		);
 	}
-	
+
 	/**
 	 * @Then the response should contain a share-types property with
 	 *
@@ -426,7 +434,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->getResponseXmlObject(), $table
 		);
 	}
-	
+
 	/**
 	 * @Then the response should contain an empty property :property
 	 *

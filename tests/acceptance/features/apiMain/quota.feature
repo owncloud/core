@@ -6,60 +6,40 @@ Feature: quota
 
 	# Owner
 
-  Scenario Outline: Uploading a file as owner having enough quota
-    Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
+  Scenario: Uploading a file as owner having enough quota
+    Given user "user0" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "10 MB"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
   @smokeTest
-  Scenario Outline: Uploading a file as owner having insufficient quota
-    Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
+  Scenario: Uploading a file as owner having insufficient quota
+    Given user "user0" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "20 B"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     Then as "user0" the files uploaded to "/testquota.txt" with all mechanisms should not exist
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
-  Scenario Outline: Overwriting a file as owner having enough quota
-    Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
+  Scenario: Overwriting a file as owner having enough quota
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "user0" has been set to "10 MB"
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
-  Scenario Outline: Overwriting a file as owner having insufficient quota
-    Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
+  Scenario: Overwriting a file as owner having insufficient quota
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "user0" has been set to "20 B"
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota.txt" for user "user0" should be "test"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
 	# Received shared folder
 
-  Scenario Outline: Uploading a file in received folder having enough quota
-    Given using <dav_version> DAV path
-    And these users have been created with default attributes and skeleton files:
+  @files_sharing-app-required
+  Scenario: Uploading a file in received folder having enough quota
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -69,14 +49,10 @@ Feature: quota
     And the quota of user "user1" has been set to "10 MB"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
-  Scenario Outline: Uploading a file in received folder having insufficient quota
-    Given using <dav_version> DAV path
-    And these users have been created with default attributes and skeleton files:
+  @files_sharing-app-required
+  Scenario: Uploading a file in received folder having insufficient quota
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -87,14 +63,10 @@ Feature: quota
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     Then as "user0" the files uploaded to "/testquota.txt" with all mechanisms should not exist
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
-  Scenario Outline: Overwriting a file in received folder having enough quota
-    Given using <dav_version> DAV path
-    And these users have been created with default attributes and skeleton files:
+  @files_sharing-app-required
+  Scenario: Overwriting a file in received folder having enough quota
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -105,14 +77,10 @@ Feature: quota
     And the quota of user "user1" has been set to "10 MB"
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
-  Scenario Outline: Overwriting a file in received folder having insufficient quota
-    Given using <dav_version> DAV path
-    And these users have been created with default attributes and skeleton files:
+  @files_sharing-app-required
+  Scenario: Overwriting a file in received folder having insufficient quota
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -124,16 +92,12 @@ Feature: quota
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota/testquota.txt" for user "user0" should be "test"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
 	# Received shared file
 
-  Scenario Outline: Overwriting a received file having enough quota
-    Given using <dav_version> DAV path
-    And these users have been created with default attributes and skeleton files:
+  @files_sharing-app-required
+  Scenario: Overwriting a received file having enough quota
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -143,14 +107,10 @@ Feature: quota
     And the quota of user "user1" has been set to "10 MB"
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
-  Scenario Outline: Overwriting a received file having insufficient quota
-    Given using <dav_version> DAV path
-    And these users have been created with default attributes and skeleton files:
+  @files_sharing-app-required
+  Scenario: Overwriting a received file having insufficient quota
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -161,7 +121,3 @@ Feature: quota
     When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota.txt" for user "user0" should be "test"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |

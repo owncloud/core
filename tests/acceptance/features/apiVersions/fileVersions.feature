@@ -56,11 +56,19 @@ Feature: dav-versions
 
   @smokeTest
   Scenario: Restore a file and check, if the content is now in the current file
-    Given user "user0" has uploaded file with content "123" to "/davtest.txt"
-    And user "user0" has uploaded file with content "12345" to "/davtest.txt"
+    Given user "user0" has uploaded file with content "Test Content." to "/davtest.txt"
+    And user "user0" has uploaded file with content "Content Test Updated." to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the content of file "/davtest.txt" for user "user0" should be "123"
+    Then the content of file "/davtest.txt" for user "user0" should be "Test Content."
+
+  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-278
+  Scenario: Restore a file back to bigger content and check, if the content is now in the current file
+    Given user "user0" has uploaded file with content "Back To The Future." to "/davtest.txt"
+    And user "user0" has uploaded file with content "Update Content." to "/davtest.txt"
+    And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
+    When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
+    Then the content of file "/davtest.txt" for user "user0" should be "Back To The Future."
 
   @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
   Scenario Outline: Uploading a chunked file does create the correct version that can be restored
@@ -100,6 +108,7 @@ Feature: dav-versions
     When user "user1" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/<<FILEID>>"
     Then the HTTP status code should be "404"
 
+  @files_sharing-app-required
   Scenario: User can access meta folder of a file which is owned by somebody else but shared with that user
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "123" to "/davtest.txt"
@@ -112,6 +121,7 @@ Feature: dav-versions
       | permissions | read         |
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element
 
+  @files_sharing-app-required
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
@@ -120,6 +130,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the version folder of file "/sharefile.txt" for user "user0" should contain "1" element
 
+  @files_sharing-app-required
   Scenario: sharer of a file can restore the original content of a shared file after the file has been modified by the sharee
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
@@ -130,6 +141,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "user0" should be "user0 content"
     And the content of file "/sharefile.txt" for user "user1" should be "user0 content"
 
+  @files_sharing-app-required
   Scenario: sharer can restore a file inside a shared folder modified by sharee
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -141,6 +153,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
 
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder modified by sharee
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -152,6 +165,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
 
+  @files_sharing-app-required
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -163,6 +177,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user1 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
 
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -174,6 +189,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user1 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
 
+  @files_sharing-app-required
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharee
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -185,6 +201,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -196,6 +213,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -209,6 +227,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
     And the content of file "/received/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "old content" to "/sharefile.txt"
@@ -221,6 +240,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "user0" should be "old content"
     And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
 
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -234,6 +254,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
     And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
 
+  @files_sharing-app-required
   Scenario: sharer can restore a file inside a group shared folder modified by sharee
     Given user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and skeleton files
@@ -250,3 +271,75 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
     And the content of file "/sharingfolder/sharefile.txt" for user "user2" should be "user0 content"
+
+  @files_sharing-app-required
+  Scenario Outline: Moving a file (with versions) into a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    And user "<mover>" has uploaded file with content "test data 1" to "/testfile.txt"
+    And user "<mover>" has uploaded file with content "test data 2" to "/testfile.txt"
+    And user "<mover>" has uploaded file with content "test data 3" to "/testfile.txt"
+    When user "<mover>" moves file "/testfile.txt" to "/testshare/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testshare/testfile.txt" for user "user0" should be "test data 3"
+    And the content of file "/testshare/testfile.txt" for user "user1" should be "test data 3"
+    And as "<mover>" file "/testfile.txt" should not exist
+    And the version folder of file "/testshare/testfile.txt" for user "user0" should contain "2" elements
+    And the version folder of file "/testshare/testfile.txt" for user "user1" should contain "2" elements
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  @files_sharing-app-required
+  Scenario Outline: Moving a file (with versions) out of a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "/testshare"
+    And user "user1" has uploaded file with content "test data 1" to "/testshare/testfile.txt"
+    And user "user1" has uploaded file with content "test data 2" to "/testshare/testfile.txt"
+    And user "user1" has uploaded file with content "test data 3" to "/testshare/testfile.txt"
+    And user "user1" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | user0     |
+    When user "<mover>" moves file "/testshare/testfile.txt" to "/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testfile.txt" for user "<mover>" should be "test data 3"
+    And as "user0" file "/testshare/testfile.txt" should not exist
+    And as "user1" file "/testshare/testfile.txt" should not exist
+    And the version folder of file "/testfile.txt" for user "<mover>" should contain "2" elements
+    Examples:
+      | dav_version | mover |
+      | old         | user0 |
+      | new         | user0 |
+      | old         | user1 |
+      | new         | user1 |
+
+  @skipOnOcV10.3.0 @files_sharing-app-required
+  Scenario: Receiver tries to get file versions of unshared file from the sharer
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has shared file "textfile0.txt" with user "user1"
+    When user "user1" tries to get versions of file "textfile1.txt" from "user0"
+    Then the HTTP status code should be "404"
+    Then the value of the item "//s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+
+  @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required
+  Scenario: Receiver tries get file versions of shared file from the sharer
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "user0" has uploaded file with content "version 2" to "textfile0.txt"
+    And user "user0" has uploaded file with content "version 3" to "textfile0.txt"
+    And user "user0" has shared file "textfile0.txt" with user "user1"
+    When user "user1" tries to get versions of file "textfile0.txt" from "user0"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"

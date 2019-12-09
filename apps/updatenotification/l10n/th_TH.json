@@ -9,10 +9,10 @@
     "Open updater" : "เปิดตัวอัปเดต",
     "Show changelog" : "แสดงบันทึกการเปลี่ยนแปลง",
     "Your version is up to date." : "<strong>รุ่นของคุณใหม่ล่าสุดแล้ว</strong>",
-    "Checked on %s" : "ตรวจสอบเมื่อ %s แล้ว",
-    "Update channel:" : "รูปแบบการอัปเดต:",
+    "Checked on %s" : "ตรวจสอบเมื่อ %s",
+    "Update channel:" : "ช่องทางการอัปเดต:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "คุณสามารถอัปเดตเป็นรุ่นที่ใหม่กว่าหรือใช้ตัวเบต้า แต่คุณไม่ควรกลับไปใช้รุ่นที่เก่ากว่าเนื่องจากอาจมีปัญหาเรื่องความเสถียร",
     "Notify members of the following groups about available updates:" : "แจ้งเตือนสมาชิกที่กำลังติดตามกลุ่มนี้เกี่ยวกับการอัปเดตที่เกิดขึ้น:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "แจ้งเตือนเฉพาะแอพฯที่พร้อมอัปเดตเพราะการอัปเดตแชลแนลที่เลือกด้วยตัวเองสำหรับ  ownCloud ยังไม่อนุญาตให้มีการแจ้งเตือน"
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "แจ้งเตือนเฉพาะแอปฯที่พร้อมอัปเดตเพราะการอัปเดตแชลแนลที่เลือกด้วยตัวเองสำหรับ  ownCloud ยังไม่อนุญาตให้มีการแจ้งเตือน"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

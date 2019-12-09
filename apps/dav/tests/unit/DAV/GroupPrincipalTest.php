@@ -36,7 +36,7 @@ class GroupPrincipalTest extends \Test\TestCase {
 	/** @var GroupPrincipalBackend */
 	private $connector;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
 			->disableOriginalConstructor()->getMock();
 
@@ -137,10 +137,11 @@ class GroupPrincipalTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception
-	 * @expectedExceptionMessage Setting members of the group is not supported yet
 	 */
 	public function testSetGroupMembership() {
+		$this->expectException(\Sabre\DAV\Exception::class);
+		$this->expectExceptionMessage('Setting members of the group is not supported yet');
+
 		$this->connector->setGroupMemberSet('principals/groups/foo', ['foo']);
 	}
 

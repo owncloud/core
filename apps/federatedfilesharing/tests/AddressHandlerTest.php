@@ -38,7 +38,7 @@ class AddressHandlerTest extends \Test\TestCase {
 	/** @var  IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $il10n;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
@@ -113,9 +113,10 @@ class AddressHandlerTest extends \Test\TestCase {
 	 * @dataProvider dataTestSplitUserRemoteError
 	 *
 	 * @param string $id
-	 * @expectedException \OC\HintException
 	 */
 	public function testSplitUserRemoteError($id) {
+		$this->expectException(\OC\HintException::class);
+
 		$this->addressHandler->splitUserRemote($id);
 	}
 

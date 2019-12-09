@@ -886,7 +886,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getLazyRootFolder(),
 				$c->getEventDispatcher(),
 				new View('/'),
-				$c->getDatabaseConnection()
+				$c->getDatabaseConnection(),
+				$c->getUserSession()
 			);
 
 			return $manager;

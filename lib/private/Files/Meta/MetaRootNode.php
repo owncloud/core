@@ -26,6 +26,7 @@ use OCP\Constants;
 use OCP\Files\FileInfo;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
+use OCP\IUserSession;
 
 /**
  * Class MetaRootNode - this class represents the root node of the meta endpoint
@@ -34,11 +35,18 @@ use OCP\Files\NotFoundException;
  */
 class MetaRootNode extends AbstractFolder {
 
-	/** @var IRootFolder */
+	/**
+	 * @var IRootFolder
+	 */
 	private $rootFolder;
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
 
-	public function __construct(IRootFolder $rootFolder) {
+	public function __construct(IRootFolder $rootFolder, IUserSession $userSession) {
 		$this->rootFolder = $rootFolder;
+		$this->userSession = $userSession;
 	}
 	/**
 	 * @inheritdoc
@@ -76,7 +84,8 @@ class MetaRootNode extends AbstractFolder {
 		$pieces = \explode('/', $path);
 		$fileId = (int)$pieces[0];
 
-		$nodes = $this->rootFolder->getById($fileId, true);
+		$uid = $this->userSession->getUser()->getUID();
+		$nodes = $this->rootFolder->getUserFolder($uid)->getById($fileId, true);
 		if (empty($nodes)) {
 			throw new NotFoundException();
 		}

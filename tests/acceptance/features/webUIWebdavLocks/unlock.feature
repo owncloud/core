@@ -106,7 +106,7 @@ Feature: Unlock locked files and folders
       | exclusive |
       | shared    |
 
-  @skipOnFIREFOX
+  @skipOnFIREFOX @files_sharing-app-required
   Scenario: deleting the first one of multiple shared locks on the webUI
     Given these users have been created with skeleton files:
       | username  |
@@ -145,7 +145,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
-  @skipOnFIREFOX
+  @skipOnFIREFOX @files_sharing-app-required
   Scenario: deleting the second one of multiple shared locks on the webUI
     Given these users have been created with skeleton files:
       | username  |
@@ -184,7 +184,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
-  @skipOnFIREFOX
+  @skipOnFIREFOX @files_sharing-app-required
   Scenario: deleting the last one of multiple shared locks on the webUI
     Given these users have been created with skeleton files:
       | username  |
@@ -223,6 +223,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
+  @files_sharing-app-required
   Scenario Outline: deleting a lock that was created by an other user
     Given these users have been created with skeleton files:
       | username  |

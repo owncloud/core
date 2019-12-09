@@ -35,7 +35,7 @@ class TemplateResponseTest extends TestCase {
 	/** @var \OCP\AppFramework\IApi */
 	private $api;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')

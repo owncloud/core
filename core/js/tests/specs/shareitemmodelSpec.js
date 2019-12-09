@@ -229,7 +229,7 @@ describe('OC.Share.ShareItemModel', function() {
 			/* jshint camelcase: false */
 			fetchReshareDeferred.resolve(makeOcsResponse([
 				{
-					id: '1',
+					id: 1,
 					share_type: OC.Share.SHARE_TYPE_USER,
 					uid_owner: 'owner',
 					displayname_owner: 'Owner',
@@ -238,7 +238,7 @@ describe('OC.Share.ShareItemModel', function() {
 					permissions: 1
 				},
 				{
-					id: '2',
+					id: 2,
 					share_type: OC.Share.SHARE_TYPE_GROUP,
 					uid_owner: 'owner',
 					displayname_owner: 'Owner',
@@ -246,7 +246,7 @@ describe('OC.Share.ShareItemModel', function() {
 					permissions: 15
 				},
 				{
-					id: '3',
+					id: 3,
 					share_type: OC.Share.SHARE_TYPE_GROUP,
 					uid_owner: 'owner',
 					displayname_owner: 'Owner',
@@ -267,7 +267,7 @@ describe('OC.Share.ShareItemModel', function() {
 			expect(reshare.share_type).toEqual(OC.Share.SHARE_TYPE_USER);
 			expect(reshare.share_with).toEqual('root');
 			expect(reshare.share_with_displayname).toEqual('Wurzel');
-			expect(reshare.id).toEqual('1');
+			expect(reshare.id).toEqual(1);
 
 			expect(model.getReshareWith()).toEqual('root');
 			expect(model.getReshareWithDisplayName()).toEqual('Wurzel');

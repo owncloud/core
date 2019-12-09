@@ -1,0 +1,6 @@
+Change: Update jQuery-File-Upload from 9.18 to 9.34
+
+Updated jQuery-File-Upload component to the v9.34 which fixed Edge garbage collection for huge files
+
+https://github.com/blueimp/jQuery-File-Upload/pull/3508
+https://github.com/owncloud/core/pull/36343

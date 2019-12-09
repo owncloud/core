@@ -27,10 +27,10 @@
  *
  */
 
-// Show warning if a PHP version below 7.0.7 is used, this has to happen here
-// because base.php will already use 7.0 syntax.
-if (\version_compare(PHP_VERSION, '7.0.7') === -1) {
-	echo 'This version of ownCloud requires at least PHP 7.0.7<br/>';
+// Show warning if a PHP version below 7.1.0 is used, this has to happen here
+// because base.php will already use 7.1 syntax.
+if (\version_compare(PHP_VERSION, '7.1.0') === -1) {
+	echo 'This version of ownCloud requires at least PHP 7.1.0<br/>';
 	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.';
 	return;
 }
@@ -67,23 +67,20 @@ try {
 } catch (\OCP\Files\ForbiddenException $ex) {
 	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
 	OC_Template::printErrorPage($ex->getMessage());
-} catch (Exception $ex) {
+} catch (\Throwable $ex) {
 	try {
 		\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
 		//show the user a detailed error page
 		OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 		OC_Template::printExceptionErrorPage($ex);
-	} catch (\Exception $ex2) {
+	} catch (\Throwable $ex2) {
 		// with some env issues, it can happen that the logger couldn't log properly,
 		// so print out the exception directly
-		echo('<html><body>');
-		echo('Exception occurred while logging exception: ' . $ex->getMessage() . '<br/>');
-		echo(\str_replace("\n", '<br/>', $ex->getTraceAsString()));
-		echo('</body></html>');
+		// NOTE: If we've reached this point, something has gone really wrong because
+		// we couldn't even get the logger, so don't rely on ownCloud here.
+		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		\OC::crashLog($ex);
+		\OC::crashLog($ex2);
 	}
-} catch (Error $ex) {
-	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
-	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-	OC_Template::printExceptionErrorPage($ex);
 }

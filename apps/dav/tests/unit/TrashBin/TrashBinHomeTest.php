@@ -36,19 +36,18 @@ class TrashBinHomeTest extends TestCase {
 	 */
 	private $trashBinManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->trashBinManager = $this->createMock(TrashBinManager::class);
-		$this->trashBinHome = new TrashBinHome([
-			'uri' => 'principals/alice'
-		], $this->trashBinManager);
+		$this->trashBinHome = new TrashBinHome($this->trashBinManager, 'alice');
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Permission denied to rename this folder
 	 */
 	public function testSetName() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+		$this->expectExceptionMessage('Permission denied to rename this folder');
+
 		$this->trashBinHome->setName('');
 	}
 

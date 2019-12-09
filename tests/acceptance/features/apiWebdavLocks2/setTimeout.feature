@@ -31,6 +31,7 @@ Feature: set timeouts of LOCKS
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
 
+  @files_sharing-app-required
   Scenario Outline: as owner set timeout on folder as receiver check it
     Given using <dav-path> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -60,6 +61,7 @@ Feature: set timeouts of LOCKS
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
 
+  @files_sharing-app-required
   Scenario Outline: as share receiver set timeout on folder as owner check it
     Given using <dav-path> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -89,6 +91,7 @@ Feature: set timeouts of LOCKS
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
 
+  @files_sharing-app-required
   Scenario Outline: as owner set timeout on folder as public check it
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "PARENT"

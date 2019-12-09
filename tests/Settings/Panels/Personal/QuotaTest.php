@@ -23,7 +23,7 @@ class QuotaTest extends \Test\TestCase {
 	/** @var Helper */
 	private $helper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->panel = new Quota($this->helper);
@@ -34,7 +34,7 @@ class QuotaTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(0, $this->panel->getPriority());
 	}
 
@@ -46,7 +46,7 @@ class QuotaTest extends \Test\TestCase {
 			'quota' => 1000
 		]));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="quota"', $templateHtml);
-		$this->assertContains('You are using', $templateHtml);
+		$this->assertStringContainsString('<div id="quota"', $templateHtml);
+		$this->assertStringContainsString('You are using', $templateHtml);
 	}
 }

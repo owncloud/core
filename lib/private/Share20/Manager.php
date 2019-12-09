@@ -29,6 +29,7 @@ namespace OC\Share20;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
+use OC\Helper\UserTypeHelper;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -40,6 +41,7 @@ use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Security\IHasher;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\GenericShareException;
@@ -85,6 +87,8 @@ class Manager implements IManager {
 	private $view;
 	/** @var IDBConnection  */
 	private $connection;
+	/** @var IUserSession  */
+	private $userSession;
 
 	/**
 	 * Manager constructor.
@@ -99,6 +103,10 @@ class Manager implements IManager {
 	 * @param IProviderFactory $factory
 	 * @param IUserManager $userManager
 	 * @param IRootFolder $rootFolder
+	 * @param EventDispatcher $eventDispatcher
+	 * @param View $view
+	 * @param IDBConnection $connection
+	 * @param IUserSession $userSession
 	 */
 	public function __construct(
 			ILogger $logger,
@@ -113,7 +121,8 @@ class Manager implements IManager {
 			IRootFolder $rootFolder,
 			EventDispatcher $eventDispatcher,
 			View $view,
-			IDBConnection $connection
+			IDBConnection $connection,
+			IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -129,6 +138,7 @@ class Manager implements IManager {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->view = $view;
 		$this->connection = $connection;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -192,9 +202,12 @@ class Manager implements IManager {
 	protected function passwordMustBeEnforced($permissions) {
 		$roEnforcement = $permissions === \OCP\Constants::PERMISSION_READ && $this->shareApiLinkEnforcePasswordReadOnly();
 		$woEnforcement = $permissions === \OCP\Constants::PERMISSION_CREATE && $this->shareApiLinkEnforcePasswordWriteOnly();
+		// use read, write & delete enforcement for the case
+		$rwdEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE)) &&
+			$this->shareApiLinkEnforcePasswordReadWriteDelete();
 		// use read & write enforcement for the rest of the cases
-		$rwEnforcement = ($permissions !== \OCP\Constants::PERMISSION_READ && $permissions !== \OCP\Constants::PERMISSION_CREATE) && $this->shareApiLinkEnforcePasswordReadWrite();
-		if ($roEnforcement || $woEnforcement || $rwEnforcement) {
+		$rwEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE)) && $this->shareApiLinkEnforcePasswordReadWrite();
+		if ($roEnforcement || $woEnforcement || $rwEnforcement || $rwdEnforcement) {
 			return true;
 		} else {
 			return false;
@@ -229,7 +242,7 @@ class Manager implements IManager {
 			}
 		} else {
 			// We can't handle other types yet
-			throw new \InvalidArgumentException('unkown share type');
+			throw new \InvalidArgumentException('Unknown share type');
 		}
 
 		// Verify the initiator of the share is set
@@ -319,7 +332,8 @@ class Manager implements IManager {
 		}
 
 		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
-		if ($shareNode->getOwner()->getUID() !== $share->getSharedBy()) {
+		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
+			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
 			$maxPermissions = $this->calculateReshareNodePermissions($share);
 		}
 
@@ -449,8 +463,11 @@ class Manager implements IManager {
 	 * @throws \Exception
 	 */
 	protected function userCreateChecks(\OCP\Share\IShare $share) {
+		$userTypeHelper = new UserTypeHelper();
+		$isGuestUser = $userTypeHelper->isGuestUser($share->getSharedWith());
 		// Check if we can share with group members only
-		if ($this->shareWithGroupMembersOnly()) {
+		// We still should be able to share with guest user even when it's not a group member
+		if (!$isGuestUser && $this->shareWithGroupMembersOnly()) {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			// Verify we can share with this user
@@ -458,6 +475,7 @@ class Manager implements IManager {
 					$this->groupManager->getUserGroupIds($sharedBy),
 					$this->groupManager->getUserGroupIds($sharedWith)
 			);
+
 			if (empty($groups)) {
 				throw new \Exception('Only sharing with group members is allowed');
 			}
@@ -468,8 +486,7 @@ class Manager implements IManager {
 		 *
 		 * Also this is not what we want in the future.. then we want to squash identical shares.
 		 */
-		$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_USER);
-		$existingShares = $provider->getSharesByPath($share->getNode());
+		$existingShares = $this->getSharesByPath($share->getNode());
 		foreach ($existingShares as $existingShare) {
 			// Ignore if it is the same share
 			try {
@@ -480,13 +497,12 @@ class Manager implements IManager {
 				//Shares are not identical
 			}
 
-			// Identical share already existst
-			if ($existingShare->getSharedWith() === $share->getSharedWith()) {
-				throw new \Exception('Path already shared with this user');
-			}
-
-			// The share is already shared with this user via a group share
-			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			// Identical share already exist
+			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+				if ($existingShare->getSharedWith() === $share->getSharedWith()) {
+					throw new \Exception('Path already shared with this user');
+				}
+			} elseif ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 				$group = $this->groupManager->get($existingShare->getSharedWith());
 				if ($group !== null) {
 					$user = $this->userManager->get($share->getSharedWith());
@@ -525,8 +541,7 @@ class Manager implements IManager {
 		 *
 		 * Also this is not what we want in the future.. then we want to squash identical shares.
 		 */
-		$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_GROUP);
-		$existingShares = $provider->getSharesByPath($share->getNode());
+		$existingShares = $this->getSharesByPath($share->getNode());
 		foreach ($existingShares as $existingShare) {
 			try {
 				if ($existingShare->getFullId() === $share->getFullId()) {
@@ -536,7 +551,7 @@ class Manager implements IManager {
 				//It is a new share so just continue
 			}
 
-			if ($existingShare->getSharedWith() === $share->getSharedWith()) {
+			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP && $existingShare->getSharedWith() === $share->getSharedWith()) {
 				throw new \Exception('Path already shared with this group');
 			}
 		}
@@ -639,8 +654,6 @@ class Manager implements IManager {
 	public function createShare(\OCP\Share\IShare $share) {
 		$this->canShare($share);
 
-		$this->generalChecks($share);
-
 		// Verify if there are any issues with the path
 		$this->pathCreateChecks($share->getNode());
 
@@ -658,6 +671,8 @@ class Manager implements IManager {
 		} else {
 			$share->setShareOwner($share->getNode()->getOwner()->getUID());
 		}
+
+		$this->generalChecks($share);
 
 		//Verify share type
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
@@ -1277,13 +1292,13 @@ class Manager implements IManager {
 	 */
 	public function getAllSharedWith($userId, $shareTypes, $node = null) {
 		$shares = [];
-		
+
 		// Aggregate all required $shareTypes by mapping provider to supported shareTypes
 		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
 		foreach ($providerIdMap as $providerId => $shareTypeArray) {
 			// Get provider from cache
 			$provider = $this->factory->getProvider($providerId);
-			
+
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			$shares = \array_merge($shares, $queriedShares);
@@ -1291,7 +1306,7 @@ class Manager implements IManager {
 
 		return $shares;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */
@@ -1520,6 +1535,15 @@ class Manager implements IManager {
 	 */
 	public function shareApiLinkEnforcePasswordReadWrite() {
 		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
+	}
+
+	/**
+	 * Is password enforced for read, write & delete shares?
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePasswordReadWriteDelete() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write_delete', 'no') === 'yes';
 	}
 
 	/**

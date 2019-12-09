@@ -31,11 +31,11 @@ $CONFIG = array(
 /**
  * App: Activity
  * 
- * Possible values: `activity_expire_days` days
+ * Possible values: `activity_expire_days` days.
  */
  
 /**
- * Retention for activities of the activity app
+ * Define the retention for activities of the activity app.
  */
 
 'activity_expire_days' => 365,
@@ -43,13 +43,13 @@ $CONFIG = array(
 /**
  * App: LDAP
  * 
- * Possible values: `ldapIgnoreNamingRules` 'doSet' or false
+ * Possible values: `ldapIgnoreNamingRules` `doSet` or `false`.
  * 
- * Possible values: `user_ldap.enable_medial_search` true or false
+ * Possible values: `user_ldap.enable_medial_search` `true` or `false`.
  */
  
 /**
- * Configuring the LDAP app
+ * Define parameters for the LDAP app.
  */
 
 'ldapIgnoreNamingRules' => false,
@@ -58,11 +58,11 @@ $CONFIG = array(
 /**
  * App: Market
  * 
- * Possible values: `appstoreurl` URL
+ * Possible values: `appstoreurl` URL.
  */
 
 /**
- * Configuring the download URL for apps
+ * Define the download URL for apps.
  */
 
 'appstoreurl' => 'https://marketplace.owncloud.com',
@@ -70,14 +70,15 @@ $CONFIG = array(
 /**
  * App: Firstrunwizard
  * 
- * Possible values: `customclient_desktop` URL
+ * Possible values: `customclient_desktop` URL.
  * 
- * Possible values: `customclient_android` URL
+ * Possible values: `customclient_android` URL.
  * 
- * Possible values: `customclient_ios` URL
+ * Possible values: `customclient_ios` URL.
  */
 
 /**
+ * Define the download links for ownCloud clients.
  * Configuring the download links for ownCloud clients, 
  * as seen in the first-run wizard and on Personal pages
  */
@@ -92,14 +93,13 @@ $CONFIG = array(
 /**
  * App: Richdocuments
  * 
- * Possible values: `collabora_group` string
+ * Possible values: `collabora_group` string.
  */
 
 /**
- * Configuring the group name for users allowed to use collabora
+ * Define the group name for users allowed to use Collabora.
  */
 
 'collabora_group' => '',
-
 
 );

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -224,6 +224,7 @@ Feature: sharing
       | permissions | share,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
+    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -239,6 +240,7 @@ Feature: sharing
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -248,16 +250,85 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,read"
-    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,create,read"
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,read"
+    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
     When user "user1" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
+    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
+  Scenario Outline: Update of user reshare by the original share owner can increase permissions up to the permissions of the top-level share
+    Given using OCS API version "<ocs_api_version>"
+    And user "user2" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/TMP"
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
+    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | share,create,update,read |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: Update of user reshare by the original share owner can increase permissions to more than the permissions of the top-level share
+    Given using OCS API version "<ocs_api_version>"
+    And user "user2" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/TMP"
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,update,read"
+    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | share,create,update,read |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: Update of group reshare by the original share owner can increase permissions up to permissions of the top-level share
+    Given using OCS API version "<ocs_api_version>"
+    And user "user2" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user2" has been added to group "grp1"
+    And user "user0" has created folder "/TMP"
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
+    And user "user1" has shared folder "/TMP" with group "grp1" with permissions "share,read"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | share,create,update,read |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: Update of group reshare by the original share owner can increase permissions to more than the permissions of the top-level share
+    Given using OCS API version "<ocs_api_version>"
+    And user "user2" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user2" has been added to group "grp1"
+    And user "user0" has created folder "/TMP"
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,update,read"
+    And user "user1" has shared folder "/TMP" with group "grp1" with permissions "share,read"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | share,create,update,read |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions
     Given using OCS API version "<ocs_api_version>"

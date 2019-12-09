@@ -385,7 +385,7 @@ EOD;
 		$expectedEventsInResult = \array_map(function ($index) use ($events) {
 			return $events[$index];
 		}, $expectedEventsInResult);
-		$this->assertEquals($expectedEventsInResult, $result, '', 0.0, 10, true);
+		$this->assertEqualsCanonicalizing($expectedEventsInResult, $result);
 	}
 
 	/**

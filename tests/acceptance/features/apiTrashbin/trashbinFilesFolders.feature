@@ -5,7 +5,8 @@ Feature: files and folders exist in the trashbin after being deleted
   So that I can recover data easily
 
   Background:
-    Given using OCS API version "1"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "1"
     And as the administrator
 
   @smokeTest
@@ -45,6 +46,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @files_sharing-app-required
   Scenario Outline: deleting a file in a shared folder moves it to the trashbin root
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -63,6 +65,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @files_sharing-app-required
   Scenario Outline: deleting a shared folder moves it to trashbin
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -79,6 +82,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @files_sharing-app-required
   Scenario Outline: deleting a received folder doesn't move it to trashbin
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -96,6 +100,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @files_sharing-app-required
   Scenario Outline: deleting a file in a received folder moves it to trashbin
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -176,6 +181,98 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     When user "user0" deletes folder "/local_storage/tmp" using the WebDAV API
     Then as "user0" the folder with original path "/local_storage/tmp" should exist in trash
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  # This issue makes this scenario behave differently based on previously created users.
+  # So we use user that has not been created in any other scenarios.
+  @skipOnLDAP @skip_on_objectstore
+  Scenario Outline: Listing other user's trashbin is prohibited
+    Given using <dav-path> DAV path
+    And user "user40" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user40" has deleted file "/textfile1.txt"
+    When user "user1" tries to list the trashbin content for user "user40"
+    Then the HTTP status code should be "401"
+    And the last webdav response should not contain the following elements
+      | path          | user   |
+      | textfile1.txt | user40 |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  # This issue makes this scenario behave differently based on previously created users.
+  # So we use user that has not been created in any other scenarios.
+  @skipOnLDAP @skip_on_objectstore
+  Scenario Outline: Listing other user's trashbin is prohibited
+    Given using <dav-path> DAV path
+    And user "user60" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user60" has deleted file "/textfile0.txt"
+    And user "user60" has deleted file "/textfile2.txt"
+    When user "user1" tries to list the trashbin content for user "user60"
+    Then the HTTP status code should be "401"
+    And the last webdav response should not contain the following elements
+      | path          | user   |
+      | textfile0.txt | user60 |
+      | textfile2.txt | user60 |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  # This issue makes this scenario behave differently based on previously created users.
+  # So we use user that has not been created in any other scenarios.
+  @skipOnLDAP @skip_on_objectstore
+  Scenario Outline: Listing other user's trashbin is prohibited
+    Given using <dav-path> DAV path
+    And user "user504" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user504" has deleted file "/textfile0.txt"
+    And user "user504" has deleted file "/textfile2.txt"
+    And the administrator deletes user "user504" using the provisioning API
+    Given these users have been created with default attributes and skeleton files but not initialized:
+      | username |
+      | user504  |
+    And user "user504" has deleted file "/textfile3.txt"
+    When user "user1" tries to list the trashbin content for user "user504"
+    Then the HTTP status code should be "401"
+    And the last webdav response should not contain the following elements
+      | path          | user    |
+      | textfile0.txt | user504 |
+      | textfile2.txt | user504 |
+      | textfile3.txt  | user504 |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  Scenario Outline: Get trashbin content with wrong password
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" tries to list the trashbin content for user "user0" using password "invalid"
+    Then the HTTP status code should be "401"
+    And the last webdav response should not contain the following elements
+      | path           | user  |
+      | /textfile0.txt | user0 |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  Scenario Outline: Get trashbin content without password
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" tries to list the trashbin content for user "user0" using password ""
+    Then the HTTP status code should be "401"
+    And the last webdav response should not contain the following elements
+      | path           | user  |
+      | /textfile0.txt | user0 |
     Examples:
       | dav-path |
       | old      |

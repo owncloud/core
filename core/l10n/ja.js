@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "ダウンロード / 表示",
     "Recipients can view or download contents." : "受信者はコンテンツを表示またはダウンロードできます。",
     "Download / View / Upload" : "ダウンロード / 表示 / アップロード",
+    "Recipients can view, download, edit, delete and upload contents." : "受信者はコンテンツを表示、ダウンロード、編集、削除、およびアップロードできます。",
     "Upload only" : "アップロードのみ",
     "Receive files from multiple recipients without revealing the contents of the folder." : "フォルダーの内容を見せないで、複数の相手からファイルを受け取ります。",
     "Preparing update" : "アップデートの準備中",

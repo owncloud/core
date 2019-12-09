@@ -40,7 +40,7 @@ class UnshareChildrenTest extends TestCase {
 
 	private static $tempStorage;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');
@@ -59,7 +59,7 @@ class UnshareChildrenTest extends TestCase {
 		$this->view->file_put_contents($this->folder . $this->subfolder . $this->filename, $this->data);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->view) {
 			$this->view->deleteAll($this->folder);
 		}

@@ -26,7 +26,9 @@ namespace OCA\Files_Sharing\Tests\Controllers;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IResponse;
 use OCP\IRequest;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -44,7 +46,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 	/** @var IClientService */
 	private $clientService;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->request = $this->getMockBuilder('\\OCP\\IRequest')
 			->disableOriginalConstructor()->getMock();
@@ -171,5 +173,29 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->will($this->returnValue($client));
 
 		$this->assertEquals(new DataResponse(false), $this->getExternalShareController()->testRemote('owncloud.org'));
+	}
+
+	public function testRemoteIsCleanedUp() {
+		$client = $this->createMock(IClient::class);
+		$response = $this->createMock(IResponse::class);
+		$response
+			->expects($this->exactly(2))
+			->method('getBody')
+			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+		$client
+			->expects($this->any())
+			->method('get')
+			->withConsecutive(
+				['https://owncloud.org/ocs-provider/'],
+				['https://owncloud.org/ocs-provider/index.php']
+			)
+			->will($this->returnValue($response));
+
+		$this->clientService
+			->expects($this->exactly(2))
+			->method('newClient')
+			->will($this->returnValue($client));
+		$response = $this->getExternalShareController()->testRemote('owncloud.org?app=files#anchor');
+		$this->assertEquals(new DataResponse('https'), $response);
 	}
 }

@@ -23,7 +23,7 @@ class AppsTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->panel = new Apps($this->config);
@@ -34,11 +34,11 @@ class AppsTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 	}
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="apps-list" class="icon-loading"></div>', $templateHtml);
+		$this->assertStringContainsString('<div id="apps-list" class="icon-loading"></div>', $templateHtml);
 	}
 }

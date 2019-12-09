@@ -1,4 +1,4 @@
-@api @skipOnOcV10.0
+@api @skipOnOcV10.0 @files_sharing-app-required
 Feature: lock should propagate correctly if a share is reshared
 
   Background:
@@ -50,7 +50,8 @@ Feature: lock should propagate correctly if a share is reshared
 
   @issue-36064
   Scenario Outline: public uploads to a reshared share that was locked by original owner
-    Given user "user0" has shared folder "PARENT" with user "user1"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has shared folder "PARENT" with user "user1"
     And user "user1" has shared folder "PARENT (2)" with user "user2"
     And user "user2" has created a public link share of folder "PARENT (2)" with change permission
     And user "user0" has locked folder "PARENT" setting following properties

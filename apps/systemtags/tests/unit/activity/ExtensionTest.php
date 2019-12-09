@@ -42,7 +42,7 @@ class ExtensionTest extends TestCase {
 	/** @var Extension */
 	private $extension;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->languageFactory = $this->createMock(IFactory::class);

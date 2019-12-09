@@ -9,7 +9,7 @@ Feature: User can open the details panel for any file or folder
       | username |
       | user1    |
 
-  @comments-app-required @files_versions-app-required
+  @comments-app-required @files_versions-app-required @files_sharing-app-required
   Scenario: View different areas of the details panel in files page
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
     And user "user1" has logged in using the webUI
@@ -24,7 +24,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "versions" tab in details panel using the webUI
     Then the "versions" details panel should be visible
 
-  @comments-app-required @files_versions-app-required
+  @comments-app-required @files_versions-app-required @files_sharing-app-required
   Scenario: View different areas of the details panel in favorites page
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
     And user "user1" has logged in using the webUI
@@ -41,7 +41,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "versions" tab in details panel using the webUI
     Then the "versions" details panel should be visible
 
-  @comments-app-required @public_link_share-feature-required
+  @comments-app-required @public_link_share-feature-required @files_sharing-app-required
   Scenario: user shares a file through public link and then the details dialog should work in a Shared by link page
     Given user "user1" has created folder "a-folder"
     And user "user1" has logged in using the webUI
@@ -57,7 +57,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "comments" tab in details panel using the webUI
     Then the "comments" details panel should be visible
 
-  @comments-app-required
+  @comments-app-required @files_sharing-app-required
   Scenario: user shares a file and then the details dialog should work in a Shared with others page
     Given user "user2" has been created with default attributes and without skeleton files
     And user "user1" has created folder "a-folder"
@@ -74,7 +74,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "comments" tab in details panel using the webUI
     Then the "comments" details panel should be visible
 
-  @comments-app-required
+  @comments-app-required @files_sharing-app-required
   Scenario: the recipient user should be able to view different areas of details panel in Shared with you page
     Given user "user2" has been created with default attributes and skeleton files
     And user "user1" has created folder "a-folder"
@@ -92,7 +92,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "comments" tab in details panel using the webUI
     Then the "comments" details panel should be visible
 
-  @comments-app-required
+  @comments-app-required @files_sharing-app-required
   Scenario: View different areas of details panel for the folder with given tag in Tags page
     Given user "user1" has created a "normal" tag with name "simple"
     And user "user1" has created folder "a-folder"

@@ -34,13 +34,12 @@ class TrashBinHome extends Collection {
 	/**
 	 * TrashBinHome constructor.
 	 *
-	 * @param array $principalInfo
 	 * @param TrashBinManager $trashBinManager
+	 * @param string $user
 	 */
-	public function __construct(array $principalInfo, TrashBinManager $trashBinManager) {
+	public function __construct(TrashBinManager $trashBinManager, string $user) {
 		$this->trashBinManager = $trashBinManager;
-		list(, $name) = \Sabre\Uri\split($principalInfo['uri']);
-		$this->user = $name;
+		$this->user = $user;
 	}
 
 	public function getChild($name) {

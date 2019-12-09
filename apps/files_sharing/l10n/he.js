@@ -103,6 +103,7 @@ OC.L10N.register(
     "Unknown share type" : "סוג שיתוף אינו מוכר",
     "Not a directory" : "אינה תיקייה",
     "Could not lock path" : "לא ניתן היה לנעול נתיב",
+    "Could not update share" : "לא ניתן היה לעדכן את השיתוף",
     "Can't change permissions for public share links" : "לא ניתן לשנות הרשאות לקישורי שיתוף ציבוריים",
     "Wrong or no update parameter given" : "משתנה עדכון שניתן שגוי או לא קיים",
     "Only recipient can change accepted state" : "רק נמענים יכולים לשנות המצב המקובל",

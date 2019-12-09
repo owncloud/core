@@ -272,6 +272,9 @@
 			var messages = [];
 
 			if (xhr.status === 200) {
+				var oc_defaults = oc_defaults || {};
+				var docPlaceholderUrl = oc_defaults.docPlaceholderUrl || '';
+
 				if(OC.getProtocol() === 'https') {
 					// Extract the value of 'Strict-Transport-Security'
 					var transportSecurityValidity = xhr.getResponseHeader('Strict-Transport-Security');
@@ -283,17 +286,20 @@
 							transportSecurityValidity = transportSecurityValidity.substring(8);
 						}
 					}
-
 					var minimumSeconds = 15552000;
 					if(isNaN(transportSecurityValidity) || transportSecurityValidity <= (minimumSeconds - 1)) {
 						messages.push({
-							msg: t('core', 'The "Strict-Transport-Security" HTTP header is not configured to at least "{seconds}" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="{docUrl}" rel="noreferrer">security tips</a>.', {'seconds': minimumSeconds, docUrl: '#admin-tips'}),
+							msg: t('core',
+								'The "Strict-Transport-Security" HTTP header is not configured to at least "{seconds}" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="{docUrl}" rel="noreferrer">security tips</a>.',
+								{'seconds': minimumSeconds, docUrl: docPlaceholderUrl.replace('PLACEHOLDER', 'enable-http-strict-transport-security')}),
 							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 						});
 					}
 				} else {
 					messages.push({
-						msg: t('core', 'You are accessing this site via HTTP. We strongly suggest you configure your server to require using HTTPS instead as described in our <a href="{docUrl}">security tips</a>.', {docUrl: '#admin-tips'}),
+						msg: t('core',
+							'You are accessing this site via HTTP. We strongly suggest you configure your server to require using HTTPS instead as described in our <a href="{docUrl}">security tips</a>.',
+							{docUrl: docPlaceholderUrl.replace('PLACEHOLDER', 'use-https')}),
 						type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 					});
 				}

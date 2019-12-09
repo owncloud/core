@@ -27,7 +27,7 @@ class GroupsControllerTest extends \Test\TestCase {
 	/** @var GroupsController */
 	private $groupsController;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$app = new Application();
 		$this->container = $app->getContainer();
 		$this->container['AppName'] = 'settings';

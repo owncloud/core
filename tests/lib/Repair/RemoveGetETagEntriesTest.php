@@ -36,7 +36,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 	/** @var \OCP\IDBConnection */
 	protected $connection;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();

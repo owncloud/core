@@ -10,6 +10,7 @@ Feature: Locks
       |username      |
       |brand-new-user|
 
+  @files_sharing-app-required
   Scenario Outline: deleting a file in a public share of a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"

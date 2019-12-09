@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -56,7 +56,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions
-    Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
@@ -72,7 +73,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
     When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
@@ -86,7 +88,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete
-    Given user "user0" has created a public link share with settings
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
     When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
@@ -100,7 +103,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create
-    Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
@@ -114,7 +118,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create,delete
-    Given user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -125,3 +130,167 @@ Feature: sharing
       | public-webdav-api-version |
       | old                       |
       | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public cannot delete file through publicly shared link with password using an invalid password
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT   |
+      | permissions | change    |
+      | password    | newpasswd |
+    When the public deletes file "welcome.txt" from the last public share using the password "invalid" and <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "401"
+    And as "user0" file "PARENT/welcome.txt" should exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+
+  @public_link_share-feature-required
+  Scenario Outline: Public can delete file through publicly shared link with password using the valid password
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT   |
+      | permissions | change    |
+      | password    | newpasswd |
+    When the public deletes file "welcome.txt" from the last public share using the password "newpasswd" and <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "204"
+    And as "user0" file "PARENT/welcome.txt" should not exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public tries to rename a file in a password protected share using an invalid password
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT   |
+      | permissions | change    |
+      | password    | newpasswd |
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "invalid" and <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "401"
+    And as "user0" file "/PARENT/newparent.txt" should not exist
+    And as "user0" file "/PARENT/parent.txt" should exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public tries to rename a file in a password protected share using the valid password
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT   |
+      | permissions | change    |
+      | password    | newpasswd |
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "newpasswd" and <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "/PARENT/newparent.txt" should exist
+    And as "user0" file "/PARENT/parent.txt" should not exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public tries to upload to a password protected public share using an invalid password
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT   |
+      | permissions | change    |
+      | password    | newpasswd |
+    When the public uploads file "lorem.txt" with password "invalid" and content "test" using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "401"
+    And as "user0" file "/PARENT/lorem.txt" should not exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public tries to upload to a password protected public share using the valid password
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT   |
+      | permissions | change    |
+      | password    | newpasswd |
+    When the public uploads file "lorem.txt" with password "newpasswd" and content "test" using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "/PARENT/lorem.txt" should exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public cannot rename a file in uploadwriteonly public link share
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT         |
+      | permissions | uploadwriteonly |
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file "/PARENT/parent.txt" should exist
+    And as "user0" file "/PARENT/newparent.txt" should not exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  @public_link_share-feature-required
+  Scenario Outline: Public cannot delete a file in uploadwriteonly public link share
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT         |
+      | permissions | uploadwriteonly |
+    When the public deletes file "welcome.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file "PARENT/welcome.txt" should exist
+    Examples:
+      | public-webdav-api-version |
+      | old                       |
+      | new                       |
+
+  Scenario: Move files between shares by same user
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created folder "share1"
+    And user "user0" has created folder "share2"
+    And user "user0" has moved file "welcome.txt" to "share1/welcome.txt"
+    And user "user0" has shared folder "/share1" with user "user1"
+    And user "user0" has shared folder "/share2" with user "user1"
+    When user "user1" moves file "share1/welcome.txt" to "share2/welcome.txt" using the WebDAV API
+    Then as "user1" file "share1/welcome.txt" should not exist
+    But as "user1" file "share2/welcome.txt" should exist
+    And as "user0" file "share1/welcome.txt" should not exist
+    But as "user0" file "share2/welcome.txt" should exist
+
+  Scenario: Move files between shares by same user added by sharee
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created folder "share1"
+    And user "user0" has created folder "share2"
+    And user "user0" has shared folder "/share1" with user "user1"
+    And user "user0" has shared folder "/share2" with user "user1"
+    When user "user1" moves file "welcome.txt" to "share1/welcome.txt" using the WebDAV API
+    Then as "user1" file "share1/welcome.txt" should exist
+    And as "user0" file "share1/welcome.txt" should exist
+    When user "user1" moves file "share1/welcome.txt" to "share2/welcome.txt" using the WebDAV API
+    Then as "user1" file "share2/welcome.txt" should exist
+    And as "user0" file "share2/welcome.txt" should exist
+
+  Scenario: Move files between shares by different users
+    Given the administrator has enabled DAV tech_preview
+    And user "user3" has been created with default attributes and skeleton files
+    And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "user0" has shared folder "/PARENT" with user "user3"
+    And user "user1" has shared folder "/PARENT" with user "user3"
+    When user "user3" moves file "PARENT (2)/welcome.txt" to "PARENT (3)/welcome.txt" using the WebDAV API
+    Then as "user3" file "PARENT (3)/welcome.txt" should exist
+    And as "user1" file "PARENT/welcome.txt" should exist
+    But as "user0" file "PARENT/welcome.txt" should not exist

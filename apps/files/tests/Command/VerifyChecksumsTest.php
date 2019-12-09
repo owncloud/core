@@ -43,7 +43,7 @@ class VerifyChecksumsTest extends TestCase {
 	 */
 	private $testFiles;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->rootFolder = \OC::$server->getRootFolder();
@@ -190,11 +190,11 @@ class VerifyChecksumsTest extends TestCase {
 
 		$output = $this->cmd->getDisplay();
 
-		$this->assertContains($file1->getInternalPath(), $output);
-		$this->assertContains($file2->getInternalPath(), $output);
-		$this->assertContains(self::BROKEN_CHECKSUM_STRING, $output);
-		$this->assertContains($this->testFiles[4]['expectedChecksums'](), $output);
-		$this->assertContains($this->testFiles[7]['expectedChecksums'](), $output);
+		$this->assertStringContainsString($file1->getInternalPath(), $output);
+		$this->assertStringContainsString($file2->getInternalPath(), $output);
+		$this->assertStringContainsString(self::BROKEN_CHECKSUM_STRING, $output);
+		$this->assertStringContainsString($this->testFiles[4]['expectedChecksums'](), $output);
+		$this->assertStringContainsString($this->testFiles[7]['expectedChecksums'](), $output);
 	}
 
 	/**
@@ -314,8 +314,8 @@ class VerifyChecksumsTest extends TestCase {
 		$this->cmd->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 		$output = $this->cmd->getDisplay();
 
-		$this->assertContains('somefile.txt => No Checksum', $output);
-		$this->assertContains('Skipping', $output);
+		$this->assertStringContainsString('somefile.txt => No Checksum', $output);
+		$this->assertStringContainsString('Skipping', $output);
 	}
 
 	public function testFileInCacheButNotOnDiskIsIgnored() {
@@ -329,7 +329,7 @@ class VerifyChecksumsTest extends TestCase {
 		$this->cmd->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 		$output = $this->cmd->getDisplay();
 
-		$this->assertContains('x-file.txt => File is in file-cache but doesn\'t exist on storage/disk', $output);
+		$this->assertStringContainsString('x-file.txt => File is in file-cache but doesn\'t exist on storage/disk', $output);
 	}
 
 	public function testInvalidArgs() {

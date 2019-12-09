@@ -7,4 +7,5 @@ return [
 	'password'=>'test',
 	'root'=>'',
 	'share'=>'public',
+	'domain'=>'WORKGROUP',
 ];

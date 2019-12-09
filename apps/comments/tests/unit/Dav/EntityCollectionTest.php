@@ -46,7 +46,7 @@ class EntityCollectionTest extends \Test\TestCase {
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $dispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->commentsManager = $this->createMock(ICommentsManager::class);
@@ -66,11 +66,11 @@ class EntityCollectionTest extends \Test\TestCase {
 		);
 	}
 
-	public function testGetId() {
+	public function testGetId(): void {
 		$this->assertSame($this->collection->getId(), '19');
 	}
 
-	public function testGetChild() {
+	public function testGetChild(): void {
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('55')
@@ -81,9 +81,10 @@ class EntityCollectionTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
-	public function testGetChildException() {
+	public function testGetChildException(): void {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('55')
@@ -92,7 +93,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->collection->getChild('55');
 	}
 
-	public function testGetChildren() {
+	public function testGetChildren(): void {
 		$this->commentsManager->expects($this->once())
 			->method('getForObject')
 			->with('files', '19')
@@ -104,7 +105,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $result[0]);
 	}
 
-	public function testFindChildren() {
+	public function testFindChildren(): void {
 		$dt = new \DateTime('2016-01-10 18:48:00');
 		$this->commentsManager->expects($this->once())
 			->method('getForObject')
@@ -117,11 +118,11 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $result[0]);
 	}
 
-	public function testChildExistsTrue() {
+	public function testChildExistsTrue(): void {
 		$this->assertTrue($this->collection->childExists('44'));
 	}
 
-	public function testChildExistsFalse() {
+	public function testChildExistsFalse(): void {
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('44')

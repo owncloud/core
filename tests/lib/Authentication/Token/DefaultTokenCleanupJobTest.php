@@ -31,7 +31,7 @@ class DefaultTokenCleanupJobTest extends TestCase {
 	private $job;
 	private $tokenProvider;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tokenProvider = $this->getMockBuilder('\OC\Authentication\Token\DefaultTokenProvider')
@@ -41,7 +41,7 @@ class DefaultTokenCleanupJobTest extends TestCase {
 		$this->job = new DefaultTokenCleanupJob();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 
 		$this->restoreService('\OC\Authentication\Token\DefaultTokenProvider');

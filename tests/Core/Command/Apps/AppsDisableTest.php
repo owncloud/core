@@ -35,7 +35,7 @@ class AppsDisableTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$command = new Disable(\OC::$server->getAppManager());
@@ -53,7 +53,7 @@ class AppsDisableTest extends TestCase {
 		$input = ['app-id' => $appId];
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	public function providesAppIds() {

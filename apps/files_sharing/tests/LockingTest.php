@@ -43,7 +43,7 @@ class LockingTest extends TestCase {
 	private $ownerUid;
 	private $recipientUid;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->ownerUid = $this->getUniqueID('owner_');
@@ -69,9 +69,10 @@ class LockingTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testLockAsRecipient() {
+		$this->expectException(\OCP\Lock\LockedException::class);
+
 		$this->loginAsUser($this->ownerUid);
 
 		Filesystem::initMountPoints($this->recipientUid);

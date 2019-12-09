@@ -57,6 +57,53 @@ class OccContext implements Context {
 	private $lastDeletedJobId;
 
 	/**
+	 * @var boolean techPreviewEnabled
+	 */
+	private $techPreviewEnabled = false;
+
+	/**
+	 * @var string initialTechPreviewStatus
+	 */
+	private $initialTechPreviewStatus;
+
+	/**
+	 * @return boolean
+	 */
+	public function isTechPreviewEnabled() {
+		return $this->techPreviewEnabled;
+	}
+
+	/**
+	 * @Given the administrator has enabled DAV tech_preview
+	 * @When the administrator enables DAV tech_preview
+	 *
+	 * @return bool true if DAV Tech Preview was disabled and had to be enabled
+	 */
+	public function enableDAVTechPreview() {
+		if (!$this->isTechPreviewEnabled()) {
+			$this->theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+				"dav.enable.tech_preview", "true", "boolean"
+			);
+			$this->techPreviewEnabled = true;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @Given the administrator has disabled DAV tech_preview
+	 * @When the administrator disables DAV tech_preview
+	 *
+	 * @return void
+	 */
+	public function disableDAVTechPreview() {
+		$this->theAdministratorDeletesSystemConfigKeyUsingTheOccCommand(
+			"dav.enable.tech_preview"
+		);
+		$this->techPreviewEnabled = false;
+	}
+
+	/**
 	 * @When /^the administrator invokes occ command "([^"]*)"$/
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 *
@@ -262,6 +309,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has set the default folder for received shares to :folder
+	 *
+	 * @param string $folder
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetTheDefaultFolderForReceivedSharesTo($folder) {
+		$this->theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+			"share_folder", $folder
+		);
+	}
+
+	/**
 	 * @Given the administrator has set the mail smtpmode to :smtpmode
 	 *
 	 * @param string $smtpmode
@@ -269,8 +329,8 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
-		$this->invokingTheCommand(
-			"config:system:set  --value $smtpmode mail_smtpmode"
+		$this->theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+			"mail_smtpmode", $smtpmode
 		);
 	}
 
@@ -617,7 +677,9 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value, $type="string") {
+	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
+		$key, $value, $type="string"
+	) {
 		$this->invokingTheCommand(
 			"config:system:set --value ${value} --type ${type} ${key}"
 		);
@@ -927,6 +989,25 @@ class OccContext implements Context {
 			$this->theCommandShouldHaveBeenSuccessful();
 		}
 	}
+
+	/**
+	 * This will run after EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function resetDAVTechPreview() {
+		if ($this->initialTechPreviewStatus === "") {
+			$this->featureContext->deleteSystemConfig('dav.enable.tech_preview');
+		} elseif ($this->initialTechPreviewStatus === 'true' && !$this->techPreviewEnabled) {
+			$this->enableDAVTechPreview();
+		} elseif ($this->initialTechPreviewStatus === 'false' && $this->techPreviewEnabled) {
+			$this->disableDAVTechPreview();
+		}
+	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
@@ -942,5 +1023,16 @@ class OccContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		SetupHelper::init(
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$techPreviewEnabled = \trim(
+			$this->featureContext->getSystemConfigValue('dav.enable.tech_preview')
+		);
+		$this->initialTechPreviewStatus = $techPreviewEnabled;
+		$this->techPreviewEnabled = $techPreviewEnabled === 'true';
 	}
 }

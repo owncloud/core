@@ -194,7 +194,6 @@
     "Allow users to share via link" : "Consenti agli utenti di condividere tramite collegamento",
     "Allow public uploads" : "Consenti caricamenti pubblici",
     "Enforce password protection for read-only links" : "Attivare la protezione con password per link a sola lettura",
-    "Enforce password protection for read & write links" : "Attivare la protezione con password per link di lettura e scrittura",
     "Enforce password protection for upload-only (File Drop) links" : "Attivare la protezione con password solo per link di upload (file drop)",
     "Set default expiration date" : "Imposta data di scadenza predefinita",
     "Expire after " : "Scadenza dopo",

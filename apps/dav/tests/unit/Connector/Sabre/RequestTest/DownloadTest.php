@@ -46,9 +46,10 @@ class DownloadTest extends RequestTest {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\FileLocked
 	 */
 	public function testDownloadWriteLocked() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
+
 		$user = $this->getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 

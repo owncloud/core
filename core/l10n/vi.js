@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "Tải về / Xem",
     "Recipients can view or download contents." : "Người nhận chỉ có thể xem hoặc tải nội dung.",
     "Download / View / Upload" : "Tải về / Xem / Tải lên",
+    "Recipients can view, download, edit, delete and upload contents." : "Người nhận có thể xem, tải về, chỉnh sửa, xóa và tải lên nội dung.",
     "Preparing update" : "Chuẩn bị cập nhật",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Cảnh báo đang sửa:",

@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Not allowed to create a federated share with the same user",
     "File is already shared with %s" : "File is already shared with %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Sharing %s failed, could not find %s, maybe the server is currently unreachable.",
+    "Federated Sharing failed: %s" : "Federated Sharing failed: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" shared \"%3$s\" with you",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")",
@@ -20,11 +21,13 @@ OC.L10N.register(
     "Open documentation" : "Open documentation",
     "Allow users on this server to send shares to other servers" : "Allow users on this server to send shares to other servers",
     "Allow users on this server to receive shares from other servers" : "Allow users on this server to receive shares from other servers",
+    "Automatically accept remote shares from trusted servers" : "Automatically accept remote shares from trusted servers",
     "Federated Cloud" : "Federated Cloud",
     "Your Federated Cloud ID:" : "Your Federated Cloud ID:",
     "Share it:" : "Share it:",
     "Add to your website" : "Add to your website",
     "Share with me via ownCloud" : "Share with me via ownCloud",
-    "HTML Code:" : "HTML Code:"
+    "HTML Code:" : "HTML Code:",
+    "Nothing to configure." : "Nothing to configure."
 },
 "nplurals=2; plural=(n != 1);");

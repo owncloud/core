@@ -41,7 +41,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	/** @var IDBConnection */
 	protected $connection;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -1135,7 +1135,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		$actual = $qB->getLastInsertId();
 
 		$this->assertNotNull($actual);
-		$this->assertInternalType('int', $actual);
+		$this->assertIsInt($actual);
 		$this->assertEquals($this->connection->lastInsertId('*PREFIX*properties'), $actual);
 
 		$qB->delete('properties')

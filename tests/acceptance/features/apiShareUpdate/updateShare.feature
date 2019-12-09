@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -498,7 +498,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Updating share permissions from change to read/update/create restricts public from deleting files
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -521,7 +522,8 @@ Feature: sharing
 
   @public_link_share-feature-required
   Scenario Outline: Updating share permissions from read/update/create to change allows public to delete files
-    Given using OCS API version "<ocs_api_version>"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |

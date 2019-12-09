@@ -16,6 +16,7 @@ Feature: tags
       | MyFirstTag | normal |
     And the HTTP status when user "user1" requests tags for file "/myFileToTag.txt" owned by "user0" should be "404"
 
+  @files_sharing-app-required
   Scenario: Static tags should be available while accessing the file if it is assigned to file
     Given the administrator has created a "static" tag with name "StaticTag"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"

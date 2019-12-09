@@ -48,7 +48,14 @@ try {
 		\header('Content-Type: application/json');
 		echo \json_encode($values);
 	}
-} catch (Exception $ex) {
-	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-	\OCP\Util::writeLog('remote', $ex->getMessage(), \OCP\Util::FATAL);
+} catch (\Throwable $ex) {
+	try {
+		OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+		\OCP\Util::writeLog('remote', $ex->getMessage(), \OCP\Util::FATAL);
+	} catch (\Throwable $ex2) {
+		// log through the crashLog
+		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		\OC::crashLog($ex);
+		\OC::crashLog($ex2);
+	}
 }

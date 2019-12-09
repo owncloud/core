@@ -5,6 +5,7 @@ Feature: poll incoming shares
   I want to be able to poll incoming shares manually
   So that I can make sure all shares are up-to-date
 
+  @files_sharing-app-required
   Scenario: poll incoming share with a federation share of deep nested folders when there is a file change in remote end
     Given using server "REMOTE"
     And user "user0" has been created with default attributes and skeleton files
@@ -27,6 +28,7 @@ Feature: poll incoming shares
     When the administrator invokes occ command "incoming-shares:poll"
     Then the etag of element "/" of user "user1" should have changed
 
+  @files_sharing-app-required
   Scenario: poll incoming share with a federation share and no file change
     Given using server "REMOTE"
     And user "user0" has been created with default attributes and skeleton files
@@ -41,6 +43,7 @@ Feature: poll incoming shares
     When the administrator invokes occ command "incoming-shares:poll"
     Then the etag of element "/" of user "user1" should have changed
 
+  @files_sharing-app-required
   Scenario: poll incoming share multiple times
     Given using server "REMOTE"
     And user "user0" has been created with default attributes and skeleton files

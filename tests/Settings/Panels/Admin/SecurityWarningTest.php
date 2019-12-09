@@ -35,7 +35,7 @@ class SecurityWarningTest extends \Test\TestCase {
 	/** @var Helper */
 	private $helper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
@@ -55,12 +55,15 @@ class SecurityWarningTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(100, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div id="security-warning" class="section">', $templateHtml);
+		$this->assertStringContainsString(
+			'<div id="security-warning" class="section">',
+			$templateHtml
+		);
 	}
 }

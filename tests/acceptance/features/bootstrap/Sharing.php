@@ -111,7 +111,7 @@ trait Sharing {
 		if (\in_array('uploadwriteonly', $permissions, true)) {
 			// remove 'uploadwriteonly' from $permissions
 			$permissions = \array_diff($permissions, ['uploadwriteonly']);
-			$permissions = \array_merge($permissions, ['create', 'read']);
+			$permissions = \array_merge($permissions, ['create']);
 		}
 		if (\in_array('change', $permissions, true)) {
 			// remove 'change' from $permissions
@@ -172,7 +172,7 @@ trait Sharing {
 	 *       |                 |     1 = read; 2 = update; 4 = create;               |
 	 *       |                 |     8 = delete; 16 = share; 31 = all                |
 	 *       |                 |     15 = change                                     |
-	 *       |                 |     7 = uploadwriteonly                             |
+	 *       |                 |     4 = uploadwriteonly                             |
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
@@ -812,9 +812,7 @@ trait Sharing {
 		}
 
 		$data = $this->getResponseXml()->data[0];
-		if (\is_array($data)
-			|| (\is_object($data) && ($data instanceof \Traversable))
-		) {
+		if (\is_iterable($data)) {
 			foreach ($data as $element) {
 				if ($element->share_with->__toString() === $userOrGroup
 					&& ($permissions === null
@@ -1827,8 +1825,8 @@ trait Sharing {
 		foreach ($table as $row) {
 			$found = false;
 			//the API returns the path without trailing slash, but we want to
-			//be able to accept trailing slashes in the step definition
-			$row['path'] = \rtrim($row['path'], "/");
+			//be able to accept leading and/or trailing slashes in the step definition
+			$row['path'] = "/" . \trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
 					Assert::assertArraySubset($row, $share);

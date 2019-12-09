@@ -52,7 +52,7 @@ class CorsPluginTest extends TestCase {
 	 */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->server = new Server();
 
@@ -79,7 +79,7 @@ class CorsPluginTest extends TestCase {
 		$this->server->addPlugin($extraMethodPlugin);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->restoreService('AllConfig');
 	}
 

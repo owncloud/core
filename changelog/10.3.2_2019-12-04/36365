@@ -1,0 +1,8 @@
+Bugfix: Do not create error log about user home in user creation
+
+The server was producing an error log in every user creation and every first sync of a user account.
+This problem has been fixed.
+
+https://github.com/owncloud/core/issues/30853
+https://github.com/owncloud/core/issues/32438
+https://github.com/owncloud/core/pull/36365

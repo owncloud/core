@@ -183,7 +183,6 @@
     "Allow users to share via link" : "URLリンクでの共有を許可する",
     "Allow public uploads" : "パブリックなアップロードを許可する",
     "Enforce password protection for read-only links" : "読取専用のリンクにパスワードによる保護を強制する",
-    "Enforce password protection for read & write links" : "読み書き可能なリンクにパスワードによる保護を強制する",
     "Enforce password protection for upload-only (File Drop) links" : "アップロード（File Drop）のみのリンクにパスワードによる保護を強制する",
     "Set default expiration date" : "有効期限のデフォルト値を設定する",
     "Expire after " : "無効になるまで",

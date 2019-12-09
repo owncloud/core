@@ -37,7 +37,7 @@ class MaintenancePluginTest extends TestCase {
 	/** @var MaintenancePlugin */
 	private $maintenancePlugin;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock('\OCP\IConfig');
@@ -45,10 +45,11 @@ class MaintenancePluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
-	 * @expectedExceptionMessage System in single user mode.
 	 */
 	public function testSingleUserMode() {
+		$this->expectException(\Sabre\DAV\Exception\ServiceUnavailable::class);
+		$this->expectExceptionMessage('System in single user mode.');
+
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
@@ -59,10 +60,11 @@ class MaintenancePluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
-	 * @expectedExceptionMessage System in single user mode.
 	 */
 	public function testMaintenanceMode() {
+		$this->expectException(\Sabre\DAV\Exception\ServiceUnavailable::class);
+		$this->expectExceptionMessage('System in single user mode.');
+
 		$this->config
 			->expects($this->exactly(1))
 			->method('getSystemValue')

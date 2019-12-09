@@ -91,7 +91,7 @@ class AddressBookImpl implements IAddressBook {
 	 * @since 5.0.0
 	 */
 	public function search($pattern, $searchProperties, $options, $limit = null, $offset = null) {
-		$results = $this->backend->search($this->getKey(), $pattern, $searchProperties, $limit, $offset);
+		$results = $this->backend->searchEx($this->getKey(), $pattern, $searchProperties, $options, $limit, $offset);
 
 		$vCards = [];
 		foreach ($results as $result) {

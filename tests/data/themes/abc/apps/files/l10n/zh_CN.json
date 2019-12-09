@@ -79,6 +79,7 @@
     "{owner} has locked this resource via {path}" : "{owner}已通过{path}锁定资源",
     "Could not unlock, please contact the lock owner {owner}" : "无法解锁，请联系锁定所有者{owner}",
     "Unlock failed with status {status}" : "解锁失败。{status}",
+    "Locks" : "锁定",
     "Resource is not locked" : "资源未被锁定",
     "Path" : "路径",
     "_%n byte_::_%n bytes_" : ["%n 字节"],

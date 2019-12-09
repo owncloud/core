@@ -5,9 +5,11 @@ Feature: Restore deleted files/folders
   So that I can recover accidentally deleted files/folders in ownCloud
 
   Background:
-    Given using OCS API version "1"
+    Given the administrator has enabled DAV tech_preview
+    And using OCS API version "1"
     And as the administrator
 
+  @files_sharing-app-required
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -134,7 +136,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @issue-35900
+  @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only folder
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -159,7 +161,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @issue-35900
+  @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only sub-folder
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
@@ -263,3 +265,51 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
+
+  @smokeTest @skipOnOcV10.3
+  Scenario Outline: A deleted file cannot be restored by a different user
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user1" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the trashbin API
+    Then the HTTP status code should be "401"
+    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And user "user0" should not see the following elements
+      | /textfile0.txt     |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @smokeTest
+  Scenario Outline: A deleted file cannot be restored with invalid password
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "invalid" and the trashbin API
+    Then the HTTP status code should be "401"
+    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And user "user0" should not see the following elements
+      | /textfile0.txt     |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @smokeTest
+  Scenario Outline: A deleted file cannot be restored without using a password
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "" and the trashbin API
+    Then the HTTP status code should be "401"
+    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And user "user0" should not see the following elements
+      | /textfile0.txt     |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |

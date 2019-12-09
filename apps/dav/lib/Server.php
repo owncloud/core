@@ -131,11 +131,12 @@ class Server {
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$this->server->addPlugin(new CorsPlugin(OC::$server->getUserSession()));
 		$authPlugin = new Plugin();
-		if ($this->isRequestForSubtree(['public-files'])) {
+		if ($config->getSystemValue('dav.enable.tech_preview', false) === true
+			&& $this->isRequestForSubtree(['public-files'])
+		) {
 			$this->server->addPlugin(new PublicFilesPlugin());
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
 			$this->server->addPlugin(new PublicLinkEventsPlugin(\OC::$server->getEventDispatcher()));
-			$this->server->addPlugin(new PublicFilesPlugin());
 		}
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
@@ -155,9 +156,16 @@ class Server {
 		}
 
 		$this->server->addPlugin(new ExceptionLoggerPlugin('webdav', $logger));
-		$this->server->addPlugin(new LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
-		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory())));
+		$this->server->addPlugin(new LockPlugin());
+
+		$fileLocksBackend = new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory());
+		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) {
+			if (\strpos($uri, "public-files/") === 0) {
+				return true;
+			}
+			return false;
+		}));
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
@@ -206,16 +214,21 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
-		$this->server->addPlugin(new TrashBinPlugin());
+
+		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
+			$this->server->addPlugin(new TrashBinPlugin());
+		}
+
 		$this->server->addPlugin(new MetaPlugin(
 			OC::$server->getUserSession(),
 			OC::$server->getLazyRootFolder()
 		));
 
-		// Allow view-only plugin for webdav requests
-		$this->server->addPlugin(new ViewOnlyPlugin(
-			OC::$server->getLogger()
-		));
+		if ($this->isRequestForSubtree(['files', 'trash-bin', 'public-files'])) {
+			$this->server->addPlugin(new ViewOnlyPlugin(
+				OC::$server->getLogger()
+			));
+		}
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
@@ -239,7 +252,7 @@ class Server {
 					)
 				);
 
-				if ($this->isRequestForSubtree(['files', 'uploads', 'trash-bin'])) {
+				if ($this->isRequestForSubtree(['files', 'uploads', 'trash-bin', 'public-files'])) {
 					//For files only
 					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
 						new FileCustomPropertiesBackend(

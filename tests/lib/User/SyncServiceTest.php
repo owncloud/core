@@ -47,7 +47,7 @@ class SyncServiceTest extends TestCase {
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $mapper;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);
@@ -160,9 +160,10 @@ class SyncServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testTrySyncExistingUserWithOtherBackend() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$uid = 'myTestUser';
 
 		$wrongBackend = new Database();
@@ -187,7 +188,7 @@ class SyncServiceTest extends TestCase {
 		$backend = $this->createMock(UserInterface::class);
 		$result = $s->analyzeExistingUsers($backend, function () {
 		});
-		$this->assertInternalType('array', $result);
+		$this->assertIsArray($result);
 		$this->assertCount(2, $result);
 	}
 

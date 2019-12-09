@@ -42,9 +42,10 @@ class BmpToResourceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \DomainException
 	 */
 	public function testReadWrongBitmapSignature() {
+		$this->expectException(\DomainException::class);
+
 		$headerHex = '99 4D 9A 00 00 00 00 00 00 00 7A 00 00 00';
 		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
@@ -71,9 +72,10 @@ class BmpToResourceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException  \UnexpectedValueException
 	 */
 	public function testReadUnsupportedDibHeaderBitDepth() {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$headerLengthHex = '6C 00 00 00 ';
 		$headerHex = '20 00 00 00 12 00 00 00 01 00 07 00 03 00 00 00 20 00 00 00 14 0B 00 00 13 0B 00 00 00 00 00 00 00 00 00 00';
 		$headerLengthBin = \hex2bin(\str_replace(' ', '', $headerLengthHex));
@@ -83,9 +85,10 @@ class BmpToResourceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException  \UnexpectedValueException
 	 */
 	public function testReadWrongDibHeaderLength() {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$headerHex = '10 00 00 00 00 00 00 00 00 00 7A 00 00 00';
 		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);

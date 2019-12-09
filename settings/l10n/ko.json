@@ -191,7 +191,6 @@
     "Allow users to share via link" : "사용자별 링크 공유 허용",
     "Allow public uploads" : "공개 업로드 허용",
     "Enforce password protection for read-only links" : "읽기 전용 링크에 대해 비밀번호 보호 적용",
-    "Enforce password protection for read & write links" : "읽기와 쓰기 링크에 대해 비밀번호 보호 적용",
     "Enforce password protection for upload-only (File Drop) links" : "업로드 전용 링크에 대해 비밀번호 보호 적용",
     "Set default expiration date" : "기본 만료 날짜 설정",
     "Expire after " : "다음 날짜 후 만료",

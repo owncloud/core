@@ -653,6 +653,16 @@ trait AppConfiguration {
 		}
 		$this->usingServer($previousServer);
 		$this->currentUser = $user;
+	}
+
+	/**
+	 * Before Scenario to Save trusted Servers
+	 *
+	 * @BeforeScenario @federation-app-required
+	 *
+	 * @return void
+	 */
+	public function setInitialTrustedServersBeforeScenario() {
 		$this->initialTrustedServer = [
 			'LOCAL' => $this->getTrustedServers(),
 			'REMOTE' => $this->getTrustedServers('REMOTE')
@@ -662,12 +672,15 @@ trait AppConfiguration {
 	/**
 	 * After Scenario. restore trusted servers
 	 *
-	 * @AfterScenario
+	 * @AfterScenario @federation-app-required
 	 *
 	 * @return void
 	 */
 	public function restoreTrustedServersAfterScenario() {
-		$this->runFunctionOnEveryServer([$this, 'restoreTrustedServers']);
+		$this->restoreTrustedServers('LOCAL');
+		if ($this->federatedServerExists()) {
+			$this->restoreTrustedServers('REMOTE');
+		}
 	}
 
 	/**

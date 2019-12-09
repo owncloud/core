@@ -36,7 +36,7 @@ class CalendarTest extends TestCase {
 	/** @var IL10N */
 	private $l10n;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
@@ -66,9 +66,10 @@ class CalendarTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteFromGroup() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		/** @var \PHPUnit\Framework\MockObject\MockObject | CalDavBackend $backend */
 		$backend = $this->getMockBuilder(CalDavBackend::class)->disableOriginalConstructor()->getMock();
 		$backend->expects($this->never())->method('updateShares');

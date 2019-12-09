@@ -29,7 +29,7 @@ class OwncloudTest extends TestCase {
 	private $restore_logfile;
 	private $restore_logdateformat;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$config = \OC::$server->getConfig();
 		$this->restore_logfile = $config->getSystemValue("logfile");
@@ -38,7 +38,7 @@ class OwncloudTest extends TestCase {
 		$config->setSystemValue("logfile", $config->getSystemValue('datadirectory') . "/logtest");
 		Owncloud::init();
 	}
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$config = \OC::$server->getConfig();
 		if (isset($this->restore_logfile)) {
 			$config->getSystemValue("logfile", $this->restore_logfile);

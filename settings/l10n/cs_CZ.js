@@ -195,7 +195,6 @@ OC.L10N.register(
     "Allow users to share via link" : "Povolit uživatelům sdílení pomocí odkazů",
     "Allow public uploads" : "Povolit veřejné nahrávání souborů",
     "Enforce password protection for read-only links" : "Vynutit ochranu heslem pro odkazy pro čtení",
-    "Enforce password protection for read & write links" : "Vynutit ochranu heslem pro odkazy pro čtení a zapisování",
     "Enforce password protection for upload-only (File Drop) links" : "Vynutit ochranu heslem pro odkazy pro nahrávání (File Drop)",
     "Set default expiration date" : "Nastavit výchozí datum vypršení platnosti",
     "Expire after " : "Vyprší po",

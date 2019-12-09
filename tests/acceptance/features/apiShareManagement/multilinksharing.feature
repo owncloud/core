@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @public_link_share-feature-required
+@api @TestAlsoOnExternalUserBackend @public_link_share-feature-required @files_sharing-app-required
 Feature: multilinksharing
 
   Background:

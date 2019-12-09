@@ -1,8 +1,9 @@
-@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0
+@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0 @files_sharing-app-required
 Feature: persistent-locking in case of a public link
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has been created with default attributes and skeleton files
 
   @issue-36064
   Scenario Outline: Uploading a file into a locked public folder
@@ -117,12 +118,13 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  Scenario Outline: Public locking is forbidden
+  @skipOnOcV10.3
+  Scenario Outline: Public locking is not supported
     Given user "user0" has created a public link share of folder "PARENT" with change permission
     When the public locks "/CHILD" in the last public shared folder using the <public-webdav-api-version> public WebDAV API setting following properties
       | lockscope | <lock-scope> |
-    Then the HTTP status code should be "403"
-    And the value of the item "//s:message" in the response should be "Forbidden to lock from public endpoint"
+    Then the HTTP status code should be "405"
+    And the value of the item "//s:message" in the response should be "Locking not allowed from public endpoint"
     Examples:
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |

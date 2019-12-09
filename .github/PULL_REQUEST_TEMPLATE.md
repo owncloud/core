@@ -7,14 +7,11 @@ For fixing potential security issues please see https://owncloud.org/security/
 
 To make it possible for us to get your change reviewed and merged please carefully fill out the requested information below.
 
-Please note that any kind of change needs first be submitted to the master branch which holds the next major version of ownCloud.
-
-We will carefully discuss if your change can or has to be backported to stable branches.
+Please note that any kind of change needs first be submitted to the master branch which holds the next version of ownCloud.
 
 Please set the following labels:
 
-- Set label "3 - To review" for review or "2 - Development" in case the PR still has open tasks
-- Set label "backport-request" if backport is needed
+- Set label "3 - To review" for review or "2 - Development" if the PR still has open tasks
 - Assignment: assign to self
 - Milestone: set the same as the ticket this PR fixes, or "development" by default
 - Reviewers: pick at least one
@@ -60,7 +57,4 @@ Please set the following labels:
 - [ ] Unit tests added
 - [ ] Acceptance tests added
 - [ ] Documentation ticket raised: <link> 
-
-## Open tasks:
-<!-- In case of incomplete PR, please list the open tasks here -->
-- [ ] Backport (if applicable set "backport-request" label and remove when the backport was done)
+- [ ] Changelog item, see [TEMPLATE](https://github.com/owncloud/core/blob/master/changelog/TEMPLATE)

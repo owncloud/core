@@ -7,7 +7,7 @@ For reporting potential security issues please see https://owncloud.org/security
 
 To make it possible for us to help you please fill out below information carefully.
 
-Before reporting any issues please make sure that you're using the latest available version for your major branch (e.g. 9.0.x), see https://owncloud.org/changelog/
+Before reporting any issues please make sure that you're using the latest available version of ownCloud, see https://owncloud.org/changelog/
 --> 
 ### Steps to reproduce
 1.

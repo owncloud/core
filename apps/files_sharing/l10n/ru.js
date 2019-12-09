@@ -103,6 +103,7 @@ OC.L10N.register(
     "Unknown share type" : "Предоставление доступа неизвестного типа",
     "Not a directory" : "Это не каталог",
     "Could not lock path" : "Не удалось заблокировать путь",
+    "Could not update share" : "Не удалось обновить общий доступ",
     "Can't change permissions for public share links" : "Невозможно изменить права для публикации через ссылку",
     "Wrong or no update parameter given" : "Параметр для изменения неправилен или не задан",
     "Only recipient can change accepted state" : "Только получатель может изменить состояние принятости",

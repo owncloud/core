@@ -662,6 +662,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			$body['env_variables'] = $envVariables;
 		}
 
+		$isTestingAppEnabledText = "Is the testing app installed and enabled?\n";
+
 		try {
 			$result = OcsApiHelper::sendRequest(
 				$baseUrl, $adminUsername, $adminPassword,
@@ -670,7 +672,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		} catch (ServerException $e) {
 			throw new Exception(
 				"Could not execute 'occ'. " .
-				"Is the testing app installed and enabled?\n" .
+				$isTestingAppEnabledText .
 				$e->getResponse()->getBody()
 			);
 		}
@@ -680,16 +682,54 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$return['stdOut'] = $result->xml()->xpath("//ocs/data/stdOut");
 		$return['stdErr'] = $result->xml()->xpath("//ocs/data/stdErr");
 
-		if (!\is_a($return['code'][0], "SimpleXMLElement")
-			|| !\is_a($return['stdOut'][0], "SimpleXMLElement")
-			|| !\is_a($return['stdErr'][0], "SimpleXMLElement")
-		) {
+		if (!isset($return['code'][0])) {
 			throw new Exception(
-				"Could not execute 'occ'. " .
-				"Is the testing app installed and enabled?\n" .
+				"Return code not found after executing 'occ'. " .
+				$isTestingAppEnabledText .
 				$result->getBody()
 			);
 		}
+
+		if (!isset($return['stdOut'][0])) {
+			throw new Exception(
+				"Return stdOut not found after executing 'occ'. " .
+				$isTestingAppEnabledText .
+				$result->getBody()
+			);
+		}
+
+		if (!isset($return['stdErr'][0])) {
+			throw new Exception(
+				"Return stdOut not found after executing 'occ'. " .
+				$isTestingAppEnabledText .
+				$result->getBody()
+			);
+		}
+
+		if (!\is_a($return['code'][0], "SimpleXMLElement")) {
+			throw new Exception(
+				"Return code is not a SimpleXMLElement after executing 'occ'. " .
+				$isTestingAppEnabledText .
+				$result->getBody()
+			);
+		}
+
+		if (!\is_a($return['stdOut'][0], "SimpleXMLElement")) {
+			throw new Exception(
+				"Return stdOut is not a SimpleXMLElement after executing 'occ'. " .
+				$isTestingAppEnabledText .
+				$result->getBody()
+			);
+		}
+
+		if (!\is_a($return['stdErr'][0], "SimpleXMLElement")) {
+			throw new Exception(
+				"Return stdErr is not a SimpleXMLElement after executing 'occ'. " .
+				$isTestingAppEnabledText .
+				$result->getBody()
+			);
+		}
+
 		$return['code'] = $return['code'][0]->__toString();
 		$return['stdOut'] = $return['stdOut'][0]->__toString();
 		$return['stdErr'] = $return['stdErr'][0]->__toString();

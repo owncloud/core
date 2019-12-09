@@ -13,6 +13,7 @@ OC.L10N.register(
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Errore sconosciuto \"{error}\" inviando il file \"{file}\"",
     "Could not create folder \"{dir}\"" : "Impossibile creare la cartella \"{dir}\"",
     "Upload cancelled." : "Caricamento annullato.",
+    "The file {file} already exists" : "Il file {file} esiste già",
     "Processing files..." : "Processando il file....",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Impossibile caricare {filename} poiché è una cartella oppure ha una dimensione di 0 byte.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Spazio insufficiente, stai caricando {size1}, ma è rimasto solo {size2}",

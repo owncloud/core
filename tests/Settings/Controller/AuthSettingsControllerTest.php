@@ -42,7 +42,7 @@ class AuthSettingsControllerTest extends TestCase {
 	private $secureRandom;
 	private $uid;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->createMock('\OCP\IRequest');

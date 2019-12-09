@@ -49,7 +49,7 @@ class ShareTest extends \Test\TestCase {
 	protected $dateInFuture;
 	protected $dateInPast;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->user1 = $this->getUniqueID('user1_');
@@ -96,7 +96,7 @@ class ShareTest extends \Test\TestCase {
 		$this->dateInFuture = \date($dateFormat, $now + 20 * 60);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `item_type` = ?');
 		$query->execute(['test']);
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_allow_resharing', $this->resharing);
@@ -231,7 +231,7 @@ class ShareTest extends \Test\TestCase {
 	protected function shareUserTestFileAsLink() {
 		\OC_User::setUserId($this->user1);
 		$result = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType('string', $result);
+		$this->assertIsString($result);
 	}
 
 	/**
@@ -612,9 +612,7 @@ class ShareTest extends \Test\TestCase {
 	 */
 	protected function getShareByValidToken($token) {
 		$row = \OCP\Share::getShareByToken($token);
-		$this->assertInternalType(
-			'array',
-			$row,
+		$this->assertIsArray($row,
 			"Failed asserting that a share for token $token exists."
 		);
 		return $row;
@@ -747,9 +745,7 @@ class ShareTest extends \Test\TestCase {
 	public function testShareItemWithLink() {
 		\OC_User::setUserId($this->user1);
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'string',
-			$token,
+		$this->assertIsString($token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -795,9 +791,7 @@ class ShareTest extends \Test\TestCase {
 		$config->setAppValue('core', 'shareapi_expire_after_n_days', '2');
 
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'string',
-			$token,
+		$this->assertIsString($token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -835,9 +829,10 @@ class ShareTest extends \Test\TestCase {
 	 * @dataProvider dataShareWithRemoteUserAndRemoteIsInvalid
 	 *
 	 * @param string $remoteId
-	 * @expectedException \OC\HintException
 	 */
 	public function testShareWithRemoteUserAndRemoteIsInvalid($remoteId) {
+		$this->expectException(\OC\HintException::class);
+
 		\OC_User::setUserId($this->user1);
 		\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, $remoteId, \OCP\Constants::PERMISSION_ALL);
 	}
@@ -1120,9 +1115,7 @@ class ShareTest extends \Test\TestCase {
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_enforce_expire_date', 'yes');
 
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType(
-			'string',
-			$token,
+		$this->assertIsString($token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -1146,10 +1139,11 @@ class ShareTest extends \Test\TestCase {
 	/**
 	 * Cannot set password is there is no user
 	 *
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage User not logged in
 	 */
 	public function testSetPasswordNoUser() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('User not logged in');
+
 		$userSession = $this->getMockBuilder('\OCP\IUserSession')
 							->disableOriginalConstructor()
 							->getMock();
@@ -1269,12 +1263,12 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Cannot remove password
-	 *
 	 * Test removing a password when password is enforced
 	 */
 	public function testSetPasswordRemove() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Cannot remove password');
+
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
 					 ->getMock();
@@ -1320,12 +1314,12 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Share not found
-	 *
-	 * Test modification of invaid share
+	 * Test modification of invalid share
 	 */
 	public function testSetPasswordInvalidShare() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Share not found');
+
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
 					 ->getMock();
@@ -1370,12 +1364,12 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Cannot update share of a different user
-	 *
 	 * Test modification of share of another user
 	 */
 	public function testSetPasswordShareOtherUser() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Cannot update share of a different user');
+
 		$user = $this->getMockBuilder('\OCP\IUser')
 					 ->disableOriginalConstructor()
 					 ->getMock();
@@ -1475,7 +1469,7 @@ class ShareTest extends \Test\TestCase {
 		//User 2 shares as link
 		\OC_User::setUserId($this->user2);
 		$result = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertInternalType('string', $result);
+		$this->assertIsString($result);
 
 		//Check if expire date is correct
 		$result = \OCP\Share::getItemShared('test', 'test.txt');
