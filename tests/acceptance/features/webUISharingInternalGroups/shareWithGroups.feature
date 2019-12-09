@@ -316,6 +316,7 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for file "lorem.txt"
     Then the group "grp1" should not be in share with group list
 
+<<<<<<< HEAD
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder
     Given user "user1" has created folder "/simple-folder"
@@ -365,3 +366,18 @@ Feature: Sharing files and folders with internal groups
       | simple-empty-folder |
       | lorem.txt           |
 
+  Scenario: user uploads file inside a shared folder
+    Given user "user3" has shared folder "/simple-empty-folder" with group "grp1"
+    And user "user3" has logged in using the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    And the user uploads file "new-lorem.txt" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | new-lorem.txt           |
+
+  Scenario: user creates folder inside a shared folder
+    Given user "user3" has shared folder "/simple-empty-folder" with group "grp1"
+    And user "user3" has logged in using the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    And the user creates a folder with the name "sub-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | sub-folder           |
