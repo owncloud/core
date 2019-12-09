@@ -796,3 +796,22 @@ Feature: Sharing files and folders with internal users
     And the user creates a folder with the name "sub-folder" using the webUI
     Then the following resources should have share indicators on the webUI
       | sub-folder |
+
+  @skipOnOcV10.3
+  Scenario: sharing details of items inside a shared folder shared with multiple users
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/sub-folder/lorem.txt"
+    And user "user1" has shared folder "simple-folder" with user "user2"
+    And user "user1" has shared folder "/simple-folder/sub-folder" with user "user3"
+    And user "user1" has logged in using the webUI
+    And the user has opened folder "simple-folder/sub-folder" using the webUI
+    When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
+    Then user "User Two" should be listed as share receiver via "simple-folder" on the webUI
+    And user "User Three" should be listed as share receiver via "sub-folder" on the webUI
+
