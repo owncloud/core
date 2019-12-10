@@ -699,6 +699,7 @@ Feature: Share by public link
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
+  @skipOnOcV10.3
   Scenario: sharing details of items inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created folder "/simple-folder/sub-folder"
@@ -711,3 +712,15 @@ Feature: Share by public link
     And the user opens the share dialog for folder "sub-folder"
     And the user opens the public link share tab
     Then public link with name "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+
+  @skipOnOcV10.3
+  Scenario: sharing detail of items in the webUI shared by public links with empty name
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens the share dialog for file "textfile.txt"
+    And the user opens the public link share tab
+    Then public link with last share token should be listed as share receiver via "simple-folder" on the webUI
