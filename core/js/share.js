@@ -53,6 +53,7 @@ OC.Share = _.extend(OC.Share || {}, {
 	 * @param fileList file list instance, defaults to OCA.Files.App.fileList
 	 * @param callback function to call after the shares were loaded
 	 */
+
 	loadIcons:function(itemType, fileList, callback) {
 		var path = fileList.dirInfo.path;
 		if (path === '/') {
@@ -430,7 +431,5 @@ $(document).ready(function() {
 			OC.Share.hideDropDown();
 		}
 	});
-
-
 
 });

@@ -372,3 +372,28 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then using server "REMOTE"
     And as "user1" folder "simple-folder" should exist
     And as "user1" folder "simple-folder (3)" should exist
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator inside folder shared using federated sharing
+    Given user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" from server "LOCAL" has shared "/simple-folder" with user "user1" from server "REMOTE"
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | lorem.txt  |
+      | sub-folder |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator for file uploaded inside folder shared using federated sharing
+    Given user "user1" from server "LOCAL" has shared "/simple-folder" with user "user1" from server "REMOTE"
+    When the user opens folder "simple-folder" using the webUI
+    And the user uploads file "new-lorem.txt" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | new-lorem.txt |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator for folder created inside folder shared using federated sharing
+    Given user "user1" from server "LOCAL" has shared "/simple-folder" with user "user1" from server "REMOTE"
+    When the user opens folder "simple-folder" using the webUI
+    And the user creates a folder with the name "sub-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | sub-folder |

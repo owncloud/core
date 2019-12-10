@@ -198,6 +198,9 @@
 					// (FIXME: yes, this is hacky)
 					icon: $tr.attr('data-icon')
 				});
+
+				fileList._setShareTreeLinkView();
+				fileList._setShareTreeUserGroupView();
 			});
 			fileList.registerTabView(shareTab);
 		},

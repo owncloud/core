@@ -29,11 +29,15 @@
 		'        <div class="oneline">' +
 		'            <input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
 		'            <span class="shareWithLoading icon-loading-small hidden"></span>'+
-		'{{{remoteShareInfo}}}' +
+		'            {{{remoteShareInfo}}}' +
 		'        </div>' +
 		'        <div class="shareeListView subView"></div>' +
+		'        <div class="shareeTreeUserGroupListView subView"></div>' +
 		'    </div>' +
-		'    <div class="linkShareView subView tab hidden" style="padding-left:0;padding-right:0;"></div>' +
+		'    <div class="linkShareView tab hidden" style="padding-left:0;padding-right:0;">' +
+		'        <div class="linkListView"></div>' +
+		'        <div class="shareeTreeLinkListView subView"></div>' +
+		'    </div>' +
 		'</div>' +
 		'{{else}}' +
 		'<div class="noSharingPlaceholder">{{noSharingPlaceholder}}</div>' +
@@ -156,6 +160,7 @@
 			this.$('.localShareView').toggleClass('hidden', !$target.hasClass('subtab-localshare'));
 
 			var $linkShareView = this.$('.linkShareView');
+			var $linkListView = this.$('.linkListView');
 			if ($linkShareView.length) {
 				$linkShareView.toggleClass('hidden', !$target.hasClass('subtab-publicshare'));
 
@@ -166,7 +171,7 @@
 						itemModel: this.model
 					});
 					this.linkShareView.render();
-					$linkShareView.append(this.linkShareView.$el);
+					$linkListView.html(this.linkShareView.$el);
 				}
 			}
 		},
