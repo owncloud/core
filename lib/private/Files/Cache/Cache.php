@@ -36,6 +36,7 @@
 namespace OC\Files\Cache;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
 use \OCP\Files\IMimeTypeLoader;
@@ -188,11 +189,29 @@ class Cache implements ICache {
 	 * @return ICacheEntry[]
 	 */
 	public function getFolderContentsById($fileId) {
+		return $this->getChildrenWithFilter($fileId, null);
+	}
+
+	private function getChildrenWithFilter($fileId, $mimetypeFilter = null) {
 		if ($fileId > -1) {
-			$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`,
-						   `storage_mtime`, `encrypted`, `etag`, `permissions`, `checksum`
-					FROM `*PREFIX*filecache` WHERE `parent` = ? ORDER BY `name` ASC';
-			$result = $this->connection->executeQuery($sql, [$fileId]);
+			$qb = $this->connection->getQueryBuilder();
+			$qb->select('fileid', 'storage', 'path', 'parent', 'name', 'mimetype', 'mimepart', 'size', 'mtime',
+				'storage_mtime', 'encrypted', 'etag', 'permissions', 'checksum')
+				->from('filecache')
+				->where(
+					$qb->expr()->eq('parent', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+				);
+
+			if ($mimetypeFilter) {
+				$mimetypeId = $this->mimetypeLoader->getId($mimetypeFilter);
+				$qb->andWhere(
+					$qb->expr()->eq('mimetype', $qb->createNamedParameter($mimetypeId, IQueryBuilder::PARAM_INT))
+				);
+			}
+
+			$qb->orderBy('name', 'ASC');
+
+			$result = $qb->execute();
 			$files = $result->fetchAll();
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->mimetypeLoader->getMimetypeById($file['mimetype']);
@@ -458,10 +477,7 @@ class Cache implements ICache {
 	 * @return array[] the cache entries for the subfolders
 	 */
 	private function getSubFolders($entry) {
-		$children = $this->getFolderContentsById($entry['fileid']);
-		return \array_filter($children, function ($child) {
-			return $child['mimetype'] === 'httpd/unix-directory';
-		});
+		return $this->getChildrenWithFilter($entry['fileid'], 'httpd/unix-directory');
 	}
 
 	/**

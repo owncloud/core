@@ -684,6 +684,38 @@ class CacheTest extends TestCase {
 		$this->assertEmpty($entry['checksum']);
 	}
 
+	public function testRemoveChildren() {
+		$parent1 = 'parent1';
+		$parent2 = 'parent1/parent2';
+		$file1 = 'parent1/file1';
+		$file2 = 'parent1/parent2/file2';
+		$file3 = 'parent1/parent2/file3';
+
+		// path /parent1/file1
+		$this->cache->put($parent1, ['size' => 0, 'mtime' => 5, 'mimetype' => 'httpd/unix-directory']);
+		$this->cache->put($file1, ['size' => 25, 'mtime' => 10, 'mimetype' => 'text/plain']);
+
+		// path /parent1/parent2/file1
+		// path /parent1/parent2/file2
+		$this->cache->put($parent2, ['size' => 0, 'mtime' => 15, 'mimetype' => 'httpd/unix-directory']);
+		$this->cache->put($file2, ['size' => 1000, 'mtime' => 20, 'mimetype' => 'text/plain']);
+		$this->cache->put($file3, ['size' => 20, 'mtime' => 25, 'mimetype' => 'text/plain']);
+		
+		$content = $this->cache->getFolderContents($parent1);
+		$this->assertEquals(2, \count($content));
+
+		$content = $this->cache->getFolderContents($parent2);
+		$this->assertEquals(2, \count($content));
+
+		$this->cache->remove($parent1);
+
+		$content = $this->cache->getFolderContents($parent1);
+		$this->assertEquals(0, \count($content));
+
+		$content = $this->cache->getFolderContents($parent2);
+		$this->assertEquals(0, \count($content));
+	}
+
 	protected function tearDown(): void {
 		if ($this->cache) {
 			$this->cache->clear();
