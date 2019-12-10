@@ -230,6 +230,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
+        - FederationContext:
         - WebDavPropertiesContext:
 
     apiWebdavUpload:

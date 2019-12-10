@@ -100,10 +100,15 @@ config = {
 				'apiWebdavLocks2',
 				'apiWebdavMove',
 				'apiWebdavOperations',
-				'apiWebdavProperties',
 				'apiWebdavUpload',
 			],
 		},
+        'apiWebdavProperties': {
+            'suites': [
+                'apiWebdavProperties',
+            ],
+            'federatedServerNeeded': True
+        },
 		'apiNotifications': {
 			'suites': [
 				'apiSharingNotifications',
