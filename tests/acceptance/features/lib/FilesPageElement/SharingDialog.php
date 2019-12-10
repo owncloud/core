@@ -765,12 +765,16 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * @param string $type user|group|public link with name
 	 * @param string $name user or group name
 	 * @param string $path
 	 *
 	 * @return NodeElement
 	 */
-	public function getShareTreeItem($name, $path) {
+	public function getShareTreeItem($type, $name, $path) {
+		if ($type === "group") {
+			$name = \sprintf($this->groupFramework, $name);
+		}
 		$fullXpath = \sprintf($this->shareTreeItemByNameAndPathXpath, $name, $path);
 		$item = $this->find("xpath", $fullXpath);
 		$this->assertElementNotNull(
