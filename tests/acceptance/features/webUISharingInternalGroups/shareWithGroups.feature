@@ -358,12 +358,13 @@ Feature: Sharing files and folders with internal groups
   @skipOnOcV10.3
   Scenario: no sharing indicator of items inside a not shared folder
     Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/simple-sub-folder"
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "user1" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     Then the following resources should not have share indicators on the webUI
-      | simple-empty-folder |
-      | lorem.txt           |
+      | simple-sub-folder |
+      | lorem.txt         |
 
   @skipOnOcV10.3
   Scenario: sharing indicator for file uploaded inside a shared folder
