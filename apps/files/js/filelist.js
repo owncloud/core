@@ -1931,8 +1931,10 @@
 
 				_.each(shares, function(share) {
 
+					var shareName = (!_.isEmpty(share.name)) ? share.name : share.token;
+
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name })
-					var $name = $('<strong>', { class : 'shareTree-item-name', text : share.name })
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareName })
 					var $icon = $('<span>',   { class : 'shareTree-item-icon link-entry--icon icon-public-white' })
 
 					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(function() {
