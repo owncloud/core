@@ -45,6 +45,13 @@ class SharingHelper {
 			'federated' => 6,
 	];
 
+	const SHARE_STATES = [
+			'accepted' => 0,
+			'pending' => 1,
+			'rejected' => 2,
+			'declined' => 2, // declined is a synonym for rejected
+	];
+
 	/**
 	 *
 	 * @param string $baseUrl baseURL of the ownCloud installation without /ocs.
