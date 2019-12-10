@@ -382,3 +382,15 @@ Feature: Sharing files and folders with internal groups
     And the user creates a folder with the name "sub-folder" using the webUI
     Then the following resources should have share indicators on the webUI
       | sub-folder |
+
+  @skipOnOcV10.3
+  Scenario: sharing details of items inside a shared folder shared with user and group
+    Given user "user3" has created folder "/simple-folder/sub-folder"
+    And user "user3" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/sub-folder/lorem.txt"
+    And user "user3" has shared folder "simple-folder" with user "user2"
+    And user "user3" has shared folder "/simple-folder/sub-folder" with group "grp1"
+    And user "user3" has logged in using the webUI
+    When the user opens folder "simple-folder/sub-folder" using the webUI
+    And the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
+    Then user "User Two" should be listed as share receiver via "simple-folder" on the webUI
+    And group "grp1" should be listed as share receiver via "sub-folder" on the webUI

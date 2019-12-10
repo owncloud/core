@@ -2213,7 +2213,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(?:user|group) ((?:'[^']*')|(?:"[^"]*")) should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
+	 * @Then /^(?:user|group|public link with name) ((?:'[^']*')|(?:"[^"]*")) should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
 	 *
 	 * @param string $name
 	 * @param string $item
