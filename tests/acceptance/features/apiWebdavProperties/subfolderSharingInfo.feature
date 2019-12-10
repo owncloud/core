@@ -107,7 +107,7 @@ Feature: Return the share information inside the shared folders
     Examples:
       | dav_version | href                           |
       | old         | /%dav_path%/PARENT             |
-      | new    a    | /%dav_path%/files/user0/PARENT |
+      | new         | /%dav_path%/files/user0/PARENT |
 
   Scenario Outline: Retrieving share-types-parents of a file of which the parent and the grand-parent folder is shared in different ways
     Given using <dav_version> DAV path
