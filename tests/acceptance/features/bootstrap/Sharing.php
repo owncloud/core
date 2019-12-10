@@ -29,8 +29,6 @@ use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Sharing trait
  */
@@ -1914,14 +1912,10 @@ trait Sharing {
 	private function getAllSharesSharedWithUser($user, $state = "all") {
 		switch ($state) {
 			case 'pending':
-				$stateCode = \OCP\Share::STATE_PENDING;
-				break;
 			case 'accepted':
-				$stateCode = \OCP\Share::STATE_ACCEPTED;
-				break;
 			case 'declined':
 			case 'rejected':
-				$stateCode = \OCP\Share::STATE_REJECTED;
+				$stateCode = SharingHelper::SHARE_STATES[$state];
 				break;
 			case 'all':
 				$stateCode = "all";

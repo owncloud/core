@@ -30,8 +30,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Basic functions needed by mostly everything
  */

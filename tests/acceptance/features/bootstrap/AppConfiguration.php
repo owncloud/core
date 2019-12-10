@@ -29,8 +29,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use Behat\Gherkin\Node\TableNode;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * AppConfiguration trait
  */

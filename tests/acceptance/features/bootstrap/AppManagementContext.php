@@ -25,8 +25,6 @@ use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Context for steps that test apps_paths.
  */

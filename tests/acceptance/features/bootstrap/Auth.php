@@ -23,8 +23,6 @@ use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use Behat\Gherkin\Node\TableNode;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Authentication functions
  */

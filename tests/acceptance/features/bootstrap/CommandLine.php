@@ -21,8 +21,6 @@
 
 use TestHelpers\SetupHelper;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
 /**
  * Command line functions
  */
