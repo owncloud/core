@@ -397,3 +397,14 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user creates a folder with the name "sub-folder" using the webUI
     Then the following resources should have share indicators on the webUI
       | sub-folder |
+
+  @skipOnOcV10.3
+  Scenario: sharing details inside folder shared using federated sharing
+    Given user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
+    And user "user1" from server "LOCAL" has shared "/simple-folder" with user "user1" from server "REMOTE"
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens the share dialog for folder "sub-folder"
+    Then federated user "user1@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    And the user opens the share dialog for file "textfile.txt"
+    Then federated user "user1@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI

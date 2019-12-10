@@ -2213,9 +2213,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(user|group|public link) ((?:'[^']*')|(?:"[^"]*")) should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
+	 * @Then /^(user|group|public link|federated user) ((?:'[^']*')|(?:"[^"]*")) should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
 	 *
-	 * @param string $type user|group|public link
+	 * @param string $type user|group|public link|federated user
 	 * @param string $name
 	 * @param string $item
 	 *
@@ -2224,6 +2224,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function userGroupShouldBeListedAsShareReceiver($type, $name, $item) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
+		$name = $this->featureContext->substituteInLineCodes($name);
 		$name = \trim($name, $name[0]);
 		$item = \trim($item, $item[0]);
 		$sharingDialog = $this->filesPage->getSharingDialog();
