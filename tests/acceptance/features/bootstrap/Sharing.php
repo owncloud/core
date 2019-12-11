@@ -189,7 +189,6 @@ trait Sharing {
 	public function userCreatesAShareWithSettings($user, $body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			$fd['expireDate'] = \array_key_exists('expireDate', $fd) ? $fd['expireDate'] : null;
 			$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
 			$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
 			$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
@@ -211,8 +210,15 @@ trait Sharing {
 			} else {
 				$fd['shareType'] = null;
 			}
-		}
 
+			Assert::assertFalse(
+				isset($fd['expireDate'], $fd['expireDateAsString']),
+				'expireDate and expireDateAsString cannot be set at the same time.'
+			);
+			$needToParse = \array_key_exists('expireDate', $fd);
+			$expireDate = $fd['expireDate'] ?? $fd['expireDateAsString'] ?? null;
+			$fd['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
+		}
 		$this->createShare(
 			$user,
 			$fd['path'],
@@ -660,14 +666,15 @@ trait Sharing {
 		}
 		//do not try to convert empty date
 		if ((string) $field === 'expiration' && !empty($contentExpected)) {
-			$contentExpected
-				= \date(
-					'Y-m-d',
-					\strtotime(
-						$contentExpected,
-						$this->getServerShareTimeFromLastResponse()
-					)
-				) . " 00:00:00";
+			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
+			// strtotime returns false if it failed to parse, just leave it as it is in that condition
+			if ($timestamp !== false) {
+				$contentExpected
+					= \date(
+						'Y-m-d',
+						$timestamp
+					) . " 00:00:00";
+			}
 		}
 
 		$contentExpected = (string) $contentExpected;
@@ -1201,7 +1208,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function getLastShareIdOf($user) {
-		if ($this->lastShareData !== null) {
+		if (isset($this->lastShareData->data[0]->id)) {
 			return (int)$this->lastShareData->data[0]->id;
 		}
 
@@ -1481,7 +1488,6 @@ trait Sharing {
 	public function checkFields($body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
 				Assert::assertTrue(
