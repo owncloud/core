@@ -460,7 +460,7 @@ class OC_API {
 	 */
 	private static function toXML($array, $writer) {
 		foreach ($array as $k => $v) {
-			if ($k[0] === '@') {
+			if (isset($k[0]) && ($k[0] === '@')) {
 				if (\is_array($v)) {
 					foreach ($v as $name => $value) {
 						$writer->writeAttribute($name, $value);
