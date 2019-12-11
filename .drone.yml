@@ -9584,7 +9584,7 @@ steps:
 
 - name: configure-federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   commands:
   - cd /drone/federated
   - php occ a:l
@@ -9672,7 +9672,7 @@ services:
 
 - name: federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -9781,7 +9781,7 @@ steps:
 
 - name: configure-federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   commands:
   - cd /drone/federated
   - php occ a:l
@@ -9869,7 +9869,7 @@ services:
 
 - name: federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -14848,7 +14848,7 @@ steps:
 
 - name: configure-federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   commands:
   - cd /drone/federated
   - php occ a:l
@@ -14946,7 +14946,7 @@ services:
 
 - name: federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -15055,7 +15055,7 @@ steps:
 
 - name: configure-federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   commands:
   - cd /drone/federated
   - php occ a:l
@@ -15153,7 +15153,7 @@ services:
 
 - name: federated
   pull: always
-  image: owncloudci/php:7.3
+  image: owncloudci/php:7.2
   command:
   - /usr/local/bin/apachectl
   - -e

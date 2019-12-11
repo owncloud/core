@@ -1326,7 +1326,7 @@ def acceptance():
 		'includeKeyInMatrixName': False,
 		'runAllSuites': False,
 		'numberOfParts': 1,
-		'federatedPhpVersion': '7.3',
+		'federatedPhpVersion': '7.2',
 	}
 
 	if 'defaults' in config:
