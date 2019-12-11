@@ -678,17 +678,6 @@ Feature: sharing
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
-  @public_link_share-feature-required
-  Scenario: Only allow 1 link share per file/folder
-    Given using OCS API version "1"
-    And as user "user0"
-    And the user has created a public link share with settings
-      | path | welcome.txt |
-    And the last share id has been remembered
-    When the user creates a public link share using the sharing API with settings
-      | path | welcome.txt |
-    Then the share ids should match
-
   @smokeTest
   Scenario: unique target names for incoming shares
     Given using OCS API version "1"
