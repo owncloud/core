@@ -699,6 +699,7 @@ Feature: Share by public link
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
+  @skipOnOcV10.3
   Scenario: sharing details of items inside a shared folder
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has created folder "/simple-folder/sub-folder"
