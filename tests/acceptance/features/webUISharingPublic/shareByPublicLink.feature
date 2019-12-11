@@ -710,7 +710,7 @@ Feature: Share by public link
     When the user opens folder "simple-folder" using the webUI
     And the user opens the share dialog for folder "sub-folder"
     And the user opens the public link share tab
-    Then public link with name "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+    Then public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
 
   @skipOnOcV10.3
   Scenario: sharing details of multiple public link shares with different link names
@@ -731,5 +731,5 @@ Feature: Share by public link
     When the user opens folder "sub-folder" using the webUI
     And the user opens the share dialog for file "textfile.txt"
     And the user opens the public link share tab
-    Then public link with name "strängé लिंक नाम (#2 &).नेपाली" should be listed as share receiver via "sub-folder" on the webUI
-    And public link with name "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+    Then public link "strängé लिंक नाम (#2 &).नेपाली" should be listed as share receiver via "sub-folder" on the webUI
+    And public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
