@@ -1,0 +1,5 @@
+Change: Protect public preview with password
+
+The preview route for password protected shares was accessible without the password.
+
+https://github.com/owncloud/core/pull/36571
