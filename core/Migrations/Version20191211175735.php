@@ -30,7 +30,7 @@ use OC\User\SyncService;
 /**
  * Set a sync limit based on the current number of users
  */
-class Version20190503101238 implements ISimpleMigration {
+class Version20191211175735 implements ISimpleMigration {
 	/** @var AccountMapper */
 	private $accountMapper;
 	/** @var SyncService */
