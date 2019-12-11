@@ -1627,27 +1627,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given the last share id has been remembered
-	 *
-	 * @return void
-	 */
-	public function rememberLastShareId() {
-		$this->savedShareId = $this->lastShareData['data']['id'];
-	}
-
-	/**
-	 * @Then the share ids should match
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function shareIdsShouldMatch() {
-		if ($this->savedShareId !== $this->lastShareData['data']['id']) {
-			throw new \Exception('Expected the same link share to be returned');
-		}
-	}
-
-	/**
 	 * Returns shares of a file or folders as an array of elements
 	 *
 	 * @param string $user
