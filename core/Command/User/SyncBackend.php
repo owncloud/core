@@ -252,15 +252,23 @@ class SyncBackend extends Command {
 		$missingAccountsAction
 	) {
 		$output->writeln("Syncing $uid ...");
-		$users = $backend->getUsers($uid, 2);
-		if (\count($users) > 1) {
-			throw new \LengthException("Multiple users returned from backend for: $uid. Cancelling sync.");
+		$userUids = $backend->getUsers('', null);
+		$userToSync = null;
+		foreach ($userUids as $userUid) {
+			if ($userUid === $uid) {
+				if ($userToSync === null) {
+					$userToSync = $userUid;
+				} else {
+					throw new \LengthException("Multiple users returned from backend for: $uid. Cancelling sync.");
+				}
+			}
 		}
 
 		$dummy = new Account(); // to prevent null pointer when writing messages
-		if (\count($users) === 1) {
+
+		if ($userToSync !== null) {
 			// Run the sync using the internal username if mapped
-			$syncService->run($backend, new \ArrayIterator([$users[0]]), function () {
+			$syncService->run($backend, new \ArrayIterator([$userToSync]), function () {
 			});
 		} else {
 			// Not found
