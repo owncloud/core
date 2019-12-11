@@ -1634,6 +1634,7 @@ Feature: sharing
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
+  @issue-36568
   Scenario Outline: sharing with expiration date is not enabled, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -1744,6 +1745,7 @@ Feature: sharing
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
+  @issue-36568
   Scenario Outline: sharing with expiration date is not enabled for groups, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -1756,6 +1758,7 @@ Feature: sharing
       | permissions | read,share |
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
+    # And the HTTP status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
       | share_type  | group    |
@@ -2114,24 +2117,6 @@ Feature: sharing
       | 11.12.2050          |
       | 11.12.2050 12:30:40 |
 
-  Scenario Outline: sharing with expiration date enforced for users, user shares with invalid expiration date format
-    Given using OCS API version "<ocs_api_version>"
-    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
-      | path               | textfile0.txt |
-      | shareType          | user          |
-      | shareWith          | user1         |
-      | permissions        | read,share    |
-      | expireDateAsString | tomorrow      |
-    Then the fields of the last response should include
-      | expiration | tomorrow |
-    Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
-
   Scenario Outline: sharing with expiration date enforced for users, user shares with humanized expiration date format
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -2207,6 +2192,7 @@ Feature: sharing
       | 1               | 404             | 200              |
       | 2               | 404             | 404              |
 
+  @issue-36569
   Scenario Outline: sharing with expiration date set, max expire date is 0, user shares without specifying expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
