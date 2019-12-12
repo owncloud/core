@@ -35,6 +35,8 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+    And  the downloaded content when downloading file "/PARENT (2)/parent.txt" for user "user1" with range "bytes=19-29" should be "file parent"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "user1" with range "bytes=14-24" should be "text file 0"
 
   Scenario Outline: share a file & folder with another internal user when auto accept is enabled and there is a default folder for received shares
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -90,6 +92,8 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+    And  the downloaded content when downloading file "/PARENT (2)/parent.txt" for user "user2" with range "bytes=19-29" should be "file parent"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=14-24" should be "text file 0"
 
   @smokeTest
   Scenario: decline a share that has been auto-accepted
@@ -127,6 +131,8 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+    And  the downloaded content when downloading file "/PARENT (2)/parent.txt" for user "user1" with range "bytes=19-29" should be "file parent"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "user1" with range "bytes=14-24" should be "text file 0"
 
   Scenario: unshare a share that has been auto-accepted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -194,6 +200,7 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "user1" that these shares are in the accepted state
       | path             |
       | /PARENT-renamed/ |
+    And  the downloaded content when downloading file "/PARENT-renamed/parent.txt" for user "user1" with range "bytes=19-29" should be "file parent"
 
   Scenario: move accepted share, decline it, accept again
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"

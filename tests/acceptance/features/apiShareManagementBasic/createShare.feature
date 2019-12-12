@@ -25,6 +25,7 @@ Feature: sharing
       | mimetype                   | text/plain        |
       | storage_id                 | ANY_VALUE         |
       | share_type                 | user              |
+    And  the downloaded content when downloading file "welcome.txt" for user "user1" with range "bytes=0-6" should be "Welcome"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
