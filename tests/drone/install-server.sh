@@ -76,23 +76,23 @@ rm -rf ${DATA_DIRECTORY} config/config.php
 echo "waiting for database to be ready"
 case "${DB_TYPE}" in
   mariadb)
-    wait-for-it -t 120 mariadb:3306
+    wait-for-it -t 600 mariadb:3306
     DB=mysql
     ;;
   mysql)
-    wait-for-it -t 120 mysql:3306
+    wait-for-it -t 600 mysql:3306
     DB=mysql
     ;;
   mysql8)
-    wait-for-it -t 120 mysql8:3306
+    wait-for-it -t 600 mysql8:3306
     DB=mysql
     ;;
   postgres)
-    wait-for-it -t 120 postgres:5432
+    wait-for-it -t 600 postgres:5432
     DB=pgsql
     ;;
   oracle)
-    wait-for-it -t 120 oracle:1521
+    wait-for-it -t 600 oracle:1521
     DB=oci
     DB_USERNAME=autotest
     DB_NAME='XE'
@@ -111,7 +111,7 @@ declare -x PRIMARY_OBJECTSTORE
 if [[ ! -z "${PRIMARY_OBJECTSTORE}" ]]; then
   case "${PRIMARY_OBJECTSTORE}" in
     files_primary_s3)
-      wait-for-it -t 120 scality:8000
+      wait-for-it -t 600 scality:8000
       ;;
     *)
       echo "Unknown primary object storage!"

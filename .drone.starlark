@@ -1887,7 +1887,7 @@ def setupCeph(phpVersion, cephS3):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'commands': [
-			'wait-for-it -t 120 ceph:80',
+			'wait-for-it -t 600 ceph:80',
 			'cd /drone/src/apps/files_primary_s3',
 			'cp tests/drone/ceph.config.php /drone/src/config',
 			'cd /var/www/owncloud/server',
@@ -1912,7 +1912,7 @@ def setupScality(phpVersion, scalityS3):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'commands': [
-			'wait-for-it -t 120 scality:8000',
+			'wait-for-it -t 600 scality:8000',
 			'cp /drone/src/apps/files_primary_s3/tests/drone/%s /drone/src/config' % configFile,
 			'php occ s3:create-bucket owncloud --accept-warning'
 		] + ([
