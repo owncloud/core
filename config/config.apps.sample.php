@@ -11,7 +11,7 @@
  *
  * All keys are only valid if the corresponding app is installed and enabled.
  * You MUST copy the keys needed to the active config.php file.
- * 
+ *
  * This file is used to generate the configuration documentation.
  * Please consider following requirements of the current parser:
  *  * all comments need to start with `/**` and end with ` *\/` - each on their
@@ -26,11 +26,11 @@
  * See examples below.
  */
 
-$CONFIG = array(
+$CONFIG = [
 
 /**
  * App: Activity
- * 
+ *
  * Possible values: `activity_expire_days` days.
  */
  
@@ -42,9 +42,9 @@ $CONFIG = array(
 
 /**
  * App: LDAP
- * 
+ *
  * Possible values: `ldapIgnoreNamingRules` `doSet` or `false`.
- * 
+ *
  * Possible values: `user_ldap.enable_medial_search` `true` or `false`.
  */
  
@@ -57,7 +57,7 @@ $CONFIG = array(
 
 /**
  * App: Market
- * 
+ *
  * Possible values: `appstoreurl` URL.
  */
 
@@ -69,17 +69,17 @@ $CONFIG = array(
 
 /**
  * App: Firstrunwizard
- * 
+ *
  * Possible values: `customclient_desktop` URL.
- * 
+ *
  * Possible values: `customclient_android` URL.
- * 
+ *
  * Possible values: `customclient_ios` URL.
  */
 
 /**
  * Define the download links for ownCloud clients.
- * Configuring the download links for ownCloud clients, 
+ * Configuring the download links for ownCloud clients,
  * as seen in the first-run wizard and on Personal pages
  */
  
@@ -92,7 +92,7 @@ $CONFIG = array(
 
 /**
  * App: Richdocuments
- * 
+ *
  * Possible values: `collabora_group` string.
  */
 
@@ -102,4 +102,4 @@ $CONFIG = array(
 
 'collabora_group' => '',
 
-);
+];

@@ -24,7 +24,6 @@ $excludeDirs = [
 	'build',
 	'apps/files_external/3rdparty',
 	'apps-external',
-	'config',
 	'data',
 	'3rdparty',
 ];
@@ -38,6 +37,8 @@ foreach ($dirIterator as $fileinfo) {
 
 $finder = PhpCsFixer\Finder::create()
 	->exclude($excludeDirs)
+	->notPath('config/config.php')
+	->notPath('config/config.backup.php')
 	->notPath('tests/autoconfig*')
 	->in(__DIR__);
 
