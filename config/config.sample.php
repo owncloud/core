@@ -283,7 +283,7 @@ $CONFIG = array(
 'user_backends' => [
 	[
 		'class' => 'OC_User_IMAP',
-		'arguments' => ['{imap.gmail.com:993/imap/ssl}INBOX')]
+		'arguments' => ['{imap.gmail.com:993/imap/ssl}INBOX']
 	]
   ],
 
