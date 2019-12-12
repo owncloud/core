@@ -51,9 +51,10 @@ class RootCollectionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotAuthenticated
 	 */
 	public function testGetChildForPrincipalWithUnauthorizedUser() {
+		$this->expectException(\Sabre\DAV\Exception\NotAuthenticated::class);
+
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('john');
 		$userSession = $this->createMock(IUserSession::class);

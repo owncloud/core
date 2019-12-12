@@ -55,9 +55,10 @@ class PublicDavLocksPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testHttpLockForPublicWithoutLocks() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		$this->matcher->method('__invoke')->willReturn(true);
 
 		$request = $this->createMock(RequestInterface::class);
@@ -71,9 +72,10 @@ class PublicDavLocksPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Locked
 	 */
 	public function testHttpLockForPublicWithLocks() {
+		$this->expectException(\Sabre\DAV\Exception\Locked::class);
+
 		$this->matcher->method('__invoke')->willReturn(true);
 
 		$request = $this->createMock(RequestInterface::class);
@@ -89,9 +91,10 @@ class PublicDavLocksPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testHttpUnlockForPublic() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		$this->matcher->method('__invoke')->willReturn(true);
 
 		$request = $this->createMock(RequestInterface::class);
