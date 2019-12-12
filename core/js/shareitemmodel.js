@@ -219,7 +219,10 @@
 
 		updateShare: function(shareId, properties, options) {
 			var self = this;
-			options = options || {};
+
+			options = _.defaults(options, {
+				silent: false
+			})
 
 			// Extend attributes for update share
 			properties.attributes = this._handleUpdateShareAttributes(shareId, properties, options);
@@ -231,6 +234,7 @@
 				dataType: 'json'
 			}).done(function() {
 				self.fetch({
+					silent: options.silent,
 					success: function() {
 						if (_.isFunction(options.success)) {
 							options.success(self);
@@ -665,14 +669,20 @@
 			return superShare;
 		},
 
-		fetch: function() {
+		fetch: function(options) {
 			var model = this;
+
+			options = _.defaults(options, {
+				silent: false
+			})
+
 			this.trigger('request', this);
 
 			var deferred = $.when(
 				this._fetchShares(),
 				this._fetchReshare()
 			);
+
 			deferred.done(function(data1, data2) {
 				model.trigger('sync', 'GET', this);
 				var sharesMap = {};
@@ -688,7 +698,9 @@
 				model.set(model.parse({
 					shares: sharesMap,
 					reshare: reshare
-				}));
+				}), {
+					silent: options.silent
+				});
 			});
 
 			return deferred;

@@ -14,82 +14,93 @@
 	}
 
 	var TEMPLATE =
-			'<ul id="shareWithList" class="shareWithList">' +
-			'{{#each sharees}}' +
-			'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
-			'<a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
-			'{{#if avatarEnabled}}' +
-			'<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
-			'{{/if}}' +
-			'<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
-			'{{#if shareWithAdditionalInfo}}' +
-			'<span class="has-tooltip user-additional-info">({{shareWithAdditionalInfo}})</span>' +
-			'{{/if}}' +
-			'{{#if mailNotificationEnabled}}  {{#unless isRemoteShare}}' +
-			'<span class="shareOption">' +
-			'{{#unless wasMailSent}}' +
-			'<span class="mailNotificationSpinner icon-loading-small hidden"></span>' +
-			'<input id="mail-{{cid}}-{{shareWith}}" type="button" name="mailNotification" value="{{notifyByMailLabel}}" class="mailNotification checkbox" />' +
-			'{{/unless}}' +
-			'</span>' +
-			'{{/unless}} {{/if}}' +
-			'{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
-			'<span class="shareOption">' +
-			'<input id="canShare-{{cid}}-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
-			'<label for="canShare-{{cid}}-{{shareWith}}">{{canShareLabel}}</label>' +
-			'</span>' +
-			'{{/if}} {{/if}}' +
-			'{{#if editPermissionPossible}}' +
-			'<span class="shareOption">' +
-			'<input id="canEdit-{{cid}}-{{shareWith}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
-			'<label for="canEdit-{{cid}}-{{shareWith}}">{{canEditLabel}}</label>' +
-			'<a href="#" class="showCruds"><img alt="{{crudsLabel}}" src="{{triangleSImage}}"/></a>' +
-			'</span>' +
-			'{{/if}}' +
-			'<div class="cruds hidden">' +
-			'{{#if createPermissionPossible}}' +
-			'<span class="shareOption">' +
-			'<input id="canCreate-{{cid}}-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
-			'<label for="canCreate-{{cid}}-{{shareWith}}">{{createPermissionLabel}}</label>' +
-			'</span>' +
-			'{{/if}}' +
-			'{{#if updatePermissionPossible}}' +
-			'<span class="shareOption">' +
-			'<input id="canUpdate-{{cid}}-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
-			'<label for="canUpdate-{{cid}}-{{shareWith}}">{{updatePermissionLabel}}</label>' +
-			'</span>' +
-			'{{/if}}' +
-			'{{#if deletePermissionPossible}}' +
-			'<span class="shareOption">' +
-			'<input id="canDelete-{{cid}}-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
-			'<label for="canDelete-{{cid}}-{{shareWith}}">{{deletePermissionLabel}}</label>' +
-			'</span>' +
-			'{{/if}}' +
-			'</div>' +
-			'<div class="shareAttributes"">' +
-			'{{#each shareAttributesV1}}' +
-			'<span class="shareOption">' +
-			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
-			'<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
-			'</span>' +
-			'{{/each}}' +
-			'</div>' +
-			'{{#if defaultExpireDateUserEnabled}} {{#if isUserShare}}' +
-			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
-			'   <input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-user"/>' +
-			'   <button class="removeExpiration">Remove</button>' +
-			'</label>' +
-			'{{/if}} {{/if}}' +
-			'{{#if defaultExpireDateGroupEnabled}} {{#if isGroupShare}}' +
-			'<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
-			'   <input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-group"/>' +
-			'   <button class="removeExpiration">Remove</button>' +
-			'</label>' +
-			'{{/if}} {{/if}}' +
-			'</li>' +
-			'{{/each}}' +
-			'</ul>'
-	;
+		'<ul id="shareWithList" class="shareWithList">' +
+		'	{{#each sharees}}' +
+		'	<li class="shareWithList__item" data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
+		'		<div class="shareWithList__container--left">' +
+		'			{{#if avatarEnabled}}' +
+		'			<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
+		'			{{/if}}' +
+		'			<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
+		'		</div>' + 
+		'		<div class="shareWithList__container--right">'+
+		'			{{#if expirationDate}}' +
+		'			<div class="action-item"><span class="icon icon-time"></span><span class="hidden-visually">{{unshareLabel}}</span></div>' +
+		'			{{/if}}' +
+		'			<a href="#" class="action-item toggleShareDetails"><span class="icon icon-settings-dark"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
+		'			<a href="#" class="action-item unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
+		'			{{#if shareWithAdditionalInfo}}' +
+		'			<span class="has-tooltip user-additional-info">({{shareWithAdditionalInfo}})</span>' +
+		'			{{/if}}' +
+		'			{{#if mailNotificationEnabled}} {{#unless isRemoteShare}}' +
+		'			<div class="shareOption">' +
+		'				{{#unless wasMailSent}}' +
+		'				<span class="mailNotificationSpinner icon-loading-small hidden"></span>' +
+		'				<input id="mail-{{cid}}-{{shareWith}}" type="button" name="mailNotification" value="{{notifyByMailLabel}}" class="mailNotification checkbox" />' +
+		'				{{/unless}}' +
+		'			</div>' +
+		'			{{/unless}}' +
+		'			{{/if}}' +
+		'		</div>' + 
+		'		<div class="shareWithList__details hidden">'+
+		'			<div class="shareWithList__details-group">' +
+		'				{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
+		'				<div class="shareOption">' +
+		'					<input id="canShare-{{cid}}-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
+		'					<label for="canShare-{{cid}}-{{shareWith}}">{{canShareLabel}}</label>' +
+		'				</div>' +
+		'				{{/if}} {{/if}}' +
+		'				{{#if editPermissionPossible}}' +
+		'				<div class="shareOption">' +
+		'					<input id="canEdit-{{cid}}-{{shareWith}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
+		'					<label for="canEdit-{{cid}}-{{shareWith}}">{{canEditLabel}}</label>' +
+		'				</div>' +
+		'				{{/if}}' +
+		'				{{#if createPermissionPossible}}' +
+		'				<div class="shareOption">' +
+		'					<input id="canCreate-{{cid}}-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
+		'					<label for="canCreate-{{cid}}-{{shareWith}}">{{createPermissionLabel}}</label>' +
+		'				</div>' +
+		'				{{/if}}' +
+		'				{{#if updatePermissionPossible}}' +
+		'				<div class="shareOption">' +
+		'					<input id="canUpdate-{{cid}}-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
+		'					<label for="canUpdate-{{cid}}-{{shareWith}}">{{updatePermissionLabel}}</label>' +
+		'				</div>' +
+		'				{{/if}}' +
+		'				{{#if deletePermissionPossible}}' +
+		'				<div class="shareOption">' +
+		'					<input id="canDelete-{{cid}}-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
+		'					<label for="canDelete-{{cid}}-{{shareWith}}">{{deletePermissionLabel}}</label>' +
+		'				</div>' +
+		'				{{/if}}' +
+		'				<div class="shareAttributes"">' +
+		'					{{#each shareAttributesV1}}' +
+		'					<div class="shareOption">' +
+		'						<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
+		'						<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
+		'					</div>' +
+		'					{{/each}}' +
+		'				</div>' +
+		'			</div>' + // .shareWithList__details-group
+		'			<div class="shareWithList__details-group">' +
+		'				{{#if isUserShare}}' +
+		'				<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expiration: ' +
+		'				   <input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="Choose an expiration date" />' +
+		'				   <button class="removeExpiration">Remove</button>' +
+		'				</label>' +
+		'				{{/if}}' +
+		'				{{#if isGroupShare}}' +
+		'				<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
+		'				   <input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-group"/>' +
+		'				   <button class="removeExpiration">Remove</button>' +
+		'				</label>' +
+		'				{{/if}}' +
+		'			</div>' + 
+		'		</div>' + // .shareWithList__details-group
+		'	</li>' +
+		'{{/each}}' +
+		'</ul>';
 
 	/**
 	 * @class OCA.Share.ShareDialogShareeListView
@@ -115,7 +126,7 @@
 			'click .unshare': 'onUnshare',
 			'click .permissions': 'onPermissionChange',
 			'click .attributes': 'onPermissionChange',
-			'click .showCruds': 'onCrudsToggle',
+			'click .toggleShareDetails' : 'onToggleShareDetails',
 			'click .mailNotification': 'onSendMailNotification',
 			'click .removeExpiration' : 'onRemoveExpiration'
 		},
@@ -282,23 +293,19 @@
 				placement: 'bottom'
 			});
 
-			if (this.configModel.isDefaultExpireDateUserEnabled()) {
-				this.$el.find('.expiration-user:not(.hasDatepicker)').each(function(){
-					self._setDatepicker(this, {
-						maxDate  : self.configModel.getDefaultExpireDateUser(),
-						enforced : self.configModel.isDefaultExpireDateUserEnforced()
-					})
+			this.$el.find('.expiration-user:not(.hasDatepicker)').each(function(){
+				self._setDatepicker(this, {
+					maxDate  : self.configModel.getDefaultExpireDateUser(),
+					enforced : self.configModel.isDefaultExpireDateUserEnforced()
 				})
-			}
+			})
 
-			if (this.configModel.isDefaultExpireDateGroupEnabled()) {
-				this.$el.find('.expiration-group:not(.hasDatepicker)').each(function(){
-					self._setDatepicker(this, {
-						maxDate  : self.configModel.getDefaultExpireDateGroup(),
-						enforced : self.configModel.isDefaultExpireDateGroupEnforced()
-					})
+			this.$el.find('.expiration-group:not(.hasDatepicker)').each(function(){
+				self._setDatepicker(this, {
+					maxDate  : self.configModel.getDefaultExpireDateGroup(),
+					enforced : self.configModel.isDefaultExpireDateGroupEnforced()
 				})
-			}
+			})
 
 			this.delegateEvents();
 
@@ -386,17 +393,13 @@
 				});
 			});
 
-			this.model.updateShare(
-				shareId,
-				{permissions: permissions, attributes: attributes},
-				{}
+			this.model.updateShare(shareId,	{
+					permissions: permissions,
+					attributes: attributes
+				}, {
+					silent: true
+				}
 			);
-		},
-
-		onCrudsToggle: function(event) {
-			var $target = $(event.target);
-			$target.closest('li').find('.cruds').toggleClass('hidden');
-			return false;
 		},
 
 		onSendMailNotification: function(event) {
@@ -432,13 +435,20 @@
 			});
 		},
 
+		onToggleShareDetails: function() {
+			var $target = $(event.target);
+			$target.closest('.shareWithList__item').toggleClass('shareWithList__item--detailed').find('.shareWithList__details').toggleClass('hidden');
+		},
+
 		_onExpirationChange: function(el) {
 			var $el        = $(el)
 			var shareId    = $el.closest('li').data('share-id');
 			var expiration = moment($el.val(), 'DD-MM-YYYY').format()
 
 			this.model.updateShare( shareId, {
-				expireDate: expiration
+				expireDate: expiration,
+			}, {
+				silent: true
 			});
 		},
 
