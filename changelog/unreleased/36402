@@ -1,0 +1,21 @@
+Change: Don't report locking support in public.php and public-files endpoints
+
+Public endpoints were reporting locking support even though the backend were rejecting
+those requests. This was causing a problem accessing a publicly shared document using
+libreoffice opening the file through webdav (libreoffice was complaining about a 
+Forbidden error trying to lock the file)
+
+With these changes, libreoffice will show a warning while opening the remote file (from
+a public link) if the file is already locked, letting the user choose what to do. If there
+is no lock, the file will be opened normally, but it won't be locked.
+
+Following changes are expected:
+* LOCK and UNLOCK methods won't be reported as allowed
+* Lock information (d:lockdiscovery) and support (d:supportedlock) will be shown in the
+  propfind if requested (lock support is needed for libreoffice to try to lock the file)
+* Trying to lock the file through public link will either throw a Locked exception if there is
+  a lock in place, or MethodNotAllowed if there are no locks (the Locked exception is needed
+  for libreoffice to show a popup warning the user that the file is locked)
+
+
+https://github.com/owncloud/core/pull/36402
