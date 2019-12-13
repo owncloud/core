@@ -84,8 +84,8 @@ class FileCacheTest extends TestCache {
 	}
 
 	protected function tearDown(): void {
-		if ($this->instance) {
-			$this->instance->remove('hack', 'hack');
+		if ($this->instance->get('hack') !== null) {
+			$this->instance->remove('hack');
 		}
 
 		parent::tearDown();
