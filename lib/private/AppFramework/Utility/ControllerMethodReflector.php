@@ -64,7 +64,7 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 			if (\method_exists($param, 'getType')) {
 				$type = $param->getType();
 				if ($type !== null) {
-					$this->types[$param->getName()] = (string) $type;
+					$this->types[$param->getName()] = $type->getName();
 				}
 			}
 
