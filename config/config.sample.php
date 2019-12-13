@@ -20,7 +20,7 @@
  *  * use RST syntax
  */
 
-$CONFIG = array(
+$CONFIG = [
 
 /**
  * Default Parameters
@@ -28,7 +28,6 @@ $CONFIG = array(
  * These parameters are configured by the ownCloud installer and are required
  * for your ownCloud server to operate.
  */
-
 
 /**
  * Unique identifier for your ownCloud installation
@@ -163,14 +162,12 @@ $CONFIG = array(
  */
 'dbtableprefix' => '',
 
-
 /**
  * Indicates whether the ownCloud instance was installed successfully
  * `true` indicates a successful installation,
  * `false` indicates an unsuccessful installation.
  */
 'installed' => false,
-
 
 /**
  * User Experience
@@ -418,7 +415,6 @@ $CONFIG = array(
  */
 'mail_smtppassword' => '',
 
-
 /**
  * Proxy Configurations
  */
@@ -526,7 +522,6 @@ $CONFIG = array(
  * Example: `usern@me` needs to be encoded as `usern%40ame`.
  */
 'proxyuserpwd' => '',
-
 
 /**
  * Deleted Items (trash bin)
@@ -783,13 +778,11 @@ $CONFIG = array(
  */
 'log_rotate_size' => false,
 
-
 /**
  * Alternate Code Locations
  *
  * Some of the ownCloud code may be stored in alternate locations.
  */
-
 
 /**
  * Define alternative app directories
@@ -822,7 +815,6 @@ $CONFIG = array(
 			'writable' => true,
 		],
   ],
-
 
 /**
  * Previews
@@ -1003,7 +995,6 @@ $CONFIG = array(
  */
 'singleuser' => false,
 
-
 /**
  * SSL
  */
@@ -1091,7 +1082,6 @@ $CONFIG = array(
 	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE
   ],
 
-
 /**
  * Define server details for memcached servers to use for memory caching
  * Server details for one or more memcached servers to use for memory caching
@@ -1128,7 +1118,6 @@ $CONFIG = array(
 	// Binary serializer will be enabled if the igbinary PECL module is available
 	//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
   ],
-
 
 /**
  * Define the location of the cache folder
@@ -1181,7 +1170,6 @@ $CONFIG = array(
  * instead of hard forcing HTTPS
  */
 'sharing.federation.allowHttpFallback' => false,
-
 
 /**
  * All other configuration options
@@ -1441,7 +1429,6 @@ $CONFIG = array(
  */
 'max_filesize_animated_gifs_public_sharing' => 10,
 
-
 /**
  * Enables transactional file locking
  * Transactional file locking is enabled by default.
@@ -1543,4 +1530,4 @@ $CONFIG = array(
  */
 'dav.enable.tech_preview' => false,
 
-);
+];
