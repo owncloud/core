@@ -48,6 +48,14 @@ if ($token === '') {
 $shareManager = \OC::$server->getShareManager();
 try {
 	$linkedItem = $shareManager->getShareByToken($token);
+	if ($linkedItem->getPassword() !== null) {
+		$session = \OC::$server->getSession();
+		if (! $session->exists('public_link_authenticated')
+			|| $session->get('public_link_authenticated') !== (string)$linkedItem->getId()) {
+			// sending back 404 in case access is not allowed - not 401 because this way we would expose existence of a share
+			throw new ShareNotFound();
+		}
+	}
 } catch (ShareNotFound $e) {
 	\OC_Response::setStatus(\OC_Response::STATUS_NOT_FOUND);
 	\OCP\Util::writeLog('core-preview', 'Passed token parameter is not valid', \OCP\Util::DEBUG);

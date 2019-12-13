@@ -1938,6 +1938,35 @@ trait Sharing {
 	}
 
 	/**
+	 * Send request for preview of a file in a public link
+	 *
+	 * @param string $fileName
+	 * @param string $token
+	 *
+	 * @return void
+	 */
+	public function getPublicPreviewOfFile($fileName, $token) {
+		$url = $this->getBaseUrl() .
+			"/index.php/apps/files_sharing/ajax/publicpreview.php" .
+			"?file=$fileName&t=$token";
+		$resp = HttpRequestHelper::get($url);
+		$this->setResponse($resp);
+	}
+
+	/**
+	 * @When the public accesses the preview of file :path from the last shared public link using the sharing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function thePublicAccessesThePreviewOfTheSharedFileUsingTheSharingApi($path) {
+		$shareData = $this->getLastShareData();
+		$token = (string)$shareData->data->token;
+		$this->getPublicPreviewOfFile($path, $token);
+	}
+
+	/**
 	 * replace values from table
 	 *
 	 * @param string $field
