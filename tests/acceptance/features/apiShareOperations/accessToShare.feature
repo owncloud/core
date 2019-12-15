@@ -64,7 +64,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @public_link_share-feature-required @skipOnOc10.3
+  @public_link_share-feature-required @skipOnOcV10.3
   Scenario: Access to the preview of password protected public link without providing the password is not allowed
     Given the administrator has enabled DAV tech_preview
     And user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "testavatar.jpg"
@@ -85,7 +85,7 @@ Feature: sharing
     When the public accesses the preview of file "testavatar.jpg" from the last shared public link using the sharing API
     Then the HTTP status code should be "200"
 
-  @public_link_share-feature-required @skipOnOc10.3
+  @public_link_share-feature-required @skipOnOcV10.3
   Scenario: Access to the preview of password protected public shared file inside a folder without providing the password is not allowed
     Given the administrator has enabled DAV tech_preview
     And user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "FOLDER/testavatar.jpg"
