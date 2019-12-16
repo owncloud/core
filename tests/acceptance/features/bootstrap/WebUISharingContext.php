@@ -278,7 +278,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function clearExpirationDate($userOrGroup, $receiver) {
+		$this->sharingDialog->openShareActionsDropDown();
 		$this->sharingDialog->clearExpirationDateFor($this->getSession(), $receiver, $userOrGroup);
+		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
