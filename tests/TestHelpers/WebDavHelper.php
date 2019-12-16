@@ -305,7 +305,6 @@ class WebDavHelper {
 				}
 			}
 		}
-
 		return HttpRequestHelper::sendRequest(
 			$fullUrl, $method, $user, $password, $headers, $body, $config, null,
 			$stream, $timeout, $client
