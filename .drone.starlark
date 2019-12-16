@@ -79,6 +79,7 @@ config = {
 			'suites': [
 				'apiAuth',
 				'apiAuthOcs',
+				'apiAuthWebDav',
 				'apiCapabilities',
 				'apiComments',
 				'apiFavorites',

@@ -101,7 +101,7 @@ class OCSContext implements Context {
 		if ($body instanceof TableNode) {
 			$bodyArray = $body->getRowsHash();
 		}
-		
+
 		if ($user !== 'UNAUTHORIZED_USER') {
 			$user = $this->featureContext->getActualUsername($user);
 			if ($password === null) {
@@ -111,7 +111,7 @@ class OCSContext implements Context {
 			$user = null;
 			$password = null;
 		}
-		
+
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(), $user, $password, $verb,
 			$url, $bodyArray, $this->featureContext->getOcsApiVersion()
@@ -192,7 +192,7 @@ class OCSContext implements Context {
 		foreach ($headersTable as $row) {
 			$headers[$row['header']] = $row ['value'];
 		}
-		
+
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(), $user, $password, $verb,
 			$url, [], $this->featureContext->getOcsApiVersion(), $headers
@@ -336,7 +336,64 @@ class OCSContext implements Context {
 				$password,
 				$row['body']
 			);
-			$this->featureContext->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$ocsCode = null;
+			if (\array_key_exists('ocs-code', $row)) {
+				$ocsCode = $row['ocs-code'];
+			}
+			$this->featureContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When user :user requests these endpoints with :method including body then the status codes should be as listed
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userSendsRequestToTheseEndpointsWithBody($user, $method, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->featureContext->userRequestsURLWithUsingBasicAuth(
+				$user,
+				$row['endpoint'],
+				$method,
+				$this->featureContext->getPasswordForUser($user),
+				$row['body']
+			);
+			$ocsCode = null;
+			if (\array_key_exists('ocs-code', $row)) {
+				$ocsCode = $row['ocs-code'];
+			}
+			$this->featureContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When user :asUser requests these endpoints with :method including body using the password of user :user then the status codes should be as listed
+	 *
+	 * @param string $asUser
+	 * @param string $method
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->featureContext->userRequestsURLWithUsingBasicAuth(
+				$asUser,
+				$row['endpoint'],
+				$method,
+				$this->featureContext->getPasswordForUser($user),
+				$row['body']
+			);
+			$ocsCode = null;
+			if (\array_key_exists('ocs-code', $row)) {
+				$ocsCode = $row['ocs-code'];
+			}
+			$this->featureContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -352,7 +409,7 @@ class OCSContext implements Context {
 		if ($message === "") {
 			$message = "OCS status code is not the expected value";
 		}
-		
+
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
