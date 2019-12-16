@@ -263,7 +263,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function expirationDateShouldBe($days, $type, $receiver) {
 		if (\strtotime($days) !== false) {
-			Assert::assertEquals(\strtotime($days), $this->sharingDialog->getExpirationDateFor($receiver, $type));
+			Assert::assertEquals(\date('d-m-Y', \strtotime($days)), $this->sharingDialog->getExpirationDateFor($receiver, $type));
 		} else {
 			throw new Exception("Invalid Format for the expiration date provided.");
 		}
