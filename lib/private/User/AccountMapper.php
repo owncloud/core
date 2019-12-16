@@ -214,6 +214,10 @@ class AccountMapper extends Mapper {
 		return (int) $data['count'];
 	}
 
+	public function callForAllUsers($callback, $search, $onlySeen) {
+		return $this->callForUsers($callback, $search, $onlySeen);
+	}
+
 	public function callForUsers($callback, $search, $onlySeen, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['*'])

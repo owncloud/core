@@ -22,7 +22,7 @@
 namespace OCA\Files_Trashbin\Tests\Command;
 
 use OCA\Files_Trashbin\Command\ExpireTrash;
-use OCA\Files_Trashbin\Expiration;
+use OCA\Files_Trashbin\TrashExpiryManager;
 use OCP\IUserManager;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
@@ -47,13 +47,13 @@ class ExpireTrashTest extends TestCase {
 		parent::setUp();
 
 		$this->userManager = $this->createMock(IUserManager::class);
-		$this->expiration = $this->createMock(Expiration::class);
+		$this->expiration = $this->getMockBuilder(TrashExpiryManager::class)->disableOriginalConstructor()->getMock();
 		$command = new ExpireTrash($this->userManager, $this->expiration);
 		$this->commandTester = new CommandTester($command);
 	}
 
 	public function testExpireNoMaxRetention() {
-		$this->expiration->expects($this->any())->method('getMaxAgeAsTimestamp')
+		$this->expiration->expects($this->any())->method('retentionEnabled')
 			->willReturn(false);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();

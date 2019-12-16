@@ -41,7 +41,7 @@ class Helper {
 	 * @param bool $addExtraData if true, file info will include original path
 	 * @return \OCP\Files\FileInfo[]
 	 */
-	public static function getTrashFiles($dir, $user, $sortAttribute = '', $sortDescending = false, $addExtraData = false) {
+	public static function getTrashFiles($dir, $user, $sortAttribute = '', $sortDescending = false, $addExtraData = true) {
 		$result = [];
 		$timestamp = null;
 

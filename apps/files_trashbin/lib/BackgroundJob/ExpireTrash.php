@@ -4,8 +4,9 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Piotr Mrowczynski piotr@owncloud.com
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,46 +25,68 @@
 
 namespace OCA\Files_Trashbin\BackgroundJob;
 
-use OCA\Files_Trashbin\AppInfo\Application;
+use OC\BackgroundJob\TimedJob;
 use OCA\Files_Trashbin\Expiration;
-use OCA\Files_Trashbin\Helper;
-use OCA\Files_Trashbin\Trashbin;
+use OCA\Files_Trashbin\Quota;
+use OCA\Files_Trashbin\TrashExpiryManager;
+use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 
-class ExpireTrash extends \OC\BackgroundJob\TimedJob {
+class ExpireTrash extends TimedJob {
 
 	/**
-	 * @var Expiration
+	 * @var IConfig
 	 */
-	private $expiration;
+	private $config;
+
+	/**
+	 * @var TrashExpiryManager
+	 */
+	private $trashExpiryManager;
 	
 	/**
 	 * @var IUserManager
 	 */
 	private $userManager;
 
+	const USERS_PER_SESSION = 500;
+
 	/**
+	 * @param IConfig|null $config
 	 * @param IUserManager|null $userManager
-	 * @param Expiration|null $expiration
+	 * @param TrashExpiryManager|null $trashExpiryManager
 	 */
-	public function __construct(IUserManager $userManager = null,
-								Expiration $expiration = null) {
+	public function __construct(IConfig $config = null,
+								IUserManager $userManager = null,
+								TrashExpiryManager $trashExpiryManager = null) {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 
-		if ($expiration === null || $userManager === null) {
+		if ($trashExpiryManager === null || $userManager === null) {
 			$this->fixDIForJobs();
 		} else {
 			$this->userManager = $userManager;
-			$this->expiration = $expiration;
+			$this->trashExpiryManager = $trashExpiryManager;
+			$this->config = $config;
 		}
 	}
 
 	protected function fixDIForJobs() {
-		$application = new Application();
 		$this->userManager = \OC::$server->getUserManager();
-		$this->expiration = $application->getContainer()->query('Expiration');
+		$expiration = new Expiration(
+			\OC::$server->getConfig(),
+			\OC::$server->getTimeFactory()
+		);
+		$quota = new Quota(
+			$this->userManager,
+			\OC::$server->getConfig()
+		);
+		$this->trashExpiryManager = new TrashExpiryManager(
+			$expiration,
+			$quota,
+			\OC::$server->getLogger()
+		);
 	}
 
 	/**
@@ -71,20 +94,41 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 	 * @throws \Exception
 	 */
 	protected function run($argument) {
-		$maxAge = $this->expiration->getMaxAgeAsTimestamp();
-		if (!$maxAge) {
+		$retentionEnabled = $this->trashExpiryManager->retentionEnabled();
+		if (!$retentionEnabled) {
 			return;
 		}
 
-		$this->userManager->callForSeenUsers(function (IUser $user) {
+		$offset = $this->config->getAppValue('files_trashbin', 'cronjob_trash_expiry_offset', 0);
+
+		$usersScanned = 0;
+		$this->userManager->callForUsers(function (IUser $user) use (&$usersScanned, &$offset) {
+			// expire trash by retention for the user
+			$usersScanned++;
 			$uid = $user->getUID();
 			if (!$this->setupFS($uid)) {
 				return;
 			}
-			$dirContent = Helper::getTrashFiles('/', $uid, 'mtime');
-			Trashbin::deleteExpiredFiles($dirContent, $uid);
-		});
-		
+			$this->trashExpiryManager->expireTrashByRetention($uid);
+
+			// increase the offset to know where to start next
+			// e.g. in case of crash of this job due to memory
+			$this->config->setAppValue('files_trashbin', 'cronjob_trash_expiry_offset', $offset + $usersScanned);
+		}, '', true, self::USERS_PER_SESSION, $offset);
+
+		if ($usersScanned < self::USERS_PER_SESSION) {
+			// next run wont have any users to scan,
+			// as we returned less than the limit
+			$this->config->setAppValue('files_trashbin', 'cronjob_trash_expiry_offset', 0);
+		}
+
+		$this->tearDownFS();
+	}
+
+	/**
+	 * Tear down owner fs
+	 */
+	protected function tearDownFS() {
 		\OC_Util::tearDownFS();
 	}
 

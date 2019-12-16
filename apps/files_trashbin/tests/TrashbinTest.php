@@ -28,146 +28,44 @@
 
 namespace OCA\Files_Trashbin\Tests;
 
-use OC\Files\Cache\Watcher;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Local;
-use OC\Files\View;
-use OCA\Files_Sharing\AppInfo\Application;
-use OCA\Files_Trashbin\Expiration;
 use OCA\Files_Trashbin\Helper;
 use OCA\Files_Trashbin\Storage;
 use OCA\Files_Trashbin\Trashbin;
 use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
-use Test\TestCase;
 use OCP\IURLGenerator;
 use OCP\Files\IRootFolder;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Class Test_Encryption
+ * Class TrashbinTest
+ *
+ * Extend TrashbinTestCase as we need to use Trashbin class that
+ * has static functions that cannot be mocked
  *
  * @group DB
  */
 class TrashbinTest extends TestCase {
-	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
-	const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
-
-	private $trashRoot1;
-	private $trashRoot2;
-
-	private static $rememberRetentionObligation;
 
 	/**
-	 * @var bool
+	 * Login USER1 for each test case
 	 */
-	private static $trashBinStatus;
-
-	/**
-	 * @var View
-	 */
-	private $rootView;
-
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
-
-		$appManager = \OC::$server->getAppManager();
-		self::$trashBinStatus = $appManager->isEnabledForUser('files_trashbin');
-
-		// clear share hooks
-		\OC_Hook::clear('OCP\\Share');
-		\OC::registerShareHooks();
-		$application = new Application();
-		$application->registerMountProviders();
-
-		//disable encryption
-		\OC_App::disable('encryption');
-
-		$config = \OC::$server->getConfig();
-		//configure trashbin
-		self::$rememberRetentionObligation = $config->getSystemValue('trashbin_retention_obligation', Expiration::DEFAULT_RETENTION_OBLIGATION);
-		$config->setSystemValue('trashbin_retention_obligation', 'auto, 2');
-
-		// register hooks
-		Trashbin::registerHooks();
-
-		// create test user
-		self::loginHelper(self::TEST_TRASHBIN_USER2, true);
-		self::loginHelper(self::TEST_TRASHBIN_USER1, true);
-	}
-
-	public static function tearDownAfterClass(): void {
-		// cleanup test user
-		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER1);
-		if ($user !== null) {
-			$user->delete();
-		}
-		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER2);
-		if ($user !== null) {
-			$user->delete();
-		}
-
-		\OC::$server->getConfig()->setSystemValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
-
-		\OC_Hook::clear();
-
-		Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
-
-		if (self::$trashBinStatus) {
-			\OC::$server->getAppManager()->enableApp('files_trashbin');
-		}
-
-		parent::tearDownAfterClass();
-	}
-
 	protected function setUp(): void {
 		parent::setUp();
-
-		\OC::$server->getAppManager()->enableApp('files_trashbin');
-		$config = \OC::$server->getConfig();
-		$mockConfig = $this->createMock('\OCP\IConfig');
-		$mockConfig->expects($this->any())
-			->method('getSystemValue')
-			->will($this->returnCallback(function ($key, $default) use ($config) {
-				if ($key === 'filesystem_check_changes') {
-					return Watcher::CHECK_ONCE;
-				} else {
-					return $config->getSystemValue($key, $default);
-				}
-			}));
-		$this->overwriteService('AllConfig', $mockConfig);
-
-		$this->trashRoot1 = '/' . self::TEST_TRASHBIN_USER1 . '/files_trashbin';
-		$this->trashRoot2 = '/' . self::TEST_TRASHBIN_USER2 . '/files_trashbin';
-		$this->rootView = new View();
 		self::loginHelper(self::TEST_TRASHBIN_USER1);
 	}
 
-	protected function tearDown(): void {
-		$this->restoreService('AllConfig');
-		// disable trashbin to be able to properly clean up
-		\OC::$server->getAppManager()->disableApp('files_trashbin');
-
-		$this->rootView->deleteAll('/' . self::TEST_TRASHBIN_USER1 . '/files');
-		$this->rootView->deleteAll('/' . self::TEST_TRASHBIN_USER2 . '/files');
-		$this->rootView->deleteAll($this->trashRoot1);
-		$this->rootView->deleteAll($this->trashRoot2);
-
-		// clear trash table
-		$connection = \OC::$server->getDatabaseConnection();
-		$connection->executeUpdate('DELETE FROM `*PREFIX*files_trash`');
-
-		parent::tearDown();
-	}
-
 	/**
-	 * test expiration of files older then the max storage time defined for the trash
-	 * in this test we delete a shared file and check if both trash bins, the one from
-	 * the owner of the file and the one from the user who deleted the file get expired
-	 * correctly
+	 * test that adding to trashbin schedules an expiry for both
+	 * share receiver and sender, in this test we delete a shared file and
+	 * check if both trash bins, the one from  the owner of the file and
+	 * the one from the user who deleted the file get expired correctly (with
+	 * expiration of files older then the max storage time defined for the trash)
 	 */
-	public function testExpireOldFilesShared() {
+	public function testScheduleExpireOldFilesShared() {
 		$currentTime = \time();
 		$folder = "trashTest-" . $currentTime . '/';
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
@@ -221,6 +119,7 @@ class TrashbinTest extends TestCase {
 
 		Filesystem::unlink($folder . 'user1-4.txt');
 
+		// force running Expire command scheduled with scheduleExpire
 		$this->runCommands();
 
 		$filesInTrashUser2AfterDelete = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER2);
@@ -237,9 +136,11 @@ class TrashbinTest extends TestCase {
 	}
 
 	/**
-	 * test expiration of files older then the max storage time defined for the trash
+	 * test that adding to trashbin schedules an expiry for the user,
+	 * in this test we delete a file and check if file get expired correctly (with
+	 * expiration of files older then the max storage time defined for the trash)
 	 */
-	public function testExpireOldFiles() {
+	public function testScheduleExpireOldFiles() {
 		$currentTime = \time();
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
@@ -258,24 +159,16 @@ class TrashbinTest extends TestCase {
 		$this->assertCount(3, $filesInTrash);
 
 		// every second file will get a date in the past so that it will get expired
-		$manipulatedList = $this->manipulateDeleteTime($filesInTrash, $this->trashRoot1, $expiredDate);
+		$this->manipulateDeleteTime($filesInTrash, $this->trashRoot1, $expiredDate);
 
-		list($sizeOfDeletedFiles, $count) = Trashbin::deleteExpiredFiles($manipulatedList, self::TEST_TRASHBIN_USER1);
+		// force running Expire command scheduled with scheduleExpire
+		$this->runCommands();
 
-		$this->assertSame(10, $sizeOfDeletedFiles);
-		$this->assertSame(2, $count);
+		$remainingFiles = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
 
-		// only file2.txt should be left
-		$remainingFiles = \array_slice($manipulatedList, $count);
 		$this->assertCount(1, $remainingFiles);
 		$remainingFile = \reset($remainingFiles);
 		$this->assertSame('file2.txt', $remainingFile['name']);
-
-		// check that file1.txt and file3.txt was really deleted
-		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
-		$this->assertCount(1, $newTrashContent);
-		$element = \reset($newTrashContent);
-		$this->assertSame('file2.txt', $element['name']);
 	}
 
 	/**
@@ -305,7 +198,6 @@ class TrashbinTest extends TestCase {
 	 * @param FileInfo[] $files
 	 * @param string $trashRoot
 	 * @param integer $expireDate
-	 * @return FileInfo[]
 	 */
 	private function manipulateDeleteTime($files, $trashRoot, $expireDate) {
 		$counter = 0;
@@ -316,43 +208,8 @@ class TrashbinTest extends TestCase {
 				$source = $trashRoot . '/files/' . $file['name'] . '.d' . $file['mtime'];
 				$target = Filesystem::normalizePath($trashRoot . '/files/' . $file['name'] . '.d' . $expireDate);
 				$this->rootView->rename($source, $target);
-				$file['mtime'] = $expireDate;
 			}
 		}
-		return \OCA\Files\Helper::sortFiles($files, 'mtime');
-	}
-
-	/**
-	 * test expiration of old files in the trash bin until the max size
-	 * of the trash bin is met again
-	 */
-	public function testExpireOldFilesUtilLimitsAreMet() {
-
-		// create some files
-		Filesystem::file_put_contents('file1.txt', 'file1');
-		Filesystem::file_put_contents('file2.txt', 'file2');
-		Filesystem::file_put_contents('file3.txt', 'file3');
-
-		// delete them so that they end up in the trash bin
-		Filesystem::unlink('file3.txt');
-		\sleep(1); // make sure that every file has a unique mtime
-		Filesystem::unlink('file2.txt');
-		\sleep(1); // make sure that every file has a unique mtime
-		Filesystem::unlink('file1.txt');
-
-		//make sure that files are in the trash bin
-		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'mtime');
-		$this->assertCount(3, $filesInTrash);
-
-		$sizeOfDeletedFiles = $this->invokePrivate(Trashbin::class, 'deleteFiles', [$filesInTrash, self::TEST_TRASHBIN_USER1, -8]);
-
-		// the two oldest files (file3.txt and file2.txt) should be deleted
-		$this->assertSame(10, $sizeOfDeletedFiles);
-
-		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
-		$this->assertCount(1, $newTrashContent);
-		$element = \reset($newTrashContent);
-		$this->assertSame('file1.txt', $element['name']);
 	}
 
 	/**
@@ -745,25 +602,5 @@ class TrashbinTest extends TestCase {
 			->method('deleteAllFileKeys')
 			->with('//files/file1.txt');
 		$this->invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1529567106, $sourceStorage]);
-	}
-
-	/**
-	 * @param string $user
-	 * @param bool $create
-	 */
-	public static function loginHelper($user, $create = false) {
-		if ($create) {
-			try {
-				\OC::$server->getUserManager()->createUser($user, $user);
-			} catch (\Exception $e) { // catch username is already being used from previous aborted runs
-			}
-		}
-
-		\OC_Util::tearDownFS();
-		\OC_User::setUserId('');
-		Filesystem::tearDown();
-		\OC_User::setUserId($user);
-		\OC_Util::setupFS($user);
-		\OC::$server->getUserFolder($user);
 	}
 }

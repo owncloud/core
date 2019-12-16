@@ -41,7 +41,7 @@ if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
 	if ($dir === '' || $dir === '/') {
 		$dirListing = false;
 	}
-	foreach (OCA\Files_Trashbin\Helper::getTrashFiles($dir, \OCP\User::getUser()) as $file) {
+	foreach (OCA\Files_Trashbin\Helper::getTrashFiles($dir, \OCP\User::getUser(), '', false, false) as $file) {
 		$fileName = $file['name'];
 		if (!$dirListing) {
 			$fileName .= '.d' . $file['mtime'];
