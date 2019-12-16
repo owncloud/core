@@ -62,9 +62,10 @@ class SharingDialog extends OwncloudPage {
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
 	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
-	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/..//input[contains(@class, 'expiration')]";
+	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/../..//input[contains(@class, 'expiration')]";
 	private $shareWithClearExpirationFieldXpath = "/following-sibling::button[@class='removeExpiration']"; // in relation to $shareWithExpirationFieldXpath
 	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
+	private $shareWithListDetailsXpath = "//div[@class='shareWithList__details']";
 	private $userOrGroupNameSpanXpath = "//span[contains(@class,'username')]";
 	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
 	private $sharedWithGroupAndSharerName = null;
@@ -103,6 +104,26 @@ class SharingDialog extends OwncloudPage {
 		return $this->find("xpath", \sprintf($this->shareWithExpirationFieldXpath, $user));
 	}
 
+	public function toggleShareActionsDropDown() {
+		$showCrudsBtn = $this->find("xpath", $this->showCrudsXpath);
+		$this->assertElementNotNull(
+			$showCrudsBtn,
+			__METHOD__
+			. " xpath $this->showCrudsXpath could not find show-cruds button"
+		);
+		$showCrudsBtn->click();
+	}
+
+	public function openShareActionsDropDown() {
+		$this->toggleShareActionsDropDown();
+		$this->waitTillElementIsNotNull($this->shareWithListDetailsXpath);
+	}
+
+	public function closeShareActionsDropDown() {
+		$this->toggleShareActionsDropDown();
+		$this->waitTillElementIsNull($this->shareWithListDetailsXpath);
+	}
+
 	/**
 	 * @param string $user
 	 * @param string $type
@@ -110,8 +131,11 @@ class SharingDialog extends OwncloudPage {
 	 * @return bool
 	 */
 	public function isExpirationFieldVisible($user, $type = 'user') {
+		$this->openShareActionsDropDown();
 		$field = $this->getExpirationFieldFor($user, $type);
-		return $field and $field->isVisible();
+		$visible = ($field and $field->isVisible());
+		$this->closeShareActionsDropDown();
+		return $visible;
 	}
 
 	/**
@@ -139,6 +163,7 @@ class SharingDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function setExpirationDateFor(Session $session, $user, $type = 'user', $value = '') {
+		$this->openShareActionsDropDown();
 		$field = $this->getExpirationFieldFor($user, $type);
 		$this->assertElementNotNull(
 			$field,
@@ -146,6 +171,7 @@ class SharingDialog extends OwncloudPage {
 		);
 		$field->setValue($value . "\n");
 		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->closeShareActionsDropDown();
 	}
 
 	/**
