@@ -104,6 +104,11 @@ class SharingDialog extends OwncloudPage {
 		return $this->find("xpath", \sprintf($this->shareWithExpirationFieldXpath, $user));
 	}
 
+	/**
+	 * click the dropdown button for share actions in the sidebar
+	 *
+	 * @return void
+	 */
 	public function toggleShareActionsDropDown() {
 		$showCrudsBtn = $this->find("xpath", $this->showCrudsXpath);
 		$this->assertElementNotNull(
@@ -114,11 +119,21 @@ class SharingDialog extends OwncloudPage {
 		$showCrudsBtn->click();
 	}
 
+	/**
+	 * open the dropdown for share actions in the sidebar
+	 *
+	 * @return void
+	 */
 	public function openShareActionsDropDown() {
 		$this->toggleShareActionsDropDown();
 		$this->waitTillElementIsNotNull($this->shareWithListDetailsXpath);
 	}
 
+	/**
+	 * open the dropdown for share actions in the sidebar
+	 *
+	 * @return void
+	 */
 	public function closeShareActionsDropDown() {
 		$this->toggleShareActionsDropDown();
 		$this->waitTillElementIsNull($this->shareWithListDetailsXpath);
@@ -131,10 +146,8 @@ class SharingDialog extends OwncloudPage {
 	 * @return bool
 	 */
 	public function isExpirationFieldVisible($user, $type = 'user') {
-		$this->openShareActionsDropDown();
 		$field = $this->getExpirationFieldFor($user, $type);
 		$visible = ($field and $field->isVisible());
-		$this->closeShareActionsDropDown();
 		return $visible;
 	}
 
@@ -163,7 +176,6 @@ class SharingDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function setExpirationDateFor(Session $session, $user, $type = 'user', $value = '') {
-		$this->openShareActionsDropDown();
 		$field = $this->getExpirationFieldFor($user, $type);
 		$this->assertElementNotNull(
 			$field,
@@ -171,7 +183,6 @@ class SharingDialog extends OwncloudPage {
 		);
 		$field->setValue($value . "\n");
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->closeShareActionsDropDown();
 	}
 
 	/**

@@ -218,7 +218,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function expirationFieldVisibleForUser($shouldOrNot, $type, $receiver) {
 		$expected = ($shouldOrNot === "");
+		$this->sharingDialog->openShareActionsDropDown();
 		Assert::assertEquals($this->sharingDialog->isExpirationFieldVisible($receiver, $type), $expected);
+		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
@@ -244,7 +246,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function expirationDateChangedTo($type, $receiver, $days) {
 		$expectedDate = \date('d-m-Y', \strtotime($days));
+		$this->sharingDialog->openShareActionsDropDown();
 		$this->sharingDialog->setExpirationDateFor($this->getSession(), $receiver, $type, $expectedDate);
+		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
@@ -255,10 +259,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $receiver
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function expirationDateShouldBe($days, $type, $receiver) {
-		$expectedDate = \date('d-m-Y', \strtotime($days));
-		Assert::assertEquals($this->sharingDialog->getExpirationDateFor($receiver, $type), $expectedDate);
+		if (\strtotime($days) !== false) {
+			Assert::assertEquals(\strtotime($days), $this->sharingDialog->getExpirationDateFor($receiver, $type));
+		} else {
+			throw new Exception("Invalid Format for the expiration date provided.");
+		}
 	}
 
 	/**

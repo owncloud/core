@@ -26,6 +26,12 @@ Feature: Sharing files and folders with internal groups with expiration date set
     And user "user1" has logged in using the webUI
     When the user shares file "lorem.txt" with group "grp1" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the group "grp1" in the share dialog
+    And the expiration date input field should be empty for the group "grp1" in the share dialog
+    And the information of the last share of user "user1" should include
+      | share_type  | group      |
+      | file_target | /lorem.txt |
+      | expiration  |            |
+      | uid_owner   | user1      |
 
   Scenario: expiration date is disabled for sharing with groups but enabled for sharing with users, user shares with a group
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -34,6 +40,12 @@ Feature: Sharing files and folders with internal groups with expiration date set
     And user "user1" has logged in using the webUI
     When the user shares file "lorem.txt" with group "grp1" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the group "grp1" in the share dialog
+    And the expiration date input field should be empty for the group "grp1" in the share dialog
+    And the information of the last share of user "user1" should include
+      | share_type  | group      |
+      | file_target | /lorem.txt |
+      | expiration  |            |
+      | uid_owner   | user1      |
 
   Scenario: expiration date is enabled for sharing with groups, user shares a file with a group
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
