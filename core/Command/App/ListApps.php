@@ -60,7 +60,7 @@ class ListApps extends Base {
 				'disabled',
 				'd',
 				InputOption::VALUE_NONE,
-				'Only display disabled apps.'
+				'Only display disabled apps. If the app was previously enabled, the app version is also displayed. '
 			)
 			->addArgument(
 				'search-pattern',
