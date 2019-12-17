@@ -276,7 +276,9 @@ class SyncBackendTest extends TestCase {
 		$outputInterface = $this->createMock(OutputInterface::class);
 		$syncService = $this->createMock(SyncService::class);
 
-		$this->dummyBackend->method('getUsers')->willReturn(['existing-uid', 'should-explode']);
+		$this->dummyBackend->method('getUsers')->willReturn(['existing-uid', 'existing-uid']);
+		$this->dummyBackend->method('getDisplayName')
+			->willReturn('existing-uid');
 
 		$missingAccountsAction = 'disable';
 		$syncService->expects($this->never())->method('run');
@@ -297,6 +299,8 @@ class SyncBackendTest extends TestCase {
 		$syncService = $this->createMock(SyncService::class);
 
 		$this->dummyBackend->method('getUsers')->willReturn(['existing-uid']);
+		$this->dummyBackend->method('getDisplayName')
+			->willReturn('existing-uid');
 
 		$missingAccountsAction = 'disable';
 		$syncService->expects($this

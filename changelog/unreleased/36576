@@ -1,0 +1,11 @@
+Bugfix: Receive multiple users for user sync command
+
+Recieve multiple users for user sync command. Previously
+when multiple users were returned, an exception was thrown
+and the command was aborted. In this fix we allow multiple
+users to be returned, and we check for the uid provided by the
+admin matches with the returned users. And if we find matches
+of more than one users with same uid, then we throw the exception
+that was thrown previously. The messages are kept intact.
+
+https://github.com/owncloud/core/pull/36576
