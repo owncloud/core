@@ -50,6 +50,18 @@ class ListApps extends Base {
 		$this
 			->setName('app:list')
 			->setDescription('List all available apps.')
+			->addOption(
+				'enabled',
+				'e',
+				InputOption::VALUE_NONE,
+				'Only display enabled apps.'
+			)
+			->addOption(
+				'disabled',
+				'd',
+				InputOption::VALUE_NONE,
+				'Only display disabled apps. If the app was previously enabled, the app version is also displayed. '
+			)
 			->addArgument(
 				'search-pattern',
 				InputArgument::OPTIONAL,
@@ -96,14 +108,19 @@ class ListApps extends Base {
 
 		$apps = ['enabled' => [], 'disabled' => []];
 
-		\sort($enabledApps);
-		foreach ($enabledApps as $app) {
-			$apps['enabled'][$app] = (isset($versions[$app])) ? $versions[$app] : true;
+		$neitherSpecified = !($input->getOption('enabled') || $input->getOption('disabled'));
+		if ($input->getOption('enabled') || $neitherSpecified) {
+			\sort($enabledApps);
+			foreach ($enabledApps as $app) {
+				$apps['enabled'][$app] = (isset($versions[$app])) ? $versions[$app] : true;
+			}
 		}
 
-		\sort($disabledApps);
-		foreach ($disabledApps as $app) {
-			$apps['disabled'][$app] = null;
+		if ($input->getOption('disabled') || $neitherSpecified) {
+			\sort($disabledApps);
+			foreach ($disabledApps as $app) {
+				$apps['disabled'][$app] = ($input->getOption('disabled') && isset($versions[$app])) ? $versions[$app] : null;
+			}
 		}
 
 		$this->writeAppList($input, $output, $apps);
