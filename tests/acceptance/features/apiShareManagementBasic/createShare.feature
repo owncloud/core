@@ -25,6 +25,7 @@ Feature: sharing
       | mimetype                   | text/plain        |
       | storage_id                 | ANY_VALUE         |
       | share_type                 | user              |
+    And  the downloaded content when downloading file "welcome.txt" for user "user1" with range "bytes=0-6" should be "Welcome"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -185,9 +186,10 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @public_link_share-feature-required
+  @smokeTest @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1)
     Given using OCS API version "<ocs_api_version>"
+    And the administrator has enabled DAV tech_preview
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
@@ -205,8 +207,10 @@ Feature: sharing
       | uid_file_owner         | user0           |
       | uid_owner              | user0           |
       | name                   |                 |
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
+    When the public downloads the last public shared file with range "bytes=0-9" using the old public WebDAV API
+    Then the downloaded content should be "user0 file"
+    When the public downloads the last public shared file with range "bytes=0-9" using the new public WebDAV API
+    Then the downloaded content should be "user0 file"
     And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
@@ -236,11 +240,17 @@ Feature: sharing
       | uid_owner              | user0           |
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the HTTP status code should be "200"
     And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "user0 file"
+    And the HTTP status code should be "200"
     And the public download of the last publicly shared file using the old public WebDAV API with password "%regular%" should fail with HTTP status code "401"
+    And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
     And the public download of the last publicly shared file using the new public WebDAV API with password "%regular%" should fail with HTTP status code "401"
+    And the value of the item "//s:message" in the response should match "/Username or password was incorrect/"
     And the public download of the last publicly shared file using the old public WebDAV API without a password should fail with HTTP status code "401"
+    And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
     And the public download of the last publicly shared file using the new public WebDAV API without a password should fail with HTTP status code "401"
+    And the value of the item "//s:message" in the response should match "/No 'Authorization: Basic' header found/"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -279,6 +289,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password
     Given using OCS API version "<ocs_api_version>"
+    And the administrator has enabled DAV tech_preview
     And user "user0" has uploaded file with content "user0 file" to "/PARENT/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
@@ -296,8 +307,10 @@ Feature: sharing
       | uid_file_owner         | user0                |
       | uid_owner              | user0                |
       | name                   |                      |
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "user0 file"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "user0 file"
+    When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=1-7" using the old public WebDAV API
+    Then the downloaded content should be "ser0 fi"
+    When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=2-7" using the new public WebDAV API
+    Then the downloaded content should be "er0 fi"
     And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "user0 file"
     And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%" and the content should be "user0 file"
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
@@ -312,8 +325,9 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has uploaded file with content "user0 file" to "/PARENT/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
-      | path     | PARENT   |
-      | password | %public% |
+      | path        | PARENT   |
+      | password    | %public% |
+      | permissions | change   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -321,7 +335,7 @@ Feature: sharing
       | mimetype               | httpd/unix-directory |
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
-      | permissions            | read                 |
+      | permissions            | change               |
       | share_type             | public_link          |
       | displayname_file_owner | User Zero            |
       | displayname_owner      | User Zero            |
@@ -1467,30 +1481,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @public_link_share-feature-required
-  Scenario Outline: Creating a new public link share of a folder, and checking it's content
-    Given using OCS API version "<ocs_api_version>"
-    And user "user0" has uploaded file with content "ownCloud test text file parent" to "/PARENT/parent.txt"
-    When user "user0" creates a public link share using the sharing API with settings
-      | path     | PARENT   |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | item_type              | folder               |
-      | file_target            | /PARENT              |
-      | path                   | /PARENT              |
-      | share_type             | public_link          |
-      | displayname_file_owner | User Zero            |
-      | displayname_owner      | User Zero            |
-      | uid_file_owner         | user0                |
-      | uid_owner              | user0                |
-    And the public should be able to download file "parent.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "ownCloud test text file parent"
-    And the public should be able to download file "parent.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "ownCloud test text file parent"
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
-
   @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: creating a new share with user and a group having same name
     Given these users have been created without skeleton files:
@@ -1585,3 +1575,47 @@ Feature: sharing
       | ocs_api_version | ocs_status_code | http_status_code | share_folder    |
       | 1               | 404             | 200              | /ReceivedShares |
       | 2               | 404             | 404              | /ReceivedShares |
+
+  Scenario: Share a file by multiple channels and download from sub-folder and direct file share
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
+    And user "user0" has created folder "/common"
+    And user "user0" has created folder "/common/sub"
+    And user "user0" has shared folder "common" with group "grp1"
+    And user "user1" has shared file "textfile0.txt" with user "user2"
+    And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
+    And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
+    When user "user2" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
+    And user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the WebDAV API
+    Then the downloaded content should be "BLABLABLA"
+    And the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=0-8" should be "BLABLABLA"
+    And user "user2" should see the following elements
+      | /common/sub/textfile0.txt |
+      | /textfile0%20(2).txt      |
+
+  @public_link_share-feature-required
+  Scenario: Deleting a folder that has been publicly shared
+    Given user "user0" has created a public link share with settings
+      | path        | PARENT |
+      | permissions | read   |
+    When user "user0" deletes folder "PARENT" using the WebDAV API
+    Then the public download of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API should fail with HTTP status code "404"
+    And the public download of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API should fail with HTTP status code "404"
+
+  @public_link_share-feature-required
+  Scenario: try to download from a public share that has upload only permissions
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has created a public link share with settings
+      | path        | PARENT          |
+      | permissions | uploadwriteonly |
+    When the public downloads file "parent.txt" from inside the last public shared folder using the new public WebDAV API
+    Then the value of the item "//s:message" in the response should be "File not found: parent.txt"
+    And the HTTP status code should be "404"
+    When the public downloads file "parent.txt" from inside the last public shared folder using the old public WebDAV API
+    Then the value of the item "//s:message" in the response should be ""
+    And the HTTP status code should be "404"

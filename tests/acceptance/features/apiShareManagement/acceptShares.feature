@@ -18,9 +18,13 @@ Feature: accept/decline shares coming from internal users
     And user "user2" has been added to group "grp1"
 
   @smokeTest
-  Scenario: share a file & folder with another internal user when auto accept is enabled
+  Scenario Outline: share a file & folder with another internal user with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
-    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+    When user "user0" creates a share using the sharing API with settings
+      | path        | PARENT        |
+      | shareType   | user          |
+      | shareWith   | user1         |
+      | permissions | <permissions> |
     And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -35,6 +39,13 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+    And  the downloaded content when downloading file "/PARENT (2)/CHILD/child.txt" for user "user1" with range "bytes=19-28" should be "file child"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "user1" with range "bytes=14-24" should be "text file 0"
+    Examples:
+      | permissions |
+      | read        |
+      | change      |
+      | all         |
 
   Scenario Outline: share a file & folder with another internal user when auto accept is enabled and there is a default folder for received shares
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -62,9 +73,13 @@ Feature: accept/decline shares coming from internal users
       | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
       | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
 
-  Scenario: share a file & folder with internal group when auto accept is enabled
+  Scenario Outline: share a file & folder with internal group with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
-    When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
+    When user "user0" creates a share using the sharing API with settings
+      | path        | PARENT        |
+      | shareType   | group         |
+      | shareWith   | grp1          |
+      | permissions | <permissions> |
     And user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -90,6 +105,13 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+    And  the downloaded content when downloading file "/PARENT (2)/CHILD/child.txt" for user "user2" with range "bytes=19-28" should be "file child"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=14-24" should be "text file 0"
+    Examples:
+      | permissions |
+      | read        |
+      | change      |
+      | all         |
 
   @smokeTest
   Scenario: decline a share that has been auto-accepted
