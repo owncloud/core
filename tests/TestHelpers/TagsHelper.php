@@ -92,7 +92,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $taggingUser, $password, "PUT",
-			$path, null, null, null, $davPathVersionToUse, "systemtags"
+			$path, null, null, $davPathVersionToUse, "systemtags"
 		);
 		return $response;
 	}
@@ -107,10 +107,10 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		self::assertArrayHasKey(
 			0, $tagID, "cannot find id of tag"
 		);
-		
+
 		return (int) $tagID[0]->__toString();
 	}
-	
+
 	/**
 	 * get all tags of a user
 	 *
@@ -217,7 +217,6 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			"POST",
 			$tagsPath,
 			['Content-Type' => 'application/json',],
-			null,
 			\json_encode($body),
 			$davPathVersionToUse,
 			"systemtags"
@@ -244,7 +243,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$tagsPath = '/systemtags/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $user, $password,
-			"DELETE", $tagsPath, [], null, null, $davPathVersionToUse, "systemtags"
+			"DELETE", $tagsPath, [], null, $davPathVersionToUse, "systemtags"
 		);
 		return $response;
 	}

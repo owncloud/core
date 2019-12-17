@@ -87,13 +87,13 @@ class WebDavLockingContext implements Context {
 				$body .= "<d:$property[0]><d:$property[1]/></d:$property[0]>";
 			}
 		}
-		
+
 		$body .= "</d:lockinfo>";
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "LOCK", $file, $headers, $body, null,
+			$baseUrl, $user, $password, "LOCK", $file, $headers, $body,
 			$this->featureContext->getDavPathVersion(), $type
 		);
-		
+
 		$this->featureContext->setResponse($response);
 		$responseXml = $this->featureContext->getResponseXml();
 		$this->featureContext->setResponseXmlObject($responseXml);
@@ -226,7 +226,7 @@ class WebDavLockingContext implements Context {
 			$user, $itemToUnlock, $user, $itemToUseLockOf
 		);
 	}
-	
+
 	/**
 	 * @When user :user unlocks file/folder :itemToUnlock with the last created public lock of file/folder :itemToUseLockOf using the WebDAV API
 	 *
@@ -273,7 +273,7 @@ class WebDavLockingContext implements Context {
 		$this->featureContext->setResponse(
 			WebDavHelper::makeDavRequest(
 				$baseUrl, $user, $password, "UNLOCK", $itemToUnlock, $headers,
-				null, null, $this->featureContext->getDavPathVersion(), $type
+				null, $this->featureContext->getDavPathVersion(), $type
 			)
 		);
 	}
@@ -440,7 +440,7 @@ class WebDavLockingContext implements Context {
 			"<d:prop><d:lockdiscovery/></d:prop>" .
 			"</d:propfind>";
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "PROPFIND", $file, null, $body, null,
+			$baseUrl, $user, $password, "PROPFIND", $file, null, $body,
 			$this->featureContext->getDavPathVersion()
 		);
 		$responseXml = $this->featureContext->getResponseXml($response);

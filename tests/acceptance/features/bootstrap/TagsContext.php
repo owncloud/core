@@ -112,19 +112,19 @@ class TagsContext implements Context {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
 		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
 		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
-		
+
 		$tagDisplayName = $tagData->xpath(".//oc:display-name");
 		Assert::assertArrayHasKey(
 			0, $tagDisplayName, "cannot find 'oc:display-name' property"
 		);
 		$tagDisplayName = $tagDisplayName[0]->__toString();
-		
+
 		$tagUserVisible = $tagData->xpath(".//oc:user-visible");
 		Assert::assertArrayHasKey(
 			0, $tagUserVisible, "cannot find 'oc:user-visible' property"
 		);
 		$tagUserVisible = $tagUserVisible[0]->__toString();
-		
+
 		$tagUserAssignable = $tagData->xpath(".//oc:user-assignable");
 		Assert::assertArrayHasKey(
 			0, $tagUserAssignable, "cannot find 'oc:user-assignable' property"
@@ -275,7 +275,7 @@ class TagsContext implements Context {
 		$user, $tagDisplayName, $withGroups = false
 	) {
 		$tagList = $this->requestTagsForUser($user, $withGroups);
-		
+
 		$tagData = $tagList->xpath(
 			"//d:prop//oc:display-name[text() = '$tagDisplayName']/.."
 		);
@@ -957,7 +957,6 @@ class TagsContext implements Context {
 			null,
 			null,
 			"uploads",
-			null,
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
@@ -1010,7 +1009,7 @@ class TagsContext implements Context {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->removesTagFromFileSharedBy($admin, $tagName, $fileName, $shareUser);
 	}
-	
+
 	/**
 	 * @AfterScenario
 	 *
