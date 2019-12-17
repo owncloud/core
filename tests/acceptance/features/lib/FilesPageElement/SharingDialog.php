@@ -130,7 +130,7 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * open the dropdown for share actions in the sidebar
+	 * close the dropdown for share actions in the sidebar
 	 *
 	 * @return void
 	 */
