@@ -481,8 +481,6 @@ class SharingDialog extends OwncloudPage {
 		);
 		$showCrudsBtn->click();
 		foreach ($permissions as $permission => $value) {
-			//the additional permission disappear again after they are changed
-			//so we need to open them again and again
 			$value = \strtolower($value);
 
 			//to find where to click is a little bit complicated

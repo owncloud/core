@@ -17,9 +17,9 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And user "user1" has logged in using the webUI
     When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be empty for the group "grp1" in the share dialog
+    And the expiration date input field should be empty for the user "User Two" in the share dialog
     And the information of the last share of user "user1" should include
-      | share_type  | group      |
+      | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  |            |
       | uid_owner   | user1      |
