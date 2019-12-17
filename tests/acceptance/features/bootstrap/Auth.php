@@ -118,10 +118,12 @@ trait Auth {
 	 * @return void
 	 */
 	public function verifyStatusCode($ocsCode, $httpCode, $endPoint) {
-		$this->ocsContext->theOCSStatusCodeShouldBe(
-			$ocsCode,
-			$message = "Got unexpected OCS code while sending request to endpoint " . $endPoint
-		);
+		if ($ocsCode !== null) {
+			$this->ocsContext->theOCSStatusCodeShouldBe(
+				$ocsCode,
+				$message = "Got unexpected OCS code while sending request to endpoint " . $endPoint
+			);
+		}
 		$this->theHTTPStatusCodeShouldBe(
 			$httpCode,
 			$message = "Got unexpected HTTP code while sending request to endpoint " . $endPoint
@@ -374,7 +376,7 @@ trait Auth {
 		if ($password === null) {
 			$authString = "$user:" . $this->getPasswordForUser($user);
 		} else {
-			$authString = $password;
+			$authString = $user . ":" . $password;
 		}
 		$this->sendRequest(
 			$url, $method, 'basic ' . \base64_encode($authString), false, $body

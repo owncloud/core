@@ -33,6 +33,17 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
 
+    apiAuthWebDav:
+      paths:
+        - '%paths.base%/../features/apiAuthWebDav'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - OccContext:
+        - SearchContext:
+        - PublicWebDavContext:
+        - WebDavPropertiesContext:
+
     apiCapabilities:
       paths:
         - '%paths.base%/../features/apiCapabilities'
