@@ -271,20 +271,20 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And as "user2" file "/simple-folder (2)/lorem.txt" should exist
 
   Scenario: test resharing folder as readonly and set it as readonly by resharer
-    Given using server "LOCAL"
+    Given using server "REMOTE"
     And user "user2" has been created with default attributes and without skeleton files
-    And user "user2" has created folder "simple-folder"
-    When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
-    And user "user1" re-logs in to "%remote_server%" using the webUI
+    When user "user1" from server "REMOTE" shares "simple-folder" with user "user1" from server "LOCAL" using the sharing API
+    And user "user1" re-logs in to "%local_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
-    And user "user1" from server "REMOTE" shares "/simple-folder (2)" with user "user2" from server "LOCAL" using the sharing API
-    And the user sets the sharing permissions of user "user2@%local_server%/ (federated)" for "simple-folder (2)" using the webUI to
+    And user "user1" from server "LOCAL" shares "/simple-folder (2)" with user "user2" from server "REMOTE" using the sharing API
+    And the user reloads the current page of the webUI
+    And the user sets the sharing permissions of user "user2@%remote_server%/ (federated)" for "simple-folder (2)" using the webUI to
       | edit | no |
-    And user "user2" re-logs in to "%local_server%" using the webUI
+    And user "user2" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
-    Then as "user2" folder "/simple-folder (2)" should exist
-    And as "user2" file "/simple-folder (2)/lorem.txt" should exist
-    When the user opens folder "simple-folder (2)" using the webUI
+    Then as "user2" folder "/simple-folder" should exist
+    And as "user2" file "/simple-folder/lorem.txt" should exist
+    When the user opens folder "simple-folder" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
   Scenario: test resharing folder and set it as readonly by owner

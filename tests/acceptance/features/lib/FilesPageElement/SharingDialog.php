@@ -479,10 +479,10 @@ class SharingDialog extends OwncloudPage {
 				. " xpath $this->showCrudsXpath could not find show-cruds button for user "
 				. $shareReceiverName
 		);
+		$showCrudsBtn->click();
 		foreach ($permissions as $permission => $value) {
 			//the additional permission disappear again after they are changed
 			//so we need to open them again and again
-			$showCrudsBtn->click();
 			$value = \strtolower($value);
 
 			//to find where to click is a little bit complicated
