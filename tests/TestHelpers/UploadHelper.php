@@ -73,7 +73,6 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				$destination,
 				$headers,
 				$data,
-				null,
 				$davPathVersionToUse
 			);
 		} else {
@@ -93,7 +92,8 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				$password,
 				'MKCOL',
 				$v2ChunksDestination,
-				$headers, null, null,
+				$headers,
+				null,
 				$davPathVersionToUse,
 				"uploads"
 			);
@@ -121,7 +121,6 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				$filename,
 				$headers,
 				$data,
-				null,
 				$davPathVersionToUse,
 				$davRequestType
 			);
@@ -142,7 +141,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				'MOVE',
 				$source,
 				$headers,
-				null, null,
+				null,
 				$davPathVersionToUse,
 				"uploads"
 			);
@@ -176,7 +175,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 			} else {
 				$davHuman = 'new';
 			}
-	
+
 			foreach ([null, 1, 2] as $chunkingVersion) {
 				$valid = WebDavHelper::isValidDavChunkingCombination(
 					$davPathVersion,

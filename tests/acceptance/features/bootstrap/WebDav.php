@@ -311,7 +311,6 @@ trait WebDav {
 	 * @param array $headers
 	 * @param StreamInterface $body
 	 * @param string $type
-	 * @param string|null $requestBody
 	 * @param string|null $davPathVersion
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
@@ -326,7 +325,6 @@ trait WebDav {
 		$headers,
 		$body = null,
 		$type = "files",
-		$requestBody = null,
 		$davPathVersion = null,
 		$stream = false,
 		$password = null
@@ -345,7 +343,7 @@ trait WebDav {
 		return WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(),
 			$user, $password, $method,
-			$path, $headers, $body, $requestBody, $davPathVersion,
+			$path, $headers, $body, $davPathVersion,
 			$type, null, "basic", $stream, $this->httpRequestTimeout
 		);
 	}
@@ -367,7 +365,6 @@ trait WebDav {
 			$user,
 			"PROPFIND",
 			$path,
-			null,
 			null,
 			null,
 			null,
@@ -539,7 +536,7 @@ trait WebDav {
 		}
 		try {
 			$this->response = $this->makeDavRequest(
-				$user, "MOVE", $fileSource, $headers, null, "files", null, null, $stream
+				$user, "MOVE", $fileSource, $headers, null, "files", null, $stream
 			);
 			$this->setResponseXml(
 				HttpRequestHelper::parseResponseAsXml($this->response)
@@ -1014,7 +1011,6 @@ trait WebDav {
 			null,
 			"files",
 			null,
-			null,
 			false,
 			$password
 		);
@@ -1114,8 +1110,8 @@ trait WebDav {
 		$path = $this->substituteInLineCodes($path);
 		$response = WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(), $this->getActualUsername($user),
-			$this->getPasswordForUser($user), 'GET', $path, [],
-			null, null, 2, $type
+			$this->getPasswordForUser($user), 'GET', $path,
+			[], null, 2, $type
 		);
 		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
 			throw new \Exception(

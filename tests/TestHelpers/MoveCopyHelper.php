@@ -137,7 +137,7 @@ class MoveCopyHelper {
 		$fullDestUrl = WebDavHelper::sanitizeUrl(
 			$baseUrl . $davPath . $toFileName
 		);
-		
+
 		$headers["Destination"] = $fullDestUrl;
 		return WebDavHelper::makeDavRequest(
 			$baseUrl,
@@ -146,7 +146,6 @@ class MoveCopyHelper {
 			$method,
 			$fromFileName,
 			$headers,
-			null,
 			null,
 			$davPathVersionToUse,
 			"files",

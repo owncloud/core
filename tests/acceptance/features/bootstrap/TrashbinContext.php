@@ -62,7 +62,6 @@ class TrashbinContext implements Context {
 			"/trash-bin/$user/",
 			[],
 			null,
-			null,
 			2,
 			'trash-bin'
 		);
@@ -379,7 +378,7 @@ class TrashbinContext implements Context {
 			if ($entry['original-location'] === $originalPath) {
 				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
 				$response = $this->featureContext->makeDavRequest(
-					$asUser, 'DELETE', $trashItemHRef, [], null, 'trash-bin', null, 2, false, $password
+					$asUser, 'DELETE', $trashItemHRef, [], null, 'trash-bin', 2, false, $password
 				);
 				$this->featureContext->setResponse($response);
 				$numItemsDeleted++;
@@ -494,7 +493,7 @@ class TrashbinContext implements Context {
 		$trashItemHRef = $this->convertTrashbinHref($trashItemHRef);
 		$headers['Destination'] = $destinationValue;
 		$response = $this->featureContext->makeDavRequest(
-			$asUser, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2, false, $password
+			$asUser, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', 2, false, $password
 		);
 		$this->featureContext->setResponse($response);
 		return $response;

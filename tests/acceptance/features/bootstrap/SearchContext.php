@@ -65,7 +65,7 @@ class SearchContext implements Context {
 		if ($limit !== null) {
 			$body .= "			<oc:limit>$limit</oc:limit>\n";
 		}
-		
+
 		$body .= "		</oc:search>\n";
 		if ($properties !== null) {
 			$propertiesRows = $properties->getRows();
@@ -77,7 +77,7 @@ class SearchContext implements Context {
 		}
 		$body .= "	</oc:search-files>";
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "REPORT", "/", null, $body, null,
+			$baseUrl, $user, $password, "REPORT", "/", null, $body,
 			$this->featureContext->getDavPathVersion()
 		);
 		$this->featureContext->setResponse($response);

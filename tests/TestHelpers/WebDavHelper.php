@@ -249,7 +249,6 @@ class WebDavHelper {
 	 * @param string $path
 	 * @param array $headers
 	 * @param StreamInterface $body
-	 * @param string $requestBody
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
 	 * @param string $sourceIpAddress to initiate the request from
@@ -269,7 +268,6 @@ class WebDavHelper {
 		$path,
 		$headers,
 		$body = null,
-		$requestBody = null,
 		$davPathVersionToUse = 1,
 		$type = "files",
 		$sourceIpAddress = null,
@@ -285,9 +283,6 @@ class WebDavHelper {
 		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 
-		if ($requestBody !== null) {
-			$body = $requestBody;
-		}
 		if ($authType === 'bearer') {
 			$headers['Authorization'] = 'Bearer ' . $password;
 			$user = null;

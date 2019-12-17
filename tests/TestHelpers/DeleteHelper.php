@@ -65,7 +65,6 @@ class DeleteHelper {
 			$fileName,
 			$headers,
 			null,
-			null,
 			$davPathVersionToUse,
 			"files",
 			$sourceIpAddress,
