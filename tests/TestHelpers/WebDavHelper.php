@@ -138,7 +138,7 @@ class WebDavHelper {
 				</d:propfind>";
 		return self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, $headers, $body,
-			null, $davPathVersionToUse, $type
+			$davPathVersionToUse, $type
 		);
 	}
 
@@ -186,7 +186,7 @@ class WebDavHelper {
 
 		return self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
-			null, $davPathVersionToUse, $type
+			$davPathVersionToUse, $type
 		);
 	}
 
