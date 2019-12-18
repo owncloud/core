@@ -1408,7 +1408,7 @@ trait Sharing {
 	 * @Then the information of the last share of user :user should include
 	 *
 	 * @param string $user
-	 * @param TableNode|null $body
+	 * @param TableNode $body
 	 *
 	 * @throws \Exception
 	 *
@@ -1459,6 +1459,35 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the response should not contain any share ids/
+	 *
+	 * @return void
+	 */
+	public function theResponseShouldNotContainAnyShareIds() {
+		$data = $this->getResponseXml()->data[0];
+		$fieldIsSet = false;
+		$receivedShareCount = 0;
+
+		if (\count($data->element) > 0) {
+			foreach ($data as $element) {
+				if (isset($element->id)) {
+					$fieldIsSet = true;
+					$receivedShareCount += 1;
+				}
+			}
+		} else {
+			if (isset($data->id)) {
+				$fieldIsSet = true;
+				$receivedShareCount += 1;
+			}
+		}
+		Assert::assertFalse(
+			$fieldIsSet,
+			"response contains $receivedShareCount share ids but should not contain any share ids"
+		);
+	}
+
+	/**
 	 * @Then user :user should not see share_id of last share
 	 *
 	 * @param string $user
@@ -1468,6 +1497,18 @@ trait Sharing {
 	public function userShouldNotSeeShareIdOfLastShare($user) {
 		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
 		$this->checkingLastShareIDIsNotIncluded();
+	}
+
+	/**
+	 * @Then user :user should not have any received shares
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userShouldNotHaveAnyReceivedShares($user) {
+		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
+		$this->theResponseShouldNotContainAnyShareIds();
 	}
 
 	/**
