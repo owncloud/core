@@ -572,7 +572,7 @@ Feature: sharing
       | 2               | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing with user using the sharing API with expire days set
+  Scenario Outline: resharing with user using the sharing API with expire days set and combinations of default/enforce expire date enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
@@ -596,7 +596,7 @@ Feature: sharing
       | 2               | no                  | yes                 |                      | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing with group using the sharing API with expire days set
+  Scenario Outline: resharing with group using the sharing API with expire days set and combinations of default/enforce expire date enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "<enforce-expire-date>"
@@ -621,7 +621,7 @@ Feature: sharing
       | 2               | no                  | yes                 |                      | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing with user using the sharing API without expire days set
+  Scenario Outline: resharing with user using the sharing API without expire days set and with combinations of default/enforce expire date enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
@@ -644,7 +644,7 @@ Feature: sharing
       | 2               | no                  | yes                 |                      | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing with group using the sharing API without expire days set
+  Scenario Outline: resharing with group using the sharing API without expire days set and with combinations of default/enforce expire date enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "<enforce-expire-date>"
@@ -667,7 +667,7 @@ Feature: sharing
       | 2               | no                  | yes                 |                      | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing with user using the sharing API with expire days set and specify expire date in share
+  Scenario Outline: resharing with user using the sharing API with expire days set and with combinations of default/enforce expire date enabled and specify expire date in share
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
@@ -692,7 +692,7 @@ Feature: sharing
       | 2               | no                  | yes                 | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing with group using the sharing API with expire days set and specify expire date in share
+  Scenario Outline: resharing with group using the sharing API with expire days set and with combinations of default/enforce expire date enabled and specify expire date in share
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "<enforce-expire-date>"
@@ -724,7 +724,7 @@ Feature: sharing
     And user "user1" has shared file "/textfile0.txt" with user "user2"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
-    And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "4"
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "4"
     When user "user1" gets the info of the last share using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
@@ -738,7 +738,7 @@ Feature: sharing
       | 2               | no                  | yes                 | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing group share with user using the sharing API with default expire date set
+  Scenario Outline: resharing group share with user using the sharing API with default expire date set and with combinations of default/enforce expire date enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
@@ -764,7 +764,7 @@ Feature: sharing
       | 2               | no                  | yes                 |                      | 200              |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing group share with user using the sharing API with default expire date set and specifying expiration on share
+  Scenario Outline: resharing group share with user using the sharing API with default expire date set and specifying expiration on share and with combinations of default/enforce expire date enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
@@ -791,7 +791,7 @@ Feature: sharing
       | 2               | no                  | yes                 | +20 days             | 200             |
 
   @skipOnOcV10.3
-  Scenario Outline: Default expiration date for resharing using the sharing API with default expire date set but not enforced
+  Scenario Outline: resharing using the sharing API with default expire date set but not enforced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"

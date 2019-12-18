@@ -77,7 +77,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | expiration  | +3 days    |
       | uid_owner   | user1      |
 
-  Scenario: expiration date is enforced for group, user shares  and tries to change expiration date more than allowed
+  Scenario: expiration date is enforced for group, user shares and tries to change expiration date more than allowed
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"

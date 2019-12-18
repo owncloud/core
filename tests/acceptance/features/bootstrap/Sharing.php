@@ -157,30 +157,36 @@ trait Sharing {
 	 * @param string $user
 	 * @param TableNode|null $body
 	 *    TableNode $body should not have any heading and can have following rows    |
-	 *       | path            | The folder or file path to be shared                |
-	 *       | name            | A (human-readable) name for the share,              |
-	 *       |                 | which can be up to 64 characters in length.         |
-	 *       | publicUpload    | Whether to allow public upload to a public          |
-	 *       |                 | shared folder. Write true for allowing.             |
-	 *       | password        | The password to protect the public link share with. |
-	 *       | expireDate      | An expire date for public link shares.              |
-	 *       |                 | This argument expects a date string.                |
-	 *       |                 | in the format 'YYYY-MM-DD' or '+ x days'.            |
-	 *       | permissions     | The permissions to set on the share.                |
-	 *       |                 |     1 = read; 2 = update; 4 = create;               |
-	 *       |                 |     8 = delete; 16 = share; 31 = all                |
-	 *       |                 |     15 = change                                     |
-	 *       |                 |     4 = uploadwriteonly                             |
-	 *       |                 |     (default: 31, for public shares: 1)             |
-	 *       |                 |     Pass either the (total) number,                 |
-	 *       |                 |     or the keyword,                                 |
-	 *       |                 |     or an comma separated list of keywords          |
-	 *       | shareWith       | The user or group id with which the file should     |
-	 *       |                 | be shared.                                          |
-	 *       | shareType       | The type of the share. This can be one of:          |
-	 *       |                 |    0 = user, 1 = group, 3 = public_link,            |
-	 *       |                 |    6 = federated (cloud share).                     |
-	 *       |                 |    Pass either the number or the keyword.           |
+	 *       | path               | The folder or file path to be shared                |
+	 *       | name               | A (human-readable) name for the share,              |
+	 *       |                    | which can be up to 64 characters in length.         |
+	 *       | publicUpload       | Whether to allow public upload to a public          |
+	 *       |                    | shared folder. Write true for allowing.             |
+	 *       | password           | The password to protect the public link share with. |
+	 *       | expireDate         | An expire date for public link shares.              |
+	 *       |                    | This argument takes a date string in any format     |
+	 *       |                    | that can be passed to strtotime(), for example:     |
+	 *       |                    | 'YYYY-MM-DD' or '+ x days'. It will be converted to |
+	 *       |                    | 'YYYY-MM-DD' format before sending                  |
+	 *       | expireDateAsString | An expire date string for public link shares.       |
+	 *       |                    | Whatever string is provided will be sent as the     |
+	 *       |                    | expire date. For example, use this to test sending  |
+	 *       |                    | invalid date strings.                               |
+	 *       | permissions        | The permissions to set on the share.                |
+	 *       |                    |     1 = read; 2 = update; 4 = create;               |
+	 *       |                    |     8 = delete; 16 = share; 31 = all                |
+	 *       |                    |     15 = change                                     |
+	 *       |                    |     4 = uploadwriteonly                             |
+	 *       |                    |     (default: 31, for public shares: 1)             |
+	 *       |                    |     Pass either the (total) number,                 |
+	 *       |                    |     or the keyword,                                 |
+	 *       |                    |     or an comma separated list of keywords          |
+	 *       | shareWith          | The user or group id with which the file should     |
+	 *       |                    | be shared.                                          |
+	 *       | shareType          | The type of the share. This can be one of:          |
+	 *       |                    |    0 = user, 1 = group, 3 = public_link,            |
+	 *       |                    |    6 = federated (cloud share).                     |
+	 *       |                    |    Pass either the number or the keyword.           |
 	 *
 	 * @return void
 	 */

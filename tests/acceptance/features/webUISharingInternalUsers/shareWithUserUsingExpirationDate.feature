@@ -11,7 +11,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | user2    |
     And user "user3" has been created with default attributes and skeleton files
 
-  Scenario: expiration date is disabled for sharing with users, user shares with an other user
+  Scenario: expiration date is disabled for sharing with users, user shares with another user
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "no"
     And user "user1" has logged in using the webUI
@@ -24,7 +24,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | expiration  |            |
       | uid_owner   | user1      |
 
-  Scenario: expiration date is disabled for sharing with users but enabled for sharing with groups, user shares with an other user
+  Scenario: expiration date is disabled for sharing with users but enabled for sharing with groups, user shares with another user
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "no"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -60,7 +60,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | expiration  | +3 days    |
       | uid_owner   | user1      |
 
-  Scenario: expiration date is enforced for user, user shares  and tries to change expiration date more than allowed
+  Scenario: expiration date is enforced for user, user shares and tries to change expiration date more than allowed
     Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
