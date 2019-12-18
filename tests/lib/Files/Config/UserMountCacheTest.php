@@ -8,6 +8,7 @@
 
 namespace Test\Files\Config;
 
+use Doctrine\DBAL\Statement;
 use OC\DB\QueryBuilder\Literal;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Mount\MountPoint;
@@ -16,9 +17,12 @@ use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Manager;
 use OC\User\SyncService;
+use OCP\DB\QueryBuilder\IExpressionBuilder;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Config\ICachedMountInfo;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\ILogger;
 use OCP\IUserManager;
 use Test\TestCase;
 
@@ -435,5 +439,30 @@ class UserMountCacheTest extends TestCase {
 		$cachedMounts = $this->cache->getMountsForFileId($rootId);
 
 		$this->assertEmpty($cachedMounts);
+	}
+
+	/**
+	 * Oracle returns null for empty path, strict comparison fails on null
+	 */
+	public function testEmptyPathCacheInfoFromFileId() {
+		$statement = $this->createMock(Statement::class);
+		$statement->method('fetch')->willReturn([ 'storage' => 55, 'path' => null]);
+
+		$eb = $this->createMock(IExpressionBuilder::class);
+		$qb = $this->createMock(IQueryBuilder::class);
+		$qb->method('expr')->willReturn($eb);
+		$qb->method('select')->willReturnSelf();
+		$qb->method('from')->willReturnSelf();
+		$qb->method('where')->willReturnSelf();
+		$qb->method('execute')->willReturn($statement);
+
+		$conn = $this->createMock(IDBConnection::class);
+		$conn->method('getQueryBuilder')->willReturn($qb);
+		$userManager = $this->createMock(IUserManager::class);
+		$logger = $this->createMock(ILogger::class);
+
+		$cache = new UserMountCache($conn, $userManager, $logger);
+		$cacheInfo = $this->invokePrivate($cache, 'getCacheInfoFromFileId', [55]);
+		$this->assertEquals([55, ''], $cacheInfo);
 	}
 }

@@ -256,7 +256,7 @@ class UserMountCache implements IUserMountCache {
 			if (\is_array($row)) {
 				$this->cacheInfoCache[$fileId] = [
 					(int)$row['storage'],
-					$row['path']
+					(string)$row['path']
 				];
 			} else {
 				throw new NotFoundException('File with id "' . $fileId . '" not found');
