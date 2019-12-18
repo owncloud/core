@@ -1630,6 +1630,8 @@ Feature: sharing
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
       | expiration |  |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration |  |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -1654,6 +1656,8 @@ Feature: sharing
       | uid_owner   | user0    |
       | expiration  | +15 days |
       | share_with  | user1    |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -1677,6 +1681,8 @@ Feature: sharing
       | uid_owner   | user0    |
       | share_with  | user1    |
       | expiration  | +15 days |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -1701,6 +1707,8 @@ Feature: sharing
       | uid_owner   | user0    |
       | share_with  | user1    |
       | expiration  | +15 days |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +15 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -1725,6 +1733,8 @@ Feature: sharing
       | uid_owner   | user0   |
       | share_with  | user1   |
       | expiration  | +7 days |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +7 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -1741,6 +1751,8 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
+      | expiration |  |
+    And the response when user "user1" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -1768,6 +1780,8 @@ Feature: sharing
       | uid_owner   | user0    |
       | expiration  | +15 days |
       | share_with  | grp1     |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -1794,6 +1808,8 @@ Feature: sharing
       | uid_owner   | user0    |
       | expiration  | +15 days |
       | share_with  | grp1     |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -1820,6 +1836,8 @@ Feature: sharing
       | uid_owner   | user0    |
       | share_with  | grp1     |
       | expiration  | +15 days |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +15 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -1847,6 +1865,8 @@ Feature: sharing
       | uid_owner   | user0   |
       | share_with  | grp1    |
       | expiration  | +3 days |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +3 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -1865,6 +1885,8 @@ Feature: sharing
       | uid_owner   | user0          |
       | share_with  | user1          |
       | expiration  | +7 days        |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +7 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -1885,6 +1907,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -1904,6 +1927,8 @@ Feature: sharing
       | uid_owner   | user0          |
       | share_with  | user1          |
       | expiration  | +30 days       |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +30 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -1925,6 +1950,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -1979,6 +2005,8 @@ Feature: sharing
       | uid_owner   | user0          |
       | share_with  | grp1           |
       | expiration  | +7 days        |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +7 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -2001,6 +2029,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -2022,6 +2051,8 @@ Feature: sharing
       | uid_owner   | user0          |
       | share_with  | grp1           |
       | expiration  | +30 days       |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +30 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -2045,6 +2076,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -2063,6 +2095,8 @@ Feature: sharing
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
     And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
+      | expiration | +30 days |
+    And the response when user "user1" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -2083,6 +2117,8 @@ Feature: sharing
     And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration | +30 days |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | +30 days |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -2100,6 +2136,8 @@ Feature: sharing
     And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration |  |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration |  |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -2114,6 +2152,8 @@ Feature: sharing
     When user "user0" shares file "/FOLDER" with user "user1" with permissions "read,share" using the sharing API
     And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
+      | expiration |  |
+    And the response when user "user1" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version |
@@ -2135,6 +2175,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 404             | 200              |
@@ -2154,6 +2195,8 @@ Feature: sharing
     Then the HTTP status code should be "200"
     And the OCS status code should be "200"
     Then the fields of the last response should include
+      | expiration | 2050-12-11 |
+    And the response when user "user1" gets the info of the last share should include
       | expiration | 2050-12-11 |
     Examples:
       | date                |
@@ -2177,6 +2220,8 @@ Feature: sharing
       | expireDateAsString | tomorrow      |
     Then the fields of the last response should include
       | expiration | tomorrow |
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | tomorrow |
     Examples:
       | ocs_api_version |
       | 1               |
@@ -2197,6 +2242,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Expiration date is in the past"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 404             | 200              |
@@ -2217,6 +2263,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 404             | 200              |
@@ -2237,6 +2284,7 @@ Feature: sharing
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Expiration date is in the past"
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 404             | 200              |
@@ -2256,6 +2304,7 @@ Feature: sharing
       | permissions | read,share    |
     Then the fields of the last response should include
       | expiration | today |
+    And user "user1" should not have any received shares
     Examples:
       | ocs_api_version |
       | 1               |
@@ -2274,6 +2323,8 @@ Feature: sharing
       | shareWith   | user1         |
       | permissions | read,share    |
     Then the fields of the last response should include
+      | expiration | tomorrow |
+    And the response when user "user1" gets the info of the last share should include
       | expiration | tomorrow |
     Examples:
       | ocs_api_version |
