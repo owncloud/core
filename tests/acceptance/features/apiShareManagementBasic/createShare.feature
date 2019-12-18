@@ -2304,7 +2304,8 @@ Feature: sharing
       | permissions | read,share    |
     Then the fields of the last response should include
       | expiration | today |
-    And user "user1" should not have any received shares
+    And the response when user "user1" gets the info of the last share should include
+      | expiration | today |
     Examples:
       | ocs_api_version |
       | 1               |
