@@ -38,3 +38,21 @@ Feature: get file info using MKCOL
       | /remote.php/webdav/PARENT                     | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
+
+  Scenario: send MKCOL requests to webDav endpoints using valid password and username of different user
+    When user "user1" requests these endpoints with "MKCOL" including body using the password of user "user0" then the status codes should be as listed
+      | endpoint                                      | http-code | body          |
+      | /remote.php/webdav/textfile0.txt              | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/textfile0.txt     | 401       | doesnotmatter |
+      | /remote.php/webdav/PARENT                     | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
+
+  Scenario: send MKCOL requests to webDav endpoints without any authentication
+    When a user requests these endpoints with "MKCOL" and no authentication then the status codes should be as listed
+      | endpoint                                      | http-code | body          |
+      | /remote.php/webdav/textfile0.txt              | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/textfile0.txt     | 401       | doesnotmatter |
+      | /remote.php/webdav/PARENT                     | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
