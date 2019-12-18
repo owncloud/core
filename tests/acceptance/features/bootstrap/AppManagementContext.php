@@ -84,11 +84,14 @@ class AppManagementContext implements Context {
 			];
 			$this->featureContext->mkDirOnServer($appsPathToAdd['dir']);
 		}
-		$this->setAppsPaths($appsPathsConfigs);
+		$resp = $this->setAppsPaths($appsPathsConfigs);
+		Assert::assertEmpty(
+			$resp['stdErr'],
+			'Expected to set app path but failed due to error: ' . $resp['stdErr']
+		);
 	}
 
 	/**
-	 * @Given app :appId with version :version has been put in dir :dir
 	 * @When the administrator puts app :appId with version :version in dir :dir
 	 *
 	 * @param string $appId app id
@@ -98,7 +101,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function appHasBeenPutInDir($appId, $version, $dir) {
+	public function putAppInDir($appId, $version, $dir) {
 		$ocVersion = $this->featureContext->getSystemConfigValue('version');
 		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
@@ -134,6 +137,26 @@ class AppManagementContext implements Context {
 				$this->createdApps[$appId][] = $targetDir;
 			}
 		}
+	}
+
+	/**
+	 * @Given app :appId with version :version has been put in dir :dir
+	 *
+	 * @param string $appId app id
+	 * @param string $version app version
+	 * @param string $dir app directory
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function appHasBeenPutInDir($appId, $version, $dir) {
+		$this->putAppInDir($appId, $version, $dir);
+		$check = SetupHelper::runOcc(['app:list', '--output json']);
+		$appsDisabled = \json_decode($check['stdOut'], true)['disabled'];
+		assert::assertTrue(
+			\array_key_exists($appId, $appsDisabled),
+			'Expected: ' . $appId . 'to be present in apps(disabled) list, but not found'
+		);
 	}
 
 	/**
