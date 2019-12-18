@@ -435,10 +435,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.0.0
 	 */
 	public function callForAllUsers(\Closure $callback, $search = '', $onlySeen = false) {
-		$this->accountMapper->callForAllUsers(function (Account $account) use ($callback) {
-			$user = $this->getUserObject($account);
-			return $callback($user);
-		}, $search, $onlySeen);
+		return $this->callForUsers($callback, '', $onlySeen, null, null);
 	}
 
 	/**
@@ -459,6 +456,21 @@ class Manager extends PublicEmitter implements IUserManager {
 		$this->callForAllUsers($callback, '', true);
 	}
 
+	/**
+	 * @param \Closure $callback
+	 * @param string $search
+	 * @param boolean $onlySeen when true only users that have a lastLogin entry
+	 *                in the preferences table will be affected
+	 * @param int $limit
+	 * @param int $offset
+	 * @since 10.4.0
+	 */
+	public function callForUsers(\Closure $callback, $search = '', $onlySeen = false, $limit = null, $offset = null) {
+		$this->accountMapper->callForUsers(function (Account $account) use ($callback) {
+			$user = $this->getUserObject($account);
+			return $callback($user);
+		}, $search, $onlySeen, $limit, $offset);
+	}
 	/**
 	 * @param string $email
 	 * @return IUser[]

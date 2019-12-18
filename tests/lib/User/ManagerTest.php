@@ -272,7 +272,7 @@ class ManagerTest extends TestCase {
 		$function = function (IUser $user) use (&$users) {
 			$users[] = $user->getUID();
 		};
-		$this->manager->callForAllUsers($function, '', true);
+		$this->manager->callForUsers($function, '', true, null, null);
 		$usersBefore = $users;
 
 		//Add test users
@@ -288,7 +288,7 @@ class ManagerTest extends TestCase {
 		$user4->updateLastLoginTimestamp();
 
 		$users = [];
-		$this->manager->callForAllUsers($function, '', true);
+		$this->manager->callForUsers($function, '', true, null, null);
 		$this->assertCount(\count($usersBefore) + 3, $users, \join(', ', $usersBefore) . " !== " . \join(', ', $users));
 
 		//cleanup

@@ -212,4 +212,28 @@ class AccountMapperTest extends TestCase {
 		$result = $this->mapper->findUserIds($backend, true, $limit, $offset);
 		$this->assertSame($expected, $result);
 	}
+
+	public function testCallForUsersLimit() {
+		// don use offset and limit
+		$i = 1;
+		$this->mapper->callForUsers(function (Account $account) use (&$i) {
+			$this->assertEquals("TestFind".$i, $account->getUserId());
+			$i++;
+		}, 'TestFind', false, null, null);
+		$this->assertEquals(5, $i);
+
+		// use offset and limit
+		$i = 1;
+		$this->mapper->callForUsers(function (Account $account) use (&$i) {
+			$this->assertEquals("TestFind".$i, $account->getUserId());
+			$i++;
+		}, 'TestFind', false, 2, 0);
+		$this->assertEquals(3, $i);
+
+		$this->mapper->callForUsers(function (Account $account) use (&$i) {
+			$this->assertEquals("TestFind".$i, $account->getUserId());
+			$i++;
+		}, 'TestFind', false, 2, 2);
+		$this->assertEquals(5, $i);
+	}
 }
