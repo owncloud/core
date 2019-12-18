@@ -141,7 +141,8 @@ trait Auth {
 	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
 		foreach ($table->getHash() as $row) {
 			$this->sendRequest($row['endpoint'], $method);
-			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$ocsCode = $row['ocs-code'] ?? null;
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
