@@ -212,4 +212,18 @@ class AccountMapperTest extends TestCase {
 		$result = $this->mapper->findUserIds($backend, true, $limit, $offset);
 		$this->assertSame($expected, $result);
 	}
+
+	public function testCallForAllUsersLimit() {
+		// force to chunk by 3 users (1st should return 3, 2nd 1, 3rd 0)
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with($this->equalTo('accounts.call_for_all_users_limit'), $this->equalTo(1000))
+			->willReturn(3);
+
+		$count = 0;
+		$this->mapper->callForAllUsers(function (Account $account) use (&$count) {
+			$count++;
+		}, 'TestFind', false);
+		$this->assertEquals(4, $count);
+	}
 }

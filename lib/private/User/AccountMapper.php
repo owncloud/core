@@ -215,26 +215,43 @@ class AccountMapper extends Mapper {
 	}
 
 	public function callForAllUsers($callback, $search, $onlySeen) {
-		$qb = $this->db->getQueryBuilder();
-		$qb->select(['*'])
-			->from($this->getTableName());
+		// do not allocate in memory more than 1000 records with PDO as
+		// scrollable cursor is not enabled and not available for some DBs
+		// this is also useful in cases where callback wants to escape
+		$limit = $this->config->getSystemValue('accounts.call_for_all_users_limit', 1000);
+		$offset = 0;
 
-		if ($search) {
-			$qb->where($qb->expr()->iLike('user_id',
-				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
-		}
-		if ($onlySeen) {
-			$qb->where($qb->expr()->gt('last_login', new Literal(0)));
-		}
-		$stmt = $qb->execute();
-		while ($row = $stmt->fetch()) {
-			$return = $callback($this->mapRowToEntity($row));
-			if ($return === false) {
-				break;
+		do {
+			$qb = $this->db->getQueryBuilder();
+			$qb->select(['*'])
+				->from($this->getTableName());
+
+			if ($search) {
+				$qb->where($qb->expr()->iLike('user_id',
+					$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
 			}
-		}
+			if ($onlySeen) {
+				$qb->where($qb->expr()->gt('last_login', new Literal(0)));
+			}
+			$qb->orderBy('user_id');
+			$qb->setMaxResults($limit);
+			$qb->setFirstResult($offset);
 
-		$stmt->closeCursor();
+			$stmt = $qb->execute();
+
+			$rowCount = 0;
+			while ($row = $stmt->fetch()) {
+				$rowCount++;
+				$offset++;
+				$entity = $this->mapRowToEntity($row);
+				$return = $callback($entity);
+				if ($return === false) {
+					break;
+				}
+			}
+
+			$stmt->closeCursor();
+		} while ($rowCount > 0);
 	}
 
 	/**
