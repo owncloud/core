@@ -153,7 +153,7 @@ class AppManagementContext implements Context {
 		$this->putAppInDir($appId, $version, $dir);
 		$check = SetupHelper::runOcc(['app:list', '--output json']);
 		$appsDisabled = \json_decode($check['stdOut'], true)['disabled'];
-		assert::assertTrue(
+		Assert::assertTrue(
 			\array_key_exists($appId, $appsDisabled),
 			'Expected: ' . $appId . 'to be present in apps(disabled) list, but not found'
 		);
