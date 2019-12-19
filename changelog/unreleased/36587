@@ -1,0 +1,7 @@
+Change: Consolidate user/group share actions into single dropdown
+
+User and group share actions are grouped inside a dropdown which can
+be toggled via the cogwheel. This dropdown holds all related additional
+info and actions such as permissions, expiration, etc.
+
+https://github.com/owncloud/core/pull/36587
