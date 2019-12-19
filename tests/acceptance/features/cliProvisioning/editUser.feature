@@ -46,11 +46,11 @@ Feature: edit users
     And the content of file "textfile0.txt" for user "brand-new-user" using password "<password>" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"
     Examples:
-      | password                     | comment                     |
-      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
-      | España§àôœ€  | special European and other characters       |
-      | नेपाली                       | Unicode                     |
-      | password with spaces         | password with spaces        |
+      | password                     | comment                               |
+      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
+      | España§àôœ€                  | special European and other characters |
+      | नेपाली                       | Unicode                               |
+      | password with spaces         | password with spaces                  |
 
   Scenario: admin creates a user and specifies an invalid password, containing just space
     Given user "brand-new-user" has been deleted

@@ -10,17 +10,17 @@ Feature: security certificates
     When the administrator invokes occ command "security:certificates"
     Then the command should have been successful
     And the command output table should contain the following text:
-      | table_column         |
-      | goodCertificate.crt  |
+      | table_column        |
+      | goodCertificate.crt |
 
   Scenario: List security certificates when multiple certificates are imported
     Given the administrator has imported security certificate from the path "tests/data/certificates/goodCertificate.crt"
     And the administrator has imported security certificate from the path "tests/data/certificates/badCertificate.crt"
     When the administrator invokes occ command "security:certificates"
     And the command output table should contain the following text:
-    | table_column         |
-    | goodCertificate.crt  |
-    | badCertificate.crt   |
+      | table_column        |
+      | goodCertificate.crt |
+      | badCertificate.crt  |
 
   Scenario: Remove a security certificate
     Given the administrator has imported security certificate from the path "tests/data/certificates/goodCertificate.crt"
@@ -29,8 +29,8 @@ Feature: security certificates
     Then the command should have been successful
     When the administrator invokes occ command "security:certificates"
     And the command output table should contain the following text:
-      | table_column         |
-      | badCertificate.crt   |
+      | table_column       |
+      | badCertificate.crt |
 
   @issue-35364
   Scenario: Remove a security certificate that is not installed

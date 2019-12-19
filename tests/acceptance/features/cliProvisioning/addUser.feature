@@ -58,11 +58,11 @@ Feature: add a user using the using the occ command
     And user "brand-new-user" should exist
     And user "brand-new-user" should be able to access a skeleton file
     Examples:
-      | password                     | comment                     |
-      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
-      | España§àôœ€  | special European and other characters       |
-      | नेपाली                       | Unicode                     |
-      | password with spaces         | password with spaces        |
+      | password                     | comment                               |
+      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
+      | España§àôœ€                  | special European and other characters |
+      | नेपाली                       | Unicode                               |
+      | password with spaces         | password with spaces                  |
 
   Scenario: admin creates a user and specifies an invalid password, containing just space
     Given user "brand-new-user" has been deleted

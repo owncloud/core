@@ -10,10 +10,10 @@ Feature: add group
     And the command output should contain the text 'Created group "<group_id>"'
     And group "<group_id>" should exist
     Examples:
-      | group_id     | comment                               |
-      | simplegroup  | nothing special here                  |
-      | España§àôœ€  | special European and other characters |
-      | नेपाली       | Unicode group name                    |
+      | group_id    | comment                               |
+      | simplegroup | nothing special here                  |
+      | España§àôœ€ | special European and other characters |
+      | नेपाली      | Unicode group name                    |
 
   Scenario Outline: group names are case-sensitive, multiple groups can exist with different upper and lower case names
     When the administrator creates group "<group_id1>" using the occ command
