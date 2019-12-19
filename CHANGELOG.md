@@ -27,6 +27,7 @@ Summary
 * Change - Update league/flysystem (1.0.57 => 1.0.61): [#36553](https://github.com/owncloud/core/pull/36553)
 * Change - Update pear/archive_tar (1.4.8 => 1.4.9): [#36554](https://github.com/owncloud/core/pull/36554)
 * Change - Protect public preview with password: [#36571](https://github.com/owncloud/core/pull/36571)
+* Change - Consolidate user/group share actions into single dropdown: [#36587](https://github.com/owncloud/core/pull/36587)
 * Change - Update pear/pear_exception (v1.0.0 => v1.0.1): [#36599](https://github.com/owncloud/core/pull/36599)
 * Change - Update myclabs/deep-copy (1.9.3 => 1.9.4): [#36599](https://github.com/owncloud/core/pull/36599)
 * Change - Update phpspec/prophecy (1.9.0 => 1.10.0): [#36603](https://github.com/owncloud/core/pull/36603)
@@ -36,6 +37,7 @@ Summary
 * Enhancement - Support Oracle connection strings: [#36489](https://github.com/owncloud/core/pull/36489)
 * Enhancement - Add enabled and disabled filter options to occ app:list command: [#36520](https://github.com/owncloud/core/pull/36520)
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
+* Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
 
 Details
 -------
@@ -208,6 +210,14 @@ Details
 
    https://github.com/owncloud/core/pull/36571
 
+* Change - Consolidate user/group share actions into single dropdown: [#36587](https://github.com/owncloud/core/pull/36587)
+
+   User and group share actions are grouped inside a dropdown which can be toggled via the
+   cogwheel. This dropdown holds all related additional info and actions such as permissions,
+   expiration, etc.
+
+   https://github.com/owncloud/core/pull/36587
+
 * Change - Update pear/pear_exception (v1.0.0 => v1.0.1): [#36599](https://github.com/owncloud/core/pull/36599)
 
    https://github.com/owncloud/core/pull/36599
@@ -266,6 +276,19 @@ Details
    share-recipients and the parent folder that has been shared.
 
    https://github.com/owncloud/core/pull/36572
+
+* Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
+
+   Shares with users and/or groups can now be given an expiration date. If the default expiration
+   date is enabled then the default expiration is 7 days in the future. The default expiration date
+   can be modified by the administrator. The default expiration date can be enforced as the
+   maximum expiration date of a share. In that case the user can select a shorter expiration, but
+   not longer.
+
+   The settings are disabled by default, preserving the existing behavior. They can be enabled on
+   the admin sharing settings page. They can be set independently for user and group shares.
+
+   https://github.com/owncloud/core/pull/36573
 
 Changelog for ownCloud Core [10.3.2] (2019-12-04)
 =======================================
