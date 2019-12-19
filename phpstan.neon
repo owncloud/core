@@ -34,6 +34,9 @@ parameters:
     - '#Undefined variable: \$vendor#'
     - '#Undefined variable: \$baseuri#'
     - '#Instantiated class OC_Theme not found.#'
+    -
+      message: '#Instantiated class OCA\\Enterprise_Key\\EnterpriseKey not found.#'
+      path: core/Command/App/Enable.php
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#OCA\\DAV\\Connector\\Sabre\\ObjectTree::__construct\(\) does not call parent constructor from Sabre\\DAV\\Tree.#'
     - '#OC\\Files\\ObjectStore\\NoopScanner::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Scanner.#'

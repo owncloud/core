@@ -77,7 +77,9 @@ class Enable extends Command {
 		}
 
 		if (\OC_App::isEnabled('enterprise_key')) {
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$key = new \OCA\Enterprise_Key\EnterpriseKey(false, $this->config);
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			if ($key && !$key->isValid()) {
 				$output->writeln($appId . ' cannot be enabled because of invalid enterprise key');
 				return 1;
