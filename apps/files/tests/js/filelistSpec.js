@@ -1024,6 +1024,24 @@ describe('OCA.Files.FileList tests', function() {
 			expect($summary.find('.dirinfo').hasClass('hidden')).toEqual(true);
 			expect($summary.find('.fileinfo').text()).toEqual('1 file');
 		});
+		it('shows icon for shareTree items if parent is shared', function() {
+			fileList._setShareTreeCache({
+				'/folder' : {
+					name: "folder",
+					shares : [{
+						share_type: 0,
+						share_with_displayname: "Demo user",
+					}]
+				}
+			});
+			fileList.setFiles(testFiles);
+			expect($('#fileList tr:first-of-type td .sharetree-item').length).toEqual(1);
+		});
+		it('does not show shareTree items if shareTree is empty', function() {
+			fileList._purgeShareTreeCache();
+			fileList.setFiles(testFiles);
+			expect($('#fileList tr td .sharetree-item').length).toEqual(0);
+		});
 	});
 	describe('Filtered list rendering', function() {
 		it('filters the list of files using filter()', function() {

@@ -62,6 +62,7 @@ class FileRow extends OwncloudPage {
 	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
 	protected $lockDialogId = "lockTabView";
 	protected $highlightsXpath = "//div[@class='highlights']";
+	protected $sharedIndicatorXpath = "//div[contains(@class, 'sharetree-item')]";
 
 	/**
 	 *
@@ -405,7 +406,7 @@ class FileRow extends OwncloudPage {
 		$this->findFileLink()->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
-	
+
 	/**
 	 * restore the current deleted file and folder by clicking on the restore link
 	 *
@@ -446,14 +447,14 @@ class FileRow extends OwncloudPage {
 		$checkFavorite = $this->rowElement->find(
 			"xpath", $this->markedFavoriteXpath
 		);
-		
+
 		if ($checkFavorite === null) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * unmarks the current file or folder off favorite by clicking the star icon
 	 *
@@ -584,5 +585,18 @@ class FileRow extends OwncloudPage {
 	public function isActionLabelAvailable($actionLabel, Session $session) {
 		$actionMenu = $this->openFileActionsMenu($session);
 		return $actionMenu->isActionLabelVisible($actionLabel);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSharedIndicatorPresent() {
+		if ($this->rowElement->find(
+			"xpath", $this->sharedIndicatorXpath
+		) === null
+		) {
+			return false;
+		}
+		return true;
 	}
 }

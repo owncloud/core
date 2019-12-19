@@ -663,3 +663,86 @@ Feature: Share by public link
 			user0 shared simple-folder with you
 			"""
     And the email address "foo@bar.co" should have received an email containing the last shared public link
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator inside a shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | sub-folder   |
+      | textfile.txt |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator for file uploaded inside a shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user uploads file "new-lorem.txt" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | new-lorem.txt |
+
+  @skipOnOcV10.3
+  Scenario: sharing indicator for folder created inside a shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user creates a folder with the name "sub-folder" using the webUI
+    Then the following resources should have share indicators on the webUI
+      | sub-folder |
+
+  @skipOnOcV10.3
+  Scenario: sharing details of items inside a shared folder
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+      | name | Public Link    |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens the share dialog for folder "sub-folder"
+    And the user opens the public link share tab
+    Then public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+
+  @skipOnOcV10.3
+  Scenario: sharing details of multiple public link shares with different link names
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has created folder "/simple-folder/sub-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/sub-folder/textfile.txt"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+      | name | Public Link    |
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder/sub-folder        |
+      | name | strängé लिंक नाम (#2 &).नेपाली      |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens the share dialog for folder "sub-folder"
+    And the user opens the public link share tab
+    Then public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+    When the user opens folder "sub-folder" using the webUI
+    And the user opens the share dialog for file "textfile.txt"
+    And the user opens the public link share tab
+    Then public link "strängé लिंक नाम (#2 &).नेपाली" should be listed as share receiver via "sub-folder" on the webUI
+    And public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
+
+  @skipOnOcV10.3
+  Scenario: sharing detail of items in the webUI shared by public links with empty name
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
+    And user "user1" has created a public link share with settings
+      | path | /simple-folder |
+    And user "user1" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens the share dialog for file "textfile.txt"
+    And the user opens the public link share tab
+    Then public link with last share token should be listed as share receiver via "simple-folder" on the webUI

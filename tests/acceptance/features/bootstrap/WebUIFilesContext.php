@@ -2211,4 +2211,39 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->getSession()
 		);
 	}
+
+	/**
+	 * @Then /^(user|group|public link|federated user) ((?:'[^']*')|(?:"[^"]*")) should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
+	 *
+	 * @param string $type user|group|public link|federated user
+	 * @param string $name
+	 * @param string $item
+	 *
+	 * @return void
+	 */
+	public function userGroupShouldBeListedAsShareReceiver($type, $name, $item) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$name = $this->featureContext->substituteInLineCodes($name);
+		$name = \trim($name, $name[0]);
+		$item = \trim($item, $item[0]);
+
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		$shareTreeItem = $sharingDialog->getShareTreeItem($type, $name, $item);
+		Assert::assertTrue($shareTreeItem->isVisible());
+	}
+
+	/**
+	 * @Then public link with last share token should be listed as share receiver via :item on the webUI
+	 *
+	 * @param string $item
+	 *
+	 * @return void
+	 */
+	public function publicLinkWithLastShareTokenShouldBeListedAsShareReceiverViaOnTheWebUI($item) {
+		$token = $this->featureContext->getLastShareData()->data->token;
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		$shareTreeItem = $sharingDialog->getShareTreeItem("public link", $token, $item);
+		Assert::assertTrue($shareTreeItem->isVisible());
+	}
 }

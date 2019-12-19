@@ -1601,4 +1601,48 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 		}
 	}
+
+	/**
+	 * @Then the following resources should have share indicators on the webUI
+	 *
+	 * @param TableNode $resourceTable
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingResourcesShouldHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+		$elementRows = $resourceTable->getRows();
+		$elements = $this->featureContext->simplifyArray($elementRows);
+		foreach ($elements as $filename) {
+			$isMarked = $this->filesPage->isSharedIndicatorPresent(
+				$filename, $this->getSession()
+			);
+			Assert::assertTrue(
+				$isMarked,
+				"Expected: " . $filename . " to be marked as shared but it's not"
+			);
+		}
+	}
+
+	/**
+	 * @Then the following resources should not have share indicators on the webUI
+	 *
+	 * @param TableNode $resourceTable
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingResourcesShouldNotHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+		$elementRows = $resourceTable->getRows();
+		$elements = $this->featureContext->simplifyArray($elementRows);
+		foreach ($elements as $filename) {
+			$isMarked = $this->filesPage->isSharedIndicatorPresent(
+				$filename, $this->getSession()
+			);
+			Assert::assertFalse(
+				$isMarked,
+				"Expected: " . $filename . " not to be marked as shared but it is"
+			);
+		}
+	}
 }

@@ -169,6 +169,13 @@
 		_sortComparator: null,
 
 		/**
+		 * Stores shareTree items and infos
+		 * 
+		 * @type Array
+		 */
+		_shareTreeCache: {},
+
+		/**
 		 * Whether to do a client side sort.
 		 * When false, clicking on a table header will call reload().
 		 * When true, clicking on a table header will simply resort the list.
@@ -293,11 +300,11 @@
 				breadcrumbOptions.onDrop = _.bind(this._onDropOnBreadCrumb, this);
 				breadcrumbOptions.onOver = function() {
 					self.$el.find('td.filename.ui-droppable').droppable('disable');
-				}
+				};
 				breadcrumbOptions.onOut = function() {
 					self.$el.find('td.filename.ui-droppable').droppable('enable');
+				};
 				}
-			}
 			this.breadcrumb = new OCA.Files.BreadCrumb(breadcrumbOptions);
 
 			var $controls = this.$el.find('#controls');
@@ -379,6 +386,7 @@
 			// remove summary
 			this.$el.find('tfoot tr.summary').remove();
 			this.$fileList.empty();
+
 		},
 
 		/**
@@ -1048,6 +1056,7 @@
 			$(window).scrollTop(0);
 
 			this.$fileList.trigger(jQuery.Event('updated'));
+			
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
@@ -1389,6 +1398,10 @@
 				tr.addClass('hidden-file');
 			}
 
+			if(_.keys(this._shareTreeCache).length) {
+				filenameTd.find('.thumbnail:not(.sharetree-item)').addClass('sharetree-item');
+			}
+
 			// display actions
 			this.fileActions.display(filenameTd, !options.silent, this);
 
@@ -1440,21 +1453,32 @@
 		 * @param {boolean} [changeUrl=true] if the URL must not be changed (defaults to true)
 		 * @param {boolean} [force=false] set to true to force changing directory
 		 * @param {string} [fileId] optional file id, if known, to be appended in the URL
+		 * @return {Promise} empty
 		 */
 		changeDirectory: function(targetDir, changeUrl, force, fileId) {
 			var self = this;
 			var currentDir = this.getCurrentDirectory();
 			targetDir = targetDir || '/';
-			if (!force && currentDir === targetDir) {
-				return;
-			}
-			this._setCurrentDir(targetDir, changeUrl, fileId);
-			// discard finished uploads list, we'll get it through a regular reload
-			this._uploads = {};
-			this.reload().then(function(success){
-				if (!success) {
-					self.changeDirectory(currentDir, true);
+
+			return new Promise(function(resolve, reject) {
+
+				if (!force && currentDir === targetDir) {
+					resolve();
+					return;
 				}
+				self._setCurrentDir(targetDir, changeUrl, fileId);
+				// discard finished uploads list, we'll get it through a regular reload
+				self._uploads = {};
+				self.reload().then(function(success){
+					if (!success) {
+						self.changeDirectory(currentDir, true);
+						reject();
+					}
+					self._updateShareTree().then(function() {
+						self._setShareTreeIcons();
+					});
+					resolve();
+				});
 			});
 		},
 		linkTo: function(dir) {
@@ -1721,6 +1745,207 @@
 			});
 			var uid = encodeURIComponent(OC.getCurrentUser().uid);
 			return OC.linkToRemoteBase('dav') + '/files/' + uid + encodedPath;
+		},
+
+		/**
+		 * Fetch shareTypes of a certain directory
+		 * @param {String} dir directory string
+		 * @return {Promise} object with name and shareTypes
+		 */
+		getDirShareInfo: function(dir) {
+			// Dir can't be empty
+			if (typeof dir !== 'string' || dir.length === 0) {
+				return Promise.reject('getDirShareInfo(). param must be typeof string and can not be empty!');
+			}
+
+			// avoiding a unnessesary API calls
+			if (typeof this._shareTreeCache[dir] !== 'undefined' || dir === '/') {
+				return Promise.resolve();
+			}
+
+			// trim trailing slashes
+			dir = dir.replace(/\/$/, "");
+
+			var self       = this;
+			var client     = this.filesClient;
+			var options    = {
+				properties : ['{' + OC.Files.Client.NS_OWNCLOUD + '}share-types']
+			};
+
+			return new Promise( function(resolve, reject) {
+				client.getFileInfo(dir, options).done(function(s, dir) {
+
+					var path = OC.joinPaths(dir.path, dir.name);
+
+					if (dir.shareTypes !== undefined) {
+						// Fetch all shares for directory in question
+						$.get( OC.linkToOCS('apps/files_sharing/api/v1', 2) + 'shares?' + OC.buildQueryString({format: 'json', path: path, reshares : true }), function(e) {
+							self._shareTreeCache[path] = {
+								name : dir.name,
+								shares : e.ocs.data
+							};
+							resolve();
+						});
+					} else {
+						resolve();
+					}
+				}).fail(function(error) {
+					reject(error);
+				});
+			});
+		},
+
+		/**
+		 * Fetch shareInfos recursively from current
+		 * directory down to root
+		 * @param {String} dir directory string
+		 * @return {Promise} array of objects with name and shareTypes
+		 */
+		getPathShareInfo: function(path) {
+			if (typeof path !== 'string') {
+				console.error('getDirShareInfo(). param must be typeof string!');
+				return Promise.reject();
+			}
+
+			var crumbs     = [];
+			var pathToHere = '';
+			var parts      = (path === '/' || path.length === 0) ? ['/'] : path.split('/');
+
+			for (var i = 0; i < parts.length; i++) {
+				var part = parts[i];
+				pathToHere += part + '/';
+
+				crumbs.push(this.getDirShareInfo(pathToHere));
+			}
+
+			return Promise.all(crumbs);
+		},
+
+		_updateShareTree: function() {
+			var self = this;
+			var dir  = this.getCurrentDirectory();
+
+			// Purge shareTreeCache in root dir
+			if (dir === '/') {
+				this._purgeShareTreeCache();
+				return Promise.resolve();
+			}
+
+			return this.getPathShareInfo(dir).then(function () {
+				var breadcrumbs = dir.split('/');
+
+				// Diff keys in shareTreeCache agains the current dir
+				// removing deeper nested shares
+				var cache = _.omit(self._shareTreeCache, function(value, key) {
+					var diffs = _.difference(key.split('/'), breadcrumbs);
+					return diffs.length > 0;
+				});
+
+				self._setShareTreeCache(cache);
+			});
+		},
+
+		_setShareTreeCache: function(data) {
+			this._shareTreeCache = data;
+		},
+
+		_purgeShareTreeCache: function() {
+			this._setShareTreeCache({});
+		},
+
+		_setShareTreeIcons: function() {
+			// Add share-tree icon to files and folders
+			// each per <tr> in the table
+
+			if (_.keys(this._shareTreeCache).length > 0) {
+				this.$fileList.find('tr td.filename .thumbnail:not(.sharetree-item)').addClass('sharetree-item');
+			} else {
+				this.$fileList.find('tr td.filename .thumbnail.sharetree-item').removeClass('sharetree-item');
+			}
+		},
+
+		_setShareTreeUserGroupView: function() {
+			var self  = this;
+			var $list = $('<ul>', { id : 'shareTreeUserGroupList' });
+
+			if (! _.keys(self._shareTreeCache).length > 0) {
+				return;
+			}
+
+			$('.shareeTreeUserGroupListView').html($list);
+
+			// Shared folders
+			_.each(self._shareTreeCache, function(folder) {
+
+				var shares = _.filter(folder.shares, function(share) {
+					return (
+						share.share_type === OC.Share.SHARE_TYPE_USER ||
+						share.share_type === OC.Share.SHARE_TYPE_GROUP ||
+						share.share_type === OC.Share.SHARE_TYPE_GUEST ||
+						share.share_type === OC.Share.SHARE_TYPE_REMOTE );
+				});
+
+				_.each(shares, function(share) {
+
+					var shareWith = share.share_with_displayname;
+
+					if (share.share_type === OC.Share.SHARE_TYPE_GROUP) {
+						shareWith += ' (' + t('core', 'group') + ')';
+					} else if (share.share_type === OC.Share.SHARE_TYPE_REMOTE) {
+						shareWith += ' (' + t('files_sharing', 'Remote share') + ')';
+					}
+
+					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name });
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith });
+					var $icon = $('<div>',    { class : 'shareTree-item-avatar' });
+
+					$icon.avatar(share.share_with, 32);
+
+					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(function() {
+						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
+							self._updateDetailsView(folder.name, true);
+						}).catch(function(e) {
+							console.error(e);
+						});
+					});
+				});
+			});
+		},
+
+		_setShareTreeLinkView: function() {
+			var self  = this;
+			var $list = $('<ul>', { id : 'shareTreeLinkList' });
+
+			if (! _.keys(self._shareTreeCache).length > 0) {
+				return;
+			}
+
+			$('.shareeTreeLinkListView').html($list);
+
+			// Shared folders
+			_.each(self._shareTreeCache, function(folder) {
+
+				var shares = _.filter(folder.shares, function(share) {
+					return share.share_type === OC.Share.SHARE_TYPE_LINK;
+				});
+
+				_.each(shares, function(share) {
+
+					var shareName = (!_.isEmpty(share.name)) ? share.name : share.token;
+
+					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name });
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareName });
+					var $icon = $('<span>',   { class : 'shareTree-item-icon link-entry--icon icon-public-white' });
+
+					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(function() {
+						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
+							self._updateDetailsView(folder.name, true);
+						}).catch(function(e) {
+							console.error(e);
+						});
+					});
+				});
+			});
 		},
 
 		/**

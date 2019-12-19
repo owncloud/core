@@ -1,0 +1,8 @@
+Enhancement: Share indicator on webUI
+
+The file list in the webUI now shows a share indicator on files and folders that
+reside inside a shared folder. The sidebar sharing tab reveals a detailed view
+of the share-tree including share-recipients and the parent folder that has been
+shared.
+
+https://github.com/owncloud/core/pull/36572
