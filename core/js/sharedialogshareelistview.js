@@ -435,7 +435,7 @@
 			});
 		},
 
-		onToggleShareDetails: function() {
+		onToggleShareDetails: function(event) {
 			var $target = $(event.target);
 			$target.closest('.shareWithList__item').toggleClass('shareWithList__item--detailed').find('.shareWithList__details').toggleClass('hidden');
 		},
