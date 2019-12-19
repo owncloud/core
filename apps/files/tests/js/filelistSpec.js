@@ -1034,14 +1034,14 @@ describe('OCA.Files.FileList tests', function() {
 					}]
 				}
 			});
-			fileList.setFiles(testFiles)
-			expect($('#fileList tr:first-of-type td .sharetree-item').length).toEqual(1)
+			fileList.setFiles(testFiles);
+			expect($('#fileList tr:first-of-type td .sharetree-item').length).toEqual(1);
 		});
 		it('does not show shareTree items if shareTree is empty', function() {
-			fileList._purgeShareTreeCache()
-			fileList.setFiles(testFiles)
-			expect($('#fileList tr td .sharetree-item').length).toEqual(0)
-		})
+			fileList._purgeShareTreeCache();
+			fileList.setFiles(testFiles);
+			expect($('#fileList tr td .sharetree-item').length).toEqual(0);
+		});
 	});
 	describe('Filtered list rendering', function() {
 		it('filters the list of files using filter()', function() {

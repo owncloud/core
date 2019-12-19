@@ -1804,7 +1804,7 @@
 		getPathShareInfo: function(path) {
 			if (typeof path !== 'string') {
 				console.error('getDirShareInfo(). param must be typeof string!');
-				return Promise.reject()
+				return Promise.reject();
 			}
 
 			var crumbs     = [];

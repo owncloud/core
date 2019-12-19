@@ -965,7 +965,7 @@ describe('OC.Share.ShareDialogView', function() {
 		});
 		it('creates link share view only after selecting tab', function() {
 			expect(dialog.$('.linkListView').is(':empty')).toEqual(true);
-			
+
 			dialog.$('.subTabHeaders>.subTabHeader:eq(1)').click();
 
 			expect(dialog.$('.linkListView').is(':empty')).toEqual(false);
@@ -1001,18 +1001,18 @@ describe('OC.Share.ShareDialogView', function() {
 					}]
 				}
 			});
-		})
+		});
 		afterEach(function() {
 			fileList.destroy();
-			$('#filelist').remove()
+			$('#filelist').remove();
 		});
 		it('renders parent user/groups shares', function() {
-			fileList._setShareTreeUserGroupView()
+			fileList._setShareTreeUserGroupView();
 			expect(dialog.$el.find('#shareTreeUserGroupList li').length).toEqual(4);
-		})
+		});
 		it('renders parent link shares', function() {
-			fileList._setShareTreeLinkView()
+			fileList._setShareTreeLinkView();
 			expect(dialog.$el.find('#shareTreeLinkList li').length).toEqual(2);
-		})
+		});
 	});
 });
