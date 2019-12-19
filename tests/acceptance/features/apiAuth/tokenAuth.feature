@@ -24,6 +24,22 @@ Feature: tokenAuth
     When the user requests "/index.php/apps/files" with "GET" using the generated app password
     Then the HTTP status code should be "200"
 
+  Scenario: cannot access files app with an app password that is deleted when token auth is enforced
+    Given a new browser session for "user1" has been started
+    And the user has generated a new app password named "my-client"
+    And the user has deleted the app password named "my-client"
+    When the user requests "/index.php/apps/files" with "GET" using the generated app password
+    Then the HTTP status code should be "401"
+
+  Scenario: Access files app with when there are multiple tokens generated
+    Given a new browser session for "user1" has been started
+    And the user has generated a new app password named "my-client"
+    And the user has generated a new app password named "my-new-client"
+    When the user requests "/index.php/apps/files" with "GET" using app password named "my-client"
+    Then the HTTP status code should be "200"
+    When the user requests "/index.php/apps/files" with "GET" using app password named "my-new-client"
+    Then the HTTP status code should be "200"
+
   @smokeTest
   Scenario: cannot access files app with basic auth when token auth is enforced
     When user "user1" requests "/index.php/apps/files" with "GET" using basic auth

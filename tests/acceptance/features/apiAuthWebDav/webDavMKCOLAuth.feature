@@ -56,3 +56,27 @@ Feature: get file info using MKCOL
       | /remote.php/webdav/PARENT                     | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
+
+  Scenario: send MKCOL requests to webDav endpoints using token authentication should not work
+    Given token auth has been enforced
+    And a new browser session for "user0" has been started
+    And the user has generated a new app password named "my-client"
+    When the user requests these endpoints with "MKCOL" using the generated app password then the status codes should be as listed
+      | endpoint                                      | http-code | body          |
+      | /remote.php/webdav/textfile0.txt              | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/textfile0.txt     | 401       | doesnotmatter |
+      | /remote.php/webdav/PARENT                     | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
+
+  Scenario: send MKCOL requests to webDav endpoints using app password token as password
+    Given token auth has been enforced
+    And a new browser session for "user0" has been started
+    And the user has generated a new app password named "my-client"
+    When the user "user0" requests these endpoints with "MKCOL" using the basic auth and generated app password then the status codes should be as listed
+      | endpoint                                  | http-code |
+      | /remote.php/webdav/newCol                 | 201       |
+      | /remote.php/dav/files/user0/newCol1       | 201       |
+      | /remote.php/dav/files/user0/PARENT/newCol | 201       |
+      | /remote.php/webdav/COL                    | 201       |
+      | /remote.php/dav/files/user0/FOLDER/newCol | 201       |
