@@ -38,7 +38,10 @@ class AppsEnableTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$command = new Enable(\OC::$server->getAppManager());
+		$command = new Enable(
+			\OC::$server->getAppManager(),
+			\OC::$server->getConfig()
+		);
 		$this->commandTester = new CommandTester($command);
 	}
 
