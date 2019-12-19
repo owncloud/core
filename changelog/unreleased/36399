@@ -1,0 +1,10 @@
+Bugfix: Inform the admin if they enable an enterprise app without valid key
+
+Previously no message was displayed but the app was not enabled.
+
+Now, when the admin tries to enable an enterprise app when the enterprise key
+is invalid, the message "cannot be enabled because of invalid enterprise key"
+is displayed.
+
+https://github.com/owncloud/core/issues/36351
+https://github.com/owncloud/core/pull/36399
