@@ -170,6 +170,165 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the user shares (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI without closing the share dialog$/
+	 *
+	 * @param string $folder
+	 * @param string $remote (remote|federated|)
+	 * @param string $name
+	 * @param int $maxRetries
+	 * @param bool $quiet
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function theUserSharesWithUserWithoutClosingDialog(
+		$folder, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+	) {
+		$this->theUserSharesUsingWebUIWithoutClosingDialog($folder, "user", $remote, $name, $maxRetries, $quiet);
+	}
+
+	/**
+	 * @When /^the user shares (?:file|folder) "([^"]*)" with group "([^"]*)" using the webUI without closing the share dialog$/
+	 *
+	 * @param string $folder
+	 * @param string $name
+	 * @param int $maxRetries
+	 * @param bool $quiet
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 *
+	 */
+	public function theUserSharesWithGroupWithoutClosingDialog(
+		$folder, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+	) {
+		$this->theUserSharesUsingWebUIWithoutClosingDialog($folder, "group", "", $name, $maxRetries, $quiet);
+	}
+
+	/**
+	 * @Then /^the expiration date input field should (not |)be visible for the (user|group) "([^"]*)" in the share dialog$/
+	 *
+	 * @param string $shouldOrNot
+	 * @param string $type
+	 * @param string $receiver
+	 *
+	 * @return void
+	 */
+	public function expirationFieldVisibleForUser($shouldOrNot, $type, $receiver) {
+		$expected = ($shouldOrNot === "");
+		$this->sharingDialog->openShareActionsDropDown();
+		Assert::assertEquals($this->sharingDialog->isExpirationFieldVisible($receiver, $type), $expected);
+		$this->sharingDialog->closeShareActionsDropDown();
+	}
+
+	/**
+	 * @Then /^the expiration date input field should be empty for the (user|group) "([^"]*)" in the share dialog$/
+	 *
+	 * @param string $type
+	 * @param string $receiver
+	 *
+	 * @return void
+	 */
+	public function expirationFieldEmptyForUser($type, $receiver) {
+		Assert::assertEquals($this->sharingDialog->getExpirationDateFor($receiver, $type), "");
+	}
+
+	/**
+	 * @When /^the user changes expiration date for share of (user|group) "([^"]*)" to "([^"]*)" in the share dialog$/
+	 *
+	 * @param string $type
+	 * @param string $receiver
+	 * @param string $days
+	 *
+	 * @return void
+	 */
+	public function expirationDateChangedTo($type, $receiver, $days) {
+		$expectedDate = \date('d-m-Y', \strtotime($days));
+		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->setExpirationDateFor($this->getSession(), $receiver, $type, $expectedDate);
+		$this->sharingDialog->closeShareActionsDropDown();
+	}
+
+	/**
+	 * @Then /^the expiration date input field should be "([^"]*)" for the (user|group) "([^"]*)" in the share dialog$/
+	 *
+	 * @param string $days
+	 * @param string $type
+	 * @param string $receiver
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function expirationDateShouldBe($days, $type, $receiver) {
+		if (\strtotime($days) !== false) {
+			Assert::assertEquals(
+				\date('d-m-Y', \strtotime($days)),
+				$this->sharingDialog->getExpirationDateFor($receiver, $type)
+			);
+		} else {
+			throw new Exception("Invalid Format for the expiration date provided.");
+		}
+	}
+
+	/**
+	 * @When /^the user clears the expiration date input field for share of (user|group) "([^"]*)" in the share dialog$/
+	 *
+	 * @param string $userOrGroup
+	 * @param string $receiver
+	 *
+	 * @return void
+	 */
+	public function clearExpirationDate($userOrGroup, $receiver) {
+		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->clearExpirationDateFor($this->getSession(), $receiver, $userOrGroup);
+		$this->sharingDialog->closeShareActionsDropDown();
+	}
+
+	/**
+	 * @param string $folder
+	 * @param string $userOrGroup (user|group)
+	 * @param string $remote (remote|federated|)
+	 * @param string $name
+	 * @param int $maxRetries
+	 * @param bool $quiet
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function theUserSharesUsingWebUIWithoutClosingDialog(
+		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+	) {
+		$this->filesPage->waitTillPageIsloaded($this->getSession());
+		try {
+			$this->filesPage->closeDetailsDialog();
+		} catch (Exception $e) {
+			//we don't care
+		}
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$folder, $this->getSession()
+		);
+		if ($userOrGroup === "user") {
+			$user = $this->featureContext->substituteInLineCodes($name);
+			if ($remote === "remote") {
+				$this->sharingDialog->shareWithRemoteUser(
+					$user, $this->getSession(), $maxRetries, $quiet
+				);
+			} else {
+				$this->sharingDialog->shareWithUser(
+					$user, $this->getSession(), $maxRetries, $quiet
+				);
+			}
+		} else {
+			$this->sharingDialog->shareWithGroup(
+				$name, $this->getSession(), $maxRetries, $quiet
+			);
+		}
+	}
+
+	/**
 	 * @When the user shares file/folder :folder with group :group using the webUI
 	 * @Given the user has shared file/folder :folder with group :group using the webUI
 	 *
@@ -203,31 +362,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
 		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
-		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//we don't care
-		}
-		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$folder, $this->getSession()
+		$this->theUserSharesUsingWebUIWithoutClosingDialog(
+			$folder, $userOrGroup, $remote, $name, $maxRetries, $quiet
 		);
-		if ($userOrGroup === "user") {
-			$user = $this->featureContext->substituteInLineCodes($name);
-			if ($remote === "remote") {
-				$this->sharingDialog->shareWithRemoteUser(
-					$user, $this->getSession(), $maxRetries, $quiet
-				);
-			} else {
-				$this->sharingDialog->shareWithUser(
-					$user, $this->getSession(), $maxRetries, $quiet
-				);
-			}
-		} else {
-			$this->sharingDialog->shareWithGroup(
-				$name, $this->getSession(), $maxRetries, $quiet
-			);
-		}
 		$this->theUserClosesTheShareDialog();
 	}
 
@@ -1084,7 +1221,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function userShouldBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
@@ -1101,7 +1238,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function userShouldNotBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();

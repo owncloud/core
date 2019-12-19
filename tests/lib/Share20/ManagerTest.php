@@ -597,7 +597,7 @@ class ManagerTest extends \Test\TestCase {
 			->setMethods(['deleteShare'])
 			->getMock();
 
-		$date = new \DateTime();
+		$date = new \DateTime("yesterday");
 		$date->setTime(0, 0, 0);
 
 		$share = $this->manager->newShare();
@@ -1014,7 +1014,9 @@ class ManagerTest extends \Test\TestCase {
 		$this->expectExceptionMessage('Expiration date is enforced');
 
 		$share = $this->manager->newShare();
-		$share->setProviderId('foo')->setId('bar');
+		$share->setId(43)
+			->setProviderId('prov')
+			->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -1027,7 +1029,7 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testvalidateExpirationDateEnforceButNotEnabledAndNotSet() {
 		$share = $this->manager->newShare();
-		$share->setProviderId('foo')->setId('bar');
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -1041,13 +1043,13 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testvalidateExpirationDateEnforceButNotSetNewShare() {
 		$share = $this->manager->newShare();
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
 				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
 				['core', 'shareapi_expire_after_n_days', '7', '3'],
 				['core', 'shareapi_default_expire_date', 'no', 'yes'],
-				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
 			]));
 
 		$expected = new \DateTime();
@@ -1064,7 +1066,8 @@ class ManagerTest extends \Test\TestCase {
 		$future->add(new \DateInterval('P7D'));
 
 		$share = $this->manager->newShare();
-		$share->setExpirationDate($future);
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK)
+			->setExpirationDate($future);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -2760,8 +2763,8 @@ class ManagerTest extends \Test\TestCase {
 		$shareExpired = $this->createMock(IShare::class);
 		$shareExpired->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 		$shareExpired->method('getNodeId')->willReturn(201);
-		$today = new \DateTime();
-		$shareExpired->method('getExpirationDate')->willReturn($today);
+		$yesterday = new \DateTime("yesterday");
+		$shareExpired->method('getExpirationDate')->willReturn($yesterday);
 
 		$node = $this->createMock('OCP\Files\Folder');
 		$node->expects($this->any())
@@ -2860,16 +2863,16 @@ class ManagerTest extends \Test\TestCase {
 			$shares[] = $share;
 		}
 
-		$today = new \DateTime();
-		$today->setTime(0, 0, 0);
+		$yesterday = new \DateTime("yesterday");
+		$yesterday->setTime(0, 0, 0);
 
 		/*
-		 * Set the expiration date to today for some shares
+		 * Set the expiration date to yesterday for some shares
 		 */
-		$shares[2]->setExpirationDate($today);
-		$shares[3]->setExpirationDate($today);
-		$shares[4]->setExpirationDate($today);
-		$shares[5]->setExpirationDate($today);
+		$shares[2]->setExpirationDate($yesterday);
+		$shares[3]->setExpirationDate($yesterday);
+		$shares[4]->setExpirationDate($yesterday);
+		$shares[5]->setExpirationDate($yesterday);
 
 		/** @var \OCP\Share\IShare[] $i */
 		$shares2 = [];
@@ -2913,7 +2916,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals(1, $shares2[1]->getId());
 		$this->assertEquals(6, $shares2[2]->getId());
 		$this->assertEquals(7, $shares2[3]->getId());
-		$this->assertSame($today, $shares[3]->getExpirationDate());
+		$this->assertSame($yesterday, $shares[3]->getExpirationDate());
 	}
 
 	public function testGetShareByToken() {
@@ -3003,7 +3006,7 @@ class ManagerTest extends \Test\TestCase {
 			->setMethods(['deleteShare'])
 			->getMock();
 
-		$date = new \DateTime();
+		$date = new \DateTime("yesterday");
 		$date->setTime(0, 0, 0);
 		$share = $this->manager->newShare();
 		$share->setExpirationDate($date);
@@ -3768,6 +3771,10 @@ class DummyFactory implements IProviderFactory {
 	private $provider;
 
 	public function __construct(\OCP\IServerContainer $serverContainer) {
+	}
+
+	public function getProviders() {
+		return [$this->provider];
 	}
 
 	/**

@@ -76,8 +76,7 @@ class SharingHelper {
 	 *                                                    or any of the above keywords or array of keywords.
 	 * @param string|null $linkName A (human-readable) name for the share,
 	 *                              which can be up to 64 characters in length.
-	 * @param string|null $expireDate **NOT IMPLEMENTED**
-	 *                                An expire date for public link shares.
+	 * @param string|null $expireDate An expire date for public link shares.
 	 *                                This argument expects a date string
 	 *                                in the format 'YYYY-MM-DD'.
 	 * @param int $ocsApiVersion
@@ -147,7 +146,7 @@ class SharingHelper {
 			$fd['name'] = $linkName;
 		}
 		if ($expireDate !== null) {
-			$fd['expireDate'] = \date('Y-m-d', \strtotime($expireDate));
+			$fd['expireDate'] = $expireDate;
 		}
 
 		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);

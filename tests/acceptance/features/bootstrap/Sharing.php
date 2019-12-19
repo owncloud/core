@@ -157,37 +157,42 @@ trait Sharing {
 	 * @param string $user
 	 * @param TableNode|null $body
 	 *    TableNode $body should not have any heading and can have following rows    |
-	 *       | path            | The folder or file path to be shared                |
-	 *       | name            | A (human-readable) name for the share,              |
-	 *       |                 | which can be up to 64 characters in length.         |
-	 *       | publicUpload    | Whether to allow public upload to a public          |
-	 *       |                 | shared folder. Write true for allowing.             |
-	 *       | password        | The password to protect the public link share with. |
-	 *       | expireDate      | An expire date for public link shares.              |
-	 *       |                 | This argument expects a date string.                |
-	 *       |                 | in the format 'YYYY-MM-DD' or '+ x days'.            |
-	 *       | permissions     | The permissions to set on the share.                |
-	 *       |                 |     1 = read; 2 = update; 4 = create;               |
-	 *       |                 |     8 = delete; 16 = share; 31 = all                |
-	 *       |                 |     15 = change                                     |
-	 *       |                 |     4 = uploadwriteonly                             |
-	 *       |                 |     (default: 31, for public shares: 1)             |
-	 *       |                 |     Pass either the (total) number,                 |
-	 *       |                 |     or the keyword,                                 |
-	 *       |                 |     or an comma separated list of keywords          |
-	 *       | shareWith       | The user or group id with which the file should     |
-	 *       |                 | be shared.                                          |
-	 *       | shareType       | The type of the share. This can be one of:          |
-	 *       |                 |    0 = user, 1 = group, 3 = public_link,            |
-	 *       |                 |    6 = federated (cloud share).                     |
-	 *       |                 |    Pass either the number or the keyword.           |
+	 *       | path               | The folder or file path to be shared                |
+	 *       | name               | A (human-readable) name for the share,              |
+	 *       |                    | which can be up to 64 characters in length.         |
+	 *       | publicUpload       | Whether to allow public upload to a public          |
+	 *       |                    | shared folder. Write true for allowing.             |
+	 *       | password           | The password to protect the public link share with. |
+	 *       | expireDate         | An expire date for public link shares.              |
+	 *       |                    | This argument takes a date string in any format     |
+	 *       |                    | that can be passed to strtotime(), for example:     |
+	 *       |                    | 'YYYY-MM-DD' or '+ x days'. It will be converted to |
+	 *       |                    | 'YYYY-MM-DD' format before sending                  |
+	 *       | expireDateAsString | An expire date string for public link shares.       |
+	 *       |                    | Whatever string is provided will be sent as the     |
+	 *       |                    | expire date. For example, use this to test sending  |
+	 *       |                    | invalid date strings.                               |
+	 *       | permissions        | The permissions to set on the share.                |
+	 *       |                    |     1 = read; 2 = update; 4 = create;               |
+	 *       |                    |     8 = delete; 16 = share; 31 = all                |
+	 *       |                    |     15 = change                                     |
+	 *       |                    |     4 = uploadwriteonly                             |
+	 *       |                    |     (default: 31, for public shares: 1)             |
+	 *       |                    |     Pass either the (total) number,                 |
+	 *       |                    |     or the keyword,                                 |
+	 *       |                    |     or an comma separated list of keywords          |
+	 *       | shareWith          | The user or group id with which the file should     |
+	 *       |                    | be shared.                                          |
+	 *       | shareType          | The type of the share. This can be one of:          |
+	 *       |                    |    0 = user, 1 = group, 3 = public_link,            |
+	 *       |                    |    6 = federated (cloud share).                     |
+	 *       |                    |    Pass either the number or the keyword.           |
 	 *
 	 * @return void
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			$fd['expireDate'] = \array_key_exists('expireDate', $fd) ? $fd['expireDate'] : null;
 			$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
 			$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
 			$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
@@ -209,8 +214,15 @@ trait Sharing {
 			} else {
 				$fd['shareType'] = null;
 			}
-		}
 
+			Assert::assertFalse(
+				isset($fd['expireDate'], $fd['expireDateAsString']),
+				'expireDate and expireDateAsString cannot be set at the same time.'
+			);
+			$needToParse = \array_key_exists('expireDate', $fd);
+			$expireDate = $fd['expireDate'] ?? $fd['expireDateAsString'] ?? null;
+			$fd['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
+		}
 		$this->createShare(
 			$user,
 			$fd['path'],
@@ -658,14 +670,15 @@ trait Sharing {
 		}
 		//do not try to convert empty date
 		if ((string) $field === 'expiration' && !empty($contentExpected)) {
-			$contentExpected
-				= \date(
-					'Y-m-d',
-					\strtotime(
-						$contentExpected,
-						$this->getServerShareTimeFromLastResponse()
-					)
-				) . " 00:00:00";
+			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
+			// strtotime returns false if it failed to parse, just leave it as it is in that condition
+			if ($timestamp !== false) {
+				$contentExpected
+					= \date(
+						'Y-m-d',
+						$timestamp
+					) . " 00:00:00";
+			}
 		}
 
 		$contentExpected = (string) $contentExpected;
@@ -1199,7 +1212,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function getLastShareIdOf($user) {
-		if ($this->lastShareData !== null) {
+		if (isset($this->lastShareData->data[0]->id)) {
 			return (int)$this->lastShareData->data[0]->id;
 		}
 
@@ -1392,6 +1405,32 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the information of the last share of user :user should include
+	 *
+	 * @param string $user
+	 * @param TableNode $body
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function informationOfLastShareShouldInclude(
+		$user, $body
+	) {
+		$this->getListOfShares($user);
+		$share_id = $this->extractLastSharedIdFromLastResponse();
+		if ($share_id === null) {
+			throw new Exception("Could not find id in the last response.");
+		}
+		$this->getShareData($user, $share_id);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Error getting info of last share for user $user"
+		);
+		$this->checkFields($body);
+	}
+
+	/**
 	 * @Then /^the last share_id should be included in the response/
 	 *
 	 * @return void
@@ -1420,6 +1459,35 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the response should not contain any share ids/
+	 *
+	 * @return void
+	 */
+	public function theResponseShouldNotContainAnyShareIds() {
+		$data = $this->getResponseXml()->data[0];
+		$fieldIsSet = false;
+		$receivedShareCount = 0;
+
+		if (\count($data->element) > 0) {
+			foreach ($data as $element) {
+				if (isset($element->id)) {
+					$fieldIsSet = true;
+					$receivedShareCount += 1;
+				}
+			}
+		} else {
+			if (isset($data->id)) {
+				$fieldIsSet = true;
+				$receivedShareCount += 1;
+			}
+		}
+		Assert::assertFalse(
+			$fieldIsSet,
+			"response contains $receivedShareCount share ids but should not contain any share ids"
+		);
+	}
+
+	/**
 	 * @Then user :user should not see share_id of last share
 	 *
 	 * @param string $user
@@ -1429,6 +1497,18 @@ trait Sharing {
 	public function userShouldNotSeeShareIdOfLastShare($user) {
 		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
 		$this->checkingLastShareIDIsNotIncluded();
+	}
+
+	/**
+	 * @Then user :user should not have any received shares
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userShouldNotHaveAnyReceivedShares($user) {
+		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
+		$this->theResponseShouldNotContainAnyShareIds();
 	}
 
 	/**
@@ -1453,7 +1533,6 @@ trait Sharing {
 	public function checkFields($body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
 				Assert::assertTrue(
@@ -2157,6 +2236,34 @@ trait Sharing {
 				'capabilitiesParameter' => 'public@@@expire_date@@@enforced',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_enforce_expire_date',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_user_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date_group_share',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date_group_share',
 				'testingState' => false
 			],
 			[

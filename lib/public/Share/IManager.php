@@ -194,6 +194,21 @@ interface IManager {
 	public function getShareByToken($token);
 
 	/**
+	 * Get the capabilities that the providers have. Foreach provider, a list of capabilities
+	 * (IShareProvider::CAPABILITY_*) for the supported types will be returned. An empty
+	 * list of capabilities could be returned
+	 * [
+	 *   'providerId' => [
+	 *     \OCP\Share::SHARE_TYPE_* => [IShareProvider::CAPABILITY_*, ...]
+	 *   ]
+	 * ]
+	 *
+	 * @return array
+	 * @since 10.3.2
+	 */
+	public function getProvidersCapabilities();
+
+	/**
 	 * Verify the password of a public share
 	 *
 	 * @param IShare $share
