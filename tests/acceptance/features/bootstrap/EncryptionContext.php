@@ -119,11 +119,11 @@ class EncryptionContext implements Context {
 
 		$response = $this->featureContext->getResponse();
 		$parsedResponse = HttpRequestHelper::getResponseXml($response);
-		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
+		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
 
 		$this->featureContext->userDownloadsFileUsingTheAPI($username, "/$fileName");
-		$fileContentServer = (string)$this->featureContext->getResponse()->getBody();
+		$fileContentServer = (string) $this->featureContext->getResponse()->getBody();
 
 		Assert::assertEquals(
 			$fileContentServer,
@@ -146,7 +146,7 @@ class EncryptionContext implements Context {
 
 		$response = $this->featureContext->getResponse();
 		$parsedResponse = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
-		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
+		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
 
 		Assert::assertStringStartsWith(

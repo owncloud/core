@@ -48,7 +48,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	) {
 		$this->owncloudPage = $owncloudPage;
 	}
-	
+
 	/**
 	 *
 	 * @Then /^the user should see (\d+) notification(?:s|) on the webUI with these details$/
@@ -101,10 +101,10 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $firstOrLast first|last
 	 *
-	 * @throws InvalidArgumentException
+	 * @return void
 	 * @throws \Exception
 	 *
-	 * @return void
+	 * @throws InvalidArgumentException
 	 */
 	public function userFollowsLink($firstOrLast) {
 		$notificationsDialog = $this->openNotificationsDialog($this->getSession());

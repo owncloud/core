@@ -419,7 +419,7 @@ trait Provisioning {
 			if (isset($row['password'])) {
 				$body['password'] = $this->getActualPassword($row['password']);
 			} else {
-				$body['password'] =  $this->getPasswordForUser($row['username']);
+				$body['password'] = $this->getPasswordForUser($row['username']);
 			}
 
 			// Add request body to the bodies array. we will use that later to loop through created users.
@@ -2263,7 +2263,7 @@ trait Provisioning {
 		$user, $anotheruser, $group
 	) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
 		$body = ['groupid' => $group];
 		$this->response = HttpRequestHelper::post(
 			$fullUrl,
@@ -2283,7 +2283,7 @@ trait Provisioning {
 	 */
 	public function theAdministratorGetsAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
@@ -2331,7 +2331,7 @@ trait Provisioning {
 	 */
 	public function userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($user, $group) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
 		);
@@ -2366,7 +2366,7 @@ trait Provisioning {
 		$user, $anotheruser, $group
 	) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
 		$this->response = HttpRequestHelper::delete(
 			$fullUrl,
 			$this->getActualUsername($user),
@@ -2721,7 +2721,7 @@ trait Provisioning {
 	 */
 	public function appShouldBeDisabled($app) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v2.php/cloud/apps?filter=disabled";
+			. "/ocs/v2.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
@@ -2826,9 +2826,9 @@ trait Provisioning {
 	public function adminSetsUserQuotaToUsingTheProvisioningApi($user, $quota) {
 		$body
 			= [
-				'key' => 'quota',
-				'value' => $quota,
-			];
+			'key' => 'quota',
+			'value' => $quota,
+		];
 
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -3063,7 +3063,7 @@ trait Provisioning {
 	 */
 	public function disableOrEnableUser($user, $anotheruser, $action) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/$action";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/$action";
 		$this->response = HttpRequestHelper::put(
 			$fullUrl,
 			$this->getActualUsername($user),
@@ -3078,7 +3078,7 @@ trait Provisioning {
 	 */
 	public function getEnabledApps() {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=enabled";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=enabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
@@ -3092,7 +3092,7 @@ trait Provisioning {
 	 */
 	public function getDisabledApps() {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=disabled";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);

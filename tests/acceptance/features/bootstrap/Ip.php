@@ -45,7 +45,7 @@ trait Ip {
 
 	private $ipv4Url;
 	private $ipv6Url;
-	
+
 	private $guzzleClientHeaders = [];
 
 	/**
@@ -69,7 +69,7 @@ trait Ip {
 	public function getGuzzleClientHeaders() {
 		return $this->guzzleClientHeaders;
 	}
-	
+
 	/**
 	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
 	 *
@@ -89,6 +89,7 @@ trait Ip {
 			$this->guzzleClientHeaders, $guzzleClientHeaders
 		);
 	}
+
 	/**
 	 * @When the client accesses the server from a :networkScope :ipAddressFamily address
 	 *
@@ -122,7 +123,7 @@ trait Ip {
 		} else {
 			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();
 		}
-		
+
 		$this->featureContext->setSourceIpAddress($sourceIpAddress);
 	}
 
@@ -139,7 +140,7 @@ trait Ip {
 		$this->addGuzzleClientHeaders(["X-Forwarded-For" => $sourceIpAddress]);
 		$this->featureContext->addGuzzleClientHeaders(["X-Forwarded-For" => $sourceIpAddress]);
 	}
-	
+
 	/**
 	 * @BeforeScenario
 	 *

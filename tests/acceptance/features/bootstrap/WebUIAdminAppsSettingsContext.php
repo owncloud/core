@@ -33,13 +33,13 @@ require_once 'bootstrap.php';
  */
 class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	private $adminAppsSettingsPage;
-	
+
 	/**
 	 *
 	 * @var WebUIGeneralContext
 	 */
 	private $webUIGeneralContext;
-	
+
 	/**
 	 * WebUIAdminAdminSettingsContext constructor.
 	 *

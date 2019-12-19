@@ -72,7 +72,7 @@ trait Logging {
 				if ($comparingMode === 'matching') {
 					$expectedLogEntry[$attribute]
 						= $this->featureContext->substituteInLineCodes(
-							$expectedLogEntry[$attribute], ['preg_quote' => ['/'] ]
+							$expectedLogEntry[$attribute], ['preg_quote' => ['/']]
 						);
 				} else {
 					$expectedLogEntry[$attribute]
@@ -161,10 +161,6 @@ trait Logging {
 	/**
 	 * wrapper around assertLogFileContainsAtLeastOneEntryMatchingTable()
 	 *
-	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
-	 *
-	 * @Then the log file should contain at least one entry matching each of these lines:
-	 *
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
@@ -172,6 +168,10 @@ trait Logging {
 	 *
 	 * @return void
 	 * @throws \Exception
+	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @Then the log file should contain at least one entry matching each of these lines:
+	 *
 	 */
 	public function logFileShouldContainEntriesMatching(
 		TableNode $expectedLogEntries
@@ -184,14 +184,14 @@ trait Logging {
 	/**
 	 * wrapper around assertLogFileContainsAtLeastOneEntryMatchingTable()
 	 *
-	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
-	 *
-	 * @Then the log file should contain at least one entry matching the regular expressions in each of these lines:
-	 *
 	 * @param TableNode $expectedLogEntries
 	 *
 	 * @return void
 	 * @throws \Exception
+	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @Then the log file should contain at least one entry matching the regular expressions in each of these lines:
+	 *
 	 */
 	public function logFileShouldContainEntriesMatchingRegularExpression(
 		TableNode $expectedLogEntries
@@ -224,7 +224,7 @@ trait Logging {
 	 *
 	 * @param boolean $shouldOrNot if true the table entries are expected to match
 	 *                             at least one entry in the log
-	 * 							   if false the table entries are expected not
+	 *                             if false the table entries are expected not
 	 *                             to match any log in the log file
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
@@ -275,7 +275,7 @@ trait Logging {
 					if ($regexCompare === true) {
 						$expectedLogEntry[$attribute]
 							= $this->featureContext->substituteInLineCodes(
-								$expectedLogEntry[$attribute], ['preg_quote' => ['/'] ]
+								$expectedLogEntry[$attribute], ['preg_quote' => ['/']]
 							);
 						$matchAttribute = \preg_match(
 							$expectedLogEntry[$attribute], $logEntry[$attribute]

@@ -442,7 +442,7 @@ trait Auth {
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password=null, $body=null) {
+	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
 		if ($password === null) {
 			$authString = "$user:" . $this->getPasswordForUser($user);
 		} else {
@@ -465,7 +465,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userHasRequestedURLWithUsingBasicAuth(
-		$user, $url, $method, $password=null, $body=null
+		$user, $url, $method, $password = null, $body = null
 	) {
 		$this->userRequestsURLWithUsingBasicAuth(
 			$user, $url, $method, $password, $body
@@ -482,7 +482,7 @@ trait Auth {
 	 *
 	 * @return void
 	 */
-	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password=null) {
+	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password = null) {
 		$this->userRequestsURLWithUsingBasicAuth(
 			$this->getAdminUsername(), $url, $method, $password
 		);

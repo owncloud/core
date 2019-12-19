@@ -178,9 +178,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
+	 * @return void
 	 * @throws \Exception
 	 *
-	 * @return void
 	 */
 	public function theUserSharesWithUserWithoutClosingDialog(
 		$folder, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
@@ -196,9 +196,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
-	 * @throws \Exception
-	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 */
 	public function theUserSharesWithGroupWithoutClosingDialog(
@@ -294,9 +294,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
+	 * @return void
 	 * @throws \Exception
 	 *
-	 * @return void
 	 */
 	public function theUserSharesUsingWebUIWithoutClosingDialog(
 		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false

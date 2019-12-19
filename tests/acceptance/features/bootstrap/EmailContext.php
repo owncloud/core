@@ -124,8 +124,8 @@ class EmailContext implements Context {
 			EmailHelper::deleteAllMessages($this->getLocalMailhogUrl());
 		} catch (Exception $e) {
 			echo __METHOD__ .
-			" could not delete mailhog messages, is mailhog set up?\n" .
-			$e->getMessage();
+				" could not delete mailhog messages, is mailhog set up?\n" .
+				$e->getMessage();
 		}
 	}
 }

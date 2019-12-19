@@ -135,7 +135,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function publicGetsThePropertiesOfFolder($path, TableNode $propertiesTable) {
-		$user = (string)$this->featureContext->getLastShareData()->data->token;
+		$user = (string) $this->featureContext->getLastShareData()->data->token;
 		$properties = null;
 		if ($propertiesTable instanceof TableNode) {
 			foreach ($propertiesTable->getRows() as $row) {
@@ -331,7 +331,7 @@ class WebDavPropertiesContext implements Context {
 		);
 		$value = $xmlPart[0]->__toString();
 		$pattern = $this->featureContext->substituteInLineCodes(
-			$pattern, ['preg_quote' => ['/'] ]
+			$pattern, ['preg_quote' => ['/']]
 		);
 		Assert::assertRegExp(
 			$pattern, $value,

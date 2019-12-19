@@ -481,8 +481,8 @@ class OCSContext implements Context {
 	 *
 	 * @param ResponseInterface $response
 	 *
-	 * @throws \Exception
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function getOCSResponseStatusCode($response) {
 		$responseXml = $this->featureContext->getResponseXml($response);
@@ -522,6 +522,7 @@ class OCSContext implements Context {
 			$this->theOCSStatusCodeShouldBe('200', $message);
 		}
 	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.

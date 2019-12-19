@@ -63,7 +63,7 @@ class FederationContext implements Context {
 			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 		);
 	}
-	
+
 	/**
 	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the sharing API with permissions (.*)$/
 	 *
@@ -279,7 +279,7 @@ class FederationContext implements Context {
 		} else {
 			$url = "/apps/files_sharing/api/v1/remote_shares/$share_id";
 		}
-		
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, 'DELETE', $url, null, $password
 		);
@@ -293,7 +293,7 @@ class FederationContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsSharedSecretUsingTheFederationApi($user) {
-		$url  = '/apps/federation/api/v1/request-shared-secret';
+		$url = '/apps/federation/api/v1/request-shared-secret';
 		$this->featureContext->asUser($user);
 		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
 			'POST',

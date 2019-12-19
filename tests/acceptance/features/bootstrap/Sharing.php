@@ -200,7 +200,7 @@ trait Sharing {
 
 			if (\array_key_exists('permissions', $fd)) {
 				if (\is_numeric($fd['permissions'])) {
-					$fd['permissions'] = (int)$fd['permissions'];
+					$fd['permissions'] = (int) $fd['permissions'];
 				} else {
 					$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
 				}
@@ -209,7 +209,7 @@ trait Sharing {
 			}
 			if (\array_key_exists('shareType', $fd)) {
 				if (\is_numeric($fd['shareType'])) {
-					$fd['shareType'] = (int)$fd['shareType'];
+					$fd['shareType'] = (int) $fd['shareType'];
 				}
 			} else {
 				$fd['shareType'] = null;
@@ -566,7 +566,7 @@ trait Sharing {
 			}
 			if (\array_key_exists('permissions', $fd)) {
 				if (\is_numeric($fd['permissions'])) {
-					$fd['permissions'] = (int)$fd['permissions'];
+					$fd['permissions'] = (int) $fd['permissions'];
 				} else {
 					$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
 					$fd['permissions'] = SharingHelper::getPermissionSum($fd['permissions']);
@@ -689,7 +689,7 @@ trait Sharing {
 			foreach ($data as $element) {
 				if (isset($element->$field)) {
 					$fieldIsSet = true;
-					$value = (string)$element->$field;
+					$value = (string) $element->$field;
 					if ($this->doesFieldValueMatchExpectedContent(
 						$field, $value, $contentExpected, $expectSuccess
 					)
@@ -701,7 +701,7 @@ trait Sharing {
 		} else {
 			$fieldIsSet = isset($data->$field);
 			if ($fieldIsSet) {
-				$value = (string)$data->$field;
+				$value = (string) $data->$field;
 				if ($this->doesFieldValueMatchExpectedContent(
 					$field, $value, $contentExpected, $expectSuccess
 				)
@@ -827,7 +827,7 @@ trait Sharing {
 			foreach ($data as $element) {
 				if ($element->share_with->__toString() === $userOrGroup
 					&& ($permissions === null
-					|| $permissionSum === (int)$element->permissions->__toString())
+					|| $permissionSum === (int) $element->permissions->__toString())
 				) {
 					return true;
 				}
@@ -1213,7 +1213,7 @@ trait Sharing {
 	 */
 	public function getLastShareIdOf($user) {
 		if (isset($this->lastShareData->data[0]->id)) {
-			return (int)$this->lastShareData->data[0]->id;
+			return (int) $this->lastShareData->data[0]->id;
 		}
 
 		$this->getListOfShares($user);
@@ -1298,7 +1298,7 @@ trait Sharing {
 	 */
 	public function userGetsAllSharesSharedWithHimFromFileOrFolderUsingTheProvisioningApi($user, $path) {
 		$url = "/apps/files_sharing/api/"
-		. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
+			. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
@@ -1316,8 +1316,8 @@ trait Sharing {
 	 */
 	public function userGetsAllSharesSharedByHimUsingTheSharingApi($user) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-		. "v{$this->sharingApiVersion}/shares";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+			. "v{$this->sharingApiVersion}/shares";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
@@ -1342,8 +1342,8 @@ trait Sharing {
 	 */
 	public function userGetsAllTheSharesFromTheFileUsingTheSharingApi($user, $path) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-		. "v{$this->sharingApiVersion}/shares?path=$path";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+			. "v{$this->sharingApiVersion}/shares?path=$path";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
@@ -1361,8 +1361,8 @@ trait Sharing {
 		$user, $path
 	) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-		. "v{$this->sharingApiVersion}/shares?reshares=true&path=$path";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+			. "v{$this->sharingApiVersion}/shares?reshares=true&path=$path";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
@@ -1378,8 +1378,8 @@ trait Sharing {
 	 */
 	public function userGetsAllTheSharesInsideTheFolderUsingTheSharingApi($user, $path) {
 		$fullUrl = $this->getBaseUrl()
-		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-		. "v{$this->sharingApiVersion}/shares?path=$path&subfiles=true";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+			. "v{$this->sharingApiVersion}/shares?path=$path&subfiles=true";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
@@ -1410,9 +1410,9 @@ trait Sharing {
 	 * @param string $user
 	 * @param TableNode $body
 	 *
+	 * @return void
 	 * @throws \Exception
 	 *
-	 * @return void
 	 */
 	public function informationOfLastShareShouldInclude(
 		$user, $body
@@ -1673,8 +1673,8 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $fileName
 	 *
-	 * @throws \Exception
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$url = $this->getBaseUrl()
@@ -1747,14 +1747,14 @@ trait Sharing {
 				//0 path, 1 permissions, 2 name
 				$nameFound = false;
 				foreach ($dataResponded as $elementResponded) {
-					if ((string)$elementResponded->name[0] === $expectedElementsArray[2]) {
+					if ((string) $elementResponded->name[0] === $expectedElementsArray[2]) {
 						Assert::assertEquals(
 							$expectedElementsArray[0],
-							(string)$elementResponded->path[0]
+							(string) $elementResponded->path[0]
 						);
 						Assert::assertEquals(
 							$expectedElementsArray[1],
-							(string)$elementResponded->permissions[0]
+							(string) $elementResponded->permissions[0]
 						);
 						$nameFound = true;
 						break;
@@ -1778,8 +1778,8 @@ trait Sharing {
 	public function getPublicShareIDByName($user, $path, $name) {
 		$dataResponded = $this->getShares($user, $path);
 		foreach ($dataResponded as $elementResponded) {
-			if ((string)$elementResponded->name[0] === $name) {
-				return (int)$elementResponded->id[0];
+			if ((string) $elementResponded->name[0] === $name) {
+				return (int) $elementResponded->id[0];
 			}
 		}
 		return null;
@@ -1820,8 +1820,8 @@ trait Sharing {
 		$dataResponded = $this->getAllSharesSharedWithUser($user);
 		$shareId = null;
 		foreach ($dataResponded as $shareElement) {
-			if ((string)$shareElement['uid_owner'] === $offeredBy
-				&& (string)$shareElement['path'] === $share
+			if ((string) $shareElement['uid_owner'] === $offeredBy
+				&& (string) $shareElement['path'] === $share
 			) {
 				$shareId = (string) $shareElement['id'];
 				break;
@@ -1834,7 +1834,7 @@ trait Sharing {
 			);
 		}
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
-			   "/shares/pending/$shareId";
+			"/shares/pending/$shareId";
 		if (\substr($action, 0, 7) === "decline") {
 			$httpRequestMethod = "DELETE";
 		} elseif (\substr($action, 0, 6) === "accept") {
@@ -1962,10 +1962,10 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $state pending|accepted|declined|rejected|all
 	 *
-	 * @throws InvalidArgumentException
+	 * @return array of shares that are shared with this user
 	 * @throws Exception
 	 *
-	 * @return array of shares that are shared with this user
+	 * @throws InvalidArgumentException
 	 */
 	private function getAllSharesSharedWithUser($user, $state = "all") {
 		switch ($state) {
@@ -1986,7 +1986,7 @@ trait Sharing {
 		}
 
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
-			   "?format=json&shared_with_me=true&state=$stateCode";
+			"?format=json&shared_with_me=true&state=$stateCode";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
@@ -2041,7 +2041,7 @@ trait Sharing {
 	 */
 	public function thePublicAccessesThePreviewOfTheSharedFileUsingTheSharingApi($path) {
 		$shareData = $this->getLastShareData();
-		$token = (string)$shareData->data->token;
+		$token = (string) $shareData->data->token;
 		$this->getPublicPreviewOfFile($path, $token);
 	}
 
@@ -2186,28 +2186,28 @@ trait Sharing {
 			[
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' =>
-				'public@@@password@@@enforced_for@@@read_only',
+					'public@@@password@@@enforced_for@@@read_only',
 				'testingApp' => 'core',
 				'testingParameter' =>
-				'shareapi_enforce_links_password_read_only',
+					'shareapi_enforce_links_password_read_only',
 				'testingState' => false
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' =>
-				'public@@@password@@@enforced_for@@@read_write',
+					'public@@@password@@@enforced_for@@@read_write',
 				'testingApp' => 'core',
 				'testingParameter' =>
-				'shareapi_enforce_links_password_read_write',
+					'shareapi_enforce_links_password_read_write',
 				'testingState' => false
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' =>
-				'public@@@password@@@enforced_for@@@upload_only',
+					'public@@@password@@@enforced_for@@@upload_only',
 				'testingApp' => 'core',
 				'testingParameter' =>
-				'shareapi_enforce_links_password_write_only',
+					'shareapi_enforce_links_password_write_only',
 				'testingState' => false
 			],
 			[

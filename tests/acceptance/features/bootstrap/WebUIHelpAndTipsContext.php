@@ -68,7 +68,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	protected function generateHelpLinks($to) {
 		$version = $this->featureContext->getSystemConfigValue('version');
 		$version = \explode(".", $version);
-		$version = (string)$version[0] . "." . (string)$version[1];
+		$version = (string) $version[0] . "." . (string) $version[1];
 		return "https://doc.owncloud.org/server/$version/go.php?to=$to";
 	}
 

@@ -456,7 +456,7 @@ class OccUsersGroupsContext implements Context {
 		// check if an array is a multi-dimensional array with inner array key 'displayName'
 		if (\array_column($lastOutputUsers, 'displayName')) {
 			foreach ($lastOutputUsers as $key => $value) {
-				$result[$key] =  $value['displayName'];
+				$result[$key] = $value['displayName'];
 			}
 		} else {
 			$result = $lastOutputUsers;

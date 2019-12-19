@@ -37,7 +37,7 @@ require_once 'bootstrap.php';
  */
 class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context {
 	private $adminGeneralSettingsPage;
-	
+
 	/**
 	 *
 	 * @var WebUIGeneralContext
@@ -52,7 +52,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 
 	private $appParameterValues = null;
 	private $logLevelValue = null;
-	
+
 	/**
 	 * WebUIAdminAdminSettingsContext constructor.
 	 *
@@ -182,7 +182,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 
 		if ($this->appParameterValues === null || $this->logLevelValue) {
 			// Get app config values
-			$appConfigs =  AppConfigHelper::getAppConfigs(
+			$appConfigs = AppConfigHelper::getAppConfigs(
 				$this->featureContext->getBaseUrl(),
 				$this->featureContext->getAdminUsername(),
 				$this->featureContext->getAdminPassword(),
@@ -219,7 +219,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
-		$actualVersion =  $this->adminGeneralSettingsPage->getOwncloudVersionString();
+		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersionString();
 		$expectedVersion = SetupHelper::runOcc(['-V'])['stdOut'];
 		Assert::assertStringEndsWith($actualVersion, \trim($expectedVersion));
 	}

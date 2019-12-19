@@ -575,8 +575,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param int $size if not int given it will be cast to int
 	 * @param string $name
 	 *
-	 * @throws InvalidArgumentException
 	 * @return void
+	 * @throws InvalidArgumentException
 	 */
 	public function aFileWithSizeAndNameHasBeenCreatedLocally($size, $name) {
 		$fullPath = \getenv("FILES_FOR_UPLOAD") . $name;
@@ -585,7 +585,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				__METHOD__ . " could not create '$fullPath' file exists"
 			);
 		}
-		UploadHelper::createFileSpecificSize($fullPath, (int)$size);
+		UploadHelper::createFileSpecificSize($fullPath, (int) $size);
 		$this->createdFiles[] = $fullPath;
 	}
 
@@ -695,7 +695,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$result = SetupHelper::runOcc(
 				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
 			);
-			if ((int)$result['code'] !== 0) {
+			if ((int) $result['code'] !== 0) {
 				throw new Exception(
 					"could not sync users with LDAP. stdOut:\n" .
 					"{$result['stdOut']}\n" .

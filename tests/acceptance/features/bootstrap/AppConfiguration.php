@@ -131,7 +131,7 @@ trait AppConfiguration {
 			$capabilitiesPath
 		);
 
-		return (string)$answeredValue;
+		return (string) $answeredValue;
 	}
 
 	/**
@@ -235,7 +235,7 @@ trait AppConfiguration {
 			}
 		}
 
-		return (string)$answeredValue;
+		return (string) $answeredValue;
 	}
 
 	/**
@@ -638,7 +638,7 @@ trait AppConfiguration {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 		$previousServer = $this->currentServer;
-		foreach (['LOCAL','REMOTE'] as $server) {
+		foreach (['LOCAL', 'REMOTE'] as $server) {
 			if (($server === 'LOCAL') || $this->federatedServerExists()) {
 				$this->usingServer($server);
 				$this->resetAppConfigs();
@@ -716,9 +716,9 @@ trait AppConfiguration {
 	 *
 	 * @param string $server LOCAL|REMOTE
 	 *
-	 * @throws \Exception
-	 *
 	 * @return void
+	 *
+	 * @throws \Exception
 	 *
 	 */
 	private function restoreParameters($server) {

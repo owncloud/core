@@ -117,7 +117,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 			"'$file' should not be marked as locked, but it is"
 		);
 	}
-	
+
 	/**
 	 * @Then /^(?:file|folder) "([^"]*)" should (not|)\s?be marked as locked by user "([^"]*)" in the locks tab of the details panel on the webUI$/
 	 *

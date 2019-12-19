@@ -53,7 +53,7 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function downloadPublicFileWithRange($range, $publicWebDAVAPIVersion, $password ="") {
+	public function downloadPublicFileWithRange($range, $publicWebDAVAPIVersion, $password = "") {
 		if ($publicWebDAVAPIVersion === "new") {
 			$path = $this->featureContext->getLastShareData()->data->file_target;
 		} else {
@@ -117,7 +117,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function deleteFileFromPublicShare($fileName, $publicWebDAVAPIVersion, $password = "") {
-		$token = (string)$this->featureContext->getLastShareData()->data->token;
+		$token = (string) $this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token, 0, "public-files-$publicWebDAVAPIVersion"
 		);
@@ -246,7 +246,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
-		$path, $password, $range, $publicWebDAVAPIVersion="old"
+		$path, $password, $range, $publicWebDAVAPIVersion = "old"
 	) {
 		$path = \ltrim($path, "/");
 		$password = $this->featureContext->getActualPassword($password);
@@ -316,7 +316,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publiclyUploadingContentWithPassword(
-		$filename, $password = '', $body = 'test', $publicWebDAVAPIVersion="old"
+		$filename, $password = '', $body = 'test', $publicWebDAVAPIVersion = "old"
 	) {
 		$this->publicUploadContent(
 			$filename, $password, $body, false, [], $publicWebDAVAPIVersion
@@ -347,7 +347,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publiclyUploadingContent(
-		$filename, $body = 'test', $publicWebDAVAPIVersion="old"
+		$filename, $body = 'test', $publicWebDAVAPIVersion = "old"
 	) {
 		$this->publicUploadContent(
 			$filename, '', $body, false, [], $publicWebDAVAPIVersion
@@ -743,7 +743,7 @@ class PublicWebDavContext implements Context {
 		$publicWebDAVAPIVersion = "old"
 	) {
 		$password = $this->featureContext->getActualPassword($password);
-		$token =  $this->featureContext->getLastShareToken();
+		$token = $this->featureContext->getLastShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token, 0, "public-files-$publicWebDAVAPIVersion"
 		);
@@ -779,10 +779,10 @@ class PublicWebDavContext implements Context {
 		$token, $password, $publicWebDAVAPIVersion
 	) {
 		if ($publicWebDAVAPIVersion === "old") {
-			$userName =  $token;
+			$userName = $token;
 		} else {
 			if ($password !== '') {
-				$userName =  'public';
+				$userName = 'public';
 			} else {
 				$userName = null;
 			}

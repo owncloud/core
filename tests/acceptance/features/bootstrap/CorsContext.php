@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
+
 /**
  * Steps that relate to CORS tests
  */
@@ -34,7 +35,7 @@ class CorsContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
-	
+
 	private $originalAdminCorsDomains = null;
 
 	/**
@@ -66,10 +67,10 @@ class CorsContext implements Context {
 		) {
 			$this->originalAdminCorsDomains = $domainsJson;
 		}
-		
+
 		$domains[] = $domain;
 		$valueString = \json_encode($domains);
-		
+
 		$this->featureContext->runOcc(
 			[
 				'user:setting',
