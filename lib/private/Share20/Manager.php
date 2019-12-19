@@ -306,12 +306,12 @@ class Manager implements IManager {
 			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_CREATE);
 		}
 
-		/**
+		/*
 		 * TODO: ideally, getPermissions should always return valid permission
 		 *       and this check should be done in Share object's setPermission method
 		 */
 		if ($share->getPermissions() < 0 || $share->getPermissions() > \OCP\Constants::PERMISSION_ALL) {
-			$message_t = $this->l->t('invalid permissionss');
+			$message_t = $this->l->t('Invalid permissions');
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
@@ -320,8 +320,12 @@ class Manager implements IManager {
 			throw new GenericShareException($message_t, $message_t, 400);
 		}
 
-		/** Use share node permission as default $maxPermissions*/
+		/* Use share node permission as default $maxPermissions */
 		$maxPermissions = $shareNode->getPermissions();
+
+		/* Attributes default is null, as attributes are restricted only in reshare */
+		$maxAttributes = null;
+
 		/*
 		 * Quick fix for #23536
 		 * Non moveable mount points do not have update and delete permissions
@@ -331,65 +335,43 @@ class Manager implements IManager {
 			$maxPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
 		}
 
-		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
+		/*
+		 * If share node is also share ($share is reshare),
+		 * get $maxPermissions based on supershare permissions
+		 */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			$maxPermissions = $this->calculateReshareNodePermissions($share);
-		}
-
-		// Check that we do not share with more permissions than we have
-		if (!$this->strictSubsetOf($maxPermissions, $share->getPermissions())) {
-			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
-			throw new GenericShareException($message_t, $message_t, 404);
-		}
-	}
-
-	/**
-	 * It calculates reshare permissions based on all share mount points
-	 * that mounted to UserFolder of sharer user
-	 *
-	 * @param \OCP\Share\IShare $share The share to validate its permission
-	 * @return int
-	 */
-	protected function calculateReshareNodePermissions(IShare $share) {
-		/*
-		 * if it is an incoming federated share, use node permission
-		 */
-		if ($share->getNode()->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-			return $share->getNode()->getPermissions();
-		}
-		$maxPermissions = 0;
-		$incomingShares = [];
-		$shareTypes = [
-			\OCP\Share::SHARE_TYPE_USER,
-			\OCP\Share::SHARE_TYPE_GROUP
-		];
-		$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-		/**
-		 * The node can be shared multiple times, get all share nodes
-		 */
-		$incomingShareNodes = $userFolder->getById($share->getNode()->getId());
-		foreach ($incomingShareNodes as $incomingShareNode) {
-			/**
-			 * find mountpoint of the share node,
-			 * check incoming share permissions based on mountpoint node
-			 */
-			$mount = $incomingShareNode->getMountPoint();
-			$shareMountPointNodes = $userFolder->getById($mount->getStorageRootId());
-			foreach ($shareMountPointNodes as $shareMountPointNode) {
-				$incomingShares = \array_merge($incomingShares, $this->getAllSharedWith(
-					$share->getSharedBy(),
-					$shareTypes,
-					$shareMountPointNode
-				));
+			// retrieve received share node $shareFileNode being reshared with $share
+			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
+			$shareFileNodes = $userFolder->getById($shareNode->getId(), true);
+			$shareFileNode = $shareFileNodes[0] ?? null;
+			if ($shareFileNode) {
+				$shareFileStorage = $shareFileNode->getStorage();
+				if ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+					// if $shareFileNode is an incoming federated share, use share node permission directly
+					$maxPermissions = $shareNode->getPermissions();
+				} elseif ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+					// if $shareFileNode is user/group share, use supershare permissions
+					/** @var \OCA\Files_Sharing\SharedStorage $shareFileStorage */
+					'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
+					$parentShare = $shareFileStorage->getShare();
+					$maxPermissions = $parentShare->getPermissions();
+					$maxAttributes = $parentShare->getAttributes();
+				}
 			}
 		}
 
-		foreach ($incomingShares as $incomingShare) {
-			$maxPermissions |= $incomingShare->getPermissions();
+		/* Check that we do not share with more permissions than we have */
+		if (!$this->strictSubsetOfPermissions($maxPermissions, $share->getPermissions())) {
+			$message_t = $this->l->t('Cannot set the requested share permissions for %s', [$share->getNode()->getName()]);
+			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
-		return $maxPermissions;
+		/* Check that we do not share with more attributes than we have */
+		if ($maxAttributes !== null && !$this->strictSubsetOfAttributes($maxAttributes, $share->getAttributes())) {
+			$message_t = $this->l->t('Cannot set the requested share attributes for %s', [$share->getNode()->getName()]);
+			throw new GenericShareException($message_t, $message_t, 404);
+		}
 	}
 
 	/**
@@ -1693,7 +1675,40 @@ class Manager implements IManager {
 	 * @param int $newPermissions
 	 * @return boolean ,true if $allowedPermissions bit super set of $newPermissions bit, else false
 	 */
-	private function strictSubsetOf($allowedPermissions, $newPermissions) {
+	private function strictSubsetOfPermissions($allowedPermissions, $newPermissions) {
 		return (($allowedPermissions | $newPermissions) === $allowedPermissions);
+	}
+
+	/**
+	 * Check $newAttributes attribute is a subset of $allowedAttributes
+	 *
+	 * @param IAttributes $allowedAttributes
+	 * @param IAttributes $newAttributes
+	 * @return boolean ,true if $allowedAttributes enabled is super set of $newAttributes enabled, else false
+	 */
+	private function strictSubsetOfAttributes($allowedAttributes, $newAttributes) {
+		// if both are empty, it is strict subset
+		if ((!$allowedAttributes || empty($allowedAttributes->toArray()))
+			&& (!$newAttributes || empty($newAttributes->toArray()))) {
+			return true;
+		}
+
+		// make sure that number of attributes is the same
+		if (\count($allowedAttributes->toArray()) !== \count($newAttributes->toArray())) {
+			return false;
+		}
+
+		// if number of attributes is the same, make sure that attributes are
+		// existing in allowed set and disabled attribute is not being enabled
+		foreach ($newAttributes->toArray() as $newAttribute) {
+			$allowedEnabled = $allowedAttributes->getAttribute($newAttribute['scope'], $newAttribute['key']);
+			if (($newAttribute['enabled'] === true && $allowedEnabled === false)
+				|| ($newAttribute['enabled'] === null && $allowedEnabled !== null)
+				|| $allowedEnabled === null) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
