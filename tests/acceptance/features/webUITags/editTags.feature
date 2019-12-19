@@ -20,7 +20,7 @@ Feature: Edit tags for files and folders
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
     And the user edits the tag with name "random" and sets its name to "random-big" using the webUI
     Then file "randomfile.txt" should have the following tags for user "user1"
-      | random-big  | normal |
+      | random-big | normal |
     And tag "random" should not exist for the user
 
   @files_sharing-app-required
@@ -34,7 +34,7 @@ Feature: Edit tags for files and folders
     And the user edits the tag with name "random" and sets its name to "random-big" using the webUI
     And the user edits the tag with name "some-tag" and sets its name to "another-tag" using the webUI
     Then file "randomfile.txt" should have the following tags for user "user1"
-      |  random-big  | normal |
+      | random-big  | normal |
       | another-tag | normal |
     And tag "random" should not exist for the user
     And tag "some-tag" should not exist for the user

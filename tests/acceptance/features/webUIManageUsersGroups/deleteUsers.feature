@@ -32,7 +32,7 @@ Feature: delete users
     Then user "<user_id1>" should not exist
     And user "<user_id2>" should not exist
     Examples:
-      | user_id1          | user_id2       |
-      | Brand-New-User    | brand-new-user |
-      | brand-new-user    | Brand-New-User |
-      | Brand-New-User    | BRAND-NEW-USER |
+      | user_id1       | user_id2       |
+      | Brand-New-User | brand-new-user |
+      | brand-new-user | Brand-New-User |
+      | Brand-New-User | BRAND-NEW-USER |

@@ -174,7 +174,7 @@ Feature: add users
       | password                     | comment                     |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
       | España                       | special European characters |
-      | नेपाली                                                  | Unicode                     |
+      | नेपाली                       | Unicode                     |
       | password with spaces         | password with spaces        |
 
   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
@@ -190,7 +190,7 @@ Feature: add users
       | password                     | comment                     |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
       | España                       | special European characters |
-      | नेपाली                                                  | Unicode                     |
+      | नेपाली                       | Unicode                     |
       | password with spaces         | password with spaces        |
 
   Scenario: admin creates a user without setting password and user sets empty spaces as password
@@ -223,7 +223,7 @@ Feature: add users
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A user with that name already exists. |
     Examples:
-      | user_id1          | user_id2       | user_id3       |
-      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
-      | brand-new-user    | BRAND-NEW-USER | Brand-New-User |
-      | BRAND-NEW-USER    | Brand-New-User | brand-new-user |
+      | user_id1       | user_id2       | user_id3       |
+      | Brand-New-User | brand-new-user | BRAND-NEW-USER |
+      | brand-new-user | BRAND-NEW-USER | Brand-New-User |
+      | BRAND-NEW-USER | Brand-New-User | brand-new-user |

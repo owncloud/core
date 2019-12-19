@@ -205,6 +205,7 @@ Feature: Sharing files and folders with internal groups
       """
       just letting you know that User Three shared lorem.txt with you.
       """
+
   Scenario: user added to a group has a share that matches the skeleton of added user
     Given user "user1" has uploaded file with content "some content" to "lorem.txt"
     And user "user3" has been added to group "grp1"

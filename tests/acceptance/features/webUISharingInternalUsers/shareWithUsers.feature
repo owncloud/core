@@ -388,10 +388,10 @@ Feature: Sharing files and folders with internal users
     When the user types "<user_id3>" in the share-with-field
     Then a tooltip with the text "No users or groups found for <user_id3>" should be shown near the share-with-field on the webUI
     Examples:
-      | user_id1          | user_id2       | user_id3       |
-      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
-      | brand-new-user    | BRAND-NEW-USER | Brand-New-User |
-      | BRAND-NEW-USER    | Brand-New-User | brand-new-user |
+      | user_id1       | user_id2       | user_id3       |
+      | Brand-New-User | brand-new-user | BRAND-NEW-USER |
+      | brand-new-user | BRAND-NEW-USER | Brand-New-User |
+      | BRAND-NEW-USER | Brand-New-User | brand-new-user |
 
   Scenario: sharer should be able to share a folder to a user when only share with groups they are member of is enabled
     Given these users have been created with default attributes and without skeleton files:
@@ -432,7 +432,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
-      | edit   | no |
+      | edit | no |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder" using the webUI
     Then the option to rename file "lorem.txt" should not be available on the webUI
@@ -516,7 +516,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
-      | share   | no |
+      | share | no |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder" using the webUI
     Then the option to rename file "lorem.txt" should be available on the webUI

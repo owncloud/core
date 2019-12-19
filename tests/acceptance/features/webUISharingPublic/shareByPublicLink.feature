@@ -474,19 +474,19 @@ Feature: Share by public link
     #And folder "newfolder" should be listed on the webUI
     And folder "test" should be listed on the webUI
 
-    @issue-35174
-    Scenario: User renames folders with different path in Shared by link page
-      Given user "user1" has created folder "nf1"
-      And user "user1" has created folder "nf1/newfolder"
-      And user "user1" has created folder "test"
-      And user "user1" has created a public link share with settings
-        | path | nf1/newfolder |
-      And user "user1" has created a public link share with settings
-        | path | test |
-      And user "user1" has logged in using the webUI
-      And the user has browsed to the shared-by-link page
-      When the user renames folder "test" to "newfolder" using the webUI
-      Then near folder "test" a tooltip with the text 'newfolder already exists' should be displayed on the webUI
+  @issue-35174
+  Scenario: User renames folders with different path in Shared by link page
+    Given user "user1" has created folder "nf1"
+    And user "user1" has created folder "nf1/newfolder"
+    And user "user1" has created folder "test"
+    And user "user1" has created a public link share with settings
+      | path | nf1/newfolder |
+    And user "user1" has created a public link share with settings
+      | path | test |
+    And user "user1" has logged in using the webUI
+    And the user has browsed to the shared-by-link page
+    When the user renames folder "test" to "newfolder" using the webUI
+    Then near folder "test" a tooltip with the text 'newfolder already exists' should be displayed on the webUI
       #Then the following folder should be listed on the webUI
         #| newfolder |
         #| newfolder |
@@ -582,7 +582,7 @@ Feature: Share by public link
     Then the user should see an error message on the public link popup saying "Expiration date is required"
     And the user gets the info of the last share using the sharing API
     And the fields of the last response should include
-      | expiration | + 5 days   |
+      | expiration | + 5 days |
 
   Scenario: user deletes the expiration date of already existing public link using webUI when expiration date is set but not enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -590,13 +590,13 @@ Feature: Share by public link
     And user "user1" has created a share with settings
       | path       | lorem.txt   |
       | name       | Public link |
-      | expireDate |  + 5 days   |
+      | expireDate | + 5 days    |
       | shareType  | public_link |
     And user "user1" has logged in using the webUI
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
     And the user gets the info of the last share using the sharing API
     And the fields of the last response should include
-      | expiration   | |
+      | expiration |  |
 
   Scenario: user creates a new public link using webUI without setting expiration date when default expire date is set but not enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -604,10 +604,10 @@ Feature: Share by public link
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "user1" has logged in using the webUI
     When the user creates a new public link for file "lorem.txt" using the webUI with
-      | expiration | |
+      | expiration |  |
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | expiration   | |
+      | expiration |  |
 
   Scenario: user creates a new public link using webUI removing expiration date when default expire date is set and enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -615,7 +615,7 @@ Feature: Share by public link
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "user1" has logged in using the webUI
     When the user tries to create a new public link for file "lorem.txt" using the webUI
-      | expiration | |
+      | expiration |  |
     Then the user should see an error message on the public link popup saying "Expiration date is required"
 
   Scenario: user creates a new public link using webUI when default expire date is set and enforced
@@ -657,7 +657,7 @@ Feature: Share by public link
     And parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And user "user0" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
-      | email           | foo@bar.co  |
+      | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
 			"""
 			user0 shared simple-folder with you
@@ -722,8 +722,8 @@ Feature: Share by public link
       | path | /simple-folder |
       | name | Public Link    |
     And user "user1" has created a public link share with settings
-      | path | /simple-folder/sub-folder        |
-      | name | strängé लिंक नाम (#2 &).नेपाली      |
+      | path | /simple-folder/sub-folder      |
+      | name | strängé लिंक नाम (#2 &).नेपाली |
     And user "user1" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user opens the share dialog for folder "sub-folder"

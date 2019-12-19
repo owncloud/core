@@ -25,11 +25,11 @@ Feature: Sharing files and folders with internal groups
     When user "user3" has shared folder "/a-folder" with group "grp1"
     And user "user3" has shared file "/data.zip" with group "grp1"
     Then the user should see 2 notifications on the webUI with these details
-      | title                                        |
-      | "User Three" shared "a-folder" with you      |
-      | "User Three" shared "data.zip" with you    |
+      | title                                   |
+      | "User Three" shared "a-folder" with you |
+      | "User Three" shared "data.zip" with you |
     When the user re-logs in as "user1" using the webUI
     Then the user should see 2 notifications on the webUI with these details
-      | title                                        |
-      | "User Three" shared "a-folder" with you      |
-      | "User Three" shared "data.zip" with you    |
+      | title                                   |
+      | "User Three" shared "a-folder" with you |
+      | "User Three" shared "data.zip" with you |
