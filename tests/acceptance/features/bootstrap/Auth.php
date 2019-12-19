@@ -38,6 +38,11 @@ trait Auth {
 	private $appToken;
 
 	/**
+	 * @var array
+	 */
+	private $appTokens;
+
+	/**
 	 * @var boolean
 	 */
 	private $tokenAuthHasBeenSet = false;
@@ -72,6 +77,16 @@ trait Auth {
 	 */
 	public function getAppToken() {
 		return $this->appToken;
+	}
+
+	/**
+	 * get the app token that was last generated
+	 * app acceptance tests that have their own step code may need to use this
+	 *
+	 * @return string app token
+	 */
+	public function getAppTokens() {
+		$this->appTokens;
 	}
 
 	/**
@@ -160,6 +175,24 @@ trait Auth {
 	}
 
 	/**
+	 * @When the user :user requests these endpoints with :method using the basic auth and generated app password then the status codes should be as listed
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$body = $row['body'] ?? null;
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
+			$ocsCode = $row['ocs-code'] ?? null;
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
 	 * @When user :user requests these endpoints with :method using password :password then the status codes should be as listed
 	 *
 	 * @param string $user
@@ -171,7 +204,8 @@ trait Auth {
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
 		foreach ($table->getHash() as $row) {
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password);
+			$body = $row['body'] ?? null;
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
 			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
 		}
 	}
@@ -254,7 +288,8 @@ trait Auth {
 	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
-			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$ocsCode = $row['ocs-code'] ?? null;
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -312,8 +347,30 @@ trait Auth {
 		$this->response = HttpRequestHelper::post(
 			$url, null, null, $headers, $body, null, $this->cookieJar
 		);
-		$this->appToken
-			= \json_decode($this->response->getBody()->getContents())->token;
+		$token = \json_decode($this->response->getBody()->getContents());
+		$this->appToken = $token->token;
+		$this->appTokens[$token->deviceToken->name]
+			= ["id" => $token->deviceToken->id, "token" => $token->token];
+	}
+
+	/**
+	 * Use the private API to generate an app password
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function userDeletesAppPasswordNamed($name) {
+		$url = $this->getBaseUrl() . '/index.php/settings/personal/authtokens/' . $this->appTokens[$name]["id"];
+		$headers = [
+			'Content-Type' => 'application/x-www-form-urlencoded',
+			'OCS-APIREQUEST' => 'true',
+			'requesttoken' => $this->requestToken,
+			'X-Requested-With' => 'XMLHttpRequest'
+		];
+		$this->response = HttpRequestHelper::delete(
+			$url, null, null, $headers, null, null, $this->cookieJar
+		);
 	}
 
 	/**
@@ -325,6 +382,18 @@ trait Auth {
 	 */
 	public function aNewAppPasswordHasBeenGenerated($name) {
 		$this->userGeneratesNewAppPasswordNamed($name);
+		$this->theHTTPStatusCodeShouldBe(200);
+	}
+
+	/**
+	 * @Given the user has deleted the app password named :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function aNewAppPasswordHasBeenDeleted($name) {
+		$this->userDeletesAppPasswordNamed($name);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -485,6 +554,19 @@ trait Auth {
 	 */
 	public function userRequestsURLWithUsingAppPassword($url, $method) {
 		$this->sendRequest($url, $method, 'token ' . $this->appToken);
+	}
+
+	/**
+	 * @When the user requests :url with :method using app password named :tokenName
+	 *
+	 * @param string $url
+	 * @param string $method
+	 * @param string $tokenName
+	 *
+	 * @return void
+	 */
+	public function theUserRequestsWithUsingAppPasswordNamed($url, $method, $tokenName) {
+		$this->sendRequest($url, $method, 'token ' . $this->appTokens[$tokenName]['token']);
 	}
 
 	/**
