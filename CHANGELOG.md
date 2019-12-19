@@ -7,6 +7,7 @@ Summary
 -------
 
 * Bugfix - Fix links in setupchecks.js: [#36315](https://github.com/owncloud/core/pull/36315)
+* Bugfix - Inform the admin if they enable an enterprise app without valid key: [#36351](https://github.com/owncloud/core/issues/36351)
 * Bugfix - Set 599 HTTP code on error: [#36413](https://github.com/owncloud/core/pull/36413)
 * Bugfix - Fix "files:transfer-ownership" in S3 multibucket setups: [#36464](https://github.com/owncloud/core/pull/36464)
 * Bugfix - Fix Trash-bin api access: [#36378](https://github.com/owncloud/core/issues/36378)
@@ -46,6 +47,16 @@ Details
 
    https://github.com/owncloud/core/issues/36238
    https://github.com/owncloud/core/pull/36315
+
+* Bugfix - Inform the admin if they enable an enterprise app without valid key: [#36351](https://github.com/owncloud/core/issues/36351)
+
+   Previously no message was displayed but the app was not enabled.
+
+   Now, when the admin tries to enable an enterprise app when the enterprise key is invalid, the
+   message "cannot be enabled because of invalid enterprise key" is displayed.
+
+   https://github.com/owncloud/core/issues/36351
+   https://github.com/owncloud/core/pull/36399
 
 * Bugfix - Set 599 HTTP code on error: [#36413](https://github.com/owncloud/core/pull/36413)
 
