@@ -1607,7 +1607,6 @@ trait BasicStructure {
 
 	/**
 	 * @When the administrator creates file :path with content :content in local storage using the testing API
-	 * @Given the administrator has created file :path with content :content in local storage using the testing API
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -1623,8 +1622,23 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given the administrator has created file :path with content :content in local storage using the testing API
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasCreatedFileUsingTheTestingApi($path, $content) {
+		$this->theAdministratorHasCreatedFileWithContentInLocalStorageUsingTheTestingApi(
+			$path,
+			$content,
+			'local_storage'
+		);
+	}
+
+	/**
 	 * @When the administrator creates file :path with content :content in local storage :mountPoint using the testing API
-	 * @Given the administrator has created file :path with content :content in local storage :mountPount
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -1649,9 +1663,27 @@ trait BasicStructure {
 			$this->getOcsApiVersion()
 		);
 		$this->setResponse($response);
-		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
+	/**
+	 * @Given the administrator has created file :path with content :content in local storage :mountPount
+	 *
+	 * @param string $path
+	 * @param string $content
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasCreatedFileWithContentInLocalStorageUsingTheTestingApi(
+		$path, $content, $mountPoint
+	) {
+		$this->theAdministratorCreatesFileWithContentInLocalStorageUsingTheTestingApi(
+			$path,
+			$content,
+			$mountPoint
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
 	/**
 	 * @When the administrator deletes file :path in local storage using the testing API
 	 *
