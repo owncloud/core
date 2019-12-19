@@ -269,7 +269,7 @@
 		},
 
 		render: function() {
-			var self =this;
+			var self = this;
 
 			this.$el.html(this.template({
 				cid: this.cid,
@@ -464,8 +464,9 @@
 				}
 			});
 
-			if (params.enforced)
-				$el.datepicker( "option", "maxDate", "+" + params.maxDate + 'd' );
+			if (params.enforced) {
+				$el.datepicker("option", "maxDate", "+" + params.maxDate + 'd');
+			}
 		}
 	});
 
