@@ -59,7 +59,7 @@ $application->add(new \OC\Core\Command\Integrity\CheckCore(
 
 if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\App\Disable(\OC::$server->getAppManager()));
-	$application->add(new OC\Core\Command\App\Enable(\OC::$server->getAppManager()));
+	$application->add(new OC\Core\Command\App\Enable(\OC::$server->getAppManager(), \OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\App\GetPath());
 	$application->add(new OC\Core\Command\App\ListApps(\OC::$server->getAppManager()));
 	

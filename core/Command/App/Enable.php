@@ -24,6 +24,7 @@
 
 namespace OC\Core\Command\App;
 
+use OCP\IConfig;
 use OCP\App\IAppManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,12 +37,17 @@ class Enable extends Command {
 	/** @var IAppManager */
 	protected $manager;
 
+	/** @var IConfig */
+	protected $config;
+
 	/**
 	 * @param IAppManager $manager
+	 * @param IConfig $config
 	 */
-	public function __construct(IAppManager $manager) {
+	public function __construct(IAppManager $manager, IConfig $config) {
 		parent::__construct();
 		$this->manager = $manager;
+		$this->config = $config;
 	}
 
 	protected function configure() {
@@ -68,6 +74,16 @@ class Enable extends Command {
 		if (!\OC_App::getAppPath($appId)) {
 			$output->writeln($appId . ' not found');
 			return 1;
+		}
+
+		if (\OC_App::isEnabled('enterprise_key')) {
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
+			$key = new \OCA\Enterprise_Key\EnterpriseKey(false, $this->config);
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
+			if ($key && !$key->isValid()) {
+				$output->writeln($appId . ' cannot be enabled because of invalid enterprise key');
+				return 1;
+			}
 		}
 
 		$groups = $input->getOption('groups');
