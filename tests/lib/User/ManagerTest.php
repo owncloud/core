@@ -302,7 +302,66 @@ class ManagerTest extends TestCase {
 		$this->expectException(\Exception::class);
 		$this->expectExceptionMessage('The username can not be longer than 64 characters');
 		$this->manager = \OC::$server->getUserManager();
-		$user = $this->manager->createUser('testuser123456789012345678901234567890123456789012345678901234567890', 'testuser1');
+		$this->manager->createUser('testuser123456789012345678901234567890123456789012345678901234567890', 'testuser1');
+	}
+
+	public function testUsernameMinLength() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('The username must be at least 3 characters long');
+		$this->manager = \OC::$server->getUserManager();
+		$this->manager->createUser('u2', 'testuser');
+	}
+
+	public function testUsernameIsJustWhiteSpace() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('A valid username must be provided');
+		$this->manager = \OC::$server->getUserManager();
+		$this->manager->createUser('   ', 'testuser');
+	}
+
+	public function usernameWhiteSpaceDataProvider() {
+		return [
+			[' spaceBefore'],
+			['spaceAfter '],
+			[' space before and after '],
+		];
+	}
+
+	/**
+	 * @dataProvider usernameWhiteSpaceDataProvider
+	 * @param $uid string
+	 */
+	public function testUsernameWhiteSpace($uid) {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Username contains whitespace at the beginning or at the end');
+		$this->manager = \OC::$server->getUserManager();
+		$this->manager->createUser($uid, 'testuser');
+	}
+
+	public function usernameHasInvalidCharsDataProvider() {
+		return [
+			['John#Smith'],
+			['John^Smith'],
+			['JohnSmith(CEO)'],
+		];
+	}
+
+	/**
+	 * @dataProvider usernameHasInvalidCharsDataProvider
+	 * @param $uid string
+	 */
+	public function testUsernameHasInvalidChars($uid) {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-\'"');
+		$this->manager = \OC::$server->getUserManager();
+		$this->manager->createUser($uid, 'testuser');
+	}
+
+	public function testPasswordIsNotJustWhiteSpace() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('A valid password must be provided');
+		$this->manager = \OC::$server->getUserManager();
+		$this->manager->createUser('testuser', '   ');
 	}
 
 	public function testNullUidMakesNoQueryToAccountsTable() {
