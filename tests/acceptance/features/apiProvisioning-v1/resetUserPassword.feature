@@ -83,8 +83,8 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "brand-new-user" using password "<password>" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
     Examples:
-      | password        | comment  |
-      | 😛 😜           | smileys  |
-      | 🐶🐱 🐭           | Animals  |
-      | ⌚️ 📱 📲 💻           | objects  |
-      | 🚴🏿‍♀️ 🚴‍♂️            | cycling |
+      | password      | comment |
+      | 😛 😜         | smileys |
+      | 🐶🐱 🐭       | Animals |
+      | ⌚️ 📱 📲 💻   | objects |
+      | 🚴🏿‍♀️ 🚴‍♂️ | cycling |

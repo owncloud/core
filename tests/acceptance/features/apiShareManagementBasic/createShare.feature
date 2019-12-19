@@ -6,7 +6,7 @@ Feature: sharing
     And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
-  @skipOnEncryptionType:user-keys @issue-32322
+    @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files

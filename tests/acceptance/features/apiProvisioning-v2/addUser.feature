@@ -78,12 +78,12 @@ Feature: add user
     And user "BrAnD-nEw-UsEr" should exist
     And the display name of user "brand-new-user" should be "<display-name>"
     Examples:
-      |  display-name   |
-      | Brand-New-User  |
-      | BRAND-NEW-USER  |
-      | brand-new-user  |
-      | brand-NEW-user  |
-      | BrAnD-nEw-UsEr  |
+      | display-name   |
+      | Brand-New-User |
+      | BRAND-NEW-USER |
+      | brand-new-user |
+      | brand-NEW-user |
+      | BrAnD-nEw-UsEr |
 
   Scenario: admin tries to create an existing user but with username containing capital letters
     Given user "brand-new-user" has been created with default attributes and skeleton files

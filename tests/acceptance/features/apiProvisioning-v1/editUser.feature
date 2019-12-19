@@ -82,8 +82,8 @@ Feature: edit users
       | displayname | <display-name> |
     And the display name of user "brand-new-user" should be "<display-name>"
     Examples:
-      | display-name   |
-      | Alan Border    |
+      | display-name    |
+      | Alan Border     |
       | Phil Cyclist 🚴 |
 
   Scenario: a normal user should not be able to change their quota

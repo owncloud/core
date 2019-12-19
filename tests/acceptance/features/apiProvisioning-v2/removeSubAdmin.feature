@@ -37,7 +37,7 @@ Feature: remove subadmin
     Given these users have been created with default attributes and skeleton files:
       | username |
       | subadmin |
-      | newuser |
+      | newuser  |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "newuser" has been added to group "new-group"

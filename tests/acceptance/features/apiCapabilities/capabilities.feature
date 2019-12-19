@@ -162,7 +162,7 @@ Feature: capabilities
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
-      | capability    | path_to_element               | value |
+      | capability    | path_to_element                | value |
       | files_sharing | group@@@expire_date@@@enabled  | 1     |
       | files_sharing | group@@@expire_date@@@days     | 7     |
       | files_sharing | group@@@expire_date@@@enforced | 1     |

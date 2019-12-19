@@ -17,7 +17,7 @@ Feature: get subadmin groups
     When the administrator gets all the groups where user "brand-new-user" is subadmin using the provisioning API
     Then the subadmin groups returned by the API should be
       | new-group |
-      | 😅 😆      |
+      | 😅 😆     |
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
 

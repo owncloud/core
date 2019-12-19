@@ -103,13 +103,13 @@ Feature: Restore deleted files/folders
     And as "user0" file "<restore-path>" should exist
     And as "user0" file "<delete-path>" should not exist
     Examples:
-      | dav-path | delete-path              | restore-path         |
-      | old      | /PARENT/parent.txt       | parent.txt           |
-      | new      | /PARENT/parent.txt       | parent.txt           |
-      | old      | /PARENT/CHILD/child.txt  | child.txt            |
-      | new      | /PARENT/CHILD/child.txt  | child.txt            |
-      | old      | /textfile0.txt           | FOLDER/textfile0.txt |
-      | new      | /textfile0.txt           | FOLDER/textfile0.txt |
+      | dav-path | delete-path             | restore-path         |
+      | old      | /PARENT/parent.txt      | parent.txt           |
+      | new      | /PARENT/parent.txt      | parent.txt           |
+      | old      | /PARENT/CHILD/child.txt | child.txt            |
+      | new      | /PARENT/CHILD/child.txt | child.txt            |
+      | old      | /textfile0.txt          | FOLDER/textfile0.txt |
+      | new      | /textfile0.txt          | FOLDER/textfile0.txt |
 
   @issue-35974
   Scenario Outline: restoring a file to an already existing path overrides the file
@@ -140,9 +140,9 @@ Feature: Restore deleted files/folders
   Scenario Outline: restoring a file to a read-only folder
     Given using <dav-path> DAV path
     And these users have been created with default attributes and skeleton files:
-    | username |
-    | user0    |
-    | user1    |
+      | username |
+      | user0    |
+      | user1    |
     And user "user1" has created folder "shareFolderParent"
     And user "user1" has shared folder "shareFolderParent" with user "user0" with permissions "read"
     And as "user0" folder "/shareFolderParent" should exist
@@ -207,8 +207,8 @@ Feature: Restore deleted files/folders
       | new      |
 
   @local_storage
-  @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore
+    @skipOnEncryptionType:user-keys @encryption-issue-42
+    @skip_on_objectstore
   Scenario Outline: Deleting a file into external storage moves it to the trashbin and can be restored
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -276,7 +276,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "401"
     And as "user0" the folder with original path "/textfile0.txt" should exist in trash
     And user "user0" should not see the following elements
-      | /textfile0.txt     |
+      | /textfile0.txt |
     Examples:
       | dav-path |
       | old      |
@@ -292,7 +292,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "401"
     And as "user0" the folder with original path "/textfile0.txt" should exist in trash
     And user "user0" should not see the following elements
-      | /textfile0.txt     |
+      | /textfile0.txt |
     Examples:
       | dav-path |
       | old      |
@@ -308,7 +308,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "401"
     And as "user0" the folder with original path "/textfile0.txt" should exist in trash
     And user "user0" should not see the following elements
-      | /textfile0.txt     |
+      | /textfile0.txt |
     Examples:
       | dav-path |
       | old      |
