@@ -15,6 +15,19 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "user1" should be disabled
 
+  Scenario Outline: admin disables an user with special characters in the username
+    Given these users have been created with skeleton files:
+      | username   | email   |
+      | <username> | <email> |
+    When the administrator disables user "<username>" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "<username>" should be disabled
+    Examples:
+      | username | email               |
+      | a@-+_.b  | a.b@example.com     |
+      | a space  | a.space@example.com |
+
   @smokeTest
   Scenario: Subadmin should be able to disable an user in their group
     Given these users have been created with default attributes and skeleton files:

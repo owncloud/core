@@ -18,6 +18,21 @@ Feature: get user
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
 
+  Scenario Outline: admin gets an existing user with special characters in the username
+    Given these users have been created with skeleton files:
+      | username   | displayname   | email   |
+      | <username> | <displayname> | <email> |
+    When the administrator retrieves the information of user "<username>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "<displayname>"
+    And the email address returned by the API should be "<email>"
+    And the quota definition returned by the API should be "default"
+    Examples:
+      | username | displayname  | email               |
+      | a@-+_.b  | A weird b    | a.b@example.com     |
+      | a space  | A Space Name | a.space@example.com |
+
   Scenario: admin tries to get a not existing user
     When the administrator retrieves the information of user "not-a-user" using the provisioning API
     Then the OCS status code should be "404"

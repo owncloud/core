@@ -15,6 +15,19 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
+  Scenario Outline: Delete a user with special characters in the username
+    Given these users have been created with skeleton files:
+      | username   | email   |
+      | <username> | <email> |
+    When the administrator deletes user "<username>" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "<username>" should not exist
+    Examples:
+      | username | email               |
+      | a@-+_.b  | a.b@example.com     |
+      | a space  | a.space@example.com |
+
   Scenario: Delete a user, and specify the user name in different case
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator deletes user "Brand-New-User" using the provisioning API

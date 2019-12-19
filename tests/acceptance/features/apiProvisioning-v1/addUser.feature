@@ -16,6 +16,18 @@ Feature: add user
     And user "brand-new-user" should exist
     And user "brand-new-user" should be able to access a skeleton file
 
+  Scenario Outline: admin creates a user with special characters in the username
+    Given user "<username>" has been deleted
+    When the administrator sends a user creation request for user "<username>" password "%alt1%" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "<username>" should exist
+    And user "<username>" should be able to access a skeleton file
+    Examples:
+      | username |
+      | a@-+_.b  |
+      | a space  |
+
   Scenario: admin tries to create an existing user
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
