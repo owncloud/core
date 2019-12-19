@@ -138,7 +138,7 @@ class SyncService {
 			}
 
 			// call the callback
-			if ($callback) {
+			if (\is_callable($callback)) {
 				$callback($uid);
 			}
 		}

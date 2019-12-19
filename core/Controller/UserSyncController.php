@@ -24,6 +24,7 @@ declare(strict_types = 1);
 namespace OC\Core\Controller;
 
 use ArrayIterator;
+use OC\AppFramework\Http;
 use OC\OCS\Result;
 use OC\User\SyncService;
 use OCP\AppFramework\OCSController;
@@ -78,20 +79,21 @@ class UserSyncController extends OCSController {
 	 * @return Result
 	 */
 	public function syncUser($userId): Result {
-		foreach ($this->userManager->getBackends() as $backEnd) {
-			$users = $backEnd->getUsers($userId, 2);
-			if (\count($users) > 1) {
-				$backEndName = \get_class($backEnd);
-				return new Result([], 409, "Multiple users returned from backend($backEndName) for: $userId. Cancelling sync.");
+		foreach ($this->userManager->getBackends() as $backend) {
+			$users = $backend->getUsers($userId, 2);
+			$numberOfUsers = \count($users);
+			if ($numberOfUsers > 1) {
+				$backendName = \get_class($backend);
+				return new Result([], Http::STATUS_CONFLICT, "Multiple users returned from backend($backendName) for: $userId. Cancelling sync.");
 			}
 
-			if (\count($users) === 1) {
+			if ($numberOfUsers === 1) {
 				// Run the sync using the internal username if mapped
-				$this->syncService->run($backEnd, new ArrayIterator([$users[0]]));
+				$this->syncService->run($backend, new ArrayIterator([$users[0]]));
 				return new Result();
 			}
 		}
 
-		return new Result([], 404, "User is not known in any user backend: $userId");
+		return new Result([], Http::STATUS_NOT_FOUND, "User is not known in any user backend: $userId");
 	}
 }
