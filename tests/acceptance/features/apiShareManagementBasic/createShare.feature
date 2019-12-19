@@ -1787,7 +1787,7 @@ Feature: sharing
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @skipOnOcV10.3 @issue-36568
+  @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date not enabled for groups, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -1800,7 +1800,6 @@ Feature: sharing
       | permissions | read,share |
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
-    # And the HTTP status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
       | share_type  | group    |
