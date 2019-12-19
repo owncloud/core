@@ -60,8 +60,8 @@ class DetailsDialog extends OwncloudPage {
 	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
 	private $tagDeleteButtonInTagXpath = "//form[@class='systemtags-rename-form']//a";
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
-										"//ul[@class='select2-results']" .
-										"//span[@class='label']";
+	"//ul[@class='select2-results']" .
+	"//span[@class='label']";
 	private $tagEditInputXpath = "//input[@id='view9-rename-input']";
 
 	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
@@ -121,8 +121,8 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @param string $tabName e.g. comments, sharing, versions
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	private function findDetailsTab($tabName) {
 		$tab = $this->detailsDialogElement->findById(
@@ -199,8 +199,8 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @param string $tabName e.g. comments, sharing, versions
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function changeDetailsTab($tabName) {
 		$tabId = $this->getDetailsTabId($tabName);
@@ -364,8 +364,8 @@ class DetailsDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement of the whole container holding the thumbnail
+	 * @throws ElementNotFoundException
 	 */
 	public function findThumbnailContainer() {
 		$thumbnailContainer = $this->detailsDialogElement->find(
@@ -382,8 +382,8 @@ class DetailsDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function findThumbnail() {
 		$thumbnailContainer = $this->findThumbnailContainer();
@@ -578,8 +578,8 @@ class DetailsDialog extends OwncloudPage {
 	/**
 	 * closes the details dialog panel
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function closeDetailsDialog() {
 		$detailsDialogCloseButton = $this->detailsDialogElement->find(

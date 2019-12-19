@@ -39,6 +39,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 
 	private $userEnableRecoveryCheckboxId = 'userEnableRecoveryCheckbox';
 	private $userEnableRecoveryCheckboxXpath = '//label[@for="userEnableRecoveryCheckbox"]';
+
 	/**
 	 * Enable password recovery
 	 *

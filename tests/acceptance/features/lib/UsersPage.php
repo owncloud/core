@@ -125,8 +125,8 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * @param string $username
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string text describing the quota
+	 * @throws ElementNotFoundException
 	 */
 	public function getQuotaOfUser($username) {
 		$userTr = $this->findUserInTable($username);
@@ -157,8 +157,8 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * @param string $username
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string email of user
+	 * @throws ElementNotFoundException
 	 */
 	public function getEmailOfUser($username) {
 		$userTr = $this->findUserInTable($username);
@@ -234,8 +234,8 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * @param string $username
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string storage location of user
+	 * @throws ElementNotFoundException
 	 */
 	public function getStorageLocationOfUser($username) {
 		$userTr = $this->findUserInTable($username);
@@ -265,8 +265,8 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * @param string $username
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string last login of a user
+	 * @throws ElementNotFoundException
 	 */
 	public function getLastLoginOfUser($username) {
 		$userTr = $this->findUserInTable($username);
@@ -296,8 +296,8 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * Open the settings menu
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function openAppSettingsMenu() {
 		$settingsBtn = $this->find("xpath", $this->settingsBtnXpath);
@@ -325,8 +325,8 @@ class UsersPage extends OwncloudPage {
 	 * @param string $setting the human readable setting string
 	 * @param boolean $value
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setSetting($setting, $value = true) {
 		$settingContent = $this->findById($this->settingContentId);
@@ -391,8 +391,8 @@ class UsersPage extends OwncloudPage {
 	 * @param string $email
 	 * @param string[] $groups
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function createUser(
 		Session $session, $username, $password, $email = null, $groups = null
@@ -494,8 +494,8 @@ class UsersPage extends OwncloudPage {
 	 * @param Session $session
 	 * @param boolean $valid is the set quota expected to be valid
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setQuotaOfUserTo(
 		$username, $quota, Session $session, $valid = true
@@ -566,8 +566,8 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return GroupList
+	 * @throws ElementNotFoundException
 	 */
 	private function getGroupListElement() {
 		$groupListElement = $this->findById($this->groupListId);
@@ -790,7 +790,7 @@ class UsersPage extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add=true) {
+	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add = true) {
 		$userTr = $this->findUserInTable($user);
 		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
 		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);

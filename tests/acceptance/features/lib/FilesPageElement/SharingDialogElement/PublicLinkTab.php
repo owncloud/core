@@ -60,8 +60,8 @@ class PublicLinkTab extends OwncloudPage {
 	 *
 	 * @param NodeElement $publicLinkTab
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setElement(NodeElement $publicLinkTab) {
 		$this->publicLinkTabElement = $publicLinkTab;
@@ -261,8 +261,8 @@ class PublicLinkTab extends OwncloudPage {
 	 *
 	 * @param string $name
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getLinkUrl($name) {
 		$linkEntry = $this->findLinkEntryByName($name);
@@ -329,8 +329,8 @@ class PublicLinkTab extends OwncloudPage {
 	 *
 	 * @param string $name
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	private function findLinkEntryByName($name) {
 		$xpathString = $this->quotedText($name);

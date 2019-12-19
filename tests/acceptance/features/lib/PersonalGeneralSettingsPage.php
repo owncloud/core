@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace Page;
 
 use Behat\Mink\Session;
@@ -150,19 +151,19 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 
 	/**
 	 *
+	 * @return string
 	 * @throws ElementNotFoundException
 	 *
-	 * @return string
 	 */
 	public function getWrongPasswordMessageText() {
 		$errorMessage = $this->findById($this->passwordErrorMessageID);
-		
+
 		$this->assertElementNotNull(
 			$errorMessage,
 			__METHOD__ .
 			" could not find element with id $this->passwordErrorMessageID"
 		);
-		
+
 		return $this->getTrimmedText($errorMessage);
 	}
 

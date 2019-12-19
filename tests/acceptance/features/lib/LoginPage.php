@@ -54,8 +54,8 @@ class LoginPage extends OwncloudPage {
 	 * @param string $password
 	 * @param string $target
 	 *
-	 * @throws ElementNotFoundException
 	 * @return Page
+	 * @throws ElementNotFoundException
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
 		$this->fillField($this->userInputId, $username);
@@ -110,9 +110,9 @@ class LoginPage extends OwncloudPage {
 
 	/**
 	 *
+	 * @return Page
 	 * @throws ElementNotFoundException
 	 *
-	 * @return Page
 	 */
 	private function lostPasswordField() {
 		$lostPasswordField = $this->findById($this->lostPasswordId);
@@ -126,9 +126,9 @@ class LoginPage extends OwncloudPage {
 
 	/**
 	 *
+	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 *
-	 * @return NodeElement
 	 */
 	private function getSetPasswordErrorMessageField() {
 		$setPasswordErrorMessageField = $this->findById($this->setPasswordErrorMessageId);
@@ -142,9 +142,9 @@ class LoginPage extends OwncloudPage {
 
 	/**
 	 *
+	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 *
-	 * @return NodeElement
 	 */
 	private function getLostPasswordResetErrorMessageField() {
 		$lostPasswordResetErrorMessageField = $this->find(
@@ -252,6 +252,6 @@ class LoginPage extends OwncloudPage {
 			"could not find link"
 		);
 
-		return($legalUrlLink->getAttribute("href"));
+		return ($legalUrlLink->getAttribute("href"));
 	}
 }

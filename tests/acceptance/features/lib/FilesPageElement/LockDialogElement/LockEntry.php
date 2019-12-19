@@ -82,9 +82,9 @@ class LockEntry extends OwncloudPage {
 	/**
 	 * gets the user that has locked the resource
 	 *
+	 * @return string
 	 * @throws \Exception
 	 *
-	 * @return string
 	 */
 	public function getLockingUser() {
 		$lockDescriptionElement = $this->lockElement->find(

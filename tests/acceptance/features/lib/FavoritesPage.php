@@ -30,7 +30,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Favorites page.
  */
 class FavoritesPage extends FilesPageBasic {
-	
+
 	/**
 	 *
 	 * @var string $path
@@ -41,28 +41,28 @@ class FavoritesPage extends FilesPageBasic {
 	protected $fileListXpath = ".//div[@id='app-content-favorites']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-favorites']//div[@id='emptycontent']";
 	protected $filePathInRowXpath = "//*[@data-tags='_\$!<Favorite>!\$_']";
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileListXpath() {
 		return $this->fileListXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileNamesXpath() {
 		return $this->fileNamesXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileNameMatchXpath() {
 		return $this->fileNameMatchXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -73,9 +73,9 @@ class FavoritesPage extends FilesPageBasic {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @return string
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return string
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;

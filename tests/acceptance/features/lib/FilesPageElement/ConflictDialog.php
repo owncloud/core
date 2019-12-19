@@ -33,14 +33,14 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 class ConflictDialog extends OCDialog {
 	private $keepNewFilesCheckXpath = "//label[@for='checkbox-allnewfiles']";
 	private $keepExistingFilesCheckXpath = "//label[@for='checkbox-allexistingfiles']";
-	
+
 	/**
 	 * takes the xpath and selects the option with that xpath
 	 *
 	 * @param string $xpath
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	private function keepFiles($xpath) {
 		$checkBox = $this->dialogElement->find("xpath", $xpath);
@@ -54,16 +54,16 @@ class ConflictDialog extends OCDialog {
 	}
 
 	/**
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function keepExistingFiles() {
 		$this->keepFiles($this->keepExistingFilesCheckXpath);
 	}
 
 	/**
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function keepNewFiles() {
 		$this->keepFiles($this->keepNewFilesCheckXpath);

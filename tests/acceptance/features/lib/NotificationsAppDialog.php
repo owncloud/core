@@ -32,7 +32,7 @@ class NotificationsAppDialog extends OwncloudPage {
 	private $notificationTitleXpath = "//h3[@class='notification-title']";
 	private $notificationLinkXpath = "//a[@class='notification-link']";
 	private $notificationMessageXpath = "//p[@class='notification-message']";
-	
+
 	/**
 	 *
 	 * @return array with notifications details title,link,message

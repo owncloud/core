@@ -122,21 +122,21 @@ class FilesPageCRUD extends FilesPageBasic {
 	protected function getFileListXpath() {
 		return $this->fileListXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileNamesXpath() {
 		return $this->fileNamesXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getFileNameMatchXpath() {
 		return $this->fileNameMatchXpath;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -168,9 +168,9 @@ class FilesPageCRUD extends FilesPageBasic {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @return void
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		throw new \Exception("not implemented");
@@ -195,7 +195,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		if (\is_array($toFileName)) {
 			$toFileName = \implode($toFileName);
 		}
-		
+
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
 				$fileRow = $this->findFileRowByName($fromFileName, $session);
@@ -216,7 +216,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			echo $message;
 			\error_log($message);
 		}
-		
+
 		$this->waitTillFileRowsAreReady($session);
 	}
 
@@ -235,10 +235,10 @@ class FilesPageCRUD extends FilesPageBasic {
 	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
-		
+
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
-		
+
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$toMoveFileRow->findFileLink()->dragTo(
 				$destinationFileRow->findFileLink()
@@ -266,7 +266,7 @@ class FilesPageCRUD extends FilesPageBasic {
 	 */
 	public function findNewFileFolderButton() {
 		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
-		
+
 		$this->assertElementNotNull(
 			$newButtonElement,
 			__METHOD__ .
@@ -284,8 +284,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	 * @param string $name
 	 * @param int $timeoutMsec
 	 *
-	 * @throws ElementNotFoundException|\Exception
 	 * @return string name of the created file
+	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
 		Session $session, $name = null,
@@ -296,16 +296,16 @@ class FilesPageCRUD extends FilesPageBasic {
 		}
 		$newButtonElement = $this->findNewFileFolderButton();
 		$newButtonElement->click();
-		
+
 		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
-		
+
 		$this->assertElementNotNull(
 			$newFolderButtonElement,
 			__METHOD__ .
 			" xpath $this->newFolderButtonXpath " .
 			"could not find new folder button"
 		);
-		
+
 		try {
 			$newFolderButtonElement->click();
 		} catch (NoSuchElement $e) {
@@ -320,7 +320,7 @@ class FilesPageCRUD extends FilesPageBasic {
 				. "\n-------------------------\n"
 			);
 		}
-		
+
 		try {
 			$this->fillField($this->newFolderNameInputLabel, $name . Key::ENTER);
 		} catch (NoSuchElement $e) {
@@ -337,7 +337,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		$timeoutMsec = (int) $timeoutMsec;
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeoutMsec / 1000);
-		
+
 		while ($currentTime <= $end) {
 			$newFolderButton = $this->find("xpath", $this->newFolderButtonXpath);
 			if ($newFolderButton === null || !$newFolderButton->isVisible()) {
@@ -356,7 +356,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
-		
+
 		if ($currentTime > $end) {
 			throw new \Exception("could not create folder");
 		}
@@ -380,7 +380,7 @@ class FilesPageCRUD extends FilesPageBasic {
 	) {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
-		
+
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			$row = $this->findFileRowByName($name, $session);
 			try {
@@ -424,8 +424,8 @@ class FilesPageCRUD extends FilesPageBasic {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function findDeleteAllSelectedFilesBtn() {
 		$deleteAllSelectedBtn = $this->find(
@@ -475,8 +475,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	/**
 	 * waits till the upload progressbar is not visible anymore
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function waitForUploadProgressbarToFinish() {
 		$uploadProgressbar = $this->find(

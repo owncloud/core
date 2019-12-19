@@ -70,10 +70,11 @@ class OCDialog extends OwncloudPage {
 	public function getOwnElement() {
 		return $this->dialogElement;
 	}
+
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getTitle() {
 		$title = $this->dialogElement->find("xpath", $this->titleClassXpath);
@@ -88,8 +89,8 @@ class OCDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getMessage() {
 		$contentElement = $this->dialogElement->find(
@@ -111,8 +112,8 @@ class OCDialog extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function accept(Session $session) {
 		$primaryButton = $this->dialogElement->find(
