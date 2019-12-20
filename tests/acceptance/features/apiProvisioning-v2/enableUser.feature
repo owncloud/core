@@ -16,6 +16,20 @@ Feature: enable user
     And the HTTP status code should be "200"
     And user "user1" should be enabled
 
+  Scenario Outline: admin enables an user with special characters in the username
+    Given these users have been created with skeleton files:
+      | username   | email   |
+      | <username> | <email> |
+    And user "<username>" has been disabled
+    When the administrator enables user "<username>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "<username>" should be enabled
+    Examples:
+      | username | email               |
+      | a@-+_.b  | a.b@example.com     |
+      | a space  | a.space@example.com |
+
   Scenario: admin enables another admin user
     Given user "another-admin" has been created with default attributes and skeleton files
     And user "another-admin" has been added to group "admin"

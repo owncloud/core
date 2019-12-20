@@ -15,19 +15,19 @@ Feature: add users
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: use the webUI to create a user with special valid characters
-    When the administrator creates a user with the name "@-_.'" and the password "%regular%" using the webUI
+    When the administrator creates a user with the name "@-+_.'" and the password "%regular%" using the webUI
     And the administrator logs out of the webUI
-    And user "@-_.'" logs in using the webUI
+    And user "@-+_.'" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: use the webUI to create a user with special invalid characters
     When the administrator attempts to create these users then the notifications should be as listed
-      | user | password    | notification                                                                                                   |
-      | a#%  | "%regular%" | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
-      | a+^  | "%alt1%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
-      | a)~  | "%alt2%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
-      | a(=  | "%alt3%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
-      | a`*^ | "%alt4%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
+      | user | password    | notification                                                                                                    |
+      | a#%  | "%regular%" | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
+      | a+^  | "%alt1%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
+      | a)~  | "%alt2%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
+      | a(=  | "%alt3%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
+      | a`*^ | "%alt4%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
@@ -71,7 +71,7 @@ Feature: add users
     Examples:
       | username | comment               |
       | guiusr1  | simple user-name      |
-      | a@-_.'b  | complicated user-name |
+      | a@-+_.'b | complicated user-name |
 
   Scenario Outline: user sets his own password but retypes it wrongly after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
@@ -85,7 +85,7 @@ Feature: add users
     Examples:
       | username | comment               |
       | guiusr1  | simple user-name      |
-      | a@-_.'b  | complicated user-name |
+      | a@-+_.'b | complicated user-name |
 
   Scenario Outline: webUI refuses to create users with invalid Email addresses
     When the administrator creates a user with the name "guiusr1" and the email "<email>" without a password using the webUI
