@@ -36,6 +36,7 @@ use OC\Security\CSP\ContentSecurityPolicy;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\OCSController;
 use OCP\ISession;
 use OCP\AppFramework\Controller;
 use OCP\IUserSession;
@@ -565,6 +566,17 @@ class SecurityMiddlewareTest extends TestCase {
 				$this->secAjaxException);
 
 		$this->assertInstanceOf(JSONResponse::class, $response);
+	}
+
+	public function testAfterExceptionForNonAdminAccess() {
+		$nonAdminException = new NotAdminException();
+		$expectedResponse = $this->createMock(Response::class);
+		$controller = $this->createMock(OCSController::class);
+		$controller->expects($this->once())
+			->method('buildResponse')
+			->willReturn($expectedResponse);
+		$response = $this->middleware->afterException($controller, 'test', $nonAdminException);
+		$this->assertSame($expectedResponse, $response);
 	}
 
 	public function testAfterController() {

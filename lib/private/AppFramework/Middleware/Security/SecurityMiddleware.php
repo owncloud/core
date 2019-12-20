@@ -191,6 +191,9 @@ class SecurityMiddleware extends Middleware {
 			if ($exception instanceof NotLoggedInException) {
 				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'));
 			}
+			if ($exception instanceof NotAdminException) {
+				return $controller->buildResponse(new Result(null, $exception->getCode(), $exception->getMessage()));
+			}
 			return $controller->buildResponse(new Result(null, API::RESPOND_SERVER_ERROR, $exception->getMessage()));
 		}
 
