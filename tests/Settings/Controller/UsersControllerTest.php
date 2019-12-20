@@ -1715,7 +1715,7 @@ class UsersControllerTest extends \Test\TestCase {
 			)
 			->will($this->returnValue(true));
 
-		$expectedResult['isRestoreDisabled'] = true;
+		$expectedResult['isRestoreDisabled'] = false;
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()

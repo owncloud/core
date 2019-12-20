@@ -84,8 +84,6 @@ class UsersController extends Controller {
 	private $fromMailAddress;
 	/** @var IURLGenerator */
 	private $urlGenerator;
-	/** @var bool contains the state of the encryption app */
-	private $isEncryptionAppEnabled;
 	/** @var bool contains the state of the admin recovery setting */
 	private $isRestoreEnabled = false;
 	/** @var IAvatarManager */
@@ -153,8 +151,7 @@ class UsersController extends Controller {
 		$this->eventDispatcher = $eventDispatcher;
 
 		// check for encryption state - TODO see formatUserForIndex
-		$this->isEncryptionAppEnabled = $appManager->isEnabledForUser('encryption');
-		if ($this->isEncryptionAppEnabled) {
+		if ($appManager->isEnabledForUser('encryption')) {
 			// putting this directly in empty is possible in PHP 5.5+
 			$result = $config->getAppValue('encryption', 'recoveryAdminEnabled', 0);
 			$this->isRestoreEnabled = !empty($result);
@@ -176,20 +173,17 @@ class UsersController extends Controller {
 		// below
 		$restorePossible = false;
 
-		if ($this->isEncryptionAppEnabled) {
-			if ($this->isRestoreEnabled) {
-				// check for the users recovery setting
-				$recoveryMode = $this->config->getUserValue($user->getUID(), 'encryption', 'recoveryEnabled', '0');
-				// method call inside empty is possible with PHP 5.5+
-				$recoveryModeEnabled = !empty($recoveryMode);
-				if ($recoveryModeEnabled) {
-					// user also has recovery mode enabled
-					$restorePossible = true;
-				}
+		if ($this->isRestoreEnabled) {
+			// check for the users recovery setting
+			$recoveryMode = $this->config->getUserValue($user->getUID(), 'encryption', 'recoveryEnabled', '0');
+			// method call inside empty is possible with PHP 5.5+
+			$recoveryModeEnabled = !empty($recoveryMode);
+			if ($recoveryModeEnabled) {
+				// user also has recovery mode enabled
+				$restorePossible = true;
 			}
 		} else {
-			// recovery is possible if encryption is disabled (plain files are
-			// available)
+			// masterkey encryption or no encryption in place
 			$restorePossible = true;
 		}
 

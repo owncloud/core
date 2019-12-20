@@ -1,0 +1,5 @@
+Bugfix: suppress warning when resetting user password with masterkey encryption
+
+When an admin wanted to reset user's password over the Users management page with masterkey encryption in place, a warning was displayed about data recovery not being available. The behavior has now been fixed.  
+
+https://github.com/owncloud/core/pull/36523
