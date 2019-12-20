@@ -13,6 +13,7 @@ Summary
 * Bugfix - Fix Trash-bin api access: [#36378](https://github.com/owncloud/core/issues/36378)
 * Bugfix - Files shared with user cause purge of the trashbin content: [#36494](https://github.com/owncloud/core/pull/36494)
 * Bugfix - Enhance validation for sender e-mail address for e-mail notifications: [#36505](https://github.com/owncloud/core/pull/36505)
+* Bugfix - Suppress warning when resetting user password with masterkey encryption: [#36523](https://github.com/owncloud/core/pull/36523)
 * Bugfix - Receive multiple users for user sync command: [#36576](https://github.com/owncloud/core/pull/36576)
 * Bugfix - Fix null for empty path on Oracle: [#36610](https://github.com/owncloud/core/pull/36610)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
@@ -104,6 +105,14 @@ Details
    for this user was not set. The behavior has now been fixed.
 
    https://github.com/owncloud/core/pull/36505
+
+* Bugfix - Suppress warning when resetting user password with masterkey encryption: [#36523](https://github.com/owncloud/core/pull/36523)
+
+   When an admin wanted to reset user's password over the Users management page with masterkey
+   encryption in place, a warning was displayed about data recovery not being available. The
+   behavior has now been fixed.
+
+   https://github.com/owncloud/core/pull/36523
 
 * Bugfix - Receive multiple users for user sync command: [#36576](https://github.com/owncloud/core/pull/36576)
 
