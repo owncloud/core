@@ -38,6 +38,7 @@ Summary
 * Enhancement - Add enabled and disabled filter options to occ app:list command: [#36520](https://github.com/owncloud/core/pull/36520)
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
 * Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
+* Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
 
 Details
 -------
@@ -289,6 +290,12 @@ Details
    the admin sharing settings page. They can be set independently for user and group shares.
 
    https://github.com/owncloud/core/pull/36573
+
+* Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
+
+   The plus sign is now allowed in a username, e.g. John+Smith
+
+   https://github.com/owncloud/core/pull/36613
 
 Changelog for ownCloud Core [10.3.2] (2019-12-04)
 =======================================
