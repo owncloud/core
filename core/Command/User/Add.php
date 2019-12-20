@@ -64,7 +64,7 @@ class Add extends Command {
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'User ID used to login (must only contain a-z, A-Z, 0-9, -, _ and @).'
+				'User ID used to login (must only contain a-z, A-Z, 0-9, "+_.@-\'").'
 			)
 			->addOption(
 				'password-from-env',
