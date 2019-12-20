@@ -19,6 +19,7 @@ Summary
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
+* Change - Update handlebars library to 4.5.3: [#36439](https://github.com/owncloud/core/pull/36439)
 * Change - Update Symfony polyfill components to 1.13.0: [#36485](https://github.com/owncloud/core/pull/36485)
 * Change - Update sabre/http (5.0.2 => 5.0.5): [#36490](https://github.com/owncloud/core/pull/36490)
 * Change - Update doctrine/cache (1.9.1 => 1.10.0): [#36503](https://github.com/owncloud/core/pull/36503)
@@ -166,6 +167,13 @@ Details
    a popup warning the user that the file is locked)
 
    https://github.com/owncloud/core/pull/36402
+
+* Change - Update handlebars library to 4.5.3: [#36439](https://github.com/owncloud/core/pull/36439)
+
+   The @bower_components/handlebars library has been updated from 4.1.2 to 4.5.3.
+
+   https://github.com/owncloud/core/pull/36439
+   https://github.com/owncloud/core/pull/36438
 
 * Change - Update Symfony polyfill components to 1.13.0: [#36485](https://github.com/owncloud/core/pull/36485)
 
