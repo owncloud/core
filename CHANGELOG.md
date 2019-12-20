@@ -1,6 +1,6 @@
-Changelog for ownCloud Core [unreleased] (UNRELEASED)
+Changelog for ownCloud Core [10.4.0] (UNRELEASED)
 =======================================
-The following sections list the changes in ownCloud core unreleased relevant to
+The following sections list the changes in ownCloud core 10.4.0 relevant to
 ownCloud admins and users.
 
 Summary
