@@ -34,8 +34,8 @@ class GeneralExceptionPage extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getExceptionMessage() {
 		$exceptionMessageElement = $this->find("xpath", $this->exceptionMessageXpath);
@@ -49,8 +49,8 @@ class GeneralExceptionPage extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getExceptionTitle() {
 		$exceptionTitleElement = $this->find("xpath", $this->exceptionTitleXpath);

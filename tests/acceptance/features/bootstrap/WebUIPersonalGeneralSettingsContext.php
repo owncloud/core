@@ -53,7 +53,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @param PersonalGeneralSettingsPage $personalGeneralSettingsPage
 	 */
 	public function __construct(
-		PersonalGeneralSettingsPage$personalGeneralSettingsPage
+		PersonalGeneralSettingsPage $personalGeneralSettingsPage
 	) {
 		$this->personalGeneralSettingsPage = $personalGeneralSettingsPage;
 	}
@@ -123,7 +123,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$oldPassword, $newPassword, $this->getSession()
 		);
 	}
-	
+
 	/**
 	 * @When the user changes the password to :newPassword entering the wrong current password :wrongPassword using the webUI
 	 * @Given the user has changed the password to :newPassword entering the wrong current password :wrongPassword using the webUI

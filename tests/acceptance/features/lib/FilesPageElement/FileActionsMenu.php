@@ -88,8 +88,8 @@ class FileActionsMenu extends OwncloudPage {
 	 * @param string $xpathToWaitFor wait for this element to appear before returning
 	 * @param int $timeout_msec
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function rename(
 		$xpathToWaitFor = null, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
@@ -155,6 +155,7 @@ class FileActionsMenu extends OwncloudPage {
 		$detailsBtn->focus();
 		$detailsBtn->click();
 	}
+
 	/**
 	 * clicks the decline share button
 	 *

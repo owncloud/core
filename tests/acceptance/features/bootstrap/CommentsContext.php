@@ -77,7 +77,7 @@ class CommentsContext implements Context {
 			"uploads"
 		);
 		$this->featureContext->setResponse($response);
-		$responseHeaders =  $response->getHeaders();
+		$responseHeaders = $response->getHeaders();
 		if (isset($responseHeaders['Content-Location'][0])) {
 			$commentUrl = $responseHeaders['Content-Location'][0];
 			$this->lastCommentId = \substr(
@@ -246,7 +246,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userDeletesLastComment($user=null) {
+	public function userDeletesLastComment($user = null) {
 		if ($user === null) {
 			$user = $this->featureContext->getCurrentUser();
 		}
@@ -262,7 +262,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasDeletedLastComment($user=null) {
+	public function userHasDeletedLastComment($user = null) {
 		$this->userDeletesLastComment($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe("204");
 	}
@@ -302,7 +302,7 @@ class CommentsContext implements Context {
 	 */
 	public function theResponseShouldContainOnlyComments($number) {
 		$response = $this->featureContext->getResponse();
-		if (\count($response) !== (int)$number) {
+		if (\count($response) !== (int) $number) {
 			throw new \Exception(
 				"Found more comments than $number (" . \count($response) . ")"
 			);

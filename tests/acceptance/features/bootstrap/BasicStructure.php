@@ -505,7 +505,7 @@ trait BasicStructure {
 
 	/**
 	 * returns the complete DAV path including the base path e.g. owncloud-core/remote.php/dav
-
+	 *
 	 * @return string
 	 */
 	public function getDAVPathIncludingBasePath() {
@@ -596,8 +596,8 @@ trait BasicStructure {
 	/**
 	 * @param string $storageName
 	 *
-	 * @throws Exception
 	 * @return integer
+	 * @throws Exception
 	 */
 	public function getStorageId($storageName) {
 		if (\array_key_exists($storageName, $this->getStorageIds())) {
@@ -753,8 +753,8 @@ trait BasicStructure {
 	/**
 	 * disable CSRF
 	 *
-	 * @throws Exception
 	 * @return string the previous setting of csrf.disabled
+	 * @throws Exception
 	 */
 	public function disableCSRF() {
 		return $this->setCSRFDotDisabled('true');
@@ -763,8 +763,8 @@ trait BasicStructure {
 	/**
 	 * enable CSRF
 	 *
-	 * @throws Exception
 	 * @return string the previous setting of csrf.disabled
+	 * @throws Exception
 	 */
 	public function enableCSRF() {
 		return $this->setCSRFDotDisabled('false');
@@ -775,8 +775,8 @@ trait BasicStructure {
 	 *
 	 * @param string $setting "true", "false" or "" to delete the setting
 	 *
-	 * @throws Exception
 	 * @return string the previous setting of csrf.disabled
+	 * @throws Exception
 	 */
 	public function setCSRFDotDisabled($setting) {
 		$oldCSRFSetting = $this->getSystemConfigValue('csrf.disabled');
@@ -1472,7 +1472,7 @@ trait BasicStructure {
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['displayname'];
 		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
-			return (string)$this->createdRemoteUsers[$userName]['displayname'];
+			return (string) $this->createdRemoteUsers[$userName]['displayname'];
 		} elseif ($userName === 'regularuser') {
 			return 'Regular User';
 		} elseif ($userName === 'user0') {
@@ -1515,7 +1515,7 @@ trait BasicStructure {
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['email'];
 		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
-			return (string)$this->createdRemoteUsers[$userName]['email'];
+			return (string) $this->createdRemoteUsers[$userName]['email'];
 		} elseif ($userName === 'regularuser') {
 			return 'regularuser@example.org';
 		} elseif ($userName === 'user0') {
@@ -1538,6 +1538,7 @@ trait BasicStructure {
 	}
 
 	// TODO do similar for other usernames for e.g. %regularuser% or %test-user-1%
+
 	/**
 	 * @param string $functionalUsername
 	 *
@@ -1684,6 +1685,7 @@ trait BasicStructure {
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
+
 	/**
 	 * @When the administrator deletes file :path in local storage using the testing API
 	 *
@@ -1840,7 +1842,7 @@ trait BasicStructure {
 		);
 
 		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
-		$fileContent = (string)$fileContent->data->element->contentUrlEncoded;
+		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($fileContent);
 
 		Assert::assertSame(
@@ -2263,7 +2265,7 @@ trait BasicStructure {
 		$configkeyList = $this->getConfigKeyList($appID);
 		foreach ($configkeyList as $config) {
 			if ($config['configkey'] === $key) {
-				return  true;
+				return true;
 			}
 		}
 		return false;
@@ -2484,7 +2486,7 @@ trait BasicStructure {
 	public function runFunctionOnEveryServer($callback) {
 		$previousServer = $this->getCurrentServer();
 		$result = [];
-		foreach (['LOCAL','REMOTE'] as $server) {
+		foreach (['LOCAL', 'REMOTE'] as $server) {
 			$this->usingServer($server);
 			if (($server === 'LOCAL')
 				|| $this->federatedServerExists()

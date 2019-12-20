@@ -66,8 +66,8 @@ class GroupList extends OwncloudPage {
 	 *
 	 * @param string $name
 	 *
-	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function selectGroup($name) {
 		$name = $this->quotedText($name);
@@ -92,8 +92,8 @@ class GroupList extends OwncloudPage {
 	 * @param string $name
 	 * @param bool $confirm
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function deleteGroup($name, $confirm) {
 		$groupLi = $this->selectGroup($name);
@@ -126,10 +126,10 @@ class GroupList extends OwncloudPage {
 
 	/**
 	 *
-	 * @param string  $groupName
+	 * @param string $groupName
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function addGroup($groupName) {
 		$addLink = $this->find("xpath", $this->addGroupXpath);

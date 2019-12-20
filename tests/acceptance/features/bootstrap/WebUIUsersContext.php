@@ -132,7 +132,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminCreatesAUserUsingTheWebUI(
-		$attemptTo, $username, $password, $email=null, TableNode $groupsTable=null
+		$attemptTo, $username, $password, $email = null, TableNode $groupsTable = null
 	) {
 		$password = $this->featureContext->getActualPassword($password);
 		if ($groupsTable !== null) {
@@ -195,7 +195,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminCreatesAUserUsingWithoutAPasswordTheWebUI(
-		$attemptTo, $username, $email, TableNode $groupsTable=null
+		$attemptTo, $username, $email, TableNode $groupsTable = null
 	) {
 		$this->theAdminCreatesAUserUsingTheWebUI(
 			$attemptTo, $username, null, $email, $groupsTable

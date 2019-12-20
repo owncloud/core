@@ -785,7 +785,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 					break;
 				} elseif ($response->getStatusCode() === 423) {
 					$message = "INFORMATION: file '" . $file['name'] .
-					"' is locked";
+						"' is locked";
 					\error_log($message);
 				} else {
 					throw new \Exception(
@@ -929,9 +929,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			if ($currentNotificationsCount > $previousNotificationsCount) {
 				$message
 					= "Upload overwriting $name" .
-					  " and got $currentNotificationsCount" .
-					  " notifications including " .
-					  \end($notifications) . "\n";
+					" and got $currentNotificationsCount" .
+					" notifications including " .
+					\end($notifications) . "\n";
 				echo $message;
 				\error_log($message);
 				$previousNotificationsCount = $currentNotificationsCount;
@@ -1918,9 +1918,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @see WebDavAssert::assertContentOfRemoteAndLocalFileIsSame
-	 * uses the current user to download the remote file
-	 *
 	 * @param string $remoteFile
 	 * @param string $localFile
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
@@ -1929,6 +1926,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 * @throws \Exception
+	 * @see WebDavAssert::assertContentOfRemoteAndLocalFileIsSame
+	 * uses the current user to download the remote file
+	 *
 	 */
 	private function assertContentOfRemoteAndLocalFileIsSame(
 		$remoteFile, $localFile, $shouldBeSame = true, $checkOnRemoteServer = false
@@ -1951,9 +1951,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @see WebDavAssert::assertContentOfDAVFileAndSkeletonFileOnSUT
-	 * uses the current user to download the remote file
-	 *
 	 * @param string $remoteFile
 	 * @param string $fileInSkeletonFolder
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
@@ -1962,6 +1959,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 * @throws \Exception
+	 * @see WebDavAssert::assertContentOfDAVFileAndSkeletonFileOnSUT
+	 * uses the current user to download the remote file
+	 *
 	 */
 	private function assertContentOfDAVFileAndSkeletonFileOnSUT(
 		$remoteFile,
@@ -2069,8 +2069,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $action_label
 	 *
-	 * @throws \Exception
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserClicksTheFileActionOnTheWebui($action_label) {
 		switch ($action_label) {

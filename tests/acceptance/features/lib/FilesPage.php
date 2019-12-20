@@ -81,9 +81,9 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @return void
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		throw new \Exception("not implemented in FilesPage");
@@ -92,7 +92,7 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * @param Session $session
 	 * @param Factory $factory
-	 * @param array   $parameters
+	 * @param array $parameters
 	 */
 	public function __construct(
 		Session $session, Factory $factory, array $parameters = []
@@ -116,8 +116,8 @@ class FilesPage extends FilesPageBasic {
 	 * @param string $name
 	 * @param int $timeoutMsec
 	 *
-	 * @throws ElementNotFoundException|\Exception
 	 * @return string name of the created file
+	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
 		Session $session, $name = null,
@@ -147,8 +147,8 @@ class FilesPage extends FilesPageBasic {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getCreateFolderTooltip() {
 		$newFolderTooltip = $this->find("xpath", $this->newFolderTooltipXpath);
@@ -175,8 +175,8 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * gets a sharing dialog object
 	 *
-	 * @throws ElementNotFoundException
 	 * @return SharingDialog
+	 * @throws ElementNotFoundException
 	 */
 	public function getSharingDialog() {
 		return $this->getPage("FilesPageElement\\SharingDialog");
@@ -200,9 +200,9 @@ class FilesPage extends FilesPageBasic {
 	 * closes an open details dialog
 	 * the details dialog contains the comments, sharing, versions etc tabs
 	 *
+	 * @return void
 	 * @throws ElementNotFoundException
 	 * if no sharing dialog is open
-	 * @return void
 	 */
 	public function closeDetailsDialog() {
 		$this->getDetailsDialog()->closeDetailsDialog();
@@ -344,6 +344,7 @@ class FilesPage extends FilesPageBasic {
 
 		return $this;
 	}
+
 	/**
 	 * Browse to Home Page by clicking on home icon.
 	 *
@@ -393,8 +394,8 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * waits till the upload progressbar is not visible anymore
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function waitForUploadProgressbarToFinish() {
 		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();

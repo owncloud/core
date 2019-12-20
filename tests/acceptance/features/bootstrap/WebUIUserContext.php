@@ -32,7 +32,7 @@ require_once 'bootstrap.php';
  * Context for steps associated with the user logged in to the WebUI
  */
 class WebUIUserContext extends RawMinkContext implements Context {
-	
+
 	/**
 	 *
 	 * @var OwncloudPage
@@ -47,7 +47,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	public function __construct(OwncloudPage $owncloudPage) {
 		$this->owncloudPage = $owncloudPage;
 	}
-	
+
 	/**
 	 * @Then :displayname should be shown as the name of the current user on the WebUI
 	 *
@@ -62,7 +62,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 			"displayed username should be '$displayname' but it is '$actualUserName'"
 		);
 	}
-	
+
 	/**
 	 * @Then /^the display name should (not|)\s?be visible on the WebUI$/
 	 *

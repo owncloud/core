@@ -70,9 +70,9 @@ class SharedWithYouPage extends FilesPageBasic {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @return void
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		throw new \Exception("not implemented in SharedWithYouPage");

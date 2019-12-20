@@ -32,11 +32,11 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  */
 class NotificationsEnabledOwncloudPage extends OwncloudPage {
 	private $notificationsButtonXpath = "//div[contains(@class,'notifications-button')]";
-	
+
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	private function findNotificationsButton() {
 		$button = $this->waitTillElementIsNotNull($this->notificationsButtonXpath);

@@ -84,6 +84,7 @@ class TrashbinContext implements Context {
 			204, $response->getStatusCode()
 		);
 	}
+
 	/**
 	 * Get files list from the response from trashbin api
 	 *
@@ -101,7 +102,7 @@ class TrashbinContext implements Context {
 				$successPropStat = \array_filter(
 					$propStats, static function (SimpleXMLElement $propStat) {
 						$status = $propStat->xpath('./d:status');
-						return (string)$status[0] === 'HTTP/1.1 200 OK';
+						return (string) $status[0] === 'HTTP/1.1 200 OK';
 					}
 				);
 				if (isset($successPropStat[0])) {
@@ -117,16 +118,17 @@ class TrashbinContext implements Context {
 				}
 
 				return [
-					'href' => (string)$href,
-					'name' => isset($name[0]) ? (string)$name[0] : null,
-					'mtime' => isset($mtime[0]) ? (string)$mtime[0] : null,
-					'original-location' => isset($originalLocation[0]) ? (string)$originalLocation[0] : null
+					'href' => (string) $href,
+					'name' => isset($name[0]) ? (string) $name[0] : null,
+					'mtime' => isset($mtime[0]) ? (string) $mtime[0] : null,
+					'original-location' => isset($originalLocation[0]) ? (string) $originalLocation[0] : null
 				];
 			}, $xmlElements
 		);
 
 		return $files;
 	}
+
 	/**
 	 * List trashbin folder
 	 *
@@ -162,7 +164,7 @@ class TrashbinContext implements Context {
 		$files = \array_filter(
 			$files, static function ($element) use ($user, $path) {
 				$path = \ltrim($path, '/');
-				if ($path !==  '') {
+				if ($path !== '') {
 					$path .= '/';
 				}
 				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$path");
@@ -368,7 +370,7 @@ class TrashbinContext implements Context {
 	 *
 	 * @return int the number of items that were matched and requested for delete
 	 */
-	public function tryToDeleteFileFromTrashbin($user, $originalPath, $asUser=null, $password=null) {
+	public function tryToDeleteFileFromTrashbin($user, $originalPath, $asUser = null, $password = null) {
 		$asUser = $asUser ?? $user;
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');

@@ -51,6 +51,7 @@ class TrashbinPage extends FilesPageBasic {
 	 * @var FilesPageCRUD $filesPageCRUDFunctions
 	 */
 	protected $filesPageCRUDFunctions;
+
 	/**
 	 * @return string
 	 */
@@ -82,9 +83,9 @@ class TrashbinPage extends FilesPageBasic {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @return string
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return string
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
@@ -93,7 +94,7 @@ class TrashbinPage extends FilesPageBasic {
 	/**
 	 * @param Session $session
 	 * @param Factory $factory
-	 * @param array   $parameters
+	 * @param array $parameters
 	 */
 	public function __construct(
 		Session $session, Factory $factory, array $parameters = []
@@ -110,8 +111,8 @@ class TrashbinPage extends FilesPageBasic {
 	}
 
 	/**
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function findRestoreAllSelectedFilesBtn() {
 		$restoreAllSelectedBtn = $this->find(

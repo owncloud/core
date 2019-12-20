@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace Page;
 
 use Behat\Gherkin\Node\TableNode;
@@ -128,21 +129,21 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	public function checkRequiredAuthentication($requiredState) {
 		$checkbox = $this->find("xpath", $this->authRequiredCheckboxXpath);
 		$checkCheckbox = $this->findById($this->authRequiredCheckboxId);
-		
+
 		$this->assertElementNotNull(
 			$checkbox,
 			__METHOD__ .
 			" xpath $this->authRequiredCheckboxXpath " .
 			"could not find label for checkbox"
 		);
-		
+
 		$this->assertElementNotNull(
 			$checkCheckbox,
 			__METHOD__ .
 			" id $this->authRequiredCheckboxId " .
 			"could not find checkbox"
 		);
-		
+
 		if ($requiredState == 'true') {
 			if (!$checkCheckbox->isChecked()) {
 				$checkbox->click();

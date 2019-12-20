@@ -79,8 +79,8 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement|NULL
+	 * @throws ElementNotFoundException
 	 */
 	private function findShareWithField() {
 		$shareWithField = $this->find("xpath", $this->shareWithFieldXpath);
@@ -156,8 +156,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param string $user
 	 * @param string $type
 	 *
-	 * @throws \Exception
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function getExpirationDateFor($user, $type = 'user') {
 		$field = $this->getExpirationFieldFor($user, $type);
@@ -342,8 +342,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param int $maxRetries
 	 * @param boolean $quiet
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function shareWithUserOrGroup(
 		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
@@ -391,8 +391,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param int $maxRetries
 	 * @param boolean $quiet
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function shareWithUser(
 		$name, Session $session, $maxRetries = 5, $quiet = false
@@ -410,8 +410,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param int $maxRetries
 	 * @param boolean $quiet
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function shareWithRemoteUser(
 		$name, Session $session, $maxRetries = 5, $quiet = false
@@ -429,8 +429,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param int $maxRetries
 	 * @param boolean $quiet
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function shareWithGroup(
 		$name, Session $session, $maxRetries = 5, $quiet = false
@@ -448,8 +448,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @param Session $session
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setSharingPermissions(
 		$userOrGroup,
@@ -477,8 +477,8 @@ class SharingDialog extends OwncloudPage {
 		$this->assertElementNotNull(
 			$showCrudsBtn,
 			__METHOD__
-				. " xpath $this->showCrudsXpath could not find show-cruds button for user "
-				. $shareReceiverName
+			. " xpath $this->showCrudsXpath could not find show-cruds button for user "
+			. $shareReceiverName
 		);
 		$showCrudsBtn->click();
 		foreach ($permissions as $permission => $value) {
@@ -541,8 +541,8 @@ class SharingDialog extends OwncloudPage {
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @param Session $session
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function checkSharingPermissions(
 		$userOrGroup,
@@ -590,8 +590,8 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * gets the text of the tooltip associated with the "share-with" input
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getShareWithTooltip() {
 		$shareWithField = $this->findShareWithField();
@@ -611,8 +611,8 @@ class SharingDialog extends OwncloudPage {
 	 * gets the Element with the information about who has shared the current
 	 * file/folder. This Element will contain the Avatar and some text.
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function findSharerInformationItem() {
 		$sharerInformation = $this->find("xpath", $this->sharerInformationXpath);
@@ -629,8 +629,8 @@ class SharingDialog extends OwncloudPage {
 	 * gets the group that the file/folder was shared with
 	 * and the user that shared it
 	 *
-	 * @throws \Exception
 	 * @return array ["sharedWithGroup" => string, "sharer" => string]
+	 * @throws \Exception
 	 */
 	public function getSharedWithGroupAndSharerName() {
 		if ($this->sharedWithGroupAndSharerName === null) {
@@ -662,8 +662,8 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * gets the display name of the user that has shared the current file/folder
 	 *
-	 * @throws \Exception
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function getSharerName() {
 		return $this->getSharedWithGroupAndSharerName()["sharer"];
@@ -672,8 +672,8 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * @param Session $session
 	 *
-	 * @throws ElementNotFoundException
 	 * @return PublicLinkTab
+	 * @throws ElementNotFoundException
 	 */
 	public function openPublicShareTab(Session $session) {
 		$publicLinksShareTab = $this->find("xpath", $this->publicLinksShareTabXpath);
@@ -766,9 +766,9 @@ class SharingDialog extends OwncloudPage {
 	 * @param Session $session
 	 * @param string $entryName
 	 *
+	 * @return void
 	 * @throws \Exception
 	 *
-	 * @return void
 	 */
 	public function checkThatNameIsNotInPublicLinkList(Session $session, $entryName) {
 		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
@@ -815,9 +815,9 @@ class SharingDialog extends OwncloudPage {
 	 * @param Session $session
 	 * @param integer $count
 	 *
+	 * @return void
 	 * @throws \Exception
 	 *
-	 * @return void
 	 */
 	public function checkPublicLinkCount(Session $session, $count) {
 		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
@@ -900,7 +900,7 @@ class SharingDialog extends OwncloudPage {
 		);
 		return $item;
 	}
-	
+
 	/**
 	 * waits for the dialog to appear
 	 *

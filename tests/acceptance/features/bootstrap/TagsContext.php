@@ -468,7 +468,7 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function tagsShouldExistForUser($count, $user) {
-		if ((int)$count !== \count($this->requestTagsForUser($user))) {
+		if ((int) $count !== \count($this->requestTagsForUser($user))) {
 			throw new \Exception(
 				"Expected $count tags, got "
 				. \count($this->requestTagsForUser($user))
@@ -704,13 +704,13 @@ class TagsContext implements Context {
 			$fileID = $this->featureContext->getFileIdForPath($user, $fileName);
 		}
 		$properties = [
-						'oc:id',
-						'oc:display-name',
-						'oc:user-visible',
-						'oc:user-assignable',
-						'oc:user-editable',
-						'oc:can-assign'
-					  ];
+			'oc:id',
+			'oc:display-name',
+			'oc:user-visible',
+			'oc:user-assignable',
+			'oc:user-editable',
+			'oc:can-assign'
+		];
 		$appPath = '/systemtags-relations/files/';
 		$fullPath = $appPath . $fileID;
 		$response = WebDavHelper::propfind(
@@ -925,7 +925,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function fileHasNoTagsForUser($fileName, $adminOrUser=null, $user=null) {
+	public function fileHasNoTagsForUser($fileName, $adminOrUser = null, $user = null) {
 		if ($user === null) {
 			if ($adminOrUser === 'administrator') {
 				$user = $this->featureContext->getAdminUsername();

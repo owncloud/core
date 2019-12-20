@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace Page;
 
 use Behat\Mink\Session;
@@ -47,6 +48,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 		= '//label[@for="allow_share_dialog_user_enumeration_input"]';
 	protected $allowFindingYouViaAutocompleteCheckboxXpathCheckboxId
 		= 'allow_share_dialog_user_enumeration_input';
+
 	/**
 	 *
 	 * @param Session $session
@@ -94,6 +96,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 			$this->allowFindingYouViaAutocompleteCheckboxXpathCheckboxId
 		);
 	}
+
 	/**
 	 * there is no reliable loading indicator on the personal sharing settings page,
 	 * so just wait for files_sharing personal panel div to be there and all Ajax calls to finish

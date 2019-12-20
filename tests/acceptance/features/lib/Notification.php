@@ -30,16 +30,16 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * PageObject for a single notification
  */
 class Notification extends OwncloudPage {
-	
+
 	/**
 	 *
 	 * @var NodeElement
 	 */
 	private $notificationElement;
-	
+
 	private $buttonByTextXpath = "//button[text()='%s']";
 	private $notificationLinkXpath = "//a[@class='notification-link']";
-	
+
 	/**
 	 * sets the NodeElement for the current notification
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -59,9 +59,9 @@ class Notification extends OwncloudPage {
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 *
+	 * @return void
 	 * @throws ElementNotFoundException
 	 *
-	 * @return void
 	 */
 	public function followLink(
 		Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC

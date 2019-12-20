@@ -186,11 +186,11 @@ class OccContext implements Context {
 		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
 		if ($exitStatusCode !== 0) {
 			$msg = "The command was not successful, exit code was " .
-				   $exitStatusCode . ".\n" .
-				   "stdOut was: '" .
-				   $this->featureContext->getStdOutOfOccCommand() . "'\n" .
-				   "stdErr was: '" .
-				   $this->featureContext->getStdErrOfOccCommand() . "'\n";
+				$exitStatusCode . ".\n" .
+				"stdOut was: '" .
+				$this->featureContext->getStdOutOfOccCommand() . "'\n" .
+				"stdErr was: '" .
+				$this->featureContext->getStdErrOfOccCommand() . "'\n";
 			if (!empty($exceptions)) {
 				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
@@ -212,7 +212,7 @@ class OccContext implements Context {
 	 */
 	public function theCommandFailedWithExitCode($exitCode) {
 		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
-		if ($exitStatusCode !== (int)$exitCode) {
+		if ($exitStatusCode !== (int) $exitCode) {
 			throw new \Exception(
 				"The command was expected to fail with exit code $exitCode but got "
 				. $exitStatusCode
@@ -678,7 +678,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
-		$key, $value, $type="string"
+		$key, $value, $type = "string"
 	) {
 		$this->invokingTheCommand(
 			"config:system:set --value ${value} --type ${type} ${key}"

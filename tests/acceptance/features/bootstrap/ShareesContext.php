@@ -46,6 +46,7 @@ class ShareesContext implements Context {
 	 * @var OCSContext
 	 */
 	private $ocsContext;
+
 	/**
 	 * @When /^the user gets the sharees using the sharing API with parameters$/
 	 *

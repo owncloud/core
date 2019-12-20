@@ -77,9 +77,9 @@ class SharedByLinkPage extends FilesPageCRUD {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @return void
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		throw new \Exception("not implemented in SharedByLinkPage");
@@ -88,7 +88,7 @@ class SharedByLinkPage extends FilesPageCRUD {
 	/**
 	 * @param Session $session
 	 * @param Factory $factory
-	 * @param array   $parameters
+	 * @param array $parameters
 	 */
 	public function __construct(
 		Session $session, Factory $factory, array $parameters = []

@@ -155,11 +155,11 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCardDavHttpStatusCodeShouldBe($code) {
-		if ((int)$code !== $this->response->getStatusCode()) {
+		if ((int) $code !== $this->response->getStatusCode()) {
 			throw new \Exception(
 				\sprintf(
 					'Expected %s got %s',
-					(int)$code,
+					(int) $code,
 					$this->response->getStatusCode()
 				)
 			);

@@ -100,7 +100,7 @@ class WebDavLockingContext implements Context {
 		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:locktoken/d:href");
 		if (isset($xmlPart[0])) {
-			$this->tokenOfLastLock[$user][$file] = (string)$xmlPart[0];
+			$this->tokenOfLastLock[$user][$file] = (string) $xmlPart[0];
 		} else {
 			if ($expectToSucceed === true) {
 				Assert::fail("could not find lock token");
@@ -133,6 +133,7 @@ class WebDavLockingContext implements Context {
 	public function userHasLockedFile($user, $file, TableNode $properties) {
 		$this->lockFile($user, $file, $properties, false, true);
 	}
+
 	/**
 	 * @Given the public has locked the last public shared file/folder setting following properties
 	 *
@@ -142,7 +143,7 @@ class WebDavLockingContext implements Context {
 	 */
 	public function publicHasLockedLastSharedFile(TableNode $properties) {
 		$this->lockFile(
-			(string)$this->featureContext->getLastShareData()->data->token,
+			(string) $this->featureContext->getLastShareData()->data->token,
 			"/", $properties, true
 		);
 	}
@@ -156,7 +157,7 @@ class WebDavLockingContext implements Context {
 	 */
 	public function publicLocksLastSharedFile(TableNode $properties) {
 		$this->lockFile(
-			(string)$this->featureContext->getLastShareData()->data->token,
+			(string) $this->featureContext->getLastShareData()->data->token,
 			"/", $properties, true, false
 		);
 	}
@@ -173,7 +174,7 @@ class WebDavLockingContext implements Context {
 		$file, TableNode $properties
 	) {
 		$this->lockFile(
-			(string)$this->featureContext->getLastShareData()->data->token,
+			(string) $this->featureContext->getLastShareData()->data->token,
 			$file, $properties, true
 		);
 	}
@@ -191,7 +192,7 @@ class WebDavLockingContext implements Context {
 		$file, $publicWebDAVAPIVersion, TableNode $properties
 	) {
 		$this->lockFile(
-			(string)$this->featureContext->getLastShareData()->data->token,
+			(string) $this->featureContext->getLastShareData()->data->token,
 			$file, $properties, true, false
 		);
 	}
@@ -239,7 +240,7 @@ class WebDavLockingContext implements Context {
 	public function unlockItemWithLastPublicLockOfOtherItemUsingWebDavAPI(
 		$user, $itemToUnlock, $itemToUseLockOf
 	) {
-		$lockOwner = (string)$this->featureContext->getLastShareData()->data->token;
+		$lockOwner = (string) $this->featureContext->getLastShareData()->data->token;
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user, $itemToUnlock, $lockOwner, $itemToUseLockOf
 		);
@@ -290,7 +291,7 @@ class WebDavLockingContext implements Context {
 	public function unlockItemAsPublicWithLastLockOfUserAndItemUsingWebDavAPI(
 		$itemToUnlock, $lockOwner, $itemToUseLockOf
 	) {
-		$user = (string)$this->featureContext->getLastShareData()->data->token;
+		$user = (string) $this->featureContext->getLastShareData()->data->token;
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user, $itemToUnlock, $lockOwner, $itemToUseLockOf, true
 		);
@@ -304,7 +305,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockItemAsPublicUsingWebDavAPI($itemToUnlock) {
-		$user = (string)$this->featureContext->getLastShareData()->data->token;
+		$user = (string) $this->featureContext->getLastShareData()->data->token;
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user, $itemToUnlock, $user, $itemToUnlock, true
 		);
@@ -417,11 +418,12 @@ class WebDavLockingContext implements Context {
 	public function publicUploadFileSendingLockTokenOfPublic(
 		$filename, $content, $itemToUseLockOf, $publicWebDAVAPIVersion
 	) {
-		$lockOwner = (string)$this->featureContext->getLastShareData()->data->token;
+		$lockOwner = (string) $this->featureContext->getLastShareData()->data->token;
 		$this->publicUploadFileSendingLockTokenOfUser(
 			$filename, $content, $itemToUseLockOf, $lockOwner, $publicWebDAVAPIVersion
 		);
 	}
+
 	/**
 	 * @Then :count locks should be reported for file/folder :file of user :user by the WebDAV API
 	 *
@@ -447,7 +449,7 @@ class WebDavLockingContext implements Context {
 		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:response//d:lockdiscovery/d:activelock");
 		Assert::assertCount(
-			(int)$count, $xmlPart,
+			(int) $count, $xmlPart,
 			"expected $count lock(s) for '$file' but found " . \count($xmlPart)
 		);
 	}

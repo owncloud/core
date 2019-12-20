@@ -33,8 +33,8 @@ class GeneralErrorPage extends OwncloudPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getErrorMessage() {
 		$errorMessageElement = $this->find("xpath", $this->errorMessageXpath);

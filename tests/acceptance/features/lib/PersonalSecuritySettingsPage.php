@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace Page;
 
 use Behat\Mink\Session;
@@ -53,8 +54,8 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 *
 	 * @param string $appName
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function createNewAppPassword($appName) {
 		$this->fillField($this->appPasswordNameInputId, $appName);
@@ -97,8 +98,8 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 *
 	 * @param string $appName
 	 *
-	 * @throws \Exception
 	 * @return NodeElement
+	 * @throws \Exception
 	 */
 	public function getLinkedAppByName($appName) {
 		$appTrs = $this->findAll("xpath", $this->linkedAppsTrXpath);

@@ -36,7 +36,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;
-	
+
 	/**
 	 *
 	 * @var FeatureContext

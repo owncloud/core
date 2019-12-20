@@ -179,8 +179,8 @@ class OwncloudPage extends Page {
 	/**
 	 * Get the text of the first notification
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getNotificationText() {
 		$notificationElement = $this->findById($this->notificationId);
@@ -196,8 +196,8 @@ class OwncloudPage extends Page {
 	/**
 	 * Get the text of any notifications
 	 *
-	 * @throws ElementNotFoundException
 	 * @return array
+	 * @throws ElementNotFoundException
 	 */
 	public function getNotifications() {
 		$notificationsText = [];
@@ -216,8 +216,8 @@ class OwncloudPage extends Page {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getPageTitle() {
 		$title = $this->find('xpath', $this->titleXpath);
@@ -253,8 +253,8 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 *
-	 * @throws ElementNotFoundException
 	 * @return Page
+	 * @throws ElementNotFoundException
 	 */
 	public function openSettingsMenu(Session $session) {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
@@ -278,8 +278,8 @@ class OwncloudPage extends Page {
 	/**
 	 * finds the element that contains the displayname of the current user
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	protected function findUserDisplayNameElement() {
 		$displayNameElement = $this->findById($this->userNameDisplayId);
@@ -295,8 +295,8 @@ class OwncloudPage extends Page {
 	/**
 	 * returns the displayname (Full Name or username) of the current user
 	 *
-	 * @throws ElementNotFoundException
 	 * @return string
+	 * @throws ElementNotFoundException
 	 */
 	public function getMyDisplayname() {
 		return $this->getTrimmedText($this->findUserDisplayNameElement());
@@ -312,8 +312,8 @@ class OwncloudPage extends Page {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	protected function findAvatarElement() {
 		$avatarElement = $this->find("xpath", $this->avatarImgXpath);
@@ -344,8 +344,8 @@ class OwncloudPage extends Page {
 	 * @param Session $session
 	 * @param string $searchTerm
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function search($session, $searchTerm) {
 		$searchbox = $this->findById($this->searchBoxId);
@@ -575,9 +575,9 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 *
-	 * @see resetSumStartedAjaxRequests()
-	 * @see getSumStartedAjaxRequests()
 	 * @return void
+	 * @see getSumStartedAjaxRequests()
+	 * @see resetSumStartedAjaxRequests()
 	 */
 	public function initAjaxCounters(
 		Session $session
@@ -620,8 +620,8 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 *
-	 * @see initAjaxCounters()
 	 * @return void
+	 * @see initAjaxCounters()
 	 */
 	public function resetSumStartedAjaxRequests(Session $session) {
 		$this->assertSumStartedAjaxRequestsIsDefined($session);
@@ -633,8 +633,8 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 *
-	 * @see initAjaxCounters()
 	 * @return int
+	 * @see initAjaxCounters()
 	 */
 	public function getSumStartedAjaxRequests(Session $session) {
 		$this->assertSumStartedAjaxRequestsIsDefined($session);
@@ -645,9 +645,9 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 *
-	 * @see initAjaxCounters()
-	 * @throws \Exception
 	 * @return void
+	 * @throws \Exception
+	 * @see initAjaxCounters()
 	 */
 	private function assertSumStartedAjaxRequestsIsDefined(Session $session) {
 		$sumStartedAjaxRequestsIsUndefined = $session->evaluateScript(
@@ -731,7 +731,7 @@ class OwncloudPage extends Page {
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end && $result !== 0) {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$result = (int)$session->evaluateScript("jQuery.scrolling");
+			$result = (int) $session->evaluateScript("jQuery.scrolling");
 			$currentTime = \microtime(true);
 		}
 		if ($currentTime > $end) {
@@ -755,8 +755,8 @@ class OwncloudPage extends Page {
 	 * @param string $value
 	 * @param Session $session
 	 *
-	 * @throws \Exception
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function fillFieldAndKeepFocus(NodeElement $element, $value, $session) {
 		$driver = $session->getDriver();
@@ -795,8 +795,8 @@ class OwncloudPage extends Page {
 	 *
 	 * @param NodeElement $element
 	 *
-	 * @throws \Exception
 	 * @return string text of the element with any whitespace trimmed
+	 * @throws \Exception
 	 */
 	public function getTrimmedText(NodeElement $element) {
 		return \trim($element->getText());
@@ -836,8 +836,8 @@ class OwncloudPage extends Page {
 	 * @param NodeElement $element
 	 * @param string $message
 	 *
-	 * @throws ElementNotFoundException
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function assertElementNotNull($element, $message) {
 		if ($element === null) {

@@ -338,7 +338,7 @@ trait WebDav {
 		}
 
 		if ($password === null) {
-			$password  = $this->getPasswordForUser($user);
+			$password = $this->getPasswordForUser($user);
 		}
 		return WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(),
@@ -431,7 +431,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function setHttpTimeout($timeout) {
-		$this->httpRequestTimeout = (int)$timeout;
+		$this->httpRequestTimeout = (int) $timeout;
 	}
 
 	/**
@@ -440,8 +440,8 @@ trait WebDav {
 	 * @param string $method
 	 * @param int $seconds
 	 *
-	 * @throws Exception
 	 * @return void
+	 * @throws Exception
 	 */
 	public function slowdownDavRequests($method, $seconds) {
 		if ($this->oldDavSlowdownSetting === null) {
@@ -702,7 +702,7 @@ trait WebDav {
 	 */
 	public function sizeOfDownloadedFileShouldBe($size) {
 		Assert::assertEquals(
-			$size, \strlen((string)$this->response->getBody())
+			$size, \strlen((string) $this->response->getBody())
 		);
 	}
 
@@ -715,7 +715,7 @@ trait WebDav {
 	 */
 	public function downloadedContentShouldEndWith($content) {
 		Assert::assertEquals(
-			$content, \substr((string)$this->response->getBody(), -\strlen($content))
+			$content, \substr((string) $this->response->getBody(), -\strlen($content))
 		);
 	}
 
@@ -728,7 +728,7 @@ trait WebDav {
 	 */
 	public function downloadedContentShouldBe($content) {
 		Assert::assertEquals(
-			$content, (string)$this->response->getBody()
+			$content, (string) $this->response->getBody()
 		);
 	}
 
@@ -1084,10 +1084,10 @@ trait WebDav {
 				$expectedKey, $result, "response does not have expected key '$expectedKey'"
 			);
 			$expectedValue = $this->substituteInLineCodes(
-				$row[1], ['preg_quote' => ['/'] ]
+				$row[1], ['preg_quote' => ['/']]
 			);
 			Assert::assertNotFalse(
-				(bool)\preg_match($expectedValue, $result[$expectedKey]),
+				(bool) \preg_match($expectedValue, $result[$expectedKey]),
 				"'$expectedValue' does not match '$result[$expectedKey]'"
 			);
 		}
@@ -1206,9 +1206,9 @@ trait WebDav {
 	 * @param string $shouldOrNot
 	 * @param TableNode $elements
 	 *
+	 * @return void
 	 * @throws InvalidArgumentException
 	 *
-	 * @return void
 	 */
 	public function userShouldSeeTheElements($user, $shouldOrNot, $elements) {
 		$should = ($shouldOrNot !== "not");
@@ -1222,9 +1222,9 @@ trait WebDav {
 	 * @param TableNode $elements
 	 * @param boolean $expectedToBeListed
 	 *
+	 * @return void
 	 * @throws InvalidArgumentException
 	 *
-	 * @return void
 	 */
 	public function checkElementList(
 		$user, $elements, $expectedToBeListed = true
@@ -1372,7 +1372,7 @@ trait WebDav {
 		$user,
 		$source,
 		$destination,
-		$headers=[],
+		$headers = [],
 		$noOfChunks = 0
 	) {
 		$chunkingVersion = $this->chunkingToUse;
@@ -1455,7 +1455,7 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
-	 * @param int  $noOfChunks
+	 * @param int $noOfChunks
 	 * @param string $chunkingVersion old|v1|new|v2 null for autodetect
 	 *
 	 * @return void
@@ -2629,12 +2629,12 @@ trait WebDav {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$expectedHeaderValue = $this->substituteInLineCodes(
-				$expectedHeaderValue, ['preg_quote' => ['/'] ]
+				$expectedHeaderValue, ['preg_quote' => ['/']]
 			);
 
 			$returnedHeader = $this->response->getHeader($headerName);
 			Assert::assertNotFalse(
-				(bool)\preg_match($expectedHeaderValue, $returnedHeader),
+				(bool) \preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
 			);
 		}
@@ -2792,7 +2792,7 @@ trait WebDav {
 		if ($multistatusResults === null) {
 			$multistatusResults = [];
 		}
-		Assert::assertEquals((int)$numFiles, \count($multistatusResults));
+		Assert::assertEquals((int) $numFiles, \count($multistatusResults));
 	}
 
 	/**
@@ -2836,7 +2836,7 @@ trait WebDav {
 		$fullWebDavPath = \trim(
 			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH),
 			"/"
-		) . "/" ;
+		) . "/";
 
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];

@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace Page;
 
 use Behat\Mink\Element\NodeElement;
@@ -94,6 +95,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $enforceExpirationDateUserShareCheckboxId = 'shareapiEnforceExpireDateUserShare';
 	protected $enforceExpirationDateGroupShareCheckboxXpath = '//span[@id="setDefaultExpireDateGroupShare"]//label[contains(text(),"expiration date")]';
 	protected $enforceExpirationDateGroupShareCheckboxId = 'shareapiEnforceExpireDateGroupShare';
+
 	/**
 	 * toggle the Share API
 	 *
@@ -456,8 +458,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement|NULL
+	 * @throws ElementNotFoundException
 	 */
 	private function findUserShareExpirationField() {
 		$expirationDateField = $this->find("xpath", $this->userShareExpirationDateFieldXpath);
@@ -471,8 +473,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 
 	/**
 	 *
-	 * @throws ElementNotFoundException
 	 * @return NodeElement|NULL
+	 * @throws ElementNotFoundException
 	 */
 	private function findGroupShareExpirationField() {
 		$expirationDateField = $this->find("xpath", $this->groupShareExpirationDateFieldXpath);
