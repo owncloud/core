@@ -17,10 +17,10 @@ Feature: remove a user from a group
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "<group_id>"
     Examples:
-      | group_id     | comment                               |
-      | simplegroup  | nothing special here                  |
-      | España§àôœ€  | special European and other characters |
-      | नेपाली       | Unicode group name                    |
+      | group_id    | comment                               |
+      | simplegroup | nothing special here                  |
+      | España§àôœ€ | special European and other characters |
+      | नेपाली      | Unicode group name                    |
 
   Scenario Outline: admin removes a user from a group
     Given user "brand-new-user" has been created with default attributes and skeleton files

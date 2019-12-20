@@ -7,8 +7,8 @@ Feature: Locks
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
     Given these users have been created without skeleton files:
-      |username      |
-      |brand-new-user|
+      | username       |
+      | brand-new-user |
 
   @files_sharing-app-required
   Scenario Outline: deleting a file in a public share of a locked folder

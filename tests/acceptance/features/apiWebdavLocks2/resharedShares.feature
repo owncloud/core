@@ -3,10 +3,10 @@ Feature: lock should propagate correctly if a share is reshared
 
   Background:
     Given these users have been created with default attributes and skeleton files:
-    | username |
-    | user0    |
-    | user1    |
-    | user2    |
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
 
   Scenario Outline: upload to a share that was locked by owner
     Given using <dav-path> DAV path

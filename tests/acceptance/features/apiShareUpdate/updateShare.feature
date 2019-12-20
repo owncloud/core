@@ -66,7 +66,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "user0 file" to "/randomfile.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | randomfile.txt |
-      | password | %public%    |
+      | password | %public%       |
     And user "user0" updates the last share using the sharing API with
       | expireDate | +3 days |
     Then the OCS status code should be "<ocs_status_code>"
@@ -569,15 +569,15 @@ Feature: sharing
     And the HTTP status code should be "<http_status_code>"
     When user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | item_type         | file           |
-      | item_source       | A_NUMBER       |
-      | share_type        | group          |
-      | file_target       | /textfile0.txt |
-      | permissions       | read, update, share  |
-      | mail_send         | 0              |
-      | uid_owner         | user0          |
-      | file_parent       | A_NUMBER       |
-      | displayname_owner | User Zero      |
+      | item_type         | file                |
+      | item_source       | A_NUMBER            |
+      | share_type        | group               |
+      | file_target       | /textfile0.txt      |
+      | permissions       | read, update, share |
+      | mail_send         | 0                   |
+      | uid_owner         | user0               |
+      | file_parent       | A_NUMBER            |
+      | displayname_owner | User Zero           |
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |

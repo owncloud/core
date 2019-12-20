@@ -34,7 +34,7 @@ Feature: Search
       | /upload😀 😁                  |
       | /upload😀 😁/upload😀 😁.txt  |
     But the search result should not contain these entries:
-      | /a-image.png             |
+      | /a-image.png |
     Examples:
       | dav_version |
       | old         |

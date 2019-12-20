@@ -29,7 +29,7 @@ Feature: get user groups
       | 0                    |
       | Admin & Finance (NP) |
       | admin:Pokhara@Nepal  |
-      | नेपाली                 |
+      | नेपाली               |
       | 😅 😆                |
     And the OCS status code should be "100"
     And the HTTP status code should be "200"

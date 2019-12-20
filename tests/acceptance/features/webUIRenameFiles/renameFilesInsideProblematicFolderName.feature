@@ -22,4 +22,4 @@ Feature: Renaming files inside a folder with problematic name
       | folder                |
       | 0                     |
       | 'single'quotes        |
-      | strängé नेपाली folder   |
+      | strängé नेपाली folder |

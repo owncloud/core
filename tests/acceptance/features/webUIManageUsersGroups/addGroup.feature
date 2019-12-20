@@ -52,12 +52,12 @@ Feature: Add group
     Then the group name <groupname> should be listed on the webUI
     And group <groupname> should exist
     Examples:
-      | groupname                    |
-      | "☺"                          |
-      | "☹"                          |
-      | "✍"                          |
-      | "⛷"                           |
-      | "⛹"                           |
+      | groupname |
+      | "☺"       |
+      | "☹"       |
+      | "✍"       |
+      | "⛷"       |
+      | "⛹"       |
 
   Scenario: adding multiple users to a group
     Given these users have been created without skeleton files:

@@ -40,4 +40,4 @@ Feature: the trashbin API is not available when the tech preview setting is disa
       | /textfile3.txt     |
       | /textfile4.txt     |
     But user "user0" should not see the following elements
-      | /textfile0.txt     |
+      | /textfile0.txt |

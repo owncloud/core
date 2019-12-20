@@ -61,17 +61,17 @@ Feature: Creation of tags for the files and folders
       | tag2 | normal |
 
   @files_sharing-app-required
-   Scenario: Add tags on skeleton file before sharing
-     Given these users have been created with skeleton files:
-       | username |
-       | user2    |
-       | user3    |
-     And the user re-logs in as "user2" using the webUI
-     And the user browses directly to display the details of file "lorem.txt" in folder "/"
-     When the user adds a tag "skeleton" to the file using the webUI
-     And the user shares file "lorem.txt" with user "user3" using the webUI
-     Then file "lorem (2).txt" should have the following tags for user "user3"
-       | skeleton | normal |
+  Scenario: Add tags on skeleton file before sharing
+    Given these users have been created with skeleton files:
+      | username |
+      | user2    |
+      | user3    |
+    And the user re-logs in as "user2" using the webUI
+    And the user browses directly to display the details of file "lorem.txt" in folder "/"
+    When the user adds a tag "skeleton" to the file using the webUI
+    And the user shares file "lorem.txt" with user "user3" using the webUI
+    Then file "lorem (2).txt" should have the following tags for user "user3"
+      | skeleton | normal |
 
   @files_sharing-app-required
   Scenario: Check for existence of tags in shared file
@@ -81,5 +81,5 @@ Feature: Creation of tags for the files and folders
     And the user adds a tag "Confidential" to the file using the webUI
     And the user shares file "randomfile.txt" with user "User Two" using the webUI
     Then file "/randomfile.txt" should have the following tags for user "user2"
-      | Confidential   | normal |
+      | Confidential | normal |
 

@@ -59,11 +59,11 @@ Feature: delete folder
     And user "user1" should be able to delete folder "/Top/ReceivedShares"
     And user "user1" should be able to delete folder "/Top"
     Examples:
-      | dav_version | share_folder        |
-      | old         | /ReceivedShares     |
-      | new         | /ReceivedShares     |
-      | old         | ReceivedShares      |
-      | new         | ReceivedShares      |
+      | dav_version | share_folder    |
+      | old         | /ReceivedShares |
+      | new         | /ReceivedShares |
+      | old         | ReceivedShares  |
+      | new         | ReceivedShares  |
 
   @files_sharing-app-required
   Scenario Outline: delete a folder when there is a default folder for received shares that is a multi-level path

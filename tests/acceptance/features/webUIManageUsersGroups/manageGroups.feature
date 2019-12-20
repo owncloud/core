@@ -22,13 +22,13 @@ Feature: manage groups
       | 0         |
       | false     |
     Then these groups should be listed on the webUI:
-      |groupname     |
-      |do-not-delete |
-      |do-not-delete2|
+      | groupname      |
+      | do-not-delete  |
+      | do-not-delete2 |
     But these groups should not be listed on the webUI:
-      |groupname|
-      |0        |
-      |false    |
+      | groupname |
+      | 0         |
+      | false     |
     And the administrator reloads the users page
     Then these groups should be listed on the webUI:
       | groupname      |
@@ -65,15 +65,15 @@ Feature: manage groups
       | hash#char |
       | q?mark    |
     Then these groups should be listed on the webUI:
-      |groupname     |
-      |do-not-delete |
-      |do-not-delete2|
+      | groupname      |
+      | do-not-delete  |
+      | do-not-delete2 |
     But these groups should not be listed on the webUI:
-      |groupname     |
-      |a/slash       |
-      |per%cent      |
-      |hash#char     |
-      |q?mark        |
+      | groupname |
+      | a/slash   |
+      | per%cent  |
+      | hash#char |
+      | q?mark    |
     And the administrator reloads the users page
     Then these groups should be listed on the webUI:
       | groupname      |
@@ -113,9 +113,9 @@ Feature: manage groups
       | quotes'     |
       | quotes"     |
     Then these groups should be listed on the webUI:
-      |groupname     |
-      |do-not-delete |
-      |do-not-delete2|
+      | groupname      |
+      | do-not-delete  |
+      | do-not-delete2 |
     But these groups should not be listed on the webUI:
       | groupname   |
       | grp1        |
@@ -196,7 +196,7 @@ Feature: manage groups
     But group "<group_id2>" should exist
     And group "<group_id3>" should exist
     Examples:
-      | group_id1            | group_id2            | group_id3 |
+      | group_id1            | group_id2            | group_id3            |
       | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |

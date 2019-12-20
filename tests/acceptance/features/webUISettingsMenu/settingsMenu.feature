@@ -15,7 +15,7 @@ Feature: add users
   Scenario: administrator should be able to see email of a user
     When the administrator enables the setting "Show email address" in the User Management page using the webUI
     Then the administrator should be able to see the email of these users in the User Management page:
-      | username | email        |
+      | username | email             |
       | user1    | user1@example.org |
       | user2    | user2@example.org |
 
@@ -62,18 +62,18 @@ Feature: add users
   Scenario: administrator should be able to see quota of user
     When the administrator enables the setting "Show quota field" in the User Management page using the webUI
     Then the administrator should be able to see the quota of these users in the User Management page:
-      | username |   quota   |
-      | user1    |   Default |
-      | user2    |   Default |
+      | username | quota   |
+      | user1    | Default |
+      | user2    | Default |
 
   Scenario: administrator should be able to see updated quota of user when enabled show quota field
     Given the administrator has changed the quota of user "user1" to "Unlimited"
     And the administrator has changed the quota of user "user2" to "5 GB"
     When the administrator enables the setting "Show quota field" in the User Management page using the webUI
     Then the administrator should be able to see the quota of these users in the User Management page:
-      | username |   quota     |
-      | user1    |   Unlimited |
-      | user2    |   5 GB      |
+      | username | quota     |
+      | user1    | Unlimited |
+      | user2    | 5 GB      |
 
   Scenario: administrator should not be able to see quota of user
     When the administrator disables the setting "Show quota field" in the User Management page using the webUI

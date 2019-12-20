@@ -36,7 +36,7 @@ Feature: sharing
     And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
   @public_link_share-feature-required
-  @issue-36055
+    @issue-36055
   Scenario Outline: Uploading file to a public upload-only share that was deleted does not work
     Given using <dav-path> DAV path
     And user "user0" has created a public link share with settings

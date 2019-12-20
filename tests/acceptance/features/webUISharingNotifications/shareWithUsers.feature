@@ -20,9 +20,9 @@ Feature: Sharing files and folders with internal users
     And user "user1" has shared folder "/a-folder" with user "user2"
     And user "user1" has shared file "/data.zip" with user "user2"
     Then the user should see 2 notifications on the webUI with these details
-      | title                                      |
+      | title                                 |
       | "User One" shared "a-folder" with you |
-      | "User One" shared "data.zip" with you      |
+      | "User One" shared "data.zip" with you |
 
   @smokeTest
   Scenario: Notification is gone after accepting a share

@@ -16,7 +16,7 @@ Feature: rename folders
     Then folder <to_folder_name> should be listed on the webUI
     Examples:
       | to_folder_name          |
-      | 'सिमप्ले फोल्देर$%#?&@'       |
+      | 'सिमप्ले फोल्देर$%#?&@' |
       | '"quotes1"'             |
       | "'quotes2'"             |
 
@@ -29,7 +29,7 @@ Feature: rename folders
     Then folder <to_name> should be listed on the webUI
     Examples:
       | from_name               | to_name                     |
-      | "strängé नेपाली folder"   | "strängé नेपाली folder-#?2"   |
+      | "strängé नेपाली folder" | "strängé नेपाली folder-#?2" |
       | "'single'quotes"        | "single-quotes"             |
 
   Scenario: Rename a folder using special characters and check its existence after page reload
@@ -66,7 +66,7 @@ Feature: rename folders
     And user "user1" has logged in using the webUI
     When the user renames the following folder using the webUI
       | from-name-parts | to-name-parts         |
-      | a-folder   | First 'single' quotes |
+      | a-folder        | First 'single' quotes |
       |                 | -then "double"        |
     And the user reloads the current page of the webUI
     Then the following folder should be listed on the webUI

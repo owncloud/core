@@ -240,7 +240,7 @@ Feature: deleting files and folders
     And it should not be possible to delete folder "<top_share_folder_on_ui>" using the webUI
     And as "user1" folder "<share_folder>/ShareThis" should exist
     Examples:
-      | share_folder        | top_share_folder_on_ui |other_folder1 | top_folder2 | other_folder2  |
-      | /ReceivedShares     | ReceivedShares         | Received     | Top         | ReceivedShares |
-      | ReceivedShares      | ReceivedShares         | Received     | Top         | ReceivedShares |
-      | /My/Received/Shares | My                     | M            | Received    | Shares         |
+      | share_folder        | top_share_folder_on_ui | other_folder1 | top_folder2 | other_folder2  |
+      | /ReceivedShares     | ReceivedShares         | Received      | Top         | ReceivedShares |
+      | ReceivedShares      | ReceivedShares         | Received      | Top         | ReceivedShares |
+      | /My/Received/Shares | My                     | M             | Received    | Shares         |

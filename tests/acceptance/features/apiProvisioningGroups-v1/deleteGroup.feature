@@ -15,10 +15,10 @@ Feature: delete groups
     And the HTTP status code should be "200"
     And group "<group_id>" should not exist
     Examples:
-      | group_id     | comment                               |
-      | simplegroup  | nothing special here                  |
-      | España§àôœ€  | special European and other characters |
-      | नेपाली       | Unicode group name                    |
+      | group_id    | comment                               |
+      | simplegroup | nothing special here                  |
+      | España§àôœ€ | special European and other characters |
+      | नेपाली      | Unicode group name                    |
 
   Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
@@ -57,7 +57,7 @@ Feature: delete groups
     But group "<group_id2>" should exist
     And group "<group_id3>" should exist
     Examples:
-      | group_id1            | group_id2            | group_id3 |
+      | group_id1            | group_id2            | group_id3            |
       | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |

@@ -74,7 +74,7 @@ Feature: PROPPATCH file/folder
     And a new browser session for "user0" has been started
     And the user has generated a new app password named "my-client"
     When the user "user0" requests these endpoints with "PROPPATCH" using the basic auth and generated app password then the status codes should be as listed
-      | endpoint                                      | http-code | body                                                                                                                  |
+      | endpoint                                      | http-code | body                                                                                                                                                                                                      |
       | /remote.php/webdav/textfile0.txt              | 207       | <?xml version="1.0"?><d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:set><d:prop><oc:favorite xmlns:oc="http://owncloud.org/ns">1</oc:favorite></d:prop></d:set></d:propertyupdate> |
       | /remote.php/dav/files/user0/textfile1.txt     | 207       | <?xml version="1.0"?><d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:set><d:prop><oc:favorite xmlns:oc="http://owncloud.org/ns">1</oc:favorite></d:prop></d:set></d:propertyupdate> |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 207       | <?xml version="1.0"?><d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:set><d:prop><oc:favorite xmlns:oc="http://owncloud.org/ns">1</oc:favorite></d:prop></d:set></d:propertyupdate> |

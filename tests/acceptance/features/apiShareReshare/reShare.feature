@@ -733,11 +733,11 @@ Feature: sharing
     And the response when user "user3" gets the info of the last share should include
       | expiration | +20 days |
     Examples:
-      | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code  |
-      | 1               | yes                 | yes                 | 100              |
-      | 2               | yes                 | yes                 | 200              |
-      | 1               | no                  | yes                 | 100              |
-      | 2               | no                  | yes                 | 200              |
+      | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code |
+      | 1               | yes                 | yes                 | 100             |
+      | 2               | yes                 | yes                 | 200             |
+      | 1               | no                  | yes                 | 100             |
+      | 2               | no                  | yes                 | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: Setting default expiry date and enforcement after the share is created
@@ -784,11 +784,11 @@ Feature: sharing
     And the response when user "user2" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
-      | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code  |
-      | 1               | yes                 | yes                 | +30 days             | 100              |
-      | 2               | yes                 | yes                 | +30 days             | 200              |
-      | 1               | no                  | yes                 |                      | 100              |
-      | 2               | no                  | yes                 |                      | 200              |
+      | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
+      | 1               | yes                 | yes                 | +30 days             | 100             |
+      | 2               | yes                 | yes                 | +30 days             | 200             |
+      | 1               | no                  | yes                 |                      | 100             |
+      | 2               | no                  | yes                 |                      | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: resharing group share with user using the sharing API with default expire date set and specifying expiration on share and with combinations of default/enforce expire date enabled

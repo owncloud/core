@@ -130,8 +130,8 @@ Feature: User can open the details panel for any file or folder
     When the user selects the breadcrumb for folder "<grand-parent>"
     Then folder "<parent>" should be listed on the webUI
     Examples:
-      | grand-parent  | parent       | child        | grand-child   |
-      | grand-parent  | parent       | child        | grand-child   |
-      | PARENT        | PARENT       | PARENT       | PARENT        |
-      | Grand parent  | grand child  | grand child  | grand child   |
-      | Folder12      | #fol3der     | FOL DER       | FoLdEr       |
+      | grand-parent | parent      | child       | grand-child |
+      | grand-parent | parent      | child       | grand-child |
+      | PARENT       | PARENT      | PARENT      | PARENT      |
+      | Grand parent | grand child | grand child | grand child |
+      | Folder12     | #fol3der    | FOL DER     | FoLdEr      |

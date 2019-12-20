@@ -283,7 +283,7 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And user "user1" should not see the following elements
-      | /textfile0%20(2).txt      |
+      | /textfile0%20(2).txt |
     When user "user1" gets the list of federated cloud shares using the sharing API
     Then the response should contain 0 entries
     When user "user1" gets the list of pending federated cloud shares using the sharing API
@@ -302,7 +302,7 @@ Feature: federated
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "user1" should see the following elements
-      | /textfile0%20(2).txt      |
+      | /textfile0%20(2).txt |
     When user "user1" gets the list of federated cloud shares using the sharing API
     Then the fields of the last response should include
       | id          | A_NUMBER                 |
@@ -330,7 +330,7 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And user "user1" should not see the following elements
-      | /textfile0%20(2).txt      |
+      | /textfile0%20(2).txt |
     When user "user1" gets the list of federated cloud shares using the sharing API
     Then the response should contain 0 entries
     When user "user1" gets the list of pending federated cloud shares using the sharing API
@@ -348,7 +348,7 @@ Feature: federated
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "user1" should not see the following elements
-      | /textfile0%20(2).txt      |
+      | /textfile0%20(2).txt |
     When user "user1" gets the list of pending federated cloud shares using the sharing API
     Then the fields of the last response should include
       | id          | A_NUMBER                                   |

@@ -13,10 +13,10 @@ Feature: remove a user from a group
     And the command output should contain the text 'Member "brand-new-user" removed from group "<group_id>"'
     And user "brand-new-user" should not belong to group "<group_id>"
     Examples:
-      | group_id     | comment                               |
-      | simplegroup  | nothing special here                  |
-      | España§àôœ€  | special European and other characters |
-      | नेपाली       | Unicode group name                    |
+      | group_id    | comment                               |
+      | simplegroup | nothing special here                  |
+      | España§àôœ€ | special European and other characters |
+      | नेपाली      | Unicode group name                    |
 
   Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
     Given user "brand-new-user" has been created with default attributes and skeleton files

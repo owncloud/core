@@ -69,11 +69,11 @@ Feature: restrict Sharing
     When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
       | share | no |
     Then dialog should be displayed on the webUI
-      | title | content               |
-      | Error while sharing |Group sharing is not allowed   |
+      | title               | content                      |
+      | Error while sharing | Group sharing is not allowed |
     When the user reloads the current page of the webUI
     Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
-      | share  | yes  |
+      | share | yes |
 
   Scenario: Editing create permission of existing share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"
@@ -83,11 +83,11 @@ Feature: restrict Sharing
     When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
       | create | no |
     Then dialog should be displayed on the webUI
-      | title | content               |
-      | Error while sharing |Group sharing is not allowed   |
+      | title               | content                      |
+      | Error while sharing | Group sharing is not allowed |
     When the user reloads the current page of the webUI
     Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
-      | create  | yes  |
+      | create | yes |
 
   Scenario: Deleting group share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"

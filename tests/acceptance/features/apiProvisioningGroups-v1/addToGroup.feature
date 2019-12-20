@@ -15,10 +15,10 @@ Feature: add users to group
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     Examples:
-      | group_id     | comment                               |
-      | simplegroup  | nothing special here                  |
-      | España§àôœ€  | special European and other characters |
-      | नेपाली       | Unicode group name                    |
+      | group_id    | comment                               |
+      | simplegroup | nothing special here                  |
+      | España§àôœ€ | special European and other characters |
+      | नेपाली      | Unicode group name                    |
 
   Scenario Outline: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files

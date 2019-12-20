@@ -228,10 +228,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
-      | path        | tmp                        |
-      | shareType   | group                      |
-      | shareWith   | grp1                       |
-      | permissions | share,create,update,read   |
+      | path        | tmp                      |
+      | shareType   | group                    |
+      | shareWith   | grp1                     |
+      | permissions | share,create,update,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "23"

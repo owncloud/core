@@ -44,9 +44,9 @@ Feature: get subadmins
   @issue-31276
   Scenario: normal user tries to get the subadmins of the group
     Given these users have been created with default attributes and skeleton files:
-      | username    |
-      | subadmin    |
-      | newuser     |
+      | username |
+      | subadmin |
+      | newuser  |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "newuser" gets all the subadmins of group "new-group" using the provisioning API
