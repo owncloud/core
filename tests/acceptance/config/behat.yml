@@ -145,6 +145,26 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
 
+    apiSharePublicLink1:
+      paths:
+        - '%paths.base%/../features/apiSharePublicLink1'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiSharePublicLink2:
+      paths:
+        - '%paths.base%/../features/apiSharePublicLink2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
     apiShareReshare:
       paths:
         - '%paths.base%/../features/apiShareReshare'
