@@ -15,6 +15,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "user1" should be disabled
 
+  @skipOnOcV10.3
   Scenario Outline: admin disables an user with special characters in the username
     Given these users have been created with skeleton files:
       | username   | email   |

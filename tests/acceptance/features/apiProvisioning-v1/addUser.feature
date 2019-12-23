@@ -16,6 +16,7 @@ Feature: add user
     And user "brand-new-user" should exist
     And user "brand-new-user" should be able to access a skeleton file
 
+  @skipOnOcV10.3
   Scenario Outline: admin creates a user with special characters in the username
     Given user "<username>" has been deleted
     When the administrator sends a user creation request for user "<username>" password "%alt1%" using the provisioning API
