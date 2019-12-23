@@ -44,14 +44,31 @@ class EncryptionContext implements Context {
 	private $occContext;
 
 	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	public function recreateMasterKeyUsingOccCommand() {
+		$this->featureContext->runOcc(['encryption:recreate-master-key', '-y']);
+	}
+
+	/**
 	 * @When the administrator successfully recreates the encryption masterkey using the occ command
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function adminRecreatesMasterKeyUsingOccCommand() {
+		$this->recreateMasterKeyUsingOccCommand();
+	}
+
+	/**
 	 * @Given the administrator has successfully recreated the encryption masterkey
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function recreateMasterKeyUsingOccCommand() {
-		$this->featureContext->runOcc(['encryption:recreate-master-key', '-y']);
+	public function adminHasRecreatedMasterKeyUsingOccCommand() {
+		$this->recreateMasterKeyUsingOccCommand();
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -59,14 +76,26 @@ class EncryptionContext implements Context {
 	 * @Given encryption has been enabled
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function encryptionHasBeenEnabled() {
 		$this->featureContext->runOcc(['encryption:enable']);
 	}
 
 	/**
+	 * @param $encryptionType
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function setEncryptionTypeUsingTheOccCommand($encryptionType) {
+		$this->featureContext->runOcc(
+			["encryption:select-encryption-type", $encryptionType, "-y"]
+		);
+	}
+
+	/**
 	 * @When the administrator sets the encryption type to :encryptionType using the occ command
-	 * @Given the administrator has set the encryption type to :encryptionType
 	 *
 	 * @param string $encryptionType
 	 *
@@ -74,19 +103,49 @@ class EncryptionContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand($encryptionType) {
-		$this->featureContext->runOcc(
-			["encryption:select-encryption-type", $encryptionType, "-y"]
-		);
+		$this->setEncryptionTypeUsingTheOccCommand($encryptionType);
+	}
+
+	/**
+	 * @Given the administrator has set the encryption type to :encryptionType
+	 *
+	 * @param string $encryptionType
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorHasSetEncryptionTypeToUsingTheOccCommand($encryptionType) {
+		$this->setEncryptionTypeUsingTheOccCommand($encryptionType);
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	public function encryptAllDataUsingTheOccCommand() {
+		$this->featureContext->runOcc(["encryption:encrypt-all", "-y"]);
 	}
 
 	/**
 	 * @When the administrator encrypts all data using the occ command
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorEncryptsAllDataUsingTheOccCommand() {
+		$this->encryptAllDataUsingTheOccCommand();
+	}
+
+	/**
 	 * @Given the administrator has encrypted all the data
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
-	public function theAdministratorEncryptsAllDataUsingTheOccCommand() {
-		$this->featureContext->runOcc(["encryption:encrypt-all", "-y"]);
+	public function theAdministratorHasEncryptedAllDataUsingTheOccCommand() {
+		$this->encryptAllDataUsingTheOccCommand();
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
