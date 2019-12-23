@@ -276,7 +276,7 @@ class FilesystemTest extends TestCase {
 		$this->assertSame($expected, Filesystem::isForbiddenFileOrDir($path, ['.htaccess']));
 	}
 
-	public function isFileBlacklistedDataRegex() {
+	public function isFileBlacklistedRegexData() {
 		return [
 			['/etc/foo/outlook.ptt',      [ '.*\.pst$', '.*dummy.*', '^sample.*', ], false],
 			['/etc/foo/outlook.pst',      [ '.*\.pst$', '.*dummy.*', '^sample.*', ], true],
@@ -293,7 +293,7 @@ class FilesystemTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider isFileBlacklistedDataRegex
+	 * @dataProvider isFileBlacklistedRegexData
 	 */
 	public function testIsFileBlacklistedRegex($path, $regex, $expected) {
 		$this->assertSame($expected, Filesystem::isForbiddenFileOrDir($path, $regex));

@@ -625,18 +625,18 @@ class Filesystem {
 	}
 
 	/**
-	* Regex error explanation.
-	* Check last regex validation error origin. Return a string describing error cause.
+	* Return a string describing the last regex error cause.
+	 *
 	* @return string
 	* @see https://www.php.net/manual/function.preg-last-error.php
 	*/
-	private static function is_preg_error() {
+	private static function preg_error_text() {
 		$errors = [
 			PREG_NO_ERROR               => 'Code 0 : No errors',
 			PREG_INTERNAL_ERROR         => 'Code 1 : Internal PCRE error, most likely a syntax error',
 			PREG_BACKTRACK_LIMIT_ERROR  => 'Code 2 : Backtrack limit was exhausted',
 			PREG_RECURSION_LIMIT_ERROR  => 'Code 3 : Recursion limit was exhausted',
-			PREG_BAD_UTF8_ERROR         => 'Code 4 : The offset did not correspond to the begin of a valid UTF-8 code point',
+			PREG_BAD_UTF8_ERROR         => 'Code 4 : The offset did not correspond to the beginning of a valid UTF-8 code point',
 			PREG_BAD_UTF8_OFFSET_ERROR  => 'Code 5 : Malformed UTF-8 data',
 			PREG_JIT_STACKLIMIT_ERROR   => 'Code 6 : Just-in-time compiler stack limit reached',
 		];
@@ -645,15 +645,17 @@ class Filesystem {
 
 	/**
 	 * Regex validity check.
+	 *
 	 * @param string $regexToBeChecked regex to be checked
-	 * @param string $callerMessage message from the calling function to identify where is coming from
+	 * @param string $callerMessage message from the calling function to identify where it is coming from
 	 * @return boolean
 	 */
-	private static function regexValidityCheck($regexToBeChecked, $callerMessage='') {
+	private static function regexValidityCheck($regexToBeChecked, $callerMessage = '') {
 		if (\preg_last_error() !== PREG_NO_ERROR) {
-			\OC::$server->getLogger()->error('Regex error: '.$regexToBeChecked
-					.' - '.$callerMessage.': '.self::is_preg_error(),
-					['app' => __CLASS__]);
+			\OC::$server->getLogger()->error(
+				'Regex error: ' . $regexToBeChecked . ' - ' . $callerMessage . ': ' . self::preg_error_text(),
+				['app' => __CLASS__]
+			);
 			return false;
 		}
 		return true;
@@ -661,17 +663,17 @@ class Filesystem {
 
 	/**
 	 * Manage regex against Folder or File.
+	 *
 	 * @param array $regexList Regex array as defined in Config file
 	 * @param array $path Folder path or File contained in an array
-	 * @param string $callerMessage Message from the calling function to identify where a possible error it is coming from
-	 * @param string $msgRegexMatchError message given in log in case of invalid regex
+	 * @param string $callerMessage Message from the calling function to identify where a possible error is coming from
 	 * @return boolean folder or file regex status
 	 */
-	private static function checkRegexAgainstFolderOrFile($regexList, $path, $callerMessage='') {
-		foreach ($regexList as $item) {                           // foreach given regex
-			// check if the first and last charachter is a '/' and add one if not
+	private static function checkRegexAgainstFolderOrFile($regexList, $path, $callerMessage = '') {
+		foreach ($regexList as $item) {
+			// check if the first and last character is a '/' and add one if not
 			// terminate with i == case insensitive
-			$newItem=$item;
+			$newItem = $item;
 			if (\substr($item, 0, 1) !== '/') {
 				$newItem = '/' . $item;
 			}
@@ -680,12 +682,12 @@ class Filesystem {
 			} else {
 				$newItem = $newItem . 'i';
 			}
-			@\preg_match($newItem, null);                         // regex validity check
-			if (self::regexValidityCheck($item, $callerMessage)) {  // check if regex error occurred
-				foreach ($path as $path_part) {                   // foreach folder or file in given path
-					if (@\preg_match($newItem, $path_part)        // regex match item
+			@\preg_match($newItem, null);
+			if (self::regexValidityCheck($item, $callerMessage)) {
+				foreach ($path as $path_part) {
+					if (@\preg_match($newItem, $path_part)
 						&& self::regexValidityCheck($item,
-								'Checked string: '.$path_part)) { // check if regex error occurred
+								'Checked string: ' . $path_part)) {
 						return true;
 					}
 				}
@@ -700,21 +702,17 @@ class Filesystem {
 	* config.php parameter arrays can contain file names to be blacklisted or directory names to be excluded
 	* Blacklist ... files that may harm the owncloud environment like a foreign `.htaccess` file or other unwanted files
 	* Excluded  ... directories that are excluded from beeing further processed, like snapshot directories
-	* $ed and the query with can be redesigned if filesystem.php will get
+	* The parameter $ed and the query with can be redesigned if filesystem.php will get
 	* a constructor where it is then possible to define the excluded directory names for unit tests.
+	 *
 	* @param string $FileOrDir is an array describing full folder path or full filename
 	* @param array $ed is only used in conjunction with unit tests as we handover here the blacklisted / excluded
 	* directory name to be tested against
 	* @return boolean
 	*/
 	public static function isForbiddenFileOrDir($FileOrDir, $ed = []) {
-		$exclude_folders = [];
-		$exclude_folders_regex = [];
-		$blacklist_files = [];
-		$blacklist_files_regex = [];
 		$blacklist_array = [];
 		$path_parts = [];
-		$ppx = [];
 
 		// force blacklist/exclude arraylist/arrayRegex for unit tests
 		if ($ed) {
@@ -729,8 +727,8 @@ class Filesystem {
 			$blacklist_files_regex = \OC::$server->getSystemConfig()->getValue('blacklisted_files_regex', []);
 		}
 
-		// empty array elements ('') will cause to run the code forever
-		// removes double or empty array elements and adds exact one '.htaccess' if not present.
+		// empty array elements ('') will cause an infinite loop
+		// remove double or empty array elements and add exactly one '.htaccess' if not present.
 		// important, because if you define an empty config value, '.htaccess' will not be added...
 		// prevents misuse with a fake config value
 		$blacklist_files[] = '.htaccess';
@@ -754,7 +752,7 @@ class Filesystem {
 			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
 		}
 
-		// force that the last element (possible the filename) is an array
+		// force that the last element (possibly the filename) is an array
 		// this is necessary for the called function which expects an array
 		$blacklist_array[] = \end($path_parts);
 
