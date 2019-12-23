@@ -92,6 +92,8 @@ config = {
 				'apiShareManagement',
 				'apiShareManagementBasic',
 				'apiShareOperations',
+				'apiSharePublicLink1',
+				'apiSharePublicLink2',
 				'apiShareReshare',
 				'apiShareUpdate',
 				'apiTags',
