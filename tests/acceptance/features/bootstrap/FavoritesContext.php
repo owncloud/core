@@ -47,7 +47,6 @@ class FavoritesContext implements Context {
 
 	/**
 	 * @When user :user favorites element :path using the WebDAV API
-	 * @Given user :user has favorited element :path
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -60,8 +59,20 @@ class FavoritesContext implements Context {
 	}
 
 	/**
+	 * @Given user :user has favorited element :path
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasFavoritedElement($user, $path) {
+		$this->userFavoritesElement($user, $path);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the user favorites element :path using the WebDAV API
-	 * @Given the user has favorited element :path
 	 *
 	 * @param string $path
 	 *
@@ -75,8 +86,22 @@ class FavoritesContext implements Context {
 	}
 
 	/**
+	 * @Given the user has favorited element :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserHasFavoritedElement($path) {
+		$this->theUserFavoritesElement($path);
+		$this->featureContext->theHTTPStatusCodeShouldBe(
+			207,
+			"Expected response status code to be 207 (Multi-status), but not found! "
+		);
+	}
+
+	/**
 	 * @When user :user unfavorites element :path using the WebDAV API
-	 * @Given user :user has unfavorited element :path
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -88,6 +113,19 @@ class FavoritesContext implements Context {
 			$user, $path, 0
 		);
 		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @Given user :user has unfavorited element :path
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasUnfavoritedElement($user, $path) {
+		$this->userUnfavoritesElement($user, $path);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -175,7 +213,6 @@ class FavoritesContext implements Context {
 
 	/**
 	 * @When the user unfavorites element :path using the WebDAV API
-	 * @Given the user has unfavorited element :path
 	 *
 	 * @param string $path
 	 *
@@ -186,6 +223,19 @@ class FavoritesContext implements Context {
 			$this->featureContext->getCurrentUser(), $path, 0
 		);
 		$this->featureContext->setResponse($response);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Given the user has unfavorited element :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserHasUnfavoritedElement($path) {
+		$this->theUserUnfavoritesElement($path);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
