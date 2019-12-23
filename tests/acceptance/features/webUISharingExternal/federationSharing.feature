@@ -124,7 +124,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then user "user1" should not see the following elements
       | /lorem%20(2).txt |
 
-  @skipOnMICROSOFTEDGE
+  @skipOnMICROSOFTEDGE @skipOnOcV10.3
   Scenario: share a folder with an remote user and prohibit deleting - local server shares - remote server receives
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And the user sets the sharing permissions of user "user1@%remote_server_without_scheme% (federated)" for "simple-folder" using the webUI to
@@ -287,6 +287,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+  @skipOnOcV10.3
   Scenario: test resharing folder and set it as readonly by owner
     Given using server "LOCAL"
     And user "user2" has been created with default attributes and without skeleton files
