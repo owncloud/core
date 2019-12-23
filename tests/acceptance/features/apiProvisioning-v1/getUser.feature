@@ -18,6 +18,7 @@ Feature: get user
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
 
+  @skipOnOcV10.3
   Scenario Outline: admin gets an existing user with special characters in the username
     Given these users have been created with skeleton files:
       | username   | displayname   | email   |

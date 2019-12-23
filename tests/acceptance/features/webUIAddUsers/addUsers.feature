@@ -14,12 +14,14 @@ Feature: add users
     And user "guiusr1" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
+  @skipOnOcV10.3
   Scenario: use the webUI to create a user with special valid characters
     When the administrator creates a user with the name "@-+_.'" and the password "%regular%" using the webUI
     And the administrator logs out of the webUI
     And user "@-+_.'" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
+  @skipOnOcV10.3
   Scenario: use the webUI to create a user with special invalid characters
     When the administrator attempts to create these users then the notifications should be as listed
       | user | password    | notification                                                                                                    |
@@ -55,7 +57,7 @@ Feature: add users
       Access it:
       """
 
-  @smokeTest @skipOnOcV10.0 @skipOnOcV10.1
+  @smokeTest @skipOnOcV10.0 @skipOnOcV10.1 @skipOnOcV10.2 @skipOnOcV10.3
   Scenario Outline: user sets his own password after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
@@ -73,6 +75,7 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-+_.'b | complicated user-name |
 
+  @skipOnOcV10.3
   Scenario Outline: user sets his own password but retypes it wrongly after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
