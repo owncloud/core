@@ -15,6 +15,7 @@ Feature: edit users
     And the OCS status code should be "200"
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
 
+  @skipOnOcV10.3
   Scenario Outline: the administrator can edit a user email of an user with special characters in the username
     Given these users have been created with skeleton files:
       | username   | email   |
