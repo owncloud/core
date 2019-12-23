@@ -1276,9 +1276,21 @@ $CONFIG = [
   ],
 
 /**
+ * Define blacklisted files regular expression(s)
+ * Blacklist files that match any of the given regular expressions and disallow
+ * the upload of those files. The matching is case-insensitive.
+ *
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ */
+'blacklisted_files_regex' => [
+	'.*\.ext',
+	'^somefilename.*'
+  ],
+
+/**
  * Define excluded directories
  * Exclude specific directory names and disallow scanning, creating and renaming
- * using these names. Case insensitive.
+ * using these names. The matching is case insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
  * in the middle or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
@@ -1289,6 +1301,23 @@ $CONFIG = [
 'excluded_directories' => [
 	'.snapshot',
 	'~snapshot',
+  ],
+
+/**
+ * Define excluded directories regular expression(s)
+ * Exclude directory names that match any of the given regular expressions and
+ * disallow scanning, creating and renaming using these names. The matching is
+ * case insensitive.
+ * Excluded directory names are queried at any path part like at the beginning,
+ * in the middle or at the end and will not be further processed if found.
+ * Please see the documentation for details and examples.
+ * Use when the storage backend supports, e.g. snapshot directories to be excluded.
+ *
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ */
+'excluded_directories_regex' => [
+	'^backup.*',
+	'.*backup$',
   ],
 
 /**
