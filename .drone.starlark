@@ -88,6 +88,7 @@ config = {
 				'apiProvisioning-v2',
 				'apiProvisioningGroups-v1',
 				'apiProvisioningGroups-v2',
+				'apiShareCreateSpecial',
 				'apiSharees',
 				'apiShareManagement',
 				'apiShareManagementBasic',

@@ -108,6 +108,15 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
 
+    apiShareCreateSpecial:
+      paths:
+        - '%paths.base%/../features/apiShareCreateSpecial'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
     apiSharees:
       paths:
         - '%paths.base%/../features/apiSharees'
