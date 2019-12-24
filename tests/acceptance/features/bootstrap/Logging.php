@@ -23,11 +23,17 @@
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use TestHelpers\LoggingHelper;
+use \Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * Logging trait
  */
 trait Logging {
+	/**
+	 * @var OccContext
+	 */
+	private $occContext;
+
 	private $oldLogLevel = null;
 	private $oldLogBackend = null;
 	private $oldLogTimezone = null;
@@ -376,9 +382,8 @@ trait Logging {
 
 	/**
 	 * @When the owncloud log level is set to :logLevel
-	 * @Given the owncloud log level has been set to :logLevel
 	 *
-	 * @param string $logLevel (debug|info|warning|error)
+	 * @param string $logLevel (debug|info|warning|error|fatal)
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -388,8 +393,22 @@ trait Logging {
 	}
 
 	/**
+	 * @Given the owncloud log level has been set to :logLevel
+	 *
+	 * @param string $logLevel (debug|info|warning|error|fatal)
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function owncloudLogLevelHasBeenSetTo($logLevel) {
+		$this->owncloudLogLevelIsSetTo($logLevel);
+		$logLevelArray = LoggingHelper::LOG_LEVEL_ARRAY;
+		$logLevelIndex = \array_search($logLevel, $logLevelArray);
+		$this->occContext->theLogLevelShouldBe($logLevelIndex);
+	}
+
+	/**
 	 * @When the owncloud log backend is set to :backend
-	 * @Given the owncloud log backend has been set to :backend
 	 *
 	 * @param string $backend (owncloud|syslog|errorlog)
 	 *
@@ -401,8 +420,24 @@ trait Logging {
 	}
 
 	/**
+	 * @Given the owncloud log backend has been set to :backend
+	 *
+	 * @param string $backend (owncloud|syslog|errorlog)
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function owncloudLogBackendHasBeenSetTo($backend) {
+		$this->owncloudLogBackendIsSetTo($backend);
+		$currentBackend = LoggingHelper::getLogBackend();
+		Assert::assertEquals(
+			$currentBackend,
+			$backend
+		);
+	}
+
+	/**
 	 * @When the owncloud log timezone is set to :timezone
-	 * @Given the owncloud log timezone has been set to :timezone
 	 *
 	 * @param string $timezone
 	 *
@@ -414,8 +449,27 @@ trait Logging {
 	}
 
 	/**
+	 * @Given the owncloud log timezone has been set to :timezone
+	 *
+	 * @param string $timezone
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function owncloudLogTimezoneHasBeenSetTo($timezone) {
+		$this->owncloudLogTimezoneIsSetTo($timezone);
+		$currentTimezone = LoggingHelper::getLogTimezone();
+		Assert::assertEquals(
+			$currentTimezone,
+			$timezone
+		);
+	}
+
+	/**
 	 * @When the owncloud log is cleared
 	 * @Given the owncloud log has been cleared
+	 *
+	 * checks for the httpRequest is done inside clearLogFile function
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -433,13 +487,23 @@ trait Logging {
 	 *
 	 * @BeforeScenario
 	 *
+	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function setUpScenarioLogging() {
+	public function setUpScenarioLogging($scope) {
 		$this->oldLogLevel = LoggingHelper::getLogLevel();
 		$this->oldLogBackend = LoggingHelper::getLogBackend();
 		$this->oldLogTimezone = LoggingHelper::getLogTimezone();
+
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// registers context in every suite, as every suite has FeatureContext
+		// that calls BasicStructure.php
+		$this->occContext = new OccContext();
+		$this->occContext->before($scope);
+		$environment->registerContext($this->occContext);
 	}
 
 	/**
