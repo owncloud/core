@@ -82,12 +82,15 @@ Feature: rename folders
 
   Scenario: Rename a folder using forbidden characters
     Given user "user1" has created folder "a-folder"
+    And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
     And user "user1" has logged in using the webUI
     When the user renames folder "a-folder" to one of these names using the webUI
-      | simple\folder   |
-      | \\simple-folder |
-      | .htaccess       |
+      | simple\folder        |
+      | \\simple-folder      |
+      | .htaccess            |
+      | blacklisted-file.txt |
     Then notifications should be displayed on the webUI with the text
+      | Could not rename "a-folder" |
       | Could not rename "a-folder" |
       | Could not rename "a-folder" |
       | Could not rename "a-folder" |
