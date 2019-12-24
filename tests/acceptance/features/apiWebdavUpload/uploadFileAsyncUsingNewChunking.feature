@@ -147,6 +147,7 @@ Feature: upload file using new chunking
       | 3 | CCCCC |
     Then the HTTP status code should be "201"
     And the following headers should not be set
+      | header                |
       | OC-JobStatus-Location |
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
@@ -157,6 +158,7 @@ Feature: upload file using new chunking
       | 3 | CCCCC |
     Then the HTTP status code should be "201"
     And the following headers should not be set
+      | header                |
       | OC-JobStatus-Location |
     And as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"

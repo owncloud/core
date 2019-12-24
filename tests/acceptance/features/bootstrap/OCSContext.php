@@ -187,6 +187,10 @@ class OCSContext implements Context {
 	public function userSendsToOcsApiEndpointWithHeadersAndPassword(
 		$user, $verb, $url, $password, TableNode $headersTable
 	) {
+		$this->featureContext->verifyTableNodeColumns(
+			$headersTable,
+			['header', 'value']
+		);
 		$user = $this->featureContext->getActualUsername($user);
 		$headers = [];
 		foreach ($headersTable as $row) {

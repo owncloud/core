@@ -163,6 +163,7 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/FOLDER/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should not be set
+      | header                |
       | OC-JobStatus-Location |
     And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
