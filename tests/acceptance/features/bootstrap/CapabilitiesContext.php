@@ -51,6 +51,8 @@ class CapabilitiesContext implements Context {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 		$assertedSomething = false;
 
+		$this->featureContext->verifyTableNodeColumns($formData, ['value', 'path_to_element', 'capability']);
+
 		foreach ($formData->getHash() as $row) {
 			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
 			Assert::assertEquals(

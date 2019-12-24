@@ -144,15 +144,16 @@ class CommentsContext implements Context {
 			$user, $commentsPath, $properties
 		);
 
-		$elementRows = $expectedElements->getRows();
+		$this->featureContext->verifyTableNodeColumns($expectedElements, ['user', 'comment']);
+		$elementRows = $expectedElements->getColumnsHash();
 		foreach ($elementRows as $expectedElement) {
 			$commentFound = false;
 			$properties = $elementList->xpath(
 				"//d:prop"
 			);
 			foreach ($properties as $property) {
-				$actorIdXml = $property->xpath("//oc:actorId[text() = '$expectedElement[0]']");
-				$messageXml = $property->xpath("//oc:message[text() = '$expectedElement[1]']");
+				$actorIdXml = $property->xpath("//oc:actorId[text() = '{$expectedElement['user']}']");
+				$messageXml = $property->xpath("//oc:message[text() = '{$expectedElement['comment']}']");
 
 				if (isset($actorIdXml[0], $messageXml[0])) {
 					$commentFound = true;
@@ -161,8 +162,8 @@ class CommentsContext implements Context {
 			}
 			Assert::assertTrue(
 				$commentFound,
-				"Comment with actorId = '$expectedElement[0]' " .
-				"and message = '$expectedElement[1]' not found"
+				"Comment with actorId = '{$expectedElement['user']}' " .
+				"and message = '{$expectedElement['comment']}' not found"
 			);
 		}
 	}

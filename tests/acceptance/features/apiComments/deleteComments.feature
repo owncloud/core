@@ -39,6 +39,7 @@ Feature: Comments
     And the user has commented with content "File owner comment" on file "/myFileToComment.txt"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
     And user "user1" should have the following comments on file "/myFileToComment.txt"
+      | user  | comment            |
       | user0 | File owner comment |
       | user1 | Sharee comment     |
     When user "user1" deletes the last created comment using the WebDAV API
@@ -69,6 +70,7 @@ Feature: Comments
     And the user has commented with content "Folder owner comment" on folder "/FOLDER_TO_COMMENT"
     And user "user1" has commented with content "Sharee comment" on folder "/FOLDER_TO_COMMENT"
     And user "user1" should have the following comments on folder "/FOLDER_TO_COMMENT"
+      | user  | comment              |
       | user0 | Folder owner comment |
       | user1 | Sharee comment       |
     When user "user1" deletes the last created comment using the WebDAV API
@@ -90,6 +92,7 @@ Feature: Comments
     When the administrator deletes user "user1" using the provisioning API
     Then the user should have 1 comments on folder "/FOLDER_TO_COMMENT"
     And the user should have the following comments on folder "/FOLDER_TO_COMMENT"
+      | user          | comment             |
       | deleted_users | Comment from sharee |
 
   Scenario: deleting a content owner deletes the comment
