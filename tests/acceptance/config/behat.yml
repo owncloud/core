@@ -108,6 +108,15 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
 
+    apiShareCreateSpecial:
+      paths:
+        - '%paths.base%/../features/apiShareCreateSpecial'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
     apiSharees:
       paths:
         - '%paths.base%/../features/apiSharees'
@@ -145,9 +154,39 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
 
-    apiShareReshare:
+    apiSharePublicLink1:
       paths:
-        - '%paths.base%/../features/apiShareReshare'
+        - '%paths.base%/../features/apiSharePublicLink1'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiSharePublicLink2:
+      paths:
+        - '%paths.base%/../features/apiSharePublicLink2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareReshare1:
+      paths:
+        - '%paths.base%/../features/apiShareReshare1'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareReshare2:
+      paths:
+        - '%paths.base%/../features/apiShareReshare2'
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
