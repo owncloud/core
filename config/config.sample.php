@@ -1276,7 +1276,7 @@ $CONFIG = [
   ],
 
 /**
- * Define excluded files
+ * Define excluded directories
  * Exclude specific directory names and disallow scanning, creating and renaming
  * using these names. Case insensitive.
  * Excluded directory names are queried at any path part like at the beginning,

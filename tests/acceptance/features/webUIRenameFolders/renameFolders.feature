@@ -96,6 +96,28 @@ Feature: rename folders
       | Could not rename "a-folder" |
     And folder "a-folder" should be listed on the webUI
 
+  Scenario: Rename a folder to an excluded folder name
+    Given user "user1" has created folder "a-folder"
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    And user "user1" has logged in using the webUI
+    When the user renames folder "a-folder" to one of these names using the webUI
+      | .github |
+    Then notifications should be displayed on the webUI with the text
+      | Could not rename "a-folder" |
+    And folder "a-folder" should be listed on the webUI
+
+  Scenario: Rename a folder to an excluded folder name inside a parent folder
+    Given user "user1" has created folder "top-folder"
+    And user "user1" has created folder "top-folder/a-folder"
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    And user "user1" has logged in using the webUI
+    And the user has opened folder "top-folder" using the webUI
+    When the user renames folder "a-folder" to one of these names using the webUI
+      | .github            |
+    Then notifications should be displayed on the webUI with the text
+      | Could not rename "a-folder" |
+    And folder "a-folder" should be listed on the webUI
+
   Scenario: Rename a folder putting a name of a file which already exists
     Given user "user1" has created folder "a-folder"
     And user "user1" has uploaded file with content "some content" to "/randomfile.txt"
