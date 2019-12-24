@@ -150,6 +150,20 @@ Feature: move (rename) file
     And user "user0" should see the following elements
       | /welcome.txt |
 
+  Scenario: rename a file to an excluded directory name
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" asynchronously to "/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /welcome.txt |
+
+  Scenario: rename a file to an excluded directory name inside a parent directory
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" asynchronously to "/FOLDER/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /welcome.txt |
+
   Scenario: Renaming a file to a path with extension .part should not be possible
     When user "user0" moves file "/welcome.txt" asynchronously to "/welcome.part" using the WebDAV API
     Then the HTTP status code should be "400"

@@ -114,6 +114,28 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
+  Scenario: Rename a file to an excluded folder name
+    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    And user "user1" has logged in using the webUI
+    When the user renames file "randomfile.txt" to one of these names using the webUI
+      | .github |
+    Then notifications should be displayed on the webUI with the text
+      | Could not rename "randomfile.txt" |
+    And file "randomfile.txt" should be listed on the webUI
+
+  Scenario: Rename a file to an excluded folder name inside a parent folder
+    Given user "user1" has created folder "top-folder"
+    And user "user1" has uploaded file with content "some content" to "/top-folder/randomfile.txt"
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    And user "user1" has logged in using the webUI
+    And the user has opened folder "top-folder" using the webUI
+    When the user renames file "randomfile.txt" to one of these names using the webUI
+      | .github |
+    Then notifications should be displayed on the webUI with the text
+      | Could not rename "randomfile.txt" |
+    And file "randomfile.txt" should be listed on the webUI
+
   Scenario: Rename the last file in a folder
     Given user "user1" has uploaded file with content "some content" to "/firstfile.txt"
     And user "user1" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"

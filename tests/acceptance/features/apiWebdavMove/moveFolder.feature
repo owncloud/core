@@ -69,6 +69,32 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  Scenario Outline: Rename a folder to an excluded directory name
+    Given using <dav_version> DAV path
+    And user "user0" has created folder "/testshare"
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves folder "/testshare" to "/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /testshare/ |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Rename a folder to an excluded directory name inside a parent directory
+    Given using <dav_version> DAV path
+    And user "user0" has created folder "/testshare"
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves folder "/testshare" to "/FOLDER/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /testshare/ |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   Scenario Outline: Move a folder into a not existing one
     Given using <dav_version> DAV path
     And user "user0" has created folder "/testshare"

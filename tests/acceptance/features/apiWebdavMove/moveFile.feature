@@ -237,6 +237,26 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  Scenario Outline: rename a file to an excluded directory name
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" to "/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: rename a file to an excluded directory name inside a parent directory
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" to "/FOLDER/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   Scenario Outline: Checking file id after a move
     Given using <dav_version> DAV path
     And user "user0" has stored id of file "/textfile0.txt"
