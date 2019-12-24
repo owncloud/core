@@ -75,3 +75,35 @@ Feature: upload file using old chunking
       | 0           |
       | @a#8a=b?c=d |
       | ?abc=oc #   |
+
+  @issue-36645
+  Scenario: Upload a file to a filename that is banned by default using old chunking
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/.htaccess" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "507"
+    #Then the HTTP status code should be "403"
+    And as "user0" file ".htaccess" should not exist
+
+  @issue-36645
+  Scenario: Upload a file to a banned filename using old chunking
+    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
+    And user "user0" uploads file "filesForUpload/textfile.txt" to "blacklisted-file.txt" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "507"
+    #Then the HTTP status code should be "403"
+    And as "user0" file "blacklisted-file.txt" should not exist
+
+  @issue-36645
+  Scenario: Upload a file to an excluded directory name using old chunking
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" uploads file "filesForUpload/textfile.txt" to "/.github" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "507"
+    #Then the HTTP status code should be "403"
+    And as "user0" file ".github" should not exist
+
+  @issue-36645
+  Scenario: Upload a file to an excluded directory name inside a parent directory using old chunking
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" uploads file "filesForUpload/textfile.txt" to "/FOLDER/.github" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "507"
+    #Then the HTTP status code should be "403"
+    And as "user0" folder "/FOLDER" should exist
+    But as "user0" file "/FOLDER/.github" should not exist

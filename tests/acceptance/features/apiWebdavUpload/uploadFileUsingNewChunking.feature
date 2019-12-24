@@ -154,3 +154,43 @@ Feature: upload file using new chunking
     And user "user0" moves new chunk file with id "chunking-42" to "/0" using the WebDAV API
     And as "user0" file "/0" should exist
     And the content of file "/0" for user "user0" should be "AAAAABBBBBCCCCC"
+
+  Scenario: Upload a file to a filename that is banned by default using new chunking
+    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" to ".htaccess" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file ".htaccess" should not exist
+
+  Scenario: Upload a file to a banned filename using new chunking
+    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
+    And user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" to "blacklisted-file.txt" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file "blacklisted-file.txt" should not exist
+
+  Scenario: Upload a file to an excluded directory name using new chunking
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" to ".github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file ".github" should not exist
+
+  Scenario: Upload a file to an excluded directory name inside a parent directory using new chunking
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" to "/FOLDER/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" folder "/FOLDER" should exist
+    But as "user0" file "/FOLDER/.github" should not exist

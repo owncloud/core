@@ -76,3 +76,47 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: upload a file to a filename that is banned by default
+    Given using <dav_version> DAV path
+    When user "user0" uploads file with content "uploaded content" to ".htaccess" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file ".htaccess" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: upload a file to a banned filename
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
+    And user "user0" uploads file with content "uploaded content" to "blacklisted-file.txt" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file "blacklisted-file.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: upload a file to an excluded directory name
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" uploads file with content "uploaded content" to ".github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" file ".github" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: upload a file to an excluded directory name inside a parent directory
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" uploads file with content "uploaded content" to "/FOLDER/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" folder "/FOLDER" should exist
+    But as "user0" file "/FOLDER/.github" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
