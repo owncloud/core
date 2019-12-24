@@ -1025,9 +1025,13 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function theFollowingHeadersShouldBeSet(TableNode $table) {
-		foreach ($table->getTable() as $header) {
-			$headerName = $header[0];
-			$expectedHeaderValue = $header[1];
+		$this->verifyTableNodeColumns(
+			$table,
+			['header', 'value']
+		);
+		foreach ($table->getColumnsHash() as $header) {
+			$headerName = $header['header'];
+			$expectedHeaderValue = $header['value'];
 			$returnedHeader = $this->response->getHeader($headerName);
 			$expectedHeaderValue = $this->substituteInLineCodes($expectedHeaderValue);
 
@@ -2603,8 +2607,12 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function theFollowingHeadersShouldNotBeSet(TableNode $table) {
-		foreach ($table->getTable() as $header) {
-			$headerName = $header[0];
+		$this->verifyTableNodeColumns(
+			$table,
+			['header']
+		);
+		foreach ($table->getColumnsHash() as $header) {
+			$headerName = $header['header'];
 			$headerValue = $this->response->getHeader($headerName);
 			//Note: according to the documentation of getHeader it must return null
 			//if the header does not exist, but its returning an empty string

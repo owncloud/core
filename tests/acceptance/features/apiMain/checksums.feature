@@ -219,6 +219,7 @@ Feature: checksums
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
     When user "user0" downloads file "/chksumtst.txt" using the WebDAV API
     Then the following headers should be set
+      | header      | value                                         |
       | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
     Examples:
       | dav_version |
@@ -232,6 +233,7 @@ Feature: checksums
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
     When user "user0" downloads file "/local_storage/chksumtst.txt" using the WebDAV API
     Then the following headers should be set
+      | header      | value                                         |
       | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
     Examples:
       | dav_version |
