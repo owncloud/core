@@ -2562,11 +2562,15 @@ trait BasicStructure {
 	 * @param array $requiredHeader
 	 * @param array $allowedHeader
 	 *
-	 * @return mixed[]
+	 * @return void
+	 * @throws Exception
 	 */
 	public function verifyTableNodeColumns($table, array $requiredHeader = [], array $allowedHeader = []) {
 		if (!($table instanceof TableNode)) {
 			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		if (\count($table->getHash()) < 1) {
+			throw new Exception("Table should have at least one row.");
 		}
 		$tableHeaders = $table->getRows()[0];
 		$allowedHeader = \array_unique(\array_merge($requiredHeader, $allowedHeader));
@@ -2584,6 +2588,64 @@ trait BasicStructure {
 					throw new Exception("Row with header '$element' is not allowed in table but found");
 				}
 			}
+		}
+	}
+
+	/**
+	 * Verify that the tableNode contains expected rows
+	 *
+	 * @param TableNode $table
+	 * @param array $requiredRows
+	 * @param array $allowedRows
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function verifyTableNodeRows($table, array $requiredRows = [], array $allowedRows = []) {
+		if (!($table instanceof TableNode)) {
+			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		if (\count($table->getRows()) < 1) {
+			throw new Exception("Table should have at least one row.");
+		}
+		$tableHeaders = $table->getColumn(0);
+		$allowedRows = \array_unique(\array_merge($requiredRows, $allowedRows));
+		if ($requiredRows != []) {
+			foreach ($requiredRows as $element) {
+				if (!\in_array($element, $tableHeaders)) {
+					throw new Exception("Row with name '$element' expected to be in table but not found");
+				}
+			}
+		}
+
+		if ($allowedRows != []) {
+			foreach ($tableHeaders as $element) {
+				if (!\in_array($element, $allowedRows)) {
+					throw new Exception("Row with name '$element' is not allowed in table but found");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Verify that the tableNode contains expected number of columns
+	 *
+	 * @param TableNode $table
+	 * @param int $count
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function verifyTableNodeColumnsCount($table, $count) {
+		if (!($table instanceof TableNode)) {
+			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		if (\count($table->getRows()) < 1) {
+			throw new Exception("Table should have at least one row.");
+		}
+		$rowCount = \count($table->getRows()[0]);
+		if ($count !== $rowCount) {
+			throw new Exception("Table expected to have $count rows but found $rowCount");
 		}
 	}
 }

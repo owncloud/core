@@ -154,8 +154,10 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
 		foreach ($table->getHash() as $row) {
-			$this->sendRequest($row['endpoint'], $method);
+			$body = $row['body'] ?? null;
+			$this->sendRequest($row['endpoint'], $method, null, false, $body);
 			$ocsCode = $row['ocs-code'] ?? null;
 			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
@@ -184,6 +186,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['body', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
@@ -203,6 +206,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code'], ['body']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
@@ -236,6 +240,7 @@ trait Auth {
 		$password,
 		TableNode $table
 	) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->administratorRequestsURLWithUsingBasicAuth(
 				$row['endpoint'],
@@ -256,6 +261,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingBasicTokenAuth($user, $row['endpoint'], $method);
 			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
@@ -271,6 +277,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithBrowserSession($row['endpoint'], $method);
 			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
@@ -286,6 +293,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
 			$ocsCode = $row['ocs-code'] ?? null;
