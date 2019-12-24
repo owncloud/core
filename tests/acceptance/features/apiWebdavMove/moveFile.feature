@@ -218,9 +218,39 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  Scenario Outline: rename a file into a banned filename
+  Scenario Outline: rename a file to a filename that is banned by default
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/.htaccess" using the WebDAV API
+    Then the HTTP status code should be "403"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: rename a file to a banned filename
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" to "/blacklisted-file.txt" using the WebDAV API
+    Then the HTTP status code should be "403"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: rename a file to an excluded directory name
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" to "/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: rename a file to an excluded directory name inside a parent directory
+    Given using <dav_version> DAV path
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     Examples:
       | dav_version |

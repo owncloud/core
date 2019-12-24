@@ -137,8 +137,29 @@ Feature: move (rename) file
     And user "user0" should see the following elements
       | /welcome.txt |
 
-  Scenario: rename a file into a banned filename
+  Scenario: rename a file to a filename that is banned by default
     When user "user0" moves file "/welcome.txt" asynchronously to "/.htaccess" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /welcome.txt |
+
+  Scenario: rename a file to a banned filename
+    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" asynchronously to "/blacklisted-file.txt" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /welcome.txt |
+
+  Scenario: rename a file to an excluded directory name
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" asynchronously to "/.github" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And user "user0" should see the following elements
+      | /welcome.txt |
+
+  Scenario: rename a file to an excluded directory name inside a parent directory
+    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
+    And user "user0" moves file "/welcome.txt" asynchronously to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "user0" should see the following elements
       | /welcome.txt |

@@ -100,14 +100,39 @@ Feature: rename files
 
   Scenario: Rename a file using forbidden characters
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
     And user "user1" has logged in using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
-      | lorem\txt |
-      | \\.txt    |
-      | .htaccess |
+      | lorem\txt            |
+      | \\.txt               |
+      | .htaccess            |
+      | blacklisted-file.txt |
     Then notifications should be displayed on the webUI with the text
       | Could not rename "randomfile.txt" |
       | Could not rename "randomfile.txt" |
+      | Could not rename "randomfile.txt" |
+      | Could not rename "randomfile.txt" |
+    And file "randomfile.txt" should be listed on the webUI
+
+  Scenario: Rename a file to an excluded folder name
+    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    And user "user1" has logged in using the webUI
+    When the user renames file "randomfile.txt" to one of these names using the webUI
+      | .github |
+    Then notifications should be displayed on the webUI with the text
+      | Could not rename "randomfile.txt" |
+    And file "randomfile.txt" should be listed on the webUI
+
+  Scenario: Rename a file to an excluded folder name inside a parent folder
+    Given user "user1" has created folder "top-folder"
+    And user "user1" has uploaded file with content "some content" to "/top-folder/randomfile.txt"
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    And user "user1" has logged in using the webUI
+    And the user has opened folder "top-folder" using the webUI
+    When the user renames file "randomfile.txt" to one of these names using the webUI
+      | .github |
+    Then notifications should be displayed on the webUI with the text
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 

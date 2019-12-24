@@ -114,6 +114,20 @@ Feature: capabilities
       | capability    | path_to_element     | value |
       | files_sharing | default_permissions | 7     |
 
+  Scenario: .htaccess is reported as a blacklisted file by default
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability | path_to_element                | value     |
+      | files      | blacklisted_files@@@element[0] | .htaccess |
+
+  Scenario: multiple files can be reported as blacklisted
+    When the administrator updates system config key "blacklisted_files" with value '["test.txt",".htaccess"]' and type "json" using the occ command
+    And the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability | path_to_element                | value     |
+      | files      | blacklisted_files@@@element[0] | test.txt  |
+      | files      | blacklisted_files@@@element[1] | .htaccess |
+
   @skipOnOcV10.3
   Scenario: user expire date can be enabled
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"

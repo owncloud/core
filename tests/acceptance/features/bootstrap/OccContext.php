@@ -666,8 +666,8 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has added system config key :key with value :value
-	 * @Given the administrator has added system config key :key with value :value and type :type
+	 * @Given the administrator has added/updated system config key :key with value :value
+	 * @Given the administrator has added/updated system config key :key with value :value and type :type
 	 * @When the administrator adds/updates system config key :key with value :value using the occ command
 	 * @When the administrator adds/updates system config key :key with value :value and type :type using the occ command
 	 *
