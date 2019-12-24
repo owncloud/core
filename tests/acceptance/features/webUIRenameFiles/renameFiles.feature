@@ -100,12 +100,15 @@ Feature: rename files
 
   Scenario: Rename a file using forbidden characters
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
     And user "user1" has logged in using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
-      | lorem\txt |
-      | \\.txt    |
-      | .htaccess |
+      | lorem\txt            |
+      | \\.txt               |
+      | .htaccess            |
+      | blacklisted-file.txt |
     Then notifications should be displayed on the webUI with the text
+      | Could not rename "randomfile.txt" |
       | Could not rename "randomfile.txt" |
       | Could not rename "randomfile.txt" |
       | Could not rename "randomfile.txt" |
