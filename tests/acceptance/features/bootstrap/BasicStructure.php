@@ -2554,4 +2554,36 @@ trait BasicStructure {
 		$this->usingServer($previousServer);
 		return $result;
 	}
+
+	/**
+	 * Verify that the tableNode contains expected headers
+	 *
+	 * @param TableNode $table
+	 * @param array $requiredHeader
+	 * @param array $allowedHeader
+	 *
+	 * @return mixed[]
+	 */
+	public function verifyTableNodeColumns($table, array $requiredHeader = [], array $allowedHeader = []) {
+		if (!($table instanceof TableNode)) {
+			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		$tableHeaders = $table->getRows()[0];
+		$allowedHeader = \array_unique(\array_merge($requiredHeader, $allowedHeader));
+		if ($requiredHeader != []) {
+			foreach ($requiredHeader as $element) {
+				if (!\in_array($element, $tableHeaders)) {
+					throw new Exception("Row with header '$element' expected to be in table but not found");
+				}
+			}
+		}
+
+		if ($allowedHeader != []) {
+			foreach ($tableHeaders as $element) {
+				if (!\in_array($element, $allowedHeader)) {
+					throw new Exception("Row with header '$element' is not allowed in table but found");
+				}
+			}
+		}
+	}
 }

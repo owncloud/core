@@ -43,6 +43,7 @@ Feature: download file
     Given using <dav_version> DAV path
     When user "user0" downloads file "/welcome.txt" using the WebDAV API
     Then the following headers should be set
+      | header                            | value                                                            |
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
       | Content-Security-Policy           | default-src 'none';                                              |
       | X-Content-Type-Options            | nosniff                                                          |

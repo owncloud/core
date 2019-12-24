@@ -14,6 +14,7 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should be set
+      | header                        | value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
       | Access-Control-Allow-Headers  | OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With |
       | Access-Control-Expose-Headers | Content-Location,DAV,ETag,Link,Lock-Token,OC-ETag,OC-Checksum,OC-FileId,OC-JobStatus-Location,Vary,Webdav-Location,X-Sabre-Status                                                                                                                                                                                                                                                                                                                                                                                                                     |
       | Access-Control-Allow-Origin   | https://aphno.badal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -48,6 +49,7 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should not be set
+      | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |
       | Access-Control-Allow-Origin   |
@@ -66,6 +68,7 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should be set
+      | header                        | value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
       | Access-Control-Allow-Headers  | OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With |
       | Access-Control-Expose-Headers | Content-Location,DAV,ETag,Link,Lock-Token,OC-ETag,OC-Checksum,OC-FileId,OC-JobStatus-Location,Vary,Webdav-Location,X-Sabre-Status                                                                                                                                                                                                                                                                                                                                                                                                                     |
       | Access-Control-Allow-Origin   | https://aphno.badal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -89,6 +92,7 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should not be set
+      | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |
       | Access-Control-Allow-Origin   |
@@ -123,6 +127,7 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should not be set
+      | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |
       | Access-Control-Allow-Origin   |
@@ -146,11 +151,13 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should not be set
+      | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |
       | Access-Control-Allow-Origin   |
       | Access-Control-Allow-Methods  |
     #Then the following headers should be set
+    #  | header                        | value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
     #  | Access-Control-Allow-Headers  | OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With |
     #  | Access-Control-Expose-Headers | Content-Location,DAV,ETag,Link,Lock-Token,OC-ETag,OC-Checksum,OC-FileId,OC-JobStatus-Location,Vary,Webdav-Location,X-Sabre-Status |
     #  | Access-Control-Allow-Origin   | https://aphno.badal |
@@ -184,11 +191,13 @@ Feature: CORS headers
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Then the following headers should not be set
+      | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |
       | Access-Control-Allow-Origin   |
       | Access-Control-Allow-Methods  |
     #Then the following headers should be set
+    #  | header                        | value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
     #  | Access-Control-Allow-Headers  | OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With |
     #  | Access-Control-Expose-Headers | Content-Location,DAV,ETag,Link,Lock-Token,OC-ETag,OC-Checksum,OC-FileId,OC-JobStatus-Location,Vary,Webdav-Location,X-Sabre-Status |
     #  | Access-Control-Allow-Origin   | https://aphno.badal |
