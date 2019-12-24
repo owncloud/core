@@ -41,7 +41,6 @@ class FilesVersionsContext implements Context {
 
 	/**
 	 * @When user :user restores version index :versionIndex of file :path using the WebDAV API
-	 * @Given user :user has restored version index :versionIndex of file :path
 	 *
 	 * @param string $user
 	 * @param int $versionIndex
@@ -58,11 +57,30 @@ class FilesVersionsContext implements Context {
 			WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
 		$fullUrl = $this->featureContext->getBaseUrlWithoutPath() .
 			$xmlPart[$versionIndex];
-		HttpRequestHelper::sendRequest(
+		$response = HttpRequestHelper::sendRequest(
 			$fullUrl,
 			'COPY', $user, $this->featureContext->getPasswordForUser($user),
 			['Destination' => $destinationUrl]
 		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @Given user :user has restored version index :versionIndex of file :path
+	 *
+	 * @param string $user
+	 * @param int $versionIndex
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasRestoredVersionIndexOfFile($user, $versionIndex, $path) {
+		$this->userRestoresVersionIndexOfFile(
+			$user,
+			$versionIndex,
+			$path
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
