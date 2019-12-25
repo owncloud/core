@@ -3,6 +3,8 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
+[unreleased]: https://github.com/owncloud/core/compare/v10.3.2...master
+
 Summary
 -------
 
@@ -34,8 +36,16 @@ Summary
 * Change - Update myclabs/deep-copy (1.9.3 => 1.9.4): [#36599](https://github.com/owncloud/core/pull/36599)
 * Change - Update phpspec/prophecy (1.9.0 => 1.10.0): [#36603](https://github.com/owncloud/core/pull/36603)
 * Change - Update sabre/vobject (4.2.0 => 4.2.1): [#36614](https://github.com/owncloud/core/pull/36614)
+* Change - Update league/flysystem (1.0.61 => 1.0.62): [#36659](https://github.com/owncloud/core/pull/36659)
+* Change - Update zendframework/zend-validator (2.12.2 => 2.13.0): [#36660](https://github.com/owncloud/core/pull/36660)
+* Change - Update egulias/email-validator (2.1.11 => 2.1.13): [#36661](https://github.com/owncloud/core/pull/36661)
+* Change - Update phpdocumentor/reflection-docblock (4.3.2 => 4.3.4): [#36661](https://github.com/owncloud/core/pull/36661)
+* Change - Update phpspec/prophecy (1.10.0 => 1.10.1): [#36661](https://github.com/owncloud/core/pull/36661)
+* Change - Zendframework dependency to laminas: [#36677](https://github.com/owncloud/core/pull/36677)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
+* Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
+* Enhancement - Add an option to provide a mount in read only mode: [#36397](https://github.com/owncloud/core/pull/36397)
 * Enhancement - Support Oracle connection strings: [#36489](https://github.com/owncloud/core/pull/36489)
 * Enhancement - Add enabled and disabled filter options to occ app:list command: [#36520](https://github.com/owncloud/core/pull/36520)
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
@@ -252,6 +262,32 @@ Details
 
    https://github.com/owncloud/core/pull/36614
 
+* Change - Update league/flysystem (1.0.61 => 1.0.62): [#36659](https://github.com/owncloud/core/pull/36659)
+
+   https://github.com/owncloud/core/pull/36659
+
+* Change - Update zendframework/zend-validator (2.12.2 => 2.13.0): [#36660](https://github.com/owncloud/core/pull/36660)
+
+   https://github.com/owncloud/core/pull/36660
+
+* Change - Update egulias/email-validator (2.1.11 => 2.1.13): [#36661](https://github.com/owncloud/core/pull/36661)
+
+   https://github.com/owncloud/core/pull/36661
+
+* Change - Update phpdocumentor/reflection-docblock (4.3.2 => 4.3.4): [#36661](https://github.com/owncloud/core/pull/36661)
+
+   https://github.com/owncloud/core/pull/36661
+
+* Change - Update phpspec/prophecy (1.10.0 => 1.10.1): [#36661](https://github.com/owncloud/core/pull/36661)
+
+   https://github.com/owncloud/core/pull/36661
+
+* Change - Zendframework dependency to laminas: [#36677](https://github.com/owncloud/core/pull/36677)
+
+   Zend framework changed to be known as laminas. The dependencies are updated.
+
+   https://github.com/owncloud/core/pull/36677
+
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
    MariaDb 10.3 is now supported
@@ -265,6 +301,22 @@ Details
 
    https://github.com/owncloud/core/issues/33187
    https://github.com/owncloud/core/pull/36290
+
+* Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
+
+   Adds two config options blacklisted_files_regex and excluded_directories_regex to enable
+   more flexible pattern matches. With this you can, for example, disable the upload of Microsoft
+   Outlook .pst files or the creation of directories containing <yourdate>_backup.
+
+   https://github.com/owncloud/core/pull/36360
+
+* Enhancement - Add an option to provide a mount in read only mode: [#36397](https://github.com/owncloud/core/pull/36397)
+
+   Adds a new option in the mount settings to provide a mount in read only mode. This enables users or
+   admins to provide a write protected mount independent of any backend settings. The sync client
+   automatically respects this mount setting without any additional intervention.
+
+   https://github.com/owncloud/core/pull/36397
 
 * Enhancement - Support Oracle connection strings: [#36489](https://github.com/owncloud/core/pull/36489)
 
@@ -318,6 +370,8 @@ Changelog for ownCloud Core [10.3.2] (2019-12-04)
 =======================================
 The following sections list the changes in ownCloud core 10.3.2 relevant to
 ownCloud admins and users.
+
+[10.3.2]: https://github.com/owncloud/core/compare/v10.3.1...v10.3.2
 
 Summary
 -------
@@ -1797,8 +1851,6 @@ Details
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.3.2...master
-[10.3.2]: https://github.com/owncloud/core/compare/v10.3.1...v10.3.2
 [10.3.1]: https://github.com/owncloud/core/compare/v10.3.0...v10.3.1
 [10.3.0]: https://github.com/owncloud/core/compare/v10.2.1...v10.3.0
 [10.2.1]: https://github.com/owncloud/core/compare/v10.2.0...v10.2.1
