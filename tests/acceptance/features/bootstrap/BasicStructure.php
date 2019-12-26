@@ -981,28 +981,45 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then /^the HTTP status code should be "([^"]*)"$/
+	 * Check that the status code in the saved response is the expected status
+	 * code, or one of the expected status codes.
 	 *
-	 * @param int|int[]|string|string[] $statusCode
+	 * @param int|int[]|string|string[] $expectedStatusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 */
-	public function theHTTPStatusCodeShouldBe($statusCode, $message = "") {
-		if ($message === "") {
-			$message = "HTTP status code is not the expected value";
-		}
+	public function theHTTPStatusCodeShouldBe($expectedStatusCode, $message = "") {
+		$actualStatusCode = $this->response->getStatusCode();
+		if (\is_array($expectedStatusCode)) {
+			if ($message === "") {
+				$message = "HTTP status code $actualStatusCode is not one of the expected values";
+			}
 
-		if (\is_array($statusCode)) {
 			Assert::assertContains(
-				$this->response->getStatusCode(), $statusCode,
+				$actualStatusCode, $expectedStatusCode,
 				$message
 			);
 		} else {
+			if ($message === "") {
+				$message = "HTTP status code $actualStatusCode is not the expected value $expectedStatusCode";
+			}
+
 			Assert::assertEquals(
-				$statusCode, $this->response->getStatusCode(), $message
+				$expectedStatusCode, $actualStatusCode, $message
 			);
 		}
+	}
+
+	/**
+	 * @Then /^the HTTP status code should be "([^"]*)"$/
+	 *
+	 * @param int|string $statusCode
+	 *
+	 * @return void
+	 */
+	public function thenTheHTTPStatusCodeShouldBe($statusCode) {
+		$this->theHTTPStatusCodeShouldBe($statusCode, "");
 	}
 
 	/**
