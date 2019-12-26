@@ -506,6 +506,56 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)"\s?(asynchronously|) to these (?:filenames|foldernames|entries) using the webDAV API then the results should be as listed$/
+	 *
+	 * @param string $user
+	 * @param string $fileSource
+	 * @param string $type "asynchronously" or empty
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userMovesEntriesUsingTheAPI(
+		$user,
+		$fileSource,
+		$type,
+		TableNode $table
+	) {
+		foreach ($table->getHash() as $row) {
+			// Allow the "filename" column to be optionally be called "foldername"
+			// to help readability of scenarios that test moving folders
+			if (isset($row['foldername'])) {
+				$targetName = $row['foldername'];
+			} else {
+				$targetName = $row['filename'];
+			}
+			$this->userMovesFileUsingTheAPI(
+				$user,
+				$fileSource,
+				$type,
+				$targetName
+			);
+			$this->theHTTPStatusCodeShouldBe(
+				$row['http-code'],
+				"HTTP status code is not the expected value while trying to move " . $targetName
+			);
+			if ($row['exists'] === "yes") {
+				$this->asFileOrFolderShouldExist($user, "entry", $targetName);
+				// The move was successful.
+				// Move the file/folder back so the source file/folder exists for the next move
+				$this->userMovesFileUsingTheAPI(
+					$user,
+					$targetName,
+					'',
+					$fileSource
+				);
+			} else {
+				$this->asFileOrFolderShouldNotExist($user, "entry", $targetName);
+			}
+		}
+	}
+
+	/**
 	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)"\s?(asynchronously|) to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -1769,6 +1819,38 @@ trait WebDav {
 			$destination
 		);
 		$this->removeFile($this->workStorageDirLocation(), $filename);
+	}
+
+	/**
+	 * @When user :user uploads to these filenames with content :content using the webDAV API then the results should be as listed
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userUploadsFilesWithContentTo(
+		$user,
+		$content,
+		TableNode $table
+	) {
+		foreach ($table->getHash() as $row) {
+			$this->userUploadsAFileWithContentTo(
+				$user,
+				$content,
+				$row['filename']
+			);
+			$this->theHTTPStatusCodeShouldBe(
+				$row['http-code'],
+				"HTTP status code is not the expected value while trying to upload " . $row['filename']
+			);
+			if ($row['exists'] === "yes") {
+				$this->asFileOrFolderShouldExist($user, "entry", $row['filename']);
+			} else {
+				$this->asFileOrFolderShouldNotExist($user, "entry", $row['filename']);
+			}
+		}
 	}
 
 	/**
