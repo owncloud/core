@@ -844,8 +844,12 @@ class OwncloudPage extends Page {
 			$expected = \parse_url($this->getUrl($urlParameters));
 			$actual = \parse_url($this->getDriver()->getCurrentUrl());
 			foreach (['scheme', 'host', 'path'] as $part) {
-				if (\array_key_exists($part, $expected) && $expected[$part] !== $actual[$part]) {
-					throw $e;
+				if (\array_key_exists($part, $expected)) {
+					if (!\array_key_exists($part, $actual)
+						|| ($expected[$part] !== $actual[$part])
+					) {
+						throw $e;
+					}
 				}
 			}
 
