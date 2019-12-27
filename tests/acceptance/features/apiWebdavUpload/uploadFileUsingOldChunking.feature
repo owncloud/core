@@ -106,7 +106,7 @@ Feature: upload file using old chunking
       | filename                      | http-status | comment     |
       | filename.ext                  | 507         | issue-36645 |
       | bannedfilename.txt            | 403         | ok          |
-      | this-containsbannedstring.txt | 403         | ok          |
+      | this-ContainsBannedString.txt | 403         | ok          |
 
   Scenario: upload a file to a filename that does not match blacklisted_files_regex using old chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

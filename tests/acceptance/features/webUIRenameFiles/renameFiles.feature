@@ -123,7 +123,7 @@ Feature: rename files
     When the user renames file "randomfile.txt" to one of these names using the webUI
       | filename.ext                  |
       | bannedfilename.txt            |
-      | this-containsbannedstring.txt |
+      | this-ContainsBannedString.txt |
     Then notifications should be displayed on the webUI with the text
       | Could not rename "randomfile.txt" |
       | Could not rename "randomfile.txt" |
