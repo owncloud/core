@@ -41,6 +41,8 @@ OC.L10N.register(
     "Invalid path" : "Ruta incorrecta",
     "This operation is forbidden" : "Esta operación está prohibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "Este directorio non está dispoñíbel, comprobe os rexistros ou póñase en contacto co administrador",
+    "group" : "grupo",
+    "Remote share" : "Compartición remota",
     "Could not move \"{file}\", target exists" : "Non foi posíbel mover «{file}», o destino xa existe",
     "Could not move \"{file}\" because either the file or the target are locked." : "Non foi posíbel mover «{file}» porque o ficheiro ou o destino están bloqueados.",
     "Could not move \"{file}\": {message}" : "Non foi posíbel mover «{file}»: {message}",

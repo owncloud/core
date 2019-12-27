@@ -38,6 +38,8 @@ OC.L10N.register(
     "Invalid path" : "Virheellinen polku",
     "This operation is forbidden" : "Tämä toiminto on kielletty",
     "This directory is unavailable, please check the logs or contact the administrator" : "Hakemisto ei ole käytettävissä. Tarkista lokit tai ole yhteydessä ylläpitoon.",
+    "group" : "ryhmä",
+    "Remote share" : "Etäjako",
     "Could not move \"{file}\", target exists" : "Tiedoston \"{file}\" siirtäminen ei onnistunut, kohde on olemassa",
     "Could not move \"{file}\"" : "Tiedoston \"{file}\" siirtäminen ei onnistunut",
     "{newName} already exists" : "{newName} on jo olemassa",

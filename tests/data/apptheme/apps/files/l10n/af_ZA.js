@@ -26,6 +26,7 @@ OC.L10N.register(
     "Invalid path" : "Ongeldige pad",
     "This operation is forbidden" : "Hierdie bewerking is verbode",
     "This directory is unavailable, please check the logs or contact the administrator" : "Hierdie gids is onbeskikbaar, gaan die logs na of kontak die stelseladministrateur",
+    "group" : "groep",
     "Could not move \"{file}\", target exists" : "Kon nie “{file}” skuif nie, teiken bestaan",
     "Could not move \"{file}\"" : "Kon nie “{file}” skuif nie",
     "{newName} already exists" : "{newName} bestaan reeds",

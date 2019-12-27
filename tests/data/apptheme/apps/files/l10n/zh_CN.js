@@ -41,6 +41,8 @@ OC.L10N.register(
     "Invalid path" : "无效路径",
     "This operation is forbidden" : "操作被禁止",
     "This directory is unavailable, please check the logs or contact the administrator" : "此目录不可用，请检查日志或联系管理员",
+    "group" : "群组",
+    "Remote share" : "远程分享",
     "Could not move \"{file}\", target exists" : "无法移动\"{file}\",因为目标已经存在",
     "Could not move \"{file}\" because either the file or the target are locked." : "无法移动“{file}”，因为文件和目标位置都已被锁定。",
     "Could not move \"{file}\": {message}" : "不能移动 \"{file}\": {message}",

@@ -39,6 +39,8 @@ OC.L10N.register(
     "Invalid path" : "Érvénytelen útvonal",
     "This operation is forbidden" : "Tiltott művelet",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ez a könyvtár nem elérhető, kérem nézze meg a naplófájlokat vagy keresse az adminisztrátort",
+    "group" : "csoport",
+    "Remote share" : "Távoli megosztás",
     "Could not move \"{file}\", target exists" : "{file} fájl nem áthelyezhető, mert a cél már létezik",
     "Could not move \"{file}\"" : "{file} fájl nem áthelyezhető",
     "{newName} already exists" : "{newName} már létezik",

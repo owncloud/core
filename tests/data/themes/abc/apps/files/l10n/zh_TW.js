@@ -28,6 +28,8 @@ OC.L10N.register(
     "Invalid path" : "無效的路徑",
     "This operation is forbidden" : "此動作被禁止",
     "This directory is unavailable, please check the logs or contact the administrator" : "這個目錄無法存取，請檢查伺服器記錄檔或聯絡管理員",
+    "group" : "群組",
+    "Remote share" : "遠端分享",
     "Could not move \"{file}\", target exists" : "無法移動 \"{file}\"，目標已經存在",
     "Could not move \"{file}\"" : "無法移動 \"{file}\"",
     "{newName} already exists" : "{newName} 已經存在",

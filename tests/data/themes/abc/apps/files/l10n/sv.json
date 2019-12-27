@@ -37,6 +37,8 @@
     "Invalid path" : "Ogiltig sökväg",
     "This operation is forbidden" : "Denna operation är förbjuden",
     "This directory is unavailable, please check the logs or contact the administrator" : "Denna katalog är inte tillgänglig, kontrollera loggarna eller kontakta administratören",
+    "group" : "Grupp",
+    "Remote share" : "Fjärrdelning",
     "Could not move \"{file}\", target exists" : "Kan inte flytta \"{file}\", filen finns redan",
     "Could not move \"{file}\"" : "Kan inte flytta \"{file}\"",
     "{newName} already exists" : "{newName} finns redan",

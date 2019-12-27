@@ -28,6 +28,8 @@ OC.L10N.register(
     "Invalid path" : "Cale invalidă",
     "This operation is forbidden" : "Operațiunea este interzisă",
     "This directory is unavailable, please check the logs or contact the administrator" : "Acest director nu este disponibil, te rugăm verifică logurile sau contactează un administrator",
+    "group" : "grup",
+    "Remote share" : "Element partajat la distanță",
     "Could not move \"{file}\", target exists" : "Nu s-a putut muta fișierul \"{file}\", există deja un altul cu același nume în directorul destinație",
     "Could not move \"{file}\"" : "Nu s-a putut muta fișierul \"{file}\"",
     "{newName} already exists" : "{newName} există deja",

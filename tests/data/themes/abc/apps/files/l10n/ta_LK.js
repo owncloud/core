@@ -16,6 +16,7 @@ OC.L10N.register(
     "Details" : "விவரங்கள்",
     "Select" : "தெரிக",
     "Pending" : "நிலுவையிலுள்ள",
+    "group" : "குழு",
     "Name" : "பெயர்",
     "Size" : "அளவு",
     "Modified" : "மாற்றப்பட்டது",

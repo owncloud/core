@@ -9,6 +9,7 @@ OC.L10N.register(
     "Delete" : "Padam",
     "Files" : "Fail-fail",
     "Pending" : "Dalam proses",
+    "group" : "kumpulan",
     "Name" : "Nama",
     "Size" : "Saiz",
     "Modified" : "Dimodifikasi",

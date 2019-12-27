@@ -28,6 +28,7 @@ OC.L10N.register(
     "Invalid path" : "Đường dẫn không hợp lệ",
     "This operation is forbidden" : "Thao tác bị cấm",
     "This directory is unavailable, please check the logs or contact the administrator" : "Thư mục này không sẵn có, hãy kiểm tra log hoặc liên hệ người quản lý",
+    "group" : "nhóm",
     "Could not move \"{file}\", target exists" : "Không thể di chuyển \"{file}\", trùng đích đến",
     "Could not move \"{file}\"" : "Không thể di chuyển \"{file}\"",
     "{newName} already exists" : "{newName} đã có",

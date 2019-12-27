@@ -39,6 +39,8 @@ OC.L10N.register(
     "Invalid path" : "잘못된 경로",
     "This operation is forbidden" : "이 작업이 금지됨",
     "This directory is unavailable, please check the logs or contact the administrator" : "디렉터리를 사용할 수 없습니다. 로그를 확인하거나 관리자에게 연락하십시오",
+    "group" : "그룹",
+    "Remote share" : "원격 공유",
     "Could not move \"{file}\", target exists" : "\"{file}\"을(를) 이동할 수 없음, 대상이 존재함",
     "Could not move \"{file}\"" : "\"{file}\"을(를) 이동할 수 없음",
     "{newName} already exists" : "{newName}이(가) 이미 존재함",

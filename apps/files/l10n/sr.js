@@ -27,6 +27,8 @@ OC.L10N.register(
     "Invalid path" : "Неисправна путања",
     "This operation is forbidden" : "Ова радња је забрањена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Овај директоријум није доступан, проверите записе или контактирајте администратора",
+    "group" : "група",
+    "Remote share" : "Удаљено дељење",
     "Name" : "Назив",
     "Size" : "Величина",
     "Modified" : "Измењен",

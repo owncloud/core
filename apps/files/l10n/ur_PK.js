@@ -8,6 +8,7 @@ OC.L10N.register(
     "Delete" : "حذف کریں",
     "Unshare" : "شئیرنگ ختم کریں",
     "Files" : "فائلیں",
+    "group" : "مجموعہ",
     "Name" : "اسم",
     "Settings" : "ترتیبات"
 },

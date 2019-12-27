@@ -38,6 +38,8 @@
     "Invalid path" : "Ongeldig pad",
     "This operation is forbidden" : "Deze taak is verboden",
     "This directory is unavailable, please check the logs or contact the administrator" : "Deze map is niet beschikbaar. Verifieer de logs of neem contact op met de beheerder",
+    "group" : "groep",
+    "Remote share" : "Externe share",
     "Could not move \"{file}\", target exists" : "Kon \"{file}\" niet verplaatsen, doel bestaat al",
     "Could not move \"{file}\": {message}" : "Kan \"{file}\" niet verplaatsen: {message}",
     "Could not move \"{file}\"" : "Kon \"{file}\" niet verplaatsen",

@@ -37,6 +37,7 @@
     "Invalid path" : "مسار غير صحيح",
     "This operation is forbidden" : "هذة العملية ممنوعة ",
     "This directory is unavailable, please check the logs or contact the administrator" : "المجلد غير متاح، الرجاء التواصل مع مسؤول النظام ",
+    "group" : "مجموعة",
     "Could not move \"{file}\", target exists" : "تعذر نقل الملف \"{file}\"، الملف موجود",
     "Could not move \"{file}\": {message}" : "تعذر نقل \"{file}\": {message}",
     "Could not move \"{file}\"" : "تعذر نقل الملف \"{file}\"",

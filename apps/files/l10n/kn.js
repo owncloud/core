@@ -17,6 +17,7 @@ OC.L10N.register(
     "Select" : "ಆಯ್ಕೆ ಮಾಡಿ",
     "Pending" : "﻿ಬಾಕಿ ಇದೆ",
     "Unable to determine date" : "﻿ಮುಕ್ತಾಯ ದಿನಾಂಕ ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
+    "group" : "﻿ಗುಂಪು",
     "Name" : "﻿ಹೆಸರು",
     "Size" : "﻿ ಪ್ರಮಾಣ",
     "Modified" : "﻿ಬದಲಾಯಿಸಿದ",

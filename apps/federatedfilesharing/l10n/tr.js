@@ -2,7 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Birleşmiş paylaşım",
-    "Add to your ownCloud" : "ownCloud'ınıza Ekleyin",
+    "Add to your ownCloud" : "ownCloud'ınıza ekleyin",
     "Invalid Federated Cloud ID" : "Geçersiz Birleşmiş Bulut Kimliği",
     "Sharing %s failed, because this item is already shared with %s" : "%s paylaşımı, %s ile zaten paylaşıldığından dolayı başarısız oldu",
     "Not allowed to create a federated share with the same user" : "Aynı kullanıcı ile bir birleşmiş paylaşım oluşturulamaz",
@@ -23,6 +23,6 @@ OC.L10N.register(
     "Add to your website" : "Web sitenize ekleyin",
     "Share with me via ownCloud" : "Benimle ownCloud aracılığıyla paylaşın",
     "HTML Code:" : "HTML Kodu:",
-    "Nothing to configure." : "Konfigüre edilecek birşey yok."
+    "Nothing to configure." : "Yapılandırılacak birşey yok."
 },
 "nplurals=2; plural=(n > 1);");

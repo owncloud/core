@@ -31,6 +31,8 @@ OC.L10N.register(
     "Invalid path" : "Geçersiz yol",
     "This operation is forbidden" : "Bu işlem yasak",
     "This directory is unavailable, please check the logs or contact the administrator" : "Bu dizine yazılamıyor, lütfen günlüğü kontrol edin veya yönetici ile iletişime geçin",
+    "group" : "grup",
+    "Remote share" : "Uzak paylaşım",
     "Could not move \"{file}\", target exists" : "\"{file}\" taşınamadı, hedef mevcut",
     "Could not move \"{file}\"" : "\"{file}\" taşınamadı",
     "{newName} already exists" : "{newName} zaten mevcut",

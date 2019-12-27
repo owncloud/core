@@ -28,6 +28,8 @@ OC.L10N.register(
     "Invalid path" : "Vigane tee",
     "This operation is forbidden" : "See toiming on keelatud",
     "This directory is unavailable, please check the logs or contact the administrator" : "See kaust pole saadaval. Palun kontrolli logifaile või võta ühendust administraatoriga",
+    "group" : "grupp",
+    "Remote share" : "Kaugjagamine",
     "Could not move \"{file}\"" : "\"{file}\" liigutamine ebaõnnestus",
     "{newName} already exists" : "{newName} on juba olemas",
     "Could not rename \"{fileName}\"" : "\"{fileName}\" ümbernimetamine ebaõnnestus",

@@ -71,7 +71,6 @@ OC.L10N.register(
     "Unknown share type" : "Tipe de partiment desconegut",
     "Not a directory" : "Es pas un repertòri",
     "Could not lock path" : "Impossible de verrolhar lo camin",
-    "Wrong or no update parameter given" : "Marrit o pas cap de paramètre donat ",
     "Accept" : "Acceptar",
     "Decline" : "Refusar",
     "This share is password-protected" : "Aqueste partiment es protegit per un senhal",
