@@ -105,7 +105,7 @@ Feature: rename folders
     When the user renames folder "a-folder" to one of these names using the webUI
       | filename.ext                  |
       | bannedfilename.txt            |
-      | this-containsbannedstring.txt |
+      | this-ContainsBannedString.txt |
     Then notifications should be displayed on the webUI with the text
       | Could not rename "a-folder" |
       | Could not rename "a-folder" |

@@ -248,12 +248,12 @@ Feature: move (rename) file
       | filename.ext                           | 403       | no     |
       | bannedfilename.txt                     | 403       | no     |
       | containsbannedstring                   | 403       | no     |
-      | this-containsbannedstring.txt          | 403       | no     |
+      | this-ContainsBannedString.txt          | 403       | no     |
       | /FOLDER/.ext                           | 403       | no     |
       | /FOLDER/filename.ext                   | 403       | no     |
       | /FOLDER/bannedfilename.txt             | 403       | no     |
       | /FOLDER/containsbannedstring           | 403       | no     |
-      | /FOLDER/this-containsbannedstring.txt  | 403       | no     |
+      | /FOLDER/this-ContainsBannedString.txt  | 403       | no     |
       | .extension                             | 201       | yes    |
       | filename.txt                           | 201       | yes    |
       | bannedfilename                         | 201       | yes    |

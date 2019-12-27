@@ -192,7 +192,7 @@ Feature: upload file using new chunking
       | filename                      |
       | filename.ext                  |
       | bannedfilename.txt            |
-      | this-containsbannedstring.txt |
+      | this-ContainsBannedString.txt |
 
   Scenario: upload a file to a filename that does not match blacklisted_files_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
