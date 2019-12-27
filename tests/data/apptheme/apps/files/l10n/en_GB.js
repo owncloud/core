@@ -41,6 +41,8 @@ OC.L10N.register(
     "Invalid path" : "Invalid path",
     "This operation is forbidden" : "This operation is forbidden",
     "This directory is unavailable, please check the logs or contact the administrator" : "This directory is unavailable, please check the logs or contact the administrator",
+    "group" : "group",
+    "Remote share" : "Remote share",
     "Could not move \"{file}\", target exists" : "Could not move \"{file}\", target exists",
     "Could not move \"{file}\" because either the file or the target are locked." : "Could not move \"{file}\" because either the file or the target are locked.",
     "Could not move \"{file}\": {message}" : "Could not move \"{file}\": {message}",

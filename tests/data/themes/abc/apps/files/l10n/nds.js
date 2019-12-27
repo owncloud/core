@@ -6,6 +6,7 @@ OC.L10N.register(
     "Delete" : "Löschen",
     "Files" : "Dateien",
     "Details" : "Details",
+    "group" : "Gruppe",
     "Could not move \"{file}\", target exists" : "\"{file}\" konnte nicht verschoben werden, weil das Ziel schon existiert",
     "Could not move \"{file}\"" : "\"{file}\" konnte nicht verschoben werden",
     "Name" : "Name",

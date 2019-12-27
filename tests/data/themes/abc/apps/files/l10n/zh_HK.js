@@ -11,6 +11,7 @@ OC.L10N.register(
     "Unshare" : "取消分享",
     "Files" : "文件",
     "Details" : "詳述",
+    "group" : "組別",
     "Name" : "名稱",
     "Size" : "大小",
     "{dirs} and {files}" : "{dirs} 和 {files}",

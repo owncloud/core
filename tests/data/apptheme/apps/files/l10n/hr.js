@@ -25,6 +25,8 @@ OC.L10N.register(
     "Unable to determine date" : "Nemogucnost odredjivanja datuma",
     "Invalid path" : "Pogrešna putanja",
     "This operation is forbidden" : "Ova radnja je zabranjena",
+    "group" : "Grupa",
+    "Remote share" : "Udaljeni zajednički resurs (za raspodjelu)",
     "Name" : "Naziv",
     "Size" : "Veličina",
     "Modified" : "Promijenjeno",

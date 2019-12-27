@@ -41,6 +41,8 @@ OC.L10N.register(
     "Invalid path" : "Некорректный путь",
     "This operation is forbidden" : "Операция запрещена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Директория недоступна, пожалуйста проверьте журнал сообщений или свяжитесь с администратором",
+    "group" : "группа",
+    "Remote share" : "Удаленный общий ресурс",
     "Could not move \"{file}\", target exists" : "Невозможно переместить \"{file}\", цель отсутствует",
     "Could not move \"{file}\" because either the file or the target are locked." : "Не удалось переместить \"{file}\" так как или файл, или место назначения заблокированы.",
     "Could not move \"{file}\": {message}" : "Не удалось переместить \"{file}\": {message}",

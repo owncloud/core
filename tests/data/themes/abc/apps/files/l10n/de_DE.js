@@ -41,6 +41,8 @@ OC.L10N.register(
     "Invalid path" : "Ungültiger Pfad",
     "This operation is forbidden" : "Diese Operation ist nicht erlaubt",
     "This directory is unavailable, please check the logs or contact the administrator" : "Dieses Verzeichnis ist nicht verfügbar, bitte überprüfen Sie die Logdateien oder kontaktieren Sie den Administrator",
+    "group" : "Gruppe",
+    "Remote share" : "Entfernte Freigabe",
     "Could not move \"{file}\", target exists" : "Die Datei konnte nicht verschoben werden \"{file}\", da die Datei im Zielordner bereits existiert",
     "Could not move \"{file}\" because either the file or the target are locked." : "Die Datei \"{file}\" konnte nicht verschoben werden, weil die Datei oder das Ziel gesperrt sind.",
     "Could not move \"{file}\": {message}" : "Kann die Datei \"{file}\" nicht verschieben: {message}",

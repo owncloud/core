@@ -14,6 +14,7 @@ OC.L10N.register(
     "Files" : "Ffeiliau",
     "Details" : "Manylion",
     "Pending" : "I ddod",
+    "group" : "grŵp",
     "Name" : "Enw",
     "Size" : "Maint",
     "Modified" : "Addaswyd",

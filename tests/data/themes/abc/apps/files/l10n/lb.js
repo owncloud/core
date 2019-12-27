@@ -19,6 +19,7 @@ OC.L10N.register(
     "Select" : "Auswielen",
     "This operation is forbidden" : "Dës Operatioun ass verbueden.",
     "This directory is unavailable, please check the logs or contact the administrator" : "Dësen Dossier ass net disponibel, w.e.g. kontrolléiert d'Logs oder kontaktéiert den Administrateur",
+    "group" : "Grupp",
     "Name" : "Numm",
     "Size" : "Gréisst",
     "Modified" : "Geännert",

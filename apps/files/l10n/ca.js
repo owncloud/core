@@ -26,6 +26,8 @@ OC.L10N.register(
     "Pending" : "Pendent",
     "Unable to determine date" : "No s'ha pogut determinar la data",
     "Invalid path" : "El camí no és vàlid",
+    "group" : "grup",
+    "Remote share" : "Compartició remota",
     "Name" : "Nom",
     "Size" : "Mida",
     "Modified" : "Modificat",

@@ -317,6 +317,7 @@
     "Password changed successfully" : "Pomyślnie zmieniono hasło",
     "New password" : "Nowe hasło",
     "New Password" : "Nowe hasło",
+    "Confirm Password" : "Potwierdź hasło.",
     "Reset password" : "Zresetuj hasło",
     "Personal note from the sender: <br> %s." : "Własna informacja od nadawcy:<br> %s.",
     "This ownCloud instance is currently in single user mode." : "Ta instalacja ownCloud działa obecnie w trybie pojedynczego użytkownika.",

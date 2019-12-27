@@ -116,7 +116,6 @@
     "Expiration date is in the past" : "Múltbéli lejárati idő.",
     "Cannot set expiration date more than %s days in the future" : "Nem lehet beállítani a lejárat dátumát, %s napnál többre",
     "Could not find category \"%s\"" : "Ez a kategória nem található: \"%s\"",
-    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "A felhasználónévben csak a következő karakterek fordulhatnak elő: \"a-z\", \"A-Z\", \"0-9\", és \"_.@-\"",
     "A valid username must be provided" : "Érvényes felhasználónevet kell megadnia",
     "Username contains whitespace at the beginning or at the end" : "A felhasználónév üres karaktert tartalmaz, az elején, vagy a végén",
     "A valid password must be provided" : "Érvényes jelszót kell megadnia",

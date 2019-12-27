@@ -38,6 +38,8 @@ OC.L10N.register(
     "Invalid path" : "Niewłaściwa ścieżka",
     "This operation is forbidden" : "Ta operacja jest niedozwolona",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ten folder jest niedostępny, proszę sprawdzić logi lub skontaktować się z administratorem.",
+    "group" : "grupa",
+    "Remote share" : "Zdalny zasób",
     "Could not move \"{file}\", target exists" : "Nie można było przenieść „{file}” – plik o takiej nazwie już istnieje",
     "Could not move \"{file}\": {message}" : "Nie można przenieść \"{file}\": {message}",
     "Could not move \"{file}\"" : "Nie można było przenieść \"{file}\"",

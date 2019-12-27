@@ -38,6 +38,8 @@ OC.L10N.register(
     "Invalid path" : "Невалиден път",
     "This operation is forbidden" : "Операцията е забранена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Директорията липсва, моля, проверете докладите или се свържете с администратора",
+    "group" : "група",
+    "Remote share" : "Прикачена Папка",
     "Could not move \"{file}\", target exists" : "Неуспешно преместване на  \"{file}\", крайната местоположение вече съществува",
     "Could not move \"{file}\"" : "Неуспешно преместване на \"{file}\"",
     "{newName} already exists" : "{newName} вече съществува",

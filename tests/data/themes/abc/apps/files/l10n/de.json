@@ -39,6 +39,8 @@
     "Invalid path" : "Ungültiger Pfad",
     "This operation is forbidden" : "Diese Operation ist nicht erlaubt",
     "This directory is unavailable, please check the logs or contact the administrator" : "Dieses Verzeichnis ist nicht verfügbar, bitte überprüfe die Logdateien oder kontaktiere den Administrator",
+    "group" : "Gruppe",
+    "Remote share" : "Entfernte Freigabe",
     "Could not move \"{file}\", target exists" : "\"{file}\" konnte nicht verschoben werden: Ziel existiert bereits",
     "Could not move \"{file}\" because either the file or the target are locked." : "Die Datei \"{file}\" konnte nicht verschoben werden, weil die Datei oder das Ziel gesperrt ist.",
     "Could not move \"{file}\": {message}" : "Kann die Datei \"{file}\" nicht verschieben: {message}",

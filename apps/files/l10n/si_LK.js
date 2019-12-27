@@ -12,6 +12,7 @@ OC.L10N.register(
     "Unshare" : "නොබෙදු",
     "Files" : "ගොනු",
     "Select" : "තෝරන්න",
+    "group" : "කණ්ඩායම",
     "Name" : "නම",
     "Size" : "ප්‍රමාණය",
     "Modified" : "වෙනස් කළ",

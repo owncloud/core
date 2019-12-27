@@ -26,6 +26,8 @@ OC.L10N.register(
     "Invalid path" : "Yalnış ünvan",
     "This operation is forbidden" : "Bu əməliyyat qadağandır",
     "This directory is unavailable, please check the logs or contact the administrator" : "Bu qovluq tapılmir. Xahiş olunur jurnalları yoxlayın ya da inzibatçı ilə əlaqə saxlayın",
+    "group" : "qrup",
+    "Remote share" : "Uzaq yayımlanma",
     "Name" : "Ad",
     "Size" : "Həcm",
     "Modified" : "Dəyişdirildi",

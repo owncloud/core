@@ -18,6 +18,7 @@ OC.L10N.register(
     "Invalid path" : "Անվավեր ուղի",
     "This operation is forbidden" : "Այս գործողությունը արգելված է",
     "This directory is unavailable, please check the logs or contact the administrator" : "Այս պանակը անհասանելի է, ստուգիր լոգերը կամ կապվիր ադմինի հետ",
+    "group" : "խումբ",
     "{newName} already exists" : "{newName} արդեն գոյություն ունի",
     "Could not rename \"{fileName}\", it does not exist any more" : "Չկարողացա վերանվանել «{fileName}», այն այլևս գոյություն չունի",
     "Could not rename \"{fileName}\"" : "Չկարողացա վերանվանել «{fileName}»",

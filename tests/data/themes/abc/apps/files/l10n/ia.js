@@ -12,6 +12,7 @@ OC.L10N.register(
     "Unshare" : "Leva compartir",
     "Files" : "Files",
     "Details" : "Detalios",
+    "group" : "gruppo",
     "Name" : "Nomine",
     "Size" : "Dimension",
     "Modified" : "Modificate",

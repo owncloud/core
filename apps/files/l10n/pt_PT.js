@@ -35,6 +35,8 @@ OC.L10N.register(
     "Invalid path" : "Caminho inválido",
     "This operation is forbidden" : "Esta operação é proibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "Esta diretoria está indisponível, por favor, verifique os registos ou contacte o administrador",
+    "group" : "grupo",
+    "Remote share" : "Partilha remota",
     "Could not move \"{file}\", target exists" : "Não foi possível mover \"{file}\", destino já existe",
     "Could not move \"{file}\"" : "Não foi possivel mover o ficheiro \"{file}\"",
     "{newName} already exists" : "{newName} já existe",

@@ -8,6 +8,7 @@ OC.L10N.register(
     "Unshare" : "Teilung zurücknehmen",
     "Files" : "Dateien",
     "Details" : "Details",
+    "group" : "Gruppe",
     "Name" : "Name",
     "New folder" : "Neuer Ordner",
     "Upload" : "Hochladen",

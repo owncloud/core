@@ -21,6 +21,7 @@ OC.L10N.register(
     "Select" : "Izaberi",
     "Pending" : "Na čekanju",
     "Unable to determine date" : "Nemoguće odrediti datum",
+    "group" : "grupa",
     "Name" : "Ime",
     "Size" : "Veličina",
     "Modified" : "Izmijenjeno",

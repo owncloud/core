@@ -39,6 +39,8 @@ OC.L10N.register(
     "Invalid path" : "Ugyldig område",
     "This operation is forbidden" : "Operasjon er ikkje tillatt.",
     "This directory is unavailable, please check the logs or contact the administrator" : "Området er ikkje tilgjengeleg, ver vennleg og sjå i logg eller kontakt administrator",
+    "group" : "gruppe",
+    "Remote share" : "Eksternt delt mappe",
     "Could not move \"{file}\", target exists" : "Kan ikkje flytte \"{file}\", mål finst frå før",
     "Could not move \"{file}\": {message}" : "Kan ikkje flytte  \"{file}\": {message}",
     "Could not move \"{file}\"" : "Kan ikkje flytte \"{file}\"",

@@ -35,6 +35,8 @@ OC.L10N.register(
     "Invalid path" : "Chybná cesta",
     "This operation is forbidden" : "Tato operace je zakázána",
     "This directory is unavailable, please check the logs or contact the administrator" : "Tento adresář není dostupný, zkontrolujte prosím logy nebo kontaktujte svého správce systému",
+    "group" : "skupina",
+    "Remote share" : "Vzdálené úložiště",
     "Could not move \"{file}\", target exists" : "Nelze přesunout \"{file}\", cíl existuje",
     "Could not move \"{file}\"" : "Nelze přesunout \"{file}\"",
     "{newName} already exists" : "{newName} již existuje",
