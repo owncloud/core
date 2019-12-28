@@ -19,8 +19,8 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<label for="mountOptionsEncrypt">{{t "files_external" "Enable encryption"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
-	'		<input id="mountOptionsPreviews" name="read_only" type="checkbox" value="true"/>' +
-	'		<label for="mountOptionsPreviews">{{t "files_external" "Set read-only"}}</label>' +
+	'		<input id="mountOptionsReadonly" name="read_only" type="checkbox" value="true"/>' +
+	'		<label for="mountOptionsReadonly">{{t "files_external" "Set read-only"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
 	'		<input id="mountOptionsPreviews" name="previews" type="checkbox" value="true" checked="checked"/>' +
