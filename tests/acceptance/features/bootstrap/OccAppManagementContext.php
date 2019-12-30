@@ -178,6 +178,7 @@ class OccAppManagementContext implements Context {
 	 * @return void
 	 */
 	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable) {
+		$this->featureContext->verifyTableNodeColumnsCount($appListTable, 1);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputApps = \array_keys(\json_decode($lastOutput, true)['apps']);
 

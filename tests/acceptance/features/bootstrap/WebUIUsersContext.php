@@ -236,6 +236,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->theAdminDeletesTheGroupUsingTheWebUI($row['groupname']);
 		}
@@ -250,6 +251,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminDeletesDoesNotTheseGroupsUsingTheWebUI(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->theAdminDeletesDoesNotDeleteGroupUsingWebUI($row['groupname']);
 		}
@@ -297,6 +299,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	) {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
+		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			Assert::assertEquals(
 				\in_array($row['groupname'], $groups, true),
@@ -429,6 +432,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'email']);
 		foreach ($table as $row) {
 			$userEmail = $this->usersPage->getEmailOfUser($row['username']);
 			Assert::assertEquals($row['email'], $userEmail);
@@ -443,6 +447,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'quota']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
 			Assert::assertEquals(true, $visible);
@@ -457,6 +462,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
 			Assert::assertEquals(false, $visible);
@@ -471,6 +477,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
 			Assert::assertEquals(true, $visible);
@@ -485,6 +492,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorShouldNotbeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
 			Assert::assertEquals(false, $visible);
@@ -501,6 +509,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldBeAbleToSeeStorageLocationOfTheseUsers(
 		TableNode $table
 	) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'storage location']);
 		foreach ($table as $row) {
 			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($row['username']);
 			Assert::assertContains($row['storage location'], $userStorageLocation);
@@ -517,6 +526,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldBeAbleToSeeLastLoginOfTheseUsers(
 		TableNode $table
 	) {
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'last login']);
 		foreach ($table as $row) {
 			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
 

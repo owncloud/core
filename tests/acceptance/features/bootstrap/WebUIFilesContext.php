@@ -658,6 +658,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$fromNameParts = [];
 		$toNameParts = [];
+		$this->featureContext->verifyTableNodeColumns($namePartsTable, ['from-name-parts', 'to-name-parts']);
 
 		foreach ($namePartsTable as $namePartsRow) {
 			$fromNameParts[] = $namePartsRow['from-name-parts'];
@@ -685,6 +686,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserRenamesFileToOneOfTheseNamesUsingTheWebUI(
 		$fromName, TableNode $table
 	) {
+		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		foreach ($table->getRows() as $row) {
@@ -749,6 +751,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$fileNameParts = [];
 
+		$this->featureContext->verifyTableNodeColumns($namePartsTable, ['name-parts']);
 		foreach ($namePartsTable as $namePartsRow) {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
@@ -766,6 +769,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theFollowingFilesFoldersHaveBeenDeleted(TableNode $filesTable) {
+		$this->featureContext->verifyTableNodeColumns($filesTable, ['name']);
 		foreach ($filesTable as $file) {
 			$username = $this->featureContext->getCurrentUser();
 			$currentTime = \microtime(true);
@@ -819,6 +823,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserDeletesTheFollowingElementsUsingTheWebUI(
 		TableNode $table
 	) {
+		$this->featureContext->verifyTableNodeColumns($table, ['name']);
 		$this->deletedElementsTable = $table;
 		foreach ($this->deletedElementsTable as $file) {
 			$this->deleteTheFileUsingTheWebUI($file['name']);
@@ -855,6 +860,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$itemToMoveNameParts = [];
 		$destinationNameParts = [];
 
+		$this->featureContext->verifyTableNodeColumns(
+			$namePartsTable,
+			['item-to-move-name-parts', 'destination-name-parts']
+		);
 		foreach ($namePartsTable as $namePartsRow) {
 			$itemToMoveNameParts[] = $namePartsRow['item-to-move-name-parts'];
 			$destinationNameParts[] = $namePartsRow['destination-name-parts'];
@@ -878,6 +887,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserBatchMovesTheseFilesIntoFolderUsingTheWebUI(
 		$folderName, TableNode $files
 	) {
+		$this->featureContext->verifyTableNodeColumns($files, ['name']);
 		$this->theUserMarksTheseFilesForBatchActionUsingTheWebUI($files);
 		$firstFileName = $files->getRow(1)[0];
 		$this->theUserMovesFileFolderIntoFolderUsingTheWebUI(
@@ -1203,6 +1213,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserMarksTheseFilesForBatchActionUsingTheWebUI(
 		TableNode $files
 	) {
+		$this->featureContext->verifyTableNodeColumns($files, ['name']);
 		$pageObject = $this->getCurrentPageObject();
 		$session = $this->getSession();
 		$pageObject->waitTillPageIsLoaded($session);
@@ -1550,6 +1561,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$toBeListedTableArray[] = ["name-parts"];
 		$folderNameParts = [];
+		$this->featureContext->verifyTableNodeColumns(
+			$namePartsTable,
+			['folder-name-parts', 'item-name-parts']
+		);
 		foreach ($namePartsTable as $namePartsRow) {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
@@ -1583,6 +1598,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$fileNameParts = [];
 
+		$this->featureContext->verifyTableNodeColumns($namePartsTable, ['name-parts']);
 		if ($namePartsTable !== null) {
 			foreach ($namePartsTable as $namePartsRow) {
 				$fileNameParts[] = $namePartsRow['name-parts'];
