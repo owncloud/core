@@ -50,7 +50,7 @@ class OccUsersGroupsContext implements Context {
 	 * "|username|password|displayname|email|"
 	 * displayname & email are optional
 	 *
-	 * @returns void
+	 * @return void
 	 * @throws Exception
 	 */
 	public function createUsersUsingOccCommand(TableNode $table) {
@@ -107,7 +107,7 @@ class OccUsersGroupsContext implements Context {
 	 *
 	 * @param TableNode $table
 	 *
-	 * @returns void
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theAdministratorCreatesTheseUsersUsingTheOccCommand(TableNode $table) {
@@ -122,7 +122,7 @@ class OccUsersGroupsContext implements Context {
 	 *
 	 * @param TableNode $table
 	 *
-	 * @returns void
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreatedUsingTheOccCommand(TableNode $table) {
