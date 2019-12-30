@@ -56,6 +56,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	protected $applicableUserXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//li[@class='select2-search-choice'][%s]//span";
 	protected $applicableUserDeleteXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//li[@class='select2-search-choice'][%s]//a";
 	protected $lastCreatedMountDeleteButtonXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]/td[@class='remove']";
+	protected $lastCreatedMountOptionsButtonXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]/td[@class='mountOptionsToggle']";
+	protected $setReadonlyId = "mountOptionsReadonly";
 	protected $mountPointNameXpath = "//tr[@class='local'][%s]//input[@placeholder='Folder name']";
 
 	/**
@@ -279,6 +281,46 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			if (($now - $start) * 1000 >= $timeout) {
 				break;
 			}
+		}
+	}
+
+	/**
+	 * open the mount options/advanced settings
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function openMountOptions($session) {
+		$lastCreatedMountOptionsButton = $this->find(
+			"xpath", $this->lastCreatedMountOptionsButtonXpath
+		);
+		$this->assertElementNotNull(
+			$lastCreatedMountOptionsButton,
+			__METHOD__ .
+			" xpath $this->lastCreatedMountOptionsButtonXpath " .
+			"could not find mount options advanced settings button for last created mount"
+		);
+		$lastCreatedMountOptionsButton->click();
+	}
+
+	/**
+	 * enable read-only mount option
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enableReadonlyMountOption(Session $session) {
+		$checkCheckbox = $this->findById($this->setReadonlyId);
+		$this->assertElementNotNull(
+			$checkCheckbox,
+			__METHOD__ .
+			" id " . $this->setReadonlyId .
+			" could not find checkbox for read-only mount option"
+		);
+		if ((!($checkCheckbox->isChecked()))) {
+			$checkCheckbox->click();
 		}
 	}
 
