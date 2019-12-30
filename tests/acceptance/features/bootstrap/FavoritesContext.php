@@ -52,7 +52,11 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function userFavoritesElement($user, $path) {
-		$response = $this->changeFavStateOfAnElement($user, $path, 1);
+		$response = $this->changeFavStateOfAnElement(
+			$user,
+			$path,
+			1
+		);
 		$this->featureContext->setResponse($response);
 	}
 
@@ -89,10 +93,10 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function theUserFavoritesElement($path) {
-		$response = $this->changeFavStateOfAnElement(
-			$this->featureContext->getCurrentUser(), $path, 1
+		$this->userFavoritesElement(
+			$this->featureContext->getCurrentUser(),
+			$path
 		);
-		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -103,7 +107,10 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function theUserHasFavoritedElement($path) {
-		$this->theUserFavoritesElement($path);
+		$this->userFavoritesElement(
+			$this->featureContext->getCurrentUser(),
+			$path
+		);
 		$this->featureContext->theHTTPStatusCodeShouldBe(
 			207,
 			"Expected response status code to be 207 (Multi-status), but not found! "
@@ -237,10 +244,10 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function theUserUnfavoritesElement($path) {
-		$response = $this->changeFavStateOfAnElement(
-			$this->featureContext->getCurrentUser(), $path, 0
+		$this->userUnfavoritesElement(
+			$this->featureContext->getCurrentUser(),
+			$path
 		);
-		$this->featureContext->setResponse($response);
 	}
 
 	/**
