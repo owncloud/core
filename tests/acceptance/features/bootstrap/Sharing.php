@@ -63,6 +63,17 @@ trait Sharing {
 	];
 
 	/**
+	 * @var array
+	 */
+	private $shareResponseFields = [
+		'id', 'share_type', 'uid_owner', 'displayname_owner', 'stime', 'parent',
+		'expiration', 'token', 'uid_file_owner', 'displayname_file_owner', 'path',
+		'item_type', 'mimetype', 'storage_id', 'storage', 'item_source',
+		'file_source', 'file_parent', 'file_target', 'name', 'url', 'mail_send',
+		'attributes', 'permissions'
+	];
+
+	/**
 	 * @return SimpleXMLElement
 	 */
 	public function getLastShareData() {
@@ -1407,7 +1418,7 @@ trait Sharing {
 	public function theResponseWhenUserGetsInfoOfLastShareShouldInclude(
 		$user, $body
 	) {
-		$this->verifyTableNodeRows($body, [], $this->shareFields);
+		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
 		$this->userGetsInfoOfLastShareUsingTheSharingApi($user);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
@@ -1888,7 +1899,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function assertSharesOfUserAreInState($user, $state, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ["path"]);
+		$this->verifyTableNodeColumns($table, ["path"], $this->shareResponseFields);
 		$usersShares = $this->getAllSharesSharedWithUser($user, $state);
 		foreach ($table as $row) {
 			$found = false;

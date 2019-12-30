@@ -2038,7 +2038,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content with column headings, e.g.
-	 * 								  | number | content                 |
+	 *                                | number | content                 |
 	 *                                | 1      | first data              |
 	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
@@ -2049,7 +2049,7 @@ trait WebDav {
 		$user, $total, $file, TableNode $chunkDetails
 	) {
 		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
-		foreach ($chunkDetails->getTable() as $chunkDetail) {
+		foreach ($chunkDetails->getHash() as $chunkDetail) {
 			$chunkNumber = $chunkDetail['number'];
 			$chunkContent = $chunkDetail['content'];
 			$this->userUploadsChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
@@ -2066,7 +2066,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content with following headings, e.g.
-	 * 								  | number | content                 |
+	 *                                | number | content                 |
 	 *                                | 1      | first data              |
 	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
@@ -2093,7 +2093,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content with column headings, e.g.
-	 * 								  | number | content                 |
+	 *                                | number | content                 |
 	 *                                | 1      | first data              |
 	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
@@ -2118,7 +2118,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content with headings, e.g.
-	 * 								  | number | content                 |
+	 *                                | number | content                 |
 	 *                                | 1      | first data              |
 	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
@@ -2190,7 +2190,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content, with headings e.g.
-	 * 								  | number | content      |
+	 *                                | number | content      |
 	 *                                | 1      | first data   |
 	 *                                | 2      | second data  |
 	 *                                Chunks may be numbered out-of-order if desired.
@@ -2215,7 +2215,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content without column headings, e.g.
-	 * 								  | number | content                 |
+	 *                                | number | content                 |
 	 *                                | 1      | first data              |
 	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
@@ -2238,7 +2238,7 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content with column headings, e.g.
-	 * 								  | number | content            |
+	 *                                | number | content            |
 	 *                                | 1      | first data         |
 	 *                                | 2      | second data        |
 	 *                                Chunks may be numbered out-of-order if desired.
