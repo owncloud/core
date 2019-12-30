@@ -191,38 +191,42 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
-		if ($body instanceof TableNode) {
-			$fd = $body->getRowsHash();
-			$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
-			$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
-			$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
-			$fd['password'] = \array_key_exists('password', $fd) ? $this->getActualPassword($fd['password']) : null;
+		$this->verifyTableNodeRows(
+			$body,
+			['path'],
+			['name', 'shareWith', 'publicUpload', 'password',
+			'permissions', 'shareType', 'expireDate', 'expireDateAsString']
+		);
+		$fd = $body->getRowsHash();
+		$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
+		$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
+		$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
+		$fd['password'] = \array_key_exists('password', $fd) ? $this->getActualPassword($fd['password']) : null;
 
-			if (\array_key_exists('permissions', $fd)) {
-				if (\is_numeric($fd['permissions'])) {
-					$fd['permissions'] = (int) $fd['permissions'];
-				} else {
-					$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
-				}
+		if (\array_key_exists('permissions', $fd)) {
+			if (\is_numeric($fd['permissions'])) {
+				$fd['permissions'] = (int) $fd['permissions'];
 			} else {
-				$fd['permissions'] = null;
+				$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
 			}
-			if (\array_key_exists('shareType', $fd)) {
-				if (\is_numeric($fd['shareType'])) {
-					$fd['shareType'] = (int) $fd['shareType'];
-				}
-			} else {
-				$fd['shareType'] = null;
-			}
-
-			Assert::assertFalse(
-				isset($fd['expireDate'], $fd['expireDateAsString']),
-				'expireDate and expireDateAsString cannot be set at the same time.'
-			);
-			$needToParse = \array_key_exists('expireDate', $fd);
-			$expireDate = $fd['expireDate'] ?? $fd['expireDateAsString'] ?? null;
-			$fd['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
+		} else {
+			$fd['permissions'] = null;
 		}
+		if (\array_key_exists('shareType', $fd)) {
+			if (\is_numeric($fd['shareType'])) {
+				$fd['shareType'] = (int) $fd['shareType'];
+			}
+		} else {
+			$fd['shareType'] = null;
+		}
+
+		Assert::assertFalse(
+			isset($fd['expireDate'], $fd['expireDateAsString']),
+			'expireDate and expireDateAsString cannot be set at the same time.'
+		);
+		$needToParse = \array_key_exists('expireDate', $fd);
+		$expireDate = $fd['expireDate'] ?? $fd['expireDateAsString'] ?? null;
+		$fd['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
 		$this->createShare(
 			$user,
 			$fd['path'],

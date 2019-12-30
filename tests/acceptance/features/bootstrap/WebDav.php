@@ -2760,6 +2760,7 @@ trait WebDav {
 	public function propfindResultShouldContainEntries(
 		$shouldOrNot, TableNode $expectedFiles
 	) {
+		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$elementRows = $expectedFiles->getRows();
 		$should = ($shouldOrNot !== "not");
 
@@ -2814,6 +2815,7 @@ trait WebDav {
 	public function theSearchResultOfShouldContainAnyOfTheseEntries(
 		$expectedNumber, TableNode $expectedFiles
 	) {
+		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$this->propfindResultShouldContainNumEntries($expectedNumber);
 		$elementRows = $expectedFiles->getRowsHash();
 		$resultEntries = $this->findEntryFromPropfindResponse();
