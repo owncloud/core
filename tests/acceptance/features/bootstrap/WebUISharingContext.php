@@ -576,6 +576,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserAddsTheFollowingEmailAddressesUsingTheWebUI(TableNode $emails) {
+		$this->featureContext->verifyTableNodeColumns($emails, ['email']);
 		foreach ($emails as $row) {
 			$this->publicSharingPopup->setLinkEmail($row['email']);
 		}
@@ -589,6 +590,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserRemovesTheFollowingEmailAddressesUsingTheWebui(TableNode $emails) {
+		$this->featureContext->verifyTableNodeColumns($emails, ['email']);
 		foreach ($emails as $row) {
 			$this->publicSharingPopup->unsetLinkEmail($row['email']);
 		}
@@ -754,6 +756,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
 		$userOrGroup, $userName, $fileName, TableNode $permissionsTable
 	) {
+		$this->featureContext->verifyTableNodeRows($permissionsTable, [], ['share', 'edit', 'create', 'change', 'delete']);
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
@@ -782,6 +785,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theFollowingPermissionsAreSeenForInTheSharingDialogFor(
 		$fileName, $userOrGroup, $userName, TableNode $permissionsTable
 	) {
+		$this->featureContext->verifyTableNodeRows($permissionsTable, [], ['share', 'edit', 'create', 'change', 'delete']);
+
 		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
 		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
 		$this->sharingDialog->checkSharingPermissions(
@@ -1555,6 +1560,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		if ($settings !== null) {
+			$this->featureContext->verifyTableNodeRows(
+				$settings,
+				[],
+				['name', 'permission', 'password', 'expiration', 'email', 'personalMessage', 'emailToSelf']
+			);
 			$settingsArray = $settings->getRowsHash();
 			if (!isset($settingsArray['name'])) {
 				$settingsArray['name'] = null;
@@ -1748,6 +1758,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theFollowingResourcesShouldHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+		$this->featureContext->verifyTableNodeColumnsCount($resourceTable, 1);
 		$elementRows = $resourceTable->getRows();
 		$elements = $this->featureContext->simplifyArray($elementRows);
 		foreach ($elements as $filename) {
@@ -1770,6 +1781,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theFollowingResourcesShouldNotHaveShareIndicatorOnTheWebUI(TableNode $resourceTable) {
+		$this->featureContext->verifyTableNodeColumnsCount($resourceTable, 1);
 		$elementRows = $resourceTable->getRows();
 		$elements = $this->featureContext->simplifyArray($elementRows);
 		foreach ($elements as $filename) {

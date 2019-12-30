@@ -70,6 +70,14 @@ trait Provisioning {
 	private $createdGroups = [];
 
 	/**
+	 * @var array
+	 */
+	private $userResponseFields = [
+		"enabled", "quota", "email", "displayname", "home", "two_factor_auth_enabled",
+		"quota definition", "quota free", "quota user", "quota total", "quota relative"
+	];
+
+	/**
 	 * Usernames are not case-sensitive, and can generally be specified with any
 	 * mix of upper and lower case. For remembering usernames use the normalized
 	 * form so that "User0" and "user0" are remembered as the same user.
@@ -1151,6 +1159,7 @@ trait Provisioning {
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		$groups = SetupHelper::getGroups();
+		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			if (\in_array($row['groupname'], $groups, true) !== $should) {
 				throw new Exception(
@@ -1903,6 +1912,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theseGroupsHaveBeenCreated(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->createTheGroup($row['groupname']);
 		}
@@ -2901,6 +2911,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkUserAttributes($body) {
+		$this->verifyTableNodeRows($body, [], $this->userResponseFields);
 		$fd = $body->getRowsHash();
 		foreach ($fd as $field => $value) {
 			$data = $this->getResponseXml()->data[0];

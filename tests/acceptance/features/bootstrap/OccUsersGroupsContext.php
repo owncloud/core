@@ -511,6 +511,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 */
 	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable) {
+		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid', 'display name']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUsers = \json_decode($lastOutput, true);
 		$result = [];
@@ -536,6 +537,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 */
 	public function theGroupsReturnedByTheOccCommandShouldBe(TableNode $groupTableNode) {
+		$this->featureContext->verifyTableNodeColumns($groupTableNode, ['group']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputGroups = \json_decode($lastOutput, true);
 
