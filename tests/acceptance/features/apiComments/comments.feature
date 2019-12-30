@@ -11,6 +11,7 @@ Feature: Comments
     And the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has commented with content "My first comment" on file "/myFileToComment.txt"
     And the user should have the following comments on file "/myFileToComment.txt"
+      | user  | comment          |
       | user0 | My first comment |
     When the user gets the following properties of folder "/myFileToComment.txt" using the WebDAV API
       | oc:comments-href   |

@@ -261,6 +261,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
+        - OccContext:
         - WebDavPropertiesContext:
 
     apiWebdavOperations:
@@ -456,6 +457,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - OccContext:
 
     webUIRestrictSharing:
       paths:

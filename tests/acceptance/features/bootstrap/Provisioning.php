@@ -372,6 +372,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreated($setDefaultAttributes, $doNotInitialize, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
 		$table = $table->getColumnsHash();
 		$setDefaultAttributes = $setDefaultAttributes !== "";
 		$initialize = $doNotInitialize === "";

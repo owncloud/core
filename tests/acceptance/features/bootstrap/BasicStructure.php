@@ -981,28 +981,45 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then /^the HTTP status code should be "([^"]*)"$/
+	 * Check that the status code in the saved response is the expected status
+	 * code, or one of the expected status codes.
 	 *
-	 * @param int|int[]|string|string[] $statusCode
+	 * @param int|int[]|string|string[] $expectedStatusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 */
-	public function theHTTPStatusCodeShouldBe($statusCode, $message = "") {
-		if ($message === "") {
-			$message = "HTTP status code is not the expected value";
-		}
+	public function theHTTPStatusCodeShouldBe($expectedStatusCode, $message = "") {
+		$actualStatusCode = $this->response->getStatusCode();
+		if (\is_array($expectedStatusCode)) {
+			if ($message === "") {
+				$message = "HTTP status code $actualStatusCode is not one of the expected values";
+			}
 
-		if (\is_array($statusCode)) {
 			Assert::assertContains(
-				$this->response->getStatusCode(), $statusCode,
+				$actualStatusCode, $expectedStatusCode,
 				$message
 			);
 		} else {
+			if ($message === "") {
+				$message = "HTTP status code $actualStatusCode is not the expected value $expectedStatusCode";
+			}
+
 			Assert::assertEquals(
-				$statusCode, $this->response->getStatusCode(), $message
+				$expectedStatusCode, $actualStatusCode, $message
 			);
 		}
+	}
+
+	/**
+	 * @Then /^the HTTP status code should be "([^"]*)"$/
+	 *
+	 * @param int|string $statusCode
+	 *
+	 * @return void
+	 */
+	public function thenTheHTTPStatusCodeShouldBe($statusCode) {
+		$this->theHTTPStatusCodeShouldBe($statusCode, "");
 	}
 
 	/**
@@ -2553,5 +2570,99 @@ trait BasicStructure {
 		}
 		$this->usingServer($previousServer);
 		return $result;
+	}
+
+	/**
+	 * Verify that the tableNode contains expected headers
+	 *
+	 * @param TableNode $table
+	 * @param array $requiredHeader
+	 * @param array $allowedHeader
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function verifyTableNodeColumns($table, array $requiredHeader = [], array $allowedHeader = []) {
+		if (!($table instanceof TableNode)) {
+			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		if (\count($table->getHash()) < 1) {
+			throw new Exception("Table should have at least one row.");
+		}
+		$tableHeaders = $table->getRows()[0];
+		$allowedHeader = \array_unique(\array_merge($requiredHeader, $allowedHeader));
+		if ($requiredHeader != []) {
+			foreach ($requiredHeader as $element) {
+				if (!\in_array($element, $tableHeaders)) {
+					throw new Exception("Row with header '$element' expected to be in table but not found");
+				}
+			}
+		}
+
+		if ($allowedHeader != []) {
+			foreach ($tableHeaders as $element) {
+				if (!\in_array($element, $allowedHeader)) {
+					throw new Exception("Row with header '$element' is not allowed in table but found");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Verify that the tableNode contains expected rows
+	 *
+	 * @param TableNode $table
+	 * @param array $requiredRows
+	 * @param array $allowedRows
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function verifyTableNodeRows($table, array $requiredRows = [], array $allowedRows = []) {
+		if (!($table instanceof TableNode)) {
+			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		if (\count($table->getRows()) < 1) {
+			throw new Exception("Table should have at least one row.");
+		}
+		$tableHeaders = $table->getColumn(0);
+		$allowedRows = \array_unique(\array_merge($requiredRows, $allowedRows));
+		if ($requiredRows != []) {
+			foreach ($requiredRows as $element) {
+				if (!\in_array($element, $tableHeaders)) {
+					throw new Exception("Row with name '$element' expected to be in table but not found");
+				}
+			}
+		}
+
+		if ($allowedRows != []) {
+			foreach ($tableHeaders as $element) {
+				if (!\in_array($element, $allowedRows)) {
+					throw new Exception("Row with name '$element' is not allowed in table but found");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Verify that the tableNode contains expected number of columns
+	 *
+	 * @param TableNode $table
+	 * @param int $count
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function verifyTableNodeColumnsCount($table, $count) {
+		if (!($table instanceof TableNode)) {
+			throw new Exception("TableNode expected but got " . \gettype($table));
+		}
+		if (\count($table->getRows()) < 1) {
+			throw new Exception("Table should have at least one row.");
+		}
+		$rowCount = \count($table->getRows()[0]);
+		if ($count !== $rowCount) {
+			throw new Exception("Table expected to have $count rows but found $rowCount");
+		}
 	}
 }

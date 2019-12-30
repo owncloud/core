@@ -76,6 +76,7 @@ class WebDavPropertiesContext implements Context {
 		$user, $path, $propertiesTable
 	) {
 		$properties = null;
+		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);
 		if ($propertiesTable instanceof TableNode) {
 			foreach ($propertiesTable->getRows() as $row) {
 				$properties[] = $row[0];

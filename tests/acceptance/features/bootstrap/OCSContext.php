@@ -187,6 +187,10 @@ class OCSContext implements Context {
 	public function userSendsToOcsApiEndpointWithHeadersAndPassword(
 		$user, $verb, $url, $password, TableNode $headersTable
 	) {
+		$this->featureContext->verifyTableNodeColumns(
+			$headersTable,
+			['header', 'value']
+		);
 		$user = $this->featureContext->getActualUsername($user);
 		$headers = [];
 		foreach ($headersTable as $row) {
@@ -328,6 +332,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->featureContext->userRequestsURLWithUsingBasicAuth(
 				$user,
@@ -354,6 +359,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userSendsRequestToTheseEndpointsWithBody($user, $method, TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->featureContext->userRequestsURLWithUsingBasicAuth(
 				$user,
@@ -381,6 +387,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->featureContext->userRequestsURLWithUsingBasicAuth(
 				$asUser,

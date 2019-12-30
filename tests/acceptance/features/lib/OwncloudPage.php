@@ -27,6 +27,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Page\OwncloudPageElement\OCDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use WebDriver\Exception as WebDriverException;
 use WebDriver\Key;
@@ -829,6 +830,41 @@ class OwncloudPage extends Page {
 				"mixing both single and double quotes is unsupported - '$text'"
 			);
 		}
+	}
+
+	/**
+	 * @param array $urlParameters
+	 *
+	 * @return Page
+	 */
+	public function open(array $urlParameters = []) {
+		try {
+			parent::open($urlParameters);
+		} catch (UnexpectedPageException $e) {
+			$expected = \parse_url($this->getUrl($urlParameters));
+			$actual = \parse_url($this->getDriver()->getCurrentUrl());
+			foreach (['scheme', 'host', 'path'] as $part) {
+				if (\array_key_exists($part, $expected)) {
+					if (!\array_key_exists($part, $actual)
+						|| ($expected[$part] !== $actual[$part])
+					) {
+						throw $e;
+					}
+				}
+			}
+
+			if (\array_key_exists('query', $expected)) {
+				if (!\array_key_exists('query', $actual)) {
+					throw $e;
+				}
+				$expectedQuery = \explode("&", $expected['query']);
+				$actualQuery = \explode("&", $actual['query']);
+				if (\count(\array_diff($expectedQuery, $actualQuery)) > 0) {
+					throw $e;
+				}
+			}
+		}
+		return $this;
 	}
 
 	/**
