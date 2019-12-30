@@ -272,11 +272,10 @@ class TrashbinContext implements Context {
 	 */
 	public function theLastWebdavResponseShouldNotContainFollowingElements(TableNode $elements) {
 		$files = $this->getTrashbinContentFromResponseXml($this->featureContext->getResponseXmlObject());
-		if (!($elements instanceof TableNode)) {
-			throw new InvalidArgumentException(
-				'$expectedElements has to be an instance of TableNode'
-			);
-		}
+
+		// 'user' is also allowed in the table even though it is not used anywhere
+		// This for better readability in feature files
+		$this->featureContext->verifyTableNodeColumns($elements, ['path'], ['path', 'user']);
 		$elementRows = $elements->getHash();
 		foreach ($elementRows as $expectedElement) {
 			$notFound = true;

@@ -62,14 +62,14 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	/**
 	 *
 	 * @param SimpleXMLElement $responseXmlObject
-	 * @param TableNode $expectedShareTypes
+	 * @param array $expectedShareTypes
 	 *
 	 * @return void
 	 */
 	public static function assertResponseContainsShareTypes(
 		$responseXmlObject, $expectedShareTypes
 	) {
-		foreach ($expectedShareTypes->getRows() as $row) {
+		foreach ($expectedShareTypes as $row) {
 			$xmlPart = $responseXmlObject->xpath(
 				"//d:prop/oc:share-types/oc:share-type[.=" . $row[0] . "]"
 			);

@@ -18,6 +18,7 @@ Feature: Assign tags to file/folder
     When user "user1" adds tag "JustARegularTagName" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by the user should have the following tags
+      | name                | type   |
       | JustARegularTagName | normal |
 
   Scenario: Assigning a normal tag to a file belonging to someone else as regular user should fail
@@ -28,6 +29,7 @@ Feature: Assign tags to file/folder
     And user "user1" adds tag "MySecondTag" to file "/myFileToTag.txt" owned by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" owned by the user should have the following tags
+      | name       | type   |
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user should fail
@@ -39,6 +41,7 @@ Feature: Assign tags to file/folder
     And user "user1" adds tag "MySecondTag" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" shared by the user should have the following tags
+      | name       | type   |
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user belongs to tag's groups should work
@@ -50,6 +53,7 @@ Feature: Assign tags to file/folder
     When user "user1" adds tag "JustARegularTagName" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by the user should have the following tags
+      | name                | type                |
       | JustARegularTagName | not user-assignable |
 
   Scenario: Assigning a static tag to a file shared by someone else as regular user belongs to tag's groups should work
@@ -61,6 +65,7 @@ Feature: Assign tags to file/folder
     When user "user1" adds tag "StaticTagName" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by the user should have the following tags
+      | name          | type   |
       | StaticTagName | static |
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as regular user should fail
@@ -72,6 +77,7 @@ Feature: Assign tags to file/folder
     And user "user1" adds tag "MySecondTag" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "412"
     And file "/myFileToTag.txt" shared by the user should have the following tags
+      | name       | type   |
       | MyFirstTag | normal |
 
   Scenario: Assigning a static tag to a file shared by someone else as regular user does not belong to tag's group should fail
@@ -85,6 +91,7 @@ Feature: Assign tags to file/folder
     And user "user1" adds tag "StaticTag" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" shared by the user should have the following tags
+      | name      | type   |
       | NormalTag | normal |
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as admin user should work
@@ -96,9 +103,11 @@ Feature: Assign tags to file/folder
     And the administrator adds tag "MySecondTag" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" should have the following tags for the administrator
+      | name        | type             |
       | MyFirstTag  | normal           |
       | MySecondTag | not user-visible |
     And file "/myFileToTag.txt" should have the following tags for the user
+      | name       | type   |
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as admin user should work
@@ -110,8 +119,10 @@ Feature: Assign tags to file/folder
     And the administrator adds tag "MySecondTag" to file "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" should have the following tags for the administrator
+      | name        | type                |
       | MyFirstTag  | normal              |
       | MySecondTag | not user-assignable |
     And file "/myFileToTag.txt" should have the following tags for the user
+      | name        | type                |
       | MyFirstTag  | normal              |
       | MySecondTag | not user-assignable |
