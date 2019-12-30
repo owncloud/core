@@ -94,6 +94,7 @@ class SearchContext implements Context {
 	public function fileOrFolderInTheSearchResultShouldContainProperties(
 		$path, TableNode $properties
 	) {
+		$this->featureContext->verifyTableNodeColumns($properties, ['name', 'value']);
 		$properties = $properties->getHash();
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
 			$path

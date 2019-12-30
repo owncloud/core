@@ -35,9 +35,10 @@ Feature: multilinksharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of folder "/FOLDER" should be
-      | /FOLDER | 15 | sharedlink2 |
-      | /FOLDER | 15 | sharedlink1 |
-      | /FOLDER | 1  | sharedlink3 |
+      | path    | permissions | name        |
+      | /FOLDER | 15          | sharedlink2 |
+      | /FOLDER | 15          | sharedlink1 |
+      | /FOLDER | 1           | sharedlink3 |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -68,9 +69,10 @@ Feature: multilinksharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of file "/textfile0.txt" should be
-      | /textfile0.txt | 1 | sharedlink2 |
-      | /textfile0.txt | 1 | sharedlink1 |
-      | /textfile0.txt | 1 | sharedlink3 |
+      | path           | permissions | name        |
+      | /textfile0.txt | 1           | sharedlink2 |
+      | /textfile0.txt | 1           | sharedlink1 |
+      | /textfile0.txt | 1           | sharedlink3 |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -97,8 +99,9 @@ Feature: multilinksharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of folder "/FOLDER" should be
-      | /FOLDER | 15 | sharedlink2 |
-      | /FOLDER | 15 | sharedlink1 |
+      | path    | permissions | name        |
+      | /FOLDER | 15          | sharedlink2 |
+      | /FOLDER | 15          | sharedlink1 |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -122,8 +125,7 @@ Feature: multilinksharing
     And the HTTP status code should be "204"
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as user "user0" the public shares of file "/textfile0.txt" should be
-      |  |  |  |
+    And as user "user0" the file "/textfile0.txt" should not have any shares
 
   Scenario Outline: Deleting one public link share of a file doesn't affect the rest
     Given using OCS API version "<ocs_api_version>"
@@ -149,8 +151,9 @@ Feature: multilinksharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of file "/textfile0.txt" should be
-      | /textfile0.txt | 1 | sharedlink1 |
-      | /textfile0.txt | 1 | sharedlink3 |
+      | path           | permissions | name        |
+      | /textfile0.txt | 1           | sharedlink1 |
+      | /textfile0.txt | 1           | sharedlink3 |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -172,8 +175,9 @@ Feature: multilinksharing
       | name        | sharedlink2   |
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then as user "user0" the public shares of file "/textfile0.txt" should be
-      | /textfile0.txt | 1 | sharedlink1 |
-      | /textfile0.txt | 1 | sharedlink2 |
+      | path           | permissions | name        |
+      | /textfile0.txt | 1           | sharedlink1 |
+      | /textfile0.txt | 1           | sharedlink2 |
 
   Scenario: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
@@ -193,5 +197,6 @@ Feature: multilinksharing
       | name         | sharedlink2 |
     When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the WebDAV API
     Then as user "user0" the public shares of file "/FOLDER_RENAMED" should be
-      | /FOLDER_RENAMED | 15 | sharedlink1 |
-      | /FOLDER_RENAMED | 15 | sharedlink2 |
+      | path            | permissions | name        |
+      | /FOLDER_RENAMED | 15          | sharedlink1 |
+      | /FOLDER_RENAMED | 15          | sharedlink2 |

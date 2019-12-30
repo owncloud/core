@@ -26,6 +26,7 @@ Feature: Display notifications when receiving a share
     And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
     Then user "user1" should have 2 notifications
     And the last notification of user "user1" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |
@@ -38,6 +39,7 @@ Feature: Display notifications when receiving a share
     And user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then user "user1" should have 2 notifications
     And the last notification of user "user1" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |
@@ -45,6 +47,7 @@ Feature: Display notifications when receiving a share
       | object_type | /^local_share$/                              |
     And user "user2" should have 2 notifications
     And the last notification of user "user2" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |
@@ -73,6 +76,7 @@ Feature: Display notifications when receiving a share
     And the administrator adds user "user3" to group "grp1" using the provisioning API
     Then user "user1" should have 1 notification
     And the last notification of user "user1" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |
@@ -80,6 +84,7 @@ Feature: Display notifications when receiving a share
       | object_type | /^local_share$/                              |
     And user "user2" should have 1 notification
     And the last notification of user "user2" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |
@@ -99,6 +104,7 @@ Feature: Display notifications when receiving a share
     And the administrator adds user "user3" to group "grp1" using the provisioning API
     Then user "user1" should have 1 notification
     And the last notification of user "user1" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |
@@ -106,6 +112,7 @@ Feature: Display notifications when receiving a share
       | object_type | /^local_share$/                              |
     And user "user2" should have 1 notification
     And the last notification of user "user2" should match these regular expressions
+      | key         | regex                                        |
       | app         | /^files_sharing$/                            |
       | subject     | /^"User Zero" shared "PARENT" with you$/     |
       | message     | /^"User Zero" invited you to view "PARENT"$/ |

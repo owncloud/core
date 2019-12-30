@@ -325,14 +325,15 @@ class TagsContext implements Context {
 	 */
 	public function theFollowingTagsShouldExistForUser($user, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
-		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
-			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
+		$this->featureContext->verifyTableNodeColumns($table, ['name', 'type']);
+		foreach ($table->getHash() as $row) {
+			$tagData = $this->requestTagByDisplayName($user, $row['name']);
 			if ($tagData === null) {
 				Assert::fail(
-					"tag $rowDisplayName is not in propfind answer"
+					"tag ${row['name']} is not in propfind answer"
 				);
 			} else {
-				$this->assertTypeOfTag($tagData, $rowType);
+				$this->assertTypeOfTag($tagData, $row['type']);
 			}
 		}
 	}
@@ -825,7 +826,11 @@ class TagsContext implements Context {
 	 *
 	 * @param string $fileName
 	 * @param string $sharingUser
-	 * @param TableNode $table
+	 * @param TableNode $table  - Table containg tags. Should have two columns ('name' and 'type')
+	 *                          e.g.
+	 *                          | name | type   |
+	 *                          | tag1 | normal |
+	 *                          | tag2 | static |
 	 *
 	 * @return bool
 	 * @throws \Exception
@@ -836,22 +841,23 @@ class TagsContext implements Context {
 		$xml = $this->requestTagsForFile($sharingUser, $fileName);
 		$tagList = $xml->xpath("//d:prop");
 		$found = false;
-		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
+		$this->featureContext->verifyTableNodeColumns($table, ['name', 'type']);
+		foreach ($table->getHash() as $row) {
 			$found = false;
 			foreach ($tagList as $tagData) {
 				$displayName = $tagData->xpath(".//oc:display-name");
 				Assert::assertArrayHasKey(
 					0, $displayName, "cannot find 'oc:display-name' property"
 				);
-				if ($displayName[0]->__toString() === $rowDisplayName) {
+				if ($displayName[0]->__toString() === $row['name']) {
 					$found = true;
-					$this->assertTypeOfTag($tagData, $rowType);
+					$this->assertTypeOfTag($tagData, $row['type']);
 					break;
 				}
 			}
 			if ($found === false) {
 				Assert::fail(
-					"tag $rowDisplayName is not in propfind answer"
+					"tag ${row['name']} is not in propfind answer"
 				);
 			}
 		}
