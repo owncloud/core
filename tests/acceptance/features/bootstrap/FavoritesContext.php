@@ -46,6 +46,17 @@ class FavoritesContext implements Context {
 	private $webDavPropertiesContext;
 
 	/**
+	 * @param $user
+	 * @param $path
+	 *
+	 * @returns void
+	 */
+	public function userFavoritesElement($user, $path) {
+		$response = $this->changeFavStateOfAnElement($user, $path, 1);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
 	 * @When user :user favorites element :path using the WebDAV API
 	 *
 	 * @param string $user
@@ -53,9 +64,8 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userFavoritesElement($user, $path) {
-		$response = $this->changeFavStateOfAnElement($user, $path, 1);
-		$this->featureContext->setResponse($response);
+	public function userFavoritesElementUsingWebDavApi($user, $path) {
+		$this->userFavoritesElement($user, $path);
 	}
 
 	/**
@@ -66,7 +76,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasFavoritedElement($user, $path) {
+	public function userHasFavoritedElementUsingWebDavApi($user, $path) {
 		$this->userFavoritesElement($user, $path);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -101,6 +111,19 @@ class FavoritesContext implements Context {
 	}
 
 	/**
+	 * @param $user
+	 * @param $path
+	 *
+	 * @returns void
+	 */
+	public function userUnfavoritesElement($user, $path) {
+		$response = $this->changeFavStateOfAnElement(
+			$user, $path, 0
+		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
 	 * @When user :user unfavorites element :path using the WebDAV API
 	 *
 	 * @param string $user
@@ -108,11 +131,8 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userUnfavoritesElement($user, $path) {
-		$response = $this->changeFavStateOfAnElement(
-			$user, $path, 0
-		);
-		$this->featureContext->setResponse($response);
+	public function userUnfavoritesElementUsingWebDavApi($user, $path) {
+		$this->userUnfavoritesElement($user, $path);
 	}
 
 	/**
@@ -123,7 +143,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasUnfavoritedElement($user, $path) {
+	public function userHasUnfavoritedElementUsingWebDavApi($user, $path) {
 		$this->userUnfavoritesElement($user, $path);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -212,18 +232,26 @@ class FavoritesContext implements Context {
 	}
 
 	/**
-	 * @When the user unfavorites element :path using the WebDAV API
+	 * @param $path
 	 *
-	 * @param string $path
-	 *
-	 * @return void
+	 * @returns void
 	 */
 	public function theUserUnfavoritesElement($path) {
 		$response = $this->changeFavStateOfAnElement(
 			$this->featureContext->getCurrentUser(), $path, 0
 		);
 		$this->featureContext->setResponse($response);
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @When the user unfavorites element :path using the WebDAV API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserUnfavoritesElementUsingWebDavApi($path) {
+		$this->theUserUnfavoritesElement($path);
 	}
 
 	/**
@@ -233,7 +261,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserHasUnfavoritedElement($path) {
+	public function theUserHasUnfavoritedElementUsingWebDavApi($path) {
 		$this->theUserUnfavoritesElement($path);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
