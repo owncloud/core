@@ -17,9 +17,10 @@ Feature: transfer-ownership
     And user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/file_to_overwrite.txt" to "/PARENT/textfile0.txt"
     And user "user0" has uploaded the following "3" chunks to "/PARENT/textfile0.txt" with old chunking
-      | 1 | AA |
-      | 2 | BB |
-      | 3 | CC |
+      | number | content |
+      | 1      | AA      |
+      | 2      | BB      |
+      | 3      | CC      |
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/PARENT/textfile0.txt" for user "user1" with range "bytes=0-5" from the last received transfer folder should be "AABBCC"
