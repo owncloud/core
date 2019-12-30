@@ -49,7 +49,7 @@ class FavoritesContext implements Context {
 	 * @param $user
 	 * @param $path
 	 *
-	 * @returns void
+	 * @return void
 	 */
 	public function userFavoritesElement($user, $path) {
 		$response = $this->changeFavStateOfAnElement($user, $path, 1);
@@ -114,7 +114,7 @@ class FavoritesContext implements Context {
 	 * @param $user
 	 * @param $path
 	 *
-	 * @returns void
+	 * @return void
 	 */
 	public function userUnfavoritesElement($user, $path) {
 		$response = $this->changeFavStateOfAnElement(
@@ -234,7 +234,7 @@ class FavoritesContext implements Context {
 	/**
 	 * @param $path
 	 *
-	 * @returns void
+	 * @return void
 	 */
 	public function theUserUnfavoritesElement($path) {
 		$response = $this->changeFavStateOfAnElement(
