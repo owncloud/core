@@ -258,7 +258,8 @@ Feature: Restore deleted files/folders
     And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has uploaded the following chunks to "/local_storage/tmp/textfile0.txt" with new chunking
-      | 1 | AA |
+      | number | content |
+      | 1      | AA      |
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API

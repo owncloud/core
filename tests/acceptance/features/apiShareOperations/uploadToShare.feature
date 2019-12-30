@@ -194,6 +194,7 @@ Feature: sharing
       | permissions | read       |
       | shareWith   | user1      |
     When user "user1" uploads the following chunks to "/READ_ONLY/myfile.txt" with new chunking and using the WebDAV API
-      | 1 | hallo |
-      | 2 | welt  |
+      | number | content |
+      | 1      | hallo   |
+      | 2      | welt    |
     Then the HTTP status code should be "403"

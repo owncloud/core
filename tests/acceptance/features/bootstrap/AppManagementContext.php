@@ -75,6 +75,7 @@ class AppManagementContext implements Context {
 			$this->featureContext->getSystemConfig("apps_paths", "json")['stdOut'],
 			true
 		);
+		$this->featureContext->verifyTableNodeColumns($table, ['dir'], ['is_writable']);
 		foreach ($table as $appsPathToAdd) {
 			$dir = $appsPathToAdd['dir'];
 			$appsPathsConfigs[] = [
