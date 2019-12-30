@@ -596,6 +596,39 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^user "([^"]*)" should be able to rename (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserShouldBeAbleToRenameEntryTo($user, $entry, $source, $destination) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
+		$this->userMovesFileUsingTheAPI($user, $source, "", $destination);
+		$this->asFileOrFolderShouldNotExist($user, $entry, $source);
+		$this->asFileOrFolderShouldExist($user, $entry, $destination);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should not be able to rename (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeAbleToRenameEntryTo($user, $entry, $source, $destination) {
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
+		$this->userMovesFileUsingTheAPI($user, $source, "", $destination);
+		$this->asFileOrFolderShouldExist($user, $entry, $source);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -1821,6 +1854,39 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return string
+	 */
+	public function uploadFileWithContent(
+		$user, $content, $destination
+	) {
+		$file = \GuzzleHttp\Stream\Stream::factory($content);
+		$this->pauseUploadDelete();
+		$this->response = $this->makeDavRequest(
+			$user, "PUT", $destination, [], $file
+		);
+		$this->lastUploadDeleteTime = \time();
+		return $this->response->getHeader('oc-fileid');
+	}
+
+	/**
+	 * @When the administrator uploads file with content :content to :destination using the WebDAV API
+	 *
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return string
+	 */
+	public function adminUploadsAFileWithContentTo(
+		$content, $destination
+	) {
+		return $this->uploadFileWithContent($this->getAdminUsername(), $content, $destination);
+	}
+
+	/**
 	 * @When user :user uploads file with content :content to :destination using the WebDAV API
 	 *
 	 * @param string $user
@@ -1832,13 +1898,7 @@ trait WebDav {
 	public function userUploadsAFileWithContentTo(
 		$user, $content, $destination
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory($content);
-		$this->pauseUploadDelete();
-		$this->response = $this->makeDavRequest(
-			$user, "PUT", $destination, [], $file
-		);
-		$this->lastUploadDeleteTime = \time();
-		return $this->response->getHeader('oc-fileid');
+		return $this->uploadFileWithContent($user, $content, $destination);
 	}
 
 	/**
@@ -1853,7 +1913,7 @@ trait WebDav {
 	public function userHasUploadedAFileWithContentTo(
 		$user, $content, $destination
 	) {
-		$fileId = $this->userUploadsAFileWithContentTo($user, $content, $destination);
+		$fileId = $this->uploadFileWithContent($user, $content, $destination);
 		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 		return $fileId;
 	}
