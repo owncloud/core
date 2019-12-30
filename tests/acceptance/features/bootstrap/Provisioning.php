@@ -2385,14 +2385,13 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theUsersShouldBe($usersList) {
-		if ($usersList instanceof TableNode) {
-			$users = $usersList->getRows();
-			$usersSimplified = $this->simplifyArray($users);
-			$respondedArray = $this->getArrayOfUsersResponded($this->response);
-			Assert::assertEquals(
-				$usersSimplified, $respondedArray, "", 0.0, 10, true
-			);
-		}
+		$this->verifyTableNodeColumnsCount($usersList, 1);
+		$users = $usersList->getRows();
+		$usersSimplified = $this->simplifyArray($users);
+		$respondedArray = $this->getArrayOfUsersResponded($this->response);
+		Assert::assertEquals(
+			$usersSimplified, $respondedArray, "", 0.0, 10, true
+		);
 	}
 
 	/**
@@ -2403,14 +2402,13 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theGroupsShouldBe($groupsList) {
-		if ($groupsList instanceof TableNode) {
-			$groups = $groupsList->getRows();
-			$groupsSimplified = $this->simplifyArray($groups);
-			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			Assert::assertEquals(
-				$groupsSimplified, $respondedArray, "", 0.0, 10, true
-			);
-		}
+		$this->verifyTableNodeColumnsCount($groupsList, 1);
+		$groups = $groupsList->getRows();
+		$groupsSimplified = $this->simplifyArray($groups);
+		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+		Assert::assertEquals(
+			$groupsSimplified, $respondedArray, "", 0.0, 10, true
+		);
 	}
 
 	/**
@@ -2455,6 +2453,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkSubadminGroupsOrUsersTable($groupsOrUsersList) {
+		$this->verifyTableNodeColumnsCount($groupsOrUsersList, 1);
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
@@ -2493,6 +2492,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theAppsShouldInclude($appList) {
+		$this->verifyTableNodeColumnsCount($appList, 1);
 		$apps = $appList->getRows();
 		$appsSimplified = $this->simplifyArray($apps);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
@@ -2925,6 +2925,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkAttributesForUser($user, $body) {
+		$this->verifyTableNodeColumnsCount($body, 2);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(), "GET", "/cloud/users/$user",
 			null
