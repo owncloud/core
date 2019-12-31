@@ -1441,7 +1441,7 @@ trait Sharing {
 
 	/**
 	 * @param string $user
-	 * deleteLastShareUsingSharingApi
+	 *
 	 * @return void
 	 */
 	public function deleteLastShareUsingSharingApi($user) {
