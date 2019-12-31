@@ -48,6 +48,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has shared file "coolnewfile.txt" with user "user2"
     When the user re-logs in as "user2" using the webUI
     Then file "coolnewfile.txt" should have the following tags for user "user2"
+      | name | type   |
       | tag1 | normal |
     When the user browses directly to display the details of file "coolnewfile.txt" in folder "/"
     And the user toggles a tag "tag1" on the file using the webUI
@@ -63,6 +64,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has shared file "coolnewfile.txt" with user "user2"
     When the user re-logs in as "user2" using the webUI
     Then file "coolnewfile.txt" should have the following tags for user "user2"
+      | name | type   |
       | tag1 | normal |
     When the user re-logs in with username "user1" and password "%alt1%" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder "/"
@@ -82,6 +84,7 @@ Feature: Removal of already existing tags from files and folders
     And the user toggles a tag "random" on the file using the webUI
     And the user toggles a tag "Confidential" on the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "user1"
+      | name     | type   |
       | some-tag | normal |
 
   Scenario: Remove a tag from a file and assign another tag
@@ -92,4 +95,5 @@ Feature: Removal of already existing tags from files and folders
     And the user toggles a tag "random" on the file using the webUI
     And the user adds a tag "some-tag" to the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "user1"
+      | name     | type   |
       | some-tag | normal |

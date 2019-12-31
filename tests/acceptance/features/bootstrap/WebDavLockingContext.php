@@ -78,13 +78,14 @@ class WebDavLockingContext implements Context {
 			= "<?xml version='1.0' encoding='UTF-8'?>" .
 			"<d:lockinfo xmlns:d='DAV:'> ";
 		$headers = [];
-		$propertiesRows = $properties->getRows();
-		foreach ($propertiesRows as $property) {
-			if ($property[0] === "depth" || $property[0] === "timeout") {
+		$this->featureContext->verifyTableNodeRows($properties, [], ['lockscope', 'depth', 'timeout']);
+		$propertiesRows = $properties->getRowsHash();
+		foreach ($propertiesRows as $property => $value) {
+			if ($property === "depth" || $property === "timeout") {
 				//properties that are set in the header not in the xml
-				$headers[$property[0]] = $property[1];
+				$headers[$property] = $value;
 			} else {
-				$body .= "<d:$property[0]><d:$property[1]/></d:$property[0]>";
+				$body .= "<d:$property><d:$value/></d:$property>";
 			}
 		}
 

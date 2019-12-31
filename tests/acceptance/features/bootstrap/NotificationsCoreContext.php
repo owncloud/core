@@ -208,22 +208,23 @@ class NotificationsCoreContext implements Context {
 			$this->featureContext->getResponse()->getBody()->getContents(), true
 		);
 
-		foreach ($formData->getRowsHash() as $key => $value) {
+		$this->featureContext->verifyTableNodeColumns($formData, ['key', 'regex']);
+		foreach ($formData->getHash() as $notification) {
 			Assert::assertArrayHasKey(
-				$key, $response['ocs']['data']
+				$notification['key'], $response['ocs']['data']
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(
-					$value, ['preg_quote' => ['/']]
+					$notification['regex'], ['preg_quote' => ['/']]
 				);
 				Assert::assertNotFalse(
-					(bool) \preg_match($value, $response['ocs']['data'][$key]),
-					"'$value' does not match '{$response['ocs']['data'][$key]}'"
+					(bool) \preg_match($value, $response['ocs']['data'][$notification['key']]),
+					"'$value' does not match '{$response['ocs']['data'][$notification['key']]}'"
 				);
 			} else {
-				$value = $this->featureContext->substituteInLineCodes($value);
+				$value = $this->featureContext->substituteInLineCodes($notification['regex']);
 				Assert::assertEquals(
-					$value, $response['ocs']['data'][$key]
+					$value, $response['ocs']['data'][$notification['key']]
 				);
 			}
 		}

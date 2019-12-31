@@ -16,8 +16,10 @@ Feature: Creation of tags
     When the user creates a "normal" tag with name "<tag_name>" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
+      | name       | type   |
       | <tag_name> | normal |
     And the following tags should exist for the user
+      | name       | type   |
       | <tag_name> | normal |
     Examples:
       | tag_name            |
@@ -44,24 +46,28 @@ Feature: Creation of tags
     When the administrator creates a "normal" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
+      | name                | type   |
       | JustARegularTagName | normal |
 
   Scenario: Creating a not user-assignable tag as administrator should work
     When the administrator creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
+      | name                | type                |
       | JustARegularTagName | not user-assignable |
 
   Scenario: Creating a not user-visible tag as administrator should work
     When the administrator creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
+      | name                | type             |
       | JustARegularTagName | not user-visible |
 
   Scenario: Creating a static tag as administrator should work
     When the administrator creates a "static" tag with name "StaticTagName" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
+      | name          | type   |
       | StaticTagName | static |
 
   @smokeTest

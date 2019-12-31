@@ -431,8 +431,9 @@ class WebDavPropertiesContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table) {
+		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
 		WebdavTest::assertResponseContainsShareTypes(
-			$this->featureContext->getResponseXmlObject(), $table
+			$this->featureContext->getResponseXmlObject(), $table->getRows()
 		);
 	}
 

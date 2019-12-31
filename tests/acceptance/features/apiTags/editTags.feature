@@ -12,6 +12,7 @@ Feature: Editing the tags
     Given the administrator has created a "normal" tag with name "<tag_name>"
     When the user edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name           | type   |
       | AnotherTagName | normal |
     Examples:
       | tag_name            |
@@ -23,24 +24,28 @@ Feature: Editing the tags
     Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
     When the user edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name                | type                |
       | JustARegularTagName | not user-assignable |
 
   Scenario: Renaming a static tag as regular user should fail
     Given the administrator has created a "static" tag with name "StaticTagName"
     When the user edits the tag with name "StaticTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name          | type   |
       | StaticTagName | static |
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given the administrator has created a "not user-visible" tag with name "JustARegularTagName"
     When the user edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name                | type             |
       | JustARegularTagName | not user-visible |
 
   Scenario: Renaming a not user-assignable tag as administrator should work
     Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
     When the administrator edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name           | type                |
       | AnotherTagName | not user-assignable |
     And tag "JustARegularTagName" should not exist for the administrator
 
@@ -48,6 +53,7 @@ Feature: Editing the tags
     Given the administrator has created a "not user-visible" tag with name "JustARegularTagName"
     When the administrator edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name           | type             |
       | AnotherTagName | not user-visible |
     And tag "JustARegularTagName" should not exist for the administrator
 
@@ -55,6 +61,7 @@ Feature: Editing the tags
     Given the administrator has created a "static" tag with name "StaticTagName"
     When the administrator edits the tag with name "StaticTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
+      | name           | type   |
       | AnotherTagName | static |
     And tag "StaticTagName" should not exist for the administrator
 

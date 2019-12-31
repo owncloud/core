@@ -1924,6 +1924,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDeletesFilesFoldersWithoutDelays($user, $table) {
+		$this->verifyTableNodeColumnsCount($table, 1);
 		foreach ($table->getTable() as $entry) {
 			$entryName = $entry[0];
 			$this->response = $this->makeDavRequest($user, 'DELETE', $entryName, []);

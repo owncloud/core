@@ -20,6 +20,7 @@ Feature: Deletion of existing tags from files and folders
     And the user shares file "randomfile.txt" with user "User Two" using the webUI
     And the user re-logs in with username "user2" and password "%alt2%" using the webUI
     Then file "randomfile.txt" should have the following tags for user "user2"
+      | name | type   |
       | tag1 | normal |
     When the user browses directly to display the details of file "randomfile.txt" in folder ""
     And the user deletes tag with name "tag1" using the webUI
@@ -32,6 +33,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has added tag "random" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
     Then file "randomfile.txt" should have the following tags for user "user1"
+      | name   | type   |
       | random | normal |
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "user1"
@@ -43,6 +45,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has added tag "random" to file "a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "a-folder"
     Then file "a-folder/randomfile.txt" should have the following tags for user "user1"
+      | name   | type   |
       | random | normal |
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "user1"
@@ -84,5 +87,6 @@ Feature: Deletion of existing tags from files and folders
     Then tag "random" should not exist for user "user1"
     And tag "Confidential" should not exist for user "user1"
     And file "/randomfile.txt" should have the following tags for user "user1"
+      | name     | type   |
       | some-tag | normal |
 

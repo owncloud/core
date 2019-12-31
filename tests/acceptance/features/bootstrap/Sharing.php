@@ -70,7 +70,7 @@ trait Sharing {
 		'expiration', 'token', 'uid_file_owner', 'displayname_file_owner', 'path',
 		'item_type', 'mimetype', 'storage_id', 'storage', 'item_source',
 		'file_source', 'file_parent', 'file_target', 'name', 'url', 'mail_send',
-		'attributes', 'permissions'
+		'attributes', 'permissions', 'share_with', 'share_with_displayname', 'share_with_additional_info'
 	];
 
 	/**
@@ -577,22 +577,25 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 
-		if ($body instanceof TableNode) {
-			$fd = $body->getRowsHash();
-			if (\array_key_exists('expireDate', $fd)) {
-				$dateModification = $fd['expireDate'];
-				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
-			}
-			if (\array_key_exists('password', $fd)) {
-				$fd['password'] = $this->getActualPassword($fd['password']);
-			}
-			if (\array_key_exists('permissions', $fd)) {
-				if (\is_numeric($fd['permissions'])) {
-					$fd['permissions'] = (int) $fd['permissions'];
-				} else {
-					$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
-					$fd['permissions'] = SharingHelper::getPermissionSum($fd['permissions']);
-				}
+		$this->verifyTableNodeRows(
+			$body,
+			[],
+			$this->shareFields
+		);
+		$fd = $body->getRowsHash();
+		if (\array_key_exists('expireDate', $fd)) {
+			$dateModification = $fd['expireDate'];
+			$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
+		}
+		if (\array_key_exists('password', $fd)) {
+			$fd['password'] = $this->getActualPassword($fd['password']);
+		}
+		if (\array_key_exists('permissions', $fd)) {
+			if (\is_numeric($fd['permissions'])) {
+				$fd['permissions'] = (int) $fd['permissions'];
+			} else {
+				$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
+				$fd['permissions'] = SharingHelper::getPermissionSum($fd['permissions']);
 			}
 		}
 
@@ -1450,6 +1453,7 @@ trait Sharing {
 			200,
 			"Error getting info of last share for user $user"
 		);
+		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
 		$this->checkFields($body);
 	}
 
@@ -1675,16 +1679,15 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkFieldsNotInResponse($body) {
-		if ($body instanceof TableNode) {
-			$fd = $body->getRowsHash();
+		$this->verifyTableNodeColumnsCount($body, 2);
+		$fd = $body->getRowsHash();
 
-			foreach ($fd as $field => $value) {
-				$value = $this->replaceValuesFromTable($field, $value);
-				Assert::assertFalse(
-					$this->isFieldInResponse($field, $value, false),
-					"$field has value $value but should not"
-				);
-			}
+		foreach ($fd as $field => $value) {
+			$value = $this->replaceValuesFromTable($field, $value);
+			Assert::assertFalse(
+				$this->isFieldInResponse($field, $value, false),
+				"$field has value $value but should not"
+			);
 		}
 	}
 
@@ -1757,25 +1760,20 @@ trait Sharing {
 	public function checkPublicShares($user, $path, $TableNode) {
 		$dataResponded = $this->getShares($user, $path);
 
+		$this->verifyTableNodeColumns($TableNode, ['path', 'permissions', 'name']);
 		if ($TableNode instanceof TableNode) {
-			$elementRows = $TableNode->getRows();
+			$elementRows = $TableNode->getHash();
 
-			if ($elementRows[0][0] === '') {
-				//It shouldn't have public shares
-				Assert::assertEquals(\count($dataResponded), 0);
-				return;
-			}
 			foreach ($elementRows as $expectedElementsArray) {
-				//0 path, 1 permissions, 2 name
 				$nameFound = false;
 				foreach ($dataResponded as $elementResponded) {
-					if ((string) $elementResponded->name[0] === $expectedElementsArray[2]) {
+					if ((string) $elementResponded->name[0] === $expectedElementsArray['name']) {
 						Assert::assertEquals(
-							$expectedElementsArray[0],
+							$expectedElementsArray['path'],
 							(string) $elementResponded->path[0]
 						);
 						Assert::assertEquals(
-							$expectedElementsArray[1],
+							$expectedElementsArray['permissions'],
 							(string) $elementResponded->permissions[0]
 						);
 						$nameFound = true;
@@ -1784,10 +1782,24 @@ trait Sharing {
 				}
 				Assert::assertTrue(
 					$nameFound,
-					"Shared link name {$expectedElementsArray[2]} not found"
+					"Shared link name {$expectedElementsArray['name']} not found"
 				);
 			}
 		}
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the (?:file|folder) "([^"]*)" should not have any shares$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function checkPublicSharesAreEmpty($user, $path) {
+		$dataResponded = $this->getShares($user, $path);
+		//It shouldn't have public shares
+		Assert::assertEquals(\count($dataResponded), 0);
 	}
 
 	/**
