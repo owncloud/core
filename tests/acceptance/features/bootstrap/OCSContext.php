@@ -105,6 +105,7 @@ class OCSContext implements Context {
 			null,
 			$password
 		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
