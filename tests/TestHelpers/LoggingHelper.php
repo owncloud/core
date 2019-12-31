@@ -31,6 +31,17 @@ use SimpleXMLElement;
  */
 class LoggingHelper {
 	/**
+	 * @var array
+	 */
+	const LOG_LEVEL_ARRAY = [
+		"debug",
+		"info",
+		"warning",
+		"error",
+		"fatal"
+	];
+
+	/**
 	 * returns the log file path local to the system ownCloud is running on
 	 *
 	 * @throws \Exception
@@ -111,7 +122,7 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function setLogLevel($logLevel) {
-		if (!\in_array($logLevel, ["debug", "info", "warning", "error", "fatal"])) {
+		if (!\in_array($logLevel, self::LOG_LEVEL_ARRAY)) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
 		$result = SetupHelper::runOcc(["log:manage", "--level=$logLevel"]);
