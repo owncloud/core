@@ -429,9 +429,10 @@ class OccContext implements Context {
 	 * @param string $mountPoint
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorHasSetTheExtStorageWithMountPoint($mountPoint) {
-		$command = "files:external:option";
+		$command = "files_external:option";
 
 		// get the first mount id created in before scenario
 		$mountId = $this->featureContext->getStorageId($mountPoint);
@@ -447,6 +448,7 @@ class OccContext implements Context {
 		$this->invokingTheCommand(
 			"$command $mountId $key $value"
 		);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
