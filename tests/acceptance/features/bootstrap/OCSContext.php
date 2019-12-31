@@ -43,7 +43,6 @@ class OCSContext implements Context {
 
 	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
 	 *
 	 * @param string $verb
 	 * @param string $url
@@ -55,9 +54,21 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theUserHasSentToOcsApiEndpoint($verb, $url) {
+		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" using password "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
@@ -77,14 +88,32 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
-	 * @param TableNode|null $body
 	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userHasSentToOcsApiEndpoint($user, $verb, $url, $password = null) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			$verb,
+			$url,
+			null,
+			$password
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
@@ -120,6 +149,85 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode $body
+	 *
+	 * @return void
+	 */
+	public function adminSendsHttpMethodToOcsApiEndpointWithBody(
+		$verb, $url, TableNode $body
+	) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$admin, $verb, $url, $body
+		);
+	}
+
+	/**
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode $body
+	 *
+	 * @return void
+	 */
+	public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$this->featureContext->getCurrentUser(),
+			$verb,
+			$url,
+			$body
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userSendHTTPMethodToOcsApiEndpointWithBody(
+		$user, $verb, $url, $body = null, $password = null
+	) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			$verb,
+			$url,
+			$body,
+			$password
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userHasSentHTTPMethodToOcsApiEndpointWithBody(
+		$user, $verb, $url, $body = null, $password = null
+	) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			$verb,
+			$url,
+			$body,
+			$password
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
 	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url using password :password
 	 *
@@ -145,6 +253,7 @@ class OCSContext implements Context {
 	 * @param TableNode $headersTable
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userSendsToOcsApiEndpointWithHeaders(
 		$user, $verb, $url, TableNode $headersTable
@@ -164,6 +273,7 @@ class OCSContext implements Context {
 	 * @param TableNode $headersTable
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function administratorSendsToOcsApiEndpointWithHeaders(
 		$verb, $url, TableNode $headersTable
@@ -183,6 +293,7 @@ class OCSContext implements Context {
 	 * @param TableNode $headersTable
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userSendsToOcsApiEndpointWithHeadersAndPassword(
 		$user, $verb, $url, $password, TableNode $headersTable
@@ -213,6 +324,7 @@ class OCSContext implements Context {
 	 * @param TableNode $headersTable
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function administratorSendsToOcsApiEndpointWithHeadersAndPassword(
 		$verb, $url, $password, TableNode $headersTable
@@ -224,7 +336,6 @@ class OCSContext implements Context {
 
 	/**
 	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body
-	 * @Given the administrator has sent HTTP method :verb to OCS API endpoint :url with body
 	 *
 	 * @param string $verb
 	 * @param string $url
@@ -235,14 +346,51 @@ class OCSContext implements Context {
 	public function theAdministratorSendsHttpMethodToOcsApiEndpointWithBody(
 		$verb, $url, TableNode $body
 	) {
-		$admin = $this->featureContext->getAdminUsername();
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$admin, $verb, $url, $body
+		$this->adminSendsHttpMethodToOcsApiEndpointWithBody(
+			$verb,
+			$url,
+			$body
 		);
 	}
 
 	/**
+	 * @Given the administrator has sent HTTP method :verb to OCS API endpoint :url with body
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSentHttpMethodToOcsApiEndpointWithBody(
+		$verb, $url, TableNode $body
+	) {
+		$this->adminSendsHttpMethodToOcsApiEndpointWithBody(
+			$verb,
+			$url,
+			$body
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode $body
+	 *
+	 * @return void
+	 */
+	public function theUserSendsHTTPMethodToOcsApiEndpointWithBody($verb, $url, $body) {
+		$this->theUserSendsHTTPMethodToOcsApiEndpointWithBody(
+			$verb,
+			$url,
+			$body
+		);
+	}
+
+	/**
 	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
 	 *
 	 * @param string $verb
@@ -251,13 +399,13 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$this->featureContext->getCurrentUser(),
+	public function theUserHasSentHTTPMethodToOcsApiEndpointWithBody($verb, $url, $body) {
+		$this->theUserSendsHTTPMethodToOcsApiEndpointWithBody(
 			$verb,
 			$url,
 			$body
 		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -411,6 +559,7 @@ class OCSContext implements Context {
 	 * @param string $message
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
 		if ($message === "") {
@@ -520,6 +669,7 @@ class OCSContext implements Context {
 	 * @param string $message
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function assertOCSResponseIndicatesSuccess($message = "") {
 		$this->featureContext->theHTTPStatusCodeShouldBe('200', $message);
