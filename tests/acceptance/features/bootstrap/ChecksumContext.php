@@ -38,7 +38,6 @@ class ChecksumContext implements Context {
 
 	/**
 	 * @When user :user uploads file :source to :destination with checksum :checksum using the WebDAV API
-	 * @Given user :user has uploaded file :source to :destination with checksum :checksum
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -68,8 +67,29 @@ class ChecksumContext implements Context {
 	}
 
 	/**
+	 * @Given user :user has uploaded file :source to :destination with checksum :checksum
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 * @param string $checksum
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedFileToWithChecksumUsingTheAPI(
+		$user, $source, $destination, $checksum
+	) {
+		$this->userUploadsFileToWithChecksumUsingTheAPI(
+			$user,
+			$source,
+			$destination,
+			$checksum
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When user :user uploads file with content :content and checksum :checksum to :destination using the WebDAV API
-	 * @Given user :user has uploaded file with content :content and checksum :checksum to :destination
 	 *
 	 * @param string $user
 	 * @param string $content
@@ -90,6 +110,28 @@ class ChecksumContext implements Context {
 			"files"
 		);
 		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @Given user :user has uploaded file with content :content and checksum :checksum to :destination
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $checksum
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedFileWithContentAndChecksumToUsingTheAPI(
+		$user, $content, $checksum, $destination
+	) {
+		$this->userUploadsFileWithContentAndChecksumToUsingTheAPI(
+			$user,
+			$content,
+			$checksum,
+			$destination
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -221,7 +263,6 @@ class ChecksumContext implements Context {
 
 	/**
 	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum using the WebDAV API
-	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
 	 *
 	 * @param string $user
 	 * @param int $num
@@ -247,6 +288,32 @@ class ChecksumContext implements Context {
 			"files"
 		);
 		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
+	 *
+	 * @param string $user
+	 * @param int $num
+	 * @param int $total
+	 * @param string $data
+	 * @param string $destination
+	 * @param string $checksum
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedChunkFileOfWithToWithChecksum(
+		$user, $num, $total, $data, $destination, $checksum
+	) {
+		$this->userUploadsChunkFileOfWithToWithChecksum(
+			$user,
+			$num,
+			$total,
+			$data,
+			$destination,
+			$checksum
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe(201);
 	}
 
 	/**
