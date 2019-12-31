@@ -43,7 +43,6 @@ class OCSContext implements Context {
 
 	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
 	 *
 	 * @param string $verb
 	 * @param string $url
@@ -55,9 +54,21 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theUserHasSentToOcsApiEndpoint($verb, $url) {
+		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" using password "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
@@ -77,11 +88,31 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @param $user
-	 * @param $verb
-	 * @param $url
-	 * @param null $body
-	 * @param null $password
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userHasSentToOcsApiEndpoint($user, $verb, $url, $password = null) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			$verb,
+			$url,
+			null,
+			$password
+		);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
@@ -117,8 +148,8 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @param $verb
-	 * @param $url
+	 * @param string $verb
+	 * @param string $url
 	 * @param TableNode $body
 	 *
 	 * @return void
@@ -133,9 +164,9 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @param $verb
-	 * @param $url
-	 * @param $body
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
