@@ -2104,7 +2104,7 @@ trait WebDav {
 	public function userUploadsTheFollowingChunksUsingOldChunking(
 		$user, $file, TableNode $chunkDetails
 	) {
-		$total = \count($chunkDetails->getRows());
+		$total = \count($chunkDetails->getHash());
 		$this->userUploadsTheFollowingTotalChunksUsingOldChunking(
 			$user, $total, $file, $chunkDetails
 		);
