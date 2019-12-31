@@ -36,6 +36,12 @@ class TransferOwnershipContext implements Context {
 	 */
 	private $featureContext;
 
+	/**
+	 *
+	 * @var OccContext
+	 */
+	private $occContext;
+
 	private $lastTransferPath;
 
 	/**
@@ -55,13 +61,11 @@ class TransferOwnershipContext implements Context {
 	}
 
 	/**
-	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
-	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
-	 *
 	 * @param string $user1
 	 * @param string $user2
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function transferringOwnership($user1, $user2) {
 		if ($this->featureContext->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
@@ -74,14 +78,39 @@ class TransferOwnershipContext implements Context {
 	}
 
 	/**
-	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
-	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
+	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
 	 *
+	 * @param string $user1
+	 * @param string $user2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorTransfersOwnershipFromToUsingTheOccCommand($user1, $user2) {
+		$this->transferringOwnership($user1, $user2);
+	}
+
+	/**
+	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
+	 *
+	 * @param string $user1
+	 * @param string $user2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasTransferredOwnershipFromToUsingTheOccCommand($user1, $user2) {
+		$this->transferringOwnership($user1, $user2);
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
 	 * @param string $path
 	 * @param string $user1
 	 * @param string $user2
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
 		$path = "--path=$path";
@@ -92,6 +121,43 @@ class TransferOwnershipContext implements Context {
 			// failure
 			$this->lastTransferPath = null;
 		}
+	}
+
+	/**
+	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
+	 *
+	 * @param string $path
+	 * @param string $user1
+	 * @param string $user2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorTransfersOwnershipOfPathFromToUsingTheOccCommand($path, $user1, $user2) {
+		$this->transferringOwnershipPath(
+			$path,
+			$user1,
+			$user2
+		);
+	}
+
+	/**
+	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
+	 *
+	 * @param string $path
+	 * @param string $user1
+	 * @param string $user2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasTransferredOwnershipOfPathFromToUsingTheOccCommand($path, $user1, $user2) {
+		$this->transferringOwnershipPath(
+			$path,
+			$user1,
+			$user2
+		);
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -168,5 +234,6 @@ class TransferOwnershipContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->occContext = $environment->getContext('OccContext');
 	}
 }
