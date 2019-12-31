@@ -803,6 +803,7 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputTableShouldContainTheFollowingText(TableNode $table) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$this->featureContext->verifyTableNodeColumns($table, ['table_column']);
 		foreach ($table as $row) {
 			$lines = $this->featureContext->findLines(
 				$commandOutput,
