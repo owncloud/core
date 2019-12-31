@@ -45,18 +45,15 @@ class OccUsersGroupsContext implements Context {
 	private $occContext;
 
 	/**
-	 * @When /^the administrator creates (?:these users|this user) using the occ command:$/
-	 * @Given /^(?:these users have|this user has) been created using the occ command:$/
+	 * @param TableNode $table
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * displayname & email are optional
 	 *
-	 * @param TableNode $table
-	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theseUsersHaveBeenCreatedUsingTheOccCommand(TableNode $table) {
+	public function createUsersUsingOccCommand(TableNode $table) {
 		foreach ($table as $row) {
 			$username = $row['username'];
 			$cmd = "user:add $username  --password-from-env";
@@ -103,11 +100,51 @@ class OccUsersGroupsContext implements Context {
 	}
 
 	/**
+	 * @When /^the administrator creates (?:these users|this user) using the occ command:$/
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * displayname & email are optional
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesTheseUsersUsingTheOccCommand(TableNode $table) {
+		$this->createUsersUsingOccCommand($table);
+	}
+
+	/**
+	 * @Given /^(?:these users have|this user has) been created using the occ command:$/
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * displayname & email are optional
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theseUsersHaveBeenCreatedUsingTheOccCommand(TableNode $table) {
+		$this->createUsersUsingOccCommand($table);
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
+		$createdUsersList = $this->featureContext->getCreatedUsers();
+		$tableUsername = [];
+		$displayName = [];
+		$usernameArray = \array_keys($createdUsersList);
+		foreach ($table as $row) {
+			\array_push($tableUsername, $row['username']);
+		}
+		\in_array($tableUsername, $usernameArray, true);
+	}
+
+	/**
 	 * @When the administrator tries to create a user :username using the occ command
 	 *
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorTriesToCreateAUserUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommandWithEnvVariable(
@@ -125,6 +162,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
 		$cmd = "user:add $username  --password-from-env --group=$group";
@@ -144,6 +182,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function resetUserPasswordUsingTheOccCommand($username, $password) {
 		$this->featureContext->resetUserPassword($username, $password);
@@ -156,6 +195,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function resetUserPasswordAndSendEmailUsingTheOccCommand($username, $password) {
 		$this->featureContext->resetUserPassword($username, $password, true);
@@ -167,6 +207,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $newPassword
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorResetsTheirOwnPasswordToUsingTheOccCommand($newPassword) {
 		$password = $this->featureContext->getActualPassword($newPassword);
@@ -185,6 +226,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorInvokesPasswordResetForUserUsingTheOccCommand($username) {
 		$this->featureContext->resetUserPassword($username);
@@ -197,6 +239,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $newEmail
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheOccCommand($username, $newEmail) {
 		$this->occContext->invokingTheCommand(
@@ -211,6 +254,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $newDisplayname
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheOccCommand($username, $newDisplayname) {
 		$this->occContext->invokingTheCommand(
@@ -225,6 +269,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $newQuota
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheQuotaOfUserToUsingTheOccCommand($username, $newQuota) {
 		$this->occContext->invokingTheCommand(
@@ -238,6 +283,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorDeletesUserUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommand(
@@ -249,6 +295,7 @@ class OccUsersGroupsContext implements Context {
 	 * @When the administrator retrieves all the users in JSON format using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorRetrievesAllTheUsersInJsonUsingTheOccCommand() {
 		$this->occContext->invokingTheCommand(
@@ -262,6 +309,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorRetrievesTheInformationOfUserInJsonUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommand(
@@ -275,6 +323,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorGetsTheGroupsOfUserInJsonUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommand(
@@ -288,6 +337,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorRetrievesTheTimeWhenUserWasLastSeenUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommand(
@@ -302,6 +352,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $language
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
 		$username, $language
@@ -315,6 +366,7 @@ class OccUsersGroupsContext implements Context {
 	 * @When the administrator retrieves the user report using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorRetrievesTheUserReportUsingTheOccCommand() {
 		$this->occContext->invokingTheCommand("user:report");
@@ -326,6 +378,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorCreatesGroupUsingTheOccCommand($group) {
 		$this->occContext->invokingTheCommand(
@@ -341,6 +394,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorAddsUserToGroupUsingTheOccCommand($username, $group) {
 		$this->occContext->invokingTheCommand(
@@ -354,6 +408,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorDeletesGroupUsingTheOccCommand($group) {
 		$this->occContext->invokingTheCommand(
@@ -368,6 +423,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $groupName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorGetsTheUsersInGroupInJsonUsingTheOccCommand($groupName) {
 		$this->occContext->invokingTheCommand(
@@ -379,6 +435,7 @@ class OccUsersGroupsContext implements Context {
 	 * @When the administrator gets the groups in JSON format using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorGetsTheGroupsInJsonUsingTheOccCommand() {
 		$this->occContext->invokingTheCommand(
@@ -393,6 +450,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorRemovesUserFromGroupUsingTheOccCommand($username, $group) {
 		$this->occContext->invokingTheCommand(
@@ -406,6 +464,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorDisablesUserUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommand(
@@ -419,6 +478,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function administratorEnablesUserUsingTheOccCommand($username) {
 		$this->occContext->invokingTheCommand(
@@ -433,6 +493,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param string $language
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theLanguageOfUserReturnedByTheOccCommandShouldBe($username, $language) {
 		$this->occContext->invokingTheCommand(
