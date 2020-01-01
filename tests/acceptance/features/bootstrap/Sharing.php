@@ -170,9 +170,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a share using the sharing API with settings$/
-	 * @Given /^user "([^"]*)" has created a share with settings$/
-	 *
 	 * @param string $user
 	 * @param TableNode|null $body
 	 *    TableNode $body should not have any heading and can have following rows    |
@@ -209,7 +206,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userCreatesAShareWithSettings($user, $body) {
+	public function createShareWithSettings($user, $body) {
 		$this->verifyTableNodeRows(
 			$body,
 			['path'],
@@ -259,6 +256,41 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" creates a share using the sharing API with settings$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body {@link createShareWithSettings}
+	 *
+	 * @return void
+	 */
+	public function userCreatesAShareWithSettings($user, $body) {
+		$this->createShareWithSettings(
+			$user,
+			$body
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has created a share with settings$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body {@link createShareWithSettings}
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasCreatedAShareWithSettings($user, $body) {
+		$this->createShareWithSettings(
+			$user,
+			$body
+		);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Failed HTTP status code for last share for user $user" . ", Response: " . $this->getResponse()
+		);
+	}
+
+	/**
 	 * @When /^the user creates a share using the sharing API with settings$/
 	 *
 	 * @param TableNode|null $body
@@ -266,7 +298,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theUserCreatesAShareWithSettings($body) {
-		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+		$this->createShareWithSettings($this->currentUser, $body);
 	}
 
 	/**
@@ -282,7 +314,7 @@ trait Sharing {
 		// A public link share is shareType 3
 		$rows[] = ['shareType', 'public_link'];
 		$newBody = new TableNode($rows);
-		$this->userCreatesAShareWithSettings($user, $newBody);
+		$this->createShareWithSettings($user, $newBody);
 	}
 
 	/**
@@ -318,7 +350,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theUserHasCreatedAShareWithSettings($body) {
-		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+		$this->createShareWithSettings($this->currentUser, $body);
 		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
@@ -371,7 +403,6 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -383,20 +414,65 @@ trait Sharing {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedAPublicLinkShareOf($user, $path) {
+		$this->createAPublicShare($user, $path);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function createPublicLinkShareOfResourceAsCurrentUser($path) {
+		$this->createAPublicShare($this->currentUser, $path);
+	}
+
+	/**
 	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $path
 	 *
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreated($path) {
-		$this->createAPublicShare($this->currentUser, $path);
+		$this->createPublicLinkShareOfResourceAsCurrentUser($path);
+	}
+
+	/**
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function aPublicLinkShareOfHasCreated($path) {
+		$this->createPublicLinkShareOfResourceAsCurrentUser($path);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
+	 *
+	 * @return void
+	 */
+	public function createPublicLinkShareOfResourceWithPermission(
+		$user, $path, $permissions
+	) {
+		$this->createAPublicShare($user, $path, true, null, $permissions);
 	}
 
 	/**
 	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
-	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -407,12 +483,47 @@ trait Sharing {
 	public function userCreatesAPublicLinkShareOfWithPermission(
 		$user, $path, $permissions
 	) {
-		$this->createAPublicShare($user, $path, true, null, $permissions);
+		$this->createPublicLinkShareOfResourceWithPermission(
+			$user,
+			$path,
+			$permissions
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedAPublicLinkShareOfWithPermission(
+		$user, $path, $permissions
+	) {
+		$this->createPublicLinkShareOfResourceWithPermission(
+			$user,
+			$path,
+			$permissions
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
+	 *
+	 * @return void
+	 */
+	public function createPublicLinkShareWithPermissionByCurrentUser($path, $permissions) {
+		$this->createAPublicShare(
+			$this->currentUser, $path, true, null, $permissions
+		);
 	}
 
 	/**
 	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
-	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
 	 *
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
@@ -420,14 +531,39 @@ trait Sharing {
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreatedWithPermission($path, $permissions) {
+		$this->createPublicLinkShareWithPermissionByCurrentUser($path, $permissions);
+	}
+
+	/**
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
+	 *
+	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
+	 *
+	 * @return void
+	 */
+	public function aPublicLinkShareOfHasCreatedWithPermission($path, $permissions) {
+		$this->createPublicLinkShareWithPermissionByCurrentUser($path, $permissions);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function createPublicLinkShareOfResourceWithExpiry(
+		$user, $path, $expiryDate
+	) {
 		$this->createAPublicShare(
-			$this->currentUser, $path, true, null, $permissions
+			$user, $path, true, null, null, null, $expiryDate
 		);
 	}
 
 	/**
 	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -438,14 +574,49 @@ trait Sharing {
 	public function userCreatesAPublicLinkShareOfWithExpiry(
 		$user, $path, $expiryDate
 	) {
+		$this->createPublicLinkShareOfResourceWithExpiry(
+			$user,
+			$path,
+			$expiryDate
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedAPublicLinkShareOfWithExpiry(
+		$user, $path, $expiryDate
+	) {
+		$this->createPublicLinkShareOfResourceWithExpiry(
+			$user,
+			$path,
+			$expiryDate
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function createPublicLinkShareOfResourceWithExpiryByCurrentUser(
+		$path, $expiryDate
+	) {
 		$this->createAPublicShare(
-			$user, $path, true, null, null, null, $expiryDate
+			$this->currentUser, $path, true, null, null, null, $expiryDate
 		);
 	}
 
 	/**
 	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
-	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
 	 *
 	 * @param string $path
 	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
@@ -455,9 +626,28 @@ trait Sharing {
 	public function aPublicLinkShareOfIsCreatedWithExpiry(
 		$path, $expiryDate
 	) {
-		$this->createAPublicShare(
-			$this->currentUser, $path, true, null, null, null, $expiryDate
+		$this->createPublicLinkShareOfResourceWithExpiryByCurrentUser(
+			$path,
+			$expiryDate
 		);
+	}
+
+	/**
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
+	 *
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function aPublicLinkShareOfHasCreatedWithExpiry(
+		$path, $expiryDate
+	) {
+		$this->createPublicLinkShareOfResourceWithExpiryByCurrentUser(
+			$path,
+			$expiryDate
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -552,27 +742,44 @@ trait Sharing {
 	}
 
 	/**
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function updateLastShareByCurrentUser($body) {
+		$this->updateLastShareWithSettings($this->currentUser, $body);
+	}
+
+	/**
 	 * @When /^the user updates the last share using the sharing API with$/
-	 * @Given /^the user has updated the last share with$/
 	 *
 	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
 	public function theUserUpdatesTheLastShareWith($body) {
-		$this->userUpdatesTheLastShareWith($this->currentUser, $body);
+		$this->updateLastShareByCurrentUser($body);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" updates the last share using the sharing API with$/
-	 * @Given /^user "([^"]*)" has updated the last share with$/
+	 * @Given /^the user has updated the last share with$/
 	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theUserHasUpdatedTheLastShareWith($body) {
+		$this->updateLastShareByCurrentUser($body);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @param string $user
 	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
-	public function userUpdatesTheLastShareWith($user, $body) {
+	public function updateLastShareWithSettings($user, $body) {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
@@ -602,6 +809,31 @@ trait Sharing {
 		$this->response = HttpRequestHelper::put(
 			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" updates the last share using the sharing API with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userUpdatesTheLastShareWith($user, $body) {
+		$this->updateLastShareWithSettings($user, $body);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has updated the last share with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userHasUpdatedTheLastShareWith($user, $body) {
+		$this->updateLastShareWithSettings($user, $body);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -1128,7 +1360,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userTriesToUpdateTheLastShareUsingTheSharingApiWith($user, TableNode $body) {
-		$this->userUpdatesTheLastShareWith($user, $body);
+		$this->updateLastShareWithSettings($user, $body);
 	}
 
 	/**
@@ -1180,23 +1412,29 @@ trait Sharing {
 
 	/**
 	 * @When /^the user deletes the last share using the sharing API$/
-	 * @Given /^the user has deleted the last share$/
 	 *
 	 * @return void
 	 */
 	public function theUserDeletesLastShareUsingTheSharingAPI() {
-		$this->userDeletesLastShareUsingTheSharingApi($this->currentUser);
+		$this->deleteLastShareUsingSharingApiByCurrentUser();
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes the last share using the sharing API$/
-	 * @Given /^user "([^"]*)" has deleted the last share$/
+	 * @Given /^the user has deleted the last share$/
 	 *
+	 * @return void
+	 */
+	public function theUserHasDeletedLastShareUsingTheSharingAPI() {
+		$this->deleteLastShareUsingSharingApiByCurrentUser();
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function userDeletesLastShareUsingTheSharingApi($user) {
+	public function deleteLastShareUsingSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1205,9 +1443,40 @@ trait Sharing {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function deleteLastShareUsingSharingApiByCurrentUser() {
+		$this->deleteLastShareUsingSharingApi($this->currentUser);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" deletes the last share using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userDeletesLastShareUsingTheSharingApi($user) {
+		$this->deleteLastShareUsingSharingApi($user);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has deleted the last share$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userHasDeletedLastShareUsingTheSharingApi($user) {
+		$this->deleteLastShareUsingSharingApi($user);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When /^the user gets the info of the last share using the sharing API$/
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserGetsInfoOfLastShareUsingTheSharingApi() {
 		$this->userGetsInfoOfLastShareUsingTheSharingApi($this->currentUser);
@@ -1219,6 +1488,7 @@ trait Sharing {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
 		$share_id = $this->getLastShareIdOf($user);
@@ -1417,6 +1687,7 @@ trait Sharing {
 	 * @param TableNode|null $body
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theResponseWhenUserGetsInfoOfLastShareShouldInclude(
 		$user, $body
@@ -1610,6 +1881,7 @@ trait Sharing {
 	 * @param TableNode $attributes
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function checkingAttributesInLastShareResponse(TableNode $attributes) {
 		$attributes = $attributes->getHash();
@@ -1692,16 +1964,13 @@ trait Sharing {
 	}
 
 	/**
-	 * @When user :user removes all shares from the file named :fileName using the sharing API
-	 * @Given user :user has removed all shares from the file named :fileName
-	 *
 	 * @param string $user
 	 * @param string $fileName
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
+	public function removeAllSharesFromResource($user, $fileName) {
 		$url = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
 
@@ -1709,6 +1978,10 @@ trait Sharing {
 		$res = HttpRequestHelper::get(
 			$url, $user, $this->getPasswordForUser($user), $headers
 		);
+
+		$this->setResponse($res);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+
 		$json = \json_decode($res->getBody()->getContents(), true);
 		$deleted = false;
 		foreach ($json['ocs']['data'] as $data) {
@@ -1716,9 +1989,13 @@ trait Sharing {
 				$id = $data['id'];
 				$url = $this->getBaseUrl()
 					. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}";
-				HttpRequestHelper::delete(
+				$response = HttpRequestHelper::delete(
 					$url, $user, $this->getPasswordForUser($user), $headers
 				);
+
+				$this->setResponse($response);
+				$this->theHTTPStatusCodeShouldBeSuccess();
+
 				$deleted = true;
 			}
 		}
@@ -1728,6 +2005,34 @@ trait Sharing {
 				"Could not delete shares for user $user file $fileName"
 			);
 		}
+	}
+
+	/**
+	 * @When user :user removes all shares from the file named :fileName using the sharing API
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userRemovesAllSharesFromTheFileNamedzz($user, $fileName) {
+		$this->removeAllSharesFromResource($user, $fileName);
+	}
+
+	/**
+	 * @Given user :user has removed all shares from the file named :fileName
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasRemovedAllSharesFromTheFileNamedzz($user, $fileName) {
+		$this->removeAllSharesFromResource($user, $fileName);
+		$dataResponded = $this->getShares($user, $fileName);
+		Assert::assertEquals(\count($dataResponded), 0);
 	}
 
 	/**
@@ -1820,8 +2125,24 @@ trait Sharing {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $name
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function deletePublicLinkShareUsingTheSharingApi(
+		$user, $name, $path
+	) {
+		$share_id = $this->getPublicShareIDByName($user, $path, $name);
+		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+			"DELETE", $url, null
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" deletes public link share named "([^"]*)" in (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has deleted public link share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $name
@@ -1832,11 +2153,31 @@ trait Sharing {
 	public function userDeletesPublicLinkShareNamedUsingTheSharingApi(
 		$user, $name, $path
 	) {
-		$share_id = $this->getPublicShareIDByName($user, $path, $name);
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
-			"DELETE", $url, null
+		$this->deletePublicLinkShareUsingTheSharingApi(
+			$user,
+			$name,
+			$path
 		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has deleted public link share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $name
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasDeletedPublicLinkShareNamedUsingTheSharingApi(
+		$user, $name, $path
+	) {
+		$this->deletePublicLinkShareUsingTheSharingApi(
+			$user,
+			$name,
+			$path
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -1909,6 +2250,7 @@ trait Sharing {
 	 *                         of the share e.g. "|path|uid_owner|"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function assertSharesOfUserAreInState($user, $state, TableNode $table) {
 		$this->verifyTableNodeColumns($table, ["path"], $this->shareResponseFields);
@@ -1941,6 +2283,7 @@ trait Sharing {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function assertThatNoSharesAreSharedWithUser($user) {
 		$usersShares = $this->getAllSharesSharedWithUser($user);
