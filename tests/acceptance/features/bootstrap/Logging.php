@@ -29,11 +29,6 @@ use \Behat\Behat\Hook\Scope\BeforeScenarioScope;
  * Logging trait
  */
 trait Logging {
-	/**
-	 * @var OccContext
-	 */
-	private $occContext;
-
 	private $oldLogLevel = null;
 	private $oldLogBackend = null;
 	private $oldLogTimezone = null;
@@ -403,8 +398,9 @@ trait Logging {
 	public function owncloudLogLevelHasBeenSetTo($logLevel) {
 		$this->owncloudLogLevelIsSetTo($logLevel);
 		$logLevelArray = LoggingHelper::LOG_LEVEL_ARRAY;
-		$logLevelIndex = \array_search($logLevel, $logLevelArray);
-		$this->occContext->theLogLevelShouldBe($logLevelIndex);
+		$logLevelExpected = \array_search($logLevel, $logLevelArray);
+		$logLevelActual = \array_search(LoggingHelper::getLogLevel(), $logLevelArray);
+		Assert::assertEquals($logLevelExpected, $logLevelActual);
 	}
 
 	/**
@@ -487,23 +483,13 @@ trait Logging {
 	 *
 	 * @BeforeScenario
 	 *
-	 * @param BeforeScenarioScope $scope
-	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function setUpScenarioLogging($scope) {
+	public function setUpScenarioLogging() {
 		$this->oldLogLevel = LoggingHelper::getLogLevel();
 		$this->oldLogBackend = LoggingHelper::getLogBackend();
 		$this->oldLogTimezone = LoggingHelper::getLogTimezone();
-
-		// Get the environment
-		$environment = $scope->getEnvironment();
-		// registers context in every suite, as every suite has FeatureContext
-		// that calls BasicStructure.php
-		$this->occContext = new OccContext();
-		$this->occContext->before($scope);
-		$environment->registerContext($this->occContext);
 	}
 
 	/**
