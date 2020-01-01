@@ -579,14 +579,27 @@ class TrashbinContext implements Context {
 
 	/**
 	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" using the trashbin API$/
+	 *
+	 * @param string $user
+	 * @param string $originalPath
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function elementInTrashIsRestored($user, $originalPath) {
+		$this->restoreElement($user, $originalPath);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has restored the (?:file|folder|entry) with original path "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $originalPath
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function elementInTrashIsRestored($user, $originalPath) {
+	public function elementInTrashHasBeenRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
 		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
