@@ -402,16 +402,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $path
-	 *
-	 * @return void
-	 */
-	public function createPublicLinkShareOfResource($user, $path) {
-		$this->createAPublicShare($user, $path);
-	}
-
-	/**
 	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
@@ -420,7 +410,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userCreatesAPublicLinkShareOf($user, $path) {
-		$this->createPublicLinkShareOfResource($user, $path);
+		$this->createAPublicShare($user, $path);
 	}
 
 	/**
@@ -432,7 +422,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasCreatedAPublicLinkShareOf($user, $path) {
-		$this->createPublicLinkShareOfResource($user, $path);
+		$this->createAPublicShare($user, $path);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
@@ -441,7 +431,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function createPublicLinkShareOfResourceByCurrentUser($path) {
+	public function createPublicLinkShareOfResourceAsCurrentUser($path) {
 		$this->createAPublicShare($this->currentUser, $path);
 	}
 
@@ -453,7 +443,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreated($path) {
-		$this->createPublicLinkShareOfResourceByCurrentUser($path);
+		$this->createPublicLinkShareOfResourceAsCurrentUser($path);
 	}
 
 	/**
@@ -464,7 +454,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function aPublicLinkShareOfHasCreated($path) {
-		$this->createPublicLinkShareOfResourceByCurrentUser($path);
+		$this->createPublicLinkShareOfResourceAsCurrentUser($path);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
