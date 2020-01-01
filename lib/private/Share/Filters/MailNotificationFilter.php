@@ -21,7 +21,7 @@
 
 namespace OC\Share\Filters;
 
-use Zend\InputFilter\Factory as InputFilterFactory;
+use Laminas\InputFilter\Factory as InputFilterFactory;
 
 /**
  * Class MailNotificationFilter
@@ -36,7 +36,7 @@ use Zend\InputFilter\Factory as InputFilterFactory;
 class MailNotificationFilter {
 
 	/**
-	 * @var \Zend\InputFilter\InputFilterInterface
+	 * @var \Laminas\InputFilter\InputFilterInterface
 	 */
 	private $inputFilter;
 
