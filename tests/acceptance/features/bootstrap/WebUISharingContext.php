@@ -756,7 +756,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
 		$userOrGroup, $userName, $fileName, TableNode $permissionsTable
 	) {
-		$this->featureContext->verifyTableNodeRows($permissionsTable, [], ['share', 'edit', 'create', 'change', 'delete']);
+		$this->featureContext->verifyTableNodeRows(
+			$permissionsTable,
+			[],
+			['share', 'edit', 'create', 'change', 'delete', 'edit', 'secure-view', 'print']
+		);
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));

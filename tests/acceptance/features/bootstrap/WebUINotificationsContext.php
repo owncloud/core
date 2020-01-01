@@ -75,7 +75,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 			\count($notifications),
 			"expected $number notifications, found " . \count($notifications)
 		);
-		$this->featureContext->verifyTableNodeColumns($expectedNotifications, ['title'], ['content']);
+		$this->featureContext->verifyTableNodeColumns($expectedNotifications, ['title'], ['content', 'link', 'message']);
 		foreach ($expectedNotifications as $expectedNotification) {
 			$found = false;
 			foreach ($notifications as $notification) {
