@@ -1593,6 +1593,87 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has added group :group to the exclude group from sharing list
+	 *
+	 * @param string $groups
+	 * multiple groups can be passed as comma separated string
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasAddedGroupToTheExcludeGroupFromSharingList($groups) {
+		$groups = \explode(',', \trim($groups));
+		$groups = \array_map('trim', $groups); //removing whitespaces around group names
+		$groups = '"' . \implode('","', $groups) . '"';
+		SetupHelper::runOcc(
+			[
+				'config:app:set',
+				'core',
+				'shareapi_exclude_groups_list',
+				"--value='[$groups]'"
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$response = SetupHelper::runOcc(
+			[
+				'config:app:get',
+				'core',
+				'shareapi_exclude_groups_list'
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$excludedGroupsFromResponse = (\trim($response['stdOut']));
+		$excludedGroupsFromResponse = \trim($excludedGroupsFromResponse, '[]');
+		Assert::assertEquals(
+			$groups,
+			$excludedGroupsFromResponse
+		);
+	}
+
+	/**
+	 * @Given the administrator has enabled exclude groups from sharing
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasEnabledExcludeGroupsFromSharingUsingTheWebui() {
+		SetupHelper::runOcc(
+			[
+				"config:app:set",
+				"core",
+				"shareapi_exclude_groups",
+				"--value=yes"
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$response = SetupHelper::runOcc(
+			[
+				"config:app:get",
+				"core",
+				"shareapi_exclude_groups"
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$status = \trim($response['stdOut']);
+		Assert::assertEquals(
+			"yes",
+			$status
+		);
+	}
+
+	/**
 	 * This will run after EVERY scenario.
 	 * It will set the properties for this object.
 	 *
