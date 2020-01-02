@@ -22,6 +22,7 @@
 require_once 'bootstrap.php';
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -38,6 +39,12 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @var NotificationsEnabledOwncloudPage
 	 */
 	private $owncloudPage;
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 *
@@ -68,6 +75,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 			\count($notifications),
 			"expected $number notifications, found " . \count($notifications)
 		);
+		$this->featureContext->verifyTableNodeColumns($expectedNotifications, ['title'], ['content']);
 		foreach ($expectedNotifications as $expectedNotification) {
 			$found = false;
 			foreach ($notifications as $notification) {
@@ -174,5 +182,21 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 		$this->getSession()->reload();
 		$this->owncloudPage->waitForNotifications();
 		return $this->owncloudPage->openNotifications($session);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 *
+	 * @BeforeScenario @webUI
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

@@ -46,7 +46,33 @@ class FavoritesContext implements Context {
 	private $webDavPropertiesContext;
 
 	/**
+	 * @param $user
+	 * @param $path
+	 *
+	 * @return void
+	 */
+	public function userFavoritesElement($user, $path) {
+		$response = $this->changeFavStateOfAnElement(
+			$user,
+			$path,
+			1
+		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
 	 * @When user :user favorites element :path using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userFavoritesElementUsingWebDavApi($user, $path) {
+		$this->userFavoritesElement($user, $path);
+	}
+
+	/**
 	 * @Given user :user has favorited element :path
 	 *
 	 * @param string $user
@@ -54,32 +80,46 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userFavoritesElement($user, $path) {
-		$response = $this->changeFavStateOfAnElement($user, $path, 1);
-		$this->featureContext->setResponse($response);
+	public function userHasFavoritedElementUsingWebDavApi($user, $path) {
+		$this->userFavoritesElement($user, $path);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
 	 * @When the user favorites element :path using the WebDAV API
-	 * @Given the user has favorited element :path
 	 *
 	 * @param string $path
 	 *
 	 * @return void
 	 */
 	public function theUserFavoritesElement($path) {
-		$response = $this->changeFavStateOfAnElement(
-			$this->featureContext->getCurrentUser(), $path, 1
+		$this->userFavoritesElement(
+			$this->featureContext->getCurrentUser(),
+			$path
 		);
-		$this->featureContext->setResponse($response);
 	}
 
 	/**
-	 * @When user :user unfavorites element :path using the WebDAV API
-	 * @Given user :user has unfavorited element :path
+	 * @Given the user has favorited element :path
 	 *
-	 * @param string $user
 	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserHasFavoritedElement($path) {
+		$this->userFavoritesElement(
+			$this->featureContext->getCurrentUser(),
+			$path
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe(
+			207,
+			"Expected response status code to be 207 (Multi-status), but not found! "
+		);
+	}
+
+	/**
+	 * @param $user
+	 * @param $path
 	 *
 	 * @return void
 	 */
@@ -88,6 +128,31 @@ class FavoritesContext implements Context {
 			$user, $path, 0
 		);
 		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @When user :user unfavorites element :path using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userUnfavoritesElementUsingWebDavApi($user, $path) {
+		$this->userUnfavoritesElement($user, $path);
+	}
+
+	/**
+	 * @Given user :user has unfavorited element :path
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasUnfavoritedElementUsingWebDavApi($user, $path) {
+		$this->userUnfavoritesElement($user, $path);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -174,18 +239,38 @@ class FavoritesContext implements Context {
 	}
 
 	/**
+	 * @param $path
+	 *
+	 * @return void
+	 */
+	public function theUserUnfavoritesElement($path) {
+		$this->userUnfavoritesElement(
+			$this->featureContext->getCurrentUser(),
+			$path
+		);
+	}
+
+	/**
 	 * @When the user unfavorites element :path using the WebDAV API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserUnfavoritesElementUsingWebDavApi($path) {
+		$this->theUserUnfavoritesElement($path);
+	}
+
+	/**
 	 * @Given the user has unfavorited element :path
 	 *
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theUserUnfavoritesElement($path) {
-		$response = $this->changeFavStateOfAnElement(
-			$this->featureContext->getCurrentUser(), $path, 0
-		);
-		$this->featureContext->setResponse($response);
+	public function theUserHasUnfavoritedElementUsingWebDavApi($path) {
+		$this->theUserUnfavoritesElement($path);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**

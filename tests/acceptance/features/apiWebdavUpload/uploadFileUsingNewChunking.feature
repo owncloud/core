@@ -13,9 +13,10 @@ Feature: upload file using new chunking
 
   Scenario: Upload chunked file asc with new chunking
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
@@ -27,9 +28,10 @@ Feature: upload file using new chunking
 
   Scenario: Upload chunked file desc with new chunking
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 3 | CCCCC |
-      | 2 | BBBBB |
-      | 1 | AAAAA |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
@@ -38,9 +40,10 @@ Feature: upload file using new chunking
 
   Scenario: Upload chunked file random with new chunking
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 2 | BBBBB |
-      | 3 | CCCCC |
-      | 1 | AAAAA |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:

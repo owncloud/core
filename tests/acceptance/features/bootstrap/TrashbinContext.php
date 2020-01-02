@@ -272,11 +272,10 @@ class TrashbinContext implements Context {
 	 */
 	public function theLastWebdavResponseShouldNotContainFollowingElements(TableNode $elements) {
 		$files = $this->getTrashbinContentFromResponseXml($this->featureContext->getResponseXmlObject());
-		if (!($elements instanceof TableNode)) {
-			throw new InvalidArgumentException(
-				'$expectedElements has to be an instance of TableNode'
-			);
-		}
+
+		// 'user' is also allowed in the table even though it is not used anywhere
+		// This for better readability in feature files
+		$this->featureContext->verifyTableNodeColumns($elements, ['path'], ['path', 'user']);
 		$elementRows = $elements->getHash();
 		foreach ($elementRows as $expectedElement) {
 			$notFound = true;
@@ -580,14 +579,27 @@ class TrashbinContext implements Context {
 
 	/**
 	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" using the trashbin API$/
+	 *
+	 * @param string $user
+	 * @param string $originalPath
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function elementInTrashIsRestored($user, $originalPath) {
+		$this->restoreElement($user, $originalPath);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has restored the (?:file|folder|entry) with original path "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $originalPath
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function elementInTrashIsRestored($user, $originalPath) {
+	public function elementInTrashHasBeenRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
 		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),

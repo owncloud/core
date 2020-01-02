@@ -13,9 +13,10 @@ Feature: upload file using new chunking
 
   Scenario: Upload chunked file ordered asc using async MOVE
     When user "user0" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
@@ -29,9 +30,10 @@ Feature: upload file using new chunking
 
   Scenario: Upload chunked file ordered desc using async MOVE
     When user "user0" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 3 | CCCCC |
-      | 2 | BBBBB |
-      | 1 | AAAAA |
+      | number | content |
+      | 3      | CCCCC   |
+      | 2      | BBBBB   |
+      | 1      | AAAAA   |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
@@ -45,9 +47,10 @@ Feature: upload file using new chunking
 
   Scenario: Upload chunked file in random order using async MOVE
     When user "user0" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 2 | BBBBB |
-      | 3 | CCCCC |
-      | 1 | AAAAA |
+      | number | content |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
+      | 1      | AAAAA   |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
@@ -62,9 +65,10 @@ Feature: upload file using new chunking
   Scenario: Upload chunked file overwriting existing file using async MOVE
     Given user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
     When user "user0" uploads the following chunks asynchronously to "/existingFile.txt" with new chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
@@ -182,9 +186,10 @@ Feature: upload file using new chunking
   Scenario: disabled async operations leads to original behavior
     Given the administrator has disabled async operations
     When user "user0" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "201"
     And the following headers should not be set
       | header                |
@@ -193,9 +198,10 @@ Feature: upload file using new chunking
 
   Scenario: enabling async operations does no difference to normal MOVE - Upload chunked file
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "201"
     And the following headers should not be set
       | header                |

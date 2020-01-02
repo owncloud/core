@@ -74,7 +74,6 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When the administrator enables the external storage using the webUI
-	 * @Given the administrator has enabled the external storage
 	 *
 	 * @return void
 	 */

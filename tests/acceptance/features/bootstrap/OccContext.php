@@ -429,9 +429,10 @@ class OccContext implements Context {
 	 * @param string $mountPoint
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorHasSetTheExtStorageWithMountPoint($mountPoint) {
-		$command = "files:external:option";
+		$command = "files_external:option";
 
 		// get the first mount id created in before scenario
 		$mountId = $this->featureContext->getStorageId($mountPoint);
@@ -447,6 +448,7 @@ class OccContext implements Context {
 		$this->invokingTheCommand(
 			"$command $mountId $key $value"
 		);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -801,6 +803,7 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputTableShouldContainTheFollowingText(TableNode $table) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$this->featureContext->verifyTableNodeColumns($table, ['table_column']);
 		foreach ($table as $row) {
 			$lines = $this->featureContext->findLines(
 				$commandOutput,
@@ -971,6 +974,43 @@ class OccContext implements Context {
 			$value,
 			$systemConfig[$key],
 			"config: $key doesn't contain value: $value"
+		);
+	}
+
+	/**
+	 * @Given the administrator has enabled the external storage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function enableExternalStorageUsingOccAsAdmin() {
+		SetupHelper::runOcc(
+			[
+				'config:app:set',
+				'core',
+				'enable_external_storage',
+				'--value=yes'
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$response = SetupHelper::runOcc(
+			[
+				'config:app:get',
+				'core',
+				'enable_external_storage',
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$status = \trim($response['stdOut']);
+		Assert::assertEquals(
+			'yes',
+			$status
 		);
 	}
 

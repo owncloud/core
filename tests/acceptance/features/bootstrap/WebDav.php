@@ -1077,6 +1077,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function jobStatusValuesShouldMatchRegEx($user, $table) {
+		$this->verifyTableNodeColumnsCount($table, 2);
 		$url = $this->response->getHeader("OC-JobStatus-Location");
 		$url = $this->getBaseUrlWithoutPath() . $url;
 		$response = HttpRequestHelper::get($url, $user, $this->getPasswordForUser($user));
@@ -1233,11 +1234,7 @@ trait WebDav {
 	public function checkElementList(
 		$user, $elements, $expectedToBeListed = true
 	) {
-		if (!($elements instanceof TableNode)) {
-			throw new InvalidArgumentException(
-				'$expectedElements has to be an instance of TableNode'
-			);
-		}
+		$this->verifyTableNodeColumnsCount($elements, 1);
 		$responseXmlObject = $this->listFolder($user, "/", 5);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
@@ -1927,6 +1924,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDeletesFilesFoldersWithoutDelays($user, $table) {
+		$this->verifyTableNodeColumnsCount($table, 1);
 		foreach ($table->getTable() as $entry) {
 			$entryName = $entry[0];
 			$this->response = $this->makeDavRequest($user, 'DELETE', $entryName, []);
@@ -2040,9 +2038,10 @@ trait WebDav {
 	 * @param string $total
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
-	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                content with column headings, e.g.
+	 *                                | number | content                 |
+	 *                                | 1      | first data              |
+	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 *
 	 * @return void
@@ -2050,9 +2049,10 @@ trait WebDav {
 	public function userUploadsTheFollowingTotalChunksUsingOldChunking(
 		$user, $total, $file, TableNode $chunkDetails
 	) {
-		foreach ($chunkDetails->getTable() as $chunkDetail) {
-			$chunkNumber = $chunkDetail[0];
-			$chunkContent = $chunkDetail[1];
+		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
+		foreach ($chunkDetails->getHash() as $chunkDetail) {
+			$chunkNumber = $chunkDetail['number'];
+			$chunkContent = $chunkDetail['content'];
 			$this->userUploadsChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
 		}
 	}
@@ -2066,9 +2066,10 @@ trait WebDav {
 	 * @param string $total
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
-	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                content with following headings, e.g.
+	 *                                | number | content                 |
+	 *                                | 1      | first data              |
+	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 *
 	 * @return void
@@ -2076,9 +2077,10 @@ trait WebDav {
 	public function userHasUploadedTheFollowingTotalChunksUsingOldChunking(
 		$user, $total, $file, TableNode $chunkDetails
 	) {
-		foreach ($chunkDetails->getTable() as $chunkDetail) {
-			$chunkNumber = $chunkDetail[0];
-			$chunkContent = $chunkDetail[1];
+		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
+		foreach ($chunkDetails->getHash() as $chunkDetail) {
+			$chunkNumber = $chunkDetail['number'];
+			$chunkContent = $chunkDetail['content'];
 			$this->userHasUploadedChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
 		}
 	}
@@ -2091,9 +2093,10 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
-	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                content with column headings, e.g.
+	 *                                | number | content                 |
+	 *                                | 1      | first data              |
+	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 *
 	 * @return void
@@ -2101,7 +2104,7 @@ trait WebDav {
 	public function userUploadsTheFollowingChunksUsingOldChunking(
 		$user, $file, TableNode $chunkDetails
 	) {
-		$total = \count($chunkDetails->getRows());
+		$total = \count($chunkDetails->getHash());
 		$this->userUploadsTheFollowingTotalChunksUsingOldChunking(
 			$user, $total, $file, $chunkDetails
 		);
@@ -2115,9 +2118,10 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
-	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                content with headings, e.g.
+	 *                                | number | content                 |
+	 *                                | 1      | first data              |
+	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 *
 	 * @return void
@@ -2186,9 +2190,10 @@ trait WebDav {
 	 * @param string $type "asynchronously" or empty
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
-	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                content, with headings e.g.
+	 *                                | number | content      |
+	 *                                | 1      | first data   |
+	 *                                | 2      | second data  |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 *
 	 * @return void
@@ -2211,8 +2216,9 @@ trait WebDav {
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                | number | content                 |
+	 *                                | 1      | first data              |
+	 *                                | 2      | followed by second data |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 *
 	 * @return void
@@ -2232,9 +2238,10 @@ trait WebDav {
 	 * @param string $type "asynchronously" or empty
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
-	 *                                content without column headings, e.g.
-	 *                                | 1 | first data              |
-	 *                                | 2 | followed by second data |
+	 *                                content with column headings, e.g.
+	 *                                | number | content            |
+	 *                                | 1      | first data         |
+	 *                                | 2      | second data        |
 	 *                                Chunks may be numbered out-of-order if desired.
 	 * @param bool $checkActions
 	 *
@@ -2247,8 +2254,9 @@ trait WebDav {
 		if ($type === "asynchronously") {
 			$async = true;
 		}
+		$this->verifyTableNodeColumns($chunkDetails, ["number", "content"]);
 		$this->userUploadsChunksUsingNewChunking(
-			$user, $file, 'chunking-42', $chunkDetails->getTable(), $async, $checkActions
+			$user, $file, 'chunking-42', $chunkDetails->getHash(), $async, $checkActions
 		);
 	}
 
@@ -2260,8 +2268,8 @@ trait WebDav {
 	 * @param string $chunkingId
 	 * @param array $chunkDetails of chunks of the file. Each array entry is
 	 *                            itself an array of 2 items:
-	 *                            [0] the chunk number
-	 *                            [1] data content of the chunk
+	 *                            [number] the chunk number
+	 *                            [content] data content of the chunk
 	 *                            Chunks may be numbered out-of-order if desired.
 	 * @param bool $async use asynchronous MOVE at the end or not
 	 * @param bool $checkActions
@@ -2278,8 +2286,8 @@ trait WebDav {
 			$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
 		}
 		foreach ($chunkDetails as $chunkDetail) {
-			$chunkNumber = $chunkDetail[0];
-			$chunkContent = $chunkDetail[1];
+			$chunkNumber = $chunkDetail['number'];
+			$chunkContent = $chunkDetail['content'];
 			if ($checkActions) {
 				$this->userHasUploadedNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
 			} else {
@@ -2633,6 +2641,7 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function headersShouldMatchRegularExpressions(TableNode $table) {
+		$this->verifyTableNodeColumnsCount($table, 2);
 		foreach ($table->getTable() as $header) {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];

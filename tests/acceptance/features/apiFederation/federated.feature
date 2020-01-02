@@ -248,9 +248,10 @@ Feature: federated
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
     When user "user1" uploads the following "3" chunks to "/textfile0 (2).txt" with old chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "201"
     And the content of file "/textfile0 (2).txt" for user "user1" should be "AAAAABBBBBCCCCC"
     And the content of file "/textfile0.txt" for user "user0" on server "REMOTE" should be "AAAAABBBBBCCCCC"
@@ -264,9 +265,10 @@ Feature: federated
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
     When user "user1" uploads the following "3" chunks to "/PARENT (2)/textfile0.txt" with old chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+      | number | content |
+      | 1      | AAAAA   |
+      | 2      | BBBBB   |
+      | 3      | CCCCC   |
     Then the HTTP status code should be "201"
     And the content of file "/PARENT (2)/textfile0.txt" for user "user1" should be "AAAAABBBBBCCCCC"
     And the content of file "/PARENT/textfile0.txt" for user "user0" on server "REMOTE" should be "AAAAABBBBBCCCCC"

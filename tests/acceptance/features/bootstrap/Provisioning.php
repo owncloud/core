@@ -70,6 +70,14 @@ trait Provisioning {
 	private $createdGroups = [];
 
 	/**
+	 * @var array
+	 */
+	private $userResponseFields = [
+		"enabled", "quota", "email", "displayname", "home", "two_factor_auth_enabled",
+		"quota definition", "quota free", "quota user", "quota total", "quota relative"
+	];
+
+	/**
 	 * Usernames are not case-sensitive, and can generally be specified with any
 	 * mix of upper and lower case. For remembering usernames use the normalized
 	 * form so that "User0" and "user0" are remembered as the same user.
@@ -1151,6 +1159,7 @@ trait Provisioning {
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		$groups = SetupHelper::getGroups();
+		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			if (\in_array($row['groupname'], $groups, true) !== $should) {
 				throw new Exception(
@@ -1903,6 +1912,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theseGroupsHaveBeenCreated(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->createTheGroup($row['groupname']);
 		}
@@ -2385,14 +2395,13 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theUsersShouldBe($usersList) {
-		if ($usersList instanceof TableNode) {
-			$users = $usersList->getRows();
-			$usersSimplified = $this->simplifyArray($users);
-			$respondedArray = $this->getArrayOfUsersResponded($this->response);
-			Assert::assertEquals(
-				$usersSimplified, $respondedArray, "", 0.0, 10, true
-			);
-		}
+		$this->verifyTableNodeColumnsCount($usersList, 1);
+		$users = $usersList->getRows();
+		$usersSimplified = $this->simplifyArray($users);
+		$respondedArray = $this->getArrayOfUsersResponded($this->response);
+		Assert::assertEquals(
+			$usersSimplified, $respondedArray, "", 0.0, 10, true
+		);
 	}
 
 	/**
@@ -2403,14 +2412,13 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theGroupsShouldBe($groupsList) {
-		if ($groupsList instanceof TableNode) {
-			$groups = $groupsList->getRows();
-			$groupsSimplified = $this->simplifyArray($groups);
-			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			Assert::assertEquals(
-				$groupsSimplified, $respondedArray, "", 0.0, 10, true
-			);
-		}
+		$this->verifyTableNodeColumnsCount($groupsList, 1);
+		$groups = $groupsList->getRows();
+		$groupsSimplified = $this->simplifyArray($groups);
+		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+		Assert::assertEquals(
+			$groupsSimplified, $respondedArray, "", 0.0, 10, true
+		);
 	}
 
 	/**
@@ -2455,6 +2463,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkSubadminGroupsOrUsersTable($groupsOrUsersList) {
+		$this->verifyTableNodeColumnsCount($groupsOrUsersList, 1);
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
@@ -2493,6 +2502,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theAppsShouldInclude($appList) {
+		$this->verifyTableNodeColumnsCount($appList, 1);
 		$apps = $appList->getRows();
 		$appsSimplified = $this->simplifyArray($apps);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
@@ -2901,6 +2911,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkUserAttributes($body) {
+		$this->verifyTableNodeRows($body, [], $this->userResponseFields);
 		$fd = $body->getRowsHash();
 		foreach ($fd as $field => $value) {
 			$data = $this->getResponseXml()->data[0];
@@ -2925,6 +2936,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkAttributesForUser($user, $body) {
+		$this->verifyTableNodeColumnsCount($body, 2);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(), "GET", "/cloud/users/$user",
 			null

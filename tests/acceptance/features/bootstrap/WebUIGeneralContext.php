@@ -333,6 +333,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText(
 		$matching, TableNode $table
 	) {
+		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
 		$actualNotifications = $this->owncloudPage->getNotifications();
 		$numActualNotifications = \count($actualNotifications);
 		$expectedNotifications = $table->getRows();
@@ -396,6 +397,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			Assert::assertEquals($count, \count($dialogs));
 		}
 		if ($table !== null) {
+			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content']);
 			$expectedDialogs = $table->getHash();
 			//we iterate first through the real dialogs because that way we can
 			//save time by calling getMessage() & getTitle() only once
