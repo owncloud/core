@@ -1,0 +1,5 @@
+Change: zendframework dependency to laminas
+
+zend framework changed to be known as laminas. The dependencies are updated.
+
+https://github.com/owncloud/core/pull/36677
