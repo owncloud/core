@@ -100,7 +100,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $cmd
+	 * @param string $cmd
 	 *
 	 * @return void
 	 * @throws Exception
@@ -110,7 +110,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 *
 	 * @return void
 	 * @throws Exception
@@ -123,9 +123,9 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $cmd
-	 * @param $envVariableName
-	 * @param $envVariableValue
+	 * @param string $cmd
+	 * @param string $envVariableName
+	 * @param string $envVariableValue
 	 *
 	 * @return void
 	 * @throws Exception
@@ -140,7 +140,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $mode
+	 * @param string $mode
 	 *
 	 * @return void
 	 * @throws Exception
@@ -189,7 +189,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $user
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
@@ -201,7 +201,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 *
 	 * @return void
 	 * @throws Exception
@@ -213,7 +213,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $group
+	 * @param string $group
 	 *
 	 * @return void
 	 * @throws Exception
@@ -225,7 +225,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $groups
+	 * @param string $groups
 	 *
 	 * @return void
 	 * @throws Exception
@@ -237,7 +237,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $mount
+	 * @param string $mount
 	 *
 	 * @return void
 	 */
@@ -247,9 +247,9 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $key
-	 * @param $value
-	 * @param $app
+	 * @param string $key
+	 * @param string $value
+	 * @param string $app
 	 *
 	 * @return void
 	 * @throws Exception
@@ -261,8 +261,8 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $key
-	 * @param $app
+	 * @param string $key
+	 * @param string $app
 	 *
 	 * @return void
 	 * @throws Exception
@@ -274,8 +274,8 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $key
-	 * @param $value
+	 * @param string $key
+	 * @param string $value
 	 * @param string $type
 	 *
 	 * @return void
@@ -290,7 +290,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 *
 	 * @return void
 	 * @throws Exception
@@ -302,7 +302,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $user
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
@@ -324,7 +324,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $user
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
@@ -346,7 +346,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param $job
+	 * @param string $job
 	 *
 	 * @return void
 	 * @throws Exception
