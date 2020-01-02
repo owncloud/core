@@ -96,14 +96,12 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator creates the local storage mount :mount using the webUI
-	 * @Given the administrator has created the local storage mount :mount from the admin storage settings page
-	 *
 	 * @param string $mount
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorCreatesTheLocalStorageMountUsingTheWebui($mount) {
+	public function createLocalStorageMountUsingTheWebui($mount) {
 		$serverRoot = SetupHelper::getServerRoot(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -120,6 +118,31 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 		$storageIds = $this->featureContext->getStorageIds();
 		$lastMount = \end($storageIds);
 		$this->featureContext->addStorageId($mount, $lastMount + 1);
+	}
+
+	/**
+	 * @When the administrator creates the local storage mount :mount using the webUI
+	 *
+	 * @param string $mount
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorCreatesTheLocalStorageMountUsingTheWebui($mount) {
+		$this->createLocalStorageMountUsingTheWebui($mount);
+	}
+
+	/**
+	 * @Given the administrator has created the local storage mount :mount from the admin storage settings page
+	 *
+	 * @param string $mount
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasCreatedTheLocalStorageMountUsingTheWebui($mount) {
+		$this->createLocalStorageMountUsingTheWebui($mount);
+		$this->featureContext->asFileOrFolderShouldExist($this->featureContext->getAdminUsername(), "folder", $mount);
 	}
 
 	/**
@@ -159,6 +182,16 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theAdministratorDeletesTheLastCreatedLocalStorageMountUsingTheWebui() {
 		$this->adminStorageSettingsPage->deleteLastCreatedLocalMount($this->getSession());
+	}
+
+	/**
+	 * @When the administrator enables read-only for the last created local storage mount using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesReadonlyForTheLastCreatedLocalStorageMountUsingTheWebui() {
+		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
+		$this->adminStorageSettingsPage->enableReadonlyMountOption($this->getSession());
 	}
 
 	/**

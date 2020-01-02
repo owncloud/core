@@ -1,0 +1,7 @@
+Enhancement: Add an option to provide a mount in read only mode
+
+Adds a new option in the mount settings to provide a mount in read only mode.
+This enables users or admins to provide a write protected mount independent of any backend settings.
+The sync client automatically respects this mount setting without any additional intervention. 
+
+https://github.com/owncloud/core/pull/36397
