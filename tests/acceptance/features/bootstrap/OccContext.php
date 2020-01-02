@@ -79,7 +79,7 @@ class OccContext implements Context {
 	 */
 	public function enableDAVTechPreview() {
 		if (!$this->isTechPreviewEnabled()) {
-			$this->addSystemConfigKeyWithValueUsingTheOccCommandAsAdmin(
+			$this->addSystemConfigKeyUsingTheOccCommand(
 				"dav.enable.tech_preview", "true", "boolean"
 			);
 			$this->techPreviewEnabled = true;
@@ -145,17 +145,18 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function changeBackgroundJobsModeToAsAdmin($mode) {
+	public function changeBackgroundJobsModeUsingTheOccCommand($mode) {
 		$this->invokingTheCommand("background:$mode");
 	}
 
 	/**
-	 * @param $mountPoint
+	 * @param string $mountPoint
+	 * @param string $setting "never" (switch it off) otherwise "Once every direct access"
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setExtStorageWithMountPointAsAdmin($mountPoint) {
+	public function setExtStorageCheckChangesUsingTheOccCommand($mountPoint, $setting) {
 		$command = "files_external:option";
 
 		// get the first mount id created in before scenario
@@ -166,8 +167,11 @@ class OccContext implements Context {
 
 		$key = "filesystem_check_changes";
 
-		// "0" is "Never", "1" is "Once every direct access"
-		$value = 0;
+		if ($setting === "never") {
+			$value = "0";
+		} else {
+			$value = "1";
+		}
 
 		$this->invokingTheCommand(
 			"$command $mountId $key $value"
@@ -178,7 +182,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemForAllUsersAsAdmin() {
+	public function scanFileSystemForAllUsersUsingTheOccCommand() {
 		$this->invokingTheCommand(
 			"files:scan --all"
 		);
@@ -190,7 +194,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemForAUserAsAdminAsAdmin($user) {
+	public function scanFileSystemForAUserUsingTheOccCommand($user) {
 		$this->invokingTheCommand(
 			"files:scan $user"
 		);
@@ -202,7 +206,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemInPathAsAdmin($path) {
+	public function scanFileSystemPathUsingTheOccCommand($path) {
 		$this->invokingTheCommand(
 			"files:scan --path='$path'"
 		);
@@ -214,7 +218,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemForAGroupAsAdmin($group) {
+	public function scanFileSystemForAGroupUsingTheOccCommand($group) {
 		$this->invokingTheCommand(
 			"files:scan --group=$group"
 		);
@@ -226,7 +230,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemForGroupsAsAdmin($groups) {
+	public function scanFileSystemForGroupsUsingTheOccCommand($groups) {
 		$this->invokingTheCommand(
 			"files:scan --groups=$groups"
 		);
@@ -237,7 +241,7 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asAdminCreateLocalStorageMountForAUser($mount) {
+	public function createLocalStorageMountUsingTheOccCommand($mount) {
 		$storageId = SetupHelper::createLocalStorageMount($mount);
 		$this->featureContext->addStorageId($mount, $storageId);
 	}
@@ -250,7 +254,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function addConfigKeyWithValueInAppAsAdmin($key, $value, $app) {
+	public function addConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
 		$this->invokingTheCommand(
 			"config:app:set --value ${value} ${app} ${key}"
 		);
@@ -263,7 +267,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteConfigKeyOfAppUsingTheOccCommandAsAdmin($key, $app) {
+	public function deleteConfigKeyOfAppUsingTheOccCommand($key, $app) {
 		$this->invokingTheCommand(
 			"config:app:delete ${app} ${key}"
 		);
@@ -277,7 +281,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function addSystemConfigKeyWithValueUsingTheOccCommandAsAdmin(
+	public function addSystemConfigKeyUsingTheOccCommand(
 		$key, $value, $type = "string"
 	) {
 		$this->invokingTheCommand(
@@ -303,7 +307,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function emptyTrashBinOfAUserUsingOccCommandAsAdmin($user) {
+	public function emptyTrashBinOfUserUsingOccCommand($user) {
 		$this->invokingTheCommand(
 			"trashbin:cleanup $user"
 		);
@@ -313,7 +317,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function getAllJobsInBackgroundQueueUsingOccCommandAsAdmin() {
+	public function getAllJobsInBackgroundQueueUsingOccCommand() {
 		$this->invokingTheCommand(
 			"background:queue:status"
 		);
@@ -325,7 +329,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteAllVersionsForAUserAsAdmin($user) {
+	public function deleteAllVersionsForUserUsingOccCommand($user) {
 		$this->invokingTheCommand(
 			"versions:cleanup $user"
 		);
@@ -335,7 +339,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteAllVersionsForAllUserAsAdmin() {
+	public function deleteAllVersionsForAllUsersUsingTheOccCommand() {
 		$this->invokingTheCommand(
 			"versions:cleanup"
 		);
@@ -347,7 +351,7 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteLastBackgroundJobUsingTheOccCommandAsAdmin($job) {
+	public function deleteLastBackgroundJobUsingTheOccCommand($job) {
 		$match = $this->getLastJobIdForJob($job);
 		if ($match === false) {
 			throw new \Exception("Couldn't find jobId for given job: $job");
@@ -659,7 +663,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasSetTheDefaultFolderForReceivedSharesTo($folder) {
-		$this->addSystemConfigKeyWithValueUsingTheOccCommandAsAdmin(
+		$this->addSystemConfigKeyUsingTheOccCommand(
 			"share_folder", $folder
 		);
 	}
@@ -673,7 +677,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
-		$this->addSystemConfigKeyWithValueUsingTheOccCommandAsAdmin(
+		$this->addSystemConfigKeyUsingTheOccCommand(
 			"mail_smtpmode", $smtpmode
 		);
 	}
@@ -769,7 +773,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheBackgroundJobsModeTo($mode) {
-		$this->changeBackgroundJobsModeToAsAdmin($mode);
+		$this->changeBackgroundJobsModeUsingTheOccCommand($mode);
 	}
 
 	/**
@@ -781,7 +785,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasChangedTheBackgroundJobsModeTo($mode) {
-		$this->changeBackgroundJobsModeToAsAdmin($mode);
+		$this->changeBackgroundJobsModeUsingTheOccCommand($mode);
 	}
 
 	/**
@@ -792,8 +796,8 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorSetsTheExtStorageWithMountPoint($mountPoint) {
-		$this->setExtStorageWithMountPointAsAdmin($mountPoint);
+	public function theAdminSetsTheExtStorageToBeNeverScannedAutomatically($mountPoint) {
+		$this->setExtStorageCheckChangesUsingTheOccCommand($mountPoint, "never");
 	}
 
 	/**
@@ -804,8 +808,8 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasSetTheExtStorageWithMountPoint($mountPoint) {
-		$this->setExtStorageWithMountPointAsAdmin($mountPoint);
+	public function theAdminHasSetTheExtStorageToBeNeverScannedAutomatically($mountPoint) {
+		$this->setExtStorageCheckChangesUsingTheOccCommand($mountPoint, "never");
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -816,7 +820,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorScansTheFilesystemForAllUsersUsingTheOccCommand() {
-		$this->scanFileSystemForAllUsersAsAdmin();
+		$this->scanFileSystemForAllUsersUsingTheOccCommand();
 	}
 
 	/**
@@ -826,7 +830,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasScannedTheFilesystemForAllUsersUsingTheOccCommand() {
-		$this->scanFileSystemForAllUsersAsAdmin();
+		$this->scanFileSystemForAllUsersUsingTheOccCommand();
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -839,7 +843,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorScansTheFilesystemForUserUsingTheOccCommand($user) {
-		$this->scanFileSystemForAUserAsAdminAsAdmin($user);
+		$this->scanFileSystemForAUserUsingTheOccCommand($user);
 	}
 
 	/**
@@ -851,7 +855,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasScannedTheFilesystemForUserUsingTheOccCommand($user) {
-		$this->scanFileSystemForAUserAsAdminAsAdmin($user);
+		$this->scanFileSystemForAUserUsingTheOccCommand($user);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -864,7 +868,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path) {
-		$this->scanFileSystemInPathAsAdmin($path);
+		$this->scanFileSystemPathUsingTheOccCommand($path);
 	}
 
 	/**
@@ -876,7 +880,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasScannedTheFilesystemInPathUsingTheOccCommand($path) {
-		$this->scanFileSystemInPathAsAdmin($path);
+		$this->scanFileSystemPathUsingTheOccCommand($path);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -891,7 +895,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
-		$this->scanFileSystemForAGroupAsAdmin($group);
+		$this->scanFileSystemForAGroupUsingTheOccCommand($group);
 	}
 
 	/**
@@ -905,7 +909,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasScannedTheFilesystemForGroupUsingTheOccCommand($group) {
-		$this->scanFileSystemForAGroupAsAdmin($group);
+		$this->scanFileSystemForAGroupUsingTheOccCommand($group);
 	}
 
 	/**
@@ -919,7 +923,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorScansTheFilesystemForGroupsUsingTheOccCommand($groups) {
-		$this->scanFileSystemForGroupsAsAdmin($groups);
+		$this->scanFileSystemForGroupsUsingTheOccCommand($groups);
 	}
 
 	/**
@@ -933,7 +937,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasScannedTheFilesystemForGroupsUsingTheOccCommand($groups) {
-		$this->scanFileSystemForGroupsAsAdmin($groups);
+		$this->scanFileSystemForGroupsUsingTheOccCommand($groups);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -956,8 +960,8 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorCreatesTheLocalStorageMountForAUserUsingTheOccCommand($mount) {
-		$this->asAdminCreateLocalStorageMountForAUser($mount);
+	public function theAdministratorCreatesTheLocalStorageMountUsingTheOccCommand($mount) {
+		$this->createLocalStorageMountUsingTheOccCommand($mount);
 	}
 
 	/**
@@ -967,8 +971,8 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasCreatedTheLocalStorageMountForAUserUsingTheOccCommand($mount) {
-		$this->asAdminCreateLocalStorageMountForAUser($mount);
+	public function theAdministratorHasCreatedTheLocalStorageMountUsingTheOccCommand($mount) {
+		$this->createLocalStorageMountUsingTheOccCommand($mount);
 	}
 
 	/**
@@ -1114,7 +1118,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorAddsConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
-		$this->addConfigKeyWithValueInAppAsAdmin(
+		$this->addConfigKeyWithValueInAppUsingTheOccCommand(
 			$key,
 			$value,
 			$app
@@ -1132,7 +1136,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasAddedConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
-		$this->addConfigKeyWithValueInAppAsAdmin(
+		$this->addConfigKeyWithValueInAppUsingTheOccCommand(
 			$key,
 			$value,
 			$app
@@ -1150,7 +1154,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDeletesConfigKeyOfAppUsingTheOccCommand($key, $app) {
-		$this->deleteConfigKeyOfAppUsingTheOccCommandAsAdmin($key, $app);
+		$this->deleteConfigKeyOfAppUsingTheOccCommand($key, $app);
 	}
 
 	/**
@@ -1167,7 +1171,7 @@ class OccContext implements Context {
 	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
 		$key, $value, $type = "string"
 	) {
-		$this->addSystemConfigKeyWithValueUsingTheOccCommandAsAdmin(
+		$this->addSystemConfigKeyUsingTheOccCommand(
 			$key,
 			$value,
 			$type
@@ -1188,7 +1192,7 @@ class OccContext implements Context {
 	public function theAdministratorHasAddedSystemConfigKeyWithValueUsingTheOccCommand(
 		$key, $value, $type = "string"
 	) {
-		$this->addSystemConfigKeyWithValueUsingTheOccCommandAsAdmin(
+		$this->addSystemConfigKeyUsingTheOccCommand(
 			$key,
 			$value,
 			$type
@@ -1217,7 +1221,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorEmptiesTheTrashbinOfUserUsingTheOccCommand($user) {
-		$this->emptyTrashBinOfAUserUsingOccCommandAsAdmin($user);
+		$this->emptyTrashBinOfUserUsingOccCommand($user);
 	}
 
 	/**
@@ -1229,7 +1233,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDeletesAllTheVersionsForUser($user) {
-		$this->deleteAllVersionsForAUserAsAdmin($user);
+		$this->deleteAllVersionsForUserUsingOccCommand($user);
 	}
 
 	/**
@@ -1239,7 +1243,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorEmptiesTheTrashbinOfAllUsersUsingTheOccCommand() {
-		$this->emptyTrashBinOfAUserUsingOccCommandAsAdmin('');
+		$this->emptyTrashBinOfUserUsingOccCommand('');
 	}
 
 	/**
@@ -1249,7 +1253,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorGetsAllTheJobsInTheBackgroundQueueUsingTheOccCommand() {
-		$this->getAllJobsInBackgroundQueueUsingOccCommandAsAdmin();
+		$this->getAllJobsInBackgroundQueueUsingOccCommand();
 	}
 
 	/**
@@ -1261,7 +1265,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDeletesLastBackgroundJobUsingTheOccCommand($job) {
-		$this->deleteLastBackgroundJobUsingTheOccCommandAsAdmin($job);
+		$this->deleteLastBackgroundJobUsingTheOccCommand($job);
 	}
 
 	/**
@@ -1387,7 +1391,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasClearedTheVersionsForUser($user) {
-		$this->deleteAllVersionsForAUserAsAdmin($user);
+		$this->deleteAllVersionsForUserUsingOccCommand($user);
 		Assert::assertSame(
 			"Delete versions of   $user",
 			\trim($this->featureContext->getStdOutOfOccCommand())
@@ -1401,7 +1405,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasClearedTheVersionsForAllUsers() {
-		$this->deleteAllVersionsForAllUserAsAdmin();
+		$this->deleteAllVersionsForAllUsersUsingTheOccCommand();
 		Assert::assertContains(
 			"Delete all versions",
 			\trim($this->featureContext->getStdOutOfOccCommand())
@@ -1417,7 +1421,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function getLastJobIdForJob($job) {
-		$this->getAllJobsInBackgroundQueueUsingOccCommandAsAdmin();
+		$this->getAllJobsInBackgroundQueueUsingOccCommand();
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = $this->featureContext->findLines(
 			$commandOutput,
