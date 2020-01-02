@@ -978,6 +978,43 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has enabled the external storage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function enableExternalStorageUsingOccAsAdmin() {
+		SetupHelper::runOcc(
+			[
+				'config:app:set',
+				'core',
+				'enable_external_storage',
+				'--value=yes'
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$response = SetupHelper::runOcc(
+			[
+				'config:app:get',
+				'core',
+				'enable_external_storage',
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$status = \trim($response['stdOut']);
+		Assert::assertEquals(
+			'yes',
+			$status
+		);
+	}
+
+	/**
 	 * This will run after EVERY scenario.
 	 * It will set the properties for this object.
 	 *
