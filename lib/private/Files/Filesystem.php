@@ -758,32 +758,27 @@ class Filesystem {
 		$blacklistArray[] = \end($pathParts);
 
 		// first, check if the folder is excluded
-		if (isset($excludeFolders)) {
-			$excludeFolders= \array_map('trim', $excludeFolders);
-			$excludeFolders= \array_map('strtolower', $excludeFolders);
-			if (\array_intersect($excludeFolders, $pathParts)) {
-				return true;
-			}
+		$excludeFolders= \array_map('trim', $excludeFolders);
+		$excludeFolders= \array_map('strtolower', $excludeFolders);
+		if (\array_intersect($excludeFolders, $pathParts)) {
+			return true;
 		}
-		if (isset($excludeFoldersRegex)) {
-			if (self::checkRegexAgainstFolderOrFile($excludeFoldersRegex, $pathParts,
-					"Check excluded_directories_regex variable in config file")) {
-				return true;
-			}
+
+		if (self::checkRegexAgainstFolderOrFile($excludeFoldersRegex, $pathParts,
+				"Check excluded_directories_regex variable in config file")) {
+			return true;
 		}
 
 		// second, check if the file is blacklisted
-		if (isset($blacklistFiles)) {
-			if (\array_intersect($blacklistFiles, $blacklistArray)) {
-				return true;
-			}
+		if (\array_intersect($blacklistFiles, $blacklistArray)) {
+			return true;
 		}
-		if (isset($blacklistFilesRegex)) {
-			if (self::checkRegexAgainstFolderOrFile($blacklistFilesRegex, $blacklistArray,
-					"Check blacklisted_files_regex variable in config file")) {
-				return true;
-			}
+
+		if (self::checkRegexAgainstFolderOrFile($blacklistFilesRegex, $blacklistArray,
+				"Check blacklisted_files_regex variable in config file")) {
+			return true;
 		}
+
 		return false;
 	}
 
