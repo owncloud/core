@@ -5,6 +5,7 @@
 	use OCP\Files\External\IStoragesBackendService;
 
 	$l->t("Enable encryption");
+	$l->t("Set read-only");
 	$l->t("Enable previews");
 	$l->t("Enable sharing");
 	$l->t("Check for changes");

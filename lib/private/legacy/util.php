@@ -175,6 +175,16 @@ class OC_Util {
 			return $storage;
 		});
 
+		\OC\Files\Filesystem::addStorageWrapper('read_only', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+			if ($mount->getOption('read_only', false)) {
+				return new \OC\Files\Storage\Wrapper\PermissionsMask([
+					'storage' => $storage,
+					'mask' => \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE
+				]);
+			}
+			return $storage;
+		});
+
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
 			if (!$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
