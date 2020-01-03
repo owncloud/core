@@ -35,7 +35,6 @@ Feature: admin storage settings
     Given user "user0" has been created with default attributes and without skeleton files
     And the administrator has browsed to the admin storage settings page
     And the administrator has enabled the external storage
-    And the administrator has browsed to the admin storage settings page
     When the administrator creates the local storage mount "local_storage1" using the webUI
     And the administrator uploads file with content "this is a file in local storage" to "/local_storage1/file-in-local-storage.txt" using the WebDAV API
     And the administrator enables read-only for the last created local storage mount using the webUI
