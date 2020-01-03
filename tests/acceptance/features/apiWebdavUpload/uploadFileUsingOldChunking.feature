@@ -94,6 +94,29 @@ Feature: upload file using old chunking
     #Then the HTTP status code should be "403"
     And as "user0" file "blacklisted-file.txt" should not exist
 
+  @skipOnOcV10.3 @issue-36645
+  Scenario Outline: upload a file to a filename that matches blacklisted_files_regex using old chunking
+    # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
+    # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
+    Given the administrator has updated system config key "blacklisted_files_regex" with value '[".*\\.ext$","^bannedfilename\\..+","containsbannedstring"]' and type "json"
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "<filename>" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "<http-status>"
+    And as "user0" file "<filename>" should not exist
+    Examples:
+      | filename                      | http-status | comment     |
+      | filename.ext                  | 507         | issue-36645 |
+      | bannedfilename.txt            | 403         | ok          |
+      | this-ContainsBannedString.txt | 403         | ok          |
+
+  @skipOnOcV10.3
+  Scenario: upload a file to a filename that does not match blacklisted_files_regex using old chunking
+    # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
+    # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
+    Given the administrator has updated system config key "blacklisted_files_regex" with value '[".*\\.ext$","^bannedfilename\\..+","containsbannedstring"]' and type "json"
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "not-contains-banned-string.txt" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "not-contains-banned-string.txt" should exist
+
   @issue-36645
   Scenario: Upload a file to an excluded directory name using old chunking
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
@@ -110,3 +133,26 @@ Feature: upload file using old chunking
     #Then the HTTP status code should be "403"
     And as "user0" folder "/FOLDER" should exist
     But as "user0" file "/FOLDER/.github" should not exist
+
+  @skipOnOcV10.3 @issue-36645
+  Scenario Outline: upload a file to a filename that matches excluded_directories_regex using old chunking
+    # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
+    # The actual regular expressions end up being endswith\.bad$ and ^\.git
+    Given the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "<filename>" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "<http-status>"
+    And as "user0" file "<filename>" should not exist
+    Examples:
+      | filename                        | http-status | comment     |
+      | thisendswith.bad                | 507         | issue-36645 |
+      | .github                         | 403         | ok          |
+      | this-containsvirusinthename.txt | 403         | ok          |
+
+  @skipOnOcV10.3
+  Scenario: upload a file to a filename that does not match excluded_directories_regex using old chunking
+    # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
+    # The actual regular expressions end up being endswith\.bad$ and ^\.git
+    Given the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "not-contains-virus-in-the-name.txt" in 3 chunks using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user0" file "not-contains-virus-in-the-name.txt" should exist
