@@ -127,6 +127,7 @@ config = {
 		'cli': {
 			'suites': [
 				'cliBackground',
+				'cliLocalStorage',
 				'cliMain',
 				'cliProvisioning',
 				'cliTrashbin',
