@@ -2302,35 +2302,48 @@ trait Sharing {
 	 */
 	public function administratorAddsGroupToExcludeFromSharingList($group) {
 		//get current groups
-		$occResult = SetupHelper::runOcc(
+		$occExitCode = $this->runOcc(
 			['config:app:get files_sharing blacklisted_receiver_groups']
 		);
-		//if the setting was never set before stdOut will be empty and return code will be 1
-		if (\trim($occResult['stdOut']) === "") {
-			$occResult['stdOut'] = "[]";
+		$occStdOut = $this->getStdOutOfOccCommand();
+		$occStdErr = $this->getStdErrOfOccCommand();
+
+		if (($occExitCode !== 0) && ($occExitCode !== 1)) {
+			throw new \Exception(
+				"occ config:app:get files_sharing blacklisted_receiver_groups failed with exit code " .
+				$occExitCode . ", output " .
+				$occStdOut . ", error output " .
+				$occStdErr
+			);
 		}
 
-		$currentGroups = \json_decode($occResult['stdOut'], true);
+		//if the setting was never set before stdOut will be empty and return code will be 1
+		if (\trim($occStdOut) === "") {
+			$occStdOut = "[]";
+		}
+
+		$currentGroups = \json_decode($occStdOut, true);
 		Assert::assertNotNull(
 			$currentGroups,
 			"could not json decode app setting 'blacklisted_receiver_groups' of 'files_sharing'\n" .
-			"stdOut: '" . $occResult['stdOut'] . "'\n" .
-			"stdErr: '" . $occResult['stdErr'] . "'"
+			"stdOut: '" . $occStdOut . "'\n" .
+			"stdErr: '" . $occStdErr . "'"
 		);
 
 		$currentGroups[] = $group;
-		$setSettingResult = SetupHelper::runOcc(
+		$setSettingExitCode = $this->runOcc(
 			[
 				'config:app:set',
 				'files_sharing blacklisted_receiver_groups',
 				'--value=' . \json_encode($currentGroups)
 			]
 		);
-		if ($setSettingResult["code"] !== "0") {
+		if ($setSettingExitCode !== 0) {
 			throw new \Exception(
 				"could not set files_sharing blacklisted_receiver_groups " .
-				$setSettingResult ["stdOut"] . " " .
-				$setSettingResult ["stdErr"]
+				$setSettingExitCode . " " .
+				$this->getStdOutOfOccCommand() . " " .
+				$this->getStdErrOfOccCommand()
 			);
 		}
 	}

@@ -169,17 +169,18 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function adminGetsPathForApp($appId) {
-		$occStatus = SetupHelper::runOcc(
+		$this->featureContext->runOcc(
 			['app:getpath', $appId, '--no-ansi']
 		);
-		$this->cmdOutput = $occStatus['stdOut'];
+		$this->cmdOutput = $this->featureContext->getStdOutOfOccCommand();
 		// check that the command seems to have executed OK, for both When and Given
 		// step forms. There is no point continuing the scenario if the command itself
 		// has reported an error.
+		$statusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
 		Assert::assertEquals(
 			"0",
-			$occStatus['code'],
-			"app:getpath returned error code " . $occStatus['code']
+			$statusCode,
+			"app:getpath returned error code " . $statusCode
 		);
 	}
 
@@ -187,9 +188,10 @@ class AppManagementContext implements Context {
 	 * @When the administrator lists the apps using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminListsTheApps() {
-		$occStatus = $this->featureContext->runOcc(
+		$this->featureContext->runOcc(
 			['app:list', '--no-ansi']
 		);
 	}
@@ -198,9 +200,10 @@ class AppManagementContext implements Context {
 	 * @When the administrator lists the enabled apps using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminListsTheEnabledApps() {
-		$occStatus = $this->featureContext->runOcc(
+		$this->featureContext->runOcc(
 			['app:list', '--enabled', '--no-ansi']
 		);
 	}
