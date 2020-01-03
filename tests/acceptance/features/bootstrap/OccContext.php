@@ -242,7 +242,9 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function createLocalStorageMountUsingTheOccCommand($mount) {
-		$storageId = SetupHelper::createLocalStorageMount($mount);
+		$result = SetupHelper::createLocalStorageMount($mount);
+		$storageId = $result['storageId'];
+		$this->featureContext->setResultOfOccCommand($result);
 		$this->featureContext->addStorageId($mount, $storageId);
 	}
 

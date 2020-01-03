@@ -765,7 +765,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 *
 	 * @param string $mount (name of local storage mount)
 	 *
-	 * @return integer
+	 * @return string[] associated array with "code", "stdOut", "stdErr", "storageId"
 	 */
 	public static function createLocalStorageMount($mount) {
 		$mountPath = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mount";
@@ -788,7 +788,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		);
 		// stdOut should have a string like "Storage created with id 65"
 		$storageIdWords = \explode(" ", \trim($result['stdOut']));
-		$storageId = (int)$storageIdWords[4];
-		return $storageId;
+		$result['storageId'] = (int)$storageIdWords[4];
+		return $result;
 	}
 }

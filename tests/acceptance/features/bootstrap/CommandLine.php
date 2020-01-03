@@ -20,6 +20,7 @@
  */
 
 use TestHelpers\SetupHelper;
+use PHPUnit\Framework\Assert;
 
 /**
  * Command line functions
@@ -37,6 +38,23 @@ trait CommandLine {
 	 * @var string stderr of last command
 	 */
 	private $lastStdErr;
+
+	/**
+	 * remember the result of the last occ command
+	 *
+	 * @param string[] $result associated array with "code", "stdOut", "stdErr"
+
+	 * @return void
+	 */
+	public function setResultOfOccCommand($result) {
+		Assert::assertIsArray($result);
+		Assert::assertArrayHasKey('code', $result);
+		Assert::assertArrayHasKey('stdOut', $result);
+		Assert::assertArrayHasKey('stdErr', $result);
+		$this->lastCode = (int) $result['code'];
+		$this->lastStdOut = $result['stdOut'];
+		$this->lastStdErr = $result['stdErr'];
+	}
 
 	/**
 	 * get the exit status of the last occ command
