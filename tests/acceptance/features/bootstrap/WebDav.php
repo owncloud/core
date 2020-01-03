@@ -2136,6 +2136,26 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given the user has created a folder with the following name
+	 *
+	 * @param TableNode $namePartsTable table of parts of the file name
+	 *                                  table headings: must be: |name-parts |
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserHasCreatedTheFollowingFolder(
+		TableNode $namePartsTable
+	) {
+		$fileName = '';
+
+		foreach ($namePartsTable as $namePartsRow) {
+			$fileName .= $namePartsRow['name-parts'];
+		}
+		$this->theUserHasCreatedFolder($fileName);
+	}
+
+	/**
 	 * @Given user :user has created folder :destination
 	 *
 	 * @param string $user

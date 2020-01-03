@@ -109,9 +109,9 @@ Feature: Sharing files and folders with internal users
   Scenario: share a folder with other user and then it should be listed on Shared with You for other user
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
+    And user "user2" has moved folder "simple-folder" to "new-simple-folder"
+    And user "user2" has moved file "lorem.txt" to "ipsum.txt"
     And user "user2" has logged in using the webUI
-    And the user has renamed folder "simple-folder" to "new-simple-folder" using the webUI
-    And the user has renamed file "lorem.txt" to "ipsum.txt" using the webUI
     And the user has shared file "ipsum.txt" with user "User One" using the webUI
     And the user has shared folder "new-simple-folder" with user "User One" using the webUI
     When the user re-logs in as "user1" using the webUI
