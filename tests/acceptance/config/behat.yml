@@ -307,6 +307,13 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
 
+    cliLocalStorage:
+      paths:
+        - '%paths.base%/../features/cliLocalStorage'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+
     cliMain:
       paths:
         - '%paths.base%/../features/cliMain'

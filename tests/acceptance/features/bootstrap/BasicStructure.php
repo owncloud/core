@@ -2401,7 +2401,8 @@ trait BasicStructure {
 			$this->getOcPath()
 		);
 		$storageName = "local_storage";
-		$storageId = SetupHelper::createLocalStorageMount($storageName);
+		$result = SetupHelper::createLocalStorageMount($storageName);
+		$storageId = $result['storageId'];
 		$this->addStorageId($storageName, $storageId);
 		SetupHelper::runOcc(
 			[
