@@ -30,6 +30,7 @@ Feature: admin storage settings
     And user "user0" should be able to delete file "/local_storage1/another-name.txt"
     And folder "local_storage1" should be listed on the webUI
 
+  @skipOnOcV10.3
   Scenario: administrator creates a read-only local storage mount
     Given user "user0" has been created with default attributes and without skeleton files
     And the administrator has browsed to the admin storage settings page
