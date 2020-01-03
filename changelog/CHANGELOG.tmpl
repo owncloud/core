@@ -1,8 +1,25 @@
-{{- range $changes := . }}{{ with $changes -}}
+{{ $allVersions := . }}
+{{- range $index, $changes := . }}{{ with $changes -}}
 Changelog for ownCloud Core [{{ .Version }}] ({{ .Date }})
 =======================================
 The following sections list the changes in ownCloud core {{ .Version }} relevant to
 ownCloud admins and users.
+
+{{/* creating version compare links */ -}}
+{{ $next := add1 $index -}}
+{{ if ne (len $allVersions) $next -}}
+{{ $previousVersion := (index $allVersions $next).Version -}}
+{{ if eq .Version "unreleased" -}}
+[{{ .Version }}]: https://github.com/owncloud/core/compare/v{{ $previousVersion }}...master
+{{- else -}}
+[{{ .Version }}]: https://github.com/owncloud/core/compare/v{{ $previousVersion }}...v{{ .Version }}
+{{- end -}}
+{{ end -}}
+
+{{- /* last version managed by calens, end of the loop */ -}}
+{{ if eq .Version "10.3.2" -}}
+[{{ .Version }}]: https://github.com/owncloud/core/compare/v10.3.1...v{{ .Version }}
+{{- end }}
 
 Summary
 -------
@@ -1198,8 +1215,6 @@ Details
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.3.2...master
-[10.3.2]: https://github.com/owncloud/core/compare/v10.3.1...v10.3.2
 [10.3.1]: https://github.com/owncloud/core/compare/v10.3.0...v10.3.1
 [10.3.0]: https://github.com/owncloud/core/compare/v10.2.1...v10.3.0
 [10.2.1]: https://github.com/owncloud/core/compare/v10.2.0...v10.2.1
