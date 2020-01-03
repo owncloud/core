@@ -177,6 +177,7 @@ Feature: upload file using new chunking
     Then the HTTP status code should be "403"
     And as "user0" file "blacklisted-file.txt" should not exist
 
+  @skipOnOcV10.3
   Scenario Outline: upload a file to a filename that matches blacklisted_files_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
@@ -194,6 +195,7 @@ Feature: upload file using new chunking
       | bannedfilename.txt            |
       | this-ContainsBannedString.txt |
 
+  @skipOnOcV10.3
   Scenario: upload a file to a filename that does not match blacklisted_files_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
@@ -227,6 +229,7 @@ Feature: upload file using new chunking
     And as "user0" folder "/FOLDER" should exist
     But as "user0" file "/FOLDER/.github" should not exist
 
+  @skipOnOcV10.3
   Scenario Outline: upload a file to a filename that matches excluded_directories_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
@@ -244,6 +247,7 @@ Feature: upload file using new chunking
       | .github                         |
       | this-containsvirusinthename.txt |
 
+  @skipOnOcV10.3
   Scenario: upload a file to a filename that does not match excluded_directories_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git

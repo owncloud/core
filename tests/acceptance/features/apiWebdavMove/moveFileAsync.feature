@@ -150,6 +150,7 @@ Feature: move (rename) file
     And user "user0" should see the following elements
       | /welcome.txt |
 
+  @skipOnOcV10.3
   Scenario: rename a file to a filename that matches (or not) blacklisted_files_regex
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
@@ -191,6 +192,7 @@ Feature: move (rename) file
     And user "user0" should see the following elements
       | /welcome.txt |
 
+  @skipOnOcV10.3
   Scenario: rename a file to a filename that matches (or not) excluded_directories_regex
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
