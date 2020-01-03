@@ -1038,22 +1038,6 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Given user :user has deleted the tag with name :name
-	 *
-	 * @param string $user
-	 * @param string $name
-	 *
-	 * @return void
-	 */
-	public function userHasDeletedTag($user, $name) {
-		$this->deleteTag(
-			$user,
-			$name
-		);
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
-	}
-
-	/**
 	 * @param string $name
 	 *
 	 * @return void
@@ -1076,18 +1060,6 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Given the user has deleted the tag with name :name
-	 *
-	 * @param string $name
-	 *
-	 * @return void
-	 */
-	public function theUserHasDeletedTagWithName($name) {
-		$this->deleteTagAsCurrentUser($name);
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
-	}
-
-	/**
 	 * @param string $name
 	 *
 	 * @return void
@@ -1107,18 +1079,6 @@ class TagsContext implements Context {
 	 */
 	public function theAdministratorDeletesTagWithName($name) {
 		$this->deleteTagAsAdmin($name);
-	}
-
-	/**
-	 * @Given the administrator has deleted the tag with name :name
-	 *
-	 * @param string $name
-	 *
-	 * @return void
-	 */
-	public function theAdministratorHasDeletedTagWithName($name) {
-		$this->deleteTagAsAdmin($name);
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -1583,24 +1543,6 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Given user :user has removed tag :tagName from file :fileName
-	 *
-	 * @param string $user
-	 * @param string $tagName
-	 * @param string $fileName
-	 *
-	 * @return void
-	 */
-	public function userHasRemovedTagFromFile($user, $tagName, $fileName) {
-		$this->removeTagFromFile(
-			$user,
-			$tagName,
-			$fileName
-		);
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
-	}
-
-	/**
 	 * @param string $user
 	 * @param string $tagName
 	 * @param string $fileName
@@ -1641,28 +1583,6 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Given user :user has removed tag :tagName from file :fileName shared by :shareUser
-	 *
-	 * @param string $user
-	 * @param string $tagName
-	 * @param string $fileName
-	 * @param string $shareUser
-	 *
-	 * @return void
-	 */
-	public function userHasRemovedTagFromFileSharedBy(
-		$user, $tagName, $fileName, $shareUser
-	) {
-		$this->removeTagFromFileSharedByUser(
-			$user,
-			$tagName,
-			$fileName,
-			$shareUser
-		);
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
-	}
-
-	/**
 	 * @param string $tagName
 	 * @param string $fileName
 	 * @param string $shareUser
@@ -1686,25 +1606,6 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRemovesTheTagFromFileSharedByUsingTheWebdavApi(
-		$tagName, $fileName, $shareUser
-	) {
-		$this->removeTagFromFileSharedByUserAsAdminUsingWebDavApi(
-			$tagName,
-			$fileName,
-			$shareUser
-		);
-	}
-
-	/**
-	 * Given the administrator has removed tag :tagName from file :fileName shared by :shareUser
-	 *
-	 * @param string $tagName
-	 * @param string $fileName
-	 * @param string $shareUser
-	 *
-	 * @return void
-	 */
-	public function theAdministratorHasRemovedTheTagFromFileSharedByUsingTheWebdavApi(
 		$tagName, $fileName, $shareUser
 	) {
 		$this->removeTagFromFileSharedByUserAsAdminUsingWebDavApi(
