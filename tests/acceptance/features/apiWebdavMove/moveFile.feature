@@ -237,6 +237,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcV10.3
   Scenario Outline: rename a file to a filename that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
@@ -289,6 +290,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcV10.3
   Scenario Outline: rename a file to a filename that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

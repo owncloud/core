@@ -114,6 +114,7 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
+  @skipOnOcV10.3
   Scenario: Rename a file to a filename that matches (or not) blacklisted_files_regex
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
@@ -152,6 +153,7 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
+  @skipOnOcV10.3
   Scenario: Rename a file to a filename that matches (or not) excluded_directories_regex
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

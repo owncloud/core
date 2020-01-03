@@ -69,6 +69,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  @skipOnOcV10.3
   Scenario Outline: rename a folder to a folder name that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
     And user "user0" has created folder "/testshare"
@@ -128,6 +129,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  @skipOnOcV10.3
   Scenario Outline: rename a folder to a folder name that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     And user "user0" has created folder "/testshare"
