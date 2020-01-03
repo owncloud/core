@@ -90,7 +90,7 @@ Feature: Restore deleted files/folders
     And folder "simple-folder" should be listed on the webUI
 
   Scenario: Delete a file and then restore it when a file with the same name already exists
-    Given the user has deleted file "lorem.txt" using the webUI
+    Given the user has deleted file "lorem.txt"
     And user "user1" has moved file "textfile0.txt" to "lorem.txt"
     And the user has browsed to the trashbin page
     Then folder "lorem.txt" should be listed in the trashbin on the webUI
