@@ -1,4 +1,4 @@
-Changelog for ownCloud Core [10.4.0] (UNRELEASED)
+Changelog for ownCloud Core [10.4.0] (2020-01-03)
 =======================================
 The following sections list the changes in ownCloud core 10.4.0 relevant to
 ownCloud admins and users.
