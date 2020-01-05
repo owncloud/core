@@ -53,7 +53,7 @@ $CONFIG = [
 'passwordsalt' => '',
 
 /**
- * List of trusted domains that users can log into
+ * Define list of trusted domains that users can log into
  * Specifying trusted domains prevents host header poisoning.
  * Do not remove this, as it performs necessary security checks.
  * Please consider that for backend processes like background jobs or occ commands,
@@ -65,7 +65,7 @@ $CONFIG = [
   ],
 
 /**
- * Global list of CORS domains
+ * Define global list of CORS domains
  * All users can use tools running CORS (Cross-Origin Resource Sharing) requests
  * from the listed domains.
  */
@@ -82,7 +82,7 @@ $CONFIG = [
 'datadirectory' => '/var/www/owncloud/data',
 
 /**
- * Define the directory where the crash logs will be stored.
+ * Define the directory where the crash logs will be stored
  * By default, this will be the same as the one configured as "datadirectory".
  * The directory MUST EXIST and be WRITABLE by the web server.
  * Note that crashes are extremely rare (although they can come in burst due to
@@ -118,7 +118,7 @@ $CONFIG = [
 'use_relative_domain_name' => false,
 
 /**
- * Identifies the database used with this installation
+ * Identify the database used with this installation
  * See also config option `supportedDatabases`
  *
  * Available:
@@ -130,7 +130,7 @@ $CONFIG = [
 'dbtype' => 'mysql',
 
 /**
- * Defines the database server host name
+ * Define the database server host name
  * For example `localhost`, `hostname`, `hostname.example.com`, or the IP address.
  * To specify a port use: `hostname:####`;
  * To specify a Unix socket use: `localhost:/path/to/socket`.
@@ -138,32 +138,32 @@ $CONFIG = [
 'dbhost' => '',
 
 /**
- * Defines the ownCloud database name
+ * Define the ownCloud database name
  * The name of the ownCloud database which is set during installation.
  * You should not need to change this.
  */
 'dbname' => 'owncloud',
 
 /**
- * Defines the ownCloud database user
+ * Define the ownCloud database user
  * This must be unique across ownCloud instances using the same SQL database.
  * This is setup during installation, so you shouldn't need to change it.
  */
 'dbuser' => '',
 
 /**
- * Defines the password for the database user
+ * Define the password for the database user
  * This is set up during installation, so you shouldn't need to change it.
  */
 'dbpassword' => '',
 
 /**
- * Defines the prefix for the ownCloud tables in the database
+ * Define the prefix for the ownCloud tables in the database
  */
 'dbtableprefix' => '',
 
 /**
- * Indicates whether the ownCloud instance was installed successfully
+ * Indicate whether the ownCloud instance was installed successfully
  * `true` indicates a successful installation,
  * `false` indicates an unsuccessful installation.
  */
@@ -172,12 +172,12 @@ $CONFIG = [
 /**
  * User Experience
  *
- * These optional parameters control some aspects of the user interface. Default
- * values, where present, are shown.
+ * These optional parameters control some aspects of the user interface.
+ * Default values, where present, are shown.
  */
 
 /**
- * Defines the default language of your ownCloud instance
+ * Define the default language of your ownCloud instance
  * Using ISO_639-1 language codes such as `en` for English, `de` for German, and `fr` for French.
  * Overrides automatic language detection on public pages like login or shared items.
  * User's language preferences configured under `personal -> language` override
@@ -186,7 +186,7 @@ $CONFIG = [
 'default_language' => 'en_GB',
 
 /**
- * Defines the default app to open on user login
+ * Define the default app to open on user login
  * Use the app names as they appear in the URL after clicking them in the Apps menu,
  * such as files, documents or calendar etc. You can use a comma-separated list of app names,
  * so if the first app is not enabled for a user then ownCloud will try the second one, and so
@@ -195,14 +195,14 @@ $CONFIG = [
 'defaultapp' => 'files',
 
 /**
- * Enables or removes the Help menu item in the user menu
+ * Enable or remove the Help menu item in the user menu
  * The Help menu can be found in top right of the ownCloud Web interface.
  * `true` enables the Help menu item, `false` removes the help item.
  */
 'knowledgebaseenabled' => true,
 
 /**
- * Enables or disables avatars or user profile photos
+ * Enable or disable avatars or user profile photos
  * `true` enables avatars, or user profile photos, `false` disables them.
  * These appear on the User page, on user's Personal pages and are used by some apps
  * (contacts, mail, etc).
@@ -210,21 +210,21 @@ $CONFIG = [
 'enable_avatars' => true,
 
 /**
- * Allows or disallows users to change their display names
+ * Allow or disallow users to change their display names
  * `true` allows users to change their display names (on their Personal pages),
  * `false` prevents them from changing their display names.
  */
 'allow_user_to_change_display_name' => true,
 
 /**
- * Defines the lifetime of the remember login cookie
+ * Define the lifetime of the remember login cookie
  * The remember login cookie is set when the user clicks the `remember` checkbox
  * on the login screen. The default is 15 days, expressed in seconds.
  */
 'remember_login_cookie_lifetime' => 60*60*24*15,
 
 /**
- * Defines the lifetime of a session after inactivity
+ * Define the lifetime of a session after inactivity
  * The default is 20 minutes, expressed in seconds.
  */
 'session_lifetime' => 60 * 20,
@@ -236,7 +236,7 @@ $CONFIG = [
 'session_keepalive' => true,
 
 /**
- * Enforces token only authentication for apps and clients connecting to ownCloud
+ * Enforce token only authentication for apps and clients connecting to ownCloud
  * If enabled, all access requests using the users password are blocked for enhanced security.
  * Users have to generate special app-passwords (tokens) for their apps or clients in their personal
  * settings which are further used for app or client authentication. Browser logon is not affected.
@@ -244,7 +244,7 @@ $CONFIG = [
 'token_auth_enforced' => false,
 
 /**
- * Defines additional login buttons on the logon screen
+ * Define additional login buttons on the logon screen
  * Provides the ability to create additional login buttons on the logon screen, for e.g., SSO integration
  *  'login.alternatives' => [
  *    ['href' => 'https://www.testshib.org/Shibboleth.sso/ProtectNetwork?target=https%3A%2F%2Fmy.owncloud.tld%2Flogin%2Fsso-saml%2F', 'name' => 'ProtectNetwork', 'img' => '/img/PN_sign-in.gif'],
@@ -265,14 +265,14 @@ $CONFIG = [
 'csrf.disabled' => false,
 
 /**
- * Defines the directory where the skeleton files are located
+ * Define the directory where the skeleton files are located
  * These files will be copied to the data directory of new users.
  * Leave empty to not copy any skeleton files.
  */
 'skeletondirectory' => '/path/to/owncloud/core/skeleton',
 
 /**
- * Defines the `user_backends` app
+ * Define the `user_backends` app
  * Those need to be enabled first and allow you to configure alternate authentication backends.
  * Supported backends are:
  * IMAP (OC_User_IMAP), SMB (OC_User_SMB), and FTP (OC_User_FTP).
@@ -310,7 +310,7 @@ $CONFIG = [
 'groups.enable_medial_search' => true,
 
 /**
- * Minimum characters entered before a search returns results
+ * Define minimum characters entered before a search returns results
  * Defines the minimum characters entered before a search returns results for
  * users or groups in the share autocomplete form. Lower values increase search
  * time especially for large backends.
@@ -429,7 +429,7 @@ $CONFIG = [
 'overwritehost' => '',
 
 /**
- * Override protocol usage
+ * Override protocol (http/https) usage
  * When generating URLs, ownCloud attempts to detect whether the server is
  * accessed via `https` or `http`. However, if ownCloud is behind a proxy
  * and the proxy handles the `https` calls, ownCloud would not know that
@@ -439,7 +439,7 @@ $CONFIG = [
 'overwriteprotocol' => '',
 
 /**
- * Override webroot
+ * Override ownClouds webroot
  * ownCloud attempts to detect the webroot for generating URLs automatically.
  * For example, if `www.example.com/owncloud` is the URL pointing to the
  * ownCloud instance, the webroot is `/owncloud`. When proxies are in use, it
@@ -448,7 +448,7 @@ $CONFIG = [
 'overwritewebroot' => '',
 
 /**
- * Override condition
+ * Override condition for the remote IP address with a regular expression
  * This option allows you to define a manual override condition as a regular
  * expression for the remote IP address. The keys `overwritewebroot`,
  * `overwriteprotocol`, and `overwritehost` are subject to this condition.
@@ -623,7 +623,7 @@ $CONFIG = [
 'updatechecker' => true,
 
 /**
- * Define the updatechecker URL.
+ * Define the updatechecker URL
  * URL that ownCloud should use to look for updates
  */
 'updater.server.url' => 'https://updates.owncloud.com/server/',
@@ -989,7 +989,7 @@ $CONFIG = [
 'maintenance' => false,
 
 /**
- * Enable or disable `single user mode`.
+ * Enable or disable `single user mode`
  * When set to `true`, the ownCloud instance will be unavailable for all users
  * who are not in the `admin` group.
  */
@@ -1060,7 +1060,7 @@ $CONFIG = [
   ],
 
 /**
- * Connection details for a Redis Cluster
+ * Define Redis Cluster connection details
  *
  * Only for use with Redis Clustering, for Sentinel-based setups use the single
  * server configuration above, and perform HA on the hostname.
@@ -1095,7 +1095,7 @@ $CONFIG = [
   ],
 
 /**
- * Connection options for memcached
+ * Define connection options for memcached
  * For more details please see http://apprize.info/php/scaling/15.html
  */
 'memcached_options' => [
@@ -1145,10 +1145,6 @@ $CONFIG = [
  * cache directory and `$user` is the user.
  */
 'dav.chunk_base_dir' => '',
-
-/**
- * Using Object Store with ownCloud
- */
 
 /**
  * Sharing
@@ -1422,7 +1418,7 @@ $CONFIG = [
 'secret' => '',
 
 /**
- * List of trusted proxy servers
+ * Define list of trusted proxy servers
  *
  * If you configure these also consider setting `forwarded_for_headers` which
  * otherwise defaults to `HTTP_X_FORWARDED_FOR` (the `X-Forwarded-For` header).
@@ -1449,7 +1445,7 @@ $CONFIG = [
   ],
 
 /**
- * Defines the maximum filesize for animated GIF´s
+ * Define the maximum filesize for animated GIF´s
  * Max file size for animating gifs on public-sharing-site.
  * If the gif is bigger, it'll show a static preview.
  *
@@ -1459,7 +1455,7 @@ $CONFIG = [
 'max_filesize_animated_gifs_public_sharing' => 10,
 
 /**
- * Enables transactional file locking
+ * Enable transactional file locking
  * Transactional file locking is enabled by default.
  *
  * Prevents concurrent processes from accessing the same files
@@ -1470,7 +1466,7 @@ $CONFIG = [
 'filelocking.enabled' => true,
 
 /**
- * Defines the TTL for file locking
+ * Define the TTL for file locking
  * Set the lock's time-to-live in seconds.
  *
  * Any lock older than this will be automatically cleaned up.
@@ -1493,7 +1489,7 @@ $CONFIG = [
 'upgrade.disable-web' => false,
 
 /**
- * Set whether or not to enable automatic update of market apps.
+ * Define whether or not to enable automatic update of market apps
  * Set to `false` to disable.
  */
 'upgrade.automatic-app-update' => true,
@@ -1512,7 +1508,7 @@ $CONFIG = [
 'debug' => false,
 
 /**
- * Set the data-fingerprint of the current data served
+ * Define the data-fingerprint of the current data served
  *
  * This is a property used by the clients to find out if a backup has been
  * restored on the server. Once a backup is restored run

@@ -35,7 +35,7 @@ $CONFIG = [
  */
  
 /**
- * Define the retention for activities of the activity app.
+ * Define the retention for activities of the activity app
  */
 
 'activity_expire_days' => 365,
@@ -49,7 +49,7 @@ $CONFIG = [
  */
  
 /**
- * Define parameters for the LDAP app.
+ * Define parameters for the LDAP app
  */
 
 'ldapIgnoreNamingRules' => false,
@@ -62,7 +62,7 @@ $CONFIG = [
  */
 
 /**
- * Define the download URL for apps.
+ * Define the download URL for apps
  */
 
 'appstoreurl' => 'https://marketplace.owncloud.com',
@@ -78,7 +78,7 @@ $CONFIG = [
  */
 
 /**
- * Define the download links for ownCloud clients.
+ * Define the download links for ownCloud clients
  * Configuring the download links for ownCloud clients,
  * as seen in the first-run wizard and on Personal pages
  */
@@ -97,7 +97,7 @@ $CONFIG = [
  */
 
 /**
- * Define the group name for users allowed to use Collabora.
+ * Define the group name for users allowed to use Collabora
  */
 
 'collabora_group' => '',
