@@ -980,13 +980,14 @@ class OccContext implements Context {
 	/**
 	 * @param $action
 	 * @param $userOrGroup
-	 * @param $user
+	 * @param $userOrGroupName
+	 * @param $mountName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function addRemoveAsApplicableUserLastLocalMountAsAdmin(
-		$action, $userOrGroup, $user
+	public function addRemoveUserOrGroupToOrFromMount(
+		$action, $userOrGroup, $userOrGroupName, $mountName
 	) {
 		if ($action === "adds" || $action === "added") {
 			$action = "--add";
@@ -998,15 +999,38 @@ class OccContext implements Context {
 		} else {
 			$action = "$action-group";
 		}
-		$storageIds = $this->featureContext->getStorageIds();
-		$lastMount = \end($storageIds);
+		$mountId = $this->featureContext->getStorageId($mountName);
 		$this->featureContext->runOcc(
 			[
 				'files_external:applicable',
-				$lastMount,
+				$mountId,
 				"$action ",
-				"$user"
+				"$userOrGroupName"
 			]
+		);
+	}
+
+	/**
+	 * @param $action
+	 * @param $userOrGroup
+	 * @param $userOrGroupName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function addRemoveUserOrGroupToOrFromLastLocalMount(
+		$action, $userOrGroup, $userOrGroupName
+	) {
+		$storageIds = $this->featureContext->getStorageIds();
+		Assert::assertGreaterThan(
+			0,
+			\count($storageIds),
+			"addRemoveAsApplicableUserLastLocalMount no local mounts exist"
+		);
+		\end($storageIds);
+		$lastMountName = \key($storageIds);
+		$this->addRemoveUserOrGroupToOrFromMount(
+			$action, $userOrGroup, $userOrGroupName, $lastMountName
 		);
 	}
 
@@ -1023,7 +1047,7 @@ class OccContext implements Context {
 	public function theAdminAddsRemovesAsTheApplicableUserLastLocalMountUsingTheOccCommand(
 		$action, $userOrGroup, $user
 	) {
-		$this->addRemoveAsApplicableUserLastLocalMountAsAdmin(
+		$this->addRemoveUserOrGroupToOrFromLastLocalMount(
 			$action,
 			$userOrGroup,
 			$user
@@ -1043,10 +1067,55 @@ class OccContext implements Context {
 	public function theAdminHasAddedRemovedAsTheApplicableUserLastLocalMountUsingTheOccCommand(
 		$action, $userOrGroup, $user
 	) {
-		$this->addRemoveAsApplicableUserLastLocalMountAsAdmin(
+		$this->addRemoveUserOrGroupToOrFromLastLocalMount(
 			$action,
 			$userOrGroup,
 			$user
+		);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @When /^the administrator (adds|removes) (user|group) "([^"]*)" (?:as|from) the applicable (?:user|group) for local storage mount "([^"]*)" using the occ command$/
+	 *
+	 * @param string $action
+	 * @param string $userOrGroup
+	 * @param string $user
+	 * @param string $mount
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdminAddsRemovesAsTheApplicableUserForMountUsingTheOccCommand(
+		$action, $userOrGroup, $user, $mount
+	) {
+		$this->addRemoveUserOrGroupToOrFromMount(
+			$action,
+			$userOrGroup,
+			$user,
+			$mount
+		);
+	}
+
+	/**
+	 * @Given /^the administrator has (added|removed) (user|group) "([^"]*)" (?:as|from) the applicable (?:user|group) for local storage mount "([^"]*)"$/
+	 *
+	 * @param string $action
+	 * @param string $userOrGroup
+	 * @param string $user
+	 * @param string $mount
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdminHasAddedRemovedTheApplicableUserForMountUsingTheOccCommand(
+		$action, $userOrGroup, $user, $mount
+	) {
+		$this->addRemoveUserOrGroupToOrFromMount(
+			$action,
+			$userOrGroup,
+			$user,
+			$mount
 		);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
