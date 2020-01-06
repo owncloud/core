@@ -1188,6 +1188,7 @@ class TagsContext implements Context {
 
 	/**
 	 * @Given /^the (administrator|user) has added tag "([^"]*)" to (?:file|folder) "([^"]*)"$/
+	 * @Given /^the (administrator|user) has toggled tag "([^"]*)" to (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $adminOrUser
 	 * @param string $tagName

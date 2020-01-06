@@ -36,8 +36,8 @@ Feature: Creation of tags for the files and folders
     Given user "user1" has created folder "a-folder"
     And user "user1" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
     And user "user1" has uploaded file with content "some content" to "/a-folder/randomfile-big.txt"
-    And the user has browsed directly to display the details of file "randomfile.txt" in folder "a-folder"
-    And the user has added a tag "randomfile" to the file using the webUI
+    And the user has created a "normal" tag with name "randomfile"
+    And the user has added tag "randomfile" to file "/a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile-big.txt" in folder "a-folder"
     And the user adds a tag "randomfile" to the file using the webUI
     Then file "a-folder/randomfile.txt" should have the following tags for user "user1"
