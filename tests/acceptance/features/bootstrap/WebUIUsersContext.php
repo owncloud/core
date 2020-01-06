@@ -91,7 +91,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the administrator sets/changes the quota of user :username to :quota using the webUI
-	 * @Given the administrator has set/changed the quota of user :username to :quota using the webUI
 	 *
 	 * @param string $username
 	 * @param string $quota

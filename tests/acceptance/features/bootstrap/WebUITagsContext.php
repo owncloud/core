@@ -69,8 +69,6 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has added a tag :tagName to the file using the webUI
-	 * @Given the user has toggled a tag :tagName on the file using the webUI
 	 * @When the user adds a tag :tagName to the file using the webUI
 	 * @When the user toggles a tag :tagName on the file using the webUI
 	 *
