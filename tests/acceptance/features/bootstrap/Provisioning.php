@@ -1002,7 +1002,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^the administrator has (changed|set) the quota of user "([^"]*)" to "([^"]*)"$/
+	 * @Given /^the administrator has (?:changed|set) the quota of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $quota
