@@ -1887,6 +1887,22 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given the administrator has uploaded file with content :content to :destination
+	 *
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return string
+	 */
+	public function adminHasUploadedAFileWithContentTo(
+		$content, $destination
+	) {
+		$fileId = $this->uploadFileWithContent($this->getAdminUsername(), $content, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		return $fileId;
+	}
+
+	/**
 	 * @When user :user uploads file with content :content to :destination using the WebDAV API
 	 *
 	 * @param string $user
