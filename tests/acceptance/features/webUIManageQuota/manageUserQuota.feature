@@ -12,7 +12,7 @@ Feature: manage user quota
     And the administrator has browsed to the users page
 
   Scenario Outline: change quota to a valid value
-    Given the administrator has set the quota of user "user1" to "<start_quota>" using the webUI
+    Given the administrator has set the quota of user "user1" to "<start_quota>"
     When the administrator changes the quota of user "user1" to "<wished_quota>" using the webUI
     And the administrator reloads the users page
     Then the quota of user "user1" should be set to "<expected_quota>" on the webUI
@@ -29,7 +29,7 @@ Feature: manage user quota
 
   @skipOnOcV10.0.3
   Scenario: change quota to a valid value that do not work on 10.0.3
-    Given the administrator has set the quota of user "user1" to "Unlimited" using the webUI
+    Given the administrator has set the quota of user "user1" to "Unlimited"
     When the administrator changes the quota of user "user1" to "0 Kb" using the webUI
     And the administrator reloads the users page
     Then the quota of user "user1" should be set to "0 B" on the webUI
