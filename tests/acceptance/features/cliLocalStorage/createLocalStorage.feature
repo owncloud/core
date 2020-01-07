@@ -18,3 +18,15 @@ Feature: create local storage from the command line
     And as "user1" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "user1" should be "this is a file in local storage"
+
+  @issue-36713
+  Scenario: create local storage that already exists
+    Given the administrator has created the local storage mount "local_storage2"
+    And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
+    When the administrator creates the local storage mount "local_storage2" using the occ command
+    #Then the command should have failed with exit code 1
+    Then the command should have been successful
+    And as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+    And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
+    And the content of file "/local_storage2/file-in-local-storage.txt" for user "user1" should be "this is a file in local storage"

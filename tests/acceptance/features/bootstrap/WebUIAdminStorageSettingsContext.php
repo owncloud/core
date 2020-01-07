@@ -115,8 +115,9 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 			$dirLocation
 		);
 		$storageIds = $this->featureContext->getStorageIds();
-		$lastMount = \end($storageIds);
-		$this->featureContext->addStorageId($mount, $lastMount + 1);
+		\end($storageIds);
+		$lastMountId = \key($storageIds);
+		$this->featureContext->addStorageId($mount, $lastMountId + 1);
 	}
 
 	/**
@@ -201,7 +202,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function theLastCreatedLocalStorageMountShouldOrNotBeListedOnTheWebui($shouldOrNot) {
-		$mountNameList = \array_keys($this->featureContext->getStorageIds());
+		$mountNameList = $this->featureContext->getStorageIds();
 		$lastCreatedMountName = \end($mountNameList);
 		$result = $this->adminStorageSettingsPage->checkIfLastCreatedMountIsPresent(
 			$lastCreatedMountName
