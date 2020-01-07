@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4b5a22145132ae8ba871d4664adde5f",
+    "content-hash": "473f70a18a378167d5cf8c5d7e1b615c",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -35,6 +35,42 @@
             ],
             "description": "Convenience wrapper around ini_get()",
             "time": "2014-09-15T13:12:35+00:00"
+        },
+        {
+            "name": "christophwurst/id3parser",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ChristophWurst/ID3Parser.git",
+                "reference": "c0e56c336bd6131c199827f928e5a9aec89aa4da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ChristophWurst/ID3Parser/zipball/c0e56c336bd6131c199827f928e5a9aec89aa4da",
+                "reference": "c0e56c336bd6131c199827f928e5a9aec89aa4da",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ID3Parser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "description": "An ID3 parser",
+            "homepage": "https://github.com/ChristophWurst/ID3Parser/",
+            "keywords": [
+                "codecs",
+                "php",
+                "tags"
+            ],
+            "time": "2020-01-07T09:05:03+00:00"
         },
         {
             "name": "composer/semver",
@@ -1412,41 +1448,6 @@
                 "storage"
             ],
             "time": "2020-01-04T16:30:31+00:00"
-        },
-        {
-            "name": "lukasreschke/id3parser",
-            "version": "v0.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LukasReschke/ID3Parser.git",
-                "reference": "62f4de76d4eaa9ea13c66dacc1f22977dace6638"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LukasReschke/ID3Parser/zipball/62f4de76d4eaa9ea13c66dacc1f22977dace6638",
-                "reference": "62f4de76d4eaa9ea13c66dacc1f22977dace6638",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ID3Parser\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL"
-            ],
-            "homepage": "https://github.com/LukasReschke/ID3Parser/",
-            "keywords": [
-                "codecs",
-                "php",
-                "tags"
-            ],
-            "time": "2016-09-22T15:10:54+00:00"
         },
         {
             "name": "nikic/php-parser",
