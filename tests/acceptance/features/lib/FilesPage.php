@@ -43,6 +43,7 @@ class FilesPage extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
+	protected $uploadCreatePermissionDeniedMessageSelector = ".notCreatable.notPublic";
 
 	/**
 	 *
@@ -412,5 +413,28 @@ class FilesPage extends FilesPageBasic {
 	public function isSharedIndicatorPresent($fileName, $session) {
 		$fileRow = $this->findFileRowByName($fileName, $session);
 		return $fileRow->isSharedIndicatorPresent();
+	}
+
+	/**
+	 * gets create-upload permission denied message
+	 *
+	 * @return string
+	 */
+	public function getUploadCreatePermissionDeniedMessage() {
+		$msg = $this->find("css", $this->uploadCreatePermissionDeniedMessageSelector);
+		if ($msg === null || !$msg->isVisible()) {
+			return "";
+		}
+		return \trim($msg->getHtml());
+	}
+
+	/**
+	 * checks whether the upload or create icon is visible
+	 *
+	 * @return bool
+	 */
+	public function isNewFileIconVisible() {
+		$newFileIcon = $this->find("xpath", $this->newFileFolderButtonXpath);
+		return $newFileIcon->isVisible();
 	}
 }
