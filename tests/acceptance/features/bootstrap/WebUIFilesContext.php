@@ -1218,6 +1218,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user opens folder with the following name using the webUI
+	 *
+	 * @param TableNode $namePartsTable table of parts of the file name
+	 *                                  table headings: must be: |name-parts |
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserOpensFolderWithFollowingNamePartsUsingTheWebUI($namePartsTable) {
+		$fileName = '';
+		foreach ($namePartsTable as $namePartsRow) {
+			$fileName .= $namePartsRow['name-parts'];
+		}
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI(
+			null,
+			'folder',
+			$fileName
+		);
+	}
+
+	/**
 	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
 	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
 	 *
