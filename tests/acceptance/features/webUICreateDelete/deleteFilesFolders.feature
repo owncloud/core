@@ -119,8 +119,8 @@ Feature: deleting files and folders
   @files_sharing-app-required
   Scenario: delete files from shared with others page
     Given user "user2" has been created with default attributes and without skeleton files
-    Given the user has shared file "lorem.txt" with user "User Two" using the webUI
-    And the user has shared folder "simple-folder" with user "User Two" using the webUI
+    And the user has shared file "lorem.txt" with user "user2"
+    And the user has shared folder "simple-folder" with user "user2"
     And the user has browsed to the shared-with-others page
     When the user deletes file "lorem.txt" using the webUI
     And the user deletes folder "simple-folder" using the webUI
@@ -134,7 +134,7 @@ Feature: deleting files and folders
 
   @public_link_share-feature-required @files_sharing-app-required
   Scenario: delete files from shared by link page
-    Given the user has created a new public link for file "lorem.txt" using the webUI
+    Given the user has created a public link share of file "lorem.txt"
     And the user has browsed to the shared-by-link page
     Then file "lorem.txt" should be listed on the webUI
     When the user deletes file "lorem.txt" using the webUI
@@ -158,8 +158,9 @@ Feature: deleting files and folders
 
   @files_sharing-app-required
   Scenario: delete a file on a public share
-    Given the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+    Given user "user1" has created a public link share with settings
+      | path        | /simple-folder  |
+      | permissions | read,update,create,delete     |
     And the public accesses the last created public link using the webUI
     When the user deletes the following elements using the webUI
       | name                                  |
@@ -174,8 +175,9 @@ Feature: deleting files and folders
 
   @skipOnFIREFOX @files_sharing-app-required
   Scenario: delete a file on a public share with problematic characters
-    Given the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+    Given user "user1" has created a public link share with settings
+      | path        | /simple-folder  |
+      | permissions | read,change     |
     And the public accesses the last created public link using the webUI
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
@@ -205,8 +207,9 @@ Feature: deleting files and folders
 
   @skipOnEncryption @encryption-issue-74 @files_sharing-app-required
   Scenario: Delete multiple files at once on a public share
-    Given the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+    Given user "user1" has created a public link share with settings
+      | path        | /simple-folder  |
+      | permissions | read,update,create,delete     |
     And the public accesses the last created public link using the webUI
     When the user batch deletes these files using the webUI
       | name                |

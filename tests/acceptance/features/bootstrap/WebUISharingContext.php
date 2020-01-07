@@ -97,7 +97,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @var WebUIFilesContext
 	 */
 	private $webUIFilesContext;
-	private $createdPublicLinks = [];
 
 	private $oldMinCharactersForAutocomplete = null;
 	private $oldFedSharingFallbackSetting = null;
@@ -138,19 +137,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 *
-	 * @param string $name
-	 * @param string $url
-	 *
-	 * @return void
-	 */
-	private function addToListOfCreatedPublicLinks($name, $url) {
-		$this->createdPublicLinks[] = ["name" => $name, "url" => $url];
-	}
-
-	/**
 	 * @When /^the user shares (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
-	 * @Given /^the user has shared (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $folder
 	 * @param string $remote
@@ -230,6 +217,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $receiver
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function expirationFieldEmptyForUser($type, $receiver) {
 		Assert::assertEquals($this->sharingDialog->getExpirationDateFor($receiver, $type), "");
@@ -259,7 +247,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $receiver
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function expirationDateShouldBe($days, $type, $receiver) {
 		if (\strtotime($days) !== false) {
@@ -330,7 +318,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user shares file/folder :folder with group :group using the webUI
-	 * @Given the user has shared file/folder :folder with group :group using the webUI
 	 *
 	 * @param string $folder
 	 * @param string $group
@@ -441,7 +428,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has renamed the public link name from :oldName to :newName
 	 * @When the user renames the public link name from :oldName to :newName
 	 *
 	 * @param string $oldName
@@ -457,7 +443,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
-		$this->addToListOfCreatedPublicLinks($newName, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($newName, $linkUrl);
 	}
 
 	/**
@@ -495,7 +481,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has changed the password of the public link named :name to :newPassword
 	 * @When the user changes the password of the public link named :name to :newPassword
 	 *
 	 * @param string $name
@@ -510,11 +495,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
-		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($name, $linkUrl);
 	}
 
 	/**
-	 * @Given the user has changed the permission of the public link named :name to :newPermission
 	 * @When the user changes the permission of the public link named :name to :newPermission
 	 *
 	 * @param string $name
@@ -529,7 +513,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
-		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($name, $linkUrl);
 	}
 
 	/**
@@ -540,6 +524,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $date
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserChangeTheExpirationOfThePublicLinkNamedForTo($linkName, $name, $date) {
 		$session = $this->getSession();
@@ -574,6 +559,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param TableNode $emails
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserAddsTheFollowingEmailAddressesUsingTheWebUI(TableNode $emails) {
 		$this->featureContext->verifyTableNodeColumns($emails, ['email']);
@@ -588,6 +574,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param TableNode $emails
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserRemovesTheFollowingEmailAddressesUsingTheWebui(TableNode $emails) {
 		$this->featureContext->verifyTableNodeColumns($emails, ['email']);
@@ -608,14 +595,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicSharingPopup->waitForAjaxCallsToStartAndFinish($this->getSession());
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
-		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 
 		$this->featureContext->resetLastShareData();
 	}
 
 	/**
 	 * @When the user creates a new public link for file/folder :name using the webUI
-	 * @Given the user has created a new public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -646,7 +632,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	) {
 		$linkName = $this->createPublicShareLink($name, $settings);
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
-		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
 
 	/**
@@ -876,7 +862,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI() {
-		$lastCreatedLink = \end($this->createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
+		$lastCreatedLink = \end($createdPublicLinks);
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
@@ -914,13 +901,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user (declines|accepts) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
-	 * @Given /^the user has (declined|accepted) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $share
 	 * @param string $offeredBy
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function userReactsToShareOfferedByUsingWebUI(
 		$action, $share, $offeredBy
@@ -956,9 +943,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function thePublicAccessesPublicLinkWithPasswordUsingTheWebui($password) {
-		$createdPublicLinks = $this->createdPublicLinks;
+		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($password);
@@ -974,7 +962,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePublicTriesToAccessPublicLinkWithWrongPasswordUsingTheWebui($wrongPassword) {
-		$createdPublicLinks = $this->createdPublicLinks;
+		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($wrongPassword);
@@ -1072,8 +1060,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function thePublicShouldNotGetAccessToPublicShareFile() {
 		$warningMessage = $this->publicLinkFilesPage->getWarningMessage();
 		Assert::assertEquals('The password is wrong. Try again.', $warningMessage);
-
-		$lastCreatedLink = \end($this->createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
+		$lastCreatedLink = \end($createdPublicLinks);
 		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
 		$currentPath = $this->getSession()->getCurrentUrl();
 		Assert::assertEquals($lastSharePath, $currentPath);
@@ -1525,7 +1513,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePublicShouldSeeAnErrorMessageWhileAccessingLastCreatedPublicLinkUsingTheWebui($errorMsg) {
-		$lastCreatedLink = \end($this->createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
+		$lastCreatedLink = \end($createdPublicLinks);
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
@@ -1548,6 +1537,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                                 exactly the way they are written in the UI
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function createPublicShareLink($name, $settings = null) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
@@ -1677,13 +1667,15 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $address
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink($address) {
 		$content = EmailHelper::getBodyOfLastEmail(
 			EmailHelper::getLocalMailhogUrl(),
 			$address
 		);
-		$lastCreatedPublicLink = \end($this->createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
+		$lastCreatedPublicLink = \end($createdPublicLinks);
 		Assert::assertContains($lastCreatedPublicLink["url"], $content);
 	}
 

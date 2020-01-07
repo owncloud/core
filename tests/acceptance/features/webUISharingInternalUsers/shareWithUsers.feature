@@ -12,10 +12,9 @@ Feature: Sharing files and folders with internal users
       | username |
       | user1    |
       | user2    |
-    And user "user2" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user shares file "testimage.jpg" with user "User One" using the webUI
-    And the user re-logs in as "user1" using the webUI
+    And user "user2" has shared folder "simple-folder" with user "user1"
+    And user "user2" has shared file "testimage.jpg" with user "user1"
+    When user "user1" logs in using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
     And folder "simple-folder (2)" should be marked as shared by "User Two" on the webUI
     And file "testimage (2).jpg" should be listed on the webUI
@@ -109,12 +108,11 @@ Feature: Sharing files and folders with internal users
   Scenario: share a folder with other user and then it should be listed on Shared with You for other user
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
-    And user "user2" has moved folder "simple-folder" to "new-simple-folder"
     And user "user2" has moved file "lorem.txt" to "ipsum.txt"
-    And user "user2" has logged in using the webUI
-    And the user has shared file "ipsum.txt" with user "User One" using the webUI
-    And the user has shared folder "new-simple-folder" with user "User One" using the webUI
-    When the user re-logs in as "user1" using the webUI
+    And user "user2" has moved file "simple-folder" to "new-simple-folder"
+    And user "user2" has shared file "ipsum.txt" with user "user1"
+    And user "user2" has shared file "new-simple-folder" with user "user1"
+    When user "user1" logs in using the webUI
     And the user browses to the shared-with-you page
     Then file "ipsum.txt" should be listed on the webUI
     And folder "new-simple-folder" should be listed on the webUI
@@ -122,9 +120,9 @@ Feature: Sharing files and folders with internal users
   Scenario: share a folder with other user and then it should be listed on Shared with Others page
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
+    And user "user2" has shared file "lorem.txt" with user "user1"
+    And user "user2" has shared file "simple-folder" with user "user1"
     And user "user2" has logged in using the webUI
-    And the user has shared file "lorem.txt" with user "User One" using the webUI
-    And the user has shared folder "simple-folder" with user "User One" using the webUI
     When the user browses to the shared-with-others page
     Then file "lorem.txt" should be listed on the webUI
     And folder "simple-folder" should be listed on the webUI
@@ -132,8 +130,8 @@ Feature: Sharing files and folders with internal users
   Scenario: share two file with same name but different paths
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
+    And user "user2" has shared file "lorem.txt" with user "user1"
     And user "user2" has logged in using the webUI
-    And the user has shared file "lorem.txt" with user "User One" using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user shares file "lorem.txt" with user "User One" using the webUI
     And the user browses to the shared-with-others page

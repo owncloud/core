@@ -49,6 +49,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $passwordSubmitButtonId = 'password-submit';
 	protected $warningMessageCss = '.warning';
 	protected $deleteAllSelectedBtnXpath = "//a[@class='delete-selected']";
+	protected $uploadedElementsCss = '.public-upload-view--completed';
+	protected $uploadedElementsXpath = "//div[@class='public-upload-view--completed']//li";
 
 	/**
 	 *
@@ -486,5 +488,26 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function waitForUploadProgressbarToFinish() {
 		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();
+	}
+
+	/**
+	 * returns list of completely uploaded elements
+	 *
+	 * @return array
+	 */
+	public function getCompletelyUploadedElements() {
+		$uploadedElementsContainer = $this->find("css", $this->uploadedElementsCss);
+		$this->assertElementNotNull(
+			$uploadedElementsContainer,
+			__METHOD__ .
+			" CSS $this->uploadedElementsCss " .
+			"is found NULL"
+		);
+		$elements = $this->findAll("xpath", $this->uploadedElementsXpath);
+		$uploadedElements = [];
+		foreach ($elements as $element) {
+			\array_push($uploadedElements, $element->getText());
+		}
+		return $uploadedElements;
 	}
 }

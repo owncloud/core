@@ -38,9 +38,9 @@ Feature: create folders
   @files_sharing-app-required
   Scenario: Create a folder in a public share
     Given user "user1" has created folder "/simple-empty-folder"
-    And the user has reloaded the current page of the webUI
-    And the user has created a new public link for folder "simple-empty-folder" using the webUI with
-      | permission | read-write |
+    And user "user1" has created a public link share with settings
+      | path        | /simple-empty-folder |
+      | permissions | read,create          |
     And the public accesses the last created public link using the webUI
     When the user creates a folder with the name "top-folder" using the webUI
     And the user opens folder "top-folder" using the webUI

@@ -73,6 +73,15 @@ trait Sharing {
 		'attributes', 'permissions', 'share_with', 'share_with_displayname', 'share_with_additional_info'
 	];
 
+	private $createdPublicLinks = [];
+
+	/**
+	 * @return array
+	 */
+	public function getCreatedPublicLinks() {
+		return $this->createdPublicLinks;
+	}
+
 	/**
 	 * @return SimpleXMLElement
 	 */
@@ -837,6 +846,16 @@ trait Sharing {
 	}
 
 	/**
+	 * @param string $name
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function addToListOfCreatedPublicLinks($name, $url) {
+		$this->createdPublicLinks[] = ["name" => $name, "url" => $url];
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $path
 	 * @param string $shareType
@@ -880,6 +899,11 @@ trait Sharing {
 			$this->sharingApiVersion
 		);
 		$this->lastShareData = $this->getResponseXml();
+		if ($shareType === 'public_link') {
+			$linkName = (string) $this->lastShareData->data[0]->name;
+			$linkUrl = (string) $this->lastShareData->data[0]->url;
+			$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+		}
 		$this->localLastShareTime = \microtime(true);
 	}
 
