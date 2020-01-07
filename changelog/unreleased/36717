@@ -1,0 +1,7 @@
+Change: switch to new id3parser
+
+The previous lukasreschke/id3parser library was archived.
+Use the new one published as christophwurst/id3parser
+
+https://github.com/owncloud/core/issues/36717
+https://github.com/owncloud/core/pull/36718
