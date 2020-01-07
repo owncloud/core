@@ -42,6 +42,7 @@ Summary
 * Change - Update phpdocumentor/reflection-docblock (4.3.2 => 4.3.4): [#36661](https://github.com/owncloud/core/pull/36661)
 * Change - Update phpspec/prophecy (1.10.0 => 1.10.1): [#36661](https://github.com/owncloud/core/pull/36661)
 * Change - Zendframework dependency to laminas: [#36677](https://github.com/owncloud/core/pull/36677)
+* Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -287,6 +288,14 @@ Details
    Zend framework changed to be known as laminas. The dependencies are updated.
 
    https://github.com/owncloud/core/pull/36677
+
+* Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
+
+   The previous lukasreschke/id3parser library was archived. Use the new one published as
+   christophwurst/id3parser
+
+   https://github.com/owncloud/core/issues/36717
+   https://github.com/owncloud/core/pull/36718
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
