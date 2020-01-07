@@ -1027,8 +1027,7 @@ class OccContext implements Context {
 			\count($storageIds),
 			"addRemoveAsApplicableUserLastLocalMount no local mounts exist"
 		);
-		\end($storageIds);
-		$lastMountName = \key($storageIds);
+		$lastMountName = \end($storageIds);
 		$this->addRemoveUserOrGroupToOrFromMount(
 			$action, $userOrGroup, $userOrGroupName, $lastMountName
 		);
