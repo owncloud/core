@@ -825,10 +825,7 @@ class OwncloudPage extends Page {
 			return '"' . $text . '"';
 		} else {
 			// The text contains both single and double quotes.
-			// With current xpath v1 there is no way to encode that.
-			throw new \InvalidArgumentException(
-				"mixing both single and double quotes is unsupported - '$text'"
-			);
+			return "concat('" . \str_replace("'", "',\"'\",'", $text) . "')";
 		}
 	}
 
