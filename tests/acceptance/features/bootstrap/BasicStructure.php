@@ -600,12 +600,13 @@ trait BasicStructure {
 	 * @throws Exception
 	 */
 	public function getStorageId($storageName) {
-		if (\array_key_exists($storageName, $this->getStorageIds())) {
-			return $this->getStorageIds()[$storageName];
-		}
-		throw new \Exception(
+		$storageIds = $this->getStorageIds();
+		$storageId = \array_search($storageName, $storageIds);
+		Assert::assertNotFalse(
+			$storageId,
 			"Could not find storageId with storage name $storageName"
 		);
+		return $storageId;
 	}
 
 	/**
@@ -615,7 +616,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function addStorageId($storageName, $storageId) {
-		$this->storageIds[$storageName] = $storageId;
+		$this->storageIds[$storageId] = $storageName;
 	}
 
 	/**
@@ -2436,12 +2437,12 @@ trait BasicStructure {
 	 */
 	public function removeLocalStorageAfter() {
 		if ($this->getStorageIds() !== null) {
-			foreach ($this->getStorageIds() as $key => $value) {
+			foreach ($this->getStorageIds() as $storageId => $storageName) {
 				SetupHelper::runOcc(
 					[
 						'files_external:delete',
 						'-y',
-						$value
+						$storageId
 					]
 				);
 			}
