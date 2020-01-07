@@ -15,5 +15,5 @@ changelog in the [unreleased](./unreleased) folder. The following change types a
 schema `10.0.0_2019-09-01`
 
 ## Test the Changelog generator manually
-- execute `docker run -ti --rm -v $(pwd):$(pwd) -w $(pwd) toolhippie/calens:latest` 
+- execute `docker run --rm -v $(pwd):$(pwd) -w $(pwd) toolhippie/calens:latest` 
 in the root folder of the project.
