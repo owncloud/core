@@ -543,7 +543,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user creates a folder with the following name using the webUI
-	 * @Given the user has created a folder with the following name using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
@@ -626,7 +625,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user renames file/folder :fromName to :toName using the webUI
-	 * @Given the user has renamed file/folder :fromName to :toName using the webUI
 	 *
 	 * @param string $fromName
 	 * @param string $toName
@@ -644,7 +642,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user renames the following file/folder using the webUI
-	 * @Given the user has renamed the following file/folder using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the from and to file names
 	 *                                  table headings: must be:
@@ -675,7 +672,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user renames file/folder :fromName to one of these names using the webUI
-	 * @Given the user has renamed file/folder :fromName to one of these names using the webUI
 	 *
 	 * @param string $fromName
 	 * @param TableNode $table
@@ -725,7 +721,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * like delete.
 	 *
 	 * @When the user deletes/unshares file/folder :name using the webUI
-	 * @Given the user has deleted/unshared file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -738,7 +733,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user deletes the following file/folder using the webUI
-	 * @Given the user has deleted the following file/folder using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
@@ -812,7 +806,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user deletes the following elements using the webUI
-	 * @Given the user has deleted the following elements using the webUI
 	 *
 	 * @param TableNode $table table of file names
 	 *                         table headings: must be: |name|
@@ -832,7 +825,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user moves file/folder :name into folder :destination using the webUI
-	 * @Given the user has moved file/folder :name into folder :destination using the webUI
 	 *
 	 * @param string|array $name
 	 * @param string|array $destination
@@ -846,13 +838,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user moves the following file/folder using the webUI
-	 * @Given the user has moved the following file/folder using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the from and to file names
 	 *                                  table headings: must be:
 	 *                                  |item-to-move-name-parts |destination-name-parts |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserMovesTheFollowingFileFolderUsingTheWebUI(
 		TableNode $namePartsTable
@@ -875,7 +867,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user batch moves these files/folders into folder :folderName using the webUI
-	 * @Given the user has batch moved these files/folders into folder :folderName using the webUI
 	 *
 	 * @param string $folderName
 	 * @param TableNode $files table of file names
@@ -898,7 +889,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user uploads overwriting file :name using the webUI
-	 * @Given the user has uploaded overwriting file :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -913,7 +903,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user uploads overwriting file :name using the webUI and retries if the file is locked
-	 * @Given the user has uploaded overwriting file :name using the webUI and retries if the file is locked
 	 *
 	 * @param string $name
 	 *
@@ -961,7 +950,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user uploads file :name keeping both new and existing files using the webUI
-	 * @Given the user has uploaded file :name keeping both new and existing files using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -977,7 +965,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user uploads file :name using the webUI
-	 * @Given the user has uploaded file :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -989,7 +976,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user chooses to keep the (new|existing) files in the upload dialog$/
-	 * @Given /^the user has chosen to keep the (new|existing) files in the upload dialog$/
 	 *
 	 * @param string $choice
 	 *
@@ -1029,8 +1015,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	/**
 	 * @When the user chooses :label in the upload dialog
 	 * @When I click the :label button
-	 * @Given the user has chosen :label in the upload dialog
-	 * @Given I have clicked the :label button
 	 *
 	 * @param string $label
 	 *
@@ -1106,6 +1090,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $entryName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserOpensTheSharingTabFromTheActionMenuOfFileUsingTheWebui($entryName) {
 		$this->theUserOpensTheFileActionMenuOfFileFolderOnTheWebui($entryName);
@@ -1162,7 +1147,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user batch deletes these files using the webUI
-	 * @Given the user has batch deleted these files using the webUI
 	 *
 	 * @param TableNode $files table of file names
 	 *                         table headings: must be: |name|
@@ -1178,7 +1162,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user batch deletes the marked files using the webUI
-	 * @Given the user has batch deleted the marked files using the webUI
 	 *
 	 * @return void
 	 */
@@ -1189,7 +1172,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user batch restores the marked files using the webUI
-	 * @Given the user has batch restored the marked files using the webUI
 	 *
 	 * @return void
 	 */
