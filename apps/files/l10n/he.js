@@ -43,6 +43,7 @@ OC.L10N.register(
     "This directory is unavailable, please check the logs or contact the administrator" : "תיקייה זו לא קיימת, יש לבדוק את הלוגים או ליצור קשר עם המנהל",
     "group" : "קבוצה",
     "Remote share" : "שיתוף חיצוני",
+    "via" : "באמצעות",
     "Could not move \"{file}\", target exists" : "לא ניתן להעביר \"{file}\", קובץ מטרה קיים",
     "Could not move \"{file}\" because either the file or the target are locked." : "לא ניתן להעביר את הקובץ \"{file}\" כיוון שאו שהקובץ או תיקיית המטרה נעולים.",
     "Could not move \"{file}\": {message}" : "לא ניתן להעביר את \"{file}\": {message}",

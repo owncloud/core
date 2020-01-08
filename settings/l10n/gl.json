@@ -204,6 +204,8 @@
     "Allow users to send mail notification for shared files" : "Permitirlle aos usuarios enviar notificacións por correo para os ficheiros compartidos",
     "Language used for public mail notifications for shared files" : "Idioma usado para as notificacións de correo público para ficheiros compartidos",
     "Allow users to share file via social media" : "Permitir que os usuarios compartan a través de medios sociais",
+    "Set default expiration date for user shares" : "Establecer a data de caducidade predeterminada para as comparticións de usuarios",
+    "Set default expiration date for group shares" : "Establecer a data de caducidade predeterminada das comparticions de grupo",
     "Automatically accept new incoming local user shares" : "Aceptar automaticamente novas comparticións dos usuarios locais",
     "Allow resharing" : "Permitir compartir",
     "Allow sharing with groups" : "Permitir compartir con grupos",

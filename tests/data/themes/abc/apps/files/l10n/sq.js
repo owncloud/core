@@ -43,6 +43,7 @@ OC.L10N.register(
     "This directory is unavailable, please check the logs or contact the administrator" : "Kjo drejtori nuk kapet, ju lutemi, kontrolloni regjistrat ose lidhuni me përgjegjësin",
     "group" : "grup",
     "Remote share" : "Ndarje e largët",
+    "via" : "përmes",
     "Could not move \"{file}\", target exists" : "S’u lëviz dot \"{file}\", objektivi ekziston",
     "Could not move \"{file}\" because either the file or the target are locked." : "S’u lëviz dot \"{file}\", ngaqë ose kartela vetë, ose vendmbërritja është e kyçur.",
     "Could not move \"{file}\": {message}" : "S’u lëviz dot \"{file}\": {message}",
