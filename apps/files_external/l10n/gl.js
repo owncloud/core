@@ -90,6 +90,7 @@ OC.L10N.register(
     "Storage type" : "Tipo de almacenamento",
     "Scope" : "Ámbito",
     "Enable encryption" : "Activar o cifrado",
+    "Set read-only" : "Estabelecer como de só lectura",
     "Enable previews" : "Activar as vistas previas",
     "Enable sharing" : "Activar as comparticións",
     "Check for changes" : "Comprobar se hai cambios",
