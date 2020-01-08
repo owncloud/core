@@ -90,6 +90,7 @@ OC.L10N.register(
     "Storage type" : "Lloj depozite",
     "Scope" : "Shtrirje",
     "Enable encryption" : "Aktivizoni fshehtëzim",
+    "Set read-only" : "Vëre si vetëm-lexim",
     "Enable previews" : "Aktivizoni paraparje",
     "Enable sharing" : "Aktivizo ndarjet",
     "Check for changes" : "Kontrollo për ndryshime",
