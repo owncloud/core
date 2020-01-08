@@ -248,8 +248,12 @@ class CacheTest extends TestCase {
 
 		// clean up
 		$this->cache->remove('');
-		$this->cache->remove($dir1);
-		$this->cache->remove($dir2);
+		if ($this->cache->get($dir1)) {
+			$this->cache->remove($dir1);
+		}
+		if ($this->cache->get($dir2)) {
+			$this->cache->remove($dir2);
+		}
 
 		$this->assertFalse($this->cache->inCache($dir1));
 		$this->assertFalse($this->cache->inCache($dir2));
