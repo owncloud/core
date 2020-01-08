@@ -1,0 +1,6 @@
+Change: Validate OCS API Request Header in OCSController
+
+Any OCS request has to send the header OCS-APIREQUEST to comply to the specification.
+This is now properly validated on OCSController based implementations.
+
+https://github.com/owncloud/core/pull/36734
