@@ -126,7 +126,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @return void
 	 */
 	public function theUserLogsInWithNewAppPassword($username) {
-		$this->webUILoginContext->theUserRelogsInWithUsernameAndPasswordUsingTheWebUI(
+		$this->webUILoginContext->userReLogsInWithUsernameAndPassword(
 			$username, $this->newAppPassword
 		);
 	}
