@@ -206,6 +206,8 @@ OC.L10N.register(
     "Allow users to send mail notification for shared files" : "Permitir aos usuários enviar notificação de email para arquivos compartilhados",
     "Language used for public mail notifications for shared files" : "Idioma usado para notificações de correio público para arquivos compartilhados",
     "Allow users to share file via social media" : "Permite que usuários compartilhem arquivos via mídia social",
+    "Set default expiration date for user shares" : "Definir data de validade padrão para compartilhamentos de usuários",
+    "Set default expiration date for group shares" : "Definir data de validade padrão para compartilhamentos de grupo",
     "Automatically accept new incoming local user shares" : "Aceitar automaticamente novos compartilhamentos recebidos de usuários locais",
     "Allow resharing" : "Permitir recompartilhamento",
     "Allow sharing with groups" : "Permitir o compartilhamento com grupos",
