@@ -206,6 +206,8 @@ OC.L10N.register(
     "Allow users to send mail notification for shared files" : "Разрешить пользователям отправлять email об открытии доступа к файлам",
     "Language used for public mail notifications for shared files" : "Язык, используемый для рассылок почтовых уведомлений по поводу файлов в совместном доступе",
     "Allow users to share file via social media" : "Разрешить пользователям делиться файлом через социальные сети",
+    "Set default expiration date for user shares" : "Установить дату устаревания по умолчанию для доступа, предоставленного пользователям",
+    "Set default expiration date for group shares" : "Установить дату устаревания по умолчанию для доступа, предоставленного группам",
     "Automatically accept new incoming local user shares" : "Автоматически принимать новые входящие предоставления доступа от локальных пользователей",
     "Allow resharing" : "Разрешить повторное открытие общего доступа",
     "Allow sharing with groups" : "Разрешить общий доступ для групп",
