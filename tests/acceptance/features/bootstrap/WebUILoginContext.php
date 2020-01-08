@@ -154,7 +154,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user re-logs in with username :username and password :password using the webUI
-	 * 
+	 *
 	 * @param string $username
 	 * @param string $password
 	 *
@@ -292,7 +292,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserHasReloggedInToUsingTheWebUIo(
+	public function userHasReLoggedInToServerUsingWebUI(
 		$username, $server
 	) {
 		$this->userRelogInToServerUsingTheWebUI(
