@@ -49,3 +49,25 @@ Feature: create folders
     Then folder "sub-folder" should be listed on the webUI
     When the user reloads the current page of the webUI
     Then folder "sub-folder" should be listed on the webUI
+
+  Scenario: Create folder with name including both double and single quotes
+    When the user creates a folder with the following name using the webUI
+      | name-parts         |
+      | 'single'quotes     |
+      | with"double"quotes |
+    Then the following folder should be listed on the webUI
+      | name-parts         |
+      | 'single'quotes     |
+      | with"double"quotes |
+    When the user opens folder with the following name using the webUI
+      | name-parts         |
+      | 'single'quotes     |
+      | with"double"quotes |
+    And the user creates a folder with the following name using the webUI
+      | name-parts         |
+      | another'single'    |
+      | with"double"quotes |
+    Then the following folder should be listed on the webUI
+      | name-parts         |
+      | another'single'    |
+      | with"double"quotes |
