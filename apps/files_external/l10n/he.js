@@ -90,6 +90,7 @@ OC.L10N.register(
     "Storage type" : "סוג אחסון",
     "Scope" : "היקף",
     "Enable encryption" : "אפשר הצפנה",
+    "Set read-only" : "הגדרת לקריאה-בלבד",
     "Enable previews" : "מאפשר תצוגות מקדימות",
     "Enable sharing" : "הפעלת שיתוף",
     "Check for changes" : "בדיקה אחר שינויים",
