@@ -307,6 +307,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+  @issue-36730
   Scenario: test sharing long file names with federation share
     When user "user1" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
     And the user has reloaded the current page of the webUI
@@ -314,7 +315,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"
-    Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
+    # Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
+    Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should not exist
 
   Scenario: sharee should be able to access the files/folders inside other folder
     Given user "user1" has created folder "simple-folder/simple-empty-folder"
