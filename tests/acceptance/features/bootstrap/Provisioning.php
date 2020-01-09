@@ -365,6 +365,7 @@ trait Provisioning {
 
 	/**
 	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
+	 * @When /^the administrator creates these users with ?(default attributes and|) skeleton files ?(but not initialized|):$/
 	 * This function will allow us to send user creation requests in parallel.
 	 * This will be faster in comparision to waiting for each request to complete before sending another request.
 	 *
