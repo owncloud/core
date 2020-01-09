@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "473f70a18a378167d5cf8c5d7e1b615c",
+    "content-hash": "02e46bfcc081e8ada2af383e82985590",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -233,25 +233,25 @@
         },
         {
             "name": "deepdiver1975/tarstreamer",
-            "version": "0.1.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/owncloud/TarStreamer.git",
-                "reference": "2d99636ded9c8a8a1ecd8129e7976dcd606106d9"
+                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/2d99636ded9c8a8a1ecd8129e7976dcd606106d9",
-                "reference": "2d99636ded9c8a8a1ecd8129e7976dcd606106d9",
+                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
+                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.8"
+                "php": ">=7.1"
             },
             "require-dev": {
                 "pear/archive_tar": "~1.4",
-                "pear/pear-core-minimal": "v1.10.0alpha2",
-                "phpunit/phpunit": "^4.8"
+                "pear/pear-core-minimal": "v1.10.10",
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "autoload": {
@@ -271,7 +271,7 @@
                 "stream",
                 "tar"
             ],
-            "time": "2019-02-11T13:56:51+00:00"
+            "time": "2020-01-08T09:55:35+00:00"
         },
         {
             "name": "dg/composer-cleaner",
