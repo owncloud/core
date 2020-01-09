@@ -5,7 +5,7 @@ updateDocsComment: >
   Thanks for opening this pull request! The maintainers of this repository would appreciate it if you would create a [changelog](https://github.com/owncloud/core/blob/master/changelog/README.md) item based on your changes.
 
 updateDocsWhiteList:
-  - [Tests-only]
+  - Tests-only
 
 updateDocsTargetFiles:
   - changelog/unreleased/*
