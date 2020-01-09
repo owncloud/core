@@ -468,137 +468,137 @@ def codestyle():
 	return pipelines
 
 def changelog():
-    pipelines = []
+	pipelines = []
 
-    result = {
-        'kind': 'pipeline',
-        'type': 'docker',
-        'name': 'changelog',
-        'clone': {
-            'disable': True,
-        },
-        'steps':
-            [
-                {
-                    'name': 'clone-master',
-                    'image': 'plugins/git-action:1',
-                    'pull': 'always',
-                    'settings': {
-                        'actions': [
-                            'clone',
-                            ],
-                            'remote': 'https://github.com/owncloud/core.git',
-                            'branch': 'master',
-                            'path': '/drone/src',
-                            'netrc_machine': 'github.com',
-                            'netrc_username': {
-                                'from_secret': 'github_username',
-                            },
-                            'netrc_password': {
-                                'from_secret': 'github_token',
-                            },
-                    },
-                    'when': {
-                        'ref': {
-                            'exclude': [
-                                'refs/pull/**',
-                            ],
-                        },
-                    },
-                },
-                {
-                    'name': 'clone-branch',
-                    'image': 'plugins/git-action:1',
-                    'pull': 'always',
-                    'settings': {
-                        'actions': [
-                            'clone',
-                            ],
-                            'remote': 'https://github.com/owncloud/core.git',
-                            'branch': '${DRONE_SOURCE_BRANCH}',
-                            'path': '/drone/src',
-                            'netrc_machine': 'github.com',
-                            'netrc_username': {
-                                'from_secret': 'github_username',
-                            },
-                            'netrc_password': {
-                                'from_secret': 'github_token',
-                            },
-                    },
-                    'when': {
-                        'ref': {
-                            'exclude': [
-                                'refs/heads/master',
-                            ],
-                        },
-                    },
-                },
-                {
-                    'name': 'generate',
-                    'image': 'toolhippie/calens:latest',
-                    'pull': 'always',
-                    'commands': [
-                        'calens >| CHANGELOG.md',
-                    ],
-                },
-                {
-                    'name': 'diff',
-                    'image': 'owncloud/alpine:latest',
-                    'pull': 'always',
-                    'commands': [
-                        'git diff',
-                    ],
-                },
-                {
-                    'name': 'output',
-                    'image': 'toolhippie/calens:latest',
-                    'pull': 'always',
-                    'commands': [
-                        'cat CHANGELOG.md',
-                    ],
-                },
-                {
-                    'name': 'publish',
-                    'image': 'plugins/git-action:1',
-                    'pull': 'always',
-                    'settings': {
-                        'actions': [
-                            'commit',
-                            'push',
-                        ],
-                        'message': 'Automated changelog update [skip ci]',
-                        'branch': 'master',
-                        'author_email': 'devops@owncloud.com',
-                        'author_name': 'ownClouders',
-                        'netrc_machine': 'github.com',
-                        'netrc_username': {
-                            'from_secret': 'github_username',
-                        },
-                        'netrc_password': {
-                            'from_secret': 'github_token',
-                        },
-                    },
-                    'when': {
-                        'ref': {
-                            'exclude': [
-                                'refs/pull/**',
-                            ],
-                        },
-                    },
-                },
-            ],
-        'depends_on': [],
-        'trigger': {
-            'ref': [
-                'refs/heads/master',
-                'refs/pull/**',
-            ],
-        },
-    }
+	result = {
+		'kind': 'pipeline',
+		'type': 'docker',
+		'name': 'changelog',
+		'clone': {
+			'disable': True,
+		},
+		'steps':
+			[
+				{
+					'name': 'clone-master',
+					'image': 'plugins/git-action:1',
+					'pull': 'always',
+					'settings': {
+						'actions': [
+							'clone',
+							],
+							'remote': 'https://github.com/owncloud/core.git',
+							'branch': 'master',
+							'path': '/drone/src',
+							'netrc_machine': 'github.com',
+							'netrc_username': {
+								'from_secret': 'github_username',
+							},
+							'netrc_password': {
+								'from_secret': 'github_token',
+							},
+					},
+					'when': {
+						'ref': {
+							'exclude': [
+								'refs/pull/**',
+							],
+						},
+					},
+				},
+				{
+					'name': 'clone-branch',
+					'image': 'plugins/git-action:1',
+					'pull': 'always',
+					'settings': {
+						'actions': [
+							'clone',
+							],
+							'remote': 'https://github.com/owncloud/core.git',
+							'branch': '${DRONE_SOURCE_BRANCH}',
+							'path': '/drone/src',
+							'netrc_machine': 'github.com',
+							'netrc_username': {
+								'from_secret': 'github_username',
+							},
+							'netrc_password': {
+								'from_secret': 'github_token',
+							},
+					},
+					'when': {
+						'ref': {
+							'exclude': [
+								'refs/heads/master',
+							],
+						},
+					},
+				},
+				{
+					'name': 'generate',
+					'image': 'toolhippie/calens:latest',
+					'pull': 'always',
+					'commands': [
+						'calens >| CHANGELOG.md',
+					],
+				},
+				{
+					'name': 'diff',
+					'image': 'owncloud/alpine:latest',
+					'pull': 'always',
+					'commands': [
+						'git diff',
+					],
+				},
+				{
+					'name': 'output',
+					'image': 'toolhippie/calens:latest',
+					'pull': 'always',
+					'commands': [
+						'cat CHANGELOG.md',
+					],
+				},
+				{
+					'name': 'publish',
+					'image': 'plugins/git-action:1',
+					'pull': 'always',
+					'settings': {
+						'actions': [
+							'commit',
+							'push',
+						],
+						'message': 'Automated changelog update [skip ci]',
+						'branch': 'master',
+						'author_email': 'devops@owncloud.com',
+						'author_name': 'ownClouders',
+						'netrc_machine': 'github.com',
+						'netrc_username': {
+							'from_secret': 'github_username',
+						},
+						'netrc_password': {
+							'from_secret': 'github_token',
+						},
+					},
+					'when': {
+						'ref': {
+							'exclude': [
+								'refs/pull/**',
+							],
+						},
+					},
+				},
+			],
+		'depends_on': [],
+		'trigger': {
+			'ref': [
+				'refs/heads/master',
+				'refs/pull/**',
+			],
+		},
+	}
 
-    pipelines.append(result)
+	pipelines.append(result)
 
-    return pipelines
+	return pipelines
 
 def phpstan():
 	pipelines = []
@@ -1448,6 +1448,8 @@ def acceptance():
 									if (params['scalityS3'] != False):
 										environment['S3_TYPE'] = 'scality'
 
+								federationDbSuffix = '-federated'
+
 								result = {
 									'kind': 'pipeline',
 									'type': 'docker',
@@ -1463,7 +1465,7 @@ def acceptance():
 										yarnInstall(phpVersion) +
 										installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
-											installFederated(federatedServerVersion, phpVersion, params['logLevel'], protocol) +
+											installFederated(federatedServerVersion, phpVersion, params['logLevel'], protocol, db, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
 										) +
 										installExtraApps(phpVersion, extraAppsDict) +
@@ -1495,7 +1497,10 @@ def acceptance():
 										scalityService(params['scalityS3']) +
 										params['extraServices'] +
 										owncloudService(phpVersion, 'server', '/drone/src', params['useHttps']) +
-										(owncloudService(phpVersion, 'federated', '/drone/federated', params['useHttps']) if params['federatedServerNeeded'] else []),
+										((
+											owncloudService(phpVersion, 'federated', '/drone/federated', params['useHttps']) +
+											databaseServiceForFederation(db, federationDbSuffix)
+										) if params['federatedServerNeeded'] else []),
 									'depends_on': [],
 									'trigger': {
 										'ref': [
@@ -1957,6 +1962,25 @@ def installExtraApps(phpVersion, extraApps):
 		'commands': commandArray
 	}]
 
+def databaseServiceForFederation(db, suffix):
+	dbName = getDbName(db)
+
+	if dbName not in ['mariadb', 'mysql']:
+		print('Not implemented federated database for ', dbName)
+		return []
+
+	return [{
+		'name': dbName + suffix,
+		'image': db,
+		'pull': 'always',
+		'environment': {
+			'MYSQL_USER': getDbUsername(db),
+			'MYSQL_PASSWORD': getDbPassword(db),
+			'MYSQL_DATABASE': getDbDatabase(db) + suffix,
+			'MYSQL_ROOT_PASSWORD': getDbRootPassword()
+		}
+	}]
+
 def installServer(phpVersion, db, logLevel, federatedServerNeeded = False, proxyNeeded = False):
 	return [{
 		'name': 'install-server',
@@ -1985,7 +2009,20 @@ def installServer(phpVersion, db, logLevel, federatedServerNeeded = False, proxy
 		]
 	}]
 
-def installFederated(federatedServerVersion, phpVersion, logLevel, protocol):
+def installFederated(federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = '-federated'):
+	host = getDbName(db)
+	dbType = host
+
+	username = getDbUsername(db)
+	password = getDbPassword(db)
+	database = getDbDatabase(db) + dbSuffix
+
+	if host == 'mariadb':
+		dbType = 'mysql'
+	elif host == 'postgres':
+		dbType = 'pgsql'
+	elif host == 'oracle':
+		dbType = 'oci'
 	return [
 		{
 			'name': 'install-federated',
@@ -1993,7 +2030,12 @@ def installFederated(federatedServerVersion, phpVersion, logLevel, protocol):
 			'pull': 'always',
 			'settings': {
 				'version': federatedServerVersion,
-				'core_path': '/drone/federated'
+				'core_path': '/drone/federated',
+				'db_type': dbType,
+				'db_name': database,
+				'db_host': host + dbSuffix,
+				'db_username': username,
+				'db_password': password
 			},
 		},
 		{
