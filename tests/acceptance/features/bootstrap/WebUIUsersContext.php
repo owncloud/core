@@ -570,7 +570,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			);
 			$results = [];
 			foreach ($appConfigs as $appConfig) {
-				if (isset($configs[$appConfig['configkey']])) {
+				if (\is_string($appConfig['configkey']) && isset($configs[$appConfig['configkey']])) {
 					$results[] = $appConfig;
 				}
 			}
