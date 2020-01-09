@@ -1836,6 +1836,31 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the content of "([^"]*)" (on the remote server|on the local server|)\s?for user "([^"]*)" should (not|)\s?be the same as the local "([^"]*)"$/
+	 *
+	 * @param string $remoteFile enclosed in single or double quotes
+	 * @param string $remoteServer
+	 * @param string $user
+	 * @param string $shouldOrNot
+	 * @param string $localFile enclosed in single or double quotes
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theContentOfFileForUserShouldBeTheSameAsTheLocal(
+		$remoteFile, $remoteServer, $user, $shouldOrNot, $localFile
+	) {
+		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$localFile = \getenv("FILES_FOR_UPLOAD") . "/" . \trim($localFile);
+		$shouldBeSame = ($shouldOrNot !== "not");
+		$this->assertContentOfRemoteAndLocalFileIsSameForUser(
+			$remoteFile, $localFile, $user, $shouldBeSame, $checkOnRemoteServer
+		);
+	}
+
+	/**
 	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) (on the remote server|on the local server|)\s?should not have changed$/
 	 *
 	 * @param string $fileName
@@ -1952,17 +1977,38 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private function assertContentOfRemoteAndLocalFileIsSame(
 		$remoteFile, $localFile, $shouldBeSame = true, $checkOnRemoteServer = false
 	) {
+		$this->assertContentOfRemoteAndLocalFileIsSameForUser(
+			$remoteFile, $localFile, $this->featureContext->getCurrentUser(), $shouldBeSame, $checkOnRemoteServer
+		);
+	}
+
+	/**
+	 * @param string $remoteFile
+	 * @param string $localFile
+	 * @param string $user
+	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
+	 *                           otherwise check that the file contents are different
+	 * @param bool $checkOnRemoteServer if true, then use the remote server to download the file
+	 *
+	 * @return void
+	 * @throws \Exception
+	 * @see WebDavAssert::assertContentOfRemoteAndLocalFileIsSame
+	 * uses the current user to download the remote file
+	 *
+	 */
+	private function assertContentOfRemoteAndLocalFileIsSameForUser(
+		$remoteFile, $localFile, $user, $shouldBeSame = true, $checkOnRemoteServer = false
+	) {
 		if ($checkOnRemoteServer) {
 			$baseUrl = $this->featureContext->getRemoteBaseUrl();
 		} else {
 			$baseUrl = $this->featureContext->getLocalBaseUrl();
 		}
 
-		$username = $this->featureContext->getCurrentUser();
 		WebDavAssert::assertContentOfRemoteAndLocalFileIsSame(
 			$baseUrl,
-			$username,
-			$this->featureContext->getUserPassword($username),
+			$user,
+			$this->featureContext->getUserPassword($user),
 			$remoteFile,
 			$localFile,
 			$shouldBeSame
