@@ -2265,4 +2265,17 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$shareTreeItem = $sharingDialog->getShareTreeItem("public link", $token, $item);
 		Assert::assertTrue($shareTreeItem->isVisible());
 	}
+
+	/**
+	 * @Then the user should not have permission to upload or create files
+	 *
+	 * @return void
+	 */
+	public function assertUploadCreatePermissionIsDenied() {
+		$msg = $this->filesPage->getUploadCreatePermissionDeniedMessage();
+		$expectedMsg = "You don’t have permission to upload or create files here";
+		Assert::assertEquals($expectedMsg, $msg, "Expected $expectedMsg but got $msg");
+		$isIconVisible = $this->filesPage->isNewFileIconVisible();
+		Assert::assertFalse($isIconVisible);
+	}
 }
