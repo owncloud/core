@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02e46bfcc081e8ada2af383e82985590",
+    "content-hash": "0b9cb048508aa21f458a23cc583a2d77",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2182,16 +2182,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.0.2",
+            "version": "dev-test-1181-PDO-change",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sabre-io/dav.git",
-                "reference": "fd0234d46c045fc9b35ec06bd2e7b490240e6ade"
+                "url": "https://github.com/phil-davis/dav.git",
+                "reference": "b2ef5db9a6060717aebec52f560c39b120193ee0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/fd0234d46c045fc9b35ec06bd2e7b490240e6ade",
-                "reference": "fd0234d46c045fc9b35ec06bd2e7b490240e6ade",
+                "url": "https://api.github.com/repos/phil-davis/dav/zipball/b2ef5db9a6060717aebec52f560c39b120193ee0",
+                "reference": "b2ef5db9a6060717aebec52f560c39b120193ee0",
                 "shasum": ""
             },
             "require": {
@@ -2236,7 +2236,6 @@
                     "Sabre\\CardDAV\\": "lib/CardDAV/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -2253,11 +2252,15 @@
             "keywords": [
                 "CalDAV",
                 "CardDAV",
+                "Framework",
                 "WebDAV",
-                "framework",
                 "iCalendar"
             ],
-            "time": "2019-10-19T07:17:49+00:00"
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "source": "https://github.com/fruux/sabre-dav"
+            },
+            "time": "2020-01-09T06:38:58+00:00"
         },
         {
             "name": "sabre/event",
@@ -5241,6 +5244,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "sabre/dav": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
