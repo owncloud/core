@@ -90,6 +90,7 @@ OC.L10N.register(
     "Storage type" : "ชนิดการจัดเก็บข้อมูล",
     "Scope" : "ขอบเขต",
     "Enable encryption" : "เปิดใช้งานการเข้ารหัส",
+    "Set read-only" : "ตั้งค่าเป็นอ่านอย่างเดียว",
     "Enable previews" : "เปิดใช้งานการแสดงตัวอย่าง",
     "Enable sharing" : "เปิดให้สามารถแชร์ได้",
     "Check for changes" : "ตรวจสอบการเปลี่ยนแปลง",
