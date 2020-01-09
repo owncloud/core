@@ -42,7 +42,11 @@ Summary
 * Change - Update phpdocumentor/reflection-docblock (4.3.2 => 4.3.4): [#36661](https://github.com/owncloud/core/pull/36661)
 * Change - Update phpspec/prophecy (1.10.0 => 1.10.1): [#36661](https://github.com/owncloud/core/pull/36661)
 * Change - Zendframework dependency to laminas: [#36677](https://github.com/owncloud/core/pull/36677)
+* Change - Update league/flysystem (1.0.62 => 1.0.63): [#36709](https://github.com/owncloud/core/pull/36709)
 * Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
+* Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
+* Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
+* Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -289,6 +293,10 @@ Details
 
    https://github.com/owncloud/core/pull/36677
 
+* Change - Update league/flysystem (1.0.62 => 1.0.63): [#36709](https://github.com/owncloud/core/pull/36709)
+
+   https://github.com/owncloud/core/pull/36709
+
 * Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
 
    The previous lukasreschke/id3parser library was archived. Use the new one published as
@@ -296,6 +304,23 @@ Details
 
    https://github.com/owncloud/core/issues/36717
    https://github.com/owncloud/core/pull/36718
+
+* Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
+
+   https://github.com/owncloud/core/pull/36722
+
+* Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
+
+   https://github.com/owncloud/core/issues/36726
+   https://github.com/owncloud/core/pull/36727
+
+* Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
+
+   Update laminas/laminas-zendframework-bridge (1.0.0 => 1.0.1) Update
+   laminas/laminas-filter (2.9.2 => 2.9.3)
+
+   https://github.com/owncloud/core/issues/36726
+   https://github.com/owncloud/core/pull/36727
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
