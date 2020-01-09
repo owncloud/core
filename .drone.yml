@@ -8383,6 +8383,11 @@ steps:
   image: owncloudci/core
   settings:
     core_path: /drone/federated
+    db_host: mariadb-federated
+    db_name: owncloud-federated
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
     version: daily-master-qa
 
 - name: configure-federated
@@ -8489,6 +8494,15 @@ services:
     APACHE_SSL_KEY: /drone/federated.key
     APACHE_WEBROOT: /drone/federated
 
+- name: mariadb-federated
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud-federated
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
 trigger:
   ref:
   - refs/pull/**
@@ -8580,6 +8594,11 @@ steps:
   image: owncloudci/core
   settings:
     core_path: /drone/federated
+    db_host: mariadb-federated
+    db_name: owncloud-federated
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
     version: 10.2.1
 
 - name: configure-federated
@@ -8685,6 +8704,15 @@ services:
     APACHE_SSL_CERT_CN: federated
     APACHE_SSL_KEY: /drone/federated.key
     APACHE_WEBROOT: /drone/federated
+
+- name: mariadb-federated
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud-federated
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
 
 trigger:
   ref:
@@ -13799,6 +13827,11 @@ steps:
   image: owncloudci/core
   settings:
     core_path: /drone/federated
+    db_host: mariadb-federated
+    db_name: owncloud-federated
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
     version: daily-master-qa
 
 - name: configure-federated
@@ -13915,6 +13948,15 @@ services:
     APACHE_SSL_KEY: /drone/federated.key
     APACHE_WEBROOT: /drone/federated
 
+- name: mariadb-federated
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud-federated
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
 trigger:
   ref:
   - refs/pull/**
@@ -14006,6 +14048,11 @@ steps:
   image: owncloudci/core
   settings:
     core_path: /drone/federated
+    db_host: mariadb-federated
+    db_name: owncloud-federated
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
     version: 10.2.1
 
 - name: configure-federated
@@ -14121,6 +14168,15 @@ services:
     APACHE_SSL_CERT_CN: federated
     APACHE_SSL_KEY: /drone/federated.key
     APACHE_WEBROOT: /drone/federated
+
+- name: mariadb-federated
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud-federated
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
 
 trigger:
   ref:
