@@ -8,8 +8,6 @@ Feature: upload file using old chunking
     Given using OCS API version "1"
     And using old DAV path
     And user "user0" has been created with default attributes and skeleton files
-    And the owncloud log level has been set to debug
-    And the owncloud log has been cleared
 
   @issue-36115
   Scenario: Upload chunked file asc
@@ -44,7 +42,9 @@ Feature: upload file using old chunking
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
   Scenario: Checking file id after a move overwrite using old chunking endpoint
-    Given user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
+    And user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
     And user "user0" has stored id of file "/existingFile.txt"
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/existingFile.txt" in 3 chunks with old chunking and using the WebDAV API
     Then user "user0" file "/existingFile.txt" should have the previously stored id
@@ -59,6 +59,9 @@ Feature: upload file using old chunking
       | dav |
 
   @smokeTest
+  # This smokeTest scenario does ordinary checks for chunked upload,
+  # without adjusting the log level. This allows it to run in test environments
+  # where the log level has been fixed and cannot be changed.
   Scenario Outline: Chunked upload files with difficult name
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks using the WebDAV API
     Then as "user0" file "/<file-name>" should exist
@@ -66,6 +69,24 @@ Feature: upload file using old chunking
       """
       This is a testfile.
       
+      Cheers.
+      """
+    Examples:
+      | file-name                       |
+      | &#? TIÄFÜ @a#8a=b?c=d ?abc=oc # |
+      | 0                               |
+
+  # This scenario does extra checks with the log level set to debug.
+  # It does not run in smoke test runs. (see comments in scenario above)
+  Scenario Outline: Chunked upload files with difficult name and check the log
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks using the WebDAV API
+    Then as "user0" file "/<file-name>" should exist
+    And the content of file "/<file-name>" for user "user0" should be:
+      """
+      This is a testfile.
+
       Cheers.
       """
     And the log file should not contain any log-entries containing these attributes:
