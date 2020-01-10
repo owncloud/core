@@ -8,4 +8,4 @@ updateDocsWhiteList:
   - Tests-only
 
 updateDocsTargetFiles:
-  - changelog/unreleased/*
+  - changelog/unreleased/
