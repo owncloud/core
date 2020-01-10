@@ -19,6 +19,39 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "user1" should be "this is a file in local storage"
 
+  Scenario: user cannot rename a local storage
+    Given the administrator has created the local storage mount "local_storage2"
+    And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
+    When user "user0" moves folder "local_storage2" to "another_name" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" folder "/local_storage2" should exist
+    And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
+    And as "user0" folder "/another_name" should not exist
+
+  Scenario: user cannot delete a local storage
+    Given the administrator has created the local storage mount "local_storage2"
+    And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
+    When user "user0" deletes folder "local_storage2" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user0" folder "/local_storage2" should exist
+    And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
+
+  Scenario: user cannot create a folder that matches a local storage
+    Given the administrator has created the local storage mount "local_storage2"
+    And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
+    When user "user0" creates folder "local_storage2" using the WebDAV API
+    Then the HTTP status code should be "405"
+    And as "user0" folder "/local_storage2" should exist
+    And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
+
+  Scenario: user cannot upload a file that matches a local storage folder name
+    Given the administrator has created the local storage mount "local_storage2"
+    And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
+    When user "user0" uploads file with content "this is a file called local_storage2" to "/local_storage2" using the WebDAV API
+    Then the HTTP status code should be "409"
+    And as "user0" folder "/local_storage2" should exist
+    And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
+
   @issue-36713
   Scenario: create local storage that already exists
     Given the administrator has created the local storage mount "local_storage2"
