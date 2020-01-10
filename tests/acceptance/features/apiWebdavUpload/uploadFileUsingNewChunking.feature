@@ -8,10 +8,10 @@ Feature: upload file using new chunking
     Given using OCS API version "1"
     And using new DAV path
     And user "user0" has been created with default attributes and skeleton files
-    And the owncloud log level has been set to debug
-    And the owncloud log has been cleared
 
   Scenario: Upload chunked file asc with new chunking
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
       | number | content |
       | 1      | AAAAA   |
@@ -27,6 +27,8 @@ Feature: upload file using new chunking
       | dav |
 
   Scenario: Upload chunked file desc with new chunking
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
       | number | content |
       | 1      | AAAAA   |
@@ -39,6 +41,8 @@ Feature: upload file using new chunking
       | dav |
 
   Scenario: Upload chunked file random with new chunking
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
       | number | content |
       | 1      | AAAAA   |
@@ -51,7 +55,9 @@ Feature: upload file using new chunking
       | dav |
 
   Scenario: Checking file id after a move overwrite using new chunking endpoint
-    Given user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
+    And user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
     And user "user0" has stored id of file "/existingFile.txt"
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/existingFile.txt" in 3 chunks with new chunking and using the WebDAV API
     Then user "user0" file "/existingFile.txt" should have the previously stored id
@@ -98,7 +104,9 @@ Feature: upload file using new chunking
     Then the HTTP status code should be "400"
 
   Scenario: Upload file via new chunking endpoint with correct size header
-    Given user "user0" has created a new chunking upload with id "chunking-42"
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
+    And user "user0" has created a new chunking upload with id "chunking-42"
     And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
     And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
     And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
@@ -110,29 +118,10 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
-  #logfile problem was fixed in #32166 and will be released in 10.0.10
-  #only skipping this test because this in the only smokeTest checking the logs
-  @smokeTest @skipOnOcV10.0.9
-  Scenario Outline: Upload files with difficult names using new chunking
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks with new chunking and using the WebDAV API
-    Then as "user0" file "/<file-name>" should exist
-    And the content of file "/<file-name>" for user "user0" should be:
-      """
-      This is a testfile.
-      
-      Cheers.
-      """
-    And the log file should not contain any log-entries containing these attributes:
-      | app |
-      | dav |
-    Examples:
-      | file-name |
-      | &#?       |
-      | TIÄFÜ     |
-
-  #ToDo: delete this test after 10.0.10 is released and we stop testing 10.0.9
-  #it is identical to the one above but missing the log file check because of issue #31631
   @smokeTest
+  # This smokeTest scenario does ordinary checks for chunked upload,
+  # without adjusting the log level. This allows it to run in test environments
+  # where the log level has been fixed and cannot be changed.
   Scenario Outline: Upload files with difficult names using new chunking
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
@@ -141,6 +130,27 @@ Feature: upload file using new chunking
     And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>" using the WebDAV API
     Then as "user0" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
+    Examples:
+      | file-name |
+      | &#?       |
+      | TIÄFÜ     |
+
+  # This scenario does extra checks with the log level set to debug.
+  # It does not run in smoke test runs. (see comments in scenario above)
+  Scenario Outline: Upload files with difficult names using new chunking and check the log
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks with new chunking and using the WebDAV API
+    Then as "user0" file "/<file-name>" should exist
+    And the content of file "/<file-name>" for user "user0" should be:
+      """
+      This is a testfile.
+
+      Cheers.
+      """
+    And the log file should not contain any log-entries containing these attributes:
+      | app |
+      | dav |
     Examples:
       | file-name |
       | &#?       |
