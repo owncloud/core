@@ -151,6 +151,31 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $mountPoint
+	 * @param boolean $setting
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function setExtStorageReadOnlyUsingTheOccCommand($mountPoint, $setting = true) {
+		$command = "files_external:option";
+
+		$mountId = $this->featureContext->getStorageId($mountPoint);
+
+		$key = "read_only";
+
+		if ($setting) {
+			$value = "1";
+		} else {
+			$value = "0";
+		}
+
+		$this->invokingTheCommand(
+			"$command $mountId $key $value"
+		);
+	}
+
+	/**
+	 * @param string $mountPoint
 	 * @param string $setting "never" (switch it off) otherwise "Once every direct access"
 	 *
 	 * @return void
@@ -159,11 +184,7 @@ class OccContext implements Context {
 	public function setExtStorageCheckChangesUsingTheOccCommand($mountPoint, $setting) {
 		$command = "files_external:option";
 
-		// get the first mount id created in before scenario
 		$mountId = $this->featureContext->getStorageId($mountPoint);
-
-		// $mountId should have been set. If not, @local_storage BeforeScenario never ran
-		\assert($mountId !== null);
 
 		$key = "filesystem_check_changes";
 
@@ -788,6 +809,31 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasChangedTheBackgroundJobsModeTo($mode) {
 		$this->changeBackgroundJobsModeUsingTheOccCommand($mode);
+	}
+
+	/**
+	 * @When the administrator sets the external storage :mountPoint to read-only using the occ command
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminSetsTheExtStorageToReadOnly($mountPoint) {
+		$this->setExtStorageReadOnlyUsingTheOccCommand($mountPoint);
+	}
+
+	/**
+	 * @Given the administrator has set the external storage :mountPoint to read-only
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminHasSetTheExtStorageToReadOnly($mountPoint) {
+		$this->setExtStorageReadOnlyUsingTheOccCommand($mountPoint);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
