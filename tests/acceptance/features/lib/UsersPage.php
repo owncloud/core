@@ -403,6 +403,7 @@ class UsersPage extends OwncloudPage {
 			$this->fillField($this->newUserPasswordFieldId, $password);
 		}
 		if ($email !== null) {
+			$this->setSetting("Show email address", true);
 			$this->fillField($this->newUserEmailFieldId, $email);
 		}
 		$createUserBtn = $this->find("xpath", $this->createUserBtnXpath);
