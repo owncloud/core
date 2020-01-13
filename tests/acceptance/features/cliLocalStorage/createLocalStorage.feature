@@ -13,11 +13,19 @@ Feature: create local storage from the command line
   Scenario: create local storage that is available to all users
     When the administrator creates the local storage mount "local_storage2" using the occ command
     And the administrator uploads file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt" using the WebDAV API
+    And the administrator uploads file with content "this is a file to delete in local storage" to "/local_storage2/file-to-delete.txt" using the WebDAV API
+    And the administrator uploads file with content "this is a file to rename in local storage" to "/local_storage2/file-to-rename.txt" using the WebDAV API
     Then the command should have been successful
     And as "user0" folder "/local_storage2" should exist
     And as "user1" folder "/local_storage2" should exist
+    And user "user0" should be able to delete file "/local_storage2/file-to-delete.txt"
+    And user "user0" should be able to rename file "/local_storage2/file-to-rename.txt" to "/local_storage2/another-name.txt"
+    And user "user0" should be able to upload file "filesForUpload/textfile.txt" to "/local_storage2/textfile.txt"
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "user0" should be "this is a file in local storage"
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "user1" should be "this is a file in local storage"
+    And the content of file "/local_storage2/another-name.txt" for user "user1" should be "this is a file to rename in local storage"
+    And as "user1" file "/local_storage2/textfile.txt" should exist
+    And as "user1" file "/local_storage2/file-to-delete.txt" should not exist
 
   Scenario: user cannot rename a local storage
     Given the administrator has created the local storage mount "local_storage2"
