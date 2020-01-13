@@ -523,6 +523,7 @@ class OccUsersGroupsContext implements Context {
 	 * @param TableNode $useridTable
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable) {
 		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid', 'display name']);

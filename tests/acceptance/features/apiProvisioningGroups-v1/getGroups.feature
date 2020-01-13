@@ -7,7 +7,7 @@ Feature: get groups
   Background:
     Given using OCS API version "1"
 
-  @smokeTest
+  @smokeTest @skipOnLdap @issue-ldap-500
   Scenario: admin gets all the groups
     Given group "0" has been created
     And group "new-group" has been created
@@ -19,6 +19,7 @@ Feature: get groups
       | new-group |
       | 0         |
 
+  @skipOnLdap @issue-ldap-499
   Scenario: admin gets all the groups, including groups with mixed case
     Given group "new-group" has been created
     And group "New-Group" has been created

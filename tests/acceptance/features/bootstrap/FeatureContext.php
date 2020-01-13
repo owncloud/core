@@ -34,6 +34,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;
+use Zend\Ldap\Ldap;
 
 require_once 'bootstrap.php';
 
@@ -252,6 +253,85 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string stderr of last command
 	 */
 	private $lastStdErr;
+	/*
+	 * @var Ldap
+	 */
+	private $ldap;
+	private $ldapBaseDN;
+	private $ldapHost;
+	private $ldapPort;
+	private $ldapAdminUser;
+	private $ldapAdminPassword;
+	private $ldapUsersOU;
+	private $ldapGroupsOU;
+	/**
+	 * @var array
+	 */
+	private $toDeleteDNs = [];
+	private $ldapCreatedUsers = [];
+	private $ldapCreatedGroups = [];
+	private $toDeleteLdapConfigs = [];
+	private $oldLdapConfig = [];
+
+	/**
+	 * @return Ldap
+	 */
+	public function getLdap() {
+		return $this->ldap;
+	}
+
+	/**
+	 * @param string $configId
+	 *
+	 * @return void
+	 */
+	public function setToDeleteLdapConfigs($configId) {
+		$this->toDeleteLdapConfigs = $configId;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getToDeleteLdapConfigs() {
+		return $this->toDeleteLdapConfigs;
+	}
+
+	/**
+	 * @param string $setValue
+	 *
+	 * @return void
+	 */
+	public function setToDeleteDNs($setValue) {
+		$this->toDeleteDNs = $setValue;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLdapBaseDN() {
+		return $this->ldapBaseDN;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLdapUsersOU() {
+		return $this->ldapUsersOU;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLdapGroupsOU() {
+		return $this->ldapGroupsOU;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTestingWithLdap() {
+		return (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true");
+	}
 
 	/**
 	 * BasicStructure constructor.
@@ -2536,6 +2616,11 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getBaseUrl(),
 			$this->getOcPath()
 		);
+
+		if ($this->isTestingWithLdap()) {
+			$suiteParameters = SetupHelper::getSuiteParameters($scope);
+			$this->connectToLdap($suiteParameters);
+		}
 	}
 
 	/**
