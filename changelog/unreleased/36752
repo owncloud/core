@@ -1,0 +1,5 @@
+Change: Update showdown library to 1.9.1
+
+The @bower_components/showdown library has been updated from 1.9.0 to 1.9.1.
+
+https://github.com/owncloud/core/pull/36752
