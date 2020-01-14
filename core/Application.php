@@ -43,7 +43,6 @@ use OC\Core\Controller\SyncController;
 use OC\Core\Controller\UserSyncController;
 use OC\User\AccountMapper;
 use OC\User\SyncService;
-use OC\Core\Notification\Notifier;
 use OC_Defaults;
 use OCP\AppFramework\App;
 use OCP\BackgroundJob\IJobList;
