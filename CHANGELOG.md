@@ -1,6 +1,6 @@
-Changelog for ownCloud Core [10.4.0] (2020-01-10)
+Changelog for ownCloud Core [unreleased] (UNRELEASED)
 =======================================
-The following sections list the changes in ownCloud core 10.4.0 relevant to
+The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
 Summary
@@ -40,17 +40,10 @@ Summary
 * Change - Update phpdocumentor/reflection-docblock (4.3.2 => 4.3.4): [#36661](https://github.com/owncloud/core/pull/36661)
 * Change - Update phpspec/prophecy (1.10.0 => 1.10.1): [#36661](https://github.com/owncloud/core/pull/36661)
 * Change - Zendframework dependency to laminas: [#36677](https://github.com/owncloud/core/pull/36677)
-* Change - Update league/flysystem (1.0.62 => 1.0.63): [#36709](https://github.com/owncloud/core/pull/36709)
-* Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
-* Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
-* Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
-* Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
-* Change - Validate OCS API Request Header in OCSController: [#36734](https://github.com/owncloud/core/pull/36734)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
 * Enhancement - Add an option to provide a mount in read only mode: [#36397](https://github.com/owncloud/core/pull/36397)
-* Enhancement - Add user-sync OCS API: [#36428](https://github.com/owncloud/core/pull/36428)
 * Enhancement - Support Oracle connection strings: [#36489](https://github.com/owncloud/core/pull/36489)
 * Enhancement - Add enabled and disabled filter options to occ app:list command: [#36520](https://github.com/owncloud/core/pull/36520)
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
@@ -293,42 +286,6 @@ Details
 
    https://github.com/owncloud/core/pull/36677
 
-* Change - Update league/flysystem (1.0.62 => 1.0.63): [#36709](https://github.com/owncloud/core/pull/36709)
-
-   https://github.com/owncloud/core/pull/36709
-
-* Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
-
-   The previous lukasreschke/id3parser library was archived. Use the new one published as
-   christophwurst/id3parser
-
-   https://github.com/owncloud/core/issues/36717
-   https://github.com/owncloud/core/pull/36718
-
-* Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
-
-   https://github.com/owncloud/core/pull/36722
-
-* Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
-
-   https://github.com/owncloud/core/issues/36726
-   https://github.com/owncloud/core/pull/36727
-
-* Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
-
-   Update laminas/laminas-zendframework-bridge (1.0.0 => 1.0.1) Update
-   laminas/laminas-filter (2.9.2 => 2.9.3)
-
-   https://github.com/owncloud/core/issues/36726
-   https://github.com/owncloud/core/pull/36727
-
-* Change - Validate OCS API Request Header in OCSController: [#36734](https://github.com/owncloud/core/pull/36734)
-
-   Any OCS request has to send the header OCS-APIREQUEST to comply to the specification. This is
-   now properly validated on OCSController based implementations.
-
-   https://github.com/owncloud/core/pull/36734
-
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
    MariaDb 10.3 is now supported
@@ -358,21 +315,6 @@ Details
    automatically respects this mount setting without any additional intervention.
 
    https://github.com/owncloud/core/pull/36397
-
-* Enhancement - Add user-sync OCS API: [#36428](https://github.com/owncloud/core/pull/36428)
-
-   We added a new user sync ocs api to provide an http api for external user provisioning systems to
-   trigger a user-sync for a specific user.
-
-   Authorization: The http API can only be executed by a user with admin privileges. Suggestion is
-   to create a technical user who is in the admin group.
-
-   Route: `curl -X POST http://your.domain/ocs/v2.php/cloud/user-sync/admin -v -u admin`
-
-   Response: 200 - if sync was executed, 404 - given userId is unknown, 409 - multiple users have
-   been found for the given user id - not unique user criteria
-
-   https://github.com/owncloud/core/pull/36428
 
 * Enhancement - Support Oracle connection strings: [#36489](https://github.com/owncloud/core/pull/36489)
 
