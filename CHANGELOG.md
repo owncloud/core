@@ -45,6 +45,7 @@ Summary
 * Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
 * Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
 * Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
+* Change - Validate OCS API Request Header in OCSController: [#36734](https://github.com/owncloud/core/pull/36734)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -320,6 +321,13 @@ Details
 
    https://github.com/owncloud/core/issues/36726
    https://github.com/owncloud/core/pull/36727
+
+* Change - Validate OCS API Request Header in OCSController: [#36734](https://github.com/owncloud/core/pull/36734)
+
+   Any OCS request has to send the header OCS-APIREQUEST to comply to the specification. This is
+   now properly validated on OCSController based implementations.
+
+   https://github.com/owncloud/core/pull/36734
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
