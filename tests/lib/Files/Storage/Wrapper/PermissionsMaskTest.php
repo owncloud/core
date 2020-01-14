@@ -75,6 +75,14 @@ class PermissionsMaskTest extends \Test\Files\Storage\Storage {
 		$this->assertTrue($storage->file_exists('foo'));
 	}
 
+	public function testUnlinkPartFiles() {
+		$file = 'foo.txt.part';
+		$storage = $this->getMaskedStorage(Constants::PERMISSION_ALL - Constants::PERMISSION_DELETE);
+		$storage->touch($file);
+		$this->assertTrue($storage->unlink($file));
+		$this->assertFalse($storage->file_exists($file));
+	}
+
 	public function testPutContentsNewFileNoUpdate() {
 		$storage = $this->getMaskedStorage(Constants::PERMISSION_ALL - Constants::PERMISSION_UPDATE);
 		$this->assertTrue($storage->file_put_contents('foo', 'bar'));
