@@ -113,11 +113,11 @@ class SecurityMiddleware extends Middleware {
 	 * This runs all the security checks before a method call. The
 	 * security checks are determined by inspecting the controller method
 	 * annotations
-	 * @param string $controller the controllername or string
+	 * @param Controller $controller the controller
 	 * @param string $methodName the name of the method
 	 * @throws SecurityException when a security check fails
 	 */
-	public function beforeController($controller, $methodName) {
+	public function beforeController($controller, $methodName) : void {
 
 		// this will set the current navigation entry of the app, use this only
 		// for normal HTML requests and not for AJAX requests
@@ -142,6 +142,13 @@ class SecurityMiddleware extends Middleware {
 		if (!$this->reflector->hasAnnotation('NoCSRFRequired')) {
 			if (!$this->request->passesCSRFCheck()) {
 				throw new CrossSiteRequestForgeryException();
+			}
+		}
+
+		// OCS_APIREQUEST header check
+		if ($controller instanceof OCSController) {
+			if ($this->request->getHeader('OCS-APIREQUEST') === null) {
+				throw new NotLoggedInException();
 			}
 		}
 
