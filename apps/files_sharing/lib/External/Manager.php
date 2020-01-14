@@ -354,10 +354,12 @@ class Manager {
 
 		if ($result) {
 			$share = $getShare->fetch();
-			$this->eventDispatcher->dispatch(
-				DeclineShare::class,
-				new DeclineShare($share)
-			);
+			if ($share !== false) {
+				$this->eventDispatcher->dispatch(
+					DeclineShare::class,
+					new DeclineShare($share)
+				);
+			}
 		}
 		$getShare->closeCursor();
 

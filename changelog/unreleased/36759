@@ -1,0 +1,6 @@
+Bugfix: Do not dispatch DeclineShare event for non-existing shares
+
+DeclineShare event was dispatched even when the share had been not found in oc_share_external table.
+It caused sending unshare notification to the empty hostname.
+
+https://github.com/owncloud/core/pull/36759
