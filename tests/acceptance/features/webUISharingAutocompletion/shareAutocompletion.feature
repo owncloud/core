@@ -119,9 +119,9 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP @user_ldap-issue-175
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
-    Given user "regularuser" has logged in using the webUI
+    Given user "regularuser" has shared folder "simple-folder" with user "user1"
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And the user has shared folder "simple-folder" with user "User One" using the webUI
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "user" in the share-with-field
     Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User One"
@@ -130,9 +130,9 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP @user_ldap-issue-175
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
-    Given user "regularuser" has logged in using the webUI
+    Given user "regularuser" has shared file "data.zip" with user "usergrp"
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And the user has shared file "data.zip" with user "User Grp" using the webUI
     And the user has opened the share dialog for file "data.zip"
     When the user types "user" in the share-with-field
     Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User Grp"
@@ -141,9 +141,9 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
-    Given user "regularuser" has logged in using the webUI
+    Given user "regularuser" has shared folder "simple-folder" with group "finance1"
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And the user shares folder "simple-folder" with group "finance1" using the webUI
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"
@@ -152,9 +152,9 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
-    Given user "regularuser" has logged in using the webUI
+    Given user "regularuser" has shared file "data.zip" with group "finance1"
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And the user shares file "data.zip" with group "finance1" using the webUI
     And the user has opened the share dialog for file "data.zip"
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"

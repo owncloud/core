@@ -82,10 +82,11 @@ Feature: move files
 
   @files_sharing-app-required
   Scenario: move files on a public share
-    Given the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
-    And the public accesses the last created public link using the webUI
-    And the user moves file "data.zip" into folder "simple-empty-folder" using the webUI
+    And user "user1" has created a public link share with settings
+      | path        | /simple-folder     |
+      | permissions | read,create,change |
+    And the public has accessed the last created public link using the webUI
+    When the user moves file "data.zip" into folder "simple-empty-folder" using the webUI
     Then file "data.zip" should not be listed on the webUI
     When the user reloads the current page of the webUI
     Then file "data.zip" should not be listed on the webUI
