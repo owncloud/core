@@ -62,7 +62,7 @@ class SharingDialog extends OwncloudPage {
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
 	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
-	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/../..//input[contains(@class, 'expiration')]";
+	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/..//input[contains(@class, 'expiration')]";
 	private $shareWithClearExpirationFieldXpath = "/following-sibling::button[@class='removeExpiration']"; // in relation to $shareWithExpirationFieldXpath
 	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
 	private $shareWithListDetailsXpath = "//div[@class='shareWithList__details']";

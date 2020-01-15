@@ -499,7 +499,13 @@ class Share20OcsController extends OCSController {
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->userSession->getUser()->getUID());
 
-		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));
+		// set attributes array from request, or if not provided set empty array
+		$newAttributes = $this->request->getParam('attributes', null);
+		if ($newAttributes !== null) {
+			$share = $this->setShareAttributes($share, $newAttributes);
+		} else {
+			$share = $this->setShareAttributes($share, []);
+		}
 
 		try {
 			$share = $this->shareManager->createShare($share);
@@ -846,7 +852,11 @@ class Share20OcsController extends OCSController {
 			$share->setExpirationDate($expireDate);
 		}
 
-		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));
+		// update attributes if provided
+		$newAttributes = $this->request->getParam('attributes', null);
+		if ($newAttributes !== null) {
+			$share = $this->setShareAttributes($share, $newAttributes);
+		}
 
 		try {
 			$share = $this->shareManager->updateShare($share);
@@ -1113,24 +1123,22 @@ class Share20OcsController extends OCSController {
 
 	/**
 	 * @param IShare $share
-	 * @param string[][]|null $formattedShareAttributes
+	 * @param string[][] $formattedShareAttributes
 	 * @return IShare modified share
 	 */
 	private function setShareAttributes(IShare $share, $formattedShareAttributes) {
 		$newShareAttributes = $this->shareManager->newShare()->newAttributes();
-		if ($formattedShareAttributes !== null) {
-			foreach ($formattedShareAttributes as $formattedAttr) {
-				$value = isset($formattedAttr['value']) ? $formattedAttr['value'] : null;
-				if (isset($formattedAttr['enabled'])) {
-					$value = (bool) \json_decode($formattedAttr['enabled']);
-				}
-				if ($value !== null) {
-					$newShareAttributes->setAttribute(
-						$formattedAttr['scope'],
-						$formattedAttr['key'],
-						$value
-					);
-				}
+		foreach ($formattedShareAttributes as $formattedAttr) {
+			$value = isset($formattedAttr['value']) ? $formattedAttr['value'] : null;
+			if (isset($formattedAttr['enabled'])) {
+				$value = (bool) \json_decode($formattedAttr['enabled']);
+			}
+			if ($value !== null) {
+				$newShareAttributes->setAttribute(
+					$formattedAttr['scope'],
+					$formattedAttr['key'],
+					$value
+				);
 			}
 		}
 		$share->setAttributes($newShareAttributes);

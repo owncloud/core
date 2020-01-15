@@ -39,6 +39,58 @@
 	margin-right: 0;
 }
 
+#shareWithList {
+	list-style-type: none;
+	padding        : 0 0 16px;
+}
+
+#shareWithList li {
+	padding-top   : 5px;
+	padding-bottom: 5px;
+	font-weight   : bold;
+	white-space   : normal;
+}
+
+#shareWithList .unshare img {
+	vertical-align: text-bottom;
+	/* properly align icons */
+}
+
+#shareWithList label input[type=checkbox] {
+	margin-left: 0;
+	position   : relative;
+}
+
+#shareWithList .username {
+	padding-right : 8px;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	max-width     : 254px;
+	display       : inline-block;
+	overflow      : hidden;
+	vertical-align: middle;
+}
+
+#shareWithList li label {
+	margin-right: 8px;
+}
+
+#shareWithList .expiration {
+	max-width: 190px;
+	text-align: left;
+	margin: 0 0 0 5px;
+}
+
+#shareWithList .removeExpiration {
+	text-indent: -9999px;
+	border: 0 none;
+	transform: translate(calc(-100% - 5px), -1px);
+	background-color: #F8F8F8;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('../../../core/img/actions/close.svg');
+}
+
 #shareDialogLinkList .link-shares + #shareTreeUserGroupList {
 	margin-top: -20px;
 }
@@ -97,15 +149,6 @@
 .shareTabView .icon {
 	display        : inline-block;
 	background-size: 16px 16px;
-}
-
-.shareTabView .action-item {
-	display: inherit;
-	opacity: .5;
-}
-
-.shareTabView .action-item + .action-item {
-	margin-left: 5px;
 }
 
 .shareTabView .privacyWarningMessage {
@@ -316,94 +359,4 @@
 	color: red;
     padding: 4px;
     display: block;
-}
-
-/* ---------------------------------------------------- ShareWithList --- */
-
-.shareWithList {
-	list-style-type : none;
-	padding         : 0 0 16px;
-}
-
-[class^='shareWithList__item'] {
-	display         : flex;
-	justify-content : space-between;
-	flex-wrap       : wrap;
-	padding-top     : 10px;
-	padding-bottom  : 10px;
-	font-weight     : bold;
-}
-
-.shareWithList__item--detailed {
-	background-color: #f8f8f8;
-	margin-left: -15px;
-	margin-right: -15px;
-	padding: 10px 15px;
-}
-
-.shareWithList__item--detailed + .shareWithList__item--detailed {
-	border-top: 1px solid #eee
-}
-
-[class^='shareWithList__container'] {
-	display     : flex;
-	align-items : center;
-}
-
-.shareWithList__container--left {
-	justify-content: flex-start;
-}
-
-.shareWithList__container--right {
-	justify-content: flex-end;
-}
-
-.shareWithList__item label input[type=checkbox] {
-	margin-left: 0;
-	position   : relative;
-}
-
-.shareWithList__item .username {
-	padding-right : 8px;
-	white-space   : nowrap;
-	text-overflow : ellipsis;
-	max-width     : 254px;
-	display       : inline-block;
-	overflow      : hidden;
-	vertical-align: middle;
-}
-
-.shareWithList__item label {
-	margin-right: 8px;
-}
-
-.shareWithList__item .expiration {
-	max-width: 190px;
-	text-align: left;
-	margin: 0 0 0 5px;
-}
-
-.shareWithList__item .removeExpiration {
-	text-indent: -9999px;
-	border: 0 none;
-	transform: translate(calc(-100% - 5px), -1px);
-	background-color: #F8F8F8;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('../../../core/img/actions/close.svg');
-}
-
-.shareWithList__item .toggleShareDetails {
-	display: inherit;
-    opacity: 0.5;
-}
-
-.shareWithList__details {
-	width: 100%;
-	background-color: #f8f8f8;
-}
-
-.shareWithList__details-group:first-of-type,
-.shareWithList__details-group + .shareWithList__details-group {
-	margin-top: 10px;
 }
