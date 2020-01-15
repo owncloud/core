@@ -1,0 +1,7 @@
+Change: Update laminas dependencies
+
+Update laminas/laminas-zendframework-bridge (1.0.0 => 1.0.1)
+Update laminas/laminas-filter (2.9.2 => 2.9.3)
+
+https://github.com/owncloud/core/issues/36726
+https://github.com/owncloud/core/pull/36727

@@ -1934,9 +1934,9 @@ def createShare(phpVersion):
 		'pull': 'always',
 		'commands': [
 			'curl -k -s -u user1:123456 -X MKCOL "https://server/remote.php/webdav/new_folder"',
-			'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin"',
+			'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" -H "OCS-APIREQUEST: true" --data "path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin"',
 			'echo -n "PUBLIC_TOKEN=" > .env',
-			'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=3&permissions=15&name=new_folder" | grep token | cut -d">" -f2 | cut -d"<" -f1 >> .env',
+			'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" -H "OCS-APIREQUEST: true" --data "path=/new_folder&shareType=3&permissions=15&name=new_folder" | grep token | cut -d">" -f2 | cut -d"<" -f1 >> .env',
 		]
 	}]
 

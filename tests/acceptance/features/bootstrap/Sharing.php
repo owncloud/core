@@ -731,9 +731,10 @@ trait Sharing {
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$date = \date('Y-m-d', \strtotime("+3 days"));
 		$body = ['expireDate' => $date];
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::put(
 			$fullUrl, $this->currentUser,
-			$this->getPasswordForUser($this->currentUser), null, $body
+			$this->getPasswordForUser($this->currentUser), $headers, $body
 		);
 	}
 
@@ -815,8 +816,9 @@ trait Sharing {
 			}
 		}
 
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::put(
-			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers, $fd
 		);
 	}
 
@@ -1145,8 +1147,9 @@ trait Sharing {
 
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user1, $this->getPasswordForUser($user1)
+			$fullUrl, $user1, $this->getPasswordForUser($user1), $headers
 		);
 		if ($getShareData && $this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
@@ -1157,7 +1160,7 @@ trait Sharing {
 		}
 		if ($getShareData) {
 			$this->response = HttpRequestHelper::get(
-				$fullUrl, $user1, $this->getPasswordForUser($user1)
+				$fullUrl, $user1, $this->getPasswordForUser($user1), $headers
 			);
 		}
 	}
@@ -1315,8 +1318,9 @@ trait Sharing {
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 		if ($getShareData && $this->isUserOrGroupInSharedData($group, $permissions)) {
 			return;
@@ -1327,7 +1331,7 @@ trait Sharing {
 		}
 		if ($getShareData) {
 			$this->response = HttpRequestHelper::get(
-				$fullUrl, $user, $this->getPasswordForUser($user)
+				$fullUrl, $user, $this->getPasswordForUser($user), $headers
 			);
 		}
 	}
@@ -1554,8 +1558,9 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
 			. "v{$this->sharingApiVersion}/shares";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 		return $this->response;
 	}
@@ -1637,8 +1642,9 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
 			. "v{$this->sharingApiVersion}/shares";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 	}
 
@@ -1663,8 +1669,9 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
 			. "v{$this->sharingApiVersion}/shares?path=$path";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 	}
 
@@ -1682,8 +1689,9 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
 			. "v{$this->sharingApiVersion}/shares?reshares=true&path=$path";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 	}
 
@@ -1699,8 +1707,9 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
 			. "v{$this->sharingApiVersion}/shares?path=$path&subfiles=true";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 	}
 
@@ -1998,7 +2007,7 @@ trait Sharing {
 		$url = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
 
-		$headers = ['Content-Type' => 'application/json'];
+		$headers = ['Content-Type' => 'application/json', 'OCS-APIREQUEST' => 'true'];
 		$res = HttpRequestHelper::get(
 			$url, $user, $this->getPasswordForUser($user), $headers
 		);
@@ -2071,8 +2080,9 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$fullUrl = "$fullUrl?path=$path";
+		$headers = ['OCS-APIREQUEST' => 'true'];
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+			$fullUrl, $user, $this->getPasswordForUser($user), $headers
 		);
 		return $this->getResponseXml()->data->element;
 	}
