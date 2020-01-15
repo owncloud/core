@@ -975,7 +975,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then following elements should be listed as uploaded items on the webUI:
+	 * @Then the following elements should be listed as uploaded items on the webUI:
 	 *
 	 * @param TableNode $table list of expected uploaded elements to be visible on the webUI
 	 * 						   the heading of the table is required to be "uploaded-elements"

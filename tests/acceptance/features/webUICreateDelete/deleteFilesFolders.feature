@@ -159,8 +159,8 @@ Feature: deleting files and folders
   @files_sharing-app-required
   Scenario: delete a file on a public share
     Given user "user1" has created a public link share with settings
-      | path        | /simple-folder  |
-      | permissions | read,update,create,delete     |
+      | path        | /simple-folder            |
+      | permissions | read,update,create,delete |
     And the public accesses the last created public link using the webUI
     When the user deletes the following elements using the webUI
       | name                                  |
@@ -176,8 +176,8 @@ Feature: deleting files and folders
   @skipOnFIREFOX @files_sharing-app-required
   Scenario: delete a file on a public share with problematic characters
     Given user "user1" has created a public link share with settings
-      | path        | /simple-folder  |
-      | permissions | read,change     |
+      | path        | /simple-folder |
+      | permissions | read,change    |
     And the public accesses the last created public link using the webUI
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
@@ -208,8 +208,8 @@ Feature: deleting files and folders
   @skipOnEncryption @encryption-issue-74 @files_sharing-app-required
   Scenario: Delete multiple files at once on a public share
     Given user "user1" has created a public link share with settings
-      | path        | /simple-folder  |
-      | permissions | read,update,create,delete     |
+      | path        | /simple-folder            |
+      | permissions | read,update,create,delete |
     And the public accesses the last created public link using the webUI
     When the user batch deletes these files using the webUI
       | name                |

@@ -17,7 +17,7 @@ Feature: Locks
     And user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has created a public link share with settings
-      | path        | /simple-folder  |
+      | path        | /simple-folder            |
       | permissions | read,update,create,delete |
     When the public accesses the last created public link using the webUI
     And the user deletes folder "lorem.txt" using the webUI

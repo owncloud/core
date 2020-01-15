@@ -258,7 +258,7 @@ Feature: Share by public link
     And user "user1" has created folder "/simple-folder"
     And user "user1" has created a public link share with settings
       | path     | /simple-folder |
-      | name     |  Public link   |
+      | name     | Public link    |
       | password | pass123        |
     And user "user1" has logged in using the webUI
     And the user has opened the share dialog for folder "simple-folder"
@@ -273,8 +273,8 @@ Feature: Share by public link
     Given user "user1" has created folder "/simple-folder"
     And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "user1" has created a public link share with settings
-      | path     | /simple-folder |
-      | name     |  Public link   |
+      | path | /simple-folder |
+      | name | Public link    |
     And user "user1" has logged in using the webUI
     And the user has opened the share dialog for folder "simple-folder"
     And the user has opened the public link share tab

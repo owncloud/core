@@ -140,7 +140,7 @@ Feature: File Upload
     When the public accesses the last created public link using the webUI
     And the user uploads file "lorem.txt" using the webUI
     And the user uploads file "lorem-big.txt" using the webUI
-    Then following elements should be listed as uploaded items on the webUI:
+    Then the following elements should be listed as uploaded items on the webUI:
       | uploaded-elements |
       | lorem.txt         |
       | lorem-big.txt     |
