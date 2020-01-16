@@ -3830,6 +3830,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -3976,6 +3982,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -4124,6 +4136,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -4270,6 +4288,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -4418,6 +4442,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -4564,6 +4594,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -4712,6 +4748,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -4858,6 +4900,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -5006,6 +5054,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -5152,6 +5206,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -5300,6 +5360,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -5446,6 +5512,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -5594,6 +5666,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -5740,6 +5818,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -5888,6 +5972,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -6034,6 +6124,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -6182,6 +6278,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -6328,6 +6430,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -6476,6 +6584,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -6622,6 +6736,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -6770,6 +6890,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -6916,6 +7042,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -7064,6 +7196,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -7210,6 +7348,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -7358,6 +7502,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -7504,6 +7654,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -7652,6 +7808,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -7798,6 +7960,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -7946,6 +8114,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -8092,6 +8266,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -8246,6 +8426,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -8432,6 +8618,13 @@ steps:
   commands:
   - chown -R www-data /drone/src
   - chown -R www-data /drone/federated
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+  - wait-for-it -t 600 federated:80
 
 - name: owncloud-log-server
   pull: always
@@ -8644,6 +8837,13 @@ steps:
   - chown -R www-data /drone/src
   - chown -R www-data /drone/federated
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+  - wait-for-it -t 600 federated:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -8816,6 +9016,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -8967,6 +9173,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -9120,6 +9332,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -9271,6 +9489,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -9424,6 +9648,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -9576,6 +9806,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -9722,6 +9958,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -9881,6 +10123,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -10038,6 +10286,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -10197,6 +10451,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -10354,6 +10614,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -10513,6 +10779,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -10670,6 +10942,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -10829,6 +11107,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -10986,6 +11270,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -11145,6 +11435,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -11302,6 +11598,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -11461,6 +11763,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -11618,6 +11926,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -11777,6 +12091,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -11934,6 +12254,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -12093,6 +12419,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -12250,6 +12582,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -12409,6 +12747,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -12566,6 +12910,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -12725,6 +13075,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -12882,6 +13238,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -13041,6 +13403,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -13198,6 +13566,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -13357,6 +13731,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -13514,6 +13894,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -13679,6 +14065,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -13876,6 +14268,13 @@ steps:
   commands:
   - chown -R www-data /drone/src
   - chown -R www-data /drone/federated
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+  - wait-for-it -t 600 federated:80
 
 - name: owncloud-log-server
   pull: always
@@ -14098,6 +14497,13 @@ steps:
   - chown -R www-data /drone/src
   - chown -R www-data /drone/federated
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+  - wait-for-it -t 600 federated:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -14280,6 +14686,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -14440,6 +14852,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -14602,6 +15020,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -14763,6 +15187,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -14931,6 +15361,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -15097,6 +15533,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always
@@ -15265,6 +15707,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -15417,6 +15865,12 @@ steps:
   commands:
   - chown -R www-data /drone/src
 
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
 - name: owncloud-log-server
   pull: always
   image: owncloud/ubuntu:18.04
@@ -15568,6 +16022,12 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
 
 - name: owncloud-log-server
   pull: always

@@ -1473,6 +1473,7 @@ def acceptance():
 										setupScality(phpVersion, params['scalityS3']) +
 										params['extraSetup'] +
 										fixPermissions(phpVersion, params['federatedServerNeeded']) +
+										waitForServer(phpVersion, params['federatedServerNeeded']) +
 										owncloudLog('server', 'src') +
 									[
 										({
@@ -2110,6 +2111,18 @@ def fixPermissions(phpVersion, federatedServerNeeded):
 			'chown -R www-data /drone/src'
 		] + ([
 			'chown -R www-data /drone/federated'
+		] if federatedServerNeeded else [])
+	}]
+
+def waitForServer(phpVersion, federatedServerNeeded):
+	return [{
+		'name': 'wait-for-server',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'commands': [
+			'wait-for-it -t 600 server:80'
+		] + ([
+			'wait-for-it -t 600 federated:80'
 		] if federatedServerNeeded else [])
 	}]
 
