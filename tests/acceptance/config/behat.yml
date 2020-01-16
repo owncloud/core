@@ -13,6 +13,7 @@ default:
             regularUserPassword: 123456
             ocPath: apps/testing/api/v1/occ
         - AppManagementContext:
+        - AppConfigurationContext:
         - CalDavContext:
         - CardDavContext:
         - ChecksumContext:
@@ -26,12 +27,14 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - CorsContext:
+        - AuthContext:
 
     apiAuthOcs:
       paths:
         - '%paths.base%/../features/apiAuthOcs'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - AuthContext:
 
     apiAuthWebDav:
       paths:
@@ -43,6 +46,7 @@ default:
         - SearchContext:
         - PublicWebDavContext:
         - WebDavPropertiesContext:
+        - AuthContext:
 
     apiCapabilities:
       paths:
@@ -51,6 +55,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - CapabilitiesContext:
         - OccContext:
+        - AppConfigurationContext:
 
     apiComments:
       paths:
@@ -75,6 +80,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiProvisioning-v1:
       paths:
@@ -83,6 +89,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
         - OccUsersGroupsContext:
+        - AuthContext:
 
     apiProvisioning-v2:
       paths:
@@ -91,6 +98,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
         - OccUsersGroupsContext:
+        - AuthContext:
 
     apiProvisioningGroups-v1:
       paths:
@@ -116,6 +124,7 @@ default:
         - OccContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiSharees:
       paths:
@@ -123,6 +132,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - ShareesContext:
+        - AppConfigurationContext:
 
     apiShareManagement:
       paths:
@@ -133,6 +143,7 @@ default:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiShareManagementBasic:
       paths:
@@ -143,6 +154,7 @@ default:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AuthContext:
 
     apiShareOperations:
       paths:
@@ -163,6 +175,7 @@ default:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiSharePublicLink2:
       paths:
@@ -173,6 +186,7 @@ default:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiShareReshare1:
       paths:
@@ -193,6 +207,7 @@ default:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiShareUpdate:
       paths:
@@ -203,6 +218,7 @@ default:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiSharingNotifications:
       paths:
@@ -210,6 +226,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
+        - AppConfigurationContext:
 
     apiTags:
       paths:
@@ -225,6 +242,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
         - TrashbinContext:
+        - AppConfigurationContext:
 
     apiVersions:
       paths:
@@ -282,6 +300,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiWebdavUpload:
       paths:
@@ -313,6 +332,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - AuthContext:
 
     cliMain:
       paths:
@@ -495,6 +515,7 @@ default:
         - '%paths.base%/../features/webUISharingAutocompletion'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - AppConfigurationContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
@@ -507,6 +528,7 @@ default:
         - '%paths.base%/../features/webUISharingExternal'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - AppConfigurationContext:
         - EmailContext:
         - FederationContext:
         - WebUIFilesContext:
@@ -562,6 +584,7 @@ default:
         - '%paths.base%/../features/webUISharingPublic'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - AppConfigurationContext:
         - EmailContext:
         - OccContext:
         - PublicWebDavContext:

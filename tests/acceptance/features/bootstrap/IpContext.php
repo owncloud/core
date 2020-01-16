@@ -20,12 +20,13 @@
  *
  */
 
+use Behat\Behat\Context\Context;
 use TestHelpers\IpHelper;
 
 /**
  * Ip trait
  */
-trait Ip {
+class IpContext implements Context {
 
 	/**
 	 * The local source IP address from which to initiate API actions.
