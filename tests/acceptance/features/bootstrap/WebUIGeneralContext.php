@@ -581,7 +581,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws InvalidArgumentException
 	 */
 	public function aFileWithSizeAndNameHasBeenCreatedLocally($size, $name) {
-		$fullPath = \getenv("FILES_FOR_UPLOAD") . $name;
+		$fullPath = UploadHelper::getUploadFilesDir($name);
 		if (\file_exists($fullPath)) {
 			throw new InvalidArgumentException(
 				__METHOD__ . " could not create '$fullPath' file exists"
