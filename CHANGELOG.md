@@ -14,6 +14,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
 * Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
 * Change - Update sabre/dav (4.0.2 => 4.0.3): [#36742](https://github.com/owncloud/core/issues/36742)
+* Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
 * Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
 * Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
 
@@ -53,6 +54,12 @@ Details
 
    https://github.com/owncloud/core/issues/36742
    https://github.com/owncloud/core/pull/36743
+
+* Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
+
+   The @bower_components/showdown library has been updated from 1.9.0 to 1.9.1.
+
+   https://github.com/owncloud/core/pull/36752
 
 * Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
 
