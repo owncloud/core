@@ -25,6 +25,7 @@
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
+use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
@@ -115,6 +116,15 @@ trait Sharing {
 	 */
 	public function getServerLastShareTime() {
 		return (int) $this->lastShareData->data->stime;
+	}
+
+	/**
+	 * @param string $postfix string to append to the end of the path
+	 *
+	 * @return string
+	 */
+	public function getSharesEndpointPath($postfix = '') {
+		return "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares$postfix";
 	}
 
 	/**
@@ -721,37 +731,6 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user adds an expiration date to the last share using the sharing API$/
-	 *
-	 * @return void
-	 */
-	public function theUserAddsExpirationDateToLastShare() {
-		$share_id = (string) $this->lastShareData->data[0]->id;
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$date = \date('Y-m-d', \strtotime("+3 days"));
-		$body = ['expireDate' => $date];
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::put(
-			$fullUrl, $this->currentUser,
-			$this->getPasswordForUser($this->currentUser), $headers, $body
-		);
-	}
-
-	/**
-	 * @Given /^the user has added an expiration date to the last share$/
-	 *
-	 * @return void
-	 */
-	public function theUserHasAddedExpirationDateToLastShare() {
-		$this->theUserAddsExpirationDateToLastShare();
-		Assert::assertEquals(
-			200,
-			$this->response->getStatusCode()
-		);
-	}
-
-	/**
 	 * @param TableNode|null $body
 	 *
 	 * @return void
@@ -791,8 +770,6 @@ trait Sharing {
 	 */
 	public function updateLastShareWithSettings($user, $body) {
 		$share_id = (string) $this->lastShareData->data[0]->id;
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 
 		$this->verifyTableNodeRows(
 			$body,
@@ -816,9 +793,14 @@ trait Sharing {
 			}
 		}
 
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::put(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers, $fd
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"PUT",
+			$this->getSharesEndpointPath("/$share_id"),
+			$fd,
+			$this->ocsApiVersion
 		);
 	}
 
@@ -1145,11 +1127,15 @@ trait Sharing {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
 
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user1, $this->getPasswordForUser($user1), $headers
+		$path = $this->getSharesEndpointPath("?path=$filepath");
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user1,
+			$this->getPasswordForUser($user1),
+			"GET",
+			$path,
+			[],
+			$this->ocsApiVersion
 		);
 		if ($getShareData && $this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
@@ -1159,8 +1145,14 @@ trait Sharing {
 			);
 		}
 		if ($getShareData) {
-			$this->response = HttpRequestHelper::get(
-				$fullUrl, $user1, $this->getPasswordForUser($user1), $headers
+			$this->response = OcsApiHelper::sendRequest(
+				$this->getBaseUrl(),
+				$user1,
+				$this->getPasswordForUser($user1),
+				"GET",
+				$path,
+				[],
+				$this->ocsApiVersion
 			);
 		}
 	}
@@ -1316,11 +1308,15 @@ trait Sharing {
 	public function shareFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null, $getShareData = false
 	) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$path = $this->getSharesEndpointPath("?path=$filepath");
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$path,
+			[],
+			$this->ocsApiVersion
 		);
 		if ($getShareData && $this->isUserOrGroupInSharedData($group, $permissions)) {
 			return;
@@ -1330,8 +1326,14 @@ trait Sharing {
 			);
 		}
 		if ($getShareData) {
-			$this->response = HttpRequestHelper::get(
-				$fullUrl, $user, $this->getPasswordForUser($user), $headers
+			$this->response = OcsApiHelper::sendRequest(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				"GET",
+				$path,
+				[],
+				$this->ocsApiVersion
 			);
 		}
 	}
@@ -1464,7 +1466,7 @@ trait Sharing {
 	 */
 	public function deleteLastShareUsingSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "DELETE", $url, null
 		);
@@ -1555,12 +1557,14 @@ trait Sharing {
 	 * @return ResponseInterface
 	 */
 	public function getListOfShares($user) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-			. "v{$this->sharingApiVersion}/shares";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath(),
+			[],
+			$this->ocsApiVersion
 		);
 		return $this->response;
 	}
@@ -1589,7 +1593,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function getShareData($user, $share_id) {
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
@@ -1639,12 +1643,14 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllSharesSharedByHimUsingTheSharingApi($user) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-			. "v{$this->sharingApiVersion}/shares";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath(),
+			[],
+			$this->ocsApiVersion
 		);
 	}
 
@@ -1666,12 +1672,14 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllTheSharesFromTheFileUsingTheSharingApi($user, $path) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-			. "v{$this->sharingApiVersion}/shares?path=$path";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?path=$path"),
+			[],
+			$this->ocsApiVersion
 		);
 	}
 
@@ -1686,12 +1694,14 @@ trait Sharing {
 	public function userGetsAllTheSharesWithResharesFromTheFileUsingTheSharingApi(
 		$user, $path
 	) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-			. "v{$this->sharingApiVersion}/shares?reshares=true&path=$path";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?reshares=true&path=$path"),
+			[],
+			$this->ocsApiVersion
 		);
 	}
 
@@ -1704,12 +1714,14 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllTheSharesInsideTheFolderUsingTheSharingApi($user, $path) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
-			. "v{$this->sharingApiVersion}/shares?path=$path&subfiles=true";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?path=$path&subfiles=true"),
+			[],
+			$this->ocsApiVersion
 		);
 	}
 
@@ -2004,12 +2016,16 @@ trait Sharing {
 	 * @throws \Exception
 	 */
 	public function removeAllSharesFromResource($user, $fileName) {
-		$url = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
-
-		$headers = ['Content-Type' => 'application/json', 'OCS-APIREQUEST' => 'true'];
-		$res = HttpRequestHelper::get(
-			$url, $user, $this->getPasswordForUser($user), $headers
+		$headers = ['Content-Type' => 'application/json'];
+		$res = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?format=json"),
+			[],
+			$this->ocsApiVersion,
+			$headers
 		);
 
 		$this->setResponse($res);
@@ -2020,10 +2036,14 @@ trait Sharing {
 		foreach ($json['ocs']['data'] as $data) {
 			if (\stripslashes($data['path']) === $fileName) {
 				$id = $data['id'];
-				$url = $this->getBaseUrl()
-					. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}";
-				$response = HttpRequestHelper::delete(
-					$url, $user, $this->getPasswordForUser($user), $headers
+				$response = OcsApiHelper::sendRequest(
+					$this->getBaseUrl(),
+					$user,
+					$this->getPasswordForUser($user),
+					"DELETE",
+					$this->getSharesEndpointPath("/{$id}"),
+					[],
+					$this->ocsApiVersion
 				);
 
 				$this->setResponse($response);
@@ -2077,12 +2097,14 @@ trait Sharing {
 	 * @return array
 	 */
 	public function getShares($user, $path) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
-		$fullUrl = "$fullUrl?path=$path";
-		$headers = ['OCS-APIREQUEST' => 'true'];
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user), $headers
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?path=$path"),
+			[],
+			$this->ocsApiVersion
 		);
 		return $this->getResponseXml()->data->element;
 	}
@@ -2169,7 +2191,7 @@ trait Sharing {
 		$user, $name, $path
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
 			"DELETE", $url, null
 		);
@@ -2410,8 +2432,7 @@ trait Sharing {
 				break;
 		}
 
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
-			"?format=json&shared_with_me=true&state=$stateCode";
+		$url = $this->getSharesEndpointPath("?format=json&shared_with_me=true&state=$stateCode");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
