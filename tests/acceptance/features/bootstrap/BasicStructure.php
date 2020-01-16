@@ -29,6 +29,7 @@ use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\UploadHelper;
 
 /**
  * Basic functions needed by mostly everything
@@ -180,6 +181,11 @@ trait BasicStructure {
 	 * @var array
 	 */
 	private $storageIds = [];
+
+	/**
+	 * @var array
+	 */
+	private $createdFiles = [];
 
 	/**
 	 * The local source IP address from which to initiate API actions.
@@ -1726,6 +1732,26 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given a file with the size of :size bytes and the name :name has been created locally
+	 *
+	 * @param int $size if not int given it will be cast to int
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws InvalidArgumentException
+	 */
+	public function aFileWithSizeAndNameHasBeenCreatedLocally($size, $name) {
+		$fullPath = UploadHelper::getUploadFilesDir($name);
+		if (\file_exists($fullPath)) {
+			throw new InvalidArgumentException(
+				__METHOD__ . " could not create '$fullPath' file exists"
+			);
+		}
+		UploadHelper::createFileSpecificSize($fullPath, (int) $size);
+		$this->createdFiles[] = $fullPath;
+	}
+
+	/**
 	 *
 	 * @return ResponseInterface
 	 */
@@ -2450,6 +2476,17 @@ trait BasicStructure {
 		SetupHelper::rmDirOnServer(
 			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
 		);
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function removeCreatedFilesAfter() {
+		foreach ($this->createdFiles as $file) {
+			\unlink($file);
+		}
 	}
 
 	/**
