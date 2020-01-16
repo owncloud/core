@@ -3,78 +3,7 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.4.0...master
-
-Summary
--------
-
-* Change - Update league/flysystem (1.0.62 => 1.0.63): [#36709](https://github.com/owncloud/core/pull/36709)
-* Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
-* Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
-* Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
-* Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
-* Change - Update sabre/dav (4.0.2 => 4.0.3): [#36742](https://github.com/owncloud/core/issues/36742)
-* Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
-* Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
-* Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
-
-Details
--------
-
-* Change - Update league/flysystem (1.0.62 => 1.0.63): [#36709](https://github.com/owncloud/core/pull/36709)
-
-   https://github.com/owncloud/core/pull/36709
-
-* Change - Switch to new id3parser: [#36717](https://github.com/owncloud/core/issues/36717)
-
-   The previous lukasreschke/id3parser library was archived. Use the new one published as
-   christophwurst/id3parser
-
-   https://github.com/owncloud/core/issues/36717
-   https://github.com/owncloud/core/pull/36718
-
-* Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
-
-   https://github.com/owncloud/core/pull/36722
-
-* Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
-
-   https://github.com/owncloud/core/issues/36726
-   https://github.com/owncloud/core/pull/36727
-
-* Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
-
-   Update laminas/laminas-zendframework-bridge (1.0.0 => 1.0.1) Update
-   laminas/laminas-filter (2.9.2 => 2.9.3)
-
-   https://github.com/owncloud/core/issues/36726
-   https://github.com/owncloud/core/pull/36727
-
-* Change - Update sabre/dav (4.0.2 => 4.0.3): [#36742](https://github.com/owncloud/core/issues/36742)
-
-   https://github.com/owncloud/core/issues/36742
-   https://github.com/owncloud/core/pull/36743
-
-* Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
-
-   The @bower_components/showdown library has been updated from 1.9.0 to 1.9.1.
-
-   https://github.com/owncloud/core/pull/36752
-
-* Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
-
-   https://github.com/owncloud/core/pull/36753
-
-* Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
-
-   https://github.com/owncloud/core/pull/36757
-
-Changelog for ownCloud Core [10.4.0] (2020-01-10)
-=======================================
-The following sections list the changes in ownCloud core 10.4.0 relevant to
-ownCloud admins and users.
-
-[10.4.0]: https://github.com/owncloud/core/compare/v10.3.2...v10.4.0
+[unreleased]: https://github.com/owncloud/core/compare/v10.3.2...master
 
 Summary
 -------
@@ -118,6 +47,10 @@ Summary
 * Change - Update deepdiver1975/tarstreamer (0.1.1 => 2.0.0): [#36722](https://github.com/owncloud/core/pull/36722)
 * Change - Update egulias/email-validator (2.1.13 => 2.1.14): [#36726](https://github.com/owncloud/core/issues/36726)
 * Change - Update laminas dependencies: [#36726](https://github.com/owncloud/core/issues/36726)
+* Change - Update sabre/dav (4.0.2 => 4.0.3): [#36742](https://github.com/owncloud/core/issues/36742)
+* Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
+* Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
+* Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
 * Change - Validate OCS API Request Header in OCSController: [#36762](https://github.com/owncloud/core/pull/36762)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
@@ -394,6 +327,25 @@ Details
 
    https://github.com/owncloud/core/issues/36726
    https://github.com/owncloud/core/pull/36727
+
+* Change - Update sabre/dav (4.0.2 => 4.0.3): [#36742](https://github.com/owncloud/core/issues/36742)
+
+   https://github.com/owncloud/core/issues/36742
+   https://github.com/owncloud/core/pull/36743
+
+* Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
+
+   The @bower_components/showdown library has been updated from 1.9.0 to 1.9.1.
+
+   https://github.com/owncloud/core/pull/36752
+
+* Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
+
+   https://github.com/owncloud/core/pull/36753
+
+* Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
+
+   https://github.com/owncloud/core/pull/36757
 
 * Change - Validate OCS API Request Header in OCSController: [#36762](https://github.com/owncloud/core/pull/36762)
 
