@@ -22,6 +22,7 @@
  */
 
 use rdx\behatvars\BehatVariablesContext;
+use TestHelpers\OcsApiHelper;
 
 require_once 'bootstrap.php';
 
@@ -40,5 +41,29 @@ class FeatureContext extends BehatVariablesContext {
 		$this->savedCapabilitiesXml[$this->getBaseUrl()] = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setCapabilities($this->getCommonSharingConfigs());
+	}
+
+	/**
+	 * @Given the administrator has set the last login date for user :user to :days days ago
+	 * @When the administrator sets the last login date for user :user to :days days ago using the testing API
+	 *
+	 * @param string $user
+	 * @param string $days
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTheLastLoginDateForUserToDaysAgoUsingTheTestingApi($user, $days) {
+		$adminUser = $this->getAdminUsername();
+		$baseUrl = "/apps/testing/api/v1/lastlogindate/{$user}";
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$adminUser,
+			$this->getAdminPassword(),
+			'POST',
+			$baseUrl,
+			['days' => $days],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
 	}
 }
