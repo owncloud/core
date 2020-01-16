@@ -25,6 +25,7 @@ namespace Page;
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use TestHelpers\UploadHelper;
 use WebDriver\Key;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
@@ -467,7 +468,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			" id $this->fileUploadInputId " .
 			"could not find file upload input field"
 		);
-		$uploadField->attachFile(\getenv("FILES_FOR_UPLOAD") . $name);
+		$uploadField->attachFile(UploadHelper::getUploadFilesDir($name));
 		$this->waitForAjaxCallsToStartAndFinish($session, 20000);
 		$this->waitForUploadProgressbarToFinish();
 	}

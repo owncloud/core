@@ -40,6 +40,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\DeleteHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\UploadHelper;
 
 require_once 'bootstrap.php';
 
@@ -1851,7 +1852,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$remoteFile = $this->currentFolder . "/" . \trim($remoteFile, $remoteFile[0]);
-		$localFile = \getenv("FILES_FOR_UPLOAD") . "/" . \trim($localFile, $localFile[0]);
+		$localFile = UploadHelper::getUploadFilesDir(\trim($localFile, $localFile[0]));
 		$shouldBeSame = ($shouldOrNot !== "not");
 		$this->assertContentOfRemoteAndLocalFileIsSame(
 			$remoteFile, $localFile, $shouldBeSame, $checkOnRemoteServer
@@ -1876,7 +1877,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$localFile = \getenv("FILES_FOR_UPLOAD") . "/" . \trim($localFile);
+		$localFile = UploadHelper::getUploadFilesDir(\trim($localFile));
 		$shouldBeSame = ($shouldOrNot !== "not");
 		$this->assertContentOfRemoteAndLocalFileIsSameForUser(
 			$remoteFile, $localFile, $user, $shouldBeSame, $checkOnRemoteServer

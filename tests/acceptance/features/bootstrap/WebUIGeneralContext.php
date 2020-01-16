@@ -64,7 +64,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = [];
-	private $createdFiles = [];
 
 	/**
 	 *
@@ -572,26 +571,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given a file with the size of :size bytes and the name :name has been created locally
-	 *
-	 * @param int $size if not int given it will be cast to int
-	 * @param string $name
-	 *
-	 * @return void
-	 * @throws InvalidArgumentException
-	 */
-	public function aFileWithSizeAndNameHasBeenCreatedLocally($size, $name) {
-		$fullPath = \getenv("FILES_FOR_UPLOAD") . $name;
-		if (\file_exists($fullPath)) {
-			throw new InvalidArgumentException(
-				__METHOD__ . " could not create '$fullPath' file exists"
-			);
-		}
-		UploadHelper::createFileSpecificSize($fullPath, (int) $size);
-		$this->createdFiles[] = $fullPath;
-	}
-
-	/**
 	 *
 	 * @When the user/administrator reloads the current page of the webUI
 	 * @Given the user/administrator has reloaded the current page of the webUI
@@ -806,10 +785,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->setSystemConfig(
 				'csrf.disabled', $this->oldCSRFSetting, 'boolean'
 			);
-		}
-
-		foreach ($this->createdFiles as $file) {
-			\unlink($file);
 		}
 	}
 
