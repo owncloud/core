@@ -386,6 +386,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * List created local storage mount
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listLocalStorageMount() {
+		$this->invokingTheCommand('files_external:list --output=json');
+	}
+
+	/**
 	 * @When the administrator enables DAV tech_preview
 	 *
 	 * @return void true if DAV Tech Preview was disabled and had to be enabled
@@ -1163,6 +1173,35 @@ class OccContext implements Context {
 			$mount
 		);
 		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @When the administrator lists the local storage using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userListsLocalStorageMountUsingTheOccCommand() {
+		$this->listLocalStorageMount();
+	}
+
+	/**
+	 * @Then the following local storage should exist
+	 *
+	 * @param TableNode $mountPoints
+	 *
+	 * @return void
+	 */
+	public function theFollowingLocalStoragesShouldExist(TableNode $mountPoints) {
+		$createdLocalStorage = [];
+		$expectedLocalStorages = $mountPoints->getColumnsHash();
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($commandOutput as $storageEntry) {
+			$createdLocalStorage[$storageEntry->mount_id] = \ltrim($storageEntry->mount_point, '/');
+		}
+		foreach ($expectedLocalStorages as $expectedStorageEntry) {
+			Assert::assertContains($expectedStorageEntry['localStorage'], $createdLocalStorage);
+		}
 	}
 
 	/**
