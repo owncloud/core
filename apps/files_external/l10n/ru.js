@@ -90,6 +90,7 @@ OC.L10N.register(
     "Storage type" : "Тип хранилища",
     "Scope" : "Область",
     "Enable encryption" : "Включить шифрование",
+    "Set read-only" : "Сделать только для чтения",
     "Enable previews" : "Включить предпросмотр",
     "Enable sharing" : "Включить общий доступ",
     "Check for changes" : "Проверять изменения",
