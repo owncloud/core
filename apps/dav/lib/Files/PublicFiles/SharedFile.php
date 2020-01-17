@@ -71,4 +71,8 @@ class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 			throw new Forbidden('Permission denied to change data');
 		}
 	}
+
+	public function getSize() {
+		return $this->file->getSize();
+	}
 }
