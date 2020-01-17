@@ -304,6 +304,20 @@ class OccUsersGroupsContext implements Context {
 	}
 
 	/**
+	 * @When the administrator gets the list of all users inactive for the last :numberOfDays days using the occ command
+	 *
+	 * @param integer $numberOfDays
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorGetsTheListOfAllUsersInactiveForTheLastDays($numberOfDays) {
+		$this->occContext->invokingTheCommand(
+			"user:inactive $numberOfDays --output=json"
+		);
+	}
+
+	/**
 	 * @When the administrator retrieves the information of user :username in JSON format using the occ command
 	 *
 	 * @param string $username
@@ -526,6 +540,42 @@ class OccUsersGroupsContext implements Context {
 		foreach ($useridTable as $row) {
 			Assert::assertArrayHasKey($row['uid'], $result);
 			Assert::assertContains($row['display name'], $result);
+		}
+	}
+
+	/**
+	 * @Then the inactive users returned by the occ command should be
+	 *
+	 * @param TableNode $userTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theInactiveUsersReturnedByTheOccCommandShouldBe(TableNode $userTable) {
+		$this->featureContext->verifyTableNodeColumns($userTable, ['uid', 'display name', 'inactive days']);
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lastOutputUsers = \json_decode($lastOutput, true);
+
+		Assert::assertEquals(\count($userTable->getColumnsHash()), \count($lastOutputUsers));
+
+		$found = false;
+		foreach ($userTable as $row) {
+			foreach ($lastOutputUsers as $user) {
+				if ($user['uid'] === $row['uid']) {
+					$found = true;
+					Assert::assertEquals(
+						$user['displayName'],
+						$row['display name'],
+						"expected {$row['display name']} but got {$user['displayName']}"
+					);
+					Assert::assertEquals(
+						$user['inactiveSinceDays'],
+						$row['inactive days'],
+						"expected {$row['inactive days']} days but got {$user['inactiveSinceDays']} days"
+					);
+				}
+			}
+			Assert::assertTrue($found);
 		}
 	}
 
