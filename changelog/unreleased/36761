@@ -1,0 +1,8 @@
+Bugfix: Remove part files when upload is cancelled for all public links
+
+Remove part files when the upload is cancelled for the public links.
+Prior to this change, it was noticed that for `Upload Only` and
+`Download / View / Upload` the part files were not cleaned up. With this
+change it does clean up.
+
+https://github.com/owncloud/core/pull/36761

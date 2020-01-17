@@ -104,7 +104,7 @@ class PermissionsMask extends Wrapper {
 	}
 
 	public function unlink($path) {
-		return $this->checkMask(Constants::PERMISSION_DELETE) and parent::unlink($path);
+		return ($this->isPartFile($path) || $this->checkMask(Constants::PERMISSION_DELETE)) && parent::unlink($path);
 	}
 
 	public function file_put_contents($path, $data) {
