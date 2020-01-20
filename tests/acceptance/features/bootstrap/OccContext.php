@@ -1226,6 +1226,34 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then the following local storage should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingLocalStorageShouldBeListed(TableNode $table) {
+		$expectedLocalStorages = $table->getColumnsHash();
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($expectedLocalStorages as $expectedStorageEntry) {
+			$isStorageEntryListed = false;
+			foreach ($commandOutput as $listedStorageEntry) {
+				if ($expectedStorageEntry["MountPoint"] === $listedStorageEntry->mount_point) {
+					Assert::assertEquals($expectedStorageEntry['Storage'], $listedStorageEntry->storage, "Storage column does not have the expected value");
+					Assert::assertEquals($expectedStorageEntry['AuthenticationType'], $listedStorageEntry->authentication_type, "AuthenticationType column does not have the expected value");
+					Assert::assertStringStartsWith($expectedStorageEntry['Configuration'], $listedStorageEntry->configuration, "Configuration column does not have the expected value");
+					Assert::assertEquals($expectedStorageEntry['Options'], $listedStorageEntry->options, "Options column does not have the expected value");
+					Assert::assertEquals($expectedStorageEntry['ApplicableUsers'], $listedStorageEntry->applicable_users, "ApplicableUsers column does not have the expected value");
+					Assert::assertEquals($expectedStorageEntry['ApplicableGroups'], $listedStorageEntry->applicable_groups, "ApplicableGroups column does not have the expected value");
+					$isStorageEntryListed = true;
+				}
+			}
+			Assert::assertTrue($isStorageEntryListed, "Expected local storage {$expectedStorageEntry['MountPoint']} not found");
+		}
+	}
+
+	/**
 	 * @When the administrator deletes local storage :folder using the occ command
 	 *
 	 * @param string $folder
