@@ -57,6 +57,13 @@ class IpContext implements Context {
 	private $guzzleClientHeaders = [];
 
 	/**
+	 * @return string|null
+	 */
+	public function getSourceIpAddress() {
+		return $this->sourceIpAddress;
+	}
+
+	/**
 	 * returns the base URL that matches the currently selected source IP
 	 * address (which might be an IPv4 or IPv6 address)
 	 *
