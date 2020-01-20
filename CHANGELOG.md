@@ -53,6 +53,7 @@ Summary
 * Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
 * Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
 * Change - Validate OCS API Request Header in OCSController: [#36762](https://github.com/owncloud/core/pull/36762)
+* Change - Adjust wording displayed for empty additional settings panel: [#36776](https://github.com/owncloud/core/pull/36776)
 * Change - Update laminas/laminas-validator (2.13.0 => 2.13.1): [#36780](https://github.com/owncloud/core/pull/36780)
 * Change - Update myclabs/deep-copy (1.9.4 => 1.9.5): [#36780](https://github.com/owncloud/core/pull/36780)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
@@ -364,6 +365,13 @@ Details
    now properly validated on OCSController based implementations.
 
    https://github.com/owncloud/core/pull/36762
+
+* Change - Adjust wording displayed for empty additional settings panel: [#36776](https://github.com/owncloud/core/pull/36776)
+
+   The wording displayed when the admin personal settings panel is empty has been adjusted so that
+   it no longer looks like there is an error.
+
+   https://github.com/owncloud/core/pull/36776
 
 * Change - Update laminas/laminas-validator (2.13.0 => 2.13.1): [#36780](https://github.com/owncloud/core/pull/36780)
 
