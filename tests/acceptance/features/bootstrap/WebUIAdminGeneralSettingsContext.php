@@ -196,7 +196,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			}
 			// Save the app configs
 			$this->appParameterValues = $results;
-			$this->logLevelValue = $this->featureContext->getSystemConfigValue(
+			$this->logLevelValue = SetupHelper::getSystemConfigValue(
 				"loglevel"
 			);
 		}
@@ -209,7 +209,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
-		$expectedVersion = $this->featureContext->getSystemConfigValue('version');
+		$expectedVersion = SetupHelper::getSystemConfigValue('version');
 		Assert::assertEquals(\trim($expectedVersion), $actualVersion);
 	}
 
@@ -239,7 +239,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			$this->featureContext->getAdminPassword(),
 			$this->appParameterValues
 		);
-		$this->featureContext->setSystemConfig(
+		SetupHelper::setSystemConfig(
 			"loglevel", $this->logLevelValue
 		);
 	}

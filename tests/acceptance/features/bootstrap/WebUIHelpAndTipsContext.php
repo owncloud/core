@@ -26,6 +26,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\HelpAndTipsPage;
 use PHPUnit\Framework\Assert;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -66,7 +67,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 * @return string
 	 */
 	protected function generateHelpLinks($to) {
-		$version = $this->featureContext->getSystemConfigValue('version');
+		$version = SetupHelper::getSystemConfigValue('version');
 		$version = \explode(".", $version);
 		$version = (string) $version[0] . "." . (string) $version[1];
 		return "https://doc.owncloud.org/server/$version/go.php?to=$to";
@@ -170,5 +171,13 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+
+		// Initialize SetupHelper class
+		SetupHelper::init(
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
 	}
 }

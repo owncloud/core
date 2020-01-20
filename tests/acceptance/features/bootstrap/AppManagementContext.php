@@ -55,7 +55,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function setAppsPaths($appsPaths) {
-		return $this->featureContext->setSystemConfig(
+		return SetupHelper::setSystemConfig(
 			'apps_paths',
 			\json_encode($appsPaths),
 			'json'
@@ -72,7 +72,7 @@ class AppManagementContext implements Context {
 	 */
 	public function setAppDirectories(TableNode $table) {
 		$appsPathsConfigs = \json_decode(
-			$this->featureContext->getSystemConfig("apps_paths", "json")['stdOut'],
+			SetupHelper::getSystemConfig("apps_paths", "json")['stdOut'],
 			true
 		);
 		$this->featureContext->verifyTableNodeColumns($table, ['dir'], ['is_writable']);
@@ -103,7 +103,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function putAppInDir($appId, $version, $dir) {
-		$ocVersion = $this->featureContext->getSystemConfigValue('version');
+		$ocVersion = SetupHelper::getSystemConfigValue('version');
 		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
 			<info>
@@ -378,7 +378,7 @@ class AppManagementContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 
-		$value = $this->featureContext->getSystemConfigValue(
+		$value = SetupHelper::getSystemConfigValue(
 			'apps_paths', 'json'
 		);
 
@@ -399,7 +399,7 @@ class AppManagementContext implements Context {
 	 */
 	public function undoChangingParameters() {
 		if ($this->oldAppsPaths === null) {
-			$this->featureContext->deleteSystemConfig('apps_paths');
+			SetupHelper::deleteSystemConfig('apps_paths');
 		} else {
 			$this->setAppsPaths($this->oldAppsPaths);
 		}

@@ -660,12 +660,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			= $capabilitiesXml;
 
 		if ($this->oldCSRFSetting === null) {
-			$oldCSRFSetting = $this->featureContext->getSystemConfigValue(
+			$oldCSRFSetting = SetupHelper::getSystemConfigValue(
 				'csrf.disabled'
 			);
 			$this->oldCSRFSetting = \trim($oldCSRFSetting);
 		}
-		$this->featureContext->setSystemConfig(
+		SetupHelper::setSystemConfig(
 			'csrf.disabled',
 			'true',
 			'boolean'
@@ -699,12 +699,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$this->featureContext->runFunctionOnEveryServer(
 			function ($server) {
 				if (!isset($this->oldPreviewSetting[$server])) {
-					$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
+					$oldPreviewSetting = SetupHelper::getSystemConfigValue(
 						'enable_previews'
 					);
 					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
 				}
-				$this->featureContext->setSystemConfig(
+				SetupHelper::setSystemConfig(
 					'enable_previews', 'false', 'boolean'
 				);
 			}
@@ -727,12 +727,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$this->featureContext->runFunctionOnEveryServer(
 			function ($server) {
 				if (!isset($this->oldPreviewSetting[$server])) {
-					$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
+					$oldPreviewSetting = SetupHelper::getSystemConfigValue(
 						'enable_previews'
 					);
 					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
 				}
-				$this->featureContext->setSystemConfig(
+				SetupHelper::setSystemConfig(
 					'enable_previews', 'true', 'boolean'
 				);
 			}
@@ -770,9 +770,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				if (isset($this->oldPreviewSetting[$server])
 					&& $this->oldPreviewSetting[$server] === ""
 				) {
-					$this->featureContext->deleteSystemConfig('enable_previews');
+					SetupHelper::deleteSystemConfig('enable_previews');
 				} elseif (isset($this->oldPreviewSetting[$server])) {
-					$this->featureContext->setSystemConfig(
+					SetupHelper::setSystemConfig(
 						'enable_previews', $this->oldPreviewSetting[$server], 'boolean'
 					);
 				}
@@ -780,9 +780,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 
 		if ($this->oldCSRFSetting === "") {
-			$this->featureContext->deleteSystemConfig('csrf.disabled');
+			SetupHelper::deleteSystemConfig('csrf.disabled');
 		} elseif ($this->oldCSRFSetting !== null) {
-			$this->featureContext->setSystemConfig(
+			SetupHelper::setSystemConfig(
 				'csrf.disabled', $this->oldCSRFSetting, 'boolean'
 			);
 		}
