@@ -482,7 +482,7 @@ class OCSContext implements Context {
 	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
-			$this->featureContext->userRequestsURLWithUsingBasicAuth(
+			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
 				$method,
@@ -493,7 +493,7 @@ class OCSContext implements Context {
 			if (\array_key_exists('ocs-code', $row)) {
 				$ocsCode = $row['ocs-code'];
 			}
-			$this->featureContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->authContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -509,7 +509,7 @@ class OCSContext implements Context {
 	public function userSendsRequestToTheseEndpointsWithBody($user, $method, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
-			$this->featureContext->userRequestsURLWithUsingBasicAuth(
+			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
 				$method,
@@ -520,7 +520,7 @@ class OCSContext implements Context {
 			if (\array_key_exists('ocs-code', $row)) {
 				$ocsCode = $row['ocs-code'];
 			}
-			$this->featureContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->authContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -537,7 +537,7 @@ class OCSContext implements Context {
 	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
-			$this->featureContext->userRequestsURLWithUsingBasicAuth(
+			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$asUser,
 				$row['endpoint'],
 				$method,
@@ -548,7 +548,7 @@ class OCSContext implements Context {
 			if (\array_key_exists('ocs-code', $row)) {
 				$ocsCode = $row['ocs-code'];
 			}
-			$this->featureContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->authContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 

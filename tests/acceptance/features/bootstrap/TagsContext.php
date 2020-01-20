@@ -1622,7 +1622,7 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function cleanupTags() {
-		$this->featureContext->deleteTokenAuthEnforcedAfterScenario();
+		$this->featureContext->authContext->deleteTokenAuthEnforcedAfterScenario();
 		foreach ($this->createdTags as $tagID => $tag) {
 			TagsHelper::deleteTag(
 				$this->featureContext->getBaseUrl(),

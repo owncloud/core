@@ -48,7 +48,7 @@ class CapabilitiesContext implements Context {
 	 * @return void
 	 */
 	public function checkCapabilitiesResponse(TableNode $formData) {
-		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
 		$assertedSomething = false;
 
 		$this->featureContext->verifyTableNodeColumns($formData, ['value', 'path_to_element', 'capability']);
@@ -57,7 +57,7 @@ class CapabilitiesContext implements Context {
 			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
 			Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
-				$this->featureContext->getParameterValueFromXml(
+				$this->featureContext->appConfigurationContext->getParameterValueFromXml(
 					$capabilitiesXML,
 					$row['capability'],
 					$row['path_to_element']
@@ -84,13 +84,13 @@ class CapabilitiesContext implements Context {
 	public function theCapabilityOfFilesSharingAppShouldBe(
 		$pathToElement, $value
 	) {
-		$this->featureContext->userGetsCapabilitiesCheckResponse(
+		$this->featureContext->appConfigurationContext->userGetsCapabilitiesCheckResponse(
 			$this->featureContext->getCurrentUser()
 		);
-		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
 		Assert::assertEquals(
 			$value === "EMPTY" ? '' : $value,
-			$this->featureContext->getParameterValueFromXml(
+			$this->featureContext->appConfigurationContext->getParameterValueFromXml(
 				$capabilitiesXML,
 				"files_sharing",
 				$pathToElement
@@ -106,12 +106,12 @@ class CapabilitiesContext implements Context {
 	 * @return void
 	 */
 	public function theCapabilitiesShouldNotContain(TableNode $formData) {
-		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
 		$assertedSomething = false;
 
 		foreach ($formData->getHash() as $row) {
 			Assert::assertFalse(
-				$this->featureContext->parameterValueExistsInXml(
+				$this->featureContext->appConfigurationContext->parameterValueExistsInXml(
 					$capabilitiesXML,
 					$row['capability'],
 					$row['path_to_element']

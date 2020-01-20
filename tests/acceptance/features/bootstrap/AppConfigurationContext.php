@@ -22,33 +22,19 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Context;
 
 /**
  * AppConfiguration trait
  */
-trait AppConfiguration {
-
-	/**
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 * @var array with keys for each baseURL (e.g. of local and remote server)
-	 *            that contain the original capabilities in XML format
-	 */
-	private $savedCapabilitiesXml;
-
-	/**
-	 * @var array the changes made to capabilities for the test scenario
-	 */
-	private $savedCapabilitiesChanges = [];
+class AppConfigurationContext implements Context {
 
 	/**
 	 * @var array saved configuration of the system before test runs as reported
@@ -57,9 +43,9 @@ trait AppConfiguration {
 	private $savedConfigList = [];
 
 	/**
-	 * @var array
+	 * @var FeatureContext
 	 */
-	private $initialTrustedServer;
+	private $featureContext;
 
 	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
@@ -73,12 +59,12 @@ trait AppConfiguration {
 	public function adminSetsServerParameterToUsingAPI(
 		$parameter, $app, $value
 	) {
-		$user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
+		$user = $this->featureContext->getCurrentUser();
+		$this->featureContext->setCurrentUser($this->featureContext->getAdminUsername());
 
 		$this->modifyAppConfig($app, $parameter, $value);
 
-		$this->currentUser = $user;
+		$this->featureContext->setCurrentUser($user);
 	}
 
 	/**
@@ -142,11 +128,13 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function userGetsCapabilities($username) {
-		$user = $this->getActualUsername($username);
-		$password = $this->getPasswordForUser($user);
-		$this->response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(), $user, $password, 'GET', '/cloud/capabilities',
-			[], $this->getOcsApiVersion()
+		$user = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getPasswordForUser($user);
+		$this->featureContext->setResponse(
+			OcsApiHelper::sendRequest(
+				$this->featureContext->getBaseUrl(), $user, $password, 'GET', '/cloud/capabilities',
+				[], $this->featureContext->getOcsApiVersion()
+			)
 		);
 	}
 
@@ -160,7 +148,7 @@ trait AppConfiguration {
 	public function userGetsCapabilitiesCheckResponse($username) {
 		$this->userGetsCapabilities($username);
 		Assert::assertEquals(
-			200, $this->response->getStatusCode()
+			200, $this->featureContext->getResponse()->getStatusCode()
 		);
 	}
 
@@ -170,7 +158,7 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theUserGetsCapabilities() {
-		$this->userGetsCapabilities($this->getCurrentUser());
+		$this->userGetsCapabilities($this->featureContext->getCurrentUser());
 	}
 
 	/**
@@ -179,7 +167,7 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theUserGetsCapabilitiesCheckResponse() {
-		$this->userGetsCapabilitiesCheckResponse($this->getCurrentUser());
+		$this->userGetsCapabilitiesCheckResponse($this->featureContext->getCurrentUser());
 	}
 
 	/**
@@ -188,7 +176,7 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theAdministratorGetsCapabilities() {
-		$this->userGetsCapabilities($this->getAdminUsername());
+		$this->userGetsCapabilities($this->featureContext->getAdminUsername());
 	}
 
 	/**
@@ -197,14 +185,14 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theAdministratorGetsCapabilitiesCheckResponse() {
-		$this->userGetsCapabilitiesCheckResponse($this->getAdminUsername());
+		$this->userGetsCapabilitiesCheckResponse($this->featureContext->getAdminUsername());
 	}
 
 	/**
 	 * @return string latest retrieved capabilities in XML format
 	 */
 	public function getCapabilitiesXml() {
-		return $this->getResponseXml()->data->capabilities;
+		return $this->featureContext->getResponseXml()->data->capabilities;
 	}
 
 	/**
@@ -279,64 +267,21 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesParameter the parameter name in the
-	 *                                      capabilities response
-	 *
-	 * @return boolean
-	 */
-	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
-		return (bool) $this->getParameterValueFromXml(
-			$this->savedCapabilitiesXml[$this->getBaseUrl()],
-			$capabilitiesApp,
-			$capabilitiesParameter
-		);
-	}
-
-	/**
-	 * @param array $capabilitiesArray with each array entry containing keys for:
-	 *                                 ['capabilitiesApp'] the "app" name in the capabilities response
-	 *                                 ['capabilitiesParameter'] the parameter name in the capabilities response
-	 *                                 ['testingApp'] the "app" name as understood by "testing"
-	 *                                 ['testingParameter'] the parameter name as understood by "testing"
-	 *                                 ['testingState'] boolean state the parameter must be set to for the test
-	 *
-	 * @return void
-	 */
-	public function setCapabilities($capabilitiesArray) {
-		$savedCapabilitiesChanges = AppConfigHelper::setCapabilities(
-			$this->getBaseUrl(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$capabilitiesArray,
-			$this->savedCapabilitiesXml[$this->getBaseUrl()]
-		);
-
-		if (!isset($this->savedCapabilitiesChanges[$this->getBaseUrl()])) {
-			$this->savedCapabilitiesChanges[$this->getBaseUrl()] = [];
-		}
-		$this->savedCapabilitiesChanges[$this->getBaseUrl()] = \array_merge(
-			$this->savedCapabilitiesChanges[$this->getBaseUrl()],
-			$savedCapabilitiesChanges
-		);
-	}
-
-	/**
 	 * @param string $app
 	 * @param string $parameter
 	 * @param string $value
 	 *
 	 * @return void
 	 */
-	protected function modifyAppConfig($app, $parameter, $value) {
+	public function modifyAppConfig($app, $parameter, $value) {
 		AppConfigHelper::modifyAppConfig(
-			$this->getBaseUrl(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$app,
 			$parameter,
 			$value,
-			$this->ocsApiVersion
+			$this->featureContext->getOcsApiVersion()
 		);
 	}
 
@@ -345,13 +290,13 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	protected function modifyAppConfigs($appParameterValues) {
+	public function modifyAppConfigs($appParameterValues) {
 		AppConfigHelper::modifyAppConfigs(
-			$this->getBaseUrl(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$appParameterValues,
-			$this->ocsApiVersion
+			$this->featureContext->getOcsApiVersion()
 		);
 	}
 
@@ -362,25 +307,25 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	protected function setStatusTestingApp($enabled) {
-		$this->theUserSendsToOcsApiEndpoint(
+		$this->featureContext->ocsContext->theUserSendsToOcsApiEndpoint(
 			($enabled ? 'post' : 'delete'), '/cloud/apps/testing'
 		);
-		$this->theHTTPStatusCodeShouldBe('200');
-		if ($this->ocsApiVersion == 1) {
-			$this->ocsContext->theOCSStatusCodeShouldBe('100');
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		if ($this->featureContext->getOcsApiVersion() == 1) {
+			$this->featureContext->ocsContext->theOCSStatusCodeShouldBe('100');
 		}
 
-		$this->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
-		$this->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->ocsContext->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		if ($enabled) {
 			Assert::assertContains(
 				'testing',
-				$this->response->getBody()->getContents()
+				$this->featureContext->getResponse()->getBody()->getContents()
 			);
 		} else {
 			Assert::assertNotContains(
 				'testing',
-				$this->response->getBody()->getContents()
+				$this->featureContext->getResponse()->getBody()->getContents()
 			);
 		}
 	}
@@ -393,16 +338,16 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url) {
-		$adminUser = $this->getAdminUsername();
+		$adminUser = $this->featureContext->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
+			$this->featureContext->getBaseUrl(),
 			$adminUser,
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/trustedservers",
-			['url' => $this->substituteInLineCodes($url)]
+			['url' => $this->featureContext->substituteInLineCodes($url)]
 		);
-		$this->setResponse($response);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -414,7 +359,7 @@ trait AppConfiguration {
 	 */
 	private function getUrlStringForMessage($url) {
 		$text = $url;
-		$expectedUrl = $this->substituteInLineCodes($url);
+		$expectedUrl = $this->featureContext->substituteInLineCodes($url);
 		if ($expectedUrl !== $url) {
 			$text .= " ($expectedUrl)";
 		}
@@ -441,9 +386,9 @@ trait AppConfiguration {
 	 * @return  void
 	 */
 	public function urlShouldBeATrustedServer($url) {
-		$trustedServers = $this->getTrustedServers();
+		$trustedServers = $this->featureContext->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
-			if ($server === $this->substituteInLineCodes($url)) {
+			if ($server === $this->featureContext->substituteInLineCodes($url)) {
 				return;
 			}
 		}
@@ -458,13 +403,13 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theTrustedServerListShouldIncludeTheseUrls(TableNode $table) {
-		$trustedServers = $this->getTrustedServers();
+		$trustedServers = $this->featureContext->getTrustedServers();
 		$expected = $table->getColumnsHash();
 
 		foreach ($expected as $server) {
 			$found = false;
 			foreach ($trustedServers as $url => $id) {
-				if ($url === $this->substituteInLineCodes($server['url'])) {
+				if ($url === $this->featureContext->substituteInLineCodes($server['url'])) {
 					$found = true;
 					break;
 				}
@@ -484,7 +429,7 @@ trait AppConfiguration {
 	 */
 	public function theAdministratorHasAddedUrlAsTrustedServer($url) {
 		$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
-		$status = $this->getResponse()->getStatusCode();
+		$status = $this->featureContext->getResponse()->getStatusCode();
 		if ($status !== 201) {
 			throw new \Exception(
 				__METHOD__ .
@@ -502,16 +447,16 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi($url) {
-		$adminUser = $this->getAdminUsername();
+		$adminUser = $this->featureContext->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
+			$this->featureContext->getBaseUrl(),
 			$adminUser,
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminPassword(),
 			'DELETE',
 			"/apps/testing/api/v1/trustedservers",
-			['url' => $this->substituteInLineCodes($url)]
+			['url' => $this->featureContext->substituteInLineCodes($url)]
 		);
-		$this->setResponse($response);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -522,9 +467,9 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function urlShouldNotBeATrustedServer($url) {
-		$trustedServers = $this->getTrustedServers();
+		$trustedServers = $this->featureContext->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
-			if ($server === $this->substituteInLineCodes($url)) {
+			if ($server === $this->featureContext->substituteInLineCodes($url)) {
 				Assert::fail(
 					"URL " . $this->getUrlStringForMessage($url)
 					. " is a trusted server but is not expected to be"
@@ -539,15 +484,15 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theAdministratorDeletesAllTrustedServersUsingTheTestingApi() {
-		$adminUser = $this->getAdminUsername();
+		$adminUser = $this->featureContext->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
+			$this->featureContext->getBaseUrl(),
 			$adminUser,
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminPassword(),
 			'DELETE',
 			"/apps/testing/api/v1/trustedservers/all"
 		);
-		$this->setResponse($response);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -559,10 +504,10 @@ trait AppConfiguration {
 		$this->theAdministratorDeletesAllTrustedServersUsingTheTestingApi();
 		Assert::assertEquals(
 			204,
-			$this->getResponse()->getStatusCode(),
+			$this->featureContext->getResponse()->getStatusCode(),
 			__METHOD__
 			. "Failed to clear all trusted servers"
-			. $this->getResponse()->getBody()->getContents()
+			. $this->featureContext->getResponse()->getBody()->getContents()
 		);
 	}
 
@@ -572,229 +517,21 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function theTrustedServerListShouldBeEmpty() {
-		$trustedServers = $this->getTrustedServers();
+		$trustedServers = $this->featureContext->getTrustedServers();
 		Assert::assertEmpty($trustedServers, "Trusted server list is not empty");
 	}
 
 	/**
-	 * Get the array of trusted servers in format ["url" => "id"]
-	 *
-	 * @param string $server 'LOCAL'/'REMOTE'
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public function getTrustedServers($server = 'LOCAL') {
-		if ($server === 'LOCAL') {
-			$url = $this->getLocalBaseUrl();
-		} elseif ($server === 'REMOTE') {
-			$url = $this->getRemoteBaseUrl();
-		} else {
-			throw new \Exception(__METHOD__ . "Invalid value for server : $server");
-		}
-		$adminUser = $this->getAdminUsername();
-		$response = OcsApiHelper::sendRequest(
-			$url,
-			$adminUser,
-			$this->getAdminPassword(),
-			'GET',
-			"/apps/testing/api/v1/trustedservers"
-		);
-		if ($response->getStatusCode() !== 200) {
-			throw new Exception("Could not get the list of trusted servers" . $response->getBody()->getContents());
-		}
-		$responseXml = HttpRequestHelper::getResponseXml(
-			$response
-		);
-		$serverData = \json_decode(
-			\json_encode(
-				$responseXml->data
-			),
-			true
-		);
-		if (!\array_key_exists('element', $serverData)) {
-			return [];
-		} else {
-			return isset($serverData['element'][0]) ?
-				\array_column($serverData['element'], 'id', 'url') :
-				\array_column($serverData, 'id', 'url');
-		}
-	}
-
-	/**
-	 * Setup any app config state.
-	 * This will be called before each scenario.
-	 *
-	 * @return void
-	 */
-	abstract protected function resetAppConfigs();
-
-	/**
 	 * @BeforeScenario
 	 *
-	 * @return void
-	 */
-	public function prepareParametersBeforeScenario() {
-		$user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
-		$previousServer = $this->currentServer;
-		foreach (['LOCAL', 'REMOTE'] as $server) {
-			if (($server === 'LOCAL') || $this->federatedServerExists()) {
-				$this->usingServer($server);
-				$this->resetAppConfigs();
-				$result = SetupHelper::runOcc(
-					['config:list', '--private'], $this->getAdminUsername(),
-					$this->getAdminPassword(), $this->getBaseUrl(), $this->getOcPath()
-				);
-				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
-			}
-		}
-		$this->usingServer($previousServer);
-		$this->currentUser = $user;
-	}
-
-	/**
-	 * Before Scenario to Save trusted Servers
-	 *
-	 * @BeforeScenario @federation-app-required
+	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
 	 */
-	public function setInitialTrustedServersBeforeScenario() {
-		$this->initialTrustedServer = [
-			'LOCAL' => $this->getTrustedServers(),
-			'REMOTE' => $this->getTrustedServers('REMOTE')
-		];
-	}
-
-	/**
-	 * After Scenario. restore trusted servers
-	 *
-	 * @AfterScenario @federation-app-required
-	 *
-	 * @return void
-	 */
-	public function restoreTrustedServersAfterScenario() {
-		$this->restoreTrustedServers('LOCAL');
-		if ($this->federatedServerExists()) {
-			$this->restoreTrustedServers('REMOTE');
-		}
-	}
-
-	/**
-	 * After Scenario. restore trusted servers
-	 *
-	 * @param string $server 'LOCAL'/'REMOTE'
-	 *
-	 * @return void
-	 */
-	public function restoreTrustedServers($server) {
-		$currentTrustedServers = $this->getTrustedServers($server);
-		foreach (\array_diff($currentTrustedServers, $this->initialTrustedServer[$server]) as $url => $id) {
-			$this->theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi($url);
-		}
-		foreach (\array_diff($this->initialTrustedServer[$server], $currentTrustedServers) as $url => $id) {
-			$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
-		}
-	}
-
-	/**
-	 * @AfterScenario
-	 *
-	 * @return void
-	 */
-	public function restoreParametersAfterScenario() {
-		$this->deleteTokenAuthEnforcedAfterScenario();
-		$user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
-		$this->runFunctionOnEveryServer([$this, 'restoreParameters']);
-		$this->currentUser = $user;
-	}
-
-	/**
-	 * restore settings of the system and delete new settings that were created in the test runs
-	 *
-	 * @param string $server LOCAL|REMOTE
-	 *
-	 * @return void
-	 *
-	 * @throws \Exception
-	 *
-	 */
-	private function restoreParameters($server) {
-		if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
-			$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
-		}
-		$result = SetupHelper::runOcc(
-			['config:list'], $this->getAdminUsername(),
-			$this->getAdminPassword(), $this->getBaseUrl(),
-			$this->getOcPath()
-		);
-		$currentConfigList = \json_decode($result['stdOut'], true);
-		foreach ($currentConfigList['system'] as $configKey => $configValue) {
-			if (!\array_key_exists(
-				$configKey, $this->savedConfigList[$server]['system']
-			)
-			) {
-				SetupHelper::runOcc(
-					['config:system:delete', $configKey],
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$this->getBaseUrl(),
-					$this->getOcPath()
-				);
-			}
-		}
-		foreach ($this->savedConfigList[$server]['system'] as $configKey => $configValue) {
-			if (!\array_key_exists($configKey, $currentConfigList["system"])
-				|| $currentConfigList["system"][$configKey] !== $this->savedConfigList[$server]['system'][$configKey]
-			) {
-				SetupHelper::runOcc(
-					['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey],
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$this->getBaseUrl(),
-					$this->getOcPath()
-				);
-			}
-		}
-		foreach ($currentConfigList['apps'] as $appName => $appSettings) {
-			foreach ($appSettings as $configKey => $configValue) {
-				//only check if the app was there in the original configuration
-				if (\array_key_exists($appName, $this->savedConfigList[$server]['apps'])
-					&& !\array_key_exists(
-						$configKey, $this->savedConfigList[$server]['apps'][$appName]
-					)
-				) {
-					SetupHelper::runOcc(
-						['config:app:delete', $appName, $configKey],
-						$this->getAdminUsername(),
-						$this->getAdminPassword(),
-						$this->getBaseUrl(),
-						$this->getOcPath()
-					);
-				} elseif (\array_key_exists($appName, $this->savedConfigList[$server]['apps'])
-					&& \array_key_exists($configKey, $this->savedConfigList[$server]['apps'][$appName])
-					&& $this->savedConfigList[$server]['apps'][$appName][$configKey] !== $configValue
-				) {
-					// Do not accidentally disable apps here (perhaps too early)
-					// That is done in Provisioning.php restoreAppEnabledDisabledState()
-					if ($configKey !== "enabled") {
-						SetupHelper::runOcc(
-							[
-								'config:app:set',
-								$appName,
-								$configKey,
-								"--value=" . $this->savedConfigList[$server]['apps'][$appName][$configKey]
-							],
-							$this->getAdminUsername(),
-							$this->getAdminPassword(),
-							$this->getBaseUrl(),
-							$this->getOcPath()
-						);
-					}
-				}
-			}
-		}
+	public function setUpScenario(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

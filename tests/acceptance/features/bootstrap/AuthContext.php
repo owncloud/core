@@ -19,14 +19,16 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Context;
 
 /**
  * Authentication functions
  */
-trait Auth {
+class AuthContext implements Context {
 	/**
 	 * @var string
 	 */
@@ -46,6 +48,11 @@ trait Auth {
 	 * @var boolean
 	 */
 	private $tokenAuthHasBeenSet = false;
+
+	/**
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @var string 'true' or 'false' or ''
@@ -83,19 +90,26 @@ trait Auth {
 	 * get the app token that was last generated
 	 * app acceptance tests that have their own step code may need to use this
 	 *
-	 * @return string app token
+	 * @return array app tokens
 	 */
 	public function getAppTokens() {
-		$this->appTokens;
+		return $this->appTokens;
 	}
 
 	/**
 	 * @BeforeScenario
 	 *
+	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
-	public function setUpScenario() {
-		$this->responseXml = '';
+	public function setUpScenario(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
+
+		$this->featureContext->setResponseXml([]);
 	}
 
 	/**
@@ -120,7 +134,7 @@ trait Auth {
 	 */
 	public function userHasRequestedURLWith($url, $method) {
 		$this->sendRequest($url, $method);
-		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -134,12 +148,12 @@ trait Auth {
 	 */
 	public function verifyStatusCode($ocsCode, $httpCode, $endPoint) {
 		if ($ocsCode !== null) {
-			$this->ocsContext->theOCSStatusCodeShouldBe(
+			$this->featureContext->ocsContext->theOCSStatusCodeShouldBe(
 				$ocsCode,
 				$message = "Got unexpected OCS code while sending request to endpoint " . $endPoint
 			);
 		}
-		$this->theHTTPStatusCodeShouldBe(
+		$this->featureContext->theHTTPStatusCodeShouldBe(
 			$httpCode,
 			$message = "Got unexpected HTTP code while sending request to endpoint " . $endPoint
 		);
@@ -154,7 +168,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
 			$this->sendRequest($row['endpoint'], $method, null, false, $body);
@@ -186,7 +200,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['body', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['body', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
@@ -206,7 +220,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code'], ['body']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code'], ['body']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
@@ -240,7 +254,7 @@ trait Auth {
 		$password,
 		TableNode $table
 	) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->administratorRequestsURLWithUsingBasicAuth(
 				$row['endpoint'],
@@ -261,7 +275,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingBasicTokenAuth($user, $row['endpoint'], $method);
 			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
@@ -277,7 +291,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithBrowserSession($row['endpoint'], $method);
 			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
@@ -293,7 +307,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
 			$ocsCode = $row['ocs-code'] ?? null;
@@ -314,13 +328,13 @@ trait Auth {
 		$url, $method, $authHeader = null, $useCookies = false, $body = null
 	) {
 		// reset responseXml
-		$this->responseXml = '';
+		$this->featureContext->setResponseXml([]);
 
-		$fullUrl = $this->getBaseUrl() . $url;
+		$fullUrl = $this->featureContext->getBaseUrl() . $url;
 
 		$cookies = null;
 		if ($useCookies) {
-			$cookies = $this->cookieJar;
+			$cookies = $this->featureContext->getCookieJar();
 		}
 
 		$headers = [];
@@ -329,10 +343,12 @@ trait Auth {
 		}
 		$headers['OCS-APIREQUEST'] = 'true';
 		if (isset($this->requestToken)) {
-			$headers['requesttoken'] = $this->requestToken;
+			$headers['requesttoken'] = $this->featureContext->getRequestToken();
 		}
-		$this->response = HttpRequestHelper::sendRequest(
-			$fullUrl, $method, null, null, $headers, $body, null, $cookies
+		$this->featureContext->setResponse(
+			HttpRequestHelper::sendRequest(
+				$fullUrl, $method, null, null, $headers, $body, null, $cookies
+			)
 		);
 	}
 
@@ -344,18 +360,20 @@ trait Auth {
 	 * @return void
 	 */
 	public function userGeneratesNewAppPasswordNamed($name) {
-		$url = $this->getBaseUrl() . '/index.php/settings/personal/authtokens';
+		$url = $this->featureContext->getBaseUrl() . '/index.php/settings/personal/authtokens';
 		$body = ['name' => $name];
 		$headers = [
 			'Content-Type' => 'application/x-www-form-urlencoded',
 			'OCS-APIREQUEST' => 'true',
-			'requesttoken' => $this->requestToken,
+			'requesttoken' => $this->featureContext->getRequestToken(),
 			'X-Requested-With' => 'XMLHttpRequest'
 		];
-		$this->response = HttpRequestHelper::post(
-			$url, null, null, $headers, $body, null, $this->cookieJar
+		$this->featureContext->setResponse(
+			HttpRequestHelper::post(
+				$url, null, null, $headers, $body, null, $this->featureContext->getCookieJar()
+			)
 		);
-		$token = \json_decode($this->response->getBody()->getContents());
+		$token = \json_decode($this->featureContext->getResponse()->getBody()->getContents());
 		$this->appToken = $token->token;
 		$this->appTokens[$token->deviceToken->name]
 			= ["id" => $token->deviceToken->id, "token" => $token->token];
@@ -369,15 +387,17 @@ trait Auth {
 	 * @return void
 	 */
 	public function userDeletesAppPasswordNamed($name) {
-		$url = $this->getBaseUrl() . '/index.php/settings/personal/authtokens/' . $this->appTokens[$name]["id"];
+		$url = $this->featureContext->getBaseUrl() . '/index.php/settings/personal/authtokens/' . $this->appTokens[$name]["id"];
 		$headers = [
 			'Content-Type' => 'application/x-www-form-urlencoded',
 			'OCS-APIREQUEST' => 'true',
-			'requesttoken' => $this->requestToken,
+			'requesttoken' => $this->featureContext->getRequestToken(),
 			'X-Requested-With' => 'XMLHttpRequest'
 		];
-		$this->response = HttpRequestHelper::delete(
-			$url, null, null, $headers, null, null, $this->cookieJar
+		$this->featureContext->setResponse(
+			HttpRequestHelper::delete(
+				$url, null, null, $headers, null, null, $this->featureContext->getCookieJar()
+			)
 		);
 	}
 
@@ -390,7 +410,7 @@ trait Auth {
 	 */
 	public function aNewAppPasswordHasBeenGenerated($name) {
 		$this->userGeneratesNewAppPasswordNamed($name);
-		$this->theHTTPStatusCodeShouldBe(200);
+		$this->featureContext->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
@@ -402,7 +422,7 @@ trait Auth {
 	 */
 	public function aNewAppPasswordHasBeenDeleted($name) {
 		$this->userDeletesAppPasswordNamed($name);
-		$this->theHTTPStatusCodeShouldBe(200);
+		$this->featureContext->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
@@ -416,16 +436,16 @@ trait Auth {
 	public function aNewClientTokenHasBeenGenerated($user) {
 		$body = \json_encode(
 			[
-				'user' => $this->getActualUsername($user),
-				'password' => $this->getPasswordForUser($user),
+				'user' => $this->featureContext->getActualUsername($user),
+				'password' => $this->featureContext->getPasswordForUser($user),
 			]
 		);
 		$headers = ['Content-Type' => 'application/json'];
-		$url = $this->getBaseUrl() . '/token/generate';
-		$this->response = HttpRequestHelper::post($url, null, null, $headers, $body);
-		$this->theHTTPStatusCodeShouldBe("200");
+		$url = $this->featureContext->getBaseUrl() . '/token/generate';
+		$this->featureContext->setResponse(HttpRequestHelper::post($url, null, null, $headers, $body));
+		$this->featureContext->theHTTPStatusCodeShouldBe("200");
 		$this->clientToken
-			= \json_decode($this->response->getBody()->getContents())->token;
+			= \json_decode($this->featureContext->getResponse()->getBody()->getContents())->token;
 	}
 
 	/**
@@ -435,7 +455,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function aNewClientTokenForTheAdministratorHasBeenGenerated() {
-		$admin = $this->getAdminUsername();
+		$admin = $this->featureContext->getAdminUsername();
 		$this->aNewClientTokenHasBeenGenerated($admin);
 	}
 
@@ -452,7 +472,7 @@ trait Auth {
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
 		if ($password === null) {
-			$authString = "$user:" . $this->getPasswordForUser($user);
+			$authString = "$user:" . $this->featureContext->getPasswordForUser($user);
 		} else {
 			$authString = $user . ":" . $password;
 		}
@@ -478,7 +498,7 @@ trait Auth {
 		$this->userRequestsURLWithUsingBasicAuth(
 			$user, $url, $method, $password, $body
 		);
-		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -492,7 +512,7 @@ trait Auth {
 	 */
 	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password = null) {
 		$this->userRequestsURLWithUsingBasicAuth(
-			$this->getAdminUsername(), $url, $method, $password
+			$this->featureContext->getAdminUsername(), $url, $method, $password
 		);
 	}
 
@@ -524,7 +544,7 @@ trait Auth {
 	 */
 	public function userHasRequestedURLWithUsingBasicTokenAuth($user, $url, $method) {
 		$this->userRequestsURLWithUsingBasicTokenAuth($user, $url, $method);
-		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -549,7 +569,7 @@ trait Auth {
 	 */
 	public function userHasRequestedURLWithUsingAClientToken($url, $method) {
 		$this->userRequestsURLWithUsingAClientToken($url, $method);
-		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -587,7 +607,7 @@ trait Auth {
 	 */
 	public function userHasRequestedURLWithUsingAppPassword($url, $method) {
 		$this->userRequestsURLWithUsingAppPassword($url, $method);
-		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -612,7 +632,7 @@ trait Auth {
 	 */
 	public function userHasRequestedURLWithBrowserSession($url, $method) {
 		$this->userRequestsURLWithBrowserSession($url, $method);
-		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -623,25 +643,29 @@ trait Auth {
 	 * @return void
 	 */
 	public function aNewBrowserSessionForHasBeenStarted($user) {
-		$loginUrl = $this->getBaseUrl() . '/index.php/login';
+		$loginUrl = $this->featureContext->getBaseUrl() . '/index.php/login';
 		// Request a new session and extract CSRF token
-		$this->response = HttpRequestHelper::get(
-			$loginUrl, null, null, null, null, null, $this->cookieJar
+		$this->featureContext->setResponse(
+			HttpRequestHelper::get(
+				$loginUrl, null, null, null, null, null, $this->featureContext->getCookieJar()
+			)
 		);
-		$this->theHTTPStatusCodeShouldBeSuccess();
-		$this->extractRequestTokenFromResponse($this->response);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->extractRequestTokenFromResponse($this->featureContext->getResponse());
 
 		// Login and extract new token
 		$body = [
-			'user' => $this->getActualUsername($user),
-			'password' => $this->getPasswordForUser($user),
-			'requesttoken' => $this->requestToken
+			'user' => $this->featureContext->getActualUsername($user),
+			'password' => $this->featureContext->getPasswordForUser($user),
+			'requesttoken' => $this->featureContext->getRequestToken()
 		];
-		$this->response = HttpRequestHelper::post(
-			$loginUrl, null, null, null, $body, null, $this->cookieJar
+		$this->featureContext->setResponse(
+			HttpRequestHelper::post(
+				$loginUrl, null, null, null, $body, null, $this->featureContext->getCookieJar()
+			)
 		);
-		$this->theHTTPStatusCodeShouldBeSuccess();
-		$this->extractRequestTokenFromResponse($this->response);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+		$this->featureContext->extractRequestTokenFromResponse($this->featureContext->getResponse());
 	}
 
 	/**
@@ -650,7 +674,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function aNewBrowserSessionForTheAdministratorHasBeenStarted() {
-		$admin = $this->getAdminUsername();
+		$admin = $this->featureContext->getAdminUsername();
 		$this->aNewBrowserSessionForHasBeenStarted($admin);
 	}
 
@@ -670,7 +694,7 @@ trait Auth {
 		} else {
 			$value = 'false';
 		}
-		$occStatus = $this->setSystemConfig(
+		$occStatus = $this->featureContext->setSystemConfig(
 			'token_auth_enforced',
 			$value,
 			'boolean'
@@ -691,7 +715,7 @@ trait Auth {
 	 * @return string
 	 */
 	public function generateAuthTokenForAdmin() {
-		$this->aNewBrowserSessionForHasBeenStarted($this->getAdminUsername());
+		$this->aNewBrowserSessionForHasBeenStarted($this->featureContext->getAdminUsername());
 		$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . \microtime());
 		return $this->appToken;
 	}
@@ -713,7 +737,7 @@ trait Auth {
 			} else {
 				$appTokenForOccCommand = null;
 			}
-			$this->deleteSystemConfig(
+			$this->featureContext->deleteSystemConfig(
 				'token_auth_enforced',
 				null,
 				$appTokenForOccCommand,
