@@ -21,12 +21,19 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\IpHelper;
 
 /**
  * Ip trait
  */
 class IpContext implements Context {
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * The local source IP address from which to initiate API actions.
@@ -143,11 +150,21 @@ class IpContext implements Context {
 	}
 
 	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
 	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
 	 */
-	public function setUpScenarioGetIpUrls() {
+	public function setUpScenarioGetIpUrls(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
+
 		$this->ipv4Url = \getenv('IPV4_URL');
 		$this->ipv6Url = \getenv('IPV6_URL');
 	}
