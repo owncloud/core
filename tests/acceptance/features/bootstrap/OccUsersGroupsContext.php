@@ -185,7 +185,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetUserPasswordUsingTheOccCommand($username, $password) {
-		$this->featureContext->resetUserPassword($username, $password);
+		$this->resetUserPassword($username, $password);
 	}
 
 	/**
@@ -198,7 +198,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetUserPasswordAndSendEmailUsingTheOccCommand($username, $password) {
-		$this->featureContext->resetUserPassword($username, $password, true);
+		$this->resetUserPassword($username, $password, true);
 	}
 
 	/**
@@ -229,7 +229,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorInvokesPasswordResetForUserUsingTheOccCommand($username) {
-		$this->featureContext->resetUserPassword($username);
+		$this->resetUserPassword($username);
 	}
 
 	/**
@@ -658,6 +658,44 @@ class OccUsersGroupsContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
 		Assert::assertEquals($noOfUsers, $actualUsers[1]);
+	}
+
+	/**
+	 * Reset user password
+	 *
+	 * If password is not supplied, then always send email.
+	 * If password is supplied, then only send email if sendEmail param is true
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @param bool $sendEmail
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function resetUserPassword(
+		$username, $password = null, $sendEmail = false
+	) {
+		$actualUsername = $this->featureContext->getActualUsername($username);
+		if ($password === null) {
+			$this->featureContext->runOcc(
+				["user:resetpassword $actualUsername --send-email"]
+			);
+		} else {
+			$password = $this->featureContext->getActualPassword($password);
+			if ($sendEmail) {
+				$sendEmailParam = "--send-email";
+			} else {
+				$sendEmailParam = "";
+			}
+			$this->featureContext->runOccWithEnvVariables(
+				["user:resetpassword $actualUsername $sendEmailParam --password-from-env"],
+				['OC_PASS' => $password]
+			);
+			if ($username === "%admin%") {
+				$this->featureContext->rememberNewAdminPassword($password);
+			}
+		}
 	}
 
 	/**

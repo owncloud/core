@@ -24,6 +24,7 @@ use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Context;
+use TestHelpers\SetupHelper;
 
 /**
  * Authentication functions
@@ -109,7 +110,16 @@ class AuthContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 
+		// Reset ResponseXml
 		$this->featureContext->setResponseXml([]);
+
+		// Initialize SetupHelper class
+		SetupHelper::init(
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
 	}
 
 	/**
@@ -694,7 +704,7 @@ class AuthContext implements Context {
 		} else {
 			$value = 'false';
 		}
-		$occStatus = $this->featureContext->setSystemConfig(
+		$occStatus = SetupHelper::setSystemConfig(
 			'token_auth_enforced',
 			$value,
 			'boolean'
@@ -737,7 +747,7 @@ class AuthContext implements Context {
 			} else {
 				$appTokenForOccCommand = null;
 			}
-			$this->featureContext->deleteSystemConfig(
+			SetupHelper::deleteSystemConfig(
 				'token_auth_enforced',
 				null,
 				$appTokenForOccCommand,

@@ -44,7 +44,6 @@ class FeatureContext extends BehatVariablesContext {
 	use Provisioning;
 	use Sharing;
 	use WebDav;
-	use CommandLine;
 
 	/**
 	 * @var string
@@ -231,9 +230,28 @@ class FeatureContext extends BehatVariablesContext {
 	private $savedCapabilitiesXml;
 
 	/**
+	 * @var array saved configuration of the system before test runs as reported
+	 *            by occ config:list
+	 */
+	private $savedConfigList = [];
+
+	/**
 	 * @var array
 	 */
 	private $initialTrustedServer;
+
+	/**
+	 * @var int return code of last command
+	 */
+	private $lastCode;
+	/**
+	 * @var string stdout of last command
+	 */
+	private $lastStdOut;
+	/**
+	 * @var string stderr of last command
+	 */
+	private $lastStdErr;
 
 	/**
 	 * BasicStructure constructor.
@@ -596,6 +614,36 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * get the exit status of the last occ command
+	 * app acceptance tests that have their own step code may need to process this
+	 *
+	 * @return int exit status code of the last occ command
+	 */
+	public function getExitStatusCodeOfOccCommand() {
+		return $this->lastCode;
+	}
+
+	/**
+	 * get the normal output of the last occ command
+	 * app acceptance tests that have their own step code may need to process this
+	 *
+	 * @return string normal output of the last occ command
+	 */
+	public function getStdOutOfOccCommand() {
+		return $this->lastStdOut;
+	}
+
+	/**
+	 * get the error output of the last occ command
+	 * app acceptance tests that have their own step code may need to process this
+	 *
+	 * @return string error output of the last occ command
+	 */
+	public function getStdErrOfOccCommand() {
+		return $this->lastStdErr;
+	}
+
+	/**
 	 * returns the base URL without any sub-path e.g. http://localhost:8080
 	 * of the base URL http://localhost:8080/owncloud
 	 *
@@ -827,12 +875,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function setCSRFDotDisabled($setting) {
-		$oldCSRFSetting = $this->getSystemConfigValue('csrf.disabled');
+		$oldCSRFSetting = SetupHelper::getSystemConfigValue('csrf.disabled');
 
 		if ($setting === "") {
-			$this->deleteSystemConfig('csrf.disabled');
+			SetupHelper::deleteSystemConfig('csrf.disabled');
 		} elseif (($setting === 'true') || ($setting === 'false')) {
-			$this->setSystemConfig('csrf.disabled', $setting, 'boolean');
+			SetupHelper::setSystemConfig('csrf.disabled', $setting, 'boolean');
 		} else {
 			throw new \http\Exception\InvalidArgumentException(
 				'setting must be "true", "false" or ""'
@@ -2457,17 +2505,45 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @BeforeScenario @local_storage
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
 	 */
-	public function setupLocalStorageBefore() {
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// registers context in every suite, as every suite has FeatureContext
+		// that calls BasicStructure.php
+		$this->ocsContext = new OCSContext();
+		$this->authContext = new AuthContext();
+		$this->appConfigurationContext = new AppConfigurationContext();
+		$this->ocsContext->before($scope);
+		$this->authContext->setUpScenario($scope);
+		$this->appConfigurationContext->setUpScenario($scope);
+		$environment->registerContext($this->ocsContext);
+		$environment->registerContext($this->authContext);
+		$environment->registerContext($this->appConfigurationContext);
+
+		// Initialize SetupHelper
 		SetupHelper::init(
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->getBaseUrl(),
 			$this->getOcPath()
 		);
+	}
+
+	/**
+	 * @BeforeScenario @local_storage
+	 *
+	 * @return void
+	 */
+	public function setupLocalStorageBefore() {
 		$storageName = "local_storage";
 		$result = SetupHelper::createLocalStorageMount($storageName);
 		$storageId = $result['storageId'];
@@ -2607,32 +2683,6 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
-	}
-
-	/**
-	 * This will run before EVERY scenario.
-	 * It will set the properties for this object.
-	 *
-	 * @BeforeScenario
-	 *
-	 * @param BeforeScenarioScope $scope
-	 *
-	 * @return void
-	 */
-	public function before(BeforeScenarioScope $scope) {
-		// Get the environment
-		$environment = $scope->getEnvironment();
-		// registers context in every suite, as every suite has FeatureContext
-		// that calls BasicStructure.php
-		$this->ocsContext = new OCSContext();
-		$this->authContext = new AuthContext();
-		$this->appConfigurationContext = new AppConfigurationContext();
-		$this->ocsContext->before($scope);
-		$this->authContext->setUpScenario($scope);
-		$this->appConfigurationContext->setUpScenario($scope);
-		$environment->registerContext($this->ocsContext);
-		$environment->registerContext($this->authContext);
-		$environment->registerContext($this->appConfigurationContext);
 	}
 
 	/**
@@ -2842,6 +2892,144 @@ class FeatureContext extends BehatVariablesContext {
 		if ($this->federatedServerExists()) {
 			$this->restoreTrustedServers('REMOTE');
 		}
+	}
+
+	/**
+	 * Invokes an OCC command
+	 *
+	 * @param array $args of the occ command
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return int exit code
+	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
+	 */
+	public function runOcc(
+		$args = [],
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		return $this->runOccWithEnvVariables(
+			$args,
+			null,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Invokes an OCC command with an optional array of environment variables
+	 *
+	 * @param array $args of the occ command
+	 * @param array|null $envVariables to be defined before the command is run
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return int exit code
+	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
+	 */
+	public function runOccWithEnvVariables(
+		$args = [],
+		$envVariables = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args[] = '--no-ansi';
+		$return = SetupHelper::runOcc(
+			$args, $adminUsername, $adminPassword, $baseUrl, $ocPath, $envVariables
+		);
+		$this->lastStdOut = $return['stdOut'];
+		$this->lastStdErr = $return['stdErr'];
+		$this->lastCode = (int) $return['code'];
+		return $this->lastCode;
+	}
+
+	/**
+	 * Find exception texts in stderr
+	 *
+	 * @return array of exception texts
+	 */
+	public function findExceptions() {
+		$exceptions = [];
+		$captureNext = false;
+		// the exception text usually appears after an "[Exception]" row
+		foreach (\explode("\n", $this->lastStdErr) as $line) {
+			if (\preg_match('/\[Exception\]/', $line)) {
+				$captureNext = true;
+				continue;
+			}
+			if ($captureNext) {
+				$exceptions[] = \trim($line);
+				$captureNext = false;
+			}
+		}
+
+		return $exceptions;
+	}
+
+	/**
+	 * remember the result of the last occ command
+	 *
+	 * @param string[] $result associated array with "code", "stdOut", "stdErr"
+
+	 * @return void
+	 */
+	public function setResultOfOccCommand($result) {
+		Assert::assertIsArray($result);
+		Assert::assertArrayHasKey('code', $result);
+		Assert::assertArrayHasKey('stdOut', $result);
+		Assert::assertArrayHasKey('stdErr', $result);
+		$this->lastCode = (int) $result['code'];
+		$this->lastStdOut = $result['stdOut'];
+		$this->lastStdErr = $result['stdErr'];
+	}
+
+	/**
+	 * @param string $sourceUser
+	 * @param string $targetUser
+	 *
+	 * @return string|null
+	 */
+	public function findLastTransferFolderForUser($sourceUser, $targetUser) {
+		$foundPaths = [];
+		$responseXmlObject = $this->listFolder($targetUser, '', 1);
+		$transferredElements = $responseXmlObject->xpath(
+			"//d:response/d:href[contains(., '/transferred%20from%20$sourceUser%20on%')]"
+		);
+		foreach ($transferredElements as $transferredElement) {
+			$path = \rawurldecode($transferredElement);
+			$parts = \explode(' ', $path);
+			// store timestamp as key
+			$foundPaths[] = [
+				'date' => \strtotime(\trim($parts[4], '/')),
+				'path' => $path,
+			];
+		}
+		if (empty($foundPaths)) {
+			return null;
+		}
+
+		\usort(
+			$foundPaths, function ($a, $b) {
+				return $a['date'] - $b['date'];
+			}
+		);
+
+		$davPath = \rtrim($this->getFullDavFilesPath($targetUser), '/');
+
+		$foundPath = \end($foundPaths)['path'];
+		// strip dav path
+		return \substr($foundPath, \strlen($davPath) + 1);
 	}
 
 	/**

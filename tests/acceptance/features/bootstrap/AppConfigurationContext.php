@@ -37,12 +37,6 @@ use Behat\Behat\Context\Context;
 class AppConfigurationContext implements Context {
 
 	/**
-	 * @var array saved configuration of the system before test runs as reported
-	 *            by occ config:list
-	 */
-	private $savedConfigList = [];
-
-	/**
 	 * @var FeatureContext
 	 */
 	private $featureContext;

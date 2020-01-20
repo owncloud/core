@@ -37,6 +37,7 @@ use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\EmailHelper;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -808,7 +809,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function setMinCharactersForAutocomplete($minCharacters) {
 		if ($this->oldMinCharactersForAutocomplete === null) {
 			$oldMinCharactersForAutocomplete
-				= $this->featureContext->getSystemConfigValue(
+				= SetupHelper::getSystemConfigValue(
 					'user.search_min_length'
 				);
 			$this->oldMinCharactersForAutocomplete = \trim(
@@ -816,7 +817,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 		}
 		$minCharacters = (int) $minCharacters;
-		$this->featureContext->setSystemConfig(
+		SetupHelper::setSystemConfig(
 			'user.search_min_length', $minCharacters
 		);
 	}
@@ -830,14 +831,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function allowHttpFallbackForFedSharing() {
 		if ($this->oldFedSharingFallbackSetting === null) {
 			$oldFedSharingFallbackSetting
-				= $this->featureContext->getSystemConfigValue(
+				= SetupHelper::getSystemConfigValue(
 					'sharing.federation.allowHttpFallback'
 				);
 			$this->oldFedSharingFallbackSetting = \trim(
 				$oldFedSharingFallbackSetting
 			);
 		}
-		$this->featureContext->setSystemConfig(
+		SetupHelper::setSystemConfig(
 			'sharing.federation.allowHttpFallback', 'true', 'boolean'
 		);
 	}
@@ -1711,6 +1712,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
+
+		// Initialize SetupHelper class
+		SetupHelper::init(
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
 	}
 
 	/**
@@ -1724,20 +1733,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function tearDownScenario() {
 		//TODO make a function that can be used for different settings
 		if ($this->oldMinCharactersForAutocomplete === "") {
-			$this->featureContext->deleteSystemConfig('user.search_min_length');
+			SetupHelper::deleteSystemConfig('user.search_min_length');
 		} elseif ($this->oldMinCharactersForAutocomplete !== null) {
-			$this->featureContext->setSystemConfig(
+			SetupHelper::setSystemConfig(
 				'user.search_min_length',
 				$this->oldMinCharactersForAutocomplete
 			);
 		}
 
 		if ($this->oldFedSharingFallbackSetting === "") {
-			$this->featureContext->deleteSystemConfig(
+			SetupHelper::deleteSystemConfig(
 				'sharing.federation.allowHttpFallback'
 			);
 		} elseif ($this->oldFedSharingFallbackSetting !== null) {
-			$this->featureContext->setSystemConfig(
+			SetupHelper::setSystemConfig(
 				'sharing.federation.allowHttpFallback',
 				$this->oldFedSharingFallbackSetting,
 				'boolean'

@@ -633,7 +633,7 @@ class OccContext implements Context {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lines = $this->featureContext->findLines(
+		$lines = SetupHelper::findLines(
 			$commandOutput,
 			$text
 		);
@@ -659,7 +659,7 @@ class OccContext implements Context {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$commandOutput = $this->featureContext->getStdErrOfOccCommand();
-		$lines = $this->featureContext->findLines(
+		$lines = SetupHelper::findLines(
 			$commandOutput,
 			$text
 		);
@@ -1498,7 +1498,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
-		$config = \trim($this->featureContext->getSystemConfigValue($key));
+		$config = \trim(SetupHelper::getSystemConfigValue($key));
 		Assert::assertSame($value, $config);
 	}
 
@@ -1513,7 +1513,7 @@ class OccContext implements Context {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$this->featureContext->verifyTableNodeColumns($table, ['table_column']);
 		foreach ($table as $row) {
-			$lines = $this->featureContext->findLines(
+			$lines = SetupHelper::findLines(
 				$commandOutput,
 				$row['table_column']
 			);
@@ -1533,7 +1533,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function systemConfigKeyShouldNotExist($key) {
-		Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
+		Assert::assertEmpty(SetupHelper::getSystemConfig($key)['stdOut']);
 	}
 
 	/**
@@ -1625,7 +1625,7 @@ class OccContext implements Context {
 	public function getLastJobIdForJob($job) {
 		$this->getAllJobsInBackgroundQueueUsingOccCommand();
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lines = $this->featureContext->findLines(
+		$lines = SetupHelper::findLines(
 			$commandOutput,
 			$job
 		);
@@ -1832,7 +1832,7 @@ class OccContext implements Context {
 	 */
 	public function resetDAVTechPreview() {
 		if ($this->initialTechPreviewStatus === "") {
-			$this->featureContext->deleteSystemConfig('dav.enable.tech_preview');
+			SetupHelper::deleteSystemConfig('dav.enable.tech_preview');
 		} elseif ($this->initialTechPreviewStatus === 'true' && !$this->techPreviewEnabled) {
 			$this->enableDAVTechPreview();
 		} elseif ($this->initialTechPreviewStatus === 'false' && $this->techPreviewEnabled) {
@@ -1863,7 +1863,7 @@ class OccContext implements Context {
 			$this->featureContext->getOcPath()
 		);
 		$techPreviewEnabled = \trim(
-			$this->featureContext->getSystemConfigValue('dav.enable.tech_preview')
+			SetupHelper::getSystemConfigValue('dav.enable.tech_preview')
 		);
 		$this->initialTechPreviewStatus = $techPreviewEnabled;
 		$this->techPreviewEnabled = $techPreviewEnabled === 'true';

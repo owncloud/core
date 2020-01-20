@@ -791,4 +791,188 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$result['storageId'] = (int)$storageIdWords[4];
 		return $result;
 	}
+
+	/**
+	 * Get a system config setting, including status code, output and standard
+	 * error output.
+	 *
+	 * @param string $key
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public static function getSystemConfig(
+		$key,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:get';
+		$args[] = $key;
+
+		if ($output !== null) {
+			$args[] = '--output';
+			$args[] = $output;
+		}
+
+		$args[] = '--no-ansi';
+
+		return self::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Set a system config setting
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string|null $type e.g. boolean or json
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public static function setSystemConfig(
+		$key,
+		$value,
+		$type = null,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:set';
+		$args[] = $key;
+		$args[] = '--value';
+		$args[] = $value;
+
+		if ($type !== null) {
+			$args[] = '--type';
+			$args[] = $type;
+		}
+
+		if ($output !== null) {
+			$args[] = '--output';
+			$args[] = $output;
+		}
+
+		$args[] = '--no-ansi';
+		if ($baseUrl === null) {
+			$baseUrl = self::$baseUrl;
+		}
+		return self::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Get the value of a system config setting
+	 *
+	 * @param string $key
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public static function getSystemConfigValue(
+		$key,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		if ($baseUrl === null) {
+			$baseUrl = self::$baseUrl;
+		}
+		return self::getSystemConfig(
+			$key,
+			$output,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		)['stdOut'];
+	}
+
+	/**
+	 * Finds all lines containing the given text
+	 *
+	 * @param string $input stdout or stderr output
+	 * @param string $text text to search for
+	 *
+	 * @return array array of lines that matched
+	 */
+	public function findLines($input, $text) {
+		$results = [];
+		foreach (\explode("\n", $input) as $line) {
+			if (\strpos($line, $text) !== false) {
+				$results[] = $line;
+			}
+		}
+		return $results;
+	}
+
+	/**
+	 * Delete a system config setting
+	 *
+	 * @param string $key
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public static function deleteSystemConfig(
+		$key,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:delete';
+		$args[] = $key;
+
+		$args[] = '--no-ansi';
+		if ($baseUrl === null) {
+			$baseUrl = self::$baseUrl;
+		}
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
 }
