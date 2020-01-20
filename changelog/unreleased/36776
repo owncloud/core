@@ -1,0 +1,6 @@
+Change: Adjust wording displayed for empty additional settings panel
+
+The wording displayed when the admin personal settings panel is empty has been
+adjusted so that it no longer looks like there is an error.
+
+https://github.com/owncloud/core/pull/36776
