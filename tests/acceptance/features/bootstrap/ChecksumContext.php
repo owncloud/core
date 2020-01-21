@@ -22,6 +22,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
 
@@ -149,7 +150,11 @@ class ChecksumContext implements Context {
     <oc:checksums />
   </d:prop>
 </d:propfind>';
-		$url = $this->featureContext->getBaseUrl() . '/' . $this->featureContext->getDavFilesPath($user) . $path;
+		$url = $this->featureContext->getBaseUrl() . '/' .
+			WebDavHelper::getDavPath(
+				$user, $this->featureContext->getDavPathVersion()
+			) . $path;
+		$url = WebDavHelper::sanitizeUrl($url);
 		$response = HttpRequestHelper::sendRequest(
 			$url,
 			'PROPFIND',
