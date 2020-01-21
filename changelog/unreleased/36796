@@ -1,0 +1,12 @@
+Change: Update symfony (3.4.36 => 3.4.37)
+
+The following symfony components have been updated tro version 3.4.37:
+
+symfony/debug
+symfony/console
+symfony/event-dispatcher
+symfony/routing
+symfony/process
+symfony/translation
+
+https://github.com/owncloud/core/pull/36796
