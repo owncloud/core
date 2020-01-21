@@ -1074,12 +1074,15 @@ trait Sharing {
 	}
 
 	/**
-	 * @param string $userOrGroup
+	 * @param string $userOrGroupId
+	 * @param string|int $shareType 0 or "user" for user, 1 or "group" for group
 	 * @param int|int[]|string|string[] $permissions
 	 *
 	 * @return bool
 	 */
-	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
+	public function isUserOrGroupInSharedData($userOrGroupId, $shareType, $permissions = null) {
+		$shareType = SharingHelper::getShareType($shareType);
+
 		if ($permissions !== null) {
 			if (\is_string($permissions) && !\is_numeric($permissions)) {
 				$permissions = $this->splitPermissionsString($permissions);
@@ -1090,7 +1093,8 @@ trait Sharing {
 		$data = $this->getResponseXml()->data[0];
 		if (\is_iterable($data)) {
 			foreach ($data as $element) {
-				if ($element->share_with->__toString() === $userOrGroup
+				if (($element->share_type->__toString() === (string) $shareType)
+					&& ($element->share_with->__toString() === $userOrGroupId)
 					&& ($permissions === null
 					|| $permissionSum === (int) $element->permissions->__toString())
 				) {
@@ -1137,7 +1141,7 @@ trait Sharing {
 			[],
 			$this->ocsApiVersion
 		);
-		if ($getShareData && $this->isUserOrGroupInSharedData($user2, $permissions)) {
+		if ($getShareData && $this->isUserOrGroupInSharedData($user2, "user", $permissions)) {
 			return;
 		} else {
 			$this->createShare(
@@ -1195,7 +1199,7 @@ trait Sharing {
 		);
 		// this is expected to fail if a file is shared with create and delete permissions, which is not possible
 		Assert::assertTrue(
-			$this->isUserOrGroupInSharedData($user2, $permissions),
+			$this->isUserOrGroupInSharedData($user2, "user", $permissions),
 			"User $user1 failed to share $filepath with user $user2"
 		);
 	}
@@ -1318,7 +1322,7 @@ trait Sharing {
 			[],
 			$this->ocsApiVersion
 		);
-		if ($getShareData && $this->isUserOrGroupInSharedData($group, $permissions)) {
+		if ($getShareData && $this->isUserOrGroupInSharedData($group, "group", $permissions)) {
 			return;
 		} else {
 			$this->createShare(
@@ -1377,7 +1381,7 @@ trait Sharing {
 
 		Assert::assertEquals(
 			true,
-			$this->isUserOrGroupInSharedData($group, $permissions)
+			$this->isUserOrGroupInSharedData($group, "group", $permissions)
 		);
 	}
 
