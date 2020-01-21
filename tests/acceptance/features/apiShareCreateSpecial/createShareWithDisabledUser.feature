@@ -2,8 +2,7 @@
 Feature: share resources with a disabled user
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: Creating a new share with a disabled user
     Given using OCS API version "<ocs_api_version>"

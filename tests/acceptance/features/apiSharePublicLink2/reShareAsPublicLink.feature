@@ -5,8 +5,7 @@ Feature: reshare as public link
   So that I can give controlled access to others
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
 
   Scenario Outline: creating a public link from a share with read permission only is not allowed

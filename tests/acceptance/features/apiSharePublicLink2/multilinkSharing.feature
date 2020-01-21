@@ -2,8 +2,7 @@
 Feature: multilinksharing
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And as user "user0"
 
   @smokeTest

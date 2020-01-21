@@ -3,7 +3,6 @@ Feature: update a public link share
 
   Background:
     Given using OCS API version "1"
-    And using old DAV path
     And user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info

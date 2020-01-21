@@ -2,8 +2,7 @@
 Feature: a default expiration date can be specified for shares with users or groups
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares without specifying expireDate

@@ -3,7 +3,6 @@ Feature: sharing
 
   Background:
     Given using OCS API version "1"
-    And using old DAV path
     And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest

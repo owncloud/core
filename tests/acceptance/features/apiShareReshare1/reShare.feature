@@ -2,8 +2,7 @@
 Feature: sharing
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
 
   Scenario Outline: User is not allowed to reshare file when reshare permission is not given

@@ -2,8 +2,7 @@
 Feature: resharing a resource with an expiration date
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
 
   Scenario Outline: User should not be able to re-share a folder to a group which he/she is not member of when share with only member group is enabled

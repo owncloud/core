@@ -2,8 +2,7 @@
 Feature: sharing works when a username and group name are the same
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: creating a new share with user and a group having same name
