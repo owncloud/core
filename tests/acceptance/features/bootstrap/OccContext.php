@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
+use Behat\Gherkin\Node\PyStringNode;
 
 require_once 'bootstrap.php';
 
@@ -794,6 +795,24 @@ class OccContext implements Context {
 	public function theAdministratorSetsLogRotateFileSizeUsingTheOccCommand($size) {
 		$this->invokingTheCommand(
 			"log:owncloud --rotate-size $size"
+		);
+	}
+
+	/**
+	 * @Then the command output should be:
+	 *
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theCommandOutputShouldBe(PyStringNode $content) {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		// removing blank lines
+		$commandOutput = \implode("\n", \array_filter(\explode("\n", $commandOutput)));
+		$content = \implode("\n", \array_filter(\explode("\n", $content->getRaw())));
+		Assert::assertEquals(
+			$content, $commandOutput
 		);
 	}
 
