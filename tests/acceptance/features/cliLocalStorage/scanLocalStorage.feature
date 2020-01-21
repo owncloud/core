@@ -5,8 +5,7 @@ Feature: Scanning files on local storage
   So that I can manage the balance between performance and "up-to-date-ness" of local storage
 
   Scenario: Adding a file to local storage and running scan should add files.
-    Given using new DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     # issue-33670: Need to re-scan. Config change doesn't come into effect until once scanned
     And the administrator has scanned the filesystem for all users
@@ -23,8 +22,7 @@ Feature: Scanning files on local storage
       | /hello2.txt |
 
   Scenario: Adding a file to local storage and running scan for a specific path should add files for only that path.
-    Given using new DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     And user "user0" has created folder "/local_storage/folder1"
     And user "user0" has created folder "/local_storage/folder2"
@@ -49,8 +47,7 @@ Feature: Scanning files on local storage
 
   @files_sharing-app-required
   Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
-    Given using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -82,8 +79,7 @@ Feature: Scanning files on local storage
       | commas,in,group,name |
 
   Scenario: Adding a folder to local storage, sharing with groups and running scan for a list of groups should add files for users in the groups
-    Given using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -140,8 +136,7 @@ Feature: Scanning files on local storage
       | /hello3.txt |
 
   Scenario: Deleting a file from local storage and running scan for a specific path should remove the file.
-    Given using new DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/hello1.txt"
     When user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
@@ -156,8 +151,7 @@ Feature: Scanning files on local storage
       | /hello1.txt |
 
   Scenario: Adding a file on local storage and running file scan for a specific user should add file for only that user
-    Given using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -185,8 +179,7 @@ Feature: Scanning files on local storage
       | /hello1.txt |
 
   Scenario: Adding a file on local storage and running file scan for a specific group should add file for only the users of that group
-    Given using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
