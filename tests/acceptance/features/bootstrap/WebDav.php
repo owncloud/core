@@ -233,19 +233,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @param string $user
-	 *
-	 * @return string
-	 */
-	public function getDavFilesPath($user) {
-		if ($this->usingOldDavPath === true) {
-			return $this->davPath;
-		} else {
-			return "$this->davPath/files/$user";
-		}
-	}
-
-	/**
 	 * gives the dav path of a file including the subfolder of the webserver
 	 * e.g. when the server runs in `http://localhost/owncloud/`
 	 * this function will return `owncloud/remote.php/webdav/prueba.txt`
@@ -255,9 +242,10 @@ trait WebDav {
 	 * @return string
 	 */
 	public function getFullDavFilesPath($user) {
-		return \ltrim(
-			$this->getBasePath() . "/" . $this->getDavFilesPath($user), "/"
-		);
+		$path = $this->getBasePath() . "/" .
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
+		$path = WebDavHelper::sanitizeUrl($path);
+		return \ltrim($path, "/");
 	}
 
 	/**
@@ -466,7 +454,8 @@ trait WebDav {
 	 * @return string
 	 */
 	public function destinationHeaderValue($user, $fileDestination) {
-		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
+		$fullUrl = $this->getBaseUrl() . '/' .
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
 		return $fullUrl . '/' . \ltrim($fileDestination, '/');
 	}
 
