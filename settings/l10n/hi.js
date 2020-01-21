@@ -10,7 +10,6 @@ OC.L10N.register(
     "New password" : "नया पासवर्ड",
     "Username" : "प्रयोक्ता का नाम",
     "Personal" : "यक्तिगत",
-    "Error" : "त्रुटि",
     "Settings" : "सेटिंग्स"
 },
 "nplurals=2; plural=(n != 1);");

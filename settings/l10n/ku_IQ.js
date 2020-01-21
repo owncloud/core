@@ -17,7 +17,6 @@ OC.L10N.register(
     "Name" : "ناو",
     "Username" : "ناوی به‌کارهێنه‌ر",
     "Admin" : "به‌ڕێوه‌به‌ری سه‌ره‌كی",
-    "Error" : "هه‌ڵه",
     "Settings" : "ڕێکخستنه‌کان"
 },
 "nplurals=2; plural=(n != 1);");

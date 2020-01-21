@@ -7,7 +7,6 @@ OC.L10N.register(
     "Username" : "Usuario",
     "Personal" : "Personal",
     "Admin" : "Administración",
-    "Error" : "Error",
     "Settings" : "Configuración"
 },
 "nplurals=2; plural=(n != 1);");

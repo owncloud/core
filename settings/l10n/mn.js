@@ -19,7 +19,6 @@ OC.L10N.register(
     "Password" : "Нууц үг",
     "Username" : "Хэрэглэгчийн нэр",
     "Done" : "Болсон",
-    "Error" : "Алдаа",
     "Settings" : "Тохиргоо",
     "Group" : "Грүпп"
 },

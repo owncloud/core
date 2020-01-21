@@ -49,13 +49,12 @@
     "New Password" : "新密碼",
     "Personal" : "個人",
     "Admin" : "管理",
-    "Error" : "錯誤",
+    "Other" : "其他",
     "Settings" : "設定",
     "E-Mail" : "電郵",
     "Group" : "群組",
     "Everyone" : "所有人",
     "Unlimited" : "無限",
-    "Other" : "其他",
     "Last Login" : "最後登入",
     "Default" : "預設"
 },"pluralForm" :"nplurals=1; plural=0;"

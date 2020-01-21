@@ -19,9 +19,8 @@ OC.L10N.register(
     "Username" : "یوزر نیم",
     "Personal" : "شخصی",
     "Admin" : "ایڈمن",
-    "Error" : "خرابی",
+    "Other" : "دیگر",
     "Settings" : "ترتیبات",
-    "Group" : "گروپ",
-    "Other" : "دیگر"
+    "Group" : "گروپ"
 },
 "nplurals=2; plural=(n != 1);");

@@ -20,7 +20,6 @@ OC.L10N.register(
     "Name" : "Name",
     "Username" : "Benutzername",
     "Personal" : "Persönlich",
-    "Error" : "Fehler",
     "Settings" : "Einstellungen"
 },
 "nplurals=2; plural=(n != 1);");

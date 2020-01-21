@@ -8,7 +8,6 @@ OC.L10N.register(
     "Add" : "যোগ করা",
     "Cancel" : "বাতিল করা",
     "Name" : "নাম",
-    "Error" : "ভুল",
     "Settings" : "সেটিংস"
 },
 "nplurals=2; plural=(n != 1);");

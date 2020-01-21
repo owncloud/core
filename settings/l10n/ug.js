@@ -47,10 +47,9 @@ OC.L10N.register(
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Version" : "نەشرى",
     "Personal" : "شەخسىي",
-    "Error" : "خاتالىق",
+    "Other" : "باشقا",
     "Settings" : "تەڭشەكلەر",
     "Unlimited" : "چەكسىز",
-    "Other" : "باشقا",
     "set new password" : "يېڭى ئىم تەڭشە",
     "Default" : "كۆڭۈلدىكى"
 },

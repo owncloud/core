@@ -30,10 +30,9 @@ OC.L10N.register(
     "Username" : "Nama pengguna",
     "Personal" : "Peribadi",
     "Admin" : "Admin",
-    "Error" : "Ralat",
+    "Other" : "Lain",
     "Settings" : "Tetapan",
     "Default Quota" : "Kuota Lalai",
-    "Other" : "Lain",
     "Quota" : "Kuota"
 },
 "nplurals=1; plural=0;");

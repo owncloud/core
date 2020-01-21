@@ -17,9 +17,8 @@
     "Username" : "یوزر نیم",
     "Personal" : "شخصی",
     "Admin" : "ایڈمن",
-    "Error" : "خرابی",
+    "Other" : "دیگر",
     "Settings" : "ترتیبات",
-    "Group" : "گروپ",
-    "Other" : "دیگر"
+    "Group" : "گروپ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -13,7 +13,6 @@ OC.L10N.register(
     "Name" : "పేరు",
     "Username" : "వాడుకరి పేరు",
     "Personal" : "వ్యక్తిగతం",
-    "Error" : "పొరపాటు",
     "Settings" : "అమరికలు"
 },
 "nplurals=2; plural=(n != 1);");

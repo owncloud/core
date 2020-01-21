@@ -35,10 +35,9 @@ OC.L10N.register(
     "Username" : "பயனாளர் பெயர்",
     "Personal" : "தனிப்பட்ட",
     "Admin" : "நிர்வாகம்",
-    "Error" : "வழு",
+    "Other" : "மற்றவை",
     "Settings" : "அமைப்புகள்",
     "Default Quota" : "பொது இருப்பு பங்கு",
-    "Other" : "மற்றவை",
     "Quota" : "பங்கு"
 },
 "nplurals=2; plural=(n != 1);");

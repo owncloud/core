@@ -57,11 +57,10 @@ OC.L10N.register(
     "Version" : "ვერსია",
     "Personal" : "პირადი",
     "Admin" : "ადმინისტრატორი",
-    "Error" : "შეცდომა",
+    "Other" : "სხვა",
     "Settings" : "პარამეტრები",
     "Default Quota" : "საწყისი ქვოტა",
     "Unlimited" : "ულიმიტო",
-    "Other" : "სხვა",
     "Quota" : "ქვოტა",
     "set new password" : "დააყენეთ ახალი პაროლი",
     "Default" : "საწყისი პარამეტრები"
