@@ -126,7 +126,31 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect($li.find('.user-additional-info').length).toEqual(0);
 		});
 
-		it('renders share attribute correctly', function () {
+		it('renders permission correctly', function () {
+			shareModel.set('shares', [
+				{
+					id: 100,
+					item_source: 123,
+					permissions: 31,
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user1',
+					share_with_displayname: 'User One',
+					share_with_additional_info: 'user1@example.com'
+				}]
+			);
+
+			listView.render();
+
+			var $li = listView.$el.find('li[data-share-id=100]');
+
+			var $editCheckbox = $li.find("input[name='edit']");
+			expect($editCheckbox.is(':checked')).toEqual(true);
+			expect($editCheckbox.parent().attr('class')).toEqual('shareOption');
+			expect($editCheckbox.parent().parent().is('div')).toEqual(true);
+			expect($editCheckbox.parent().parent().parent().is('li')).toEqual(true);
+		});
+
+		it('renders share attribute v1 correctly', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -153,6 +177,62 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			var input = $li.find("input[name='test-attribute']");
 			expect(input.is(':checked')).toEqual(true);
 			expect($("label[for='" + input.attr('id') + "']").text()).toEqual('test attribute');
+		});
+
+		it('renders share attribute v2 correctly', function () {
+			var shareIdToAppend = 100;
+			shareModel.set('shares', [
+				{
+					id: shareIdToAppend,
+					item_source: 123,
+					permissions: 31,
+					attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user1',
+					share_with_displayname: 'User One',
+					share_with_additional_info: 'user1@example.com'
+				}]
+			);
+
+			function customAttributeRender(view) {
+				var $share = view.$el.find('li[data-share-id=' + shareIdToAppend + ']');
+				var template =
+					'<div class="testShareOptions">' +
+					'	<span class="shareOption">' +
+					'		<input id="attr-test-1" type="checkbox" name="test-attribute" class="testShareOption checkbox" checked="checked" data-share-id="' + shareIdToAppend + '" />' +
+					'		<label for="attr-test-1">test attribute</label>' +
+					'	</span' +
+					'</div>';
+
+				if ($share) {
+					var shares =shareModel.getSharesWithCurrentItem();
+					for(var shareIndex = 0; shareIndex < shares.length; shareIndex++) {
+						if (shares[shareIndex].id === shareIdToAppend) {
+							var share = shares[shareIndex];
+							if (share.attributes[0]['key'] === 'test-attribute') {
+								$share.append(Handlebars.compile(template));
+							}
+							break;
+						}
+					}
+				}
+			}
+
+			var baseRenderCall = listView.render;
+			listView.render = function() {
+				baseRenderCall.call(listView);
+				customAttributeRender(listView);
+			};
+
+			listView.render();
+
+			var $li = listView.$el.find('li[data-share-id=' + shareIdToAppend + ']');
+
+			var $attrCheckbox = $li.find("input[name='test-attribute']");
+			expect($attrCheckbox.is(':checked')).toEqual(true);
+			expect($attrCheckbox.parent().attr('class')).toEqual('shareOption');
+			expect($attrCheckbox.parent().parent().is('div')).toEqual(true);
+			expect($attrCheckbox.parent().parent().parent().is('li')).toEqual(true);
 		});
 	});
 
@@ -256,7 +336,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find("input[name='mailNotification']").hasClass('hidden')).toEqual(false);
 		});
 
-		it('unchecks share attribute when clicked on checked', function () {
+		it('unchecks share attribute v1 when clicked on checked', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -284,7 +364,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 
-		it('shows share attribute checkbox when checking required permission', function () {
+		it('shows share attribute v1 checkbox when checking required permission', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -330,7 +410,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 
-		it('shows share attribute checkbox when unchecking incompatible attribute', function () {
+		it('shows share attribute v1 checkbox when unchecking incompatible attribute v1', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "incompatible-attribute",
@@ -390,7 +470,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 		
-		it('prevents checking/unchecking attribute when reshared', function () {
+		it('prevents checking/unchecking attribute v1 when reshared', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute-checked",
