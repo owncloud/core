@@ -56,6 +56,8 @@ Summary
 * Change - Adjust wording displayed for empty additional settings panel: [#36776](https://github.com/owncloud/core/pull/36776)
 * Change - Update laminas/laminas-validator (2.13.0 => 2.13.1): [#36780](https://github.com/owncloud/core/pull/36780)
 * Change - Update myclabs/deep-copy (1.9.4 => 1.9.5): [#36780](https://github.com/owncloud/core/pull/36780)
+* Change - Update egulias/email-validator (2.1.14 => 2.1.15): [#36789](https://github.com/owncloud/core/pull/36789)
+* Change - Update phpspec/prophecy (1.10.1 => v1.10.2): [#36789](https://github.com/owncloud/core/pull/36789)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -380,6 +382,14 @@ Details
 * Change - Update myclabs/deep-copy (1.9.4 => 1.9.5): [#36780](https://github.com/owncloud/core/pull/36780)
 
    https://github.com/owncloud/core/pull/36780
+
+* Change - Update egulias/email-validator (2.1.14 => 2.1.15): [#36789](https://github.com/owncloud/core/pull/36789)
+
+   https://github.com/owncloud/core/pull/36789
+
+* Change - Update phpspec/prophecy (1.10.1 => v1.10.2): [#36789](https://github.com/owncloud/core/pull/36789)
+
+   https://github.com/owncloud/core/pull/36789
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
