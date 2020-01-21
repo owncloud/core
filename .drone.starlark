@@ -35,7 +35,7 @@ config = {
 			],
 			'databases': [
 				'sqlite',
-				'mariadb:10.2',
+				'mariadb:10.4',
 			],
 			'coverage': False
 		},
@@ -790,7 +790,7 @@ def litmus():
 
 		for phpVersion in params['phpVersions']:
 			name = 'litmus-php%s' % phpVersion
-			db = 'mariadb:10.2'
+			db = 'mariadb:10.4'
 			image = 'owncloud/litmus:latest'
 			environment = {
 				'LITMUS_PASSWORD': 'admin',
@@ -957,7 +957,7 @@ def dav():
 		for phpVersion in params['phpVersions']:
 			for davType in ['caldav-new', 'caldav-old', 'carddav-new', 'carddav-old']:
 				name = '%s-php%s' % (davType, phpVersion)
-				db = 'mariadb:10.2'
+				db = 'mariadb:10.4'
 
 				if (davType == 'caldav-new'):
 					scriptPath = 'apps/dav/tests/ci/caldav'
@@ -1123,7 +1123,7 @@ def phptests(testType):
 	default = {
 		'phpVersions': ['7.1', '7.2', '7.3'],
 		'databases': [
-			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
+			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mariadb:10.4', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
 		],
 		'coverage': True,
 		'includeKeyInMatrixName': False,
@@ -1306,7 +1306,7 @@ def acceptance():
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.1'],
-		'databases': ['mariadb:10.2'],
+		'databases': ['mariadb:10.4'],
 		'federatedServerNeeded': False,
 		'filterTags': '',
 		'logLevel': '2',

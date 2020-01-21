@@ -900,7 +900,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -1035,7 +1035,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -1154,7 +1154,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -1273,7 +1273,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -1392,7 +1392,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -1785,6 +1785,140 @@ services:
 - name: mariadb
   pull: always
   image: mariadb:10.3
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.3
+- changelog
+- phpstan-php7.1
+- phan-php7.1
+- phan-php7.2
+- phan-php7.3
+
+---
+kind: pipeline
+type: docker
+name: phpunit-php7.1-mariadb10.4
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mariadb
+
+- name: fix-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown -R www-data /drone/src
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - su-exec www-data bash tests/drone/test-phpunit.sh
+  environment:
+    COVERAGE: true
+    DB_TYPE: mariadb
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+services:
+- name: mariadb
+  pull: always
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -2718,7 +2852,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.2-mariadb10.2
+name: phpunit-php7.2-mariadb10.4
 
 platform:
   os: linux
@@ -2810,7 +2944,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -2940,7 +3074,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.3-mariadb10.2
+name: phpunit-php7.3-mariadb10.4
 
 platform:
   os: linux
@@ -3032,7 +3166,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -3745,7 +3879,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiAuth-mariadb10.2-php7.1
+name: apiAuth-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -3858,7 +3992,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -3898,7 +4032,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiAuthOcs-mariadb10.2-php7.1
+name: apiAuthOcs-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4011,7 +4145,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4051,7 +4185,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiAuthWebDav-mariadb10.2-php7.1
+name: apiAuthWebDav-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4164,7 +4298,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4204,7 +4338,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiCapabilities-mariadb10.2-php7.1
+name: apiCapabilities-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4317,7 +4451,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4357,7 +4491,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiComments-mariadb10.2-php7.1
+name: apiComments-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4470,7 +4604,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4510,7 +4644,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiFavorites-mariadb10.2-php7.1
+name: apiFavorites-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4623,7 +4757,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4663,7 +4797,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiMain-mariadb10.2-php7.1
+name: apiMain-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4776,7 +4910,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4816,7 +4950,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioning-v1-mariadb10.2-php7.1
+name: apiProvisioning-v1-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -4929,7 +5063,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -4969,7 +5103,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioning-v2-mariadb10.2-php7.1
+name: apiProvisioning-v2-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -5082,7 +5216,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -5122,7 +5256,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioningGroups-v1-mariadb10.2-php7.1
+name: apiProvisioningGroups-v1-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -5235,7 +5369,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -5275,7 +5409,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProvisioningGroups-v2-mariadb10.2-php7.1
+name: apiProvisioningGroups-v2-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -5388,7 +5522,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -5428,7 +5562,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareCreateSpecial-mariadb10.2-php7.1
+name: apiShareCreateSpecial-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -5541,7 +5675,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -5581,7 +5715,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiSharees-mariadb10.2-php7.1
+name: apiSharees-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -5694,7 +5828,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -5734,7 +5868,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareManagement-mariadb10.2-php7.1
+name: apiShareManagement-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -5847,7 +5981,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -5887,7 +6021,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareManagementBasic-mariadb10.2-php7.1
+name: apiShareManagementBasic-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6000,7 +6134,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6040,7 +6174,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareOperations-mariadb10.2-php7.1
+name: apiShareOperations-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6153,7 +6287,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6193,7 +6327,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiSharePublicLink1-mariadb10.2-php7.1
+name: apiSharePublicLink1-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6306,7 +6440,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6346,7 +6480,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiSharePublicLink2-mariadb10.2-php7.1
+name: apiSharePublicLink2-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6459,7 +6593,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6499,7 +6633,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareReshare1-mariadb10.2-php7.1
+name: apiShareReshare1-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6612,7 +6746,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6652,7 +6786,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareReshare2-mariadb10.2-php7.1
+name: apiShareReshare2-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6765,7 +6899,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6805,7 +6939,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiShareUpdate-mariadb10.2-php7.1
+name: apiShareUpdate-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -6918,7 +7052,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -6958,7 +7092,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiTags-mariadb10.2-php7.1
+name: apiTags-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7071,7 +7205,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -7111,7 +7245,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiTrashbin-mariadb10.2-php7.1
+name: apiTrashbin-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7224,7 +7358,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -7264,7 +7398,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiVersions-mariadb10.2-php7.1
+name: apiVersions-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7377,7 +7511,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -7417,7 +7551,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavLocks-mariadb10.2-php7.1
+name: apiWebdavLocks-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7530,7 +7664,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -7570,7 +7704,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavLocks2-mariadb10.2-php7.1
+name: apiWebdavLocks2-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7683,7 +7817,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -7723,7 +7857,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavMove-mariadb10.2-php7.1
+name: apiWebdavMove-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7836,7 +7970,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -7876,7 +8010,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavOperations-mariadb10.2-php7.1
+name: apiWebdavOperations-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -7989,7 +8123,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -8029,7 +8163,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavProperties-mariadb10.2-php7.1
+name: apiWebdavProperties-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -8142,7 +8276,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -8182,7 +8316,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiWebdavUpload-mariadb10.2-php7.1
+name: apiWebdavUpload-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -8295,7 +8429,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -8335,7 +8469,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiSharingNotifications-mariadb10.2-php7.1
+name: apiSharingNotifications-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -8455,7 +8589,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -8495,7 +8629,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiFederation-master-mariadb10.2-php7.1
+name: apiFederation-master-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -8648,7 +8782,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -8689,7 +8823,7 @@ services:
 
 - name: mariadb-federated
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud-federated
     MYSQL_PASSWORD: owncloud
@@ -8713,7 +8847,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiFederation-10.2.1-mariadb10.2-php7.1
+name: apiFederation-10.2.1-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -8866,7 +9000,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -8907,7 +9041,7 @@ services:
 
 - name: mariadb-federated
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud-federated
     MYSQL_PASSWORD: owncloud
@@ -8931,7 +9065,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliBackground-mariadb10.2-php7.1
+name: cliBackground-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9045,7 +9179,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -9089,7 +9223,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliLocalStorage-mariadb10.2-php7.1
+name: cliLocalStorage-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9203,7 +9337,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -9247,7 +9381,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliMain-mariadb10.2-php7.1
+name: cliMain-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9361,7 +9495,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -9405,7 +9539,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliProvisioning-mariadb10.2-php7.1
+name: cliProvisioning-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9519,7 +9653,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -9563,7 +9697,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliTrashbin-mariadb10.2-php7.1
+name: cliTrashbin-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9677,7 +9811,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -9721,7 +9855,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: cliAppManagement-mariadb10.2-php7.1
+name: cliAppManagement-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9834,7 +9968,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -9874,7 +10008,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIAddUsers-chrome-mariadb10.2-php7.1
+name: webUIAddUsers-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -9992,7 +10126,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -10038,7 +10172,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIAdminSettings-chrome-mariadb10.2-php7.1
+name: webUIAdminSettings-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -10156,7 +10290,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -10202,7 +10336,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIComments-chrome-mariadb10.2-php7.1
+name: webUIComments-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -10320,7 +10454,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -10366,7 +10500,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUICreateDelete-chrome-mariadb10.2-php7.1
+name: webUICreateDelete-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -10484,7 +10618,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -10530,7 +10664,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFavorites-chrome-mariadb10.2-php7.1
+name: webUIFavorites-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -10648,7 +10782,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -10694,7 +10828,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFiles-chrome-mariadb10.2-php7.1
+name: webUIFiles-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -10812,7 +10946,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -10858,7 +10992,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUILogin-chrome-mariadb10.2-php7.1
+name: webUILogin-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -10976,7 +11110,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -11022,7 +11156,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIManageQuota-chrome-mariadb10.2-php7.1
+name: webUIManageQuota-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -11140,7 +11274,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -11186,7 +11320,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIManageUsersGrps-chrome-mariadb10.2-php7.1
+name: webUIManageUsersGrps-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -11304,7 +11438,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -11350,7 +11484,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIMoveFilesFolder-chrome-mariadb10.2-php7.1
+name: webUIMoveFilesFolder-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -11468,7 +11602,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -11514,7 +11648,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIPersonalSetting-chrome-mariadb10.2-php7.1
+name: webUIPersonalSetting-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -11632,7 +11766,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -11678,7 +11812,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIRenameFiles-chrome-mariadb10.2-php7.1
+name: webUIRenameFiles-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -11796,7 +11930,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -11842,7 +11976,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIRenameFolders-chrome-mariadb10.2-php7.1
+name: webUIRenameFolders-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -11960,7 +12094,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12006,7 +12140,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIRestrictSharing-chrome-mariadb10.2-php7.1
+name: webUIRestrictSharing-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -12124,7 +12258,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12170,7 +12304,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISettingsMenu-chrome-mariadb10.2-php7.1
+name: webUISettingsMenu-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -12288,7 +12422,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12334,7 +12468,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingAcceptSh-chrome-mariadb10.2-php7.1
+name: webUISharingAcceptSh-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -12452,7 +12586,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12498,7 +12632,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingAutocomp-chrome-mariadb10.2-php7.1
+name: webUISharingAutocomp-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -12616,7 +12750,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12662,7 +12796,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingIntGroup-chrome-mariadb10.2-php7.1
+name: webUISharingIntGroup-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -12780,7 +12914,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12826,7 +12960,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingIntUsers-chrome-mariadb10.2-php7.1
+name: webUISharingIntUsers-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -12944,7 +13078,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -12990,7 +13124,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingPublic-chrome-mariadb10.2-php7.1
+name: webUISharingPublic-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -13108,7 +13242,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -13154,7 +13288,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUITags-chrome-mariadb10.2-php7.1
+name: webUITags-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -13272,7 +13406,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -13318,7 +13452,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUITrashbin-chrome-mariadb10.2-php7.1
+name: webUITrashbin-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -13436,7 +13570,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -13482,7 +13616,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIUpload-chrome-mariadb10.2-php7.1
+name: webUIUpload-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -13600,7 +13734,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -13646,7 +13780,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIWebdavLockProt-chrome-mariadb10.2-php7.1
+name: webUIWebdavLockProt-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -13764,7 +13898,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -13810,7 +13944,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIWebdavLocks-chrome-mariadb10.2-php7.1
+name: webUIWebdavLocks-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -13928,7 +14062,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -13974,7 +14108,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingNotify-chrome-mariadb10.2-php7.1
+name: webUISharingNotify-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -14099,7 +14233,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -14145,7 +14279,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingExt-master-chrome-mariadb10.2-php7.1
+name: webUISharingExt-master-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -14302,7 +14436,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -14349,7 +14483,7 @@ services:
 
 - name: mariadb-federated
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud-federated
     MYSQL_PASSWORD: owncloud
@@ -14373,7 +14507,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingExt-10.2.1-chrome-mariadb10.2-php7.1
+name: webUISharingExt-10.2.1-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -14530,7 +14664,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -14577,7 +14711,7 @@ services:
 
 - name: mariadb-federated
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud-federated
     MYSQL_PASSWORD: owncloud
@@ -14601,7 +14735,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFfSmoke-3-1-firefox-mariadb10.2-php7.1
+name: webUIFfSmoke-3-1-firefox-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -14721,7 +14855,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -14768,7 +14902,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFfSmoke-3-2-firefox-mariadb10.2-php7.1
+name: webUIFfSmoke-3-2-firefox-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -14888,7 +15022,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -14935,7 +15069,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIFfSmoke-3-3-firefox-mariadb10.2-php7.1
+name: webUIFfSmoke-3-3-firefox-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -15055,7 +15189,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -15102,7 +15236,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIProxySmoke-3-1-chrome-mariadb10.2-php7.1
+name: webUIProxySmoke-3-1-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -15223,7 +15357,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -15275,7 +15409,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIProxySmoke-3-2-chrome-mariadb10.2-php7.1
+name: webUIProxySmoke-3-2-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -15396,7 +15530,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -15448,7 +15582,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIProxySmoke-3-3-chrome-mariadb10.2-php7.1
+name: webUIProxySmoke-3-3-chrome-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -15569,7 +15703,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -15621,7 +15755,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProxySmoke-3-1-mariadb10.2-php7.1
+name: apiProxySmoke-3-1-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -15737,7 +15871,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -15779,7 +15913,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProxySmoke-3-2-mariadb10.2-php7.1
+name: apiProxySmoke-3-2-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -15895,7 +16029,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -15937,7 +16071,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiProxySmoke-3-3-mariadb10.2-php7.1
+name: apiProxySmoke-3-3-mariadb10.4-php7.1
 
 platform:
   os: linux
@@ -16053,7 +16187,7 @@ steps:
 services:
 - name: mariadb
   pull: always
-  image: mariadb:10.2
+  image: mariadb:10.4
   environment:
     MYSQL_DATABASE: owncloud
     MYSQL_PASSWORD: owncloud
@@ -16131,6 +16265,7 @@ depends_on:
 - phpunit-php7.1-sqlite
 - phpunit-php7.1-mariadb10.2
 - phpunit-php7.1-mariadb10.3
+- phpunit-php7.1-mariadb10.4
 - phpunit-php7.1-mysql5.5
 - phpunit-php7.1-mysql5.7
 - phpunit-php7.1-mysql8.0
@@ -16138,89 +16273,89 @@ depends_on:
 - phpunit-php7.1-postgres10.3
 - phpunit-php7.1-oracle
 - phpunit-php7.2-sqlite
-- phpunit-php7.2-mariadb10.2
+- phpunit-php7.2-mariadb10.4
 - phpunit-php7.3-sqlite
-- phpunit-php7.3-mariadb10.2
+- phpunit-php7.3-mariadb10.4
 - phpunit-php7.1-sqlite-samba
 - phpunit-php7.1-sqlite-windows
 - phpunit-php7.1-sqlite-webdav
 - phpunit-php7.1-sqlite-sftp
 - phpunit-php7.1-sqlite-scality
-- apiAuth-mariadb10.2-php7.1
-- apiAuthOcs-mariadb10.2-php7.1
-- apiAuthWebDav-mariadb10.2-php7.1
-- apiCapabilities-mariadb10.2-php7.1
-- apiComments-mariadb10.2-php7.1
-- apiFavorites-mariadb10.2-php7.1
-- apiMain-mariadb10.2-php7.1
-- apiProvisioning-v1-mariadb10.2-php7.1
-- apiProvisioning-v2-mariadb10.2-php7.1
-- apiProvisioningGroups-v1-mariadb10.2-php7.1
-- apiProvisioningGroups-v2-mariadb10.2-php7.1
-- apiShareCreateSpecial-mariadb10.2-php7.1
-- apiSharees-mariadb10.2-php7.1
-- apiShareManagement-mariadb10.2-php7.1
-- apiShareManagementBasic-mariadb10.2-php7.1
-- apiShareOperations-mariadb10.2-php7.1
-- apiSharePublicLink1-mariadb10.2-php7.1
-- apiSharePublicLink2-mariadb10.2-php7.1
-- apiShareReshare1-mariadb10.2-php7.1
-- apiShareReshare2-mariadb10.2-php7.1
-- apiShareUpdate-mariadb10.2-php7.1
-- apiTags-mariadb10.2-php7.1
-- apiTrashbin-mariadb10.2-php7.1
-- apiVersions-mariadb10.2-php7.1
-- apiWebdavLocks-mariadb10.2-php7.1
-- apiWebdavLocks2-mariadb10.2-php7.1
-- apiWebdavMove-mariadb10.2-php7.1
-- apiWebdavOperations-mariadb10.2-php7.1
-- apiWebdavProperties-mariadb10.2-php7.1
-- apiWebdavUpload-mariadb10.2-php7.1
-- apiSharingNotifications-mariadb10.2-php7.1
-- apiFederation-master-mariadb10.2-php7.1
-- apiFederation-10.2.1-mariadb10.2-php7.1
-- cliBackground-mariadb10.2-php7.1
-- cliLocalStorage-mariadb10.2-php7.1
-- cliMain-mariadb10.2-php7.1
-- cliProvisioning-mariadb10.2-php7.1
-- cliTrashbin-mariadb10.2-php7.1
-- cliAppManagement-mariadb10.2-php7.1
-- webUIAddUsers-chrome-mariadb10.2-php7.1
-- webUIAdminSettings-chrome-mariadb10.2-php7.1
-- webUIComments-chrome-mariadb10.2-php7.1
-- webUICreateDelete-chrome-mariadb10.2-php7.1
-- webUIFavorites-chrome-mariadb10.2-php7.1
-- webUIFiles-chrome-mariadb10.2-php7.1
-- webUILogin-chrome-mariadb10.2-php7.1
-- webUIManageQuota-chrome-mariadb10.2-php7.1
-- webUIManageUsersGrps-chrome-mariadb10.2-php7.1
-- webUIMoveFilesFolder-chrome-mariadb10.2-php7.1
-- webUIPersonalSetting-chrome-mariadb10.2-php7.1
-- webUIRenameFiles-chrome-mariadb10.2-php7.1
-- webUIRenameFolders-chrome-mariadb10.2-php7.1
-- webUIRestrictSharing-chrome-mariadb10.2-php7.1
-- webUISettingsMenu-chrome-mariadb10.2-php7.1
-- webUISharingAcceptSh-chrome-mariadb10.2-php7.1
-- webUISharingAutocomp-chrome-mariadb10.2-php7.1
-- webUISharingIntGroup-chrome-mariadb10.2-php7.1
-- webUISharingIntUsers-chrome-mariadb10.2-php7.1
-- webUISharingPublic-chrome-mariadb10.2-php7.1
-- webUITags-chrome-mariadb10.2-php7.1
-- webUITrashbin-chrome-mariadb10.2-php7.1
-- webUIUpload-chrome-mariadb10.2-php7.1
-- webUIWebdavLockProt-chrome-mariadb10.2-php7.1
-- webUIWebdavLocks-chrome-mariadb10.2-php7.1
-- webUISharingNotify-chrome-mariadb10.2-php7.1
-- webUISharingExt-master-chrome-mariadb10.2-php7.1
-- webUISharingExt-10.2.1-chrome-mariadb10.2-php7.1
-- webUIFfSmoke-3-1-firefox-mariadb10.2-php7.1
-- webUIFfSmoke-3-2-firefox-mariadb10.2-php7.1
-- webUIFfSmoke-3-3-firefox-mariadb10.2-php7.1
-- webUIProxySmoke-3-1-chrome-mariadb10.2-php7.1
-- webUIProxySmoke-3-2-chrome-mariadb10.2-php7.1
-- webUIProxySmoke-3-3-chrome-mariadb10.2-php7.1
-- apiProxySmoke-3-1-mariadb10.2-php7.1
-- apiProxySmoke-3-2-mariadb10.2-php7.1
-- apiProxySmoke-3-3-mariadb10.2-php7.1
+- apiAuth-mariadb10.4-php7.1
+- apiAuthOcs-mariadb10.4-php7.1
+- apiAuthWebDav-mariadb10.4-php7.1
+- apiCapabilities-mariadb10.4-php7.1
+- apiComments-mariadb10.4-php7.1
+- apiFavorites-mariadb10.4-php7.1
+- apiMain-mariadb10.4-php7.1
+- apiProvisioning-v1-mariadb10.4-php7.1
+- apiProvisioning-v2-mariadb10.4-php7.1
+- apiProvisioningGroups-v1-mariadb10.4-php7.1
+- apiProvisioningGroups-v2-mariadb10.4-php7.1
+- apiShareCreateSpecial-mariadb10.4-php7.1
+- apiSharees-mariadb10.4-php7.1
+- apiShareManagement-mariadb10.4-php7.1
+- apiShareManagementBasic-mariadb10.4-php7.1
+- apiShareOperations-mariadb10.4-php7.1
+- apiSharePublicLink1-mariadb10.4-php7.1
+- apiSharePublicLink2-mariadb10.4-php7.1
+- apiShareReshare1-mariadb10.4-php7.1
+- apiShareReshare2-mariadb10.4-php7.1
+- apiShareUpdate-mariadb10.4-php7.1
+- apiTags-mariadb10.4-php7.1
+- apiTrashbin-mariadb10.4-php7.1
+- apiVersions-mariadb10.4-php7.1
+- apiWebdavLocks-mariadb10.4-php7.1
+- apiWebdavLocks2-mariadb10.4-php7.1
+- apiWebdavMove-mariadb10.4-php7.1
+- apiWebdavOperations-mariadb10.4-php7.1
+- apiWebdavProperties-mariadb10.4-php7.1
+- apiWebdavUpload-mariadb10.4-php7.1
+- apiSharingNotifications-mariadb10.4-php7.1
+- apiFederation-master-mariadb10.4-php7.1
+- apiFederation-10.2.1-mariadb10.4-php7.1
+- cliBackground-mariadb10.4-php7.1
+- cliLocalStorage-mariadb10.4-php7.1
+- cliMain-mariadb10.4-php7.1
+- cliProvisioning-mariadb10.4-php7.1
+- cliTrashbin-mariadb10.4-php7.1
+- cliAppManagement-mariadb10.4-php7.1
+- webUIAddUsers-chrome-mariadb10.4-php7.1
+- webUIAdminSettings-chrome-mariadb10.4-php7.1
+- webUIComments-chrome-mariadb10.4-php7.1
+- webUICreateDelete-chrome-mariadb10.4-php7.1
+- webUIFavorites-chrome-mariadb10.4-php7.1
+- webUIFiles-chrome-mariadb10.4-php7.1
+- webUILogin-chrome-mariadb10.4-php7.1
+- webUIManageQuota-chrome-mariadb10.4-php7.1
+- webUIManageUsersGrps-chrome-mariadb10.4-php7.1
+- webUIMoveFilesFolder-chrome-mariadb10.4-php7.1
+- webUIPersonalSetting-chrome-mariadb10.4-php7.1
+- webUIRenameFiles-chrome-mariadb10.4-php7.1
+- webUIRenameFolders-chrome-mariadb10.4-php7.1
+- webUIRestrictSharing-chrome-mariadb10.4-php7.1
+- webUISettingsMenu-chrome-mariadb10.4-php7.1
+- webUISharingAcceptSh-chrome-mariadb10.4-php7.1
+- webUISharingAutocomp-chrome-mariadb10.4-php7.1
+- webUISharingIntGroup-chrome-mariadb10.4-php7.1
+- webUISharingIntUsers-chrome-mariadb10.4-php7.1
+- webUISharingPublic-chrome-mariadb10.4-php7.1
+- webUITags-chrome-mariadb10.4-php7.1
+- webUITrashbin-chrome-mariadb10.4-php7.1
+- webUIUpload-chrome-mariadb10.4-php7.1
+- webUIWebdavLockProt-chrome-mariadb10.4-php7.1
+- webUIWebdavLocks-chrome-mariadb10.4-php7.1
+- webUISharingNotify-chrome-mariadb10.4-php7.1
+- webUISharingExt-master-chrome-mariadb10.4-php7.1
+- webUISharingExt-10.2.1-chrome-mariadb10.4-php7.1
+- webUIFfSmoke-3-1-firefox-mariadb10.4-php7.1
+- webUIFfSmoke-3-2-firefox-mariadb10.4-php7.1
+- webUIFfSmoke-3-3-firefox-mariadb10.4-php7.1
+- webUIProxySmoke-3-1-chrome-mariadb10.4-php7.1
+- webUIProxySmoke-3-2-chrome-mariadb10.4-php7.1
+- webUIProxySmoke-3-3-chrome-mariadb10.4-php7.1
+- apiProxySmoke-3-1-mariadb10.4-php7.1
+- apiProxySmoke-3-2-mariadb10.4-php7.1
+- apiProxySmoke-3-3-mariadb10.4-php7.1
 
 ...
