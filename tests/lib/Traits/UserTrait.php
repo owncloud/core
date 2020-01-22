@@ -57,7 +57,9 @@ trait UserTrait {
 		foreach ($this->users as $user) {
 			$user->delete();
 		}
-		\OC::$server->getUserManager()
-			->reset($this->previousUserManagerInternals[0], $this->previousUserManagerInternals[1], $this->previousUserManagerInternals[2]);
+		if ($this->previousUserManagerInternals !== null) {
+			\OC::$server->getUserManager()
+				->reset($this->previousUserManagerInternals[0], $this->previousUserManagerInternals[1], $this->previousUserManagerInternals[2]);
+		}
 	}
 }
