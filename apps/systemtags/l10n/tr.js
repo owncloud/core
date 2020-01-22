@@ -23,6 +23,7 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s, %3$s sistem etiketinin %2$s atamasını kaldırdı",
     "%s (restricted)" : "%s (kısıtlı)",
     "%s (invisible)" : "%s (gizli)",
+    "%s (static)" : "%s (statik)",
     "No files in here" : "Burada hiç dosya yok",
     "No entries found in this folder" : "Bu klasörde hiçbir girdi bulunamadı",
     "Name" : "Ad",
