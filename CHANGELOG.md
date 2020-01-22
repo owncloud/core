@@ -58,6 +58,7 @@ Summary
 * Change - Update myclabs/deep-copy (1.9.4 => 1.9.5): [#36780](https://github.com/owncloud/core/pull/36780)
 * Change - Update egulias/email-validator (2.1.14 => 2.1.15): [#36789](https://github.com/owncloud/core/pull/36789)
 * Change - Update phpspec/prophecy (1.10.1 => v1.10.2): [#36789](https://github.com/owncloud/core/pull/36789)
+* Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -390,6 +391,15 @@ Details
 * Change - Update phpspec/prophecy (1.10.1 => v1.10.2): [#36789](https://github.com/owncloud/core/pull/36789)
 
    https://github.com/owncloud/core/pull/36789
+
+* Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
+
+   The following symfony components have been updated tro version 3.4.37:
+
+   Symfony/debug symfony/console symfony/event-dispatcher symfony/routing
+   symfony/process symfony/translation
+
+   https://github.com/owncloud/core/pull/36796
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
