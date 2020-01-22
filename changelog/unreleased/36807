@@ -1,0 +1,5 @@
+Bugfix: Fix one-time password (OTP) verify button width
+
+The one-time password (OTP) verify button width has been extended.
+
+https://github.com/owncloud/core/pull/36807
