@@ -18,6 +18,7 @@ Summary
 * Bugfix - Suppress warning when resetting user password with masterkey encryption: [#36523](https://github.com/owncloud/core/pull/36523)
 * Bugfix - Receive multiple users for user sync command: [#36576](https://github.com/owncloud/core/pull/36576)
 * Bugfix - Fix null for empty path on Oracle: [#36610](https://github.com/owncloud/core/pull/36610)
+* Bugfix - Do not dispatch DeclineShare event for non-existing shares: [#36759](https://github.com/owncloud/core/pull/36759)
 * Bugfix - Remove part files when upload is cancelled for all public links: [#36761](https://github.com/owncloud/core/pull/36761)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
@@ -160,6 +161,13 @@ Details
    on the mounts list got an empty list and did nothing.
 
    https://github.com/owncloud/core/pull/36610
+
+* Bugfix - Do not dispatch DeclineShare event for non-existing shares: [#36759](https://github.com/owncloud/core/pull/36759)
+
+   DeclineShare event was dispatched even when the share had been not found in oc_share_external
+   table. It caused sending unshare notification to the empty hostname.
+
+   https://github.com/owncloud/core/pull/36759
 
 * Bugfix - Remove part files when upload is cancelled for all public links: [#36761](https://github.com/owncloud/core/pull/36761)
 
