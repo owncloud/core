@@ -2,21 +2,22 @@
 Feature: sharing
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
 
   @smokeTest
     @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
+    When user "user0" shares file "textfile0.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | user1             |
       | share_with_displayname | User One          |
-      | file_target            | /welcome.txt      |
-      | path                   | /welcome.txt      |
+      | file_target            | /textfile0.txt    |
+      | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | uid_owner              | user0             |
       | displayname_owner      | User Zero         |
@@ -24,7 +25,7 @@ Feature: sharing
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
       | share_type             | user              |
-    And  the downloaded content when downloading file "welcome.txt" for user "user1" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/textfile0.txt" for user "user1" should be "ownCloud test text file 0"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -33,14 +34,14 @@ Feature: sharing
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "welcome.txt" with user "user1" with permissions <requested_permissions> using the sharing API
+    When user "user0" shares file "textfile0.txt" with user "user1" with permissions <requested_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | user1                 |
       | share_with_displayname | User One              |
-      | file_target            | /welcome.txt          |
-      | path                   | /welcome.txt          |
+      | file_target            | /textfile0.txt        |
+      | path                   | /textfile0.txt        |
       | permissions            | <granted_permissions> |
       | uid_owner              | user0                 |
       | displayname_owner      | User Zero             |
@@ -92,6 +93,7 @@ Feature: sharing
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/FOLDER"
     When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -115,14 +117,14 @@ Feature: sharing
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
+    When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | grp1              |
       | share_with_displayname | grp1              |
-      | file_target            | /welcome.txt      |
-      | path                   | /welcome.txt      |
+      | file_target            | /textfile0.txt    |
+      | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | uid_owner              | user0             |
       | displayname_owner      | User Zero         |
@@ -138,6 +140,7 @@ Feature: sharing
   Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    And user "user0" has created folder "/FOLDER"
     When user "user0" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -161,7 +164,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -169,21 +172,17 @@ Feature: sharing
     # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
+    And user "user0" has created folder "/PARENT"
+    And user "user0" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
     Then user "user1" should see the following elements
-      | /FOLDER/                 |
-      | /PARENT/                 |
-      | /PARENT/parent.txt       |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT/           |
+      | /PARENT/parent.txt |
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "user2" should see the following elements
-      | /FOLDER/                 |
-      | /PARENT/                 |
-      | /PARENT/parent.txt       |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT/           |
+      | /PARENT/parent.txt |
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -193,13 +192,14 @@ Feature: sharing
 
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
-    And user "user1" has shared file "welcome.txt" with group "grp1"
+    And user "user1" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And user "user1" has shared file "textfile0.txt" with group "grp1"
     And user "user1" has deleted the last share
-    When user "user1" shares file "/welcome.txt" with group "grp1" using the sharing API
+    When user "user1" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -335,7 +335,7 @@ Feature: sharing
 
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -343,21 +343,17 @@ Feature: sharing
     # Note: in the user_ldap test environment user1 and user2 are already in this group
     And user "user1" has been added to group "😀 😁"
     And user "user2" has been added to group "😀 😁"
+    And user "user0" has created folder "/PARENT"
+    And user "user0" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
     When user "user0" shares folder "/PARENT" with group "😀 😁" using the sharing API
     Then user "user1" should see the following elements
-      | /FOLDER/                 |
-      | /PARENT/                 |
-      | /PARENT/parent.txt       |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT/           |
+      | /PARENT/parent.txt |
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "user2" should see the following elements
-      | /FOLDER/                 |
-      | /PARENT/                 |
-      | /PARENT/parent.txt       |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT/           |
+      | /PARENT/parent.txt |
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -424,7 +420,7 @@ Feature: sharing
       | 2               | 200             |
 
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -434,14 +430,14 @@ Feature: sharing
     And user "user0" has created folder "/common"
     And user "user0" has created folder "/common/sub"
     And user "user0" has shared folder "common" with group "grp1"
+    And user "user1" has uploaded file with content "ownCloud" to "/textfile0.txt"
     And user "user1" has shared file "textfile0.txt" with user "user2"
     And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
     And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-    When user "user2" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
-    And user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the WebDAV API
-    Then the downloaded content should be "BLABLABLA"
-    And the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=0-8" should be "BLABLABLA"
+    When user "user2" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0.txt" using the WebDAV API
+    And the content of file "/common/sub/textfile0.txt" for user "user2" should be "BLABLABLA" plus end-of-line
+    And the content of file "/textfile0.txt" for user "user2" should be "BLABLABLA" plus end-of-line
     And user "user2" should see the following elements
       | /common/sub/textfile0.txt |
-      | /textfile0%20(2).txt      |
+      | /textfile0.txt            |
 
