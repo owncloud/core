@@ -6,14 +6,17 @@ Feature: copy file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And user "user0" has uploaded file with content "ownCloud test text file 1" to "/textfile1.txt"
+    And user "user0" has created folder "/FOLDER"
 
   @smokeTest
   Scenario Outline: Copying a file
     Given using <dav_version> DAV path
-    When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
+    When user "user0" copies file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/FOLDER/textfile0.txt" for user "user0" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -22,9 +25,9 @@ Feature: copy file
   @smokeTest
   Scenario Outline: Copying and overwriting a file
     Given using <dav_version> DAV path
-    When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the WebDAV API
+    When user "user0" copies file "/textfile0.txt" to "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the downloaded content when downloading file "/textfile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/textfile1.txt" for user "user0" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -35,8 +38,8 @@ Feature: copy file
     # "/textfile1.txt" already exists in the skeleton, make another with only case differences in the file name
     When user "user0" copies file "/textfile0.txt" to "/TextFile1.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the content of file "/textfile1.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
-    And the content of file "/TextFile1.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/textfile1.txt" for user "user0" should be "ownCloud test text file 1"
+    And the content of file "/TextFile1.txt" for user "user0" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
