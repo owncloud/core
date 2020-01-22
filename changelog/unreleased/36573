@@ -11,3 +11,4 @@ be enabled on the admin sharing settings page. They can be set independently for
 user and group shares.
 
 https://github.com/owncloud/core/pull/36573
+https://github.com/owncloud/core/pull/36766

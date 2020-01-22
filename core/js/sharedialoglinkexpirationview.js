@@ -28,7 +28,7 @@
 		;
 
 	/**
-	 * @class OCA.Share.ShareDialogExpirationView
+	 * @class OCA.Share.ShareDialogLinkExpirationView
 	 * @member {OC.Share.ShareItemModel} model
 	 * @member {jQuery} $el
 	 * @memberof OCA.Sharing
@@ -37,9 +37,9 @@
 	 * Represents the expiration part in the GUI of the share dialogue
 	 *
 	 */
-	var ShareDialogExpirationView = OC.Backbone.View.extend({
+	var ShareDialogLinkExpirationView = OC.Backbone.View.extend({
 		/** @type {string} **/
-		id: 'shareDialogExpirationView',
+		id: 'shareDialogLinkExpirationView',
 
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
@@ -47,7 +47,7 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		className: 'shareDialogExpirationView',
+		className: 'shareDialogLinkExpirationView',
 
 		events: {
 			'change .expirationCheckbox': '_onToggleExpiration',
@@ -104,13 +104,11 @@
 
 			this.$el.html(this.template({
 				cid: this.cid,
-				setExpirationLabel: t('core', 'Set expiration date'),
 				expirationLabel: t('core', 'Expiration'),
 				expirationDatePlaceholder: t('core', 'Choose an expiration date'),
 				defaultExpireMessage: defaultExpireMessage,
 				isExpirationSet: isExpirationSet,
 				isExpirationEnforced: isExpirationEnforced,
-				disableCheckbox: isExpirationEnforced && isExpirationSet,
 				expirationValue: expiration
 			}));
 
@@ -176,6 +174,6 @@
 
 	});
 
-	OC.Share.ShareDialogExpirationView = ShareDialogExpirationView;
+	OC.Share.ShareDialogLinkExpirationView = ShareDialogLinkExpirationView;
 
 })();

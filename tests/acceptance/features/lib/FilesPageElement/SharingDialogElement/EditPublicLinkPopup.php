@@ -54,7 +54,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
 	private $popupCloseButton = "//a[@class='oc-dialog-close']";
-	private $expirationDateRequiredErrorMessageXpath = './/*[@id="shareDialogExpirationView"]//span[@class="error-message"]';
+	private $expirationDateRequiredErrorMessageXpath = './/*[@id="shareDialogLinkExpirationView"]//span[@class="error-message"]';
 
 	/**
 	 * sets the NodeElement for the current popup

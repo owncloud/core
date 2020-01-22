@@ -39,15 +39,19 @@
 		'		{{/unless}} {{/if}}' +
 		'		<div class="expirationOption">' +
 		'			{{#if isUserShare}}' +
-		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expiration: ' +
-		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="Choose an expiration date" />' +
+		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">{{expirationLabel}}: ' +
+		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="{{expirationDatePlaceholder}}" />' +
+		'				{{#unless isDefaultExpireDateUserEnforced}}' +
 		'				<button class="removeExpiration">Remove</button>' +
+		'				{{/unless}}' +
 		'			</label>' +
 		'			{{/if}}' +
 		'			{{#if isGroupShare}}' +
-		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">Expire share on: ' +
-		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-group"/>' +
+		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">{{expirationLabel}}: ' +
+		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-group" placeholder="{{expirationDatePlaceholder}}" />' +
+		'				{{#unless isDefaultExpireDateGroupEnforced}}' +
 		'				<button class="removeExpiration">Remove</button>' +
+		'				{{/unless}}' +
 		'			</label>' +
 		'			{{/if}}' +
 		'		</div>' +
@@ -116,7 +120,7 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		_currentlyToggled: [],
+		_currentlyToggled: {},
 
 		events: {
 			'click .unshare': 'onUnshare',
@@ -208,6 +212,10 @@
 				hasUpdatePermission: this.model.hasUpdatePermission(shareIndex),
 				hasDeletePermission: this.model.hasDeletePermission(shareIndex),
 				shareAttributesV1: this.getAttributesObject(shareIndex),
+				expirationLabel: t('core', 'Expiration'),
+				expirationDatePlaceholder: t('core', 'Choose an expiration date'),
+				isDefaultExpireDateUserEnforced: this.configModel.isDefaultExpireDateUserEnforced(),
+				isDefaultExpireDateGroupEnforced: this.configModel.isDefaultExpireDateGroupEnforced(),
 				expirationDate: this.model.getExpirationDate(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
@@ -289,14 +297,14 @@
 				placement: 'bottom'
 			});
 
-			this.$el.find('.expiration-user:not(.hasDatepicker)').each(function(){
+			this.$el.find('.expiration-user').each(function(){
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateUser(),
 					enforced : self.configModel.isDefaultExpireDateUserEnforced()
 				});
 			});
 
-			this.$el.find('.expiration-group:not(.hasDatepicker)').each(function(){
+			this.$el.find('.expiration-group').each(function(){
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateGroup(),
 					enforced : self.configModel.isDefaultExpireDateGroupEnforced()
@@ -455,7 +463,7 @@
 			var shareId = $li.data('share-id');
 
 			if (!_.isUndefined(this._currentlyToggled[shareId])) {
-				this._currentlyToggled.splice(shareId, 1);
+				delete(this._currentlyToggled[shareId]);
 				this._toggleShareDivs(shareId, false);
 			} else {
 				this._currentlyToggled[shareId] = true;
@@ -465,8 +473,7 @@
 
 		_toggleShareDivs: function(shareId, enabled) {
 			var $li = this.$el.find('li[data-share-id=' + shareId + ']');
-			$li.children("div").each(function()
-			{
+			$li.children("div").each(function() {
 				var $div = $(this);
 				if (!$div.hasClass( "avatar" )) {
 					if (enabled) {

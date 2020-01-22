@@ -19,7 +19,7 @@
 *
 */
 
-describe('OC.Share.ShareDialogExpirationView', function() {
+describe('OC.Share.ShareDialogLinkExpirationView', function() {
 	var itemModel;
 	var fileInfoModel;
 	var configModel;
@@ -61,7 +61,7 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 			expireDate: null,
 		});
 
-		view = new OC.Share.ShareDialogExpirationView({
+		view = new OC.Share.ShareDialogLinkExpirationView({
 			model: model,
 			itemModel: itemModel
 		});

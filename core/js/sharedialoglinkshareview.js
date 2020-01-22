@@ -89,7 +89,7 @@
 				throw 'missing OC.Share.ShareItemModel';
 			}
 
-			this.expirationView = new OC.Share.ShareDialogExpirationView({
+			this.expirationView = new OC.Share.ShareDialogLinkExpirationView({
 				model: this.model,
 				itemModel: this.itemModel
 			});

@@ -33,7 +33,7 @@
 		"sharescollection.js",
 		"shareitemmodel.js",
 		"sharedialogview.js",
-		"sharedialogexpirationview.js",
+		"sharedialoglinkexpirationview.js",
 		"sharedialoglinkshareview.js",
 		"sharedialoglinklistview.js",
 		"sharedialogmailview.js",
