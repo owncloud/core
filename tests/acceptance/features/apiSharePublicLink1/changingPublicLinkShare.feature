@@ -37,6 +37,7 @@ Feature: changing a public link share
       | old                       |
       | new                       |
 
+  @skipOnRansomwareProtection  @issue-ransomware-208
   Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings
@@ -124,6 +125,7 @@ Feature: changing a public link share
       | old                       |
       | new                       |
 
+  @skipOnRansomwareProtection @issue-ransomware-208
   Scenario Outline: Public tries to rename a file in a password protected share using the valid password
     Given the administrator has enabled DAV tech_preview
     And user "user0" has created a public link share with settings
