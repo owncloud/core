@@ -2,8 +2,7 @@
 Feature: resources shared with the same name are received with unique names
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario: unique target names for incoming shares

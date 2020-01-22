@@ -2,8 +2,7 @@
 Feature: resharing can be done on a reshared resource
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
 
   Scenario: Reshared files can be still accessed if a user in the middle removes it.

@@ -2,8 +2,7 @@
 Feature: cannot share resources when in a group that is excluded from sharing
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"

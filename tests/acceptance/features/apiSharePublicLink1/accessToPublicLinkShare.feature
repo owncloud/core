@@ -2,8 +2,7 @@
 Feature: accessing a public link share
 
   Background:
-    Given using old DAV path
-    And these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |

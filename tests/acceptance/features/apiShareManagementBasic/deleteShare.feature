@@ -1,9 +1,6 @@
 @api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
-  Background:
-    Given using old DAV path
-
   Scenario Outline: Delete all group shares
     Given these users have been created with default attributes and skeleton files:
       | username |

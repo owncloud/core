@@ -2,8 +2,7 @@
 Feature: resharing can be disabled
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
 
   Scenario Outline: resharing a file is not allowed when allow resharing has been disabled

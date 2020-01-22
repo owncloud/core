@@ -2,8 +2,7 @@
 Feature: cannot share resources outside the group when share with membership groups is enabled
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: sharer should not be able to share a folder to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"

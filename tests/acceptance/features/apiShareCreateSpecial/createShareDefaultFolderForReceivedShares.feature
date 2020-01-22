@@ -2,8 +2,7 @@
 Feature: shares are received in the default folder for received shares
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario Outline: Do not allow sharing of the entire share_folder

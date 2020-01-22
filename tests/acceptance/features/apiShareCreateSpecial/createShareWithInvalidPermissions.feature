@@ -2,8 +2,7 @@
 Feature: cannot share resources with invalid permissions
 
   Background:
-    Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: Cannot create a share of a file or folder with invalid permissions
     Given using OCS API version "<ocs_api_version>"

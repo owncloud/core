@@ -5,8 +5,7 @@ Feature: sharing
   So that ownCloud users cannot share file or folder
 
   Background:
-    Given using old DAV path
-    And these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
