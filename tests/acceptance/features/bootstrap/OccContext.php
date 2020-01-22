@@ -1309,6 +1309,54 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator verifies the mount configuration for local storage :localStorage using the occ command
+	 *
+	 * @param $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorVerifiesTheMountConfigurationForLocalStorageUsingTheOccCommand($localStorage) {
+		$this->listLocalStorageMount();
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($commandOutput as $entry) {
+			if (\ltrim($entry->mount_point, '/') == $localStorage) {
+				$mountId = $entry->mount_id;
+			}
+		}
+		if (!isset($mountId)) {
+			throw new Exception("Id not found for local storage $localStorage to be verified");
+		}
+		$this->invokingTheCommand('files_external:verify ' . $mountId);
+	}
+
+	/**
+	 * @Then the following mount configuration information should be listed:
+	 *
+	 * @param $info
+	 *
+	 * @return void
+	 */
+	public function theFollowingInformationShouldBeListed(TableNode $info) {
+		$ResultArray = [];
+		$expectedInfo = $info->getColumnsHash();
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$commandOutputSplitted = \preg_split("/[-]/", $commandOutput);
+		$filteredArray = \array_filter(\array_map("trim", $commandOutputSplitted));
+		foreach ($filteredArray as $entry) {
+			$keyValue = \preg_split("/[:]/", $entry);
+			if (isset($keyValue[1])) {
+				$ResultArray[$keyValue[0]] = $keyValue[1];
+			} else {
+				$ResultArray[$keyValue[0]] = "";
+			}
+		}
+		foreach ($expectedInfo as $element) {
+			Assert::assertEquals($element, \array_map('trim', $ResultArray));
+		}
+	}
+
+	/**
 	 * @When the administrator list the repair steps using the occ command
 	 *
 	 * @return void
