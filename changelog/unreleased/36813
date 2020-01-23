@@ -1,0 +1,8 @@
+Bugfix: Sharing with a user and group of the same name on the webUI
+
+When sharing with both a user and a group that have the same name it was not
+possible to adjust the sharing permissions of the 2nd share on the webUI.
+This problem has been corrected.
+
+https://github.com/owncloud/core/issues/36813
+https://github.com/owncloud/core/pull/36766

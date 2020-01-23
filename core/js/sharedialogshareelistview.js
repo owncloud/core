@@ -33,22 +33,22 @@
 		'		<span class="shareOption">' +
 		'		{{#unless wasMailSent}}' +
 		'		<span class="mailNotificationSpinner icon-loading-small hidden"></span>' +
-		'		<input id="mail-{{cid}}-{{shareWith}}" type="button" name="mailNotification" value="{{notifyByMailLabel}}" class="mailNotification checkbox" />' +
+		'		<input id="mail-{{cid}}-{{shareWith}}-{{shareType}}" type="button" name="mailNotification" value="{{notifyByMailLabel}}" class="mailNotification checkbox" />' +
 		'		{{/unless}}' +
 		'		</span>' +
 		'		{{/unless}} {{/if}}' +
 		'		<div class="expirationOption">' +
 		'			{{#if isUserShare}}' +
-		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">{{expirationLabel}}: ' +
-		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="{{expirationDatePlaceholder}}" />' +
+		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}">{{expirationLabel}}: ' +
+		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="{{expirationDatePlaceholder}}" />' +
 		'				{{#unless isDefaultExpireDateUserEnforced}}' +
 		'				<button class="removeExpiration">Remove</button>' +
 		'				{{/unless}}' +
 		'			</label>' +
 		'			{{/if}}' +
 		'			{{#if isGroupShare}}' +
-		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}">{{expirationLabel}}: ' +
-		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}" value="{{expirationDate}}" class="expiration expiration-group" placeholder="{{expirationDatePlaceholder}}" />' +
+		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}">{{expirationLabel}}: ' +
+		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}" value="{{expirationDate}}" class="expiration expiration-group" placeholder="{{expirationDatePlaceholder}}" />' +
 		'				{{#unless isDefaultExpireDateGroupEnforced}}' +
 		'				<button class="removeExpiration">Remove</button>' +
 		'				{{/unless}}' +
@@ -58,40 +58,40 @@
 		'		<div class="coreShareOptions">' +
 		'			{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
 		'			<span class="shareOption">' +
-		'				<input id="canShare-{{cid}}-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
-		'				<label for="canShare-{{cid}}-{{shareWith}}">{{canShareLabel}}</label>' +
+		'				<input id="canShare-{{cid}}-{{shareWith}}-{{shareType}}-{{shareType}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
+		'				<label for="canShare-{{cid}}-{{shareWith}}-{{shareType}}-{{shareType}}">{{canShareLabel}}</label>' +
 		'			</span>' +
 		'			{{/if}} {{/if}}' +
 		'			{{#if editPermissionPossible}}' +
 		'			<span class="shareOption">' +
-		'				<input id="canEdit-{{cid}}-{{shareWith}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
-		'				<label for="canEdit-{{cid}}-{{shareWith}}">{{canEditLabel}}</label>' +
+		'				<input id="canEdit-{{cid}}-{{shareWith}}-{{shareType}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
+		'				<label for="canEdit-{{cid}}-{{shareWith}}-{{shareType}}">{{canEditLabel}}</label>' +
 		'			</span>' +
 		'			{{/if}}' +
 		'			{{#if createPermissionPossible}}' +
 		'			<span class="shareOption">' +
-		'				<input id="canCreate-{{cid}}-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
-		'				<label for="canCreate-{{cid}}-{{shareWith}}">{{createPermissionLabel}}</label>' +
+		'				<input id="canCreate-{{cid}}-{{shareWith}}-{{shareType}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
+		'				<label for="canCreate-{{cid}}-{{shareWith}}-{{shareType}}">{{createPermissionLabel}}</label>' +
 		'			</span>' +
 		'			{{/if}}' +
 		'			{{#if updatePermissionPossible}}' +
 		'			<span class="shareOption">' +
-		'				<input id="canUpdate-{{cid}}-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
-		'				<label for="canUpdate-{{cid}}-{{shareWith}}">{{updatePermissionLabel}}</label>' +
+		'				<input id="canUpdate-{{cid}}-{{shareWith}}-{{shareType}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
+		'				<label for="canUpdate-{{cid}}-{{shareWith}}-{{shareType}}">{{updatePermissionLabel}}</label>' +
 		'			</span>' +
 		'			{{/if}}' +
 		'			{{#if deletePermissionPossible}}' +
 		'				<span class="shareOption">' +
-		'				<input id="canDelete-{{cid}}-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
-		'				<label for="canDelete-{{cid}}-{{shareWith}}">{{deletePermissionLabel}}</label>' +
+		'				<input id="canDelete-{{cid}}-{{shareWith}}-{{shareType}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
+		'				<label for="canDelete-{{cid}}-{{shareWith}}-{{shareType}}">{{deletePermissionLabel}}</label>' +
 		'			</span>' +
 		'			{{/if}}' +
 		'		</div>' +
 		'		<div class="shareAttributes"">' +
 		'			{{#each shareAttributesV1}}' +
 		'			<span class="shareOption">' +
-		'				<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
-		'				<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
+		'				<input id="can-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
+		'				<label for="can-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}">{{label}}</label>' +
 		'			</span>' +
 		'			{{/each}}' +
 		'		</div>' +
