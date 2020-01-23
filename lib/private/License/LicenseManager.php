@@ -21,19 +21,28 @@ namespace OC\License;
 
 use OCP\License\ILicenseManager;
 use OCP\IConfig;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OC\License\LicenseFetcher;
 
 class LicenseManager implements ILicenseManager {
-	/** @var IConfig */
-	private $config;
 	/** @var LicenseFetcher */
 	private $licenseFetcher;
+	/** @var IConfig */
+	private $config;
+	/** @var IAppManager */
+	private $appManager;
 	/** @var ITimeFactory */
 	private $timeFactory;
 
-	public function __construct(LicenseFetcher $licenseFetcher, IConfig $config, ITimeFactory $timeFactory) {
+	public function __construct(
+		LicenseFetcher $licenseFetcher,
+		IAppManager $appManager,
+		IConfig $config,
+		ITimeFactory $timeFactory
+	) {
 		$this->licenseFetcher = $licenseFetcher;
+		$this->appManager = $appManager;
 		$this->config = $config;
 		$this->timeFactory = $timeFactory;
 	}
@@ -58,13 +67,17 @@ class LicenseManager implements ILicenseManager {
 		}
 	}
 
-	public function isAppUnderTrialPeriod(string $appid, bool $autoStart = true) {
+	public function isAppUnderTrialPeriod(string $appid) {
 		$trialMark = $this->config->getAppValue('core', "trials_{$appid}", null);
 		if ($trialMark === null) {
-			if ($autoStart) {
+			$callerFile = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'];
+			if (\strpos($callerFile, $this->appManager->getAppPath($appid)) === 0) {
+				// ensure it's the app itself the one starting the trial.
+				// neither core nor other app should be able to start a trial on behalf of another app
 				$this->config->setAppValue('core', "trials_{$appid}", $this->timeFactory->getTime());
 				return true;
 			} else {
+				// TODO
 				return false;
 			}
 		} else {

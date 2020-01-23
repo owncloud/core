@@ -36,9 +36,7 @@ interface ILicenseManager {
 	 * trial period if the app didn't have a trial period before.
 	 * The auto-start parameter isn't guarantee a new trial period will be started.
 	 * @param string $appid the app id to check if it's under the trial period
-	 * @param bool $autoStart true to try to auto-start a trial period, false to just check.
-	 * Note that a new trial period won't be started if there was a trial period before
 	 * @return bool true if the app is NOW under the trial period, false otherwise
 	 */
-	public function isAppUnderTrialPeriod(string $appid, bool $autoStart = true);
+	public function isAppUnderTrialPeriod(string $appid);
 }
