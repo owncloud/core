@@ -5,12 +5,12 @@ Feature: delete file
   So that I can remove unwanted data
 
   Background:
-    Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: delete a file
     Given using <dav_version> DAV path
+    And user "user0" has uploaded file with content "to delete" to "/textfile0.txt"
     When user "user0" deletes file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "user0" file "/textfile0.txt" should not exist
