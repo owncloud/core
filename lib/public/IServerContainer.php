@@ -543,4 +543,9 @@ interface IServerContainer extends IContainer {
 	 * @since 10.0.10
 	 */
 	public function getShutdownHandler();
+
+	/**
+	 * @return \OCP\License\ILicenseManager
+	 */
+	public function getLicenseManager();
 }

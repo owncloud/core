@@ -63,6 +63,7 @@ use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
+use OC\License\LicenseManager;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -1679,5 +1680,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function getShutdownHandler() {
 		return $this->query(ShutDownManager::class);
+	}
+
+	public function getLicenseManager() {
+		return $this->query(LicenseManager::class);
 	}
 }
