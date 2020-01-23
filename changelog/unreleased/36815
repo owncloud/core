@@ -1,0 +1,10 @@
+Enhancement: Enable DAV endpoints for trashbin and for public shares
+
+DAV endpoint for trashbin and DAV endpoint for public shares were released in
+ownCloud 10.3.0. The endpoints were disabled by default and had to be enabled
+by setting dav.enable.tech_preview in config.php.
+
+These endpoints are now always enabled. There is no longer any need to set
+dav.enable.tech_preview in config.php.
+
+https://github.com/owncloud/core/pull/36815

@@ -59,14 +59,12 @@ class RootCollection extends SimpleCollection {
 		$filesCollection = new Files\RootCollection($userPrincipalBackend, 'principals/users');
 		$filesCollection->disableListing = $disableListing;
 
-		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
-			$trashBinCollection = new TrashBin\RootCollection(
-				$userPrincipalBackend,
-				\OC::$server->getUserSession(),
-				'principals/users'
-			);
-			$trashBinCollection->disableListing = $disableListing;
-		}
+		$trashBinCollection = new TrashBin\RootCollection(
+			$userPrincipalBackend,
+			\OC::$server->getUserSession(),
+			'principals/users'
+		);
+		$trashBinCollection->disableListing = $disableListing;
 
 		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend, $groupPrincipalBackend, $random);
 		$calendarRoot = new CalendarRoot($userPrincipalBackend, $caldavBackend, 'principals/users');
@@ -126,9 +124,7 @@ class RootCollection extends SimpleCollection {
 			$publicFilesRoot
 		];
 
-		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
-			$children[] = $trashBinCollection;
-		}
+		$children[] = $trashBinCollection;
 
 		parent::__construct('root', $children);
 	}
