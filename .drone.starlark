@@ -813,7 +813,6 @@ def litmus():
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
 					installServer(phpVersion, db, params['logLevel']) +
-					techPreview(phpVersion) +
 					setupLocalStorage(phpVersion) +
 					fixPermissions(phpVersion, False) +
 					createShare(phpVersion) +
@@ -1897,16 +1896,6 @@ def davInstall(phpVersion, scriptPath):
 		'pull': 'always',
 		'commands': [
 			'bash %s/install.sh' % scriptPath
-		]
-	}]
-
-def techPreview(phpVersion):
-	return [{
-		'name': 'tech-preview',
-		'image': 'owncloudci/php:%s' % phpVersion,
-		'pull': 'always',
-		'commands': [
-			'php occ config:system:set dav.enable.tech_preview --value=true --type boolean'
 		]
 	}]
 
