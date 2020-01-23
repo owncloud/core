@@ -5,8 +5,8 @@ Feature: delete folder
   So that I can quickly remove unwanted data
 
   Background:
-    Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" creates folder "/PARENT" using the WebDAV API
 
   Scenario Outline: delete a folder
     Given using <dav_version> DAV path
@@ -20,7 +20,6 @@ Feature: delete folder
 
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
-    And user "user0" creates folder "/PARENT" using the WebDAV API
     And user "user0" creates folder "/parent" using the WebDAV API
     When user "user0" deletes folder "/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
@@ -33,6 +32,8 @@ Feature: delete folder
 
   Scenario Outline: delete a sub-folder
     Given using <dav_version> DAV path
+    And user "user0" creates folder "/PARENT/CHILD" using the WebDAV API
+    And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/PARENT/parent.txt"
     When user "user0" deletes folder "/PARENT/CHILD" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "user0" folder "/PARENT/CHILD" should not exist
