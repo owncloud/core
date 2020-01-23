@@ -5,6 +5,7 @@ OC.L10N.register(
     "Step 2 failed. Exception: %s" : "Adım 2 başarısız. İstisna: %s",
     "External storage" : "Harici depolama",
     "Google Drive App Configuration" : "Google Drive Uygulama Yapılandırması",
+    "Error verifying OAuth2 Code for " : "OAuth2 Kodu doğrulanırken hata oluştu",
     "Personal" : "Kişisel",
     "System" : "Sistem",
     "Grant access" : "Erişimi sağla",
