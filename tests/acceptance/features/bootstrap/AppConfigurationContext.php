@@ -91,10 +91,13 @@ class AppConfigurationContext implements Context {
 		$capabilitiesApp, $capabilitiesPath, $expectedValue
 	) {
 		$this->theAdministratorGetsCapabilitiesCheckResponse();
+		$actualValue = $this->getAppParameter($capabilitiesApp, $capabilitiesPath);
 
 		Assert::assertEquals(
 			$expectedValue,
-			$this->getAppParameter($capabilitiesApp, $capabilitiesPath)
+			$actualValue,
+			__METHOD__
+			. " $capabilitiesApp path $capabilitiesPath should be $expectedValue but is $actualValue"
 		);
 	}
 
@@ -141,8 +144,13 @@ class AppConfigurationContext implements Context {
 	 */
 	public function userGetsCapabilitiesCheckResponse($username) {
 		$this->userGetsCapabilities($username);
+		$statusCode = $this->featureContext->getResponse()->getStatusCode();
+
 		Assert::assertEquals(
-			200, $this->featureContext->getResponse()->getStatusCode()
+			200,
+			$statusCode,
+			__METHOD__
+			. "'user $username returned unexpected status $statusCode"
 		);
 	}
 
@@ -295,36 +303,6 @@ class AppConfigurationContext implements Context {
 	}
 
 	/**
-	 * @param boolean $enabled if true, then enable the testing app
-	 *                         otherwise disable the testing app
-	 *
-	 * @return void
-	 */
-	protected function setStatusTestingApp($enabled) {
-		$this->featureContext->ocsContext->theUserSendsToOcsApiEndpoint(
-			($enabled ? 'post' : 'delete'), '/cloud/apps/testing'
-		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		if ($this->featureContext->getOcsApiVersion() == 1) {
-			$this->featureContext->ocsContext->theOCSStatusCodeShouldBe('100');
-		}
-
-		$this->featureContext->ocsContext->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		if ($enabled) {
-			Assert::assertContains(
-				'testing',
-				$this->featureContext->getResponse()->getBody()->getContents()
-			);
-		} else {
-			Assert::assertNotContains(
-				'testing',
-				$this->featureContext->getResponse()->getBody()->getContents()
-			);
-		}
-	}
-
-	/**
 	 * @When the administrator adds url :url as trusted server using the testing API
 	 *
 	 * @param string $url
@@ -378,6 +356,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $url
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
 	public function urlShouldBeATrustedServer($url) {
 		$trustedServers = $this->featureContext->getTrustedServers();
@@ -395,6 +374,7 @@ class AppConfigurationContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theTrustedServerListShouldIncludeTheseUrls(TableNode $table) {
 		$trustedServers = $this->featureContext->getTrustedServers();
@@ -420,6 +400,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $url
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorHasAddedUrlAsTrustedServer($url) {
 		$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
@@ -459,6 +440,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $url
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function urlShouldNotBeATrustedServer($url) {
 		$trustedServers = $this->featureContext->getTrustedServers();
@@ -509,10 +491,14 @@ class AppConfigurationContext implements Context {
 	 * @Then the trusted server list should be empty
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theTrustedServerListShouldBeEmpty() {
 		$trustedServers = $this->featureContext->getTrustedServers();
-		Assert::assertEmpty($trustedServers, "Trusted server list is not empty");
+		Assert::assertEmpty(
+			$trustedServers,
+			__METHOD__ . " Trusted server list is not empty"
+		);
 	}
 
 	/**
