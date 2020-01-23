@@ -433,28 +433,6 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator disables DAV tech_preview
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorDisablesDAVTechPreview() {
-		$this->disableDAVTechPreview();
-	}
-
-	/**
-	 * @Given the administrator has disabled DAV tech_preview
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorHasDisabledDAVTechPreview() {
-		if ($this->disableDAVTechPreview()) {
-			$this->theCommandShouldHaveBeenSuccessful();
-		}
-	}
-
-	/**
 	 * @When /^the administrator invokes occ command "([^"]*)"$/
 	 *
 	 * @param string $cmd
