@@ -1,0 +1,7 @@
+Bugfix: Optimize memory consumption of occ files:checksums:verify command
+
+Memory consumption reduced by clearing memory usages of processed files and folders.
+Also, information messages of the command improved by showing the current processed user and the command run result.
+
+https://github.com/owncloud/core/issues/31133
+https://github.com/owncloud/core/pull/36787
