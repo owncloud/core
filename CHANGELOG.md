@@ -20,6 +20,7 @@ Summary
 * Bugfix - Fix null for empty path on Oracle: [#36610](https://github.com/owncloud/core/pull/36610)
 * Bugfix - Do not dispatch DeclineShare event for non-existing shares: [#36759](https://github.com/owncloud/core/pull/36759)
 * Bugfix - Remove part files when upload is cancelled for all public links: [#36761](https://github.com/owncloud/core/pull/36761)
+* Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -176,6 +177,14 @@ Details
    With this change it does clean up.
 
    https://github.com/owncloud/core/pull/36761
+
+* Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
+
+   When sharing with both a user and a group that have the same name it was not possible to adjust the
+   sharing permissions of the 2nd share on the webUI. This problem has been corrected.
+
+   https://github.com/owncloud/core/issues/36813
+   https://github.com/owncloud/core/pull/36766
 
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 
@@ -495,6 +504,7 @@ Details
    the admin sharing settings page. They can be set independently for user and group shares.
 
    https://github.com/owncloud/core/pull/36573
+   https://github.com/owncloud/core/pull/36766
 
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
 
