@@ -1,9 +1,10 @@
-@cli @skipOnLDAP
+@cli
 Feature: get group
   As an admin
   I want to be able to get group details
   So that I can know which users are in a group
 
+  @skipOnLDAP
   Scenario: admin gets users in the group
     Given these users have been created with skeleton files:
       | username       |
@@ -38,6 +39,7 @@ Feature: get group
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Group not-a-group does not exist'
 
+  @skipOnLDAP @issue-499
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name
     Given group "<group_id1>" has been created
     When the administrator gets the users in group "<group_id2>" in JSON format using the occ command

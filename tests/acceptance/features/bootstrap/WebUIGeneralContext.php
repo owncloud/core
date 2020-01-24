@@ -672,7 +672,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 
 		//TODO make it smarter to be able also to work with other backends
-		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($this->featureContext->isTestingWithLdap()) {
 			$result = SetupHelper::runOcc(
 				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
 			);

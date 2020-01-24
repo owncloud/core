@@ -4,6 +4,7 @@ Feature: get groups
   I want to be able to get a list of groups
   So that I can see all the groups in my ownCloud
 
+  @issue-user_ldap-500
   Scenario: admin gets all the groups
     Given group "0" has been created
     And group "new-group" has been created
@@ -17,6 +18,7 @@ Feature: get groups
       | new-group |
       | 0         |
 
+  @issue-user_ldap-499
   Scenario: admin gets all the groups, including groups with mixed case
     Given group "new-group" has been created
     And group "New-Group" has been created

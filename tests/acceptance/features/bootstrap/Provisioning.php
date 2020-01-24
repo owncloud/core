@@ -27,6 +27,8 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
+use Zend\Ldap\Exception\LdapException;
+use Zend\Ldap\Ldap;
 
 /**
  * Functions for provisioning of users and groups
@@ -289,10 +291,7 @@ trait Provisioning {
 	 */
 	public function userHasBeenCreatedWithDefaultAttributes($user) {
 		$this->createUser($user);
-
-		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") !== "true") {
-			$this->userShouldExist($user);
-		}
+		$this->userShouldExist($user);
 	}
 
 	/**
@@ -301,6 +300,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
 		$baseUrl = $this->getBaseUrl();
@@ -324,6 +324,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
 		$baseUrl = $this->getBaseUrl();
@@ -348,6 +349,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table) {
 		$baseUrl = $this->getBaseUrl();
@@ -364,10 +366,416 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
-	 * @When /^the administrator creates these users with ?(default attributes and|) skeleton files ?(but not initialized|):$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function importLdifFile($path) {
+		$ldifData = \file_get_contents($path);
+		$this->importLdifData($ldifData);
+	}
+
+	/**
+	 * imports an ldif string
+	 *
+	 * @param string $ldifData
+	 *
+	 * @return void
+	 */
+	public function importLdifData($ldifData) {
+		$items = Zend\Ldap\Ldif\Encoder::decode($ldifData);
+		if (isset($items['dn'])) {
+			//only one item in the ldif data
+			$this->ldap->add($items['dn'], $items);
+		} else {
+			foreach ($items as $item) {
+				$this->ldap->add($item['dn'], $item);
+			}
+		}
+	}
+
+	/**
+	 * @param $suiteParameters
+	 *
+	 * @return void
+	 * @throws \Exception
+	 * @throws \LdapException
+	 */
+	public function connectToLdap($suiteParameters) {
+		$occResult = SetupHelper::runOcc(
+			['ldap:show-config', 'LDAPTestId', '--output=json']
+		);
+		Assert::assertSame(
+			'0', $occResult['code'],
+			"could not read current LDAP config. stdOut: " .
+			$occResult['stdOut'] .
+			" stdErr: " . $occResult['stdErr']
+		);
+
+		$ldapConfig = \json_decode(
+			$occResult['stdOut'], true
+		);
+		Assert::assertNotNull(
+			$ldapConfig,
+			"could not json decode current LDAP config. stdOut: " . $occResult['stdOut']
+		);
+
+		$this->ldapBaseDN = (string)$ldapConfig['ldapBase'][0];
+		$this->ldapHost = (string)$ldapConfig['ldapHost'];
+		$this->ldapPort = (string)$ldapConfig['ldapPort'];
+		$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+
+		$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
+		$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
+		$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
+
+		$options = [
+			'host' => $this->ldapHost,
+			'port' => $this->ldapPort,
+			'password' => $this->ldapAdminPassword,
+			'bindRequiresDn' => true,
+			'baseDn' => $this->ldapBaseDN,
+			'username' => $this->ldapAdminUser
+		];
+		$this->ldap = new Ldap($options);
+		$this->ldap->bind();
+
+		$this->importLdifFile(
+			__DIR__ . (string)$suiteParameters['ldapInitialUserFilePath']
+		);
+		$this->theLdapUsersHaveBeenResynced();
+	}
+
+	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theLdapUsersHaveBeenReSynced() {
+		$occResult = SetupHelper::runOcc(
+			['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove']
+		);
+		if ($occResult['code'] !== "0") {
+			throw new \Exception("could not sync LDAP users " . $occResult['stdErr']);
+		}
+	}
+
+	/**
+	 * prepares suitable nested array with user-attributes for multiple users to be created
+	 *
+	 * @param boolean $setDefaultAttributes
+	 * @param array $table
+	 *
+	 * @return array
+	 */
+	public function buildUsersAttributesArray($setDefaultAttributes, $table) {
+		$usersAttributes = [];
+		foreach ($table as $row) {
+			$userAttribute['userid'] = $this->getActualUsername($row['username']);
+			if (isset($row['displayname'])) {
+				$userAttribute['displayName'] = $row['displayname'];
+			} elseif ($setDefaultAttributes) {
+				$userAttribute['displayName'] = $this->getDisplayNameForUser($userAttribute['userid']);
+				if ($userAttribute['displayName'] === null) {
+					$userAttribute['displayName'] = $this->getDisplayNameForUser('regularuser');
+				}
+			} else {
+				$userAttribute['displayName'] = null;
+			}
+
+			if (isset($row['email'])) {
+				$userAttribute['email'] = $row['email'];
+			} elseif ($setDefaultAttributes) {
+				$userAttribute['email'] = $this->getEmailAddressForUser($userAttribute['userid']);
+				if ($userAttribute['email'] === null) {
+					$userAttribute['email'] = $row['username'] . '@owncloud.org';
+				}
+			} else {
+				$userAttribute['email'] = null;
+			}
+
+			if (isset($row['password'])) {
+				$userAttribute['password'] = $this->getActualPassword($row['password']);
+			} else {
+				$userAttribute['password'] = $this->getPasswordForUser($row['username']);
+			}
+			// Add request body to the bodies array. we will use that later to loop through created users.
+			\array_push($usersAttributes, $userAttribute);
+		}
+		return $usersAttributes;
+	}
+
+	/**
+	 * creates a user in the ldap server
+	 * the created user is added to `createdUsersList`
+	 * ldap users are re-synced after creating a new user
+	 *
+	 * @param array $setting
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function createLdapUser($setting) {
+		$ou = "TestUsers";
+		$newDN = 'uid=' . $setting["userid"] . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$uidNumber = \count($this->ldapCreatedUsers) + 1;
+		$entry = [];
+		$entry['cn'] = $setting["userid"];
+		$entry['sn'] = $setting["userid"];
+		$entry['homeDirectory'] = '/home/openldap/' . $setting["userid"];
+		$entry['objectclass'][] = 'posixAccount';
+		$entry['objectclass'][] = 'inetOrgPerson';
+		$entry['userPassword'] = $setting["password"];
+		if (isset($setting["displayName"])) {
+			$entry['displayName'] = $setting["displayName"];
+		}
+		if (isset($setting["email"])) {
+			$entry['mail'] = $setting["email"];
+		}
+		$entry['gidNumber'] = 5000;
+		$entry['uidNumber'] = $uidNumber;
+		$this->ldap->add($newDN, $entry);
+		\array_push($this->ldapCreatedUsers, $setting["userid"]);
+		$this->theLdapUsersHaveBeenReSynced();
+	}
+
+	/**
+	 * @param string $group group name
+	 *
+	 * @return void
+	 * @throws Exception
+	 * @throws LdapException
+	 */
+	public function createLdapGroup($group) {
+		$ou = "TestGroups";
+		$newDN = 'cn=' . $group . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$entry = [];
+		$entry['cn'] = $group;
+		$entry['objectclass'][] = 'posixGroup';
+		$entry['objectclass'][] = 'top';
+		$entry['gidNumber'] = 5000;
+		$this->ldap->add($newDN, $entry);
+		\array_push($this->ldapCreatedGroups, $group);
+		$this->theLdapUsersHaveBeenReSynced();
+	}
+
+	/**
+	 *
+	 * @param string $configId
+	 * @param string $configKey
+	 * @param string $configValue
+	 *
+	 * @throws \Exception
+	 * @return void
+	 */
+	public function setLdapSetting($configId, $configKey, $configValue) {
+		if ($configValue === "") {
+			$configValue = "''";
+		}
+		$substitutions = [
+			[
+				"code" => "%ldap_host_without_scheme%",
+				"function" => [
+					$this,
+					"getLdapHostWithoutScheme"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%ldap_host%",
+				"function" => [
+					$this,
+					"getLdapHost"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%ldap_port%",
+				"function" => [
+					$this,
+					"getLdapPort"
+				],
+				"parameter" => []
+			]
+		];
+		$configValue = $this->substituteInLineCodes(
+			$configValue, [], $substitutions
+		);
+		$occResult = SetupHelper::runOcc(
+			['ldap:set-config', $configId, $configKey, $configValue]
+		);
+		if ($occResult['code'] !== "0") {
+			throw new \Exception(
+				"could not set LDAP setting " . $occResult['stdErr']
+			);
+		}
+	}
+
+	/**
+	 * deletes LDAP users|groups created during test
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteLdapUsersAndGroups() {
+		//delete created ldap users
+		$this->ldap->delete(
+			"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN, true
+		);
+		//delete all created ldap groups
+		$this->ldap->delete(
+			"ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN, true
+		);
+		foreach ($this->ldapCreatedUsers as $user) {
+			$this->rememberThatUserIsNotExpectedToExist($user);
+		}
+		foreach ($this->ldapCreatedGroups as $group) {
+			$this->rememberThatGroupIsNotExpectedToExist($group);
+		}
+		$this->theLdapUsersHaveBeenResynced();
+	}
+
+	/**
+	 * Sets back old settings
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function resetOldLdapConfig() {
+		$toDeleteLdapConfig = $this->getToDeleteLdapConfigs();
+		foreach ($toDeleteLdapConfig as $configId) {
+			SetupHelper::runOcc(['ldap:delete-config', $configId]);
+		}
+		foreach ($this->oldLdapConfig as $configId => $settings) {
+			foreach ($settings as $configKey => $configValue) {
+				$this->setLdapSetting($configId, $configKey, $configValue);
+			}
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function afterScenario() {
+		if ($this->isTestingWithLdap()) {
+			$this->deleteLdapUsersAndGroups();
+			$this->resetOldLdapConfig();
+		}
+	}
+
+	/**
 	 * This function will allow us to send user creation requests in parallel.
-	 * This will be faster in comparision to waiting for each request to complete before sending another request.
+	 * This will be faster in comparison to waiting for each request to complete before sending another request.
+	 *
+	 * @param boolean $initialize
+	 * @param array $usersAttributes
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function usersHaveBeenCreated($initialize, $usersAttributes) {
+		$requests = [];
+		$client = new Client();
+
+		foreach ($usersAttributes as $userAttributes) {
+			if ($this->isTestingWithLdap()) {
+				$this->createLdapUser($userAttributes);
+			} else {
+				// Create a OCS request for creating the user. The request is not sent to the server yet.
+				$request = OcsApiHelper::createOcsRequest(
+					$this->getBaseUrl(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					'POST',
+					"/cloud/users",
+					$userAttributes,
+					$client
+				);
+				// Add the request to the $requests array so that they can be sent in parallel.
+				\array_push($requests, $request);
+			}
+		}
+
+		if (!$this->isTestingWithLdap()) {
+			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
+			// Retrieve all failures.
+			foreach ($results->getFailures() as $e) {
+				$failedUser = $e->getRequest()->getBody()->getFields()['userid'];
+				$message = $this->getResponseXml($e->getResponse())->xpath("/ocs/meta/message");
+				if ($message && (string)$message[0] === "User already exists") {
+					Assert::fail(
+						"Could not create user '$failedUser' as it already exists. " .
+						"Please delete the user to run tests again."
+					);
+				}
+				throw new Exception(
+					"could not create user. "
+					. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
+				);
+			}
+		}
+
+		// Create requests for setting displayname and email for the newly created users.
+		// These values cannot be set while creating the user, so we have to edit the newly created user to set these values.
+		$users = [];
+		$editData = [];
+		foreach ($usersAttributes as $userAttributes) {
+			\array_push($users, $userAttributes['userid']);
+			$this->addUserToCreatedUsersList($userAttributes['userid'], $userAttributes['password'], $userAttributes['displayName'], $userAttributes['email']);
+			if (isset($userAttributes['displayName'])) {
+				\array_push($editData, ['user' => $userAttributes['userid'], 'key' => 'displayname', 'value' => $userAttributes['displayName']]);
+			}
+			if (isset($userAttributes['email'])) {
+				\array_push($editData, ['user' => $userAttributes['userid'], 'key' => 'email', 'value' => $userAttributes['email']]);
+			}
+		}
+		// Edit the users in parallel to make the process faster.
+		if (\count($editData) > 0) {
+			UserHelper::editUserBatch(
+				$this->getBaseUrl(),
+				$editData,
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
+			);
+		}
+
+		// If the users need to be initialized then initialize them in parallel.
+		if ($initialize) {
+			$this->initializeUserBatch($users);
+		}
+	}
+
+	/**
+	 * @When /^the administrator creates these users with ?(default attributes and|) skeleton files ?(but not initialized|):$/
+	 *
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * password, displayname & email are optional
+	 *
+	 * @param string $setDefaultAttributes
+	 * @param string $doNotInitialize
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesTheseUsers($setDefaultAttributes, $doNotInitialize, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
+		$table = $table->getColumnsHash();
+		$setDefaultAttributes = $setDefaultAttributes !== "";
+		$initialize = $doNotInitialize === "";
+		$usersAttributes = $this->buildUsersAttributesArray($setDefaultAttributes, $table);
+		$this->usersHaveBeenCreated(
+			$initialize,
+			$usersAttributes
+		);
+	}
+
+	/**
+	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
 	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
@@ -385,114 +793,13 @@ trait Provisioning {
 		$table = $table->getColumnsHash();
 		$setDefaultAttributes = $setDefaultAttributes !== "";
 		$initialize = $doNotInitialize === "";
-		// We add all the request bodies in an array.
-		$bodies = [];
-		// We add all the request objects in an array so that we can send all the requests in parallel.
-		$requests = [];
-		$client = new Client();
-
-		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
-			$users = [];
-			echo "creating LDAP users is not implemented, so assume they exist\n";
-			foreach ($table as $user) {
-				\array_push($users, $user["username"]);
-			}
-			$this->initializeUserBatch($users);
-			return;
-		}
-
-		foreach ($table as $row) {
-			$body['userid'] = $this->getActualUsername($row['username']);
-
-			if (isset($row['displayname'])) {
-				$body['displayName'] = $row['displayname'];
-			} elseif ($setDefaultAttributes) {
-				$body['displayName'] = $this->getDisplayNameForUser($body['userid']);
-				if ($body['displayName'] === null) {
-					$body['displayName'] = $this->getDisplayNameForUser('regularuser');
-				}
-			} else {
-				$body['displayName'] = null;
-			}
-
-			if (isset($row['email'])) {
-				$body['email'] = $row['email'];
-			} elseif ($setDefaultAttributes) {
-				$body['email'] = $this->getEmailAddressForUser($body['userid']);
-				if ($body['email'] === null) {
-					$body['email'] = $row['username'] . '@owncloud.org';
-				}
-			} else {
-				$body['email'] = null;
-			}
-
-			if (isset($row['password'])) {
-				$body['password'] = $this->getActualPassword($row['password']);
-			} else {
-				$body['password'] = $this->getPasswordForUser($row['username']);
-			}
-
-			// Add request body to the bodies array. we will use that later to loop through created users.
-			\array_push($bodies, $body);
-
-			// Create a OCS request for creating the user. The request is not sent to the server yet.
-			$request = OcsApiHelper::createOcsRequest(
-				$this->getBaseUrl(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
-				'POST',
-				"/cloud/users",
-				$body,
-				$client
-			);
-			// Add the request to the $requests array so that they can be sent in parallel.
-			\array_push($requests, $request);
-		}
-
-		$results = HttpRequestHelper::sendBatchRequest($requests, $client);
-		// Retrieve all failures.
-		foreach ($results->getFailures() as $e) {
-			$failedUser = $e->getRequest()->getBody()->getFields()['userid'];
-			$message = $this->getResponseXml($e->getResponse())->xpath("/ocs/meta/message");
-			if ($message && (string) $message[0] === "User already exists") {
-				Assert::fail(
-					"Could not create user '$failedUser' as it already exists. " .
-					"Please delete the user to run tests again."
-				);
-			}
-			throw new Exception(
-				"could not create user. "
-				. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
-			);
-		}
-
-		// Create requests for setting displayname and email for the newly created users.
-		// These values cannot be set while creating the user, so we have to edit the newly created user to set these values.
-		$users = [];
-		$editData = [];
-		foreach ($bodies as $user) {
-			\array_push($users, $user['userid']);
-			$this->addUserToCreatedUsersList($user['userid'], $user['password'], $user['displayName'], $user['email']);
-			if (isset($user['displayName'])) {
-				\array_push($editData, ['user' => $user['userid'], 'key' => 'displayname', 'value' => $user['displayName']]);
-			}
-			if (isset($user['email'])) {
-				\array_push($editData, ['user' => $user['userid'], 'key' => 'email', 'value' => $user['email']]);
-			}
-		}
-		// Edit the users in parallel to make the process faster.
-		if (\count($editData) > 0) {
-			UserHelper::editUserBatch(
-				$this->getBaseUrl(),
-				$editData,
-				$this->getAdminUsername(),
-				$this->getAdminPassword()
-			);
-		}
-
-		// If the users need to be initialized then initialize them in parallel.
-		if ($initialize) {
-			$this->initializeUserBatch($users);
+		$usersAttributes = $this->buildUsersAttributesArray($setDefaultAttributes, $table);
+		$this->usersHaveBeenCreated(
+			$initialize,
+			$usersAttributes
+		);
+		foreach ($usersAttributes as $expectedUser) {
+			$this->userShouldExist($expectedUser["userid"]);
 		}
 	}
 
@@ -837,7 +1144,6 @@ trait Provisioning {
 	 * @see https://github.com/owncloud/core/pull/33040
 	 *
 	 * @When /^the administrator changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $displayname
@@ -853,6 +1159,36 @@ trait Provisioning {
 		);
 	}
 
+	/**
+	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $displayname
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminHasChangedTheDisplayNameOfUser(
+		$user, $displayname
+	) {
+		if ($this->isTestingWithLdap()) {
+			$this->editLdapUserDisplayName(
+				$user, $displayname
+			);
+		} else {
+			$this->adminChangesTheDisplayNameOfUserUsingKey(
+				$user, 'displayname', $displayname
+			);
+		}
+		$response = UserHelper::getUser(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+		$this->setResponse($response);
+		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
+	}
 	/**
 	 * As the administrator, edit the "display name" of a user by sending the key "display" to the API end point.
 	 *
@@ -1125,6 +1461,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function groupShouldExist($group) {
 		Assert::assertTrue(
@@ -1139,6 +1476,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function groupShouldNotExist($group) {
 		Assert::assertFalse(
@@ -1182,7 +1520,11 @@ trait Provisioning {
 	 */
 	public function userHasBeenDeleted($user) {
 		if ($this->userExists($user)) {
-			$this->deleteTheUserUsingTheProvisioningApi($user);
+			if ($this->isTestingWithLdap() && \in_array($user, $this->ldapCreatedUsers)) {
+				$this->deleteLdapUser($user);
+			} else {
+				$this->deleteTheUserUsingTheProvisioningApi($user);
+			}
 		}
 		$this->userShouldNotExist($user);
 	}
@@ -1474,7 +1816,7 @@ trait Provisioning {
 			}
 		}
 
-		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && $this->isTestingWithLdap()) {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
@@ -1519,7 +1861,22 @@ trait Provisioning {
 				}
 				break;
 			case "ldap":
-				echo "creating LDAP users is not implemented, so assume they exist\n";
+				$settings = [];
+				$setting["userid"] = $user;
+				$setting["displayName"] = $displayName;
+				$setting["password"] = $password;
+				$setting["email"] = $email;
+				\array_push($settings, $setting);
+				try {
+					$this->usersHaveBeenCreated(
+						$initialize,
+						$settings
+					);
+				} catch (LdapException $exception) {
+					throw new Exception(
+						"cannot create a LDAP user with provided data. Error: {$exception}"
+					);
+				}
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -1607,6 +1964,18 @@ trait Provisioning {
 		Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
+	}
+
+	/**
+	 * @param string $group
+	 *
+	 * @return array
+	 */
+	public function getUsersOfLdapGroup($group) {
+		$ou = $this->getLdapGroupsOU();
+		$entry = 'cn=' . $group . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$ldapResponse = $this->ldap->getEntry($entry);
+		return $ldapResponse["memberuid"];
 	}
 
 	/**
@@ -1766,7 +2135,7 @@ trait Provisioning {
 	 */
 	public function addUserToGroup($user, $group, $method = null, $checkResult = false) {
 		$user = $this->getActualUsername($user);
-		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && $this->isTestingWithLdap()) {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
@@ -1799,8 +2168,16 @@ trait Provisioning {
 				}
 				break;
 			case "ldap":
-				echo "adding users to groups in LDAP is not implemented, " .
-					"so assume user is in group\n";
+				try {
+					$this->addUserToLdapGroup(
+						$user,
+						$group
+					);
+				} catch (LdapException $exception) {
+					throw new Exception(
+						"User " . $user . " cannot be added to " . $group . " . Error: {$exception}"
+					);
+				};
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -1885,9 +2262,7 @@ trait Provisioning {
 	 */
 	public function groupHasBeenCreated($group) {
 		$this->createTheGroup($group);
-		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") !== "true") {
-			$this->groupShouldExist($group);
-		}
+		$this->groupShouldExist($group);
 	}
 
 	/**
@@ -1900,7 +2275,6 @@ trait Provisioning {
 	 */
 	public function groupHasBeenCreatedOnDatabaseBackend($group) {
 		$this->adminCreatesGroupUsingTheProvisioningApi($group);
-		$this->groupShouldExist($group);
 	}
 
 	/**
@@ -1977,7 +2351,7 @@ trait Provisioning {
 	 */
 	private function createTheGroup($group, $method = null) {
 		//guess yourself
-		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && $this->isTestingWithLdap()) {
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
@@ -2013,7 +2387,13 @@ trait Provisioning {
 				}
 				break;
 			case "ldap":
-				echo "creating LDAP groups is not implemented, so assume they exist\n";
+				try {
+					$this->createLdapGroup($group);
+				} catch (LdapException $e) {
+					throw new Exception(
+						"could not create group. Error: {$e}"
+					);
+				}
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -2022,6 +2402,147 @@ trait Provisioning {
 		}
 
 		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted);
+	}
+
+	/**
+	 * @param string $attribute
+	 * @param string $entry
+	 * @param string $value
+	 * @param bool $append
+	 *
+	 * @return void
+	 */
+	public function setTheLdapAttributeOfTheEntryTo(
+		$attribute, $entry, $value, $append=false
+	) {
+		$ldapEntry = $this->ldap->getEntry($entry . "," . $this->ldapBaseDN);
+		Zend\Ldap\Attribute::setAttribute($ldapEntry, $attribute, $value, $append);
+		$this->ldap->update($entry . "," . $this->ldapBaseDN, $ldapEntry);
+		$this->theLdapUsersHaveBeenReSynced();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $group
+	 * @param string|null $ou
+	 *
+	 * @return void
+	 */
+	public function addUserToLdapGroup($user, $group, $ou = null) {
+		if ($ou === null) {
+			$ou = $this->getLdapGroupsOU();
+		}
+		$this->setTheLdapAttributeOfTheEntryTo(
+			"memberUid",
+			"cn=$group,ou=$ou",
+			$user,
+			true
+		);
+	}
+	
+	/**
+	 * @param string $value
+	 * @param string $attribute
+	 * @param string $entry
+	 *
+	 * @return void
+	 */
+	public function deleteValueFromLdapAttribute($value, $attribute, $entry) {
+		$this->ldap->deleteAttributes(
+			$entry . "," . $this->ldapBaseDN, [$attribute => [$value]]
+		);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $group
+	 * @param null $ou
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function removeUserFromLdapGroup($user, $group, $ou = null) {
+		if ($ou === null) {
+			$ou = $this->getLdapGroupsOU();
+		}
+		$this->deleteValueFromLdapAttribute(
+			$user, "memberUid", "cn=$group,ou=$ou"
+		);
+		$this->theLdapUsersHaveBeenReSynced();
+	}
+
+	/**
+	 * @param string $entry
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteTheLdapEntry($entry) {
+		$this->ldap->delete($entry . "," . $this->ldapBaseDN);
+		$this->theLdapUsersHaveBeenReSynced();
+	}
+
+	/**
+	 * @param string $group
+	 * @param null $ou
+	 *
+	 * @return void
+	 * @throws LdapException
+	 * @throws Exception
+	 */
+	public function deleteLdapGroup($group, $ou = null) {
+		if ($ou === null) {
+			$ou = $this->getLdapGroupsOU();
+		}
+		$this->deleteTheLdapEntry("cn=$group,ou=$ou");
+		$this->theLdapUsersHaveBeenReSynced();
+		$key = \array_search($group, $this->ldapCreatedGroups);
+		if ($key !== false) {
+			unset($this->ldapCreatedGroups[$key]);
+		}
+		$this->rememberThatGroupIsNotExpectedToExist($group);
+	}
+
+	/**
+	 * @param string $username
+	 * @param null $ou
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteLdapUser($username, $ou = null) {
+		if (!\in_array($username, $this->ldapCreatedUsers)) {
+			throw new Error(
+				"User " . $username . " was not created using Ldap and does not exist as an Ldap User"
+			);
+		}
+		if ($ou === null) {
+			$ou = $this->getLdapUsersOU();
+		}
+		$entry = "uid=$username,ou=$ou";
+		$this->deleteTheLdapEntry($entry);
+		$key = \array_search($username, $this->ldapCreatedUsers);
+		if ($key !== false) {
+			unset($this->ldapCreatedUsers[$key]);
+		}
+		$this->rememberThatUserIsNotExpectedToExist($username);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $displayName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function editLdapUserDisplayName($user, $displayName) {
+		$entry = "uid=" . $user . ",ou=" . $this->getLdapUsersOU();
+		$this->setTheLdapAttributeOfTheEntryTo(
+			'displayname',
+			$entry,
+			$displayName
+		);
+		$this->theLdapUsersHaveBeenReSynced();
 	}
 
 	/**
@@ -2106,6 +2627,23 @@ trait Provisioning {
 	}
 
 	/**
+	 * @param string $group group name
+	 *
+	 * @return void
+	 * @throws Exception
+	 * @throws LdapException
+	 */
+	public function deleteGroup($group) {
+		if ($this->groupExists($group)) {
+			if ($this->isTestingWithLdap() && \in_array($group, $this->ldapCreatedGroups)) {
+				$this->deleteLdapGroup($group);
+			} else {
+				$this->deleteTheGroupUsingTheProvisioningApi($group);
+			}
+		}
+	}
+
+	/**
 	 * @Given /^group "([^"]*)" has been deleted$/
 	 *
 	 * @param string $group
@@ -2113,11 +2651,21 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function groupHasBeenDeletedUsingTheProvisioningApi($group) {
-		if ($this->groupExists($group)) {
-			$this->deleteTheGroupUsingTheProvisioningApi($group);
-		}
+	public function groupHasBeenDeleted($group) {
+		$this->deleteGroup($group);
 		$this->groupShouldNotExist($group);
+	}
+
+	/**
+	 * @When /^the administrator deletes group "([^"]*)" from the default user backend$/
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function adminDeletesGroup($group) {
+		$this->deleteGroup($group);
 	}
 
 	/**
@@ -2172,6 +2720,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return bool
+	 * @throws Exception
 	 */
 	public function groupExists($group) {
 		$group = \rawurlencode($group);
@@ -2186,18 +2735,51 @@ trait Provisioning {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function removeUserFromGroupAsAdminUsingTheProvisioningApi($user, $group) {
+		$this->userRemovesUserFromGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(), $user, $group
+		);
+	}
+
+	/**
 	 * @When the administrator removes user :user from group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminRemovesUserFromGroupUsingTheProvisioningApi($user, $group) {
+		$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
+			$user, $group
+		);
+	}
+
+	/**
 	 * @Given user :user has been removed from group :group
 	 *
 	 * @param string $user
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function adminRemovesUserFromGroupUsingTheProvisioningApi($user, $group) {
-		$this->userRemovesUserFromGroupUsingTheProvisioningApi(
-			$this->getAdminUsername(), $user, $group
-		);
+	public function adminHasRemovedUserFromGroup($user, $group) {
+		if ($this->isTestingWithLdap() && \in_array($group, $this->ldapCreatedGroups)) {
+			$this->removeUserFromLdapGroup($user, $group);
+		} else {
+			$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
+				$user, $group
+			);
+		}
+		$this->userShouldNotBelongToGroup($user, $group);
 	}
 
 	/**

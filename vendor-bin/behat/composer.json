@@ -10,6 +10,7 @@
         "symfony/translation": "^3.4",
         "sabre/xml": "^2.1",
         "guzzlehttp/guzzle": "^5.3",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "zendframework/zend-ldap": "^2.10"
     }
 }

@@ -56,7 +56,6 @@ Feature: Display notifications when receiving a share
 
 	# This scenario documents behavior discussed in core issue 31870
 	# An old share keeps its old auto-accept behavior, even after auto-accept has been disabled.
-  @skipOnLDAP
   Scenario: share to group does not send notifications to either existing or new members for an old share created before auto-accept is disabled
     Given user "user0" has shared folder "/PARENT" with group "grp1"
     When the administrator sets parameter "shareapi_auto_accept_share" of app "core" to "no"
@@ -68,7 +67,6 @@ Feature: Display notifications when receiving a share
 
 	# This scenario documents behavior discussed in core issue 31870
 	# As users are added to an existing group, they are not sent notifications about group shares.
-  @skipOnLDAP
   Scenario: share to group sends notifications to existing members, but not to new members, for a share created after auto-accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -95,7 +93,6 @@ Feature: Display notifications when receiving a share
 	# This scenario documents behavior discussed in core issue 31870
 	# Similar to the previous scenario, a new user added to the group does not get a notification,
 	# even though the group, when originally created, had notifications on.
-  @skipOnLDAP
   Scenario: share to group sends notifications to existing members, but not to new members, for an old share created before auto-accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "user0" has shared folder "/PARENT" with group "grp1"
@@ -120,7 +117,6 @@ Feature: Display notifications when receiving a share
       | object_type | /^local_share$/                              |
     And user "user3" should have 0 notifications
 
-  @skipOnLDAP
   Scenario: share to group does not send notifications to existing and new members for a share created after auto-accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -136,7 +132,6 @@ Feature: Display notifications when receiving a share
     And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
     Then user "user1" should have 0 notifications
 
-  @skipOnLDAP
   Scenario: discard notification if target user is not member of the group anymore
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -144,10 +139,9 @@ Feature: Display notifications when receiving a share
     Then user "user1" should have 0 notifications
     Then user "user2" should have 1 notification
 
-  @skipOnLDAP
   Scenario: discard notification if group is deleted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
-    And the administrator deletes group "grp1" using the provisioning API
+    And the administrator deletes group "grp1" from the default user backend
     Then user "user1" should have 0 notifications
     Then user "user2" should have 0 notifications

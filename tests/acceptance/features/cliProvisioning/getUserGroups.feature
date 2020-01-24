@@ -4,6 +4,7 @@ Feature: get user groups
   I want to be able to get group membership information
   So that I can manage group membership
 
+  @issue-ldap-500
   Scenario: admin gets groups of an user
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "unused-group" has been created
