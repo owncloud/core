@@ -736,7 +736,7 @@ trait Provisioning {
 			}
 		}
 		// Edit the users in parallel to make the process faster.
-		if (\count($editData) > 0) {
+		if (!$this->isTestingWithLdap() && \count($editData) > 0) {
 			UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
@@ -2442,7 +2442,7 @@ trait Provisioning {
 			true
 		);
 	}
-	
+
 	/**
 	 * @param string $value
 	 * @param string $attribute
