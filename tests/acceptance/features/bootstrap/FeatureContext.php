@@ -327,6 +327,24 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getOldLdapConfig() {
+		return $this->oldLdapConfig;
+	}
+
+	/**
+	 * @param $configId
+	 * @param $configKey
+	 * @param $value
+	 *
+	 * @return void
+	 */
+	public function setOldLdapConfig($configId, $configKey, $value) {
+		$this->oldLdapConfig[$configId][$configKey] = $value;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isTestingWithLdap() {
