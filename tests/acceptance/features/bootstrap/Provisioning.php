@@ -448,6 +448,9 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the LDAP users are resynced
+	 * @Given the LDAP users have been resynced
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
