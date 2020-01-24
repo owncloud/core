@@ -1089,6 +1089,53 @@ trait WebDav {
 	}
 
 	/**
+	 * @When the public gets the size of the last shared public link using the WebDAV API
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function publicGetsSizeOfLastSharedPublicLinkUsingTheWebdavApi() {
+		$tokenArray = $this->getLastShareData()->data->token;
+		$token = (string)$tokenArray[0];
+		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/{$token}";
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, "PROPFIND", null, null, null
+		);
+	}
+
+	/**
+	 * @When user :user gets the size of file :resource using the WebDAV API
+	 *
+	 * @param $user
+	 * @param $resource
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsSizeOfFileUsingTheWebdavApi($user, $resource) {
+		$headers = $this->guzzleClientHeaders;
+		$password = $this->getPasswordForUser($user);
+		$url = $this->getBaseUrl() . "/remote.php/dav/files/{$user}/{$resource}";
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, "PROPFIND", $user, $password, $headers, null, null, null
+		);
+	}
+
+	/**
+	 * @Then the size of the file should be :size
+	 *
+	 * @param $size
+	 *
+	 * @return void
+	 */
+	public function theSizeOfTheFileShouldBe($size) {
+		$responseXml = HttpRequestHelper::getResponseXml($this->response);
+		$responseXml->registerXPathNamespace('d', 'DAV:');
+		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
+		Assert::assertEquals($size, (string) $xmlPart[0]);
+	}
+
+	/**
 	 * @Then the following headers should be set
 	 *
 	 * @param TableNode $table

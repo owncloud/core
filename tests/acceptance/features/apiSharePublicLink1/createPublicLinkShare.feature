@@ -505,3 +505,13 @@ Feature: create a public link share
     When the public downloads file "parent.txt" from inside the last public shared folder using the old public WebDAV API
     Then the value of the item "//s:message" in the response should be ""
     And the HTTP status code should be "404"
+
+  Scenario: Get the size of a file shared by public link
+    Given the administrator has enabled DAV tech_preview
+    And user "user0" has uploaded file with content "This is a test file" to "test-file.txt"
+    And user "user0" has created a public link share with settings
+      | path        | test-file.txt |
+      | permissions | read          |
+    When the public gets the size of the last shared public link using the WebDAV API
+    Then the HTTP status code should be "207"
+    And the size of the file should be "19"

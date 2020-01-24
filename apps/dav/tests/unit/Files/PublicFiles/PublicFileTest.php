@@ -34,4 +34,12 @@ class PublicFileTest extends TestCase {
 		$metaFile = new SharedFile($file, $share);
 		$this->assertEquals('"123456"', $metaFile->getETag());
 	}
+
+	public function testSize() {
+		$file = $this->createMock(File::class);
+		$file->method('getSize')->willReturn(42);
+		$share = $this->createMock(IShare::class);
+		$metaFile = new SharedFile($file, $share);
+		$this->assertEquals(42, $metaFile->getSize());
+	}
 }
