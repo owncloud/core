@@ -144,7 +144,7 @@ class Share20OcsController extends OCSController {
 	 */
 	protected function formatShare(IShare $share, $received = false) {
 		$sharedBy = $this->userManager->get($share->getSharedBy());
-		$shareOwner = $this->userManager->get($share->getShareOwner());
+		$shareFileOwner = $this->userManager->get($share->getShareOwner());
 
 		$result = [
 			'id' => $share->getId(),
@@ -157,8 +157,14 @@ class Share20OcsController extends OCSController {
 			'expiration' => null,
 			'token' => null,
 			'uid_file_owner' => $share->getShareOwner(),
-			'displayname_file_owner' => $shareOwner !== null ? $shareOwner->getDisplayName() : $share->getShareOwner()
+			'displayname_file_owner' => $shareFileOwner !== null ? $shareFileOwner->getDisplayName() : $share->getShareOwner()
 		];
+		if ($sharedBy !== null) {
+			$result['additional_info_owner'] = $this->getAdditionalUserInfo($sharedBy);
+		}
+		if ($shareFileOwner !== null) {
+			$result['additional_info_file_owner'] = $this->getAdditionalUserInfo($shareFileOwner);
+		}
 
 		if ($received) {
 			// also add state
