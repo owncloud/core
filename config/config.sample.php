@@ -1549,10 +1549,4 @@ $CONFIG = [
  */
 'dav.enable.async' => false,
 
-/**
- * Enable or disable tech previews
- * Tech preview extensions are disabled by default.
- */
-'dav.enable.tech_preview' => false,
-
 ];

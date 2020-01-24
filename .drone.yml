@@ -772,12 +772,6 @@ steps:
   environment:
     DB_TYPE: mariadb
 
-- name: tech-preview
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - php occ config:system:set dav.enable.tech_preview --value=true --type boolean
-
 - name: setup-storage
   pull: always
   image: owncloudci/php:7.1

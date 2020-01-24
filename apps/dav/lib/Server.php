@@ -131,8 +131,7 @@ class Server {
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$this->server->addPlugin(new CorsPlugin(OC::$server->getUserSession()));
 		$authPlugin = new Plugin();
-		if ($config->getSystemValue('dav.enable.tech_preview', false) === true
-			&& $this->isRequestForSubtree(['public-files'])
+		if ($this->isRequestForSubtree(['public-files'])
 		) {
 			$this->server->addPlugin(new PublicFilesPlugin());
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
@@ -214,10 +213,7 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
-
-		if ($config->getSystemValue('dav.enable.tech_preview', false) === true) {
-			$this->server->addPlugin(new TrashBinPlugin());
-		}
+		$this->server->addPlugin(new TrashBinPlugin());
 
 		$this->server->addPlugin(new MetaPlugin(
 			OC::$server->getUserSession(),

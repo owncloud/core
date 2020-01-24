@@ -51,9 +51,7 @@ class Capabilities implements ICapability {
 			$cap['async'] = '1.0';
 		}
 
-		if ($this->config->getSystemValue('dav.enable.tech_preview', false) === true) {
-			$cap['dav']['trashbin'] = '1.0';
-		}
+		$cap['dav']['trashbin'] = '1.0';
 
 		return $cap;
 	}

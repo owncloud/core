@@ -58,6 +58,14 @@ class OccContext implements Context {
 	private $lastDeletedJobId;
 
 	/**
+	 * ToDo: remove all the tech_preview test code after official release of
+	 *       10.4 and we no longer need to test against 10.3.* as "latest"
+	 *
+	 * @var boolean
+	 */
+	private $doTechPreview = false;
+
+	/**
 	 * @var boolean techPreviewEnabled
 	 */
 	private $techPreviewEnabled = false;
@@ -79,25 +87,31 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function enableDAVTechPreview() {
-		if (!$this->isTechPreviewEnabled()) {
-			$this->addSystemConfigKeyUsingTheOccCommand(
-				"dav.enable.tech_preview", "true", "boolean"
-			);
-			$this->techPreviewEnabled = true;
-			return true;
+		if ($this->doTechPreview) {
+			if (!$this->isTechPreviewEnabled()) {
+				$this->addSystemConfigKeyUsingTheOccCommand(
+					"dav.enable.tech_preview", "true", "boolean"
+				);
+				$this->techPreviewEnabled = true;
+				return true;
+			}
 		}
 		return false;
 	}
 
 	/**
-	 * @return void
+	 * @return boolean true if delete-system-config-key was done
 	 * @throws Exception
 	 */
 	public function disableDAVTechPreview() {
-		$this->deleteSystemConfigKeyUsingTheOccCommand(
-			"dav.enable.tech_preview"
-		);
-		$this->techPreviewEnabled = false;
+		if ($this->doTechPreview) {
+			$this->deleteSystemConfigKeyUsingTheOccCommand(
+				"dav.enable.tech_preview"
+			);
+			$this->techPreviewEnabled = false;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -399,7 +413,7 @@ class OccContext implements Context {
 	/**
 	 * @When the administrator enables DAV tech_preview
 	 *
-	 * @return void true if DAV Tech Preview was disabled and had to be enabled
+	 * @return void
 	 * @throws Exception
 	 */
 	public function theAdministratorEnablesDAVTechPreview() {
@@ -409,33 +423,13 @@ class OccContext implements Context {
 	/**
 	 * @Given the administrator has enabled DAV tech_preview
 	 *
-	 * @return void true if DAV Tech Preview was disabled and had to be enabled
+	 * @return void
 	 * @throws Exception
 	 */
 	public function theAdministratorHasEnabledDAVTechPreview() {
-		$this->enableDAVTechPreview();
-		$this->theCommandShouldHaveBeenSuccessful();
-	}
-
-	/**
-	 * @When the administrator disables DAV tech_preview
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorDisablesDAVTechPreview() {
-		$this->disableDAVTechPreview();
-	}
-
-	/**
-	 * @Given the administrator has disabled DAV tech_preview
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorHasDisabledDAVTechPreview() {
-		$this->disableDAVTechPreview();
-		$this->theCommandShouldHaveBeenSuccessful();
+		if ($this->enableDAVTechPreview()) {
+			$this->theCommandShouldHaveBeenSuccessful();
+		}
 	}
 
 	/**
@@ -1888,12 +1882,14 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetDAVTechPreview() {
-		if ($this->initialTechPreviewStatus === "") {
-			SetupHelper::deleteSystemConfig('dav.enable.tech_preview');
-		} elseif ($this->initialTechPreviewStatus === 'true' && !$this->techPreviewEnabled) {
-			$this->enableDAVTechPreview();
-		} elseif ($this->initialTechPreviewStatus === 'false' && $this->techPreviewEnabled) {
-			$this->disableDAVTechPreview();
+		if ($this->doTechPreview) {
+			if ($this->initialTechPreviewStatus === "") {
+				SetupHelper::deleteSystemConfig('dav.enable.tech_preview');
+			} elseif ($this->initialTechPreviewStatus === 'true' && !$this->techPreviewEnabled) {
+				$this->enableDAVTechPreview();
+			} elseif ($this->initialTechPreviewStatus === 'false' && $this->techPreviewEnabled) {
+				$this->disableDAVTechPreview();
+			}
 		}
 	}
 
@@ -1919,10 +1915,16 @@ class OccContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$techPreviewEnabled = \trim(
-			SetupHelper::getSystemConfigValue('dav.enable.tech_preview')
-		);
-		$this->initialTechPreviewStatus = $techPreviewEnabled;
-		$this->techPreviewEnabled = $techPreviewEnabled === 'true';
+		$ocVersion = SetupHelper::getSystemConfigValue('version');
+		// dav.enable.tech_preview was used in some ownCloud versions before 10.4.0
+		// only set it on those versions of ownCloud
+		if (\version_compare($ocVersion, '10.4.0') === -1) {
+			$this->doTechPreview = true;
+			$techPreviewEnabled = \trim(
+				SetupHelper::getSystemConfigValue('dav.enable.tech_preview')
+			);
+			$this->initialTechPreviewStatus = $techPreviewEnabled;
+			$this->techPreviewEnabled = $techPreviewEnabled === 'true';
+		}
 	}
 }
