@@ -390,6 +390,15 @@ trait Provisioning {
 			$this->ldap->add($items['dn'], $items);
 		} else {
 			foreach ($items as $item) {
+				if (isset($item["objectclass"])) {
+					if (\in_array("posixGroup", $item["objectclass"])) {
+						\array_push($this->ldapCreatedGroups, $item["cn"][0]);
+						\array_push($this->createdGroups, $item["cn"][0]);
+					} elseif (\in_array("inetOrgPerson", $item["objectclass"])) {
+						\array_push($this->ldapCreatedUsers, $item["uid"][0]);
+						\array_push($this->createdUsers, $item["uid"][0]);
+					}
+				}
 				$this->ldap->add($item['dn'], $item);
 			}
 		}
