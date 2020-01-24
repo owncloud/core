@@ -22,6 +22,7 @@ Summary
 * Bugfix - Remove part files when upload is cancelled for all public links: [#36761](https://github.com/owncloud/core/pull/36761)
 * Bugfix - Return correct file size in the public files webdav API: [#36741](https://github.com/owncloud/core/issues/36741)
 * Bugfix - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
+* Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
@@ -194,6 +195,12 @@ Details
 
    https://github.com/owncloud/core/issues/31133
    https://github.com/owncloud/core/pull/36787
+
+* Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
+
+   The one-time password (OTP) verify button width has been extended.
+
+   https://github.com/owncloud/core/pull/36807
 
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 
