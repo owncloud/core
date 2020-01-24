@@ -8,6 +8,8 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Aynı kullanıcı ile bir birleşmiş paylaşım oluşturulamaz",
     "File is already shared with %s" : "Dosya önceden %s ile paylaşıldı",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "%s paylaşımı başarısız. %s bulunamadı veya sunucu şu anda ulaşılamıyor olabilir.",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" seninle \"%3$s\" paylaştı (\"%2$s\" adına)",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" seninle \"%3$s\" paylaştı",
     "Accept" : "Kabul et",
     "Decline" : "Reddet",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "#ownCloud Birleşmiş Bulut kimliğim ile paylaş, bkz %s",
