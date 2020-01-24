@@ -1141,6 +1141,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the size of file should be :size
+	 */
+	public function theSizeOfFileShouldBe($size) {
+		var_dump($this->response);
+		$responseXml = HttpRequestHelper::getResponseXml($this->response);
+//		var_dump($responseXml);
+		$responseXml->registerXPathNamespace('d', 'DAV:');
+		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
+		var_dump((string)$xmlPart[0]);
+		Assert::assertEquals($size, (string)$xmlPart[0]);
+	}
+
+	/**
 	 * @Then the oc job status values of last request for user :user should match these regular expressions
 	 *
 	 * @param string $user

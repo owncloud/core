@@ -1353,6 +1353,20 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @When user :user gets size of file :resource using the WebDAV API
+	 */
+	public function userGetsSizeOfFileUsingTheWebdavApi($user, $resource) {
+		$headers = $this->guzzleClientHeaders;
+		$password = $this->getPasswordForUser($user);
+		$url = $this->getBaseUrl() . "/remote.php/dav/files/{$user}/{$resource}";
+		var_dump($url);
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, "PROPFIND", $user, $password, $headers, null, null, null
+		);
+	}
+
+
+	/**
 	 * @Given the client has sent a :method to :url with requesttoken
 	 *
 	 * @param string $method

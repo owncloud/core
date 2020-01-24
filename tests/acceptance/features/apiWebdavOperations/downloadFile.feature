@@ -79,3 +79,8 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario: Get the size of a file
+    When user "user0" gets size of file "textfile0.txt" using the WebDAV API
+    And the HTTP status code should be "207"
+    Then the size of file should be "26"
