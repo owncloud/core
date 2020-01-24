@@ -345,6 +345,27 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getLdapHost() {
+		return $this->ldapHost;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLdapHostWithoutScheme() {
+		return $this->removeSchemeFromUrl($this->ldapHost);
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getLdapPort() {
+		return $this->ldapPort;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isTestingWithLdap() {
