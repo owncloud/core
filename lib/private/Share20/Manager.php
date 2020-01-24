@@ -334,8 +334,10 @@ class Manager implements IManager {
 		/* Use share node permission as default $maxPermissions */
 		$maxPermissions = $shareNode->getPermissions();
 
-		/* Attributes default is null, as attributes are restricted only in reshare */
-		$maxAttributes = null;
+		/* By default, there are no required attributes to be set on a file */
+		$requiredAttributes = $this->newShare()->newAttributes();
+		$currentAttributes = $share->getAttributes() !== null ?
+			$share->getAttributes() : $this->newShare()->newAttributes();
 
 		/*
 		 * Quick fix for #23536
@@ -367,19 +369,24 @@ class Manager implements IManager {
 					'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
 					$parentShare = $shareFileStorage->getShare();
 					$maxPermissions = $parentShare->getPermissions();
-					$maxAttributes = $parentShare->getAttributes();
+					$requiredAttributes = $parentShare->getAttributes();
 				}
 			}
 		}
 
-		/* Check that we do not share with more permissions than we have */
+		/**
+		 * Check that we do not share with more permissions than we have
+		 */
 		if (!$this->strictSubsetOfPermissions($maxPermissions, $share->getPermissions())) {
 			$message_t = $this->l->t('Cannot set the requested share permissions for %s', [$share->getNode()->getName()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
-		/* Check that we do not share with more attributes than we have */
-		if ($maxAttributes !== null && !$this->strictSubsetOfAttributes($maxAttributes, $share->getAttributes())) {
+		/**
+		 * Check that all required share attributes that were set on the file
+		 * will be respected when e.g. reshared.
+		 */
+		if (!$this->strictSubsetOfAttributes($requiredAttributes, $currentAttributes)) {
 			$message_t = $this->l->t('Cannot set the requested share attributes for %s', [$share->getNode()->getName()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
@@ -1824,31 +1831,17 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * Check $newAttributes attribute is a subset of $allowedAttributes
+	 * Check $currentAttributes attribute is a subset of $requiredAttributes.
+	 * Existing attributes cannot be modified
 	 *
-	 * @param IAttributes $allowedAttributes
-	 * @param IAttributes $newAttributes
-	 * @return boolean ,true if $allowedAttributes enabled is super set of $newAttributes enabled, else false
+	 * @param IAttributes $requiredAttributes
+	 * @param IAttributes $currentAttributes
+	 * @return boolean ,true if $currentAttributes is super set of $requiredAttributes, else false
 	 */
-	private function strictSubsetOfAttributes($allowedAttributes, $newAttributes) {
-		// if both are empty, it is strict subset
-		if ((!$allowedAttributes || empty($allowedAttributes->toArray()))
-			&& (!$newAttributes || empty($newAttributes->toArray()))) {
-			return true;
-		}
-
-		// make sure that number of attributes is the same
-		if (\count($allowedAttributes->toArray()) !== \count($newAttributes->toArray())) {
-			return false;
-		}
-
-		// if number of attributes is the same, make sure that attributes are
-		// existing in allowed set and disabled attribute is not being enabled
-		foreach ($newAttributes->toArray() as $newAttribute) {
-			$allowedEnabled = $allowedAttributes->getAttribute($newAttribute['scope'], $newAttribute['key']);
-			if (($newAttribute['enabled'] === true && $allowedEnabled === false)
-				|| ($newAttribute['enabled'] === null && $allowedEnabled !== null)
-				|| $allowedEnabled === null) {
+	private function strictSubsetOfAttributes(IAttributes $requiredAttributes, IAttributes $currentAttributes) {
+		foreach ($requiredAttributes->toArray() as $requiredAttribute) {
+			$currentAttribute = $currentAttributes->getAttribute($requiredAttribute['scope'], $requiredAttribute['key']);
+			if ($requiredAttribute['enabled'] !== $currentAttribute) {
 				return false;
 			}
 		}

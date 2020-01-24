@@ -104,14 +104,14 @@
 		 * @returns {boolean}
 		 */
 		isDefaultExpireDateUserEnabled: function() {
-			return this.get('isDefaultExpireDateUserEnabled')
+			return this.get('isDefaultExpireDateUserEnabled');
 		},
 
 		/**
 		 * @returns {boolean}
 		 */
 		isDefaultExpireDateUserEnforced: function() {
-			return this.get('isDefaultExpireDateUserEnforced')
+			return this.get('isDefaultExpireDateUserEnforced');
 		},
 
 		/**
@@ -119,13 +119,13 @@
 		 */
 		getDefaultExpireDateUser: function(format) {
 			format = format || false;
-			defaultExpireDateUser = parseInt(this.get('defaultExpireDateUser'), 10)
+			var defaultExpireDateUser = parseInt(this.get('defaultExpireDateUser'), 10);
 
 			if (format) {
-				return moment().add(defaultExpireDateUser, 'days').format(format)
+				return moment().add(defaultExpireDateUser, 'days').format(format);
 			}
 
-			return defaultExpireDateUser
+			return defaultExpireDateUser;
 		},
 
 		/**
