@@ -72,6 +72,7 @@ Summary
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
 * Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
+* Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
 
 Details
 -------
@@ -521,6 +522,17 @@ Details
    The plus sign is now allowed in a username, e.g. John+Smith
 
    https://github.com/owncloud/core/pull/36613
+
+* Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
+
+   DAV endpoint for trashbin and DAV endpoint for public shares were released in ownCloud 10.3.0.
+   The endpoints were disabled by default and had to be enabled by setting
+   dav.enable.tech_preview in config.php.
+
+   These endpoints are now always enabled. There is no longer any need to set
+   dav.enable.tech_preview in config.php.
+
+   https://github.com/owncloud/core/pull/36815
 
 Changelog for ownCloud Core [10.3.2] (2019-12-04)
 =======================================
