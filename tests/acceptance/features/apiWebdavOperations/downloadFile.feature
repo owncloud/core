@@ -5,14 +5,15 @@ Feature: download file
   So that I can work wih local copies of files on my client system
 
   Background:
-    Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And user "user0" has uploaded file with content "Welcome this is just an example file for developers." to "/welcome.txt"
 
   @smokeTest
   Scenario Outline: download a file
     Given using <dav_version> DAV path
     When user "user0" downloads file "/textfile0.txt" using the WebDAV API
-    Then the downloaded content should be "ownCloud test text file 0" plus end-of-line
+    Then the downloaded content should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -20,7 +21,7 @@ Feature: download file
 
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
-    When user "user0" downloads file "/welcome.txt" with range "bytes=51-77" using the WebDAV API
+    When user "user0" downloads file "/welcome.txt" with range "bytes=24-50" using the WebDAV API
     Then the downloaded content should be "example file for developers"
     Examples:
       | dav_version |
@@ -52,7 +53,7 @@ Feature: download file
       | X-Permitted-Cross-Domain-Policies | none                                                             |
       | X-Robots-Tag                      | none                                                             |
       | X-XSS-Protection                  | 1; mode=block                                                    |
-    And the downloaded content should start with "Welcome to your ownCloud account!"
+    And the downloaded content should start with "Welcome"
     Examples:
       | dav_version |
       | old         |
@@ -62,7 +63,7 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
     When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
-    Then the downloaded content should start with "Welcome to your ownCloud account!"
+    Then the downloaded content should start with "Welcome"
     And the HTTP status code should be "200"
     Examples:
       | dav_version |
@@ -73,7 +74,7 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
     When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
-    Then the downloaded content should start with "Welcome to your ownCloud account!"
+    Then the downloaded content should start with "Welcome"
     And the HTTP status code should be "200"
     Examples:
       | dav_version |
