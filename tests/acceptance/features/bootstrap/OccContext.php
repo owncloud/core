@@ -1299,6 +1299,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator exports the local storage mounts using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorExportsTheMountsUsingTheOccCommand() {
+		$this->invokingTheCommand('files_external:export');
+	}
+
+	/**
 	 * @When the administrator list the repair steps using the occ command
 	 *
 	 * @return void
