@@ -149,7 +149,6 @@ OC.L10N.register(
     "Error while sharing" : "共有中にエラー発生",
     "Error while unsharing" : "共有解除中にエラー発生",
     "The public link will expire no later than {days} days after it is created" : "URLによる共有は、作成してから {days} 日以内に有効期限切れになります",
-    "Set expiration date" : "有効期限を設定",
     "Expiration" : "期限切れ",
     "Choose an expiration date" : "有効期限を選択",
     "Expiration date is required" : "有効期限を設定してください",

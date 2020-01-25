@@ -140,7 +140,6 @@ OC.L10N.register(
     "Error while sharing" : "خطا درحال به اشتراک گذاشتن",
     "Error while unsharing" : "خطا درحال لغو اشتراک",
     "The public link will expire no later than {days} days after it is created" : "لینک عمومی پس از {days} روز پس از ایجاد منقضی خواهد شد",
-    "Set expiration date" : "تنظیم تاریخ انقضا",
     "Expiration" : "تاریخ انقضا",
     "Expiration date is required" : "تاریخ انقضا مورد نیاز است",
     "Delete {link}" : "حذف {پیوند}",

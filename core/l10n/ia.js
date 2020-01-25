@@ -136,7 +136,6 @@ OC.L10N.register(
     "Error while sharing" : "Error al compartir",
     "Error while unsharing" : "Error al discompartir",
     "The public link will expire no later than {days} days after it is created" : "Le ligamine public expirara al plus tarde {days} dies post su creation",
-    "Set expiration date" : "Fixar data de expiration",
     "Expiration" : "Expiration",
     "Link" : "Ligamine",
     "Edit" : "Modificar",

@@ -48,7 +48,6 @@ OC.L10N.register(
     "Ok" : "හරි",
     "Cancel" : "එපා",
     "Error" : "දෝෂයක්",
-    "Set expiration date" : "කල් ඉකුත් විමේ දිනය දමන්න",
     "Edit" : "සකසන්න",
     "Remove" : "ඉවත් කරන්න ",
     "Name" : "නම",

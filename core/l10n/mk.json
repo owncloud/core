@@ -147,7 +147,6 @@
     "Error while sharing" : "Грешка при споделување",
     "Error while unsharing" : "Грешка при прекин на споделување",
     "The public link will expire no later than {days} days after it is created" : "Овој јавен линк е важечки {days} дена од денот на креирање.",
-    "Set expiration date" : "Постави рок на траење",
     "Expiration" : "Истекување",
     "Choose an expiration date" : "Изберете датум на истекување",
     "Expiration date is required" : "Датумот на истекување е потребен",

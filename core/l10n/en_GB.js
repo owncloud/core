@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "Error whilst sharing",
     "Error while unsharing" : "Error whilst unsharing",
     "The public link will expire no later than {days} days after it is created" : "The public link will expire no later than {days} days after it is created",
-    "Set expiration date" : "Set expiration date",
     "Expiration" : "Expiration",
     "Choose an expiration date" : "Choose an expiration date",
     "Expiration date is required" : "Expiration date is required",

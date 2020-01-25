@@ -51,7 +51,6 @@ OC.L10N.register(
     "Error" : "Gwall",
     "Error while sharing" : "Gwall wrth rannu",
     "Error while unsharing" : "Gwall wrth ddad-rannu",
-    "Set expiration date" : "Gosod dyddiad dod i ben",
     "Edit" : "Golygu",
     "Remove" : "Gwaredu",
     "Name" : "Enw",

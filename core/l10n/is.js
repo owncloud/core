@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "Villa við deilingu",
     "Error while unsharing" : "Villa við að hætta deilingu",
     "The public link will expire no later than {days} days after it is created" : "Opinberi tengillinn rennur út eigi síðar en {days} dögum eftir að hann er útbúinn",
-    "Set expiration date" : "Setja gildistíma",
     "Expiration" : "Rennur út",
     "Choose an expiration date" : "Veldu lokadagsetningu",
     "Expiration date is required" : "Dagsetning gildistíma er nauðsynleg",

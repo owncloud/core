@@ -142,7 +142,6 @@ OC.L10N.register(
     "Error while sharing" : "Napaka med souporabo",
     "Error while unsharing" : "Napaka med odstranjevanjem souporabe",
     "The public link will expire no later than {days} days after it is created" : "Javna povezava bo potekla {days} dni po ustvarjanju.",
-    "Set expiration date" : "Nastavi datum preteka",
     "Expiration" : "Datum preteka",
     "Expiration date is required" : "Zahtevan je datum preteka veljavnosti",
     "Delete {link}" : "Izbriši povezavo {link}",

@@ -111,7 +111,6 @@ OC.L10N.register(
     "Error while sharing" : "Feeler beim Deelen",
     "Error while unsharing" : "Feeler beim Annuléiere vum Deelen",
     "The public link will expire no later than {days} days after it is created" : "Den ëffentleche Link wäert net méi spéit wéi {Deeg} Deeg nodeems et erstallt gouf verfalen ",
-    "Set expiration date" : "Verfallsdatum setzen",
     "Expiration" : "Leeft of",
     "Link" : "Link",
     "Edit" : "Änneren",

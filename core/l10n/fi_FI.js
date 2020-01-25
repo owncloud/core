@@ -139,7 +139,6 @@ OC.L10N.register(
     "Error while sharing" : "Virhe jaettaessa",
     "Error while unsharing" : "Virhe jakoa peruttaessa",
     "The public link will expire no later than {days} days after it is created" : "Julkinen linkki vanhenee {days} päivän jälkeen sen luomisesta",
-    "Set expiration date" : "Aseta päättymispäivä",
     "Expiration" : "Erääntyminen",
     "Choose an expiration date" : "Valitse vanhenemispäivä",
     "Expiration date is required" : "Vanhenemispäivä vaaditaan",

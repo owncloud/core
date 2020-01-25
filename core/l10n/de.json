@@ -149,7 +149,6 @@
     "Error while sharing" : "Fehler beim Teilen",
     "Error while unsharing" : "Fehler beim Aufheben der Freigabe",
     "The public link will expire no later than {days} days after it is created" : "Der öffentliche Link wird spätestens {days} Tage nach seiner Erstellung ablaufen",
-    "Set expiration date" : "Setze ein Ablaufdatum",
     "Expiration" : "Ablaufdatum",
     "Choose an expiration date" : "Wähle ein Ablaufdatum",
     "Expiration date is required" : "Ablaufdatum wird benötigt",

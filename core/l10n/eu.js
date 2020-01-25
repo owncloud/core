@@ -137,7 +137,6 @@ OC.L10N.register(
     "Error while sharing" : "Errore bat egon da elkarbanatzean",
     "Error while unsharing" : "Errore bat egon da elkarbanaketa desegitean",
     "The public link will expire no later than {days} days after it is created" : "Esteka publikoak iraungi egingo du, askoz jota, sortu eta  {days} egunetara.",
-    "Set expiration date" : "Ezarri muga data",
     "Expiration" : "Iraungitzea",
     "Remove link" : "Esteka ezabatu",
     "Link" : "Esteka",

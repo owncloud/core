@@ -149,7 +149,6 @@
     "Error while sharing" : "حدث خطأ أثناء المشاركة",
     "Error while unsharing" : "حدث خطأ أثناء إلغاء المشاركة",
     "The public link will expire no later than {days} days after it is created" : "ستنتهي صلاحية الرابط العام خلال موعد أقصاه {days} أيام بعد إنشائه",
-    "Set expiration date" : "تعيين تاريخ انتهاء الصلاحية",
     "Expiration" : "انتهاء الصلاحية",
     "Choose an expiration date" : "اختيار تاريخ انتهاء الصلاحية",
     "Expiration date is required" : "تاريخ انتهاء الصلاحية مطلوب",

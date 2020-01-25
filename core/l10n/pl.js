@@ -145,7 +145,6 @@ OC.L10N.register(
     "Error while sharing" : "Błąd podczas współdzielenia",
     "Error while unsharing" : "Błąd podczas zatrzymywania współdzielenia",
     "The public link will expire no later than {days} days after it is created" : "Link publiczny wygaśnie nie później niż po {days} dniach od utworzenia",
-    "Set expiration date" : "Ustaw datę wygaśnięcia",
     "Expiration" : "Wygaśnięcie",
     "Choose an expiration date" : "Wybierz datę wygaśnięcia",
     "Expiration date is required" : "Wymagana data wygaśnięcia",

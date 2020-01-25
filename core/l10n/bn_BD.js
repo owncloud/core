@@ -64,7 +64,6 @@ OC.L10N.register(
     "Error" : "সমস্যা",
     "Error while sharing" : "ভাগাভাগি করতে সমস্যা দেখা দিয়েছে  ",
     "Error while unsharing" : "ভাগাভাগি বাতিল করতে সমস্যা দেখা দিয়েছে",
-    "Set expiration date" : "মেয়াদোত্তীর্ণ হওয়ার তারিখ নির্ধারণ করুন",
     "Edit" : "সম্পাদনা",
     "Remove" : "অপসারণ",
     "Name" : "নাম",

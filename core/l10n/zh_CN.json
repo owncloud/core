@@ -149,7 +149,6 @@
     "Error while sharing" : "共享时出错",
     "Error while unsharing" : "取消共享时出错",
     "The public link will expire no later than {days} days after it is created" : "这个共享链接将在创建后 {days} 天失效",
-    "Set expiration date" : "设置过期日期",
     "Expiration" : "过期",
     "Choose an expiration date" : "选择过期日期",
     "Expiration date is required" : "到期日期为必填",

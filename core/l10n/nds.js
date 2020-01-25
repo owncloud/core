@@ -103,7 +103,6 @@ OC.L10N.register(
     "Your data directory and your files are probably accessible from the Internet. The .htaccess file is not working. We strongly suggest that you configure your web server in a way that the data directory is no longer accessible or you move the data directory outside the web server document root." : "Der Zugriff auf Dein Datenverzeichnis und Deine Dateien ist über das Internet vermutlich möglich. Die .htaccess-Datei greift nicht. Wir empfehlen dringend den Webserver derart zu konfigurieren, dass das Datenverzeichnis nicht mehr zugreifbar ist oder das Datenverzeichnis nach außerhalb des Dokumentenwurzelverzeichnisses des Webservers zu verschieben.",
     "Error" : "Fehler",
     "Error while sharing" : "Fehler beim Teilen",
-    "Set expiration date" : "Setze ein Auslaufdatum",
     "Link" : "Link",
     "Name" : "Name",
     "Password" : "Passwort",

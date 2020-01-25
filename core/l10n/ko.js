@@ -144,7 +144,6 @@ OC.L10N.register(
     "Error while sharing" : "공유하는 중 오류 발생",
     "Error while unsharing" : "공유 해제하는 중 오류 발생",
     "The public link will expire no later than {days} days after it is created" : "공개 링크를 만든 후 최대 {days}일까지 유지됩니다",
-    "Set expiration date" : "만료 날짜 설정",
     "Expiration" : "만료",
     "Expiration date is required" : "만료 날짜를 지정해야 함",
     "Delete {link}" : "{link} 삭제",

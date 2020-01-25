@@ -133,7 +133,6 @@ OC.L10N.register(
     "Error while sharing" : "分享時發生錯誤",
     "Error while unsharing" : "取消分享時發生錯誤",
     "The public link will expire no later than {days} days after it is created" : "這個公開連結會在 {days} 天內失效",
-    "Set expiration date" : "指定到期日",
     "Expiration" : "過期",
     "Choose an expiration date" : "選擇到期日期",
     "Expiration date is required" : "需要過期日期",

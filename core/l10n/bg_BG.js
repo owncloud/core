@@ -138,7 +138,6 @@ OC.L10N.register(
     "Error while sharing" : "Грешка при споделяне",
     "Error while unsharing" : "Грешка при премахване на споделянето",
     "The public link will expire no later than {days} days after it is created" : "Общодостъпната връзка ще изтече не по-късно от {days} дни след създаването ѝ.",
-    "Set expiration date" : "Задаване на дата на изтичане",
     "Expiration" : "Изтичане",
     "Link" : "Връзка",
     "Create public link" : "Създаване на публична връзка",

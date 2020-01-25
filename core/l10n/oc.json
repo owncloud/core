@@ -124,7 +124,6 @@
     "Error while sharing" : "Error al moment de la mesa en partiment",
     "Error while unsharing" : "Error al moment de l'anullacion del partiment",
     "The public link will expire no later than {days} days after it is created" : "Aqueste ligam public expirarà al mai tard {days} jorns aprèp sa creacion.",
-    "Set expiration date" : "Especificar una data d'expiracion",
     "Expiration" : "Expiracion",
     "Link" : "Ligam",
     "Edit" : "Modificar",

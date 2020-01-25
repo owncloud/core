@@ -108,6 +108,8 @@ OC.L10N.register(
     "Only recipient can change accepted state" : "Kabul durumunu sadece alıcılar değiştirebilir",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" seninle \"%3$s\" paylaştı (\"%2$s\" adına)",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" seninle \"%3$s\" paylaştı",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" seni \"%3$s\" görüntülemeye davet etti (\"%2$s\" adına)",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" seni \"%3$s\" görüntülemeye davet etti",
     "Accept" : "Kabul et",
     "Decline" : "Reddet",
     "This share is password-protected" : "Bu paylaşım parola korumalı",

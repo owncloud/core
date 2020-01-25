@@ -52,7 +52,6 @@ OC.L10N.register(
     "Error" : "შეცდომა",
     "Error while sharing" : "შეცდომა გაზიარების დროს",
     "Error while unsharing" : "შეცდომა გაზიარების გაუქმების დროს",
-    "Set expiration date" : "მიუთითე ვადის გასვლის დრო",
     "Expiration" : "ვადის გასვლის დრო",
     "Edit" : "რედაქტირება",
     "Remove" : "წაშლა",

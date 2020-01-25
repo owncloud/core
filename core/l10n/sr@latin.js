@@ -89,7 +89,6 @@ OC.L10N.register(
     "Error while sharing" : "Greška pri deljenju",
     "Error while unsharing" : "Greška u uklanjanju deljenja",
     "The public link will expire no later than {days} days after it is created" : "Javna prečica će isteći ne kasnije od {days} dana pošto je kreirana",
-    "Set expiration date" : "Datum isteka",
     "Expiration" : "Isticanje",
     "Link" : "Prečica",
     "Edit" : "Uredi",

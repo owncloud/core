@@ -100,7 +100,6 @@
     "Error while sharing" : "Kļūda, daloties",
     "Error while unsharing" : "Kļūda, beidzot dalīties",
     "The public link will expire no later than {days} days after it is created" : "Kopīgošanas saite pārstās darboties ne vēlāk kā {days} dienas pēc tās izveides",
-    "Set expiration date" : "Iestatiet termiņa datumu",
     "Expiration" : "Termiņš",
     "Expiration date is required" : "Termiņa datums ir jānorāda obligāti",
     "Delete {link}" : "Dzēst {link}",

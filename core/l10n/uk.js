@@ -138,7 +138,6 @@ OC.L10N.register(
     "Error while sharing" : "Помилка під час публікації",
     "Error while unsharing" : "Помилка під час відміни публікації",
     "The public link will expire no later than {days} days after it is created" : "Доступ до опублікованого посилання буде припинено не пізніше ніж через {days} днів з моменту створення",
-    "Set expiration date" : "Встановити термін дії",
     "Expiration" : "Закінчення",
     "Choose an expiration date" : "Оберіть термін дії",
     "Expiration date is required" : "Термін дії є необхідним",

@@ -75,7 +75,6 @@ OC.L10N.register(
     "Shared with {recipients}" : "{recipients}ի հետ կիսված",
     "Error" : "Սխալ",
     "Error while sharing" : "Սխալ տարածելիս",
-    "Set expiration date" : "Սահմանել վավերականության ժամկետ",
     "Expiration" : "Վավ. ժամկետ",
     "Link" : "Հղում",
     "Edit" : "Խմբագրել",

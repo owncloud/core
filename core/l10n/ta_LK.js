@@ -50,7 +50,6 @@ OC.L10N.register(
     "Error" : "வழு",
     "Error while sharing" : "பகிரும் போதான வழு",
     "Error while unsharing" : "பகிராமல் உள்ளப்போதான வழு",
-    "Set expiration date" : "காலாவதி தேதியை குறிப்பிடுக",
     "Edit" : "தொகுக்க",
     "Remove" : "அகற்றுக",
     "Name" : "பெயர்",

@@ -115,7 +115,6 @@ OC.L10N.register(
     "Error while sharing" : "Fout tydens deel",
     "Error while unsharing" : "Fout tydens deelherroeping",
     "The public link will expire no later than {days} days after it is created" : "Die openbare skakel sal nie later nie as {days} dae veral nadat dit geskep is",
-    "Set expiration date" : "Stel vervaldatum",
     "Expiration" : "Verval",
     "Expiration date is required" : "Vervaldatum word benodig",
     "Delete {link}" : "Skrap {link}",

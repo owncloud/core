@@ -63,7 +63,6 @@ OC.L10N.register(
     "Error" : "កំហុស",
     "Error while sharing" : "កំហុស​ពេល​ចែក​រំលែក",
     "Error while unsharing" : "កំពុង​ពេល​លែង​ចែក​រំលែក",
-    "Set expiration date" : "កំណត់​ពេល​ផុត​កំណត់",
     "Edit" : "កែប្រែ",
     "Remove" : "ដកចេញ",
     "Copy to clipboard" : "ចម្លង​ទៅ​ឃ្លីបបត",

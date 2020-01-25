@@ -118,7 +118,6 @@ OC.L10N.register(
     "Error while sharing" : "Eroare la partajare",
     "Error while unsharing" : "Eroare la anularea partajării",
     "The public link will expire no later than {days} days after it is created" : "Legătura publică va expira nu mai târziu de {days} zile de la ziua creării",
-    "Set expiration date" : "Specifică data expirării",
     "Expiration" : "Expira",
     "Remove link" : "Șterge legătura",
     "Link" : "Legătură",

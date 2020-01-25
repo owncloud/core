@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "При попытке поделиться произошла ошибка",
     "Error while unsharing" : "При закрытии доступа произошла ошибка",
     "The public link will expire no later than {days} days after it is created" : "Срок действия публичной ссылки истекает не позже чем через {days} дней после её создания",
-    "Set expiration date" : "Установить срок действия",
     "Expiration" : "Срок действия",
     "Choose an expiration date" : "Выберите срок действия",
     "Expiration date is required" : "Срок действия обязателен",

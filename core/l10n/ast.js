@@ -137,7 +137,6 @@ OC.L10N.register(
     "Error while sharing" : "Fallu mientres la compartición",
     "Error while unsharing" : "Fallu mientres se dexaba de compartir",
     "The public link will expire no later than {days} days after it is created" : "L'enllaz públicu va caducar enantes de {days} díes dende la so creación",
-    "Set expiration date" : "Afitar la data de caducidá",
     "Expiration" : "Caducidá",
     "Link" : "Enllaz",
     "Edit" : "Editar",

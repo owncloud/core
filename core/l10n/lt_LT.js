@@ -116,7 +116,6 @@ OC.L10N.register(
     "Error while sharing" : "Klaida, dalijimosi metu",
     "Error while unsharing" : "Klaida, kai atšaukiamas dalijimasis",
     "The public link will expire no later than {days} days after it is created" : "Vieša nuoroda galios ne mažiau kaip {days} dienas nuo sukūrimo",
-    "Set expiration date" : "Nustatykite galiojimo laiką",
     "Expiration" : "Galiojimo laikas",
     "Delete {link}" : "Trinti (link)",
     "Remove link" : "Pašalinti nuorodą",

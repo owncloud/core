@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "เกิดข้อผิดพลาดขณะกำลังแชร์ข้อมูล",
     "Error while unsharing" : "เกิดข้อผิดพลาดขณะกำลังยกเลิกการแชร์ข้อมูล",
     "The public link will expire no later than {days} days after it is created" : "ลิงก์สาธารณะจะหมดอายุภายใน {days} วัน หลังจากที่มันถูกสร้างขึ้น",
-    "Set expiration date" : "กำหนดวันที่หมดอายุ",
     "Expiration" : "กำหนดวันที่หมดอายุ",
     "Choose an expiration date" : "เลือกวันหมดอายุ",
     "Expiration date is required" : "ต้องระบุวันหมดอายุ",

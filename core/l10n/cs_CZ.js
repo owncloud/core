@@ -147,7 +147,6 @@ OC.L10N.register(
     "Error while sharing" : "Chyba při sdílení",
     "Error while unsharing" : "Chyba při rušení sdílení",
     "The public link will expire no later than {days} days after it is created" : "Veřejný odkaz vyprší nejpozději {days} dní od svého vytvoření",
-    "Set expiration date" : "Nastavit datum vypršení platnosti",
     "Expiration" : "Konec platnosti",
     "Choose an expiration date" : "Zvolte si datum expirace",
     "Expiration date is required" : "Datum vypršení platnosti je vyžadováno",

@@ -93,7 +93,6 @@ OC.L10N.register(
     "Error" : "Lỗi",
     "Error while sharing" : "Lỗi trong quá trình chia sẻ",
     "Error while unsharing" : "Lỗi trong quá trình gỡ chia sẻ",
-    "Set expiration date" : "Đặt ngày kết thúc",
     "Edit" : "Sửa",
     "Remove" : "Xóa",
     "Copy to clipboard" : "Sao chép vào clipboard",

@@ -90,7 +90,6 @@ OC.L10N.register(
     "Error" : "Error",
     "Error while sharing" : "Error al compartir",
     "Error while unsharing" : "Error al dejar de compartir",
-    "Set expiration date" : "Establecer fecha de caducidad",
     "Expiration" : "Caducidad",
     "Remove link" : "Eliminar enlace",
     "Link" : "Enlace",

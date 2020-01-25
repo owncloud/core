@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "Gabim gjatë ndarjes",
     "Error while unsharing" : "Gabim gjatë heqjes së ndarjes",
     "The public link will expire no later than {days} days after it is created" : "Lidhja publike do të skadojë jo më vonë se {days} ditë pas krijimit të saj",
-    "Set expiration date" : "Caktoni datë skadimi",
     "Expiration" : "Skadim",
     "Choose an expiration date" : "Zgjidhni një datë skadimi",
     "Expiration date is required" : "Data e skadimit është e domosdoshme",

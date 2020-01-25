@@ -141,7 +141,6 @@ OC.L10N.register(
     "Error while sharing" : "Feil ved deling",
     "Error while unsharing" : "Feil ved udeling",
     "The public link will expire no later than {days} days after it is created" : "Den offentlege lenka har gyldigheit i  {days} dagar etter den er oppretta",
-    "Set expiration date" : "Set utløpsdato",
     "Expiration" : "Utløp",
     "Expiration date is required" : "Utløp dato er krevd",
     "Delete {link}" : "Fjern {link}",

@@ -52,7 +52,6 @@ OC.L10N.register(
     "Error" : "خرابی",
     "Error while sharing" : "اشتراک کے دوران خرابی ",
     "Error while unsharing" : "اشترک ختم کرنے کے دوران خرابی",
-    "Set expiration date" : "تاریخ معیاد سیٹ کریں",
     "Edit" : "تدوین کریں",
     "Name" : "اسم",
     "Password" : "پاسورڈ",

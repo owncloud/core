@@ -124,7 +124,6 @@ OC.L10N.register(
     "Error while sharing" : "Viga jagamisel",
     "Error while unsharing" : "Viga jagamise lõpetamisel",
     "The public link will expire no later than {days} days after it is created" : "Avalik link aegub mitte hiljem kui pärast {days} päeva selle loomist",
-    "Set expiration date" : "Määra aegumise kuupäev",
     "Expiration" : "Aegumine",
     "Expiration date is required" : "Aegumise kuupäev on nõutud",
     "Delete {link}" : "Kustuta {link}",

@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "Σφάλμα κατά τον διαμοιρασμό",
     "Error while unsharing" : "Σφάλμα κατά το διακοπή του διαμοιρασμού",
     "The public link will expire no later than {days} days after it is created" : "Ο δημόσιος σύνδεσμος θα απενεργοποιηθεί όχι πριν από {days} ημέρες μετά την δημιουργία του",
-    "Set expiration date" : "Ορισμός ημερομηνίας λήξης",
     "Expiration" : "Λήξη",
     "Choose an expiration date" : "Επιλέξτε μια ημερομηνία λήξης",
     "Expiration date is required" : "Απαιτείται ημερομηνία λήξης",

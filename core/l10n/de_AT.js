@@ -135,7 +135,6 @@ OC.L10N.register(
     "Error while sharing" : "Fehler beim Teilen",
     "Error while unsharing" : "Fehler beim Aufheben der Freigabe",
     "The public link will expire no later than {days} days after it is created" : "Der öffentliche Link wird spätestens {days} Tage nach seiner Erstellung ablaufen",
-    "Set expiration date" : "Setze ein Ablaufdatum",
     "Expiration" : "Ablaufdatum",
     "Link" : "Link",
     "Edit" : "Bearbeiten",

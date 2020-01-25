@@ -149,7 +149,6 @@ OC.L10N.register(
     "Error while sharing" : "Nem sikerült létrehozni a megosztást",
     "Error while unsharing" : "Nem sikerült visszavonni a megosztást",
     "The public link will expire no later than {days} days after it is created" : "A nyilvános hivatkozás érvényessége legkorábban {days} nappal a létrehozása után jár csak le",
-    "Set expiration date" : "Legyen lejárati idő",
     "Expiration" : "Lejárat",
     "Choose an expiration date" : "Lejárati dátum választása",
     "Expiration date is required" : "A lejárat dátuma szükséges",

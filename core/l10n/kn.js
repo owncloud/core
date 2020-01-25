@@ -65,7 +65,6 @@ OC.L10N.register(
     "Error while sharing" : "ಹಂಚುವಾಗ ಏನೊ ಲೋಪವಾಗಿದೆ",
     "Error while unsharing" : " ಹಂಚಿಕೆಯನ್ನು ಹಿಂದೆರುಗಿಸು ಸಂದರ್ಭದಲ್ಲಿ ಲೋಪವಾಗಿದೆ",
     "The public link will expire no later than {days} days after it is created" : "﻿ರಚನೆಯಾದ {days} ದಿನಗಳ ನಂತರ ಈ ಸಾರ್ವಜನಿಕ ಸಂಪರ್ಕ ಕೊಂಡಿ ಅಂತ್ಯಗೊಳ್ಳಲಿದೆ",
-    "Set expiration date" : "ಮುಕ್ತಾಯ ದಿನಾಂಕವನ್ನು ನಿರ್ದರಿಸಿ",
     "Expiration" : "﻿ಮುಕ್ತಾಯ",
     "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
     "Edit" : "ಸಂಪಾದಿಸು",

@@ -137,7 +137,6 @@
     "Error while sharing" : "Fel vid delning",
     "Error while unsharing" : "Fel när delning skulle avslutas",
     "The public link will expire no later than {days} days after it is created" : "Den publika länken kommer sluta gälla inte senare än {days} dagar efter att den skapades",
-    "Set expiration date" : "Sätt utgångsdatum",
     "Expiration" : "Upphör",
     "Expiration date is required" : "Utgångsdatum krävs",
     "Delete {link}" : "Ta bort {link}",

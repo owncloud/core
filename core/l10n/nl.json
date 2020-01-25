@@ -147,7 +147,6 @@
     "Error while sharing" : "Fout tijdens het delen",
     "Error while unsharing" : "Fout tijdens het stoppen met delen",
     "The public link will expire no later than {days} days after it is created" : "De openbare link vervalt niet eerder dan {days} dagen na het aanmaken",
-    "Set expiration date" : "Stel vervaldatum in",
     "Expiration" : "Vervaltermijn",
     "Choose an expiration date" : "Kies een vervaldatum",
     "Expiration date is required" : "De vervaldatum is vereist",

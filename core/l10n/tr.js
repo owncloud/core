@@ -151,7 +151,6 @@ OC.L10N.register(
     "Error while sharing" : "Paylaşım sırasında hata",
     "Error while unsharing" : "Paylaşım iptal edilirken hata",
     "The public link will expire no later than {days} days after it is created" : "Herkese açık bağlantı, oluşturulduktan en geç {days} gün sonra sona erecek",
-    "Set expiration date" : "Son kullanma tarihini ayarla",
     "Expiration" : "Bitiş",
     "Choose an expiration date" : "Bir bitiş tarihi seçin",
     "Expiration date is required" : "Son kullanım tarihi gerekli",
