@@ -598,6 +598,7 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then it should be possible to delete file "lorem-big.txt" using the webUI
 
+  @skipOnOcV10.3
   Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
@@ -639,6 +640,7 @@ Feature: Share by public link
     Then the fields of the last response should include
       | expiration |  |
 
+  @skipOnOcV10.3
   Scenario: user creates a new public link using webUI removing expiration date when default expire date is set and enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
