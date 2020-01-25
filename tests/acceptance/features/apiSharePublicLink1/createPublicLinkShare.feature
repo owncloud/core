@@ -506,6 +506,7 @@ Feature: create a public link share
     Then the value of the item "//s:message" in the response should be ""
     And the HTTP status code should be "404"
 
+  @skipOnOcV10.3
   Scenario: Get the size of a file shared by public link
     Given the administrator has enabled DAV tech_preview
     And user "user0" has uploaded file with content "This is a test file" to "test-file.txt"
