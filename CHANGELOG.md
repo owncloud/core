@@ -64,6 +64,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.14 => 2.1.15): [#36789](https://github.com/owncloud/core/pull/36789)
 * Change - Update phpspec/prophecy (1.10.1 => v1.10.2): [#36789](https://github.com/owncloud/core/pull/36789)
 * Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
+* Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -441,6 +442,10 @@ Details
    symfony/process symfony/translation
 
    https://github.com/owncloud/core/pull/36796
+
+* Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
+
+   https://github.com/owncloud/core/pull/36826
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
