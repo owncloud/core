@@ -568,7 +568,8 @@ trait Provisioning {
 		$entry['gidNumber'] = 5000;
 		$this->ldap->add($newDN, $entry);
 		\array_push($this->ldapCreatedGroups, $group);
-		$this->theLdapUsersHaveBeenReSynced();
+		// For syncing the ldap groups
+		$this->runOcc(['group:list']);
 	}
 
 	/**
