@@ -286,7 +286,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function setToDeleteLdapConfigs($configId) {
-		$this->toDeleteLdapConfigs = $configId;
+		$this->toDeleteLdapConfigs[] = $configId;
 	}
 
 	/**
@@ -3284,6 +3284,10 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 */
 	private function restoreParameters($server) {
+		if ($this->isTestingWithLdap()) {
+			$this->deleteLdapUsersAndGroups();
+			$this->resetOldLdapConfig();
+		}
 		if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
 			$this->appConfigurationContext->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
 		}
