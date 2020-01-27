@@ -102,11 +102,18 @@ class PollIncomingShares extends Command {
 			/** @var \OCA\Files_Sharing\External\Mount $mount */
 			foreach ($userMounts as $mount) {
 				try {
+					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
+					if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+						$encodedData = \json_encode($shareData);
+						$output->writeln(
+							"User: \"{$data['user']}\", Share data: $encodedData"
+						);
+					}
+
 					/** @var Storage $storage */
 					$storage = $mount->getStorage();
 					$this->refreshStorageRoot($storage);
 				} catch (NoUserException $e) {
-					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
 					$entryId = $shareData['id'];
 					$remote = $shareData['remote'];
 					// uid was null so we need to set it
@@ -118,7 +125,6 @@ class PollIncomingShares extends Command {
 						"Remote \"$remote\" reports that external share with id \"$entryId\" no longer exists. Removing it.."
 					);
 				} catch (\Exception $e) {
-					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
 					$entryId = $shareData['id'];
 					$remote = $shareData['remote'];
 					$reason = $e->getMessage();
