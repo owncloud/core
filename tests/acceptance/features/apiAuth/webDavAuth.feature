@@ -3,7 +3,6 @@ Feature: auth
 
   Background:
     Given user "user0" has been created with default attributes and skeleton files
-    And a new client token for "user0" has been generated
 
   Scenario: using WebDAV anonymously
     When a user requests "/remote.php/webdav" with "PROPFIND" and no authentication
@@ -14,6 +13,7 @@ Feature: auth
     Then the HTTP status code should be "207"
 
   Scenario: using WebDAV with token auth
+    Given a new client token for "user0" has been generated
     When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
     Then the HTTP status code should be "207"
 

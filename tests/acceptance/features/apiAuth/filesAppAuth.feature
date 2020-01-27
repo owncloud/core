@@ -3,7 +3,6 @@ Feature: auth
 
   Background:
     Given user "user0" has been created with default attributes and skeleton files
-    And a new client token for "user0" has been generated
 
   @smokeTest
   Scenario: access files app anonymously
@@ -17,11 +16,13 @@ Feature: auth
 
   @smokeTest
   Scenario: access files app with basic token auth
+    Given a new client token for "user0" has been generated
     When user "user0" requests "/index.php/apps/files" with "GET" using basic token auth
     Then the HTTP status code should be "200"
 
   @smokeTest
   Scenario: access files app with a client token
+    Given a new client token for "user0" has been generated
     When the user requests "/index.php/apps/files" with "GET" using the generated client token
     Then the HTTP status code should be "200"
 
