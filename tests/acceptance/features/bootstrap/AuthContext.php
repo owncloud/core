@@ -230,11 +230,12 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code'], ['body']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
+			$ocsCode = $row['ocs-code'] ?? null;
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
-			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -264,14 +265,15 @@ class AuthContext implements Context {
 		$password,
 		TableNode $table
 	) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->administratorRequestsURLWithUsingBasicAuth(
 				$row['endpoint'],
 				$method,
 				$password
 			);
-			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$ocsCode = $row['ocs-code'] ?? null;
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -285,10 +287,11 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$ocsCode = $row['ocs-code'] ?? null;
 			$this->userRequestsURLWithUsingBasicTokenAuth($user, $row['endpoint'], $method);
-			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
@@ -301,10 +304,11 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$ocsCode = $row['ocs-code'] ?? null;
 			$this->userRequestsURLWithBrowserSession($row['endpoint'], $method);
-			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
