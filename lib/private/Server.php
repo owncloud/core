@@ -64,6 +64,7 @@ use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\License\LicenseManager;
+use OC\License\LicenseFetcher;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -102,6 +103,7 @@ use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OCP\IUser;
+use OCP\License\ILicenseManager;
 use OCP\Security\IContentSecurityPolicyManager;
 use OCP\Shutdown\IShutdownManager;
 use OCP\Theme\IThemeService;
@@ -909,6 +911,15 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService(IServiceLoader::class, function () {
 			return $this;
 		});
+
+		$this->registerService(ILicenseManager::class, function ($c) {
+			return new LicenseManager(
+				$c->query(LicenseFetcher::class),
+				$c->getAppManager(),
+				$c->getConfig(),
+				$c->getTimeFactory()
+			);
+		});
 	}
 
 	/**
@@ -1683,6 +1694,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	}
 
 	public function getLicenseManager() {
-		return $this->query(LicenseManager::class);
+		return $this->query(ILicenseManager::class);
 	}
 }

@@ -32,11 +32,27 @@ interface ILicenseManager {
 	public function isLicenseValid();
 
 	/**
-	 * Check if the app is under a trial period. By default, it will try to start a
-	 * trial period if the app didn't have a trial period before.
-	 * The auto-start parameter isn't guarantee a new trial period will be started.
+	 * Check if the app is under a trial period. This method won't start a new trial
 	 * @param string $appid the app id to check if it's under the trial period
 	 * @return bool true if the app is NOW under the trial period, false otherwise
 	 */
 	public function isAppUnderTrialPeriod(string $appid);
+
+	/**
+	 * Check if there is a valid license that can be used for $appid. A trial period
+	 * will start regardless of the license validation (we shouldn't start a
+	 * trial after X days of using the app because the license expired).
+	 * Note that there will be only one trial period per app, and it won't be possible
+	 * to restart it.
+	 *
+	 * If there no valid license and the app isn't under a trial period, this method
+	 * will disabled the app.
+	 *
+	 * This method will return true if there is a license valid for the app (usually
+	 * the ownCloud's license) or if the app is under a trial period
+	 * @param string $appid the id of the app we want to check
+	 * @return bool true if there is a valid license or the app is under trial, false
+	 * otherwise.
+	 */
+	public function checkLicenseFor(string $appid);
 }
