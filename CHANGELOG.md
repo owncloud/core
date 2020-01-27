@@ -75,6 +75,7 @@ Summary
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
 * Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
+* Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
 * Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
 
 Details
@@ -540,6 +541,13 @@ Details
    The plus sign is now allowed in a username, e.g. John+Smith
 
    https://github.com/owncloud/core/pull/36613
+
+* Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
+
+   MariaDb 10.4 is now supported
+
+   https://github.com/owncloud/core/issues/36799
+   https://github.com/owncloud/core/pull/36800
 
 * Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
 
