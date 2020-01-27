@@ -666,19 +666,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @AfterScenario
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function afterScenario() {
-		if ($this->isTestingWithLdap()) {
-			$this->deleteLdapUsersAndGroups();
-			$this->resetOldLdapConfig();
-		}
-	}
-
-	/**
 	 * This function will allow us to send user creation requests in parallel.
 	 * This will be faster in comparison to waiting for each request to complete before sending another request.
 	 *
