@@ -500,7 +500,7 @@
 			var $el = $(el);
 
 			$el.datepicker({
-				minDate: "+1d",
+				minDate: "+0d",
 				dateFormat : 'dd-mm-yy',
 				onSelect : function() {
 					self._onExpirationChange(el);
