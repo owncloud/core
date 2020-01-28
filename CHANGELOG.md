@@ -74,6 +74,7 @@ Summary
 * Enhancement - Add enabled and disabled filter options to occ app:list command: [#36520](https://github.com/owncloud/core/pull/36520)
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
 * Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
+* Enhancement - Reduce memory footprint of trash expiry jobs: [#36602](https://github.com/owncloud/core/pull/36602)
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
 * Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
 * Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
@@ -535,6 +536,17 @@ Details
 
    https://github.com/owncloud/core/pull/36573
    https://github.com/owncloud/core/pull/36766
+
+* Enhancement - Reduce memory footprint of trash expiry jobs: [#36602](https://github.com/owncloud/core/pull/36602)
+
+   The trash expiry job now expires the files in batches of users per script execution, instead of
+   all users at once. This prevents growing memory related to how PHP PDO handles memory for many
+   consequtive large queries. The trash expiry has been also moved to a dedicated trash expiry
+   manager class that is optimized for background job access, while trash manager is used for
+   online queries. Also some other minor memory optimizations have been applied.
+
+   https://github.com/owncloud/core/pull/36602
+   https://github.com/owncloud/core/pull/36565
 
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
 
