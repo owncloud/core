@@ -11,7 +11,7 @@ Feature: export created local storage mounts from the command line
     And the administrator has uploaded file with content "new file" to "/new_local_storage/new-file"
     When the administrator exports the local storage mounts using the occ command
     Then the following local storage should be listed:
-      | MountPoint         | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage2    | Local   | None               | datadir:      |         | All             |                  |
-      | /new_local_storage | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage     | Local   | None               | datadir:      |         | All             |                  |
+      | MountPoint         | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
+      | /local_storage2    | Local   | None               | datadir:      |                      | All             |                  |
+      | /new_local_storage | Local   | None               | datadir:      |                      | All             |                  |
+      | /local_storage     | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
