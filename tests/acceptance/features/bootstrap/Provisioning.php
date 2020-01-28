@@ -457,7 +457,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When the LDAP users are resynced
 	 * @Given the LDAP users have been resynced
 	 *
 	 * @return void
@@ -470,6 +469,18 @@ trait Provisioning {
 		if ($occResult['code'] !== "0") {
 			throw new \Exception("could not sync LDAP users " . $occResult['stdErr']);
 		}
+	}
+
+	/**
+	 * @When the LDAP users are resynced
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theLdapUsersAreReSynced() {
+		SetupHelper::runOcc(
+			['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove']
+		);
 	}
 
 	/**
@@ -975,16 +986,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When the administrator resets the password of user :username to :password using the provisioning API
-	 * @Given the administrator has reset the password of user :username to :password
-	 *
-	 * @param string $username of the user whose password is reset
+	 * @param string $username
 	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function adminResetsPasswordOfUserUsingTheProvisioningApi($username, $password) {
-		$this->userResetsPasswordOfUserUsingTheProvisioningApi(
+	public function resetUserPasswordAsAdminUsingTheProvisioningApi($username, $password) {
+		$this->userResetUserPasswordUsingProvisioningApi(
 			$this->getAdminUsername(),
 			$username,
 			$password
@@ -992,8 +1000,53 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator resets the password of user :username to :password using the provisioning API
+	 *
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function adminResetsPasswordOfUserUsingTheProvisioningApi($username, $password) {
+		$this->resetUserPasswordAsAdminUsingTheProvisioningApi(
+			$username,
+			$password
+		);
+	}
+
+	/**
+	 * @Given the administrator has reset the password of user :username to :password
+	 *
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function adminHasResetPasswordOfUserUsingTheProvisioningApi($username, $password) {
+		$this->resetUserPasswordAsAdminUsingTheProvisioningApi(
+			$username,
+			$password
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $username
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userResetUserPasswordUsingProvisioningApi($user, $username, $password) {
+		$password = $this->getActualPassword($password);
+		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
+			$user, $username, $password
+		);
+		$this->rememberUserPassword($username, $password);
+	}
+
+	/**
 	 * @When user :user resets the password of user :username to :password using the provisioning API
-	 * @Given user :user has reset the password of user :username to :password
 	 *
 	 * @param string $user that does the password reset
 	 * @param string $username of the user whose password is reset
@@ -1002,16 +1055,15 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userResetsPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
-		$password = $this->getActualPassword($password);
-		$this->userTriesToResetPasswordOfUserUsingTheProvisioningApi(
-			$user, $username, $password
+		$this->userResetUserPasswordUsingProvisioningApi(
+			$user,
+			$username,
+			$password
 		);
-		$this->rememberUserPassword($username, $password);
 	}
 
 	/**
-	 * @When user :user tries to reset the password of user :username to :password using the provisioning API
-	 * @Given user :user has tried to reset the password of user :username to :password
+	 * @Given user :user has reset the password of user :username to :password
 	 *
 	 * @param string $user that does the password reset
 	 * @param string $username of the user whose password is reset
@@ -1019,7 +1071,21 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+	public function userHasResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$this->userResetUserPasswordUsingProvisioningApi(
+			$user, $username, $password
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $username
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userTriesToResetUserPasswordUsingTheProvisioningApi($user, $username, $password) {
 		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode([['key', 'password'], ['value', $password]]);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1028,6 +1094,41 @@ trait Provisioning {
 			"/cloud/users/$username",
 			$bodyTable
 		);
+	}
+
+	/**
+	 * @When user :user tries to reset the password of user :username to :password using the provisioning API
+	 *
+	 * @param string $user that does the password reset
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
+			$user,
+			$username,
+			$password
+		);
+	}
+
+	/**
+	 * @Given user :user has tried to reset the password of user :username to :password
+	 *
+	 * @param string $user that does the password reset
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userHasTriedToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
+			$user,
+			$username,
+			$password
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -1116,16 +1217,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" changes the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has changed the email of user "([^"]*)" to "([^"]*)"$/
-	 *
 	 * @param string $requestingUser
 	 * @param string $targetUser
 	 * @param string $email
 	 *
 	 * @return void
 	 */
-	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
+	public function userChangesUserEmailUsingProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
 		$this->response = UserHelper::editUser(
@@ -1137,6 +1235,45 @@ trait Provisioning {
 			$this->getPasswordForUser($requestingUser),
 			$this->ocsApiVersion
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" changes the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $email
+	) {
+		$this->userChangesUserEmailUsingProvisioningApi(
+			$requestingUser,
+			$targetUser,
+			$email
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has changed the email of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function userHasChangedTheEmailOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $email
+	) {
+		$this->userChangesUserEmailUsingProvisioningApi(
+			$requestingUser,
+			$targetUser,
+			$email
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -1192,6 +1329,7 @@ trait Provisioning {
 		$this->setResponse($response);
 		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
 	}
+
 	/**
 	 * As the administrator, edit the "display name" of a user by sending the key "display" to the API end point.
 	 *
@@ -1200,7 +1338,6 @@ trait Provisioning {
 	 * @see https://github.com/owncloud/core/pull/33040
 	 *
 	 * @When /^the administrator changes the display of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^the administrator has changed the display of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $displayname
@@ -1254,7 +1391,6 @@ trait Provisioning {
 	 * @see https://github.com/owncloud/core/pull/33040
 	 *
 	 * @When /^user "([^"]*)" changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $requestingUser
 	 * @param string $targetUser
@@ -1278,7 +1414,6 @@ trait Provisioning {
 	 * @see https://github.com/owncloud/core/pull/33040
 	 *
 	 * @When /^user "([^"]*)" changes the display of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has changed the display of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $requestingUser
 	 * @param string $targetUser
@@ -1294,6 +1429,23 @@ trait Provisioning {
 		);
 	}
 
+	/**
+	 * @Given /^user "([^"]*)" has changed the display name of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function userHasChangedTheDisplayNameOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $displayName
+	) {
+		$this->userChangesTheDisplayNameOfUserUsingKey(
+			$requestingUser, $targetUser, 'displayname', $displayName
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
 	/**
 	 *
 	 * @param string $requestingUser
@@ -1362,16 +1514,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" changes the quota of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has changed the quota of user "([^"]*)" to "([^"]*)"$/
-	 *
 	 * @param string $requestingUser
 	 * @param string $targetUser
 	 * @param string $quota
 	 *
 	 * @return void
 	 */
-	public function userChangesTheQuotaOfUserUsingTheProvisioningApi(
+	public function userChangeQuotaOfUserUsingProvisioningApi(
 		$requestingUser, $targetUser, $quota
 	) {
 		$result = UserHelper::editUser(
@@ -1387,14 +1536,50 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator retrieves the information of user "([^"]*)" using the provisioning API$/
-	 * @Given /^the administrator has retrieved the information of user "([^"]*)"$/
+	 * @When /^user "([^"]*)" changes the quota of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function userChangesTheQuotaOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $quota
+	) {
+		$this->userChangeQuotaOfUserUsingProvisioningApi(
+			$requestingUser,
+			$targetUser,
+			$quota
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has changed the quota of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function userHasChangedTheQuotaOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $quota
+	) {
+		$this->userChangeQuotaOfUserUsingProvisioningApi(
+			$requestingUser,
+			$targetUser,
+			$quota
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function adminRetrievesTheInformationOfUserUsingTheProvisioningApi(
+	public function retrieveUserInformationAsAdminUsingProvisioningApi(
 		$user
 	) {
 		$result = UserHelper::getUser(
@@ -1408,15 +1593,41 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" retrieves the information of user "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has retrieved the information of user "([^"]*)"$/
+	 * @When /^the administrator retrieves the information of user "([^"]*)" using the provisioning API$/
 	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function adminRetrievesTheInformationOfUserUsingTheProvisioningApi(
+		$user
+	) {
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi(
+			$user
+		);
+	}
+
+	/**
+	 * @Given /^the administrator has retrieved the information of user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function adminHasRetrievedTheInformationOfUserUsingTheProvisioningApi(
+		$user
+	) {
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @param string $requestingUser
 	 * @param string $targetUser
 	 *
 	 * @return void
 	 */
-	public function userRetrievesTheInformationOfUserUsingTheProvisioningApi(
+	public function userRetrieveUserInformationUsingProvisioningApi(
 		$requestingUser, $targetUser
 	) {
 		$result = UserHelper::getUser(
@@ -1427,6 +1638,41 @@ trait Provisioning {
 			$this->ocsApiVersion
 		);
 		$this->response = $result;
+	}
+
+	/**
+	 * @When /^user "([^"]*)" retrieves the information of user "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 *
+	 * @return void
+	 */
+	public function userRetrievesTheInformationOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser
+	) {
+		$this->userRetrieveUserInformationUsingProvisioningApi(
+			$requestingUser,
+			$targetUser
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has retrieved the information of user "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 *
+	 * @return void
+	 */
+	public function userHasRetrievedTheInformationOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser
+	) {
+		$this->userRetrieveUserInformationUsingProvisioningApi(
+			$requestingUser,
+			$targetUser
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -2550,7 +2796,6 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator disables user "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has been disabled$/
 	 *
 	 * @param string $user
 	 *
@@ -2558,6 +2803,18 @@ trait Provisioning {
 	 */
 	public function adminDisablesUserUsingTheProvisioningApi($user) {
 		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'disable');
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has been disabled$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function adminHasDisabledUserUsingTheProvisioningApi($user) {
+		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'disable');
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -3174,7 +3431,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theDisplayNameOfUserShouldBe($user, $displayname) {
-		$this->adminRetrievesTheInformationOfUserUsingTheProvisioningApi($user);
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
 	}
 
@@ -3202,7 +3459,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theEmailAddressOfUserShouldBe($user, $expectedEmailAddress) {
-		$this->adminRetrievesTheInformationOfUserUsingTheProvisioningApi($user);
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress);
 	}
 
@@ -3230,7 +3487,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theQuotaDefinitionOfUserShouldBe($user, $expectedQuotaDefinition) {
-		$this->adminRetrievesTheInformationOfUserUsingTheProvisioningApi($user);
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition);
 	}
 
