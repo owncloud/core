@@ -155,7 +155,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               |
       | 2               |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
   Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:

@@ -664,6 +664,9 @@ trait Provisioning {
 				$this->setLdapSetting($configId, $configKey, $configValue);
 			}
 		}
+		foreach ($this->toDeleteDNs as $dn) {
+			$this->getLdap()->delete($dn, true);
+		}
 	}
 
 	/**

@@ -302,7 +302,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function setToDeleteDNs($setValue) {
-		$this->toDeleteDNs = $setValue;
+		$this->toDeleteDNs[] = $setValue;
 	}
 
 	/**

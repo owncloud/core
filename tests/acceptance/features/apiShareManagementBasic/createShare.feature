@@ -318,6 +318,7 @@ Feature: sharing
     And user "user1" should not see the following elements
       | /randomfile.txt |
 
+  @skipOnLDAP
   Scenario: creating a new share with user of a group when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -361,7 +362,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
   Scenario Outline: share with a group and then add a user to that group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:

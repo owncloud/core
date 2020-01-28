@@ -132,6 +132,7 @@ Feature: Display notifications when receiving a share
     And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
     Then user "user1" should have 0 notifications
 
+  @skipOnLDAP
   Scenario: discard notification if target user is not member of the group anymore
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
