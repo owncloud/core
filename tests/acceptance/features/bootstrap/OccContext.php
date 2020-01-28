@@ -421,6 +421,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * List created local storage mount with --mount-options
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listLocalStorageMountOptions() {
+		$this->invokingTheCommand('files_external:list --mount-options --output=json');
+	}
+
+	/**
 	 * @When the administrator enables DAV tech_preview
 	 *
 	 * @return void
@@ -1216,6 +1226,16 @@ class OccContext implements Context {
 	 */
 	public function adminListsLocalStorageMountShortUsingTheOccCommand() {
 		$this->listLocalStorageMountShort();
+	}
+
+	/**
+	 * @When the administrator lists the local storage with --mount-options using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsLocalStorageMountOptionsUsingTheOccCommand() {
+		$this->listLocalStorageMountOptions();
 	}
 
 	/**
