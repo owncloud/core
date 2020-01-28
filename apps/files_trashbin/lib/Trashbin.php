@@ -39,7 +39,6 @@ namespace OCA\Files_Trashbin;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
-use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Command\Expire;
 use OCP\Encryption\Keys\IStorage;
 use OCP\Files\ForbiddenException;
@@ -638,7 +637,7 @@ class Trashbin {
 		\OC_Hook::emit(
 			'\OCP\Trashbin',
 			'preDelete',
-			['path' => $path, 'user'=> $uid]
+			['path' => $path, 'user' => $uid]
 		);
 	}
 
@@ -652,7 +651,7 @@ class Trashbin {
 		\OC_Hook::emit(
 			'\OCP\Trashbin',
 			'delete',
-			['path' => $path, 'user'=> $uid]
+			['path' => $path, 'user' => $uid]
 		);
 	}
 
@@ -761,7 +760,12 @@ class Trashbin {
 	 */
 	public static function resizeTrash($user) {
 		$size = self::getTrashbinSize($user);
-		$freeSpace = self::getQuota()->calculateFreeSpace($size, $user);
+
+		$quota = new Quota(
+			\OC::$server->getUserManager(),
+			\OC::$server->getConfig()
+		);
+		$freeSpace = $quota->calculateFreeSpace($size, $user);
 
 		if ($freeSpace < 0) {
 			self::scheduleExpire($user);
@@ -769,108 +773,10 @@ class Trashbin {
 	}
 
 	/**
-	 * clean up the trash bin
-	 *
-	 * @param string $user
-	 */
-	public static function expire($user) {
-		$trashBinSize = self::getTrashbinSize($user);
-		$availableSpace = self::getQuota()->calculateFreeSpace($trashBinSize, $user);
-
-		$dirContent = Helper::getTrashFiles('/', $user, 'mtime');
-
-		// delete all files older then $retention_obligation
-		list($delSize, $count) = self::deleteExpiredFiles($dirContent, $user);
-
-		$availableSpace += $delSize;
-
-		// delete files from trash until we meet the trash bin size limit again
-		self::deleteFiles(\array_slice($dirContent, $count), $user, $availableSpace);
-	}
-
-	/**
-	 * @return Quota
-	 */
-	protected static function getQuota() {
-		$application = new Application();
-		return $application->getContainer()->query('Quota');
-	}
-
-	/**
 	 * @param string $user
 	 */
 	private static function scheduleExpire($user) {
-		// let the admin disable auto expire
-		$application = new Application();
-		$expiration = $application->getContainer()->query('Expiration');
-		if ($expiration->isEnabled()) {
-			\OC::$server->getCommandBus()->push(new Expire($user));
-		}
-	}
-
-	/**
-	 * if the size limit for the trash bin is reached, we delete the oldest
-	 * files in the trash bin until we meet the limit again
-	 *
-	 * @param array $files
-	 * @param string $user
-	 * @param int $availableSpace available disc space
-	 * @return int size of deleted files
-	 */
-	protected static function deleteFiles($files, $user, $availableSpace) {
-		$application = new Application();
-		$expiration = $application->getContainer()->query('Expiration');
-		$size = 0;
-
-		if ($availableSpace < 0) {
-			foreach ($files as $file) {
-				if ($availableSpace < 0 && $expiration->isExpired($file['mtime'], true)) {
-					$tmp = self::delete($file['name'], $user, $file['mtime']);
-					$message = \sprintf(
-						'remove "%s" (%dB) to meet the limit of trash bin size (%d%% of available quota)',
-						$file['name'],
-						$tmp,
-						self::getQuota()->getPurgeLimit()
-					);
-					\OCP\Util::writeLog('files_trashbin', $message, \OCP\Util::INFO);
-					$availableSpace += $tmp;
-					$size += $tmp;
-				} else {
-					break;
-				}
-			}
-		}
-		return $size;
-	}
-
-	/**
-	 * delete files older then max storage time
-	 *
-	 * @param array $files list of files sorted by mtime
-	 * @param string $user
-	 * @return integer[] size of deleted files and number of deleted files
-	 */
-	public static function deleteExpiredFiles($files, $user) {
-		$application = new Application();
-		$expiration = $application->getContainer()->query('Expiration');
-		$size = 0;
-		$count = 0;
-		foreach ($files as $file) {
-			$timestamp = $file['mtime'];
-			$filename = $file['name'];
-			if ($expiration->isExpired($timestamp)) {
-				$count++;
-				$size += self::delete($filename, $user, $timestamp);
-				\OC::$server->getLogger()->info(
-					'Remove "' . $filename . '" from trashbin because it exceeds max retention obligation term.',
-					['app' => 'files_trashbin']
-				);
-			} else {
-				break;
-			}
-		}
-
-		return [$size, $count];
+		\OC::$server->getCommandBus()->push(new Expire($user));
 	}
 
 	/**
@@ -1023,7 +929,7 @@ class Trashbin {
 	 * @param string $user user who owns the trash bin
 	 * @return integer trash bin size
 	 */
-	private static function getTrashbinSize($user) {
+	public static function getTrashbinSize($user) {
 		$view = new View('/' . $user);
 		$fileInfo = $view->getFileInfo('/files_trashbin');
 		return isset($fileInfo['size']) ? $fileInfo['size'] : 0;

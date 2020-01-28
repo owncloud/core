@@ -179,7 +179,7 @@ class SyncServiceTest extends TestCase {
 	public function testAnalyseExistingUsers() {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$this->mapper->expects($this->once())
-			->method('callForAllUsers')
+			->method('callForUsers')
 			->with($this->callback(function ($param) {
 				return \is_callable($param);
 			}));

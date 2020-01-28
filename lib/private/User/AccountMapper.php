@@ -215,6 +215,10 @@ class AccountMapper extends Mapper {
 	}
 
 	public function callForAllUsers($callback, $search, $onlySeen) {
+		return $this->callForUsers($callback, $search, $onlySeen);
+	}
+
+	public function callForUsers($callback, $search, $onlySeen, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['*'])
 			->from($this->getTableName());
@@ -226,6 +230,18 @@ class AccountMapper extends Mapper {
 		if ($onlySeen) {
 			$qb->where($qb->expr()->gt('last_login', new Literal(0)));
 		}
+
+		if ($limit !== null || $offset !== null) {
+			$qb->orderBy('user_id'); // needed for predictable limit & offset
+		}
+
+		if ($limit !== null) {
+			$qb->setMaxResults($limit);
+		}
+		if ($offset !== null) {
+			$qb->setFirstResult($offset);
+		}
+
 		$stmt = $qb->execute();
 		while ($row = $stmt->fetch()) {
 			$return = $callback($this->mapRowToEntity($row));

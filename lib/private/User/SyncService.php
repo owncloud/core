@@ -85,11 +85,11 @@ class SyncService {
 		$removed = [];
 		$reappeared = [];
 		$backendClass = \get_class($backend);
-		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
+		$this->mapper->callForUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
 			// Check if the backend matches handles this user
 			$this->checkIfAccountReappeared($a, $removed, $reappeared, $backend, $backendClass);
 			$callback($a);
-		}, '', false);
+		}, '', false, null, null);
 		return [$removed, $reappeared];
 	}
 
