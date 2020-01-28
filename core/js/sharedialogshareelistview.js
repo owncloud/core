@@ -301,14 +301,14 @@
 				placement: 'bottom'
 			});
 
-			this.$el.find('.expiration-user').each(function(){
+			this.$el.find('.expiration-user:not(.hasDatepicker)').each(function(){
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateUser(),
 					enforced : self.configModel.isDefaultExpireDateUserEnforced()
 				});
 			});
 
-			this.$el.find('.expiration-group').each(function(){
+			this.$el.find('.expiration-group:not(.hasDatepicker)').each(function(){
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateGroup(),
 					enforced : self.configModel.isDefaultExpireDateGroupEnforced()
@@ -452,10 +452,23 @@
 		},
 
 		onRemoveExpiration: function(event) {
-			var shareId = $(event.target).closest('li').data('share-id');
+			// make sure that click event is not propagated further
+			event.preventDefault();
 
+			// update share unsetting expiry date
+			var shareId = $(event.target).closest('li').data('share-id');
 			this.model.updateShare( shareId, {
 				expireDate: ''
+			}, {});
+		},
+
+		onExpirationChange: function(el) {
+			var $el        = $(el);
+			var shareId    = $el.closest('li').data('share-id');
+			var expiration = moment($el.val(), 'DD-MM-YYYY').format();
+
+			this.model.updateShare( shareId, {
+				expireDate: expiration
 			}, {});
 		},
 
@@ -497,16 +510,6 @@
 			});
 		},
 
-		_onExpirationChange: function(el) {
-			var $el        = $(el);
-			var shareId    = $el.closest('li').data('share-id');
-			var expiration = moment($el.val(), 'DD-MM-YYYY').format();
-
-			this.model.updateShare( shareId, {
-				expireDate: expiration
-			}, {});
-		},
-
 		_setDatepicker: function(el, params) {
 			var self = this;
 			var $el = $(el);
@@ -515,7 +518,7 @@
 				minDate: "+0d",
 				dateFormat : 'dd-mm-yy',
 				onSelect : function() {
-					self._onExpirationChange(el);
+					self.onExpirationChange(el);
 				}
 			});
 
