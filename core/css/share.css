@@ -103,7 +103,7 @@
 }
 #shareWithList .shareOption {
 	white-space: nowrap;
-	display: inline-block;
+	display: none;
 }
 
 #shareWithList .showCruds img,

@@ -37,7 +37,7 @@
 		'		{{/unless}}' +
 		'		</span>' +
 		'		{{/unless}} {{/if}}' +
-		'		<div class="expirationOption">' +
+		'		<div class="shareOption">' +
 		'			{{#if isUserShare}}' +
 		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}">{{expirationLabel}}: ' +
 		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="{{expirationDatePlaceholder}}" />' +
@@ -112,13 +112,16 @@
 	 */
 	var ShareDialogShareeListView = OC.Backbone.View.extend({
 		/** @type {string} **/
-		id: 'shareDialogLinkShare',
+		id: 'ShareDialogShareeList',
 
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
 
 		/** @type {Function} **/
 		_template: undefined,
+
+		/** @type {MutationObserver} **/
+		_toggleMutationObserver: undefined,
 
 		_currentlyToggled: {},
 
@@ -139,6 +142,7 @@
 			}
 
 			var view = this;
+
 			this.model.on('change:shares', function() {
 				view.render();
 			});
@@ -275,6 +279,7 @@
 		render: function() {
 			var self = this;
 
+			// render shares list in a container
 			this.$el.html(this.template({
 				cid: this.cid,
 				sharees: this.getShareeList()
@@ -292,7 +297,6 @@
 				});
 			}
 
-			var element = this.$el.find('.has-tooltip');
 			this.$el.find('.has-tooltip').tooltip({
 				placement: 'bottom'
 			});
@@ -311,21 +315,22 @@
 				});
 			});
 
-			this.$el.bind("DOMNodeInserted", function(){
-				// make sure to always enable toggled divs
-				if (!_.isUndefined(self._currentlyToggled)) {
-
-					self.$el.find('li').each(function()
-					{
-						var $li = $(this);
-						var shareId = $li.data('share-id');
-						if (!_.isUndefined(self._currentlyToggled[shareId])) {
-							self._toggleShareDivs(shareId, true);
-						} else {
-							self._toggleShareDivs(shareId, false);
-						}
-					});
+			// make sure that toggled share options are shown, class .shareOption
+			// elements are not displayed by default and need to be
+			// toggled so they are rendered.
+			this._renderToggledShareDetails();
+			this.$el.find('.shareWithList').each(function() {
+				// use mutation observer to ensure that if sharewithlist changes
+				// proper share details are toggled
+				var shareWithList = this;
+				if(_.isUndefined(self._toggleMutationObserver)) {
+					self._toggleMutationObserver =
+						new MutationObserver(function() {
+							self._renderToggledShareDetails();
+						});
 				}
+				self._toggleMutationObserver.disconnect();
+				self._toggleMutationObserver.observe(shareWithList, { childList: true, subtree: true });
 			});
 
 			this.delegateEvents();
@@ -455,32 +460,39 @@
 		},
 
 		onToggleShareDetails: function(event) {
-			this._toggleShareDetails(event);
-		},
-
-		_toggleShareDetails: function(event) {
 			var $li = $(event.target).closest('li');
 			var shareId = $li.data('share-id');
 
 			if (!_.isUndefined(this._currentlyToggled[shareId])) {
 				delete(this._currentlyToggled[shareId]);
-				this._toggleShareDivs(shareId, false);
+				this._toggleShareOptions(shareId, false);
 			} else {
 				this._currentlyToggled[shareId] = true;
-				this._toggleShareDivs(shareId, true);
+				this._toggleShareOptions(shareId, true);
 			}
 		},
 
-		_toggleShareDivs: function(shareId, enabled) {
+		_renderToggledShareDetails: function() {
+			var view = this;
+			this.$el.find('li').each(function() {
+				var $li = $(this);
+				var shareId = $li.data('share-id');
+				if (!_.isUndefined(view._currentlyToggled[shareId])) {
+					view._toggleShareOptions(shareId, true);
+				} else {
+					view._toggleShareOptions(shareId, false);
+				}
+			});
+		},
+
+		_toggleShareOptions: function(shareId, enabled) {
 			var $li = this.$el.find('li[data-share-id=' + shareId + ']');
-			$li.children("div").each(function() {
-				var $div = $(this);
-				if (!$div.hasClass( "avatar" )) {
-					if (enabled) {
-						$div.css('display', 'block');
-					} else {
-						$div.css('display', 'none');
-					}
+			$li.find(".shareOption").each(function() {
+				var $option = $(this);
+				if (enabled) {
+					$option.css('display', 'inline-block');
+				} else {
+					$option.css('display', 'none');
 				}
 			});
 		},
