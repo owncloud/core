@@ -411,6 +411,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * List created local storage mount with --short
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listLocalStorageMountShort() {
+		$this->invokingTheCommand('files_external:list --short --output=json');
+	}
+
+	/**
 	 * @When the administrator enables DAV tech_preview
 	 *
 	 * @return void
@@ -1194,8 +1204,18 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userListsLocalStorageMountUsingTheOccCommand() {
+	public function adminListsLocalStorageMountUsingTheOccCommand() {
 		$this->listLocalStorageMount();
+	}
+
+	/**
+	 * @When the administrator lists the local storage with --short using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsLocalStorageMountShortUsingTheOccCommand() {
+		$this->listLocalStorageMountShort();
 	}
 
 	/**
@@ -1247,18 +1267,81 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theFollowingLocalStorageShouldBeListed(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns(
+			$table,
+			['MountPoint', 'ApplicableUsers', 'ApplicableGroups'],
+			['Storage', 'AuthenticationType', 'Configuration', 'Options', 'Auth', 'Type']
+		);
 		$expectedLocalStorages = $table->getColumnsHash();
 		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($expectedLocalStorages as $expectedStorageEntry) {
 			$isStorageEntryListed = false;
 			foreach ($commandOutput as $listedStorageEntry) {
 				if ($expectedStorageEntry["MountPoint"] === $listedStorageEntry->mount_point) {
-					Assert::assertEquals($expectedStorageEntry['Storage'], $listedStorageEntry->storage, "Storage column does not have the expected value");
-					Assert::assertEquals($expectedStorageEntry['AuthenticationType'], $listedStorageEntry->authentication_type, "AuthenticationType column does not have the expected value");
-					Assert::assertStringStartsWith($expectedStorageEntry['Configuration'], $listedStorageEntry->configuration, "Configuration column does not have the expected value");
-					Assert::assertEquals($expectedStorageEntry['Options'], $listedStorageEntry->options, "Options column does not have the expected value");
-					Assert::assertEquals($expectedStorageEntry['ApplicableUsers'], $listedStorageEntry->applicable_users, "ApplicableUsers column does not have the expected value");
-					Assert::assertEquals($expectedStorageEntry['ApplicableGroups'], $listedStorageEntry->applicable_groups, "ApplicableGroups column does not have the expected value");
+					if (isset($expectedStorageEntry['Storage'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['Storage'],
+							$listedStorageEntry->storage,
+							"Storage column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['AuthenticationType'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['AuthenticationType'],
+							$listedStorageEntry->authentication_type,
+							"AuthenticationType column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['Auth'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['Auth'],
+							$listedStorageEntry->auth,
+							"Auth column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['Configuration'])) {
+						Assert::assertStringStartsWith(
+							$expectedStorageEntry['Configuration'],
+							$listedStorageEntry->configuration,
+							"Configuration column does not start with the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['Options'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['Options'],
+							$listedStorageEntry->options,
+							"Options column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['ApplicableUsers'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['ApplicableUsers'],
+							$listedStorageEntry->applicable_users,
+							"ApplicableUsers column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['ApplicableGroups'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['ApplicableGroups'],
+							$listedStorageEntry->applicable_groups,
+							"ApplicableGroups column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
+					if (isset($expectedStorageEntry['Type'])) {
+						Assert::assertEquals(
+							$expectedStorageEntry['Type'],
+							$listedStorageEntry->type,
+							"Type column does not have the expected value for storage "
+							. $expectedStorageEntry['MountPoint']
+						);
+					}
 					$isStorageEntryListed = true;
 				}
 			}
