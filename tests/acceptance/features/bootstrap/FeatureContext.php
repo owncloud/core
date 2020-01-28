@@ -3174,7 +3174,6 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @AfterScenario
 	 *
 	 * @return void
 	 */
@@ -3285,7 +3284,6 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	private function restoreParameters($server) {
 		if ($this->isTestingWithLdap()) {
-			$this->deleteLdapUsersAndGroups();
 			$this->resetOldLdapConfig();
 		}
 		if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {

@@ -3572,7 +3572,22 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function cleanupUsers() {
+	public function afterScenario() {
+		$this->restoreParametersAfterScenario();
+		if ($this->isTestingWithLdap()) {
+			$this->deleteLdapUsersAndGroups();
+		} else {
+			$this->cleanupDatabaseUsers();
+			$this->cleanupDatabaseGroups();
+		}
+	}
+
+	/**
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function cleanupDatabaseUsers() {
 		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
@@ -3587,12 +3602,11 @@ trait Provisioning {
 	}
 
 	/**
-	 * @AfterScenario
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function cleanupGroups() {
+	public function cleanupDatabaseGroups() {
 		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
