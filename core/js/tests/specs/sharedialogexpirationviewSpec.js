@@ -122,7 +122,7 @@ describe('OC.Share.ShareDialogLinkExpirationView', function() {
 			beforeEach(function() {
 				// pick a fake date
 				clock = sinon.useFakeTimers(new Date(2014, 0, 20, 14, 0, 0).getTime());
-				expectedMinDate = new Date(2014, 0, 21, 14, 0, 0);
+				expectedMinDate = new Date(2014, 0, 20, 14, 0, 0);
 
 				datepickerStub = sinon.stub($.fn, 'datepicker');
 				setDefaultsStub = sinon.stub($.datepicker, 'setDefaults');

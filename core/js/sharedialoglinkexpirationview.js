@@ -115,8 +115,6 @@
 			// what if there is another date picker on that page?
 			var minDate = new Date();
 			var maxDate = null;
-			// min date should always be the next day
-			minDate.setDate(minDate.getDate()+1);
 
 			if(isExpirationSet) {
 				if(isExpirationEnforced) {

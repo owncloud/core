@@ -26,6 +26,7 @@
 
 namespace OC\Share20;
 
+use DateTimeZone;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
@@ -405,12 +406,14 @@ class Manager implements IManager {
 		$expirationDate = $share->getExpirationDate();
 
 		if ($expirationDate !== null) {
-			//Make sure the expiration date is a date
-			$expirationDate->setTime(0, 0, 0);
+			// Set the expiration date to just the date at "zero" time in the day
+			$expirationDate->setTime(0, 0, 0, 0);
 
-			$date = new \DateTime();
-			$date->setTime(0, 0, 0);
-			if ($date >= $expirationDate) {
+			// Get the current date in the same timezone, and at "zero" time in the day
+			$date = new \DateTime('now', new DateTimeZone($expirationDate->getTimezone()->getName()));
+			$date->setTime(0, 0, 0, 0);
+
+			if ($date > $expirationDate) {
 				$message = $this->l->t('Expiration date is in the past');
 				throw new GenericShareException($message, $message, 404);
 			}

@@ -590,31 +590,41 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 11.12.2050 12:30:40 |
 
   @skipOnOcV10.3
-  Scenario Outline: sharing with default expiration date enforced for users, user shares with humanized expiration date format
+  Scenario Outline: user shares with humanized expiration date format
     Given using OCS API version "<ocs_api_version>"
-    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" creates a share using the sharing API with settings
-      | path               | textfile0.txt |
-      | shareType          | user          |
-      | shareWith          | user1         |
-      | permissions        | read,share    |
-      | expireDateAsString | tomorrow      |
+      | path               | textfile0.txt     |
+      | shareType          | user              |
+      | shareWith          | user1             |
+      | permissions        | read,share        |
+      | expireDateAsString | <expiration_date> |
     Then the fields of the last response should include
-      | expiration | tomorrow |
+      | expiration | <expiration_date> |
     And the response when user "user1" gets the info of the last share should include
-      | expiration | tomorrow |
+      | expiration | <expiration_date> |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | expiration_date | default | enforce |
+      | 1               | today           | yes     | yes     |
+      | 2               | today           | yes     | yes     |
+      | 1               | tomorrow        | yes     | yes     |
+      | 2               | tomorrow        | yes     | yes     |
+      | 1               | today           | yes     | no      |
+      | 2               | today           | yes     | no      |
+      | 1               | tomorrow        | yes     | no      |
+      | 2               | tomorrow        | yes     | no      |
+      | 1               | today           | no      | no      |
+      | 2               | today           | no      | no      |
+      | 1               | tomorrow        | no      | no      |
+      | 2               | tomorrow        | no      | no      |
 
   @skipOnOcV10.3
-  Scenario Outline: sharing with default expiration date enforced for users, user shares with humanized expiration date format in past
+  Scenario Outline: user shares with humanized expiration date format in past
     Given using OCS API version "<ocs_api_version>"
-    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" creates a share using the sharing API with settings
       | path               | textfile0.txt |
@@ -627,15 +637,19 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the OCS status message should be "Expiration date is in the past"
     And user "user1" should not have any received shares
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 404             | 200              |
-      | 2               | 404             | 404              |
+      | ocs_api_version | ocs_status_code | http_status_code | default | enforce |
+      | 1               | 404             | 200              | yes     | yes     |
+      | 2               | 404             | 404              | yes     | yes     |
+      | 1               | 404             | 200              | yes     | no      |
+      | 2               | 404             | 404              | yes     | no      |
+      | 1               | 404             | 200              | no      | no      |
+      | 2               | 404             | 404              | no      | no      |
 
   @skipOnOcV10.3
-  Scenario Outline: sharing with default expiration date enforced for users, user shares with invalid humanized expiration date
+  Scenario Outline: user shares with invalid humanized expiration date
     Given using OCS API version "<ocs_api_version>"
-    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
+    And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" creates a share using the sharing API with settings
       | path               | textfile0.txt |
@@ -648,9 +662,13 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
     And user "user1" should not have any received shares
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 404             | 200              |
-      | 2               | 404             | 404              |
+      | ocs_api_version | ocs_status_code | http_status_code | default | enforce |
+      | 1               | 404             | 200              | yes     | yes     |
+      | 2               | 404             | 404              | yes     | yes     |
+      | 1               | 404             | 200              | yes     | no      |
+      | 2               | 404             | 404              | yes     | no      |
+      | 1               | 404             | 200              | no      | no      |
+      | 2               | 404             | 404              | no      | no      |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enforced for users, user shares with past expiration date set

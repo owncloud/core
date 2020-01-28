@@ -1009,6 +1009,18 @@ class ManagerTest extends \Test\TestCase {
 
 	/**
 	 */
+	public function testValidateExpirationDateToday() {
+		$today = new \DateTime();
+		$today->setTime(0, 0, 0);
+		$share = $this->manager->newShare();
+		$share->setExpirationDate($today);
+
+		$this->invokePrivate($this->manager, 'validateExpirationDate', [$share]);
+		$this->assertEquals($today, $share->getExpirationDate());
+	}
+
+	/**
+	 */
 	public function testvalidateExpirationDateEnforceButNotSet() {
 		$this->expectException(\InvalidArgumentException::class);
 		$this->expectExceptionMessage('Expiration date is enforced');
