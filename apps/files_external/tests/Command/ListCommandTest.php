@@ -169,4 +169,78 @@ EOS
 			$this->assertEquals($expectedResult, $output);
 		}
 	}
+
+	public function providesLongView() {
+		return [
+			[
+				['short' => false, 'output' => 'json'],
+				[
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'storage' => 'Local', 'authentication_type' => 'Username and password'],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'storage' => 'Local', 'authentication_type' => 'Log-in credentials, save in session'],
+				],
+				[
+					['mount_id' => 1, 'mount_point' => '/ownCloud'],
+					['mount_id' => 2, 'mount_point' => '/SFTP'],
+				]
+			],
+			[
+				['short' => false],
+				<<<EOS
++----------+-------------+---------+-------------------------------------+---------------+---------+
+| Mount ID | Mount Point | Storage | Authentication Type                 | Configuration | Options |
++----------+-------------+---------+-------------------------------------+---------------+---------+
+| 1        | /ownCloud   |         | Username and password               |               |         |
+| 2        | /SFTP       |         | Log-in credentials, save in session |               |         |
++----------+-------------+---------+-------------------------------------+---------------+---------+
+
+EOS
+				,
+				[
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'storage' => 'Local'],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'storage' => 'Local'],
+				]
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider providesLongView
+	 * @param $options
+	 * @param $expectedResult
+	 * @param $mountOptions
+	 */
+	public function testLongView($options, $expectedResult, $mountOptions) {
+		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
+		$session = $this->createMock('\OCP\ISession');
+		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$instance = $this->getInstance();
+		// FIXME: use mock of IStorageConfig
+		$mount1 = new StorageConfig();
+		$mount1->setId($mountOptions[0]['mount_id']);
+		$mount1->setMountPoint($mountOptions[0]['mount_point']);
+		$mount1->setAuthMechanism(new Password());
+		$mount1->setBackend(new Local($l10n, new NullMechanism()));
+		$mount2 = new StorageConfig();
+		$mount2->setId($mountOptions[1]['mount_id']);
+		$mount2->setMountPoint($mountOptions[1]['mount_point']);
+		$mount2->setAuthMechanism(new SessionCredentials($session, $crypto));
+		$mount2->setBackend(new Local($l10n, new NullMechanism()));
+		$input = $this->getInput($instance, ['user_id' => 'user1'], $options);
+		$output = new BufferedOutput();
+
+		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
+		$output = $output->fetch();
+		if (isset($options['output']) && ($options['output'] === 'json')) {
+			$results = \json_decode($output, true);
+			$countResults = \count($results);
+
+			for ($i = 0; $i < $countResults; $i++) {
+				$this->assertEquals($expectedResult[$i]['mount_id'], $results[$i]['mount_id']);
+				$this->assertEquals($expectedResult[$i]['mount_point'], $results[$i]['mount_point']);
+				$this->assertEquals($expectedResult[$i]['authentication_type'], $results[$i]['authentication_type']);
+			}
+		} else {
+			$this->assertEquals($expectedResult, $output);
+		}
+	}
 }

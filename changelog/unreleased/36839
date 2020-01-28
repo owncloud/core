@@ -1,0 +1,7 @@
+Bugfix: Fix output of files_external:list command
+
+The files_external:list command was not displaying the correct information in
+the Options column. The Options column output has been corrected.
+
+https://github.com/owncloud/core/issues/36839
+https://github.com/owncloud/core/pull/36841

@@ -215,7 +215,7 @@ class ListCommand extends Base {
 			$configString = \implode(', ', $configStrings);
 
 			$mountOptions = $config->getMountOptions();
-			$mountOptions = \array_intersect($defaultMountOptions, $mountOptions);
+			$mountOptions = \array_merge($defaultMountOptions, $mountOptions);
 			// hide defaults
 			if (!$showMountOptions) {
 				foreach ($mountOptions as $key => $value) {

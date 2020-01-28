@@ -92,34 +92,28 @@ Feature: list created local storage from the command line
       | /local_storage2 | User | user0           | grp1             | Admin |
       | /local_storage3 | User | user1, user2    | grp2, grp3       | Admin |
 
-  @issue-36839
   Scenario: List local storage with non-default options (one storage set to read-only)
     Given the administrator has set the external storage "local_storage2" to read-only
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
-      | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |         | All             |                  |
-      #| /local_storage2 | Local   | None               | datadir:      | read_only: true | All             |                  |
-      | /local_storage3 | Local   | None               | datadir:      |         | All             |                  |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
+      | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      | read_only: 1         | All             |                  |
+      | /local_storage3 | Local   | None               | datadir:      |                      | All             |                  |
 
-  @issue-36839
   Scenario: List local storage with --mount-options
     When the administrator lists the local storage with --mount-options using the occ command
     Then the following local storage should be listed:
-      | MountPoint      | Storage | AuthenticationType | Configuration | Options                                                                | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1             | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      | read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
-      #| /local_storage2 | Local   | None               | datadir:      | read_only: true, enable_sharing: false, encoding_compatibility: false and other stuff...| All             |                  |
-      | /local_storage3 | Local   | None               | datadir:      | read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options                                                                                                                            | ApplicableUsers | ApplicableGroups |
+      | /local_storage  | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: true, encoding_compatibility: false  | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
+      | /local_storage3 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
 
-  @issue-36839
   Scenario: List local storage with --mount-options and non-default options (one storage set to read-only)
     Given the administrator has set the external storage "local_storage2" to read-only
     When the administrator lists the local storage with --mount-options using the occ command
     Then the following local storage should be listed:
       | MountPoint      | Storage | AuthenticationType | Configuration | Options                                                                                                                            | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1                                                                         | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
-      #| /local_storage2 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: true, enable_sharing: false, encoding_compatibility: false | All             |                  |
-      | /local_storage3 | Local   | None               | datadir:      | read_only: false, enable_sharing: false, encoding_compatibility: false                                                             | All             |                  |
+      | /local_storage  | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: true, encoding_compatibility: false  | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: 1, enable_sharing: false, encoding_compatibility: false     | All             |                  |
+      | /local_storage3 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
