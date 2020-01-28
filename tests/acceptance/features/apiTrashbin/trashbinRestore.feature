@@ -6,16 +6,13 @@ Feature: Restore deleted files/folders
 
   Background:
     Given the administrator has enabled DAV tech_preview
-    And using OCS API version "1"
-    And as the administrator
+    And user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "file to delete" to "/textfile0.txt"
 
   @files_sharing-app-required
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
     Given using <dav-path> DAV path
-    And these users have been created with default attributes and skeleton files:
-      | username |
-      | user0    |
-      | user1    |
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
@@ -37,7 +34,13 @@ Feature: Restore deleted files/folders
   @smokeTest
   Scenario Outline: A deleted file can be restored
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has created folder "/FOLDER"
+    And user "user0" has created folder "/PARENT"
+    And user "user0" has uploaded file with content "to delete" to "/PARENT/parent.txt"
+    And user "user0" has uploaded file with content "to delete" to "/textfile1.txt"
+    And user "user0" has uploaded file with content "to delete" to "/textfile2.txt"
+    And user "user0" has uploaded file with content "to delete" to "/textfile3.txt"
+    And user "user0" has uploaded file with content "to delete" to "/textfile4.txt"
     And user "user0" has deleted file "/textfile0.txt"
     And as "user0" file "/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/textfile0.txt" using the trashbin API
@@ -61,7 +64,6 @@ Feature: Restore deleted files/folders
 
   Scenario Outline: A file deleted from a folder can be restored to the original folder
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
@@ -76,7 +78,6 @@ Feature: Restore deleted files/folders
 
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and restored
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
@@ -93,7 +94,9 @@ Feature: Restore deleted files/folders
 
   Scenario Outline: a file is deleted and restored to a new destination
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has created folder "/PARENT"
+    And user "user0" has created folder "/PARENT/CHILD"
+    And user "user0" has uploaded file with content "to delete" to "<delete-path>"
     And user "user0" has deleted file "<delete-path>"
     When user "user0" restores the file with original path "<delete-path>" to "<restore-path>" using the trashbin API
     Then the HTTP status code should be "201"
@@ -108,14 +111,13 @@ Feature: Restore deleted files/folders
       | new      | /PARENT/parent.txt      | parent.txt           |
       | old      | /PARENT/CHILD/child.txt | child.txt            |
       | new      | /PARENT/CHILD/child.txt | child.txt            |
-      | old      | /textfile0.txt          | FOLDER/textfile0.txt |
-      | new      | /textfile0.txt          | FOLDER/textfile0.txt |
+      | old      | /textfile0.txt          | PARENT/textfile0.txt |
+      | new      | /textfile0.txt          | PARENT/textfile0.txt |
 
   @issue-35974
   Scenario Outline: restoring a file to an already existing path overrides the file
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user0" has uploaded file with content "file to delete" to "/textfile0.txt"
+    And user "user0" has created folder "/PARENT"
     And user "user0" has uploaded file with content "PARENT textfile0 content" to "/PARENT/textfile0.txt"
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" restores the file with original path "/textfile0.txt" to "/PARENT/textfile0.txt" using the trashbin API
@@ -139,10 +141,7 @@ Feature: Restore deleted files/folders
   @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only folder
     Given using <dav-path> DAV path
-    And these users have been created with default attributes and skeleton files:
-      | username |
-      | user0    |
-      | user1    |
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user1" has created folder "shareFolderParent"
     And user "user1" has shared folder "shareFolderParent" with user "user0" with permissions "read"
     And as "user0" folder "/shareFolderParent" should exist
@@ -164,10 +163,7 @@ Feature: Restore deleted files/folders
   @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only sub-folder
     Given using <dav-path> DAV path
-    And these users have been created with default attributes and skeleton files:
-      | username |
-      | user0    |
-      | user1    |
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user1" has created folder "shareFolderParent"
     And user "user1" has created folder "shareFolderParent/shareFolderChild"
     And user "user1" has shared folder "shareFolderParent" with user "user0" with permissions "read"
@@ -189,7 +185,6 @@ Feature: Restore deleted files/folders
 
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and recreated
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
@@ -212,7 +207,6 @@ Feature: Restore deleted files/folders
   Scenario Outline: Deleting a file into external storage moves it to the trashbin and can be restored
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
-    And user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
@@ -237,7 +231,6 @@ Feature: Restore deleted files/folders
   Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
     Given using old DAV path
     And the administrator has invoked occ command "files:scan --all"
-    And user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has uploaded chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
@@ -254,7 +247,6 @@ Feature: Restore deleted files/folders
   Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
     Given using new DAV path
     And the administrator has invoked occ command "files:scan --all"
-    And user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has uploaded the following chunks to "/local_storage/tmp/textfile0.txt" with new chunking
@@ -270,8 +262,7 @@ Feature: Restore deleted files/folders
   @smokeTest @skipOnOcV10.3
   Scenario Outline: A deleted file cannot be restored by a different user
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has deleted file "/textfile0.txt"
     When user "user1" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the trashbin API
     Then the HTTP status code should be "401"
@@ -286,8 +277,7 @@ Feature: Restore deleted files/folders
   @smokeTest
   Scenario Outline: A deleted file cannot be restored with invalid password
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "invalid" and the trashbin API
     Then the HTTP status code should be "401"
@@ -302,8 +292,7 @@ Feature: Restore deleted files/folders
   @smokeTest
   Scenario Outline: A deleted file cannot be restored without using a password
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "" and the trashbin API
     Then the HTTP status code should be "401"
