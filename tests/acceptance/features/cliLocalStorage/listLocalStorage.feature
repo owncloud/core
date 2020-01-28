@@ -13,10 +13,10 @@ Feature: list created local storage from the command line
   Scenario: List the created local storage
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
-      | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage3 | Local   | None               | datadir:      |         | All             |                  |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
+      | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      |                      | All             |                  |
+      | /local_storage3 | Local   | None               | datadir:      |                      | All             |                  |
 
   Scenario: List local storage with applicable users
     Given these users have been created with default attributes and without skeleton files:
@@ -29,10 +29,10 @@ Feature: list created local storage from the command line
     And the administrator has added user "user2" as the applicable user for local storage mount "local_storage3"
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
-      | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |         | user0           |                  |
-      | /local_storage3 | Local   | None               | datadir:      |         | user1, user2    |                  |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
+      | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      |                      | user0           |                  |
+      | /local_storage3 | Local   | None               | datadir:      |                      | user1, user2    |                  |
 
   Scenario: List local storage with applicable groups
     Given group "grp1" has been created
@@ -43,10 +43,10 @@ Feature: list created local storage from the command line
     And the administrator has added group "grp3" as the applicable group for local storage mount "local_storage3"
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
-      | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |         |                 | grp1             |
-      | /local_storage3 | Local   | None               | datadir:      |         |                 | grp2, grp3       |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
+      | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      |                      |                 | grp1             |
+      | /local_storage3 | Local   | None               | datadir:      |                      |                 | grp2, grp3       |
 
   Scenario: List local storage with applicable users and groups
     Given these users have been created with default attributes and without skeleton files:
@@ -65,10 +65,10 @@ Feature: list created local storage from the command line
     And the administrator has added group "grp3" as the applicable group for local storage mount "local_storage3"
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
-      | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage  | Local   | None               | datadir:      |         | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |         | user0           | grp1             |
-      | /local_storage3 | Local   | None               | datadir:      |         | user1, user2    | grp2, grp3       |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
+      | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
+      | /local_storage2 | Local   | None               | datadir:      |                      | user0           | grp1             |
+      | /local_storage3 | Local   | None               | datadir:      |                      | user1, user2    | grp2, grp3       |
 
   Scenario: Short list of local storage with applicable users and groups
     Given these users have been created with default attributes and without skeleton files:
