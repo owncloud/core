@@ -24,6 +24,7 @@ Summary
 * Bugfix - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
 * Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
+* Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -212,6 +213,14 @@ Details
 
    https://github.com/owncloud/core/issues/36813
    https://github.com/owncloud/core/pull/36766
+
+* Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
+
+   The files_external:list command was not displaying the correct information in the Options
+   column. The Options column output has been corrected.
+
+   https://github.com/owncloud/core/issues/36839
+   https://github.com/owncloud/core/pull/36841
 
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 
