@@ -79,6 +79,7 @@ Summary
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
 * Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
 * Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
+* Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
 
 Details
 -------
@@ -580,6 +581,12 @@ Details
    dav.enable.tech_preview in config.php.
 
    https://github.com/owncloud/core/pull/36815
+
+* Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
+
+   Adds an additional output to the incoming-shares:poll command when it is run with -vv key
+
+   https://github.com/owncloud/core/pull/36832
 
 Changelog for ownCloud Core [10.3.2] (2019-12-04)
 =======================================
