@@ -36,6 +36,7 @@ use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -193,7 +194,7 @@ class PollIncomingSharesTest extends TestCase {
 		$qbMock->method('execute')->willReturn($statementMock);
 
 		$userMock = $this->createMock(IUser::class);
-		$this->userManager->expects($this->once())->method('get')
+		$this->userManager->method('get')
 			->with($uid)->willReturn($userMock);
 
 		$this->externalManager->expects($this->once())->method('removeShare');
@@ -208,8 +209,12 @@ class PollIncomingSharesTest extends TestCase {
 			->willReturn([$mount]);
 
 		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
-		$this->commandTester->execute([]);
+		$this->commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]);
 		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString(
+			'User: "foo", Share data: ',
+			$output
+		);
 		$this->assertStringContainsString(
 			'Remote "example.org" reports that external share with id "50" no longer exists. Removing it..',
 			$output
