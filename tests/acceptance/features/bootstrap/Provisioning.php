@@ -242,11 +242,11 @@ trait Provisioning {
 	 */
 	public function theGroupShouldBeAbleToBeDeleted($groupname) {
 		if (\array_key_exists($groupname, $this->createdGroups)) {
-			return $this->createdGroups[$groupname]['possibleToDelete'];
+			return $this->createdGroups[$groupname]['possibleToDelete'] ?? true;
 		}
 
 		if (\array_key_exists($groupname, $this->createdRemoteGroups)) {
-			return $this->createdRemoteGroups[$groupname]['possibleToDelete'];
+			return $this->createdRemoteGroups[$groupname]['possibleToDelete'] ?? true;
 		}
 
 		throw new Exception(
