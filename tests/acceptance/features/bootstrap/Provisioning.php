@@ -3579,10 +3579,9 @@ trait Provisioning {
 		$this->restoreParametersAfterScenario();
 		if ($this->isTestingWithLdap()) {
 			$this->deleteLdapUsersAndGroups();
-		} else {
-			$this->cleanupDatabaseUsers();
-			$this->cleanupDatabaseGroups();
 		}
+		$this->cleanupDatabaseUsers();
+		$this->cleanupDatabaseGroups();
 	}
 
 	/**
