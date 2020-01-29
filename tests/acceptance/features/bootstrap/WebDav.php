@@ -1113,11 +1113,10 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function userGetsSizeOfFileUsingTheWebdavApi($user, $resource) {
-		$headers = $this->guzzleClientHeaders;
+		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
-		$url = $this->getBaseUrl() . "/remote.php/dav/files/{$user}/{$resource}";
-		$this->response = HttpRequestHelper::sendRequest(
-			$url, "PROPFIND", $user, $password, $headers, null, null, null
+		$this->response = WebDavHelper::propfind(
+			$this->getBaseUrl(), $user, $password, $resource, []
 		);
 	}
 
