@@ -63,7 +63,7 @@ class WebDavHelper {
 		$response = self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
 		);
-		\preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
+		\preg_match('/\<oc:fileid\>([^\<]*)\<\/oc:fileid\>/', $response, $matches);
 		if (!isset($matches[1])) {
 			throw new Exception("could not find fileId of $path");
 		}
@@ -334,10 +334,18 @@ class WebDavHelper {
 			return "remote.php/dav/archive/$user/files";
 		}
 		if ($davPathVersionToUse === 1) {
-			return "remote.php/webdav/";
+			$path = "remote.php/webdav/";
+			if (OcisHelper::isTestingOnOcis()) {
+				$path .= "home/";
+			}
+			return $path;
 		} elseif ($davPathVersionToUse === 2) {
 			if ($type === "files") {
-				return "remote.php/dav" . '/files/' . $user . "/";
+				$path = 'remote.php/dav/files/';
+				if (OcisHelper::isTestingOnOcis()) {
+					$path .= 'oc/';
+				}
+				return $path . $user . '/';
 			} else {
 				return "remote.php/dav";
 			}

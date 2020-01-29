@@ -639,6 +639,9 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$ocPath = null,
 		$envVariables = null
 	) {
+		if (OcisHelper::isTestingOnOcis()) {
+			return ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
+		}
 		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
 		$adminUsername = self::checkAdminUsername($adminUsername, "runOcc");
 		$adminPassword = self::checkAdminPassword($adminPassword, "runOcc");
