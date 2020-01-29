@@ -1020,15 +1020,24 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function sendShareNotificationByEmailUsingTheWebui() {
+		Assert::assertNotNull(
+			$this->sharingDialog, "Sharing Dialog is not open"
+		);
+		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
+		$this->sharingDialog->closeShareActionsDropDown();
+	}
+
+	/**
 	 * @When the user sends the share notification by email using the webUI
 	 *
 	 * @return void
 	 */
 	public function theUserSendsTheShareNotificationByEmailUsingTheWebui() {
-		Assert::assertNotNull(
-			$this->sharingDialog, "Sharing Dialog is not open"
-		);
-		$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
+		$this->sendShareNotificationByEmailUsingTheWebui();
 	}
 
 	/**
@@ -1038,11 +1047,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUserShouldNotBeAbleToSendTheShareNotificationByEmailUsingTheWebui() {
 		$errorMessage = "";
-		Assert::assertNotNull(
-			$this->sharingDialog, "Sharing Dialog is not open"
-		);
 		try {
-			$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
+			$this->sendShareNotificationByEmailUsingTheWebui();
 		} catch (Exception $e) {
 			$errorMessage = $e->getMessage();
 		}
