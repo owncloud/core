@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @public_link_share-feature-required @files_sharing-app-required
+@api @TestAlsoOnExternalUserBackend @public_link_share-feature-required @files_sharing-app-required @skipOnOcis @issue-ocis-reva-49
 Feature: multilinksharing
 
   Background:

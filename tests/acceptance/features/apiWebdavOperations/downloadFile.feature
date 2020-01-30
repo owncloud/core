@@ -19,6 +19,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-12
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
     When user "user0" downloads file "/welcome.txt" with range "bytes=24-50" using the WebDAV API
@@ -40,6 +41,8 @@ Feature: download file
       | new         |
 
   @smokeTest
+  @skipOnOcis
+  @issue-ocis-reva-66
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "user0" downloads file "/welcome.txt" using the WebDAV API
@@ -59,6 +62,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
@@ -70,6 +74,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
@@ -81,6 +86,8 @@ Feature: download file
       | old         |
       | new         |
 
+  @skipOnOcis
+  @issue-ocis-reva-67
   Scenario: Get the size of a file
     Given user "user0" has uploaded file with content "This is a test file" to "test-file.txt"
     When user "user0" gets the size of file "test-file.txt" using the WebDAV API

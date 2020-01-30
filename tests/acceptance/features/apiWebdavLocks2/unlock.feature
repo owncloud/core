@@ -1,4 +1,4 @@
-@api @skipOnOcV10.0
+@api @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-18
 Feature: UNLOCK locked items
 
   Background:

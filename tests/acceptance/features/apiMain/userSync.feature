@@ -1,4 +1,4 @@
-@api @skipOnOcV10.3
+@api @skipOnOcV10.3 @skipOnOcis
 Feature: Users sync
 
   Background:

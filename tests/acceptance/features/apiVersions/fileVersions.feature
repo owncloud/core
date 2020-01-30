@@ -1,4 +1,4 @@
-@api @files_versions-app-required @TestAlsoOnExternalUserBackend
+@api @files_versions-app-required @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-18
 
 Feature: dav-versions
 

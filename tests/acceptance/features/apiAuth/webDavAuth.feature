@@ -8,10 +8,18 @@ Feature: auth
     When a user requests "/remote.php/webdav" with "PROPFIND" and no authentication
     Then the HTTP status code should be "401"
 
+  @skipOnOcis @issue-ocis-reva-62
   Scenario: using WebDAV with basic auth
     When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic auth
     Then the HTTP status code should be "207"
 
+  @skipOnOcV10 @issue-ocis-reva-62
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: using WebDAV with basic auth
+    When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic auth
+    Then the HTTP status code should be "500"
+
+  @skipOnOcis @issue-ocis-reva-28
   Scenario: using WebDAV with token auth
     Given a new client token for "user0" has been generated
     When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
@@ -22,6 +30,7 @@ Feature: auth
 	#	When requesting "/remote.php/webdav" with "PROPFIND" using a client token
 	#	Then the HTTP status code should be "207"
 
+  @skipOnOcis
   Scenario: using WebDAV with browser session
     Given a new browser session for "user0" has been started
     When the user requests "/remote.php/webdav" with "PROPFIND" using the browser session

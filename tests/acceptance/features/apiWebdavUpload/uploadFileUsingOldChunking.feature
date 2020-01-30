@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-18
 Feature: upload file using old chunking
   As a user
   I want to be able to upload "large" files in chunks
@@ -51,7 +51,7 @@ Feature: upload file using old chunking
     And the content of file "/existingFile.txt" for user "user0" should be:
       """
       This is a testfile.
-      
+
       Cheers.
       """
     And the log file should not contain any log-entries containing these attributes:
@@ -68,7 +68,7 @@ Feature: upload file using old chunking
     And the content of file "/<file-name>" for user "user0" should be:
       """
       This is a testfile.
-      
+
       Cheers.
       """
     Examples:

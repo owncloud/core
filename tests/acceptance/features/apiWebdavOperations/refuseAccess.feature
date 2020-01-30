@@ -7,7 +7,7 @@ Feature: refuse access
   Background:
     Given using OCS API version "1"
 
-  @smokeTest
+  @smokeTest @skipOnOcis
   Scenario Outline: Unauthenticated call
     Given using <dav_version> DAV path
     When an unauthenticated client connects to the dav endpoint using the WebDAV API
@@ -21,6 +21,21 @@ Feature: refuse access
       | old         |
       | new         |
 
+  @smokeTest @skipOnOcV10
+  Scenario Outline: Unauthenticated call
+    Given using <dav_version> DAV path
+    When an unauthenticated client connects to the dav endpoint using the WebDAV API
+    Then the HTTP status code should be "401"
+    And there should be no duplicate headers
+    And the following headers should be set
+      | header           | value                                                                             |
+      | WWW-Authenticate | Basic realm="%base_url_without_scheme%", Bearer realm="%base_url_without_scheme%" |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skipOnOcis
   Scenario Outline: A disabled user cannot use webdav
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files

@@ -70,6 +70,7 @@ Feature: get file properties
       | new         |
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -89,6 +90,7 @@ Feature: get file properties
       | new         |
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
@@ -108,6 +110,7 @@ Feature: get file properties
       | new         |
 
   @public_link_share-feature-required @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test"
@@ -124,6 +127,7 @@ Feature: get file properties
       | new         |
 
   @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -153,6 +157,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-36
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
@@ -164,6 +169,7 @@ Feature: get file properties
       | new         |
 
   @smokeTest
+  @skipOnOcis @issue-ocis-reva-57
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -175,6 +181,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-36
   Scenario Outline: Do a PROPFIND to a non-existing URL
     And user "user0" requests "<url>" with "PROPFIND" using basic auth
     Then the value of the item "/d:error/s:message" in the response should be "<message>"

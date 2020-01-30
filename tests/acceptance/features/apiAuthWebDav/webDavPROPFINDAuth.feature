@@ -2,7 +2,11 @@
 Feature: get file info using PROPFIND
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "some data" to "/textfile0.txt"
+    And user "user0" has created folder "/PARENT"
+    And user "user0" has created folder "/FOLDER"
+    And user "user0" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And user "user1" has been created with default attributes and without skeleton files
 
   Scenario: send PROPFIND requests to webDav endpoints as normal user with wrong password
@@ -23,12 +27,22 @@ Feature: get file info using PROPFIND
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
+  @skipOnOcis @issue-ocis-reva-13
   Scenario: send PROPFIND requests to another user's webDav endpoints as normal user
     When user "user1" requests these endpoints with "PROPFIND" including body then the status codes should be as listed
       | endpoint                                      | http-code | body                                                                                                                           |
       | /remote.php/dav/files/user0/textfile0.txt     | 404       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
       | /remote.php/dav/files/user0/PARENT            | 404       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 404       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
+
+  @skipOnOcV10 @issue-ocis-reva-13
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: send PROPFIND requests to another user's webDav endpoints as normal user
+    When user "user1" requests these endpoints with "PROPFIND" including body then the status codes should be as listed
+      | endpoint                                      | http-code | body                                                                                                                           |
+      | /remote.php/dav/files/user0/textfile0.txt     | 500       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
+      | /remote.php/dav/files/user0/PARENT            | 500       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
+      | /remote.php/dav/files/user0/PARENT/parent.txt | 500       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
 
   Scenario: send PROPFIND requests to webDav endpoints using invalid username but correct password
     When user "usero" requests these endpoints with "PROPFIND" including body using the password of user "user0" then the status codes should be as listed
@@ -57,6 +71,7 @@ Feature: get file info using PROPFIND
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
+  @skipOnOcis @issue-ocis-reva-37
   Scenario: send PROPFIND requests to webDav endpoints using token authentication should not work
     Given token auth has been enforced
     And a new browser session for "user0" has been started
@@ -69,6 +84,7 @@ Feature: get file info using PROPFIND
       | /remote.php/dav/files/user0/PARENT            | 401       |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       |
 
+  @skipOnOcis @issue-ocis-reva-37
   Scenario: send PROPFIND requests to webDav endpoints using app password token as password
     Given token auth has been enforced
     And a new browser session for "user0" has been started

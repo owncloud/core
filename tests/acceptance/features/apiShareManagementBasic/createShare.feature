@@ -6,7 +6,8 @@ Feature: sharing
     And user "user0" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
 
   @smokeTest
-    @skipOnEncryptionType:user-keys @issue-32322
+  @skipOnEncryptionType:user-keys @issue-32322
+  @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -31,6 +32,12 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis
+  @issue-ocis-reva-20
+  @issue-ocis-reva-26
+  @issue-ocis-reva-43
+  @issue-ocis-reva-44
+  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -64,6 +71,38 @@ Feature: sharing
       | 1               | 2                     | 2                   | 100             |
       | 2               | 2                     | 2                   | 200             |
 
+  @skipOnOcV10
+  @issue-ocis-reva-20
+  @issue-ocis-reva-26
+  @issue-ocis-reva-43
+  @issue-ocis-reva-44
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "textfile0.txt" with user "user1" with permissions <requested_permissions> using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the OCS status message should be "error searching recipient"
+    Examples:
+      | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
+      # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
+      | 1               | 31                    | 31                  | 996             |
+      | 2               | 31                    | 31                  | 996             |
+      # Ask for read, share (17), create and delete. You get share plus read
+      | 1               | 29                    | 31                  | 996             |
+      | 2               | 29                    | 31                  | 996             |
+      # Ask for read, update, create, delete. You get read plus update.
+      | 1               | 15                    | 15                  | 996             |
+      | 2               | 15                    | 15                  | 996             |
+      # Ask for just update. You get exactly update (you do not get read or anything else)
+      | 1               | 2                     | 2                   | 996             |
+      | 2               | 2                     | 2                   | 996             |
+
+  @skipOnOcis
+  @issue-ocis-reva-45
+  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a file with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -77,6 +116,27 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
+  @skipOnOcV10
+  @issue-ocis-reva-45
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Creating a share of a file with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
+    When user "user0" shares file "randomfile.txt" with user "user1" with permissions "0" using the sharing API
+    Then the OCS status code should be "996"
+    And the OCS status message should be "error searching recipient"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 200              |
+
+  @skipOnOcis
+  @issue-ocis-reva-45
+  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a folder with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -90,6 +150,30 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
+  @skipOnOcV10
+  @issue-ocis-reva-45
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Creating a share of a folder with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/afolder"
+    When user "user0" shares folder "afolder" with user "user1" with permissions "0" using the sharing API
+    Then the OCS status code should be "996"
+    And the OCS status message should be "error searching recipient"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" folder "afolder" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 200              |
+
+  @skipOnOcis
+  @issue-ocis-reva-20
+  @issue-ocis-reva-26
+  @issue-ocis-reva-43
+  @issue-ocis-reva-46
+  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -114,6 +198,27 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcV10
+  @issue-ocis-reva-20
+  @issue-ocis-reva-26
+  @issue-ocis-reva-43
+  @issue-ocis-reva-46
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/FOLDER"
+    When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status message should be "error searching recipient"
+    And the HTTP status code should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 996             |
+      | 2               | 996             |
+
+  @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -137,6 +242,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -161,7 +267,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -190,6 +296,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -207,6 +314,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -237,6 +345,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-14
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -250,6 +359,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -266,6 +376,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-14
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -280,6 +391,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -298,6 +410,7 @@ Feature: sharing
       | 2               | 200             |
 
   @issue-35484
+  @skipOnOcis @issue-ocis-reva-11
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -334,6 +447,7 @@ Feature: sharing
       | /randomfile.txt |
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -420,6 +534,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and without skeleton files:
       | username |

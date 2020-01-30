@@ -44,7 +44,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: delete a folder when there is a default folder for received shares
     Given using <dav_version> DAV path
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -66,7 +66,7 @@ Feature: delete folder
       | old         | ReceivedShares  |
       | new         | ReceivedShares  |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: delete a folder when there is a default folder for received shares that is a multi-level path
     Given using <dav_version> DAV path
     And the administrator has set the default folder for received shares to "/My/Received/Shares"

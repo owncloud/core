@@ -1,4 +1,4 @@
-@api @skipOnOcV10.0 @files_sharing-app-required
+@api @skipOnOcV10.0 @files_sharing-app-required @skipOnOcis @issue-ocis-reva-18 @issue-ocis-reva-11
 Feature: lock should propagate correctly if a share is reshared
 
   Background:

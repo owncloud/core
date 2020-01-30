@@ -63,6 +63,7 @@ Feature: upload file
       | new         | /folder ?2.txt                   | file ?2.txt                   |
       | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
 
+  @skipOnOcis @issue-ocis-reva-18
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile.part" using the WebDAV API
@@ -77,6 +78,7 @@ Feature: upload file
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-18
   Scenario Outline: upload a file to a filename that is banned by default
     Given using <dav_version> DAV path
     When user "user0" uploads file with content "uploaded content" to ".htaccess" using the WebDAV API
@@ -87,6 +89,7 @@ Feature: upload file
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-54
   Scenario Outline: upload a file to a banned filename
     Given using <dav_version> DAV path
     When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
@@ -99,6 +102,7 @@ Feature: upload file
       | new         |
 
   @skipOnOcV10.3
+  @skipOnOcis @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
@@ -131,6 +135,7 @@ Feature: upload file
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
@@ -142,6 +147,7 @@ Feature: upload file
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
@@ -155,6 +161,7 @@ Feature: upload file
       | new         |
 
   @skipOnOcV10.3
+  @skipOnOcis @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

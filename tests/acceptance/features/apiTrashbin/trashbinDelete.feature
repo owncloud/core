@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_trashbin-app-required
+@api @TestAlsoOnExternalUserBackend @files_trashbin-app-required @skipOnOcis @issue-ocis-reva-52
 Feature: files and folders can be deleted from the trashbin
   As a user
   I want to delete files and folders from the trashbin

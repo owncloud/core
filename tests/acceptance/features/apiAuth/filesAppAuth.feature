@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-28
 Feature: auth
 
   Background:

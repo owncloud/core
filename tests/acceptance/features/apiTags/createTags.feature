@@ -1,4 +1,4 @@
-@api @systemtags-app-required @TestAlsoOnExternalUserBackend
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-51
 Feature: Creation of tags
   As a user
   I should be able to create tags

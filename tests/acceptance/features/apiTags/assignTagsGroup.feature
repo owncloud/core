@@ -1,4 +1,4 @@
-@api @systemtags-app-required @TestAlsoOnExternalUserBackend
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-51
 Feature: Title of your feature
   I want to use this template for my feature file
 
