@@ -131,7 +131,7 @@
 			'click .attributes': 'onPermissionChange',
 			'click .mailNotification': 'onSendMailNotification',
 			'click .removeExpiration' : 'onRemoveExpiration',
-			'click .toggleShareDetails' : 'onToggleShareDetails'
+			'click .toggleShareDetails' : 'onToggleShareDetailsChange'
 		},
 
 		initialize: function(options) {
@@ -315,15 +315,16 @@
 				});
 			});
 
-			// make sure that toggled share options are shown, class .shareOption
-			// elements are not displayed by default and need to be
-			// toggled so they are rendered.
-			this._renderToggledShareDetails();
-			this.$el.find('.shareWithList').each(function() {
-				// use mutation observer to ensure that if sharewithlist changes
-				// proper share details are toggled
-				var shareWithList = this;
-				if(_.isUndefined(self._toggleMutationObserver)) {
+			var shareWithList = this.$el.get(0);
+			if (!_.isUndefined(shareWithList)) {
+				// make sure that toggled share options are shown, class .shareOption
+				// elements are not displayed by default and need to be
+				// toggled so they are rendered.
+				this._renderToggledShareDetails();
+
+				// use mutation observer to ensure that if shareWithList changes
+				// proper share details are also toggled
+				if (_.isUndefined(self._toggleMutationObserver)) {
 					self._toggleMutationObserver =
 						new MutationObserver(function() {
 							self._renderToggledShareDetails();
@@ -331,7 +332,7 @@
 				}
 				self._toggleMutationObserver.disconnect();
 				self._toggleMutationObserver.observe(shareWithList, { childList: true, subtree: true });
-			});
+			}
 
 			this.delegateEvents();
 
@@ -457,7 +458,10 @@
 
 			// update share unsetting expiry date
 			var shareId = $(event.target).closest('li').data('share-id');
+			var share = this.model.getShareById(shareId);
 			this.model.updateShare( shareId, {
+				permissions: share.permissions,
+				attributes: share.attributes || {},
 				expireDate: ''
 			}, {});
 		},
@@ -467,16 +471,19 @@
 			var shareId    = $el.closest('li').data('share-id');
 			var expiration = moment($el.val(), 'DD-MM-YYYY').format();
 
+			var share = this.model.getShareById(shareId);
 			this.model.updateShare( shareId, {
+				permissions: share.permissions,
+				attributes: share.attributes || {},
 				expireDate: expiration
 			}, {});
 		},
 
-		onToggleShareDetails: function(event) {
+		onToggleShareDetailsChange: function(event) {
 			var $li = $(event.target).closest('li');
 			var shareId = $li.data('share-id');
 
-			if (!_.isUndefined(this._currentlyToggled[shareId])) {
+			if (!_.isUndefined(this._currentlyToggled[shareId]) && this._currentlyToggled[shareId] === true) {
 				delete(this._currentlyToggled[shareId]);
 				this._toggleShareOptions(shareId, false);
 			} else {
@@ -490,7 +497,7 @@
 			this.$el.find('li').each(function() {
 				var $li = $(this);
 				var shareId = $li.data('share-id');
-				if (!_.isUndefined(view._currentlyToggled[shareId])) {
+				if (!_.isUndefined(view._currentlyToggled[shareId]) && view._currentlyToggled[shareId] === true) {
 					view._toggleShareOptions(shareId, true);
 				} else {
 					view._toggleShareOptions(shareId, false);
