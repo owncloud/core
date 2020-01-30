@@ -29,6 +29,7 @@ Feature: Autocompletion of share-with names
       | finance3      |
       | users-finance |
       | other         |
+    And the administrator has added system config key "user_ldap.enable_medial_search" with value "true" and type "boolean"
 
   @smokeTest
   Scenario: autocompletion of regular existing users
@@ -238,6 +239,7 @@ Feature: Autocompletion of share-with names
     When the user types "de" in the share-with-field
     Then only user "John Finn Smith" should be listed in the autocomplete list on the webUI
 
+  @skipOnLDAP
   Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle but group medial search is disabled
     Given these groups have been created:
       | groupname |
@@ -252,6 +254,7 @@ Feature: Autocompletion of share-with names
     And group "finance2" should not be listed in the autocomplete list on the webUI
     And group "users-finance" should not be listed in the autocomplete list on the webUI
 
+  @skipOnLDAP
   Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the end but group medial search is disabled
     Given these groups have been created:
       | groupname         |
