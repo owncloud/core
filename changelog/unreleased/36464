@@ -1,4 +1,4 @@
-Bugfix: Fix "files:transfer-ownership" in S3 multibucket setups
+Bugfix: Fix "files:transfer-ownership" in S3 multi-bucket setups
 
 There were problems using the files:transfer-ownership in setups using files_primary_s3
 against S3 storage with multibucket configuration, when some of the transferred files

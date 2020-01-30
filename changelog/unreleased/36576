@@ -1,6 +1,6 @@
 Bugfix: Receive multiple users for user sync command
 
-Recieve multiple users for user sync command. Previously
+Receive multiple users for user sync command. Previously
 when multiple users were returned, an exception was thrown
 and the command was aborted. In this fix we allow multiple
 users to be returned, and we check for the uid provided by the

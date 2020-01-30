@@ -2,7 +2,7 @@ Change: Don't report locking support in public.php and public-files endpoints
 
 Public endpoints were reporting locking support even though the backend were rejecting
 those requests. This was causing a problem accessing a publicly shared document using
-libreoffice opening the file through webdav (libreoffice was complaining about a 
+LibreOffice opening the file through webdav (LibreOffice was complaining about a
 Forbidden error trying to lock the file)
 
 With these changes, libreoffice will show a warning while opening the remote file (from
