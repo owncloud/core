@@ -58,6 +58,7 @@ use OC\Settings\Panels\Admin\Logging;
 use OC\Settings\Panels\Admin\SecurityWarning;
 use OC\Settings\Panels\Admin\Tips;
 use OC\Settings\Panels\Admin\Status;
+use OC\Settings\Panels\Admin\Trials;
 
 /*
  * @since 10.0
@@ -232,6 +233,7 @@ class SettingsManager implements ISettingsManager {
 				Logging::class,
 				Tips::class,
 				SecurityWarning::class,
+				Trials::class,
 				Mail::class,
 				FileSharing::class,
 				Encryption::class,

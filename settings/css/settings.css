@@ -532,6 +532,14 @@ table.grid td.date {
 	white-space: nowrap;
 }
 
+table.grid td.error_msg {
+	background-color: #f35131;
+}
+
+table.grid td.success_msg {
+	background-color: #41f331;
+}
+
 /* ADMIN */
 #security-warning li {
 	list-style: initial;

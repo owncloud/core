@@ -49,7 +49,48 @@ class LicenseManager implements ILicenseManager {
 		$this->timeFactory = $timeFactory;
 	}
 
-	public function isLicenseValid() {
+	/**
+	 * @param int $timestamp the timestamp when the trial started
+	 */
+	private function isUnderTrial(int $timestamp) {
+		$currentTime = $this->timeFactory->getTime();
+		return $currentTime < ($timestamp + self::TRIAL_PERIOD);
+	}
+
+	public function isAppUnderTrialPeriod(string $appid) {
+		$trialMark = $this->config->getAppValue('core-trials', $appid, null);
+		if ($trialMark === null) {
+			$trialMark = - self::TRIAL_PERIOD;
+		}
+		return $this->isUnderTrial($trialMark);
+	}
+
+	public function getInfoForAllApps() {
+		// taking advantage of the current implementation, we'll check the ownCloud's license
+		// here with a dummy string. Note that this must change if a license per-app is implemented
+		$licenseState = $this->getLicenseStateFor('core');  // TODO: This is very coupled with the current impl
+		$info = [];
+		$appsWithTrial = $this->config->getAppKeys('core-trials');
+		foreach ($appsWithTrial as $appid) {
+			$trialMark = $this->config->getAppValue('core-trials', $appid, null);
+			if ($trialMark === null) {
+				continue;  // unexpected timestamp -> ignore
+			}
+			$info[$appid] = [];
+			$info[$appid]['trial_start'] = $trialMark;
+			$info[$appid]['trial_end'] = $trialMark + self::TRIAL_PERIOD;
+			$info[$appid]['license_state'] = $licenseState;
+		}
+		return $info;
+	}
+
+	/**
+	 * @inheritdoc
+	 *
+	 * Per-app licenses aren't implemented at the moment. This method will return the state
+	 * of the ownCloud's license for all apps (including public community apps)
+	 */
+	public function getLicenseStateFor(string $appid) {
 		// check if license is missing
 		$licenseObj = $this->licenseFetcher->getOwncloudLicense();
 		if ($licenseObj === null) {
@@ -67,22 +108,6 @@ class LicenseManager implements ILicenseManager {
 		} else {
 			return ILicenseManager::LICENSE_STATE_INVALID;
 		}
-	}
-
-	/**
-	 * @param int $timestamp the timestamp when the trial started
-	 */
-	private function isUnderTrial(int $timestamp) {
-		$currentTime = $this->timeFactory->getTime();
-		return $currentTime < ($timestamp + self::TRIAL_PERIOD);
-	}
-
-	public function isAppUnderTrialPeriod(string $appid) {
-		$trialMark = $this->config->getAppValue('core-trials', $appid, null);
-		if ($trialMark === null) {
-			$trialMark = - self::TRIAL_PERIOD;
-		}
-		return $this->isUnderTrial($trialMark);
 	}
 
 	public function checkLicenseFor(string $appid) {
@@ -103,9 +128,8 @@ class LicenseManager implements ILicenseManager {
 			}
 		}
 
-		// if the app isn't under trial and the ownCloud's license isn't valid, disabled the app
-		// we might need to check also for app-specific licenses at some point (not implemented now)
-		if (!$this->isUnderTrial($trialMark) && !$this->isLicenseValid() === ILicenseManager::LICENSE_STATE_VALID) {
+		// if the app isn't under trial and the license isn't valid, disabled the app
+		if (!$this->isUnderTrial($trialMark) && !($this->getLicenseStateFor($appid) === ILicenseManager::LICENSE_STATE_VALID)) {
 			$this->appManager->disableApp($appid);
 			return false;
 		} else {

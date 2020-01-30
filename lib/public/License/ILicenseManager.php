@@ -26,17 +26,44 @@ interface ILicenseManager {
 	const LICENSE_STATE_EXPIRED = 3;
 
 	/**
-	 * Check if the ownCloud's license key is valid
-	 * @return int the state of the license, one of the LICENSE_STATE_* constants
-	 */
-	public function isLicenseValid();
-
-	/**
 	 * Check if the app is under a trial period. This method won't start a new trial
 	 * @param string $appid the app id to check if it's under the trial period
 	 * @return bool true if the app is NOW under the trial period, false otherwise
 	 */
 	public function isAppUnderTrialPeriod(string $appid);
+
+	/**
+	 * Get the information about the trials and licenses. Foreach app that has started a trial
+	 * this function will return the timestamp of the start of the trial, the timestamp
+	 * of the end of the trial, and the license state for the app (one of the LICENSE_STATE_* constants).
+	 * For now, until per-app licenses are implemented, the license state will reflect the ownCloud's
+	 * license state and it will be the same for all the apps
+	 *
+	 * The format is expected to be something like:
+	 * [
+	 *  'appid1' => [
+	 *   'trial_start' => 15263548,
+	 *   'trial_end' => 15263888,
+	 *   'license_state' => ILicenseManager::LICENSE_STATE_EXPIRED
+	 *   ],
+	 *  'appid2' => [....],
+	 *  'appid3' => [....]
+	 * ]
+	 * @return array a list of apps with the timestamps of the start and end of the
+	 * trial for that app, as said above
+	 */
+	public function getInfoForAllApps();
+
+	/**
+	 * Get the license state for $appid. This function will return one of the LICENSE_STATE_*
+	 * constants.
+	 *
+	 * Current expected implementation will always check the ownCloud's license and assume the
+	 * license is for all the apps. This might change at some point, if per-app licenses are
+	 * implemented.
+	 * @return int one of the LICENSE_STATE_* constants
+	 */
+	public function getLicenseStateFor(string $appid);
 
 	/**
 	 * Check if there is a valid license that can be used for $appid. A trial period
@@ -46,7 +73,7 @@ interface ILicenseManager {
 	 * to restart it.
 	 *
 	 * If there no valid license and the app isn't under a trial period, this method
-	 * will disabled the app.
+	 * will disable the app.
 	 *
 	 * This method will return true if there is a license valid for the app (usually
 	 * the ownCloud's license) or if the app is under a trial period
