@@ -546,7 +546,14 @@ trait Provisioning {
 		}
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
-		$this->ldap->add($newDN, $entry);
+
+		if ($this->federatedServerExists()) {
+			if (!\in_array($setting['userid'], $this->ldapCreatedUsers)) {
+				$this->ldap->add($newDN, $entry);
+			}
+		} else {
+			$this->ldap->add($newDN, $entry);
+		}
 		\array_push($this->ldapCreatedUsers, $setting["userid"]);
 		$this->theLdapUsersHaveBeenReSynced();
 	}
