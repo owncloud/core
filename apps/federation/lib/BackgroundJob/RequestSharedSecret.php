@@ -145,6 +145,9 @@ class RequestSharedSecret extends Job {
 						'url' => $source,
 						'token' => $token,
 					],
+					'headers' => [
+						'OCS-APIREQUEST' => 'true'
+					],
 					'timeout' => 3,
 					'connect_timeout' => 3,
 				]
