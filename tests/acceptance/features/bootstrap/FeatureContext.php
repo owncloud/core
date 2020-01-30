@@ -2689,7 +2689,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function restoreAdminPassword() {
 		if ($this->adminPassword !== $this->originalAdminPassword) {
-			$this->adminResetsPasswordOfUserUsingTheProvisioningApi(
+			$this->resetUserPasswordAsAdminUsingTheProvisioningApi(
 				$this->getAdminUsername(),
 				$this->originalAdminPassword
 			);
