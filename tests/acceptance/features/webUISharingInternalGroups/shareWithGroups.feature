@@ -168,7 +168,7 @@ Feature: Sharing files and folders with internal groups
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email using the webUI
 
-  @mailhog
+  @mailhog @skipOnLDAP
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "user0" has been created with default attributes and skeleton files

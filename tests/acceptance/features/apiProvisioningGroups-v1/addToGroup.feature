@@ -7,7 +7,7 @@ Feature: add users to group
   Background:
     Given using OCS API version "1"
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario Outline: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
@@ -20,6 +20,7 @@ Feature: add users to group
       | España§àôœ€ | special European and other characters |
       | नेपाली      | Unicode group name                    |
 
+  @skipOnLDAP
   Scenario Outline: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
@@ -46,7 +47,7 @@ Feature: add users to group
       | staff?group         | Question mark                           |
       | 😁 😂               | emoji                                   |
 
-  @issue-31015
+  @issue-31015 @skipOnLDAP
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and skeleton files
     # After fixing issue-31015, change the following step to "has been created"
@@ -65,6 +66,7 @@ Feature: add users to group
       | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
+  @skipOnLDAP
   Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id1>" has been created
@@ -82,6 +84,7 @@ Feature: add users to group
       | Brand-New-User | new-group | NEW-GROUP | New-Group |
       | brand-new-user | NEW-GROUP | New-Group | new-group |
 
+  @skipOnLDAP
   Scenario: normal user tries to add himself to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When user "brand-new-user" tries to add himself to group "new-group" using the provisioning API
@@ -89,6 +92,7 @@ Feature: add users to group
     And the HTTP status code should be "401"
     And the API should not return any data
 
+  @skipOnLDAP
   Scenario: admin tries to add user to a group which does not exist
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "not-group" has been deleted
@@ -97,6 +101,7 @@ Feature: add users to group
     And the HTTP status code should be "200"
     And the API should not return any data
 
+  @skipOnLDAP
   Scenario: admin tries to add user to a group without sending the group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator tries to add user "brand-new-user" to group "" using the provisioning API
@@ -104,6 +109,7 @@ Feature: add users to group
     And the HTTP status code should be "200"
     And the API should not return any data
 
+  @skipOnLDAP
   Scenario: admin tries to add a user which does not exist to a group
     Given user "not-user" has been deleted
     And group "new-group" has been created
@@ -112,6 +118,7 @@ Feature: add users to group
     And the HTTP status code should be "200"
     And the API should not return any data
 
+  @skipOnLDAP
   Scenario: a subadmin cannot add users to groups the subadmin is responsible for
     Given these users have been created with default attributes and skeleton files:
       | username       |
@@ -124,6 +131,7 @@ Feature: add users to group
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "new-group"
 
+  @skipOnLDAP
   Scenario: a subadmin cannot add users to groups the subadmin is not responsible for
     Given these users have been created with default attributes and skeleton files:
       | username       |
