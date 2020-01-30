@@ -100,6 +100,9 @@ class LoggingHelper {
 	 * @return string
 	 */
 	public static function getLogLevel() {
+		if (OcisHelper::isTestingOnOcis()) {
+			return "debug";
+		}
 		$result = SetupHelper::runOcc(["log:manage"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
@@ -141,6 +144,9 @@ class LoggingHelper {
 	 * @return string
 	 */
 	public static function getLogBackend() {
+		if (OcisHelper::isTestingOnOcis()) {
+			return "errorlog";
+		}
 		$result = SetupHelper::runOcc(["log:manage"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
@@ -186,6 +192,9 @@ class LoggingHelper {
 	 * @return string
 	 */
 	public static function getLogTimezone() {
+		if (OcisHelper::isTestingOnOcis()) {
+			return "UTC";
+		}
 		$result = SetupHelper::runOcc(["log:manage"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(

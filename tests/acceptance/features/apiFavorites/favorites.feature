@@ -3,7 +3,15 @@ Feature: favorite
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "some data" to "/textfile0.txt"
+    And user "user0" has uploaded file with content "some data" to "/textfile1.txt"
+    And user "user0" has uploaded file with content "some data" to "/textfile2.txt"
+    And user "user0" has uploaded file with content "some data" to "/textfile3.txt"
+    And user "user0" has uploaded file with content "some data" to "/textfile4.txt"
+    And user "user0" has created folder "/FOLDER"
+    And user "user0" has created folder "/PARENT"
+    And user "user0" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And as user "user0"
 
   Scenario Outline: Favorite a folder
@@ -47,6 +55,7 @@ Feature: favorite
       | new         |
 
   @smokeTest
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Get favorited elements of a folder
     Given using <dav_version> DAV path
     When the user favorites element "/FOLDER" using the WebDAV API
@@ -61,12 +70,13 @@ Feature: favorite
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Get favorited elements of a subfolder
     Given using <dav_version> DAV path
     And the user has created folder "/subfolder"
-    And the user has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
-    And the user has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
-    And the user has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
+    And user "user0" has uploaded file with content "some data" to "/subfolder/textfile0.txt"
+    And user "user0" has uploaded file with content "some data" to "/subfolder/textfile1.txt"
+    And user "user0" has uploaded file with content "some data" to "/subfolder/textfile2.txt"
     When the user favorites element "/subfolder/textfile0.txt" using the WebDAV API
     And the user favorites element "/subfolder/textfile1.txt" using the WebDAV API
     And the user favorites element "/subfolder/textfile2.txt" using the WebDAV API
@@ -82,6 +92,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -98,6 +109,7 @@ Feature: favorite
       | new         |
 
   @issue-33840
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Get favorited elements and limit count of entries
     Given using <dav_version> DAV path
     And the user has favorited element "/textfile0.txt"
@@ -119,6 +131,7 @@ Feature: favorite
       | new         |
 
   @issue-33840
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Get favorited elements paginated in subfolder
     Given using <dav_version> DAV path
     And the user has created folder "/subfolder"
@@ -148,6 +161,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -161,6 +175,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -173,6 +188,7 @@ Feature: favorite
       | old         |
       | new         |
 
+  @skipOnOcis @issue-ocis-reva-39
   Scenario Outline: favoriting a folder does not change the favorite state of elements inside the folder
     Given using <dav_version> DAV path
     When the user favorites element "/PARENT/parent.txt" using the WebDAV API

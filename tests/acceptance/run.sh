@@ -162,6 +162,10 @@ export LANG=C
 # sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
 # @return occ return code given in the xml data
 function remote_occ() {
+	if [ "${TEST_OCIS}" == "true" ]
+	then
+		return 0
+	fi
 	COMMAND=`echo $3 | xargs`
 	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "command=${COMMAND}"`
 	# xargs is (miss)used to trim the output
@@ -270,6 +274,10 @@ function assert_testing_app_enabled() {
 # $4 text description of the server being checked, e.g. "local", "remote"
 # return 0 if given module is enabled, else return with 1
 function check_apache_module_enabled() {
+	if [ "${TEST_OCIS}" == "true" ]
+	then
+		return 0
+	fi
 	# test if mod_rewrite is enabled
 	CURL_RESULT=`curl -k -s -u $1 $2apache_modules/$3`
 	STATUS_CODE=`echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" -`

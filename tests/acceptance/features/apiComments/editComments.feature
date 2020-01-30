@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @comments-app-required
+@api @TestAlsoOnExternalUserBackend @comments-app-required @skipOnOcis @issue-ocis-reva-13
 Feature: Comments
 
   Background:

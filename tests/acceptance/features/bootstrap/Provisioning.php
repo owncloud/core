@@ -27,6 +27,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\OcisHelper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
@@ -412,29 +413,38 @@ trait Provisioning {
 	 * @throws \LdapException
 	 */
 	public function connectToLdap($suiteParameters) {
-		$occResult = SetupHelper::runOcc(
-			['ldap:show-config', 'LDAPTestId', '--output=json']
-		);
-		Assert::assertSame(
-			'0', $occResult['code'],
-			"could not read current LDAP config. stdOut: " .
-			$occResult['stdOut'] .
-			" stdErr: " . $occResult['stdErr']
-		);
+		$useSsl = false;
+		if (OcisHelper::isTestingOnOcis()) {
+			$this->ldapBaseDN = OcisHelper::getBaseDN();
+			$this->ldapHost = OcisHelper::getHostname();
+			$this->ldapPort = OcisHelper::getLdapPort();
+			$useSsl = OcisHelper::useSsl();
+			$this->ldapAdminUser = OcisHelper::getBindDN();
+		} else {
+			$occResult = SetupHelper::runOcc(
+				['ldap:show-config', 'LDAPTestId', '--output=json']
+			);
 
-		$ldapConfig = \json_decode(
-			$occResult['stdOut'], true
-		);
-		Assert::assertNotNull(
-			$ldapConfig,
-			"could not json decode current LDAP config. stdOut: " . $occResult['stdOut']
-		);
+			Assert::assertSame(
+				'0', $occResult['code'],
+				"could not read current LDAP config. stdOut: " .
+				$occResult['stdOut'] .
+				" stdErr: " . $occResult['stdErr']
+			);
 
-		$this->ldapBaseDN = (string)$ldapConfig['ldapBase'][0];
-		$this->ldapHost = (string)$ldapConfig['ldapHost'];
-		$this->ldapPort = (string)$ldapConfig['ldapPort'];
-		$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+			$ldapConfig = \json_decode(
+				$occResult['stdOut'], true
+			);
+			Assert::assertNotNull(
+				$ldapConfig,
+				"could not json decode current LDAP config. stdOut: " . $occResult['stdOut']
+			);
 
+			$this->ldapBaseDN = (string)$ldapConfig['ldapBase'][0];
+			$this->ldapHost = (string)$ldapConfig['ldapHost'];
+			$this->ldapPort = (string)$ldapConfig['ldapPort'];
+			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+		}
 		$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
 		$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
 		$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
@@ -444,6 +454,7 @@ trait Provisioning {
 			'port' => $this->ldapPort,
 			'password' => $this->ldapAdminPassword,
 			'bindRequiresDn' => true,
+			'useSsl' => $useSsl,
 			'baseDn' => $this->ldapBaseDN,
 			'username' => $this->ldapAdminUser
 		];
@@ -463,11 +474,13 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theLdapUsersHaveBeenReSynced() {
-		$occResult = SetupHelper::runOcc(
-			['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove']
-		);
-		if ($occResult['code'] !== "0") {
-			throw new \Exception("could not sync LDAP users " . $occResult['stdErr']);
+		if (!OcisHelper::isTestingOnOcis()) {
+			$occResult = SetupHelper::runOcc(
+				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove']
+			);
+			if ($occResult['code'] !== "0") {
+				throw new \Exception("could not sync LDAP users " . $occResult['stdErr']);
+			}
 		}
 	}
 
@@ -2153,7 +2166,12 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function deleteUser($user) {
-		$this->deleteTheUserUsingTheProvisioningApi($user);
+		if (OcisHelper::isTestingOnOcis()) {
+			OcisHelper::deleteRevaUserData($user);
+		} else {
+			$this->deleteTheUserUsingTheProvisioningApi($user);
+		}
+
 		$this->userShouldNotExist($user);
 	}
 
@@ -2194,9 +2212,19 @@ trait Provisioning {
 	 * @return bool
 	 */
 	public function userExists($user) {
+		// in OCIS there is no admin user and in oC10 there are issues when
+		// sending the username in lowercase in the auth but in uppercase in
+		// the URL see https://github.com/owncloud/core/issues/36822
+		if (OcisHelper::isTestingOnOcis()) {
+			$requestingUser = $this->getActualUsername($user);
+			$requestingPassword = $this->getPasswordForUser($requestingUser);
+		} else {
+			$requestingUser = $this->getAdminUsername();
+			$requestingPassword = $this->getAdminPassword();
+		}
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user";
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+			$fullUrl, $requestingUser, $requestingPassword
 		);
 		if ($this->response->getStatusCode() >= 400) {
 			return false;
@@ -3844,8 +3872,13 @@ trait Provisioning {
 		if ($this->isTestingWithLdap()) {
 			$this->deleteLdapUsersAndGroups();
 		}
-		$this->cleanupDatabaseUsers();
-		$this->cleanupDatabaseGroups();
+
+		if (OcisHelper::isTestingOnOcis()) {
+			OcisHelper::deleteRevaUserData("");
+		} else {
+			$this->cleanupDatabaseUsers();
+			$this->cleanupDatabaseGroups();
+		}
 	}
 
 	/**
@@ -3892,16 +3925,18 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberAppEnabledDisabledState() {
-		SetupHelper::init(
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$this->getBaseUrl(),
-			$this->getOcPath()
-		);
-		$this->runOcc(['app:list', '--output json']);
-		$apps = \json_decode($this->getStdOutOfOccCommand(), true);
-		$this->enabledApps = \array_keys($apps["enabled"]);
-		$this->disabledApps = \array_keys($apps["disabled"]);
+		if (!OcisHelper::isTestingOnOcis()) {
+			SetupHelper::init(
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				$this->getBaseUrl(),
+				$this->getOcPath()
+			);
+			$this->runOcc(['app:list', '--output json']);
+			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+			$this->enabledApps = \array_keys($apps["enabled"]);
+			$this->disabledApps = \array_keys($apps["disabled"]);
+		}
 	}
 
 	/**
@@ -3910,20 +3945,22 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function restoreAppEnabledDisabledState() {
-		$this->runOcc(['app:list', '--output json']);
-		$apps = \json_decode($this->getStdOutOfOccCommand(), true);
-		$currentlyEnabledApps = \array_keys($apps["enabled"]);
-		$currentlyDisabledApps = \array_keys($apps["disabled"]);
+		if (!OcisHelper::isTestingOnOcis()) {
+			$this->runOcc(['app:list', '--output json']);
+			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+			$currentlyEnabledApps = \array_keys($apps["enabled"]);
+			$currentlyDisabledApps = \array_keys($apps["disabled"]);
 
-		foreach ($currentlyDisabledApps as $disabledApp) {
-			if (\in_array($disabledApp, $this->enabledApps)) {
-				$this->adminEnablesOrDisablesApp('enables', $disabledApp);
+			foreach ($currentlyDisabledApps as $disabledApp) {
+				if (\in_array($disabledApp, $this->enabledApps)) {
+					$this->adminEnablesOrDisablesApp('enables', $disabledApp);
+				}
 			}
-		}
 
-		foreach ($currentlyEnabledApps as $enabledApp) {
-			if (\in_array($enabledApp, $this->disabledApps)) {
-				$this->adminEnablesOrDisablesApp('disables', $enabledApp);
+			foreach ($currentlyEnabledApps as $enabledApp) {
+				if (\in_array($enabledApp, $this->disabledApps)) {
+					$this->adminEnablesOrDisablesApp('disables', $enabledApp);
+				}
 			}
 		}
 	}

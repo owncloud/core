@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @skipOnOcis
 Feature: caldav
 
   Background:

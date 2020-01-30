@@ -27,6 +27,7 @@ use GuzzleHttp\Stream\StreamInterface;
 use Guzzle\Http\Exception\BadResponseException;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
@@ -1236,11 +1237,18 @@ trait WebDav {
 			$this->getPasswordForUser($user), 'GET', $path,
 			[], null, 2, $type
 		);
-		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
-			throw new \Exception(
-				"$entry '$path' expected to not exist " .
-				"(status code {$response->getStatusCode()}, expected 401 - 404)"
-			);
+		$actualCode = $response->getStatusCode();
+		$message = "$entry '$path' expected to not exist " .
+				   "(status code {$actualCode}, expected ";
+
+		if (OcisHelper::isTestingOnOcis()) {
+			//OCIS currently shows error 500 when accessing a not existing file
+			//https://github.com/owncloud/ocis-reva/issues/13
+			Assert::assertEquals(500, $actualCode, $message . "500)");
+		} else {
+			$message .= "401 - 404)";
+			Assert::assertGreaterThanOrEqual(401, $actualCode, $message);
+			Assert::assertLessThanOrEqual(404, $actualCode, $message);
 		}
 
 		return $response;

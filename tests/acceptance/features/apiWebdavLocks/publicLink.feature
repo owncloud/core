@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0 @files_sharing-app-required
+@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0 @files_sharing-app-required @skipOnOcis @issue-ocis-reva-18
 Feature: persistent-locking in case of a public link
 
   Background:

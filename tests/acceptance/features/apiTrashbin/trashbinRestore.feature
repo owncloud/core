@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_trashbin-app-required
+@api @TestAlsoOnExternalUserBackend @files_trashbin-app-required @skipOnOcis @issue-ocis-reva-52
 Feature: Restore deleted files/folders
   As a user
   I would like to restore files/folders

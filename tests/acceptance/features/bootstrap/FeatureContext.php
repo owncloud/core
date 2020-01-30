@@ -34,6 +34,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;
+use TestHelpers\OcisHelper;
 use Zend\Ldap\Ldap;
 
 require_once 'bootstrap.php';
@@ -2756,10 +2757,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function clearFileLocks() {
-		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
-		$this->clearFileLocksForServer($this->getBaseUrl());
-		if ($this->remoteBaseUrl !== $this->localBaseUrl) {
-			$this->clearFileLocksForServer($this->getRemoteBaseUrl());
+		if (!OcisHelper::isTestingOnOcis()) {
+			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
+			$this->clearFileLocksForServer($this->getBaseUrl());
+			if ($this->remoteBaseUrl !== $this->localBaseUrl) {
+				$this->clearFileLocksForServer($this->getRemoteBaseUrl());
+			}
 		}
 	}
 
@@ -3178,15 +3181,17 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function restoreParametersAfterScenario() {
-		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
-		$user = $this->getCurrentUser();
-		$this->setCurrentUser($this->getAdminUsername());
-		$this->runFunctionOnEveryServer(
-			function ($server) {
-				$this->restoreParameters($server);
-			}
-		);
-		$this->setCurrentUser($user);
+		if (!OcisHelper::isTestingOnOcis()) {
+			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
+			$user = $this->getCurrentUser();
+			$this->setCurrentUser($this->getAdminUsername());
+			$this->runFunctionOnEveryServer(
+				function ($server) {
+					$this->restoreParameters($server);
+				}
+			);
+			$this->setCurrentUser($user);
+		}
 	}
 
 	/**
@@ -3240,22 +3245,24 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function prepareParametersBeforeScenario() {
-		$user = $this->getCurrentUser();
-		$this->setCurrentUser($this->getAdminUsername());
-		$previousServer = $this->getCurrentServer();
-		foreach (['LOCAL', 'REMOTE'] as $server) {
-			if (($server === 'LOCAL') || $this->federatedServerExists()) {
-				$this->usingServer($server);
-				$this->resetAppConfigs();
-				$result = SetupHelper::runOcc(
-					['config:list', '--private'], $this->getAdminUsername(),
-					$this->getAdminPassword(), $this->getBaseUrl(), $this->getOcPath()
-				);
-				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
+		if (!OcisHelper::isTestingOnOcis()) {
+			$user = $this->getCurrentUser();
+			$this->setCurrentUser($this->getAdminUsername());
+			$previousServer = $this->getCurrentServer();
+			foreach (['LOCAL', 'REMOTE'] as $server) {
+				if (($server === 'LOCAL') || $this->federatedServerExists()) {
+					$this->usingServer($server);
+					$this->resetAppConfigs();
+					$result = SetupHelper::runOcc(
+						['config:list', '--private'], $this->getAdminUsername(),
+						$this->getAdminPassword(), $this->getBaseUrl(), $this->getOcPath()
+					);
+					$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
+				}
 			}
+			$this->usingServer($previousServer);
+			$this->setCurrentUser($user);
 		}
-		$this->usingServer($previousServer);
-		$this->setCurrentUser($user);
 	}
 
 	/**

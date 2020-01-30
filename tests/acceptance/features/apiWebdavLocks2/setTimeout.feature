@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0
+@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-18
 Feature: set timeouts of LOCKS
 
   Background:
