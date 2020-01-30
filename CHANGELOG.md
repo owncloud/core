@@ -11,7 +11,7 @@ Summary
 * Bugfix - Fix links in setupchecks.js: [#36315](https://github.com/owncloud/core/pull/36315)
 * Bugfix - Inform the admin if they enable an enterprise app without valid key: [#36351](https://github.com/owncloud/core/issues/36351)
 * Bugfix - Set 599 HTTP code on error: [#36413](https://github.com/owncloud/core/pull/36413)
-* Bugfix - Fix "files:transfer-ownership" in S3 multibucket setups: [#36464](https://github.com/owncloud/core/pull/36464)
+* Bugfix - Fix "files:transfer-ownership" in S3 multi-bucket setups: [#36464](https://github.com/owncloud/core/pull/36464)
 * Bugfix - Fix Trash-bin api access: [#36378](https://github.com/owncloud/core/issues/36378)
 * Bugfix - Files shared with user cause purge of the trashbin content: [#36494](https://github.com/owncloud/core/pull/36494)
 * Bugfix - Enhance validation for sender e-mail address for e-mail notifications: [#36505](https://github.com/owncloud/core/pull/36505)
@@ -114,7 +114,7 @@ Details
 
    https://github.com/owncloud/core/pull/36413
 
-* Bugfix - Fix "files:transfer-ownership" in S3 multibucket setups: [#36464](https://github.com/owncloud/core/pull/36464)
+* Bugfix - Fix "files:transfer-ownership" in S3 multi-bucket setups: [#36464](https://github.com/owncloud/core/pull/36464)
 
    There were problems using the files:transfer-ownership in setups using files_primary_s3
    against S3 storage with multibucket configuration, when some of the transferred files were
@@ -156,7 +156,7 @@ Details
 
 * Bugfix - Receive multiple users for user sync command: [#36576](https://github.com/owncloud/core/pull/36576)
 
-   Recieve multiple users for user sync command. Previously when multiple users were returned,
+   Receive multiple users for user sync command. Previously when multiple users were returned,
    an exception was thrown and the command was aborted. In this fix we allow multiple users to be
    returned, and we check for the uid provided by the admin matches with the returned users. And if
    we find matches of more than one users with same uid, then we throw the exception that was thrown
@@ -241,8 +241,8 @@ Details
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
 
    Public endpoints were reporting locking support even though the backend were rejecting those
-   requests. This was causing a problem accessing a publicly shared document using libreoffice
-   opening the file through webdav (libreoffice was complaining about a Forbidden error trying
+   requests. This was causing a problem accessing a publicly shared document using LibreOffice
+   opening the file through webdav (LibreOffice was complaining about a Forbidden error trying
    to lock the file)
 
    With these changes, libreoffice will show a warning while opening the remote file (from a
@@ -551,7 +551,7 @@ Details
 
    The trash expiry job now expires the files in batches of users per script execution, instead of
    all users at once. This prevents growing memory related to how PHP PDO handles memory for many
-   consequtive large queries. The trash expiry has been also moved to a dedicated trash expiry
+   consecutive large queries. The trash expiry has been also moved to a dedicated trash expiry
    manager class that is optimized for background job access, while trash manager is used for
    online queries. Also some other minor memory optimizations have been applied.
 
