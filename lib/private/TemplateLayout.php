@@ -69,6 +69,12 @@ class TemplateLayout extends \OC_Template {
 				\OCP\Util::addScript('core', 'integritycheck-failed-notification');
 			}
 
+			// license notification
+			$licenseManager = \OC::$server->getLicenseManager();
+			if (\OC_User::isAdminUser(\OC_User::getUser()) && $licenseManager->isThereAnAppUnderWorkingTrial()) {
+				\OCP\Util::addScript('core', 'license-trial-notification');
+			}
+
 			// Add navigation entry
 			$this->assign('application', '');
 			$this->assign('appid', $appId);

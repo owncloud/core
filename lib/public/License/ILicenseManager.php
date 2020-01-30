@@ -26,13 +26,6 @@ interface ILicenseManager {
 	const LICENSE_STATE_EXPIRED = 3;
 
 	/**
-	 * Check if the app is under a trial period. This method won't start a new trial
-	 * @param string $appid the app id to check if it's under the trial period
-	 * @return bool true if the app is NOW under the trial period, false otherwise
-	 */
-	public function isAppUnderTrialPeriod(string $appid);
-
-	/**
 	 * Get the information about the trials and licenses. Foreach app that has started a trial
 	 * this function will return the timestamp of the start of the trial, the timestamp
 	 * of the end of the trial, and the license state for the app (one of the LICENSE_STATE_* constants).
@@ -55,6 +48,13 @@ interface ILicenseManager {
 	public function getInfoForAllApps();
 
 	/**
+	 * Check if the app is under a trial period. This method won't start a new trial
+	 * @param string $appid the app id to check if it's under the trial period
+	 * @return bool true if the app is NOW under the trial period, false otherwise
+	 */
+	public function isAppUnderTrialPeriod(string $appid);
+
+	/**
 	 * Get the license state for $appid. This function will return one of the LICENSE_STATE_*
 	 * constants.
 	 *
@@ -66,9 +66,25 @@ interface ILicenseManager {
 	public function getLicenseStateFor(string $appid);
 
 	/**
+	 * Check if there is at least an app under a working trial: this means the app has a trial
+	 * active but not a valid license, so the app is relying on the trial period to work.
+	 * In particular, if the app has a valid license, then it will be skipped by this method.
+	 *
+	 * This method is intended to provide a convenient call instead of having to evaluate the
+	 * information from the `self::getInfoForAllApps()`.
+	 * @return bool true if there is at least an app under a working trial (as defined above),
+	 * false otherwise.
+	 */
+	public function isThereAnAppUnderWorkingTrial();
+
+	/**
+	 * This method is intended to be called only by the apps trying to check if the app
+	 * itself has a valid license and it's allowed to run. Core shouldn't need to call
+	 * this method, nor other different apps ("myApp" should only check for itself)
+	 *
 	 * Check if there is a valid license that can be used for $appid. A trial period
 	 * will start regardless of the license validation (we shouldn't start a
-	 * trial after X days of using the app because the license expired).
+	 * trial after X days of using the app due to the license expired).
 	 * Note that there will be only one trial period per app, and it won't be possible
 	 * to restart it.
 	 *

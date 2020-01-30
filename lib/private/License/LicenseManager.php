@@ -49,22 +49,6 @@ class LicenseManager implements ILicenseManager {
 		$this->timeFactory = $timeFactory;
 	}
 
-	/**
-	 * @param int $timestamp the timestamp when the trial started
-	 */
-	private function isUnderTrial(int $timestamp) {
-		$currentTime = $this->timeFactory->getTime();
-		return $currentTime < ($timestamp + self::TRIAL_PERIOD);
-	}
-
-	public function isAppUnderTrialPeriod(string $appid) {
-		$trialMark = $this->config->getAppValue('core-trials', $appid, null);
-		if ($trialMark === null) {
-			$trialMark = - self::TRIAL_PERIOD;
-		}
-		return $this->isUnderTrial($trialMark);
-	}
-
 	public function getInfoForAllApps() {
 		// taking advantage of the current implementation, we'll check the ownCloud's license
 		// here with a dummy string. Note that this must change if a license per-app is implemented
@@ -82,6 +66,22 @@ class LicenseManager implements ILicenseManager {
 			$info[$appid]['license_state'] = $licenseState;
 		}
 		return $info;
+	}
+
+	/**
+	 * @param int $timestamp the timestamp when the trial started
+	 */
+	private function isUnderTrial(int $timestamp) {
+		$currentTime = $this->timeFactory->getTime();
+		return $currentTime < ($timestamp + self::TRIAL_PERIOD);
+	}
+
+	public function isAppUnderTrialPeriod(string $appid) {
+		$trialMark = $this->config->getAppValue('core-trials', $appid, null);
+		if ($trialMark === null) {
+			$trialMark = - self::TRIAL_PERIOD;
+		}
+		return $this->isUnderTrial($trialMark);
 	}
 
 	/**
@@ -108,6 +108,31 @@ class LicenseManager implements ILicenseManager {
 		} else {
 			return ILicenseManager::LICENSE_STATE_INVALID;
 		}
+	}
+
+	public function isThereAnAppUnderWorkingTrial() {
+		// this should be pretty similar to the getInfoForAllApps() method
+
+		// taking advantage of the current implementation, we'll check the ownCloud's license
+		// here with a dummy string. Note that this must change if a license per-app is implemented
+		$licenseState = $this->getLicenseStateFor('core');  // TODO: This is very coupled with the current impl
+		if ($licenseState === ILicenseManager::LICENSE_STATE_VALID) {
+			// if it's a valid license, all the apps will rely on the license to work
+			// it's impossible that an app will rely on the trial to work
+			return false;
+		}
+
+		$appsWithTrial = $this->config->getAppKeys('core-trials');
+		foreach ($appsWithTrial as $appid) {
+			$trialMark = $this->config->getAppValue('core-trials', $appid, null);
+			if ($trialMark === null) {
+				continue;  // unexpected timestamp -> ignore
+			}
+			if ($this->isUnderTrial($trialMark)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public function checkLicenseFor(string $appid) {

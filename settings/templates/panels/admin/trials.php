@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section" id="trials">
 	<h2 class="app-name"><?php p($l->t('Trials')); ?></h2>
 	<table class="grid" id="trial_table">
 		<thead>
