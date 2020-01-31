@@ -1,0 +1,7 @@
+Bugfix: Pass OCS-APIREQUEST header on getting shared secret for federation
+
+OCS-APIREQUEST header added to the federation app cronjobs responsible for
+the shared secret exchange.
+
+https://github.com/owncloud/core/pull/36856
+https://github.com/owncloud/core/pull/36762
