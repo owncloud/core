@@ -406,6 +406,7 @@ class Share20OcsControllerTest extends TestCase {
 			'share_with_additional_info' => null,
 			'uid_owner' => 'initiatorId',
 			'displayname_owner' => 'initiatorDisplay',
+			'additional_info_owner' => null,
 			'item_type' => 'file',
 			'item_source' => 1,
 			'file_source' => 1,
@@ -423,6 +424,7 @@ class Share20OcsControllerTest extends TestCase {
 			'mail_send' => 0,
 			'uid_file_owner' => 'ownerId',
 			'displayname_file_owner' => 'ownerDisplay',
+			'additional_info_file_owner' => null,
 			'mimetype' => 'myMimeType',
 		];
 		$data[] = [$share, $expected];
@@ -453,6 +455,7 @@ class Share20OcsControllerTest extends TestCase {
 			'share_with_displayname' => 'groupId',
 			'uid_owner' => 'initiatorId',
 			'displayname_owner' => 'initiatorDisplay',
+			'additional_info_owner' => null,
 			'item_type' => 'folder',
 			'item_source' => 2,
 			'file_source' => 2,
@@ -470,6 +473,7 @@ class Share20OcsControllerTest extends TestCase {
 			'mail_send' => 0,
 			'uid_file_owner' => 'ownerId',
 			'displayname_file_owner' => 'ownerDisplay',
+			'additional_info_file_owner' => null,
 			'mimetype' => 'myFolderMimeType',
 		];
 		$data[] = [$share, $expected];
@@ -500,6 +504,7 @@ class Share20OcsControllerTest extends TestCase {
 			'share_with_displayname' => '***redacted***',
 			'uid_owner' => 'initiatorId',
 			'displayname_owner' => 'initiatorDisplay',
+			'additional_info_owner' => null,
 			'item_type' => 'folder',
 			'item_source' => 2,
 			'file_source' => 2,
@@ -518,6 +523,7 @@ class Share20OcsControllerTest extends TestCase {
 			'url' => 'url',
 			'uid_file_owner' => 'ownerId',
 			'displayname_file_owner' => 'ownerDisplay',
+			'additional_info_file_owner' => null,
 			'mimetype' => 'myFolderMimeType',
 			'name' => 'some_name',
 		];
@@ -2322,6 +2328,7 @@ class Share20OcsControllerTest extends TestCase {
 				'share_type' => Share::SHARE_TYPE_USER,
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiatorDN',
+				'additional_info_owner' => null,
 				'permissions' => 1,
 				'attributes' => $shareAttributesReturnJson,
 				'stime' => 946684862,
@@ -2330,6 +2337,7 @@ class Share20OcsControllerTest extends TestCase {
 				'token' => null,
 				'uid_file_owner' => 'owner',
 				'displayname_file_owner' => 'ownerDN',
+				'additional_info_file_owner' => null,
 				'path' => 'file',
 				'item_type' => 'file',
 				'storage_id' => 'storageId',
@@ -2694,17 +2702,17 @@ class Share20OcsControllerTest extends TestCase {
 
 	public function additionalInfoDataProvider() {
 		return [
-			['', null],
-			['unsupported', null],
-			['email', 'email@example.com'],
-			['id', 'recipient_id'],
+			['', null, null, null],
+			['unsupported', null, null, null],
+			['email', 'email@example.com', 'owner@example.com', 'initiator@example.com'],
+			['id', 'recipient_id', 'owner_id', 'initiator_id'],
 		];
 	}
 
 	/**
 	 * @dataProvider additionalInfoDataProvider
 	 */
-	public function testGetShareAdditionalInfo($configValue, $expectedInfo) {
+	public function testGetShareAdditionalInfo($configValue, $expectedInfo, $expectedOwnerInfo, $expectedInitiatorInfo) {
 		$config = $this->createMock(IConfig::class);
 		$config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -2713,16 +2721,22 @@ class Share20OcsControllerTest extends TestCase {
 			]));
 
 		$initiator = $this->createMock(IUser::class);
-		$recipient = $this->createMock(IUser::class);
+		$initiator->method('getUID')->willReturn('initiator_id');
+		$initiator->method('getEMailAddress')->willReturn('initiator@example.com');
+
 		$owner = $this->createMock(IUser::class);
+		$owner->method('getUID')->willReturn('owner_id');
+		$owner->method('getEMailAddress')->willReturn('owner@example.com');
+
+		$recipient = $this->createMock(IUser::class);
+		$recipient->method('getUID')->willReturn('recipient_id');
+		$recipient->method('getEMailAddress')->willReturn('email@example.com');
+
 		$this->userManager->method('get')->will($this->returnValueMap([
 			['initiator', $initiator],
 			['recipient', $recipient],
 			['owner', $owner],
 		]));
-
-		$recipient->method('getUID')->willReturn('recipient_id');
-		$recipient->method('getEMailAddress')->willReturn('email@example.com');
 
 		$ocs = new Share20OcsController(
 			'files_sharing',
@@ -2768,6 +2782,8 @@ class Share20OcsControllerTest extends TestCase {
 		$result = $this->invokePrivate($ocs, 'formatShare', [$share]);
 
 		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
+		$this->assertEquals($expectedOwnerInfo, $result['additional_info_file_owner']);
+		$this->assertEquals($expectedInitiatorInfo, $result['additional_info_owner']);
 	}
 
 	public function providesGetSharesAll() {
