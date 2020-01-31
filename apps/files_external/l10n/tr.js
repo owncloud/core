@@ -85,7 +85,7 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Not:</b> PHP'de cURL desteği etkin veya kurulu değil. %s bağlaması mümkün olmayacak. Lütfen kurulumu için sistem yöneticilerinizle iletişime geçin.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Not:</b> \"%s\" kurulu değil. %s bağlaması mümkün olmayacak. Lütfen kurulumu için sistem yöneticilerinizle iletişime geçin.",
     "No external storage configured" : "Yapılandırılmış harici depolama yok",
-    "You can add external storages in the storage settings" : "Depolama ayarlarından harici depolama birimleri ekleyebilirsiniz",
+    "You can add external storages in the storage settings" : "Depolama ayarlarından harici depolama alanları ekleyebilirsiniz",
     "Name" : "Ad",
     "Storage type" : "Depolama türü",
     "Scope" : "Kapsam",
@@ -108,6 +108,6 @@ OC.L10N.register(
     "Delete" : "Sil",
     "Allow users to mount external storage" : "Kullanıcılara harici depolama bağlamalarına izin ver",
     "Allow users to mount the following external storage" : "Kullanıcıların aşağıdaki harici depolamayı bağlamalarına izin ver",
-    "Allow sharing on user-mounted external storages" : "Kullanıcıların kendi bağladıkları harici depolamalarında paylaşıma izin ver"
+    "Allow sharing on user-mounted external storages" : "Kullanıcı tarafından bağlanmış harici depolamalarda, paylaşıma izin ver"
 },
 "nplurals=2; plural=(n > 1);");

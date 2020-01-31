@@ -8,7 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Aynı kullanıcı ile bir birleşmiş paylaşım oluşturulamaz",
     "File is already shared with %s" : "Dosya önceden %s ile paylaşıldı",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "%s paylaşımı başarısız. %s bulunamadı veya sunucu şu anda ulaşılamıyor olabilir.",
-    "Federated Sharing failed: %s" : "Hatalı birleşmiş paylaşım: %s",
+    "Federated Sharing failed: %s" : "Birleşmiş Paylaşımda hata: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" seninle \"%3$s\" paylaştı (\"%2$s\" adına)",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" seninle \"%3$s\" paylaştı",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" seni \"%3$s\" görüntülemeye davet etti (\"%2$s\" adına)",
