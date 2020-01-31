@@ -73,7 +73,7 @@ class LicenseManager implements ILicenseManager {
 	 */
 	private function isUnderTrial(int $timestamp) {
 		$currentTime = $this->timeFactory->getTime();
-		return $currentTime < ($timestamp + self::TRIAL_PERIOD);
+		return $timestamp < $currentTime && $currentTime < ($timestamp + self::TRIAL_PERIOD);
 	}
 
 	public function isAppUnderTrialPeriod(string $appid) {

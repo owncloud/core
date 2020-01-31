@@ -19,7 +19,9 @@
 				<td><?php p($appid); ?></td>
 				<td><?php p(\date('c', $info['trial_start'])); ?></td>
 
-			<?php if ($info['trial_end'] > $now): ?>
+			<?php if ($now < $info['trial_start']): ?>
+				<td class="error_msg"><?php p($l->t('Not Started')); ?></td>
+			<?php elseif ($now < $info['trial_end']): ?>
 				<td class="success_msg"><?php p($l->t('Active')); ?></td>
 			<?php else: ?>
 				<td class="error_msg"><?php p($l->t('Finished')); ?></td>
