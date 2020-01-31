@@ -497,6 +497,40 @@ describe('OC.Share.ShareItemModel', function() {
 		});
 	});
 
+	describe('getShareById', function() {
+		it('exception when user share does not exist', function() {
+			/* jshint camelcase: false */
+			fetchReshareDeferred.resolve(makeOcsResponse([]));
+			fetchSharesDeferred.resolve(makeOcsResponse([]));
+
+			model.fetch();
+
+			var thrown = false;
+			try {
+				model.getShareById(1);
+			} catch(e) {
+				thrown = true;
+			}
+			expect(thrown).toEqual(true);
+		});
+		it('returns share when user share exist', function() {
+			/* jshint camelcase: false */
+			fetchReshareDeferred.resolve(makeOcsResponse([]));
+			fetchSharesDeferred.resolve(makeOcsResponse([{
+				id: 1,
+				share_type: OC.Share.SHARE_TYPE_USER,
+				share_with: 'user1',
+				item_source: '123'
+			}]));
+
+			model.fetch();
+
+			var share = model.getShareById(1);
+			expect(share.id).toEqual(1);
+			expect(share.share_with).toEqual('user1');
+		});
+	});
+
 	describe('Util', function() {
 		it('parseTime should properly parse strings', function() {
 

@@ -417,6 +417,24 @@
 		},
 
 		/**
+		 * Returns share entry by share id. Share will only be returned that only apply to the current item
+		 * (file/folder)
+		 *
+		 * @param shareId
+		 * @return {OC.Share.Types.ShareInfo}
+		 */
+		getShareById: function(shareId) {
+			var shares = this.get('shares') || [];
+			for(var shareIndex = 0; shareIndex < shares.length; shareIndex++) {
+				if (shares[shareIndex].id === shareId) {
+					return shares[shareIndex];
+				}
+			}
+
+			throw t('core', 'Unknown Share');
+		},
+
+		/**
 		 * @param shareIndex
 		 * @returns {string}
 		 */

@@ -37,7 +37,7 @@
 		'		{{/unless}}' +
 		'		</span>' +
 		'		{{/unless}} {{/if}}' +
-		'		<div class="expirationOption">' +
+		'		<div class="shareOption">' +
 		'			{{#if isUserShare}}' +
 		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}">{{expirationLabel}}: ' +
 		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}" value="{{expirationDate}}" class="expiration expiration-user" placeholder="{{expirationDatePlaceholder}}" />' +
@@ -112,13 +112,16 @@
 	 */
 	var ShareDialogShareeListView = OC.Backbone.View.extend({
 		/** @type {string} **/
-		id: 'shareDialogLinkShare',
+		id: 'ShareDialogShareeList',
 
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
 
 		/** @type {Function} **/
 		_template: undefined,
+
+		/** @type {MutationObserver} **/
+		_toggleMutationObserver: undefined,
 
 		_currentlyToggled: {},
 
@@ -128,7 +131,7 @@
 			'click .attributes': 'onPermissionChange',
 			'click .mailNotification': 'onSendMailNotification',
 			'click .removeExpiration' : 'onRemoveExpiration',
-			'click .toggleShareDetails' : 'onToggleShareDetails'
+			'click .toggleShareDetails' : 'onToggleShareDetailsChange'
 		},
 
 		initialize: function(options) {
@@ -139,6 +142,7 @@
 			}
 
 			var view = this;
+
 			this.model.on('change:shares', function() {
 				view.render();
 			});
@@ -275,6 +279,7 @@
 		render: function() {
 			var self = this;
 
+			// render shares list in a container
 			this.$el.html(this.template({
 				cid: this.cid,
 				sharees: this.getShareeList()
@@ -292,41 +297,42 @@
 				});
 			}
 
-			var element = this.$el.find('.has-tooltip');
 			this.$el.find('.has-tooltip').tooltip({
 				placement: 'bottom'
 			});
 
-			this.$el.find('.expiration-user').each(function(){
+			this.$el.find('.expiration-user:not(.hasDatepicker)').each(function(){
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateUser(),
 					enforced : self.configModel.isDefaultExpireDateUserEnforced()
 				});
 			});
 
-			this.$el.find('.expiration-group').each(function(){
+			this.$el.find('.expiration-group:not(.hasDatepicker)').each(function(){
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateGroup(),
 					enforced : self.configModel.isDefaultExpireDateGroupEnforced()
 				});
 			});
 
-			this.$el.bind("DOMNodeInserted", function(){
-				// make sure to always enable toggled divs
-				if (!_.isUndefined(self._currentlyToggled)) {
+			var shareWithList = this.$el.get(0);
+			if (!_.isUndefined(shareWithList)) {
+				// make sure that toggled share options are shown, class .shareOption
+				// elements are not displayed by default and need to be
+				// toggled so they are rendered.
+				this._renderToggledShareDetails();
 
-					self.$el.find('li').each(function()
-					{
-						var $li = $(this);
-						var shareId = $li.data('share-id');
-						if (!_.isUndefined(self._currentlyToggled[shareId])) {
-							self._toggleShareDivs(shareId, true);
-						} else {
-							self._toggleShareDivs(shareId, false);
-						}
-					});
+				// use mutation observer to ensure that if shareWithList changes
+				// proper share details are also toggled
+				if (_.isUndefined(self._toggleMutationObserver)) {
+					self._toggleMutationObserver =
+						new MutationObserver(function() {
+							self._renderToggledShareDetails();
+						});
 				}
-			});
+				self._toggleMutationObserver.disconnect();
+				self._toggleMutationObserver.observe(shareWithList, { childList: true, subtree: true });
+			}
 
 			this.delegateEvents();
 
@@ -447,52 +453,68 @@
 		},
 
 		onRemoveExpiration: function(event) {
-			var shareId = $(event.target).closest('li').data('share-id');
+			// make sure that click event is not propagated further
+			event.preventDefault();
 
+			// update share unsetting expiry date
+			var shareId = $(event.target).closest('li').data('share-id');
+			var share = this.model.getShareById(shareId);
 			this.model.updateShare( shareId, {
+				permissions: share.permissions,
+				attributes: share.attributes || {},
 				expireDate: ''
 			}, {});
 		},
 
-		onToggleShareDetails: function(event) {
-			this._toggleShareDetails(event);
-		},
-
-		_toggleShareDetails: function(event) {
-			var $li = $(event.target).closest('li');
-			var shareId = $li.data('share-id');
-
-			if (!_.isUndefined(this._currentlyToggled[shareId])) {
-				delete(this._currentlyToggled[shareId]);
-				this._toggleShareDivs(shareId, false);
-			} else {
-				this._currentlyToggled[shareId] = true;
-				this._toggleShareDivs(shareId, true);
-			}
-		},
-
-		_toggleShareDivs: function(shareId, enabled) {
-			var $li = this.$el.find('li[data-share-id=' + shareId + ']');
-			$li.children("div").each(function() {
-				var $div = $(this);
-				if (!$div.hasClass( "avatar" )) {
-					if (enabled) {
-						$div.css('display', 'block');
-					} else {
-						$div.css('display', 'none');
-					}
-				}
-			});
-		},
-
-		_onExpirationChange: function(el) {
+		onExpirationChange: function(el) {
 			var $el        = $(el);
 			var shareId    = $el.closest('li').data('share-id');
 			var expiration = moment($el.val(), 'DD-MM-YYYY').format();
 
+			var share = this.model.getShareById(shareId);
 			this.model.updateShare( shareId, {
+				permissions: share.permissions,
+				attributes: share.attributes || {},
 				expireDate: expiration
 			}, {});
+		},
+
+		onToggleShareDetailsChange: function(event) {
+			var $li = $(event.target).closest('li');
+			var shareId = $li.data('share-id');
+
+			if (!_.isUndefined(this._currentlyToggled[shareId]) && this._currentlyToggled[shareId] === true) {
+				delete(this._currentlyToggled[shareId]);
+				this._toggleShareOptions(shareId, false);
+			} else {
+				this._currentlyToggled[shareId] = true;
+				this._toggleShareOptions(shareId, true);
+			}
+		},
+
+		_renderToggledShareDetails: function() {
+			var view = this;
+			this.$el.find('li').each(function() {
+				var $li = $(this);
+				var shareId = $li.data('share-id');
+				if (!_.isUndefined(view._currentlyToggled[shareId]) && view._currentlyToggled[shareId] === true) {
+					view._toggleShareOptions(shareId, true);
+				} else {
+					view._toggleShareOptions(shareId, false);
+				}
+			});
+		},
+
+		_toggleShareOptions: function(shareId, enabled) {
+			var $li = this.$el.find('li[data-share-id=' + shareId + ']');
+			$li.find(".shareOption").each(function() {
+				var $option = $(this);
+				if (enabled) {
+					$option.css('display', 'inline-block');
+				} else {
+					$option.css('display', 'none');
+				}
+			});
 		},
 
 		_setDatepicker: function(el, params) {
@@ -503,7 +525,7 @@
 				minDate: "+0d",
 				dateFormat : 'dd-mm-yy',
 				onSelect : function() {
-					self._onExpirationChange(el);
+					self.onExpirationChange(el);
 				}
 			});
 
