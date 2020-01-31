@@ -69,11 +69,13 @@ class LicenseManager implements ILicenseManager {
 	}
 
 	/**
+	 * Check if "now" is inside the close interval [t, t+p], where t = $timestamp
+	 * and p = the trial period (24h)
 	 * @param int $timestamp the timestamp when the trial started
 	 */
 	private function isUnderTrial(int $timestamp) {
 		$currentTime = $this->timeFactory->getTime();
-		return $timestamp < $currentTime && $currentTime < ($timestamp + self::TRIAL_PERIOD);
+		return $timestamp <= $currentTime && $currentTime <= ($timestamp + self::TRIAL_PERIOD);
 	}
 
 	public function isAppUnderTrialPeriod(string $appid) {
