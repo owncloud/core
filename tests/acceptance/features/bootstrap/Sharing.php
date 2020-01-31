@@ -26,7 +26,6 @@ use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 
@@ -1933,6 +1932,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function checkingAttributesInLastShareResponse(TableNode $attributes) {
+		$this->verifyTableNodeColumns($attributes, ['scope', 'key', 'enabled']);
 		$attributes = $attributes->getHash();
 
 		// change string "true"/"false" to boolean inside array
