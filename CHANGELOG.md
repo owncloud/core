@@ -546,6 +546,7 @@ Details
 
    https://github.com/owncloud/core/pull/36573
    https://github.com/owncloud/core/pull/36766
+   https://github.com/owncloud/core/pull/36847
 
 * Enhancement - Reduce memory footprint of trash expiry jobs: [#36602](https://github.com/owncloud/core/pull/36602)
 
