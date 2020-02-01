@@ -803,14 +803,6 @@
 						|| share.item_source === this.get('itemSource'));
 
 					if (isShareLink) {
-						/*
-						 * Ignore reshared link shares for now
-						 * FIXME: Find a way to display properly
-						 */
-						if (share.uid_owner !== OC.currentUser) {
-							return share;
-						}
-
 						linkShares.push(share);
 						return share;
 					}
