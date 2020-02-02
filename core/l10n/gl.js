@@ -226,6 +226,7 @@ OC.L10N.register(
     "Share with users or groups…" : "Compartir con usuarios ou grupos…",
     "Share with users or remote users…" : "Compartir con usuarios ou usuarios remotos…",
     "Error removing share" : "Produciuse un erro ao retirar os compartidos",
+    "Unknown Share" : "Recurso compartido descoñecido",
     "Non-existing tag #{tag}" : "A etiqueta #{tag} non existe",
     "restricted" : "restrinxido",
     "invisible" : "invisíbel",

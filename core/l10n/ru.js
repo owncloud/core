@@ -226,6 +226,7 @@ OC.L10N.register(
     "Share with users or groups…" : "Поделиться с пользователями или группами...",
     "Share with users or remote users…" : "Общий доступ с пользователями или удалеными пользователями",
     "Error removing share" : "Ошибка удаления общего доступа",
+    "Unknown Share" : "Неизвестный ресурс общего доступа",
     "Non-existing tag #{tag}" : "Несуществующий тег #{tag}",
     "restricted" : "ограниченный",
     "invisible" : "невидимый",
