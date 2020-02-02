@@ -273,7 +273,7 @@ Feature: Sharing files and folders with internal users
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
     And as "user2" file "lorem (2).txt" should not exist
 
-  @skipOnEncryptionType:user-keys @issue-encryption-126
+  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
@@ -289,7 +289,7 @@ Feature: Sharing files and folders with internal users
       just letting you know that User One shared lorem.txt with you.
       """
 
-  @mailhog
+  @mailhog @skipOnOcV10.3
   Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
@@ -304,7 +304,7 @@ Feature: Sharing files and folders with internal users
       | title                       | content                                             |
       | Email notification not sent | Couldn't send mail to following recipient(s): user0 |
 
-  @mailhog
+  @mailhog @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
@@ -318,6 +318,7 @@ Feature: Sharing files and folders with internal users
     And the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email using the webUI
 
+  @skipOnOcV10.3
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
     And user "user1" has been created with default attributes and skeleton files
