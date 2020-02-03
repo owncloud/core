@@ -66,6 +66,7 @@ Summary
 * Change - Update phpspec/prophecy (1.10.1 => v1.10.2): [#36789](https://github.com/owncloud/core/pull/36789)
 * Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
 * Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
+* Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -458,6 +459,14 @@ Details
 * Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
 
    https://github.com/owncloud/core/pull/36826
+
+* Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
+
+   The following sabre dependencies have been updated: - sabre/uri (2.1.3 => 2.2.0) -
+   sabre/event (5.0.3 => 5.1.0) - sabre/http (5.0.5 => 5.1.0) - sabre/xml (2.1.3 => 2.2.0) -
+   sabre/vobject (4.2.2 => 4.3.0)
+
+   https://github.com/owncloud/core/pull/36866
 
 * Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
