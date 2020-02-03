@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing\Panels\Personal;
 
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
@@ -31,12 +32,10 @@ class PersonalPanel implements ISettings {
 	const USER_CONFIGS = [
 		[
 			'key' => 'auto_accept_share',
-			'label' => 'Automatically accept new incoming local user shares',
 			'default' => 'yes'
 		],
 		[
 			'key' => 'allow_share_dialog_user_enumeration',
-			'label' => 'Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered.',
 			'default' => 'yes'
 		]
 	];
@@ -49,9 +48,13 @@ class PersonalPanel implements ISettings {
 	/** @var IUserSession $userSession */
 	private $userSession;
 
-	public function __construct(IConfig $config, IUserSession $userSession) {
+	/** @var IL10N */
+	private $l10n;
+
+	public function __construct(IConfig $config, IUserSession $userSession, IL10N $l10n) {
 		$this->config = $config;
 		$this->userSession = $userSession;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -63,6 +66,11 @@ class PersonalPanel implements ISettings {
 		$tmpl = new Template('files_sharing', 'settings-personal');
 		$enabledConfigs = [];
 		foreach (self::USER_CONFIGS as $config) {
+			if ($config['key'] === 'auto_accept_share') {
+				$config['label'] = $this->l10n->t('Automatically accept new incoming local user shares');
+			} elseif ($config['key'] === 'allow_share_dialog_user_enumeration') {
+				$config['label'] = $this->l10n->t('Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered.');
+			}
 			/**
 			 * Show configurations only if global enabled
 			 */

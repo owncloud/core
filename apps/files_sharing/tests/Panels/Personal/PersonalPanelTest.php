@@ -22,6 +22,7 @@ namespace OCA\Files_Sharing\Tests\Panels\Personal;
 
 use OCA\Files_Sharing\Panels\Personal\PersonalPanel;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserSession;
 
@@ -32,6 +33,9 @@ class PersonalPanelTest extends \Test\TestCase {
 
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
 	private $userSession;
+
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l10n */
+	private $l10n;
 
 	/** @var PersonalPanel $personalPanel */
 	private $personalPanel;
@@ -45,7 +49,9 @@ class PersonalPanelTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->personalPanel = new PersonalPanel($this->config, $this->userSession);
+		$this->l10n = $this->createMock(IL10N::class);
+
+		$this->personalPanel = new PersonalPanel($this->config, $this->userSession, $this->l10n);
 	}
 
 	public function testGetSectionID() {
