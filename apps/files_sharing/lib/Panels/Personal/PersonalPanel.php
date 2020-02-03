@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing\Panels\Personal;
 
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
@@ -49,9 +50,13 @@ class PersonalPanel implements ISettings {
 	/** @var IUserSession $userSession */
 	private $userSession;
 
-	public function __construct(IConfig $config, IUserSession $userSession) {
+	/** @var IL10N */
+	private $l10n;
+
+	public function __construct(IConfig $config, IUserSession $userSession, IL10N $l10n) {
 		$this->config = $config;
 		$this->userSession = $userSession;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -63,6 +68,7 @@ class PersonalPanel implements ISettings {
 		$tmpl = new Template('files_sharing', 'settings-personal');
 		$enabledConfigs = [];
 		foreach (self::USER_CONFIGS as $config) {
+			$this->l10n->t($config['label']);
 			/**
 			 * Show configurations only if global enabled
 			 */
