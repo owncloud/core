@@ -33,12 +33,39 @@ $CONFIG = [
  *
  * Possible values: `activity_expire_days` days.
  */
- 
+
 /**
  * Define the retention for activities of the activity app
  */
 
 'activity_expire_days' => 365,
+
+/**
+ * App: Admin Audit
+ *
+ * Possible values: `log.conditions` ARRAY.
+ *
+ * Possible values: `admin_audit.groups` ARRAY.
+ */
+
+/**
+ * Configure the path to the log file
+ */
+'log.conditions' => [
+  [
+	'apps' => ['admin_audit'],
+	// Adjust the path below, to match your setup
+	'logfile' => '/var/www/owncloud/data/admin_audit.log'
+  ]
+],
+
+/**
+ * Filter the groups that messages are logged for.
+ */
+'admin_audit.groups' => [
+  'group1',
+  'group2'
+],
 
 /**
  * App: LDAP
@@ -47,7 +74,7 @@ $CONFIG = [
  *
  * Possible values: `user_ldap.enable_medial_search` `true` or `false`.
  */
- 
+
 /**
  * Define parameters for the LDAP app
  */
@@ -82,7 +109,7 @@ $CONFIG = [
  * Configuring the download links for ownCloud clients,
  * as seen in the first-run wizard and on Personal pages
  */
- 
+
 'customclient_desktop' =>
 	'https://owncloud.org/install/#install-clients',
 'customclient_android' =>
