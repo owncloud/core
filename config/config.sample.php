@@ -550,7 +550,7 @@ $CONFIG = [
  *     Note: files may not be removed if space is not required.
  * * `D, auto`
  *     keeps files and folders in the trash bin for D+ days, delete anytime if
- *     space needed (note: files may not be deleted if space is not needed)
+ *     space needed (Note: files may not be deleted if space is not needed)
  * * `auto, D`
  *     delete all files in the trash bin that are older than D days
  *     automatically, delete other files anytime if space needed
@@ -593,8 +593,8 @@ $CONFIG = [
  *
  * * `auto`
  *     default setting. Automatically expire versions according to expire
- *     rules. Please refer to :doc:`../configuration/files/file_versioning` for
- *     more information.
+ *     rules. Please refer to https://doc.owncloud.org/server/latestadmin_manual/configuration/files/file_versioning.html
+ *    for more information.
  * * `D, auto`
  *     keep versions at least for D days, apply expire rules to all versions
  *     that are older than D days
@@ -728,7 +728,7 @@ $CONFIG = [
  *                     this condition is met
  *  - `logfile`:       The log message invoked by the specified apps get redirected to
  *		               this logfile, this condition is met
- *		               Note: Not applicable when using syslog.
+ *		               Note: Not applicable when using syslog
  *
  * Defaults to an empty array
  */
@@ -924,10 +924,6 @@ $CONFIG = [
  *  - OC\Preview\SVG
  *  - OC\Preview\TIFF
  *  - OC\Preview\Font
- *
- * .. note:: Troubleshooting steps for the MS Word previews are available
- *    at the :doc:`../configuration/files/collaborative_documents_configuration`
- *    section of the Administrators Manual.
  *
  * The following providers are not available in Microsoft Windows:
  *
@@ -1355,14 +1351,15 @@ $CONFIG = [
 
 /**
  * Define the minimum supported ownCloud desktop client version
- * The minimum ownCloud desktop client version that will be allowed to sync with
+ * Define the minimum ownCloud desktop client version that is allowed to sync with
  * this server instance. All connections made from earlier clients will be denied
- * by the server. Defaults to the minimum officially supported ownCloud version at
- * the time of release of this server version.
+ * by the server.
  *
- * When changing this, note that older unsupported versions of the ownCloud desktop
- * client may not function as expected, and could lead to permanent data loss for
- * clients or other unexpected results.
+ * As shipped, the value here is the oldest desktop client that is technically
+ * compatible with the server. The version number seen here does not imply official
+ * support or test coverage on behalf of ownCloud.
+ *
+ * NOTE: Lowering this value may lead to unexpected behaviour, and can include data loss.
  */
 'minimum.supported.desktop.version' => '2.3.3',
 
