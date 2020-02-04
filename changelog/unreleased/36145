@@ -1,0 +1,11 @@
+Change: Move user creation to a separate service
+
+The user creation logic is moved to a separate service.
+Instead of using user managers createUser directly, developers
+can now use methods from CreateUserService.
+Another idea behind this change is to make UI and CLI behave
+same way when user is created. This change would help users
+to be created using the email address. The provisioning api
+is also updated to behave the same way.
+
+https://github.com/owncloud/core/pull/36145
