@@ -153,9 +153,8 @@ class SharingHelper {
 		if ($expireDate !== null) {
 			$fd['expireDate'] = $expireDate;
 		}
-		$headers = ['OCS-APIREQUEST' => 'true'];
 
-		return HttpRequestHelper::post($fullUrl, $user, $password, $headers, $fd);
+		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);
 	}
 
 	/**
