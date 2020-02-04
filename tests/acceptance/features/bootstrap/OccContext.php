@@ -1374,7 +1374,7 @@ class OccContext implements Context {
 	 *
 	 * @param string $folder
 	 *
-	 * @return void
+	 * @return integer
 	 * @throws Exception
 	 */
 	public function administratorDeletesFolder($folder) {
@@ -1393,6 +1393,7 @@ class OccContext implements Context {
 			throw  new Exception("Id not found for folder to be deleted");
 		}
 		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
+		return (int) $mount_id;
 	}
 
 	/**
@@ -2004,6 +2005,103 @@ class OccContext implements Context {
 			"yes",
 			$status
 		);
+	}
+
+	/**
+	 * @param TableNode $settings
+	 *
+	 * necessary attributes inside $settings table:
+	 * 1. host        	     - remote server url
+	 * 2. root        	     - remote folder name -> mount path
+	 * 3. secure      	     - true/false (http or https)
+	 * 4. user        	     - remote server user username
+	 * 5. password    	     - remote server user password
+	 * 6. mount_point 	     - external storage name
+	 * 7. storage_backend        - options: [local, owncloud, smb, googledrive, sftp, dav]
+	 * 8. authentication_backend - options: [null::null, password::password, password::sessioncredentials]
+	 *
+	 * @see [`php occ files_external:backends`] to view
+	 * detailed information of parameters used above
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function createExternalMountPointUsingTheOccCommand($settings) {
+		$this->featureContext->verifyTableNodeRows(
+			$settings,
+			["host", "root", "storage_backend",
+			"authentication_backend", "mount_point",
+			"user", "password", "secure"]
+		);
+		$extMntSettings = $settings->getRowsHash();
+		$password = $this->featureContext->getActualPassword($extMntSettings['password']);
+		$args = [
+			"files_external:create",
+			"-c host=" .
+			$this->featureContext->substituteInLineCodes($extMntSettings['host']),
+			"-c root=" . $extMntSettings['root'],
+			"-c secure=" . $extMntSettings['secure'],
+			"-c user=" . $extMntSettings['user'],
+			"-c password=" . $password,
+			$extMntSettings['mount_point'],
+			$extMntSettings['storage_backend'],
+			$extMntSettings['authentication_backend']
+		];
+		$this->featureContext->runOcc($args);
+		// add to array of created storageIds
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$mountId = \preg_replace('/\D/', '', $commandOutput);
+		$this->featureContext->addStorageId($extMntSettings["mount_point"], $mountId);
+	}
+
+	/**
+	 * @When administrator creates an external mount point with following configuration using the occ command
+	 *
+	 * @param TableNode $settings
+	 *
+	 * @return void
+	 */
+	public function userCreatesAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
+		$this->createExternalMountPointUsingTheOccCommand($settings);
+	}
+
+	/**
+	 * @Given administrator has created an external mount point with following configuration using the occ command
+	 *
+	 * @param TableNode $settings
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
+		$this->createExternalMountPointUsingTheOccCommand($settings);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @When administrator deletes external storage with mount point :mountPoint
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 */
+	public function deleteExternalMountPoint($mountPoint) {
+		$mount_id = $this->administratorDeletesFolder($mountPoint);
+		$this->featureContext->popStorageId($mount_id);
+	}
+
+	/**
+	 * @Then mount point :mountPoint should not be listed as created external storages
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 */
+	public function mountPointShouldNotBeListedAsCreatedExternalStorage($mountPoint) {
+		$this->listLocalStorageMountShort();
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($commandOutput as $entry) {
+			Assert::assertNotEquals($mountPoint, $entry->mount_point);
+		}
 	}
 
 	/**

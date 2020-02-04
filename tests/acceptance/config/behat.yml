@@ -95,6 +95,15 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
+    cliExternalStorage:
+      paths:
+        - '%paths.base%/../features/cliExternalStorage'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
+        - OccContext:
+
     apiProvisioning-v1:
       paths:
         - '%paths.base%/../features/apiProvisioning-v1'
