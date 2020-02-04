@@ -123,7 +123,7 @@ class CronTest extends TestCase {
 		$this->commandTester->execute(['--progress' => true]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString(
-			'1 [->--------------------------]',
+			'1 [>---------------------------]',
 			$output
 		);
 	}
