@@ -1,0 +1,7 @@
+Enhancement: Optimize memory usage in Expire Trashbin Background job
+
+The expire trashbin backround job was consuming a lot of memory. We optimized the sql query by filtering out unnecessary records and we do not process all users at once. This was possible by introducing a new
+
+
+https://github.com/owncloud/core/pull/36565
+https://github.com/owncloud/core/pull/36602
