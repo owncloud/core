@@ -205,7 +205,7 @@ class Users {
 			$data['enabled'] = $targetUserObject->isEnabled() ? 'true' : 'false';
 		} else {
 			// Check they are looking up themselves
-			if ($currentLoggedInUser->getUID() !== $userId) {
+			if (\strcasecmp($currentLoggedInUser->getUID(), $userId) !== 0) {
 				return new Result(null, API::RESPOND_UNAUTHORISED);
 			}
 		}
