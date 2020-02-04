@@ -22,7 +22,6 @@ Summary
 * Bugfix - Do not dispatch DeclineShare event for non-existing shares: [#36759](https://github.com/owncloud/core/pull/36759)
 * Bugfix - Remove part files when upload is cancelled for all public links: [#36761](https://github.com/owncloud/core/pull/36761)
 * Bugfix - Return correct file size in the public files webdav API: [#36741](https://github.com/owncloud/core/issues/36741)
-* Bugfix - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
 * Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
@@ -70,7 +69,7 @@ Summary
 * Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
 * Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
 * Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
-* Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
+* Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
 * Enhancement - Add an option to provide a mount in read only mode: [#36397](https://github.com/owncloud/core/pull/36397)
@@ -82,7 +81,8 @@ Summary
 * Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
 * Enhancement - Reduce memory footprint of trash expiry jobs: [#36602](https://github.com/owncloud/core/pull/36602)
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
-* Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
+* Enhancement - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
+* Enhancement - MariaDB 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
 * Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
 * Enhancement - Additional share owner and initiator info in shares API response: [#36823](https://github.com/owncloud/core/issues/36823)
 * Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
@@ -206,15 +206,6 @@ Details
    https://github.com/owncloud/core/issues/36741
    https://github.com/owncloud/core/pull/36778
 
-* Bugfix - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
-
-   Memory consumption reduced by clearing memory usages of processed files and folders. Also,
-   information messages of the command improved by showing the current processed user and the
-   command run result.
-
-   https://github.com/owncloud/core/issues/31133
-   https://github.com/owncloud/core/pull/36787
-
 * Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
 
    The one-time password (OTP) verify button width has been extended.
@@ -273,15 +264,15 @@ Details
    opening the file through webdav (LibreOffice was complaining about a Forbidden error trying
    to lock the file)
 
-   With these changes, libreoffice will show a warning while opening the remote file (from a
+   With these changes, LibreOffice will show a warning while opening the remote file (from a
    public link) if the file is already locked, letting the user choose what to do. If there is no
    lock, the file will be opened normally, but it won't be locked.
 
    Following changes are expected: * LOCK and UNLOCK methods won't be reported as allowed * Lock
    information (d:lockdiscovery) and support (d:supportedlock) will be shown in the propfind
-   if requested (lock support is needed for libreoffice to try to lock the file) * Trying to lock the
+   if requested (lock support is needed for LibreOffice to try to lock the file) * Trying to lock the
    file through public link will either throw a Locked exception if there is a lock in place, or
-   MethodNotAllowed if there are no locks (the Locked exception is needed for libreoffice to show
+   MethodNotAllowed if there are no locks (the Locked exception is needed for LibreOffice to show
    a popup warning the user that the file is locked)
 
    https://github.com/owncloud/core/pull/36402
@@ -495,9 +486,9 @@ Details
 
    https://github.com/owncloud/core/pull/36866
 
-* Enhancement - MariaDb 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
+* Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
-   MariaDb 10.3 is now supported
+   MariaDB 10.3 is now supported
 
    https://github.com/owncloud/core/issues/29483
    https://github.com/owncloud/core/pull/36290
@@ -563,9 +554,8 @@ Details
 
 * Enhancement - Optimize memory usage in Expire Trashbin Background job: [#36565](https://github.com/owncloud/core/pull/36565)
 
-   The expire trashbin backround job was consuming a lot of memory. We optimized the sql query by
-   filtering out unnecessary records and we do not process all users at once. This was possible by
-   introducing a new
+   The expire trashbin background job was consuming a lot of memory. The SQL query has been
+   optimized by filtering out unnecessary records and not processing all users at once.
 
    https://github.com/owncloud/core/pull/36565
    https://github.com/owncloud/core/pull/36602
@@ -610,9 +600,18 @@ Details
 
    https://github.com/owncloud/core/pull/36613
 
-* Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
+* Enhancement - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
 
-   MariaDb 10.4 is now supported
+   Memory consumption reduced by clearing memory usages of processed files and folders. Also,
+   information messages of the command improved by showing the current processed user and the
+   command run result.
+
+   https://github.com/owncloud/core/issues/31133
+   https://github.com/owncloud/core/pull/36787
+
+* Enhancement - MariaDB 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
+
+   MariaDB 10.4 is now supported
 
    https://github.com/owncloud/core/issues/36799
    https://github.com/owncloud/core/pull/36800
