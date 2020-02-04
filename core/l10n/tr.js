@@ -226,6 +226,7 @@ OC.L10N.register(
     "Share with users or groups…" : "Kullanıcı ve gruplarla paylaş...",
     "Share with users or remote users…" : "Kullanıcılar, gruplar veya uzak kullanıcılarla paylaş ...",
     "Error removing share" : "Paylaşım kaldırılırken hata",
+    "Unknown Share" : "Bilinmeyen Paylaşım",
     "Non-existing tag #{tag}" : "Mevcut olmayan etiket #{tag}",
     "restricted" : "kısıtlı",
     "invisible" : "görünmez",
