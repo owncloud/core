@@ -16,6 +16,7 @@ Summary
 * Bugfix - Files shared with user cause purge of the trashbin content: [#36494](https://github.com/owncloud/core/pull/36494)
 * Bugfix - Enhance validation for sender e-mail address for e-mail notifications: [#36505](https://github.com/owncloud/core/pull/36505)
 * Bugfix - Suppress warning when resetting user password with masterkey encryption: [#36523](https://github.com/owncloud/core/pull/36523)
+* Bugfix - Stream_read not returning requested length for encrypted remote storage: [#34599](https://github.com/owncloud/core/issues/34599)
 * Bugfix - Receive multiple users for user sync command: [#36576](https://github.com/owncloud/core/pull/36576)
 * Bugfix - Fix null for empty path on Oracle: [#36610](https://github.com/owncloud/core/pull/36610)
 * Bugfix - Do not dispatch DeclineShare event for non-existing shares: [#36759](https://github.com/owncloud/core/pull/36759)
@@ -25,6 +26,7 @@ Summary
 * Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
+* Bugfix - Pass OCS-APIREQUEST header on getting shared secret for federation: [#36856](https://github.com/owncloud/core/pull/36856)
 * Bugfix - Add translation text for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
@@ -75,12 +77,14 @@ Summary
 * Enhancement - Add user-sync OCS API: [#36428](https://github.com/owncloud/core/pull/36428)
 * Enhancement - Support Oracle connection strings: [#36489](https://github.com/owncloud/core/pull/36489)
 * Enhancement - Add enabled and disabled filter options to occ app:list command: [#36520](https://github.com/owncloud/core/pull/36520)
+* Enhancement - Optimize memory usage in Expire Trashbin Background job: [#36565](https://github.com/owncloud/core/pull/36565)
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
 * Enhancement - Expiration date for user and group shares: [#36573](https://github.com/owncloud/core/pull/36573)
 * Enhancement - Reduce memory footprint of trash expiry jobs: [#36602](https://github.com/owncloud/core/pull/36602)
 * Enhancement - Allow plus sign in username: [#36613](https://github.com/owncloud/core/pull/36613)
 * Enhancement - MariaDb 10.4 support: [#36799](https://github.com/owncloud/core/issues/36799)
 * Enhancement - Enable DAV endpoints for trashbin and for public shares: [#36815](https://github.com/owncloud/core/pull/36815)
+* Enhancement - Additional share owner and initiator info in shares API response: [#36823](https://github.com/owncloud/core/issues/36823)
 * Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
 
 Details
@@ -156,6 +160,14 @@ Details
 
    https://github.com/owncloud/core/pull/36523
 
+* Bugfix - Stream_read not returning requested length for encrypted remote storage: [#34599](https://github.com/owncloud/core/issues/34599)
+
+   Stream_read was not always returning the requested length for encrypted remote storage. This
+   could result in errors when downloading files. The issue has been corrected.
+
+   https://github.com/owncloud/core/issues/34599
+   https://github.com/owncloud/core/pull/36546
+
 * Bugfix - Receive multiple users for user sync command: [#36576](https://github.com/owncloud/core/pull/36576)
 
    Receive multiple users for user sync command. Previously when multiple users were returned,
@@ -224,6 +236,14 @@ Details
 
    https://github.com/owncloud/core/issues/36839
    https://github.com/owncloud/core/pull/36841
+
+* Bugfix - Pass OCS-APIREQUEST header on getting shared secret for federation: [#36856](https://github.com/owncloud/core/pull/36856)
+
+   OCS-APIREQUEST header added to the federation app cronjobs responsible for the shared secret
+   exchange.
+
+   https://github.com/owncloud/core/pull/36856
+   https://github.com/owncloud/core/pull/36762
 
 * Bugfix - Add translation text for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 
@@ -541,6 +561,15 @@ Details
 
    https://github.com/owncloud/core/pull/36520
 
+* Enhancement - Optimize memory usage in Expire Trashbin Background job: [#36565](https://github.com/owncloud/core/pull/36565)
+
+   The expire trashbin backround job was consuming a lot of memory. We optimized the sql query by
+   filtering out unnecessary records and we do not process all users at once. This was possible by
+   introducing a new
+
+   https://github.com/owncloud/core/pull/36565
+   https://github.com/owncloud/core/pull/36602
+
 * Enhancement - Share indicator on webUI: [#36572](https://github.com/owncloud/core/pull/36572)
 
    The file list in the webUI now shows a share indicator on files and folders that reside inside a
@@ -598,6 +627,15 @@ Details
    dav.enable.tech_preview in config.php.
 
    https://github.com/owncloud/core/pull/36815
+
+* Enhancement - Additional share owner and initiator info in shares API response: [#36823](https://github.com/owncloud/core/issues/36823)
+
+   We've extended the OCS Share API response for share recipients to also include additional
+   fields for the share owner and initiator. Additional fields are configured in the admin
+   settings and can be set to email or user id and are useful to distinguish users who have the same
+   display name.
+
+   https://github.com/owncloud/core/issues/36823
 
 * Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
 
