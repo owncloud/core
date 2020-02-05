@@ -39,18 +39,13 @@ class RepairTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$application = new Application(
-			\OC::$server->getConfig(),
-			\OC::$server->getEventDispatcher(),
-			\OC::$server->getRequest()
-		);
 		$command = new Repair(
 			new \OC\Repair(\OC\Repair::getRepairSteps(), \OC::$server->getEventDispatcher()),
 			\OC::$server->getConfig(),
 			\OC::$server->getEventDispatcher(),
 			\OC::$server->getAppManager()
 		);
-		$command->setApplication($application);
+		$command->setApplication(new Application());
 		$this->commandTester = new CommandTester($command);
 	}
 

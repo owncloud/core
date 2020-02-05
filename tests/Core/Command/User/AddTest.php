@@ -42,9 +42,8 @@ class AddTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
 		$command = new Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer());
-		$command->setApplication($application);
+		$command->setApplication(new Application());
 		$this->commandTester = new CommandTester($command);
 		$this->createUser('user1');
 	}

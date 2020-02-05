@@ -42,14 +42,8 @@ class DeleteTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$application = new Application(
-			\OC::$server->getConfig(),
-			\OC::$server->getEventDispatcher(),
-			\OC::$server->getRequest()
-		);
-
 		$command = new Delete($this->userManager);
-		$command->setApplication($application);
+		$command->setApplication(new Application());
 		$this->commandTester = new CommandTester($command);
 	}
 
