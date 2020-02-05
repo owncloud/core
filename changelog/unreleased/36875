@@ -1,5 +1,7 @@
-Bugfix: Add translation text for the Personal->Sharing section
+Bugfix: Add translation code for the Personal->Sharing section
 
-Add translation for the text in Personal->Sharing section.
+Translation of the text in the Personal->Sharing section was not possible.
+This has been corrected. Translations of this text will become available after
+translators have provided the language-specific translations.
 
 https://github.com/owncloud/core/pull/36875
