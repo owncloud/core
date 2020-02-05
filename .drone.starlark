@@ -104,10 +104,11 @@ config = {
 				'apiWebdavLocks',
 				'apiWebdavLocks2',
 				'apiWebdavMove1',
-                              'apiWebdavMove2',
+				'apiWebdavMove2',
 				'apiWebdavOperations',
 				'apiWebdavProperties',
-				'apiWebdavUpload',
+				'apiWebdavUpload1',
+				'apiWebdavUpload2',
 			],
 		},
 		'apiNotifications': {
