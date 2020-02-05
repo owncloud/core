@@ -13424,7 +13424,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingIntUsers-chrome-mariadb10.2-php7.1
+name: webUISharingIntUsers1-chrome-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -13530,7 +13530,171 @@ steps:
   - . /drone/saved-settings.sh
   - make test-acceptance-webui
   environment:
-    BEHAT_SUITE: webUISharingInternalUsers
+    BEHAT_SUITE: webUISharingInternalUsers1
+    BROWSER: chrome
+    MAILHOG_HOST: email
+    PLATFORM: Linux
+    SELENIUM_HOST: selenium
+    SELENIUM_PORT: 4444
+    TESTING_REMOTE_SYSTEM: true
+    TEST_SERVER_URL: http://server
+
+services:
+- name: mariadb
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: selenium
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+
+- name: email
+  pull: always
+  image: mailhog/mailhog
+
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.3
+- changelog
+- phpstan-php7.1
+- phan-php7.1
+- phan-php7.2
+- phan-php7.3
+
+---
+kind: pipeline
+type: docker
+name: webUISharingIntUsers2-chrome-mariadb10.2-php7.1
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mariadb
+
+- name: install-extra-apps
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: fix-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown -R www-data /drone/src
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui
+  environment:
+    BEHAT_SUITE: webUISharingInternalUsers2
     BROWSER: chrome
     MAILHOG_HOST: email
     PLATFORM: Linux
@@ -16805,7 +16969,8 @@ depends_on:
 - webUISharingAutocomp-chrome-mariadb10.2-php7.1
 - webUISharingIntGroup1-chrome-mariadb10.2-php7.1
 - webUISharingIntGroup2-chrome-mariadb10.2-php7.1
-- webUISharingIntUsers-chrome-mariadb10.2-php7.1
+- webUISharingIntUsers1-chrome-mariadb10.2-php7.1
+- webUISharingIntUsers2-chrome-mariadb10.2-php7.1
 - webUISharingPublic-chrome-mariadb10.2-php7.1
 - webUITags-chrome-mariadb10.2-php7.1
 - webUITrashbin-chrome-mariadb10.2-php7.1
