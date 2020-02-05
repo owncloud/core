@@ -28,7 +28,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
-  @skipOnOcis @issue-ocis-reva-13
+  @skipOnOcis @issue-ocis-reva-9
   Scenario: send PUT requests to another user's webDav endpoints as normal user
     When user "user1" requests these endpoints with "PUT" including body then the status codes should be as listed
       | endpoint                                       | http-code | body          |
@@ -36,13 +36,13 @@ Feature: get file info using PUT
       | /remote.php/dav/files/user0/PARENTS            | 403       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENTS/parent.txt | 404       | doesnotmatter |
 
-  @skipOnOcV10 @issue-ocis-reva-13
+  @skipOnOcV10 @issue-ocis-reva-9
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send PUT requests to another user's webDav endpoints as normal user
     When user "user1" requests these endpoints with "PUT" including body then the status codes should be as listed
       | endpoint                                       | http-code | body          |
-      | /remote.php/dav/files/user0/textfile1.txt      | 500       | doesnotmatter |
-      | /remote.php/dav/files/user0/PARENTS            | 500       | doesnotmatter |
+      | /remote.php/dav/files/user0/textfile1.txt      | 204       | doesnotmatter |
+      | /remote.php/dav/files/user0/PARENTS            | 201       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENTS/parent.txt | 500       | doesnotmatter |
 
   Scenario: send PUT requests to webDav endpoints using invalid username but correct password
