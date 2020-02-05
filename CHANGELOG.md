@@ -24,8 +24,8 @@ Summary
 * Bugfix - Return correct file size in the public files webdav API: [#36741](https://github.com/owncloud/core/issues/36741)
 * Bugfix - Fix one-time password (OTP) verify button width: [#36807](https://github.com/owncloud/core/pull/36807)
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
+* Bugfix - Fix provisioning API request for user information in mixed case: [#36822](https://github.com/owncloud/core/issues/36822)
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
-* Bugfix - Pass OCS-APIREQUEST header on getting shared secret for federation: [#36856](https://github.com/owncloud/core/pull/36856)
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
@@ -60,7 +60,6 @@ Summary
 * Change - Update showdown library to 1.9.1: [#36752](https://github.com/owncloud/core/pull/36752)
 * Change - Update composer/semver (1.5.0 => 1.5.1): [#36753](https://github.com/owncloud/core/pull/36753)
 * Change - Update sabre/vobject (4.2.1 => 4.2.2): [#36757](https://github.com/owncloud/core/pull/36757)
-* Change - Validate OCS API Request Header in OCSController: [#36762](https://github.com/owncloud/core/pull/36762)
 * Change - Adjust wording displayed for empty additional settings panel: [#36776](https://github.com/owncloud/core/pull/36776)
 * Change - Update laminas/laminas-validator (2.13.0 => 2.13.1): [#36780](https://github.com/owncloud/core/pull/36780)
 * Change - Update myclabs/deep-copy (1.9.4 => 1.9.5): [#36780](https://github.com/owncloud/core/pull/36780)
@@ -69,6 +68,7 @@ Summary
 * Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
 * Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
 * Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
+* Change - Update symfony (3.4.37 => 4.4.4): [#36881](https://github.com/owncloud/core/pull/36881)
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -220,6 +220,16 @@ Details
    https://github.com/owncloud/core/issues/36813
    https://github.com/owncloud/core/pull/36766
 
+* Bugfix - Fix provisioning API request for user information in mixed case: [#36822](https://github.com/owncloud/core/issues/36822)
+
+   When a user requested their own user information using the provisioning API, the request URL
+   had to contain the UID in exactly the same case as was used when the user was created.
+
+   The issue has been fixed so that the UID in the request URL is no longer case-sensitive.
+
+   https://github.com/owncloud/core/issues/36822
+   https://github.com/owncloud/core/pull/36878
+
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
 
    The files_external:list command was not displaying the correct information in the Options
@@ -227,14 +237,6 @@ Details
 
    https://github.com/owncloud/core/issues/36839
    https://github.com/owncloud/core/pull/36841
-
-* Bugfix - Pass OCS-APIREQUEST header on getting shared secret for federation: [#36856](https://github.com/owncloud/core/pull/36856)
-
-   OCS-APIREQUEST header added to the federation app cronjobs responsible for the shared secret
-   exchange.
-
-   https://github.com/owncloud/core/pull/36856
-   https://github.com/owncloud/core/pull/36762
 
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 
@@ -437,13 +439,6 @@ Details
 
    https://github.com/owncloud/core/pull/36757
 
-* Change - Validate OCS API Request Header in OCSController: [#36762](https://github.com/owncloud/core/pull/36762)
-
-   Any OCS request has to send the header OCS-APIREQUEST to comply to the specification. This is
-   now properly validated on OCSController based implementations.
-
-   https://github.com/owncloud/core/pull/36762
-
 * Change - Adjust wording displayed for empty additional settings panel: [#36776](https://github.com/owncloud/core/pull/36776)
 
    The wording displayed when the admin personal settings panel is empty has been adjusted so that
@@ -487,6 +482,15 @@ Details
    sabre/vobject (4.2.2 => 4.3.0)
 
    https://github.com/owncloud/core/pull/36866
+
+* Change - Update symfony (3.4.37 => 4.4.4): [#36881](https://github.com/owncloud/core/pull/36881)
+
+   The following symfony components have been updated to version 4.4.4:
+
+   Symfony/console symfony/event-dispatcher symfony/process symfony/routing
+   symfony/translation
+
+   https://github.com/owncloud/core/pull/36881
 
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
