@@ -15060,7 +15060,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingExt-master-chrome-mariadb10.2-php7.1
+name: webUISharingExt1-master-chrome-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -15206,7 +15206,7 @@ steps:
   - . /drone/saved-settings.sh
   - make test-acceptance-webui
   environment:
-    BEHAT_SUITE: webUISharingExternal
+    BEHAT_SUITE: webUISharingExternal1
     BROWSER: chrome
     PLATFORM: Linux
     SELENIUM_HOST: selenium
@@ -15288,7 +15288,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUISharingExt-10.2.1-chrome-mariadb10.2-php7.1
+name: webUISharingExt1-10.2.1-chrome-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -15434,7 +15434,463 @@ steps:
   - . /drone/saved-settings.sh
   - make test-acceptance-webui
   environment:
-    BEHAT_SUITE: webUISharingExternal
+    BEHAT_SUITE: webUISharingExternal1
+    BROWSER: chrome
+    PLATFORM: Linux
+    SELENIUM_HOST: selenium
+    SELENIUM_PORT: 4444
+    TESTING_REMOTE_SYSTEM: true
+    TEST_SERVER_URL: https://server
+
+services:
+- name: mariadb
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: selenium
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_CONFIG_TEMPLATE: ssl
+    APACHE_SSL_CERT: /drone/server.crt
+    APACHE_SSL_CERT_CN: server
+    APACHE_SSL_KEY: /drone/server.key
+    APACHE_WEBROOT: /drone/src
+
+- name: federated
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_CONFIG_TEMPLATE: ssl
+    APACHE_SSL_CERT: /drone/federated.crt
+    APACHE_SSL_CERT_CN: federated
+    APACHE_SSL_KEY: /drone/federated.key
+    APACHE_WEBROOT: /drone/federated
+
+- name: mariadb-federated
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud-federated
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.3
+- changelog
+- phpstan-php7.1
+- phan-php7.1
+- phan-php7.2
+- phan-php7.3
+
+---
+kind: pipeline
+type: docker
+name: webUISharingExt2-master-chrome-mariadb10.2-php7.1
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ config:system:set trusted_domains 2 --value=federated
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates:import /drone/federated.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mariadb
+
+- name: install-federated
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /drone/federated
+    db_host: mariadb-federated
+    db_name: owncloud-federated
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
+    version: daily-master-qa
+
+- name: configure-federated
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /drone/federated
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ config:system:set trusted_domains 2 --value=federated
+  - php occ log:manage --level 2
+  - php occ config:list
+  - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates:import /drone/federated.crt
+  - php occ security:certificates
+
+- name: owncloud-log-federated
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/federated/data/owncloud.log
+
+- name: install-extra-apps
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: fix-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown -R www-data /drone/src
+  - chown -R www-data /drone/federated
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+  - wait-for-it -t 600 federated:80
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui
+  environment:
+    BEHAT_SUITE: webUISharingExternal2
+    BROWSER: chrome
+    PLATFORM: Linux
+    SELENIUM_HOST: selenium
+    SELENIUM_PORT: 4444
+    TESTING_REMOTE_SYSTEM: true
+    TEST_SERVER_URL: https://server
+
+services:
+- name: mariadb
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: selenium
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_CONFIG_TEMPLATE: ssl
+    APACHE_SSL_CERT: /drone/server.crt
+    APACHE_SSL_CERT_CN: server
+    APACHE_SSL_KEY: /drone/server.key
+    APACHE_WEBROOT: /drone/src
+
+- name: federated
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_CONFIG_TEMPLATE: ssl
+    APACHE_SSL_CERT: /drone/federated.crt
+    APACHE_SSL_CERT_CN: federated
+    APACHE_SSL_KEY: /drone/federated.key
+    APACHE_WEBROOT: /drone/federated
+
+- name: mariadb-federated
+  pull: always
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud-federated
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.3
+- changelog
+- phpstan-php7.1
+- phan-php7.1
+- phan-php7.2
+- phan-php7.3
+
+---
+kind: pipeline
+type: docker
+name: webUISharingExt2-10.2.1-chrome-mariadb10.2-php7.1
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ config:system:set trusted_domains 2 --value=federated
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates:import /drone/federated.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mariadb
+
+- name: install-federated
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /drone/federated
+    db_host: mariadb-federated
+    db_name: owncloud-federated
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
+    version: 10.2.1
+
+- name: configure-federated
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /drone/federated
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ config:system:set trusted_domains 2 --value=federated
+  - php occ log:manage --level 2
+  - php occ config:list
+  - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates:import /drone/federated.crt
+  - php occ security:certificates
+
+- name: owncloud-log-federated
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/federated/data/owncloud.log
+
+- name: install-extra-apps
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: fix-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown -R www-data /drone/src
+  - chown -R www-data /drone/federated
+
+- name: wait-for-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - wait-for-it -t 600 server:80
+  - wait-for-it -t 600 federated:80
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui
+  environment:
+    BEHAT_SUITE: webUISharingExternal2
     BROWSER: chrome
     PLATFORM: Linux
     SELENIUM_HOST: selenium
@@ -17132,8 +17588,10 @@ depends_on:
 - webUIWebdavLockProt-chrome-mariadb10.2-php7.1
 - webUIWebdavLocks-chrome-mariadb10.2-php7.1
 - webUISharingNotify-chrome-mariadb10.2-php7.1
-- webUISharingExt-master-chrome-mariadb10.2-php7.1
-- webUISharingExt-10.2.1-chrome-mariadb10.2-php7.1
+- webUISharingExt1-master-chrome-mariadb10.2-php7.1
+- webUISharingExt1-10.2.1-chrome-mariadb10.2-php7.1
+- webUISharingExt2-master-chrome-mariadb10.2-php7.1
+- webUISharingExt2-10.2.1-chrome-mariadb10.2-php7.1
 - webUIFfSmoke-3-1-firefox-mariadb10.2-php7.1
 - webUIFfSmoke-3-2-firefox-mariadb10.2-php7.1
 - webUIFfSmoke-3-3-firefox-mariadb10.2-php7.1
