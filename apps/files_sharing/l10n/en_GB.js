@@ -112,6 +112,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" invited you to view \"%3$s\"",
     "Accept" : "Accept",
     "Decline" : "Decline",
+    "Automatically accept new incoming local user shares" : "Automatically accept new incoming local user shares",
     "This share is password-protected" : "This share is password-protected",
     "The password is wrong. Try again." : "The password is wrong. Try again.",
     "Password" : "Password",

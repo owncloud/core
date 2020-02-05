@@ -109,6 +109,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" ве покани да прегледате \"%3$s\"",
     "Accept" : "Прифати",
     "Decline" : "Одбиј",
+    "Automatically accept new incoming local user shares" : "Автоматски прифаќај ги новите локални споделувања од корисниите",
     "This share is password-protected" : "Ова споделување е заштитено со лозинка",
     "The password is wrong. Try again." : "Лозинката е грешна. Обиди се повторно.",
     "Password" : "Лозинка",

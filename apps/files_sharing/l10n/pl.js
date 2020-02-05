@@ -87,6 +87,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" zaprosił cię do podglądu \"%3$s\"",
     "Accept" : "Akceptuj",
     "Decline" : "Odmów",
+    "Automatically accept new incoming local user shares" : "Automatyczna akceptacja nowych, przychodzących udziałów użytkowników lokalnych",
     "This share is password-protected" : "Udział ten jest chroniony hasłem",
     "The password is wrong. Try again." : "To hasło jest niewłaściwe. Spróbuj ponownie.",
     "Password" : "Hasło",

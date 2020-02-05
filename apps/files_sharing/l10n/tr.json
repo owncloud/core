@@ -110,6 +110,7 @@
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" seni \"%3$s\" görüntülemeye davet etti",
     "Accept" : "Kabul et",
     "Decline" : "Reddet",
+    "Automatically accept new incoming local user shares" : "Yeni gelen yerel kullanıcı paylaşımlarını otomatik olarak kabul et",
     "This share is password-protected" : "Bu paylaşım parola korumalı",
     "The password is wrong. Try again." : "Parola hatalı. Yeniden deneyin.",
     "Password" : "Parola",

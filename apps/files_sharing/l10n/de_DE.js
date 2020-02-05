@@ -112,6 +112,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" hat Sie eingeladen \"%3$s\" anzusehen",
     "Accept" : "Akzeptieren",
     "Decline" : "Ablehnen",
+    "Automatically accept new incoming local user shares" : "Neue lokale Benutzerfreigaben automatisch akzeptieren",
     "This share is password-protected" : "Diese Freigabe ist durch ein Passwort geschützt",
     "The password is wrong. Try again." : "Das Passwort ist falsch. Bitte versuchen Sie es erneut.",
     "Password" : "Passwort",

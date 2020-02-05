@@ -111,6 +111,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "Ο \"%1$s\" σας προσκάλεσε να δείτε το \"%3$s\"",
     "Accept" : "Αποδοχή",
     "Decline" : "Απόρριψη",
+    "Automatically accept new incoming local user shares" : "Αυτόματη αποδοχή νέων εισερχόμενων κοινόχρηστων από τοπικούς χρήστες",
     "This share is password-protected" : "Αυτό το κοινόχρηστο προστατεύεται με συνθηματικό",
     "The password is wrong. Try again." : "Εσφαλμένο συνθηματικό. Προσπαθήστε ξανά.",
     "Password" : "Συνθηματικό",

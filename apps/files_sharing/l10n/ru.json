@@ -110,6 +110,7 @@
     "\"%1$s\" invited you to view \"%3$s\"" : "Пользователь «%1$s» предлагает вам посмотреть «%3$s»",
     "Accept" : "Принять",
     "Decline" : "Отклонить",
+    "Automatically accept new incoming local user shares" : "Автоматически принимать новые входящие предоставления доступа от локальных пользователей",
     "This share is password-protected" : "Общий ресурс защищен паролем",
     "The password is wrong. Try again." : "Неверный пароль. Попробуйте еще раз.",
     "Password" : "Пароль",

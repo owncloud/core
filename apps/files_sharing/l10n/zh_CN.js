@@ -109,6 +109,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" 邀请你查看 \"%3$s\"",
     "Accept" : "接受",
     "Decline" : "拒绝",
+    "Automatically accept new incoming local user shares" : "自动接收新进本地用户的分享",
     "This share is password-protected" : "这是一个密码保护的共享",
     "The password is wrong. Try again." : "用户名或密码错误！请重试",
     "Password" : "密码",

@@ -109,6 +109,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" har invitert deg til å se \"%3$s\"",
     "Accept" : "Aksepter",
     "Decline" : "Avslå",
+    "Automatically accept new incoming local user shares" : "Godta nye innkommende lokale brukerdelinger automatisk",
     "This share is password-protected" : "Denne delingen er passordbeskyttet",
     "The password is wrong. Try again." : "Passordet er feil. Prøv på nytt.",
     "Password" : "Passord",

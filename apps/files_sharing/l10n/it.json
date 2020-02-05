@@ -108,6 +108,7 @@
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" ti ha invitato a visualizzare \"%3$s\"",
     "Accept" : "Accetta",
     "Decline" : "Rifiuta",
+    "Automatically accept new incoming local user shares" : "Accetta automaticamente nuove condivisioni in arrivo di utenti locali",
     "This share is password-protected" : "Questa condivisione è protetta da password",
     "The password is wrong. Try again." : "La password è errata. Prova ancora.",
     "Password" : "Password",

@@ -112,6 +112,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" ju ftoi të shihni \"%3$s\"",
     "Accept" : "Pranoje",
     "Decline" : "Hidhe poshtë",
+    "Automatically accept new incoming local user shares" : "Prano vetvetiu ndarje të reja që vijnë nga përdorues vendorë",
     "This share is password-protected" : "Kjo ndarje është e mbrojtur me fjalëkalim",
     "The password is wrong. Try again." : "Fjalëkalimi është i gabuar. Riprovoni.",
     "Password" : "Fjalëkalim",

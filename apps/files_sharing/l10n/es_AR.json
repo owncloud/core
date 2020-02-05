@@ -20,6 +20,7 @@
     "Shares" : "Compartidos",
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
+    "Automatically accept new incoming local user shares" : "Aceptar automáticamente los nuevos recursos compartidos por un usuario local",
     "This share is password-protected" : "Esto está protegido por contraseña",
     "The password is wrong. Try again." : "La contraseña no es correcta. Probá de nuevo.",
     "Password" : "Contraseña",

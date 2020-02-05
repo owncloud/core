@@ -110,6 +110,7 @@
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" מזמין אותך לצפות ב- \"%3$s\"",
     "Accept" : "אישור",
     "Decline" : "סירוב",
+    "Automatically accept new incoming local user shares" : "קבלה אוטומטית של שיתופי משתמש מקומי חדשים",
     "This share is password-protected" : "שיתוף זה מוגן סיסמא",
     "The password is wrong. Try again." : "הסיסמא שגויה. יש לנסות שנית.",
     "Password" : "סיסמא",

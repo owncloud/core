@@ -112,6 +112,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "«%1$s» convidouno a ver «%3$s»",
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
+    "Automatically accept new incoming local user shares" : "Aceptar automaticamente novas comparticións dos usuarios locais",
     "This share is password-protected" : "Esta compartición está protexida con contrasinal",
     "The password is wrong. Try again." : "O contrasinal é incorrecto. Ténteo de novo.",
     "Password" : "Contrasinal",

@@ -110,6 +110,7 @@
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" يدعوك لعرض \"%3$s\"",
     "Accept" : "قبول",
     "Decline" : "رفض",
+    "Automatically accept new incoming local user shares" : "قبول مشاركات المستخدمين المحليين الجديدة الواردة تلقائيًا",
     "This share is password-protected" : "هذه المشاركة محمية بكلمة مرور",
     "The password is wrong. Try again." : "كلمة المرور خاطئة. حاول مرة أخرى.",
     "Password" : "كلمة المرور",

@@ -112,6 +112,7 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" ได้เชิญคุณให้ดู \"%3$s\"",
     "Accept" : "ยอมรับ",
     "Decline" : "ลดลง",
+    "Automatically accept new incoming local user shares" : "ยอมรับแชร์ที่เข้ามาใหม่จากในเครื่องโดยอัตโนมัติ",
     "This share is password-protected" : "นี้แชร์การป้องกันด้วยรหัสผ่าน",
     "The password is wrong. Try again." : "รหัสผ่านที่ไม่ถูกต้อง กรุณาลองอีกครั้ง",
     "Password" : "รหัสผ่าน",
