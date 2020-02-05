@@ -7,7 +7,7 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.1"
+            "php": "7.1.3"
         }
     },
     "autoload" : {
@@ -38,10 +38,10 @@
         "punic/punic": "^3.1",
         "pear/archive_tar": "1.4.9",
         "patchwork/utf8": "^1.3",
-        "symfony/console": "^3.1",
-        "symfony/event-dispatcher": "^3.1",
-        "symfony/routing": "^3.1",
-        "symfony/process": "^3.1",
+        "symfony/console": "^4.4",
+        "symfony/event-dispatcher": "^4.4",
+        "symfony/routing": "^4.4",
+        "symfony/process": "^4.4",
         "pimple/pimple": "3.2.3",
         "nikic/php-parser": "^4.0",
         "icewind/streams": "0.7.1",
@@ -56,7 +56,7 @@
         "sabre/dav": "^4.0",
         "sabre/http": "^5.0.5",
         "deepdiver/zipstreamer": "^1.1",
-        "symfony/translation": "^3.4",
+        "symfony/translation": "^4.4",
         "laminas/laminas-inputfilter": "^2.10",
         "laminas/laminas-servicemanager": "^3.4",
         "laminas/laminas-validator": "^2.13",
