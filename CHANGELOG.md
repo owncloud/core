@@ -26,7 +26,7 @@ Summary
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
 * Bugfix - Pass OCS-APIREQUEST header on getting shared secret for federation: [#36856](https://github.com/owncloud/core/pull/36856)
-* Bugfix - Add translation text for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
+* Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -154,7 +154,7 @@ Details
 
 * Bugfix - Suppress warning when resetting user password with masterkey encryption: [#36523](https://github.com/owncloud/core/pull/36523)
 
-   When an admin wanted to reset user's password over the Users management page with masterkey
+   When an admin wanted to reset a user's password on the User management page with masterkey
    encryption in place, a warning was displayed about data recovery not being available. The
    behavior has now been fixed.
 
@@ -172,7 +172,7 @@ Details
 
    Receive multiple users for user sync command. Previously when multiple users were returned,
    an exception was thrown and the command was aborted. In this fix we allow multiple users to be
-   returned, and we check for the uid provided by the admin matches with the returned users. And if
+   returned, and we check that the uid provided by the admin matches with the returned users. And if
    we find matches of more than one users with same uid, then we throw the exception that was thrown
    previously. The messages are kept intact.
 
@@ -195,7 +195,7 @@ Details
 
 * Bugfix - Remove part files when upload is cancelled for all public links: [#36761](https://github.com/owncloud/core/pull/36761)
 
-   Remove part files when the upload is cancelled for the public links. Prior to this change, it was
+   Remove part files when the upload is cancelled for public links. Prior to this change, it was
    noticed that for `Upload Only` and `Download / View / Upload` the part files were not cleaned up.
    With this change it does clean up.
 
@@ -236,9 +236,11 @@ Details
    https://github.com/owncloud/core/pull/36856
    https://github.com/owncloud/core/pull/36762
 
-* Bugfix - Add translation text for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
+* Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 
-   Add translation for the text in Personal->Sharing section.
+   Translation of the text in the Personal->Sharing section was not possible. This has been
+   corrected. Translations of this text will become available after translators have provided
+   the language-specific translations.
 
    https://github.com/owncloud/core/pull/36875
 
@@ -259,7 +261,7 @@ Details
 
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
 
-   Public endpoints were reporting locking support even though the backend were rejecting those
+   Public endpoints were reporting locking support even though the backend was rejecting those
    requests. This was causing a problem accessing a publicly shared document using LibreOffice
    opening the file through webdav (LibreOffice was complaining about a Forbidden error trying
    to lock the file)
@@ -268,12 +270,12 @@ Details
    public link) if the file is already locked, letting the user choose what to do. If there is no
    lock, the file will be opened normally, but it won't be locked.
 
-   Following changes are expected: * LOCK and UNLOCK methods won't be reported as allowed * Lock
-   information (d:lockdiscovery) and support (d:supportedlock) will be shown in the propfind
-   if requested (lock support is needed for LibreOffice to try to lock the file) * Trying to lock the
-   file through public link will either throw a Locked exception if there is a lock in place, or
-   MethodNotAllowed if there are no locks (the Locked exception is needed for LibreOffice to show
-   a popup warning the user that the file is locked)
+   The following changes are expected: * LOCK and UNLOCK methods won't be reported as allowed *
+   Lock information (d:lockdiscovery) and support (d:supportedlock) will be shown in the
+   propfind if requested (lock support is needed for LibreOffice to try to lock the file) * Trying
+   to lock the file through the public link will either throw a Locked exception if there is a lock in
+   place, or MethodNotAllowed if there are no locks (the Locked exception is needed for
+   LibreOffice to show a popup warning the user that the file is locked)
 
    https://github.com/owncloud/core/pull/36402
 
@@ -383,7 +385,7 @@ Details
 
 * Change - Zendframework dependency to laminas: [#36677](https://github.com/owncloud/core/pull/36677)
 
-   Zend framework changed to be known as laminas. The dependencies are updated.
+   Zend framework changed to be known as laminas. The dependencies have been updated.
 
    https://github.com/owncloud/core/pull/36677
 
@@ -467,7 +469,7 @@ Details
 
 * Change - Update symfony (3.4.36 => 3.4.37): [#36796](https://github.com/owncloud/core/pull/36796)
 
-   The following symfony components have been updated tro version 3.4.37:
+   The following symfony components have been updated to version 3.4.37:
 
    Symfony/debug symfony/console symfony/event-dispatcher symfony/routing
    symfony/process symfony/translation
@@ -602,9 +604,9 @@ Details
 
 * Enhancement - Optimize memory consumption of occ files:checksums:verify command: [#31133](https://github.com/owncloud/core/issues/31133)
 
-   Memory consumption reduced by clearing memory usages of processed files and folders. Also,
-   information messages of the command improved by showing the current processed user and the
-   command run result.
+   Memory consumption has been reduced by clearing memory usages of processed files and folders.
+   Also, information messages of the command have been improved by showing the current processed
+   user and the command run result.
 
    https://github.com/owncloud/core/issues/31133
    https://github.com/owncloud/core/pull/36787
@@ -638,7 +640,7 @@ Details
 
 * Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
 
-   Adds an additional output to the incoming-shares:poll command when it is run with -vv key
+   Additional output to the incoming-shares:poll command has been added when it is run with -vv
 
    https://github.com/owncloud/core/pull/36832
 
