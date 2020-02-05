@@ -596,9 +596,23 @@ default:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
 
-    webUISharingAutocompletion:
+    webUISharingAutocompletion1:
       paths:
-        - '%paths.base%/../features/webUISharingAutocompletion'
+        - '%paths.base%/../features/webUISharingAutocompletion1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - AppConfigurationContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - OccContext:
+        - WebUIPersonalSharingSettingsContext:
+
+    webUISharingAutocompletion2:
+      paths:
+        - '%paths.base%/../features/webUISharingAutocompletion2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
