@@ -188,7 +188,8 @@ config = {
 		},
 		'webUIFederation': {
 			'suites': {
-				'webUISharingExternal': 'webUISharingExt',
+				'webUISharingExternal1': 'webUISharingExt1',
+				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['daily-master-qa', '10.2.1']

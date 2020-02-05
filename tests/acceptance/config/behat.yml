@@ -610,9 +610,27 @@ default:
         - OccContext:
         - WebUIPersonalSharingSettingsContext:
 
-    webUISharingExternal:
+    webUISharingExternal1:
       paths:
-        - '%paths.base%/../features/webUISharingExternal'
+        - '%paths.base%/../features/webUISharingExternal1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - AppConfigurationContext:
+        - EmailContext:
+        - FederationContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - OccContext:
+        - PublicWebDavContext:
+        - WebUIPersonalSharingSettingsContext:
+        - WebUIAdminSharingSettingsContext:
+
+    webUISharingExternal2:
+      paths:
+        - '%paths.base%/../features/webUISharingExternal2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
