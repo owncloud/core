@@ -24,4 +24,3 @@ Feature: share resources with a disabled user
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-

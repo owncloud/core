@@ -81,4 +81,3 @@ Feature: cannot share resources when in a group that is excluded from sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 403              |
-

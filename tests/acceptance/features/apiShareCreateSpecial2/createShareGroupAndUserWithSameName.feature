@@ -83,4 +83,3 @@ Feature: sharing works when a username and group name are the same
       | /randomfile.txt |
     And the content of file "randomfile.txt" for user "user2" should be "user0 file"
     And the content of file "randomfile.txt" for user "user1" should be "user0 file"
-

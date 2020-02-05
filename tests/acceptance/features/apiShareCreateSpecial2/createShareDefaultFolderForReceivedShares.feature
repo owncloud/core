@@ -18,4 +18,3 @@ Feature: shares are received in the default folder for received shares
       | ocs_api_version | ocs_status_code | http_status_code | share_folder    |
       | 1               | 404             | 200              | /ReceivedShares |
       | 2               | 404             | 404              | /ReceivedShares |
-

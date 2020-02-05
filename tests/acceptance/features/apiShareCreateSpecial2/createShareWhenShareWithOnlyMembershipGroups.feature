@@ -113,4 +113,3 @@ Feature: cannot share resources outside the group when share with membership gro
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
-

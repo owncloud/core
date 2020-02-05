@@ -18,4 +18,3 @@ Feature: resources shared with the same name are received with unique names
     Then user "user2" should see the following elements
       | /foo/       |
       | /foo%20(2)/ |
-

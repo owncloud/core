@@ -178,4 +178,3 @@ Feature: share resources where the sharee receives the share in multiple ways
       | ocs_api_version |
       | 1               |
       | 2               |
-

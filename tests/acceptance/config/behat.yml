@@ -133,9 +133,20 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
 
-    apiShareCreateSpecial:
+    apiShareCreateSpecial1:
       paths:
-        - '%paths.base%/../features/apiShareCreateSpecial'
+        - '%paths.base%/../features/apiShareCreateSpecial1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiShareCreateSpecial2:
+      paths:
+        - '%paths.base%/../features/apiShareCreateSpecial2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
