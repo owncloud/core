@@ -110,31 +110,25 @@ Feature: get user
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
 
-  @issue-36822
   Scenario: a normal user gets their own information, providing uppercase username in the URL
     Given these users have been created with default attributes and skeleton files:
       | username | displayname |
       | newuser  | New User    |
     When user "newuser" retrieves the information of user "NEWUSER" using the provisioning API
-    Then the OCS status code should be "997"
-    #Then the OCS status code should be "200"
-    And the HTTP status code should be "401"
-    #And the HTTP status code should be "200"
-    #And the display name returned by the API should be "New User"
-    #And the quota definition returned by the API should be "default"
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "New User"
+    And the quota definition returned by the API should be "default"
 
-  @issue-36822
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
     Given these users have been created with default attributes and skeleton files:
       | username | displayname |
       | NewUser  | New User    |
     When user "NewUser" retrieves the information of user "newuser" using the provisioning API
-    Then the OCS status code should be "997"
-    #Then the OCS status code should be "200"
-    And the HTTP status code should be "401"
-    #And the HTTP status code should be "200"
-    #And the display name returned by the API should be "New User"
-    #And the quota definition returned by the API should be "default"
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "New User"
+    And the quota definition returned by the API should be "default"
 
   Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
     Given these users have been created with default attributes and skeleton files:
