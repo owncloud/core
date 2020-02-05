@@ -348,9 +348,19 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiWebdavUpload:
+    apiWebdavUpload1:
       paths:
-        - '%paths.base%/../features/apiWebdavUpload'
+        - '%paths.base%/../features/apiWebdavUpload1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - OccContext:
+        - PublicWebDavContext:
+
+    apiWebdavUpload2:
+      paths:
+        - '%paths.base%/../features/apiWebdavUpload2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
