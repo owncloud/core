@@ -732,9 +732,24 @@ default:
         - WebUINotificationsContext:
         - WebUISharingContext:
 
-    webUISharingPublic:
+    webUISharingPublic1:
       paths:
-        - '%paths.base%/../features/webUISharingPublic'
+        - '%paths.base%/../features/webUISharingPublic1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - AppConfigurationContext:
+        - EmailContext:
+        - OccContext:
+        - PublicWebDavContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+
+    webUISharingPublic2:
+      paths:
+        - '%paths.base%/../features/webUISharingPublic2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
