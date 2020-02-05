@@ -211,6 +211,7 @@ Details
    The one-time password (OTP) verify button width has been extended.
 
    https://github.com/owncloud/core/pull/36807
+   https://github.com/owncloud/core/pull/36892
 
 * Bugfix - Sharing with a user and group of the same name on the webUI: [#36813](https://github.com/owncloud/core/issues/36813)
 
