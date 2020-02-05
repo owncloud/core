@@ -335,16 +335,10 @@ class WebDavHelper {
 		}
 		if ($davPathVersionToUse === 1) {
 			$path = "remote.php/webdav/";
-			if (OcisHelper::isTestingOnOcis()) {
-				$path .= "home/";
-			}
 			return $path;
 		} elseif ($davPathVersionToUse === 2) {
 			if ($type === "files") {
 				$path = 'remote.php/dav/files/';
-				if (OcisHelper::isTestingOnOcis()) {
-					$path .= 'oc/';
-				}
 				return $path . $user . '/';
 			} else {
 				return "remote.php/dav";
