@@ -656,9 +656,9 @@ default:
         - WebUIAdminSharingSettingsContext:
         - OccContext:
 
-    webUISharingInternalUsers:
+    webUISharingInternalUsers1:
       paths:
-        - '%paths.base%/../features/webUISharingInternalUsers'
+        - '%paths.base%/../features/webUISharingInternalUsers1'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -670,6 +670,22 @@ default:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
         - OccContext:
+
+    webUISharingInternalUsers2:
+      paths:
+        - '%paths.base%/../features/webUISharingInternalUsers2'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - EmailContext:
+        - WebUIAdminSharingSettingsContext:
+        - WebUIPersonalSharingSettingsContext:
+        - OccContext:
+
 
     webUISharingNotifications:
       paths:
