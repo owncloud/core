@@ -492,7 +492,11 @@ Details
    Symfony/console symfony/event-dispatcher symfony/process symfony/routing
    symfony/translation
 
+   Symfony EventDispatcher->dispatch() events have been adjusted to conform to the Symfony4
+   standard.
+
    https://github.com/owncloud/core/pull/36881
+   https://github.com/owncloud/core/pull/36897
 
 * Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
 
