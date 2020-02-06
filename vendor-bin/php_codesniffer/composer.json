@@ -1,6 +1,6 @@
 {
     "require": {
-        "squizlabs/php_codesniffer": "3.*"
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "conflict": {
         "squizlabs/php_codesniffer": "3.5.1"
