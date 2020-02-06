@@ -241,13 +241,13 @@ class Migrator {
 		if ($this->dispatcher === null) {
 			return;
 		}
-		$this->dispatcher->dispatch('\OC\DB\Migrator::executeSql', new GenericEvent($sql, [$step+1, $max]));
+		$this->dispatcher->dispatch(new GenericEvent($sql, [$step+1, $max]), '\OC\DB\Migrator::executeSql');
 	}
 
 	private function emitCheckStep($tableName, $step, $max) {
 		if ($this->dispatcher === null) {
 			return;
 		}
-		$this->dispatcher->dispatch('\OC\DB\Migrator::checkTable', new GenericEvent($tableName, [$step+1, $max]));
+		$this->dispatcher->dispatch(new GenericEvent($tableName, [$step+1, $max]), '\OC\DB\Migrator::checkTable');
 	}
 }

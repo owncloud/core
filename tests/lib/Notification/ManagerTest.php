@@ -54,7 +54,7 @@ class ManagerTest extends TestCase {
 				$eventMap[$eventName][] = $callable;
 			}));
 		$this->eventDispatcher->method('dispatch')
-			->will($this->returnCallback(function ($eventName, $event) use (&$eventMap) {
+			->will($this->returnCallback(function ($event, $eventName) use (&$eventMap) {
 				if (isset($eventMap[$eventName])) {
 					foreach ($eventMap[$eventName] as $callable) {
 						$callable($event);

@@ -108,7 +108,7 @@ class BackgroundRepairTest extends TestCase {
 		/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject $dispatcher */
 		$dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcher');
 		$dispatcher->expects($this->once())->method('dispatch')
-			->with('\OC\Repair::step', new GenericEvent('\OC\Repair::step', ['A test repair step']));
+			->with(new GenericEvent('\OC\Repair::step', ['A test repair step']), '\OC\Repair::step');
 
 		$this->jobList->expects($this->once())->method('remove');
 		$this->job->setDispatcher($dispatcher);

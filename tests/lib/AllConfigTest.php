@@ -84,12 +84,12 @@ class AllConfigTest extends \Test\TestCase {
 		$this->eventDispatcher->expects($this->exactly(6))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('userpreferences.beforeSetValue'), $this->equalTo($event)],
-				[$this->equalTo('userpreferences.afterSetValue'), $this->equalTo($event)],
-				[$this->equalTo('userpreferences.beforeSetValue'), $this->equalTo($event2)],
-				[$this->equalTo('userpreferences.afterSetValue'), $this->equalTo($event2)],
-				[$this->equalTo('userpreferences.beforeDeleteValue'), $this->equalTo($event3)],
-				[$this->equalTo('userpreferences.afterDeleteValue'), $this->equalTo($event3)]
+				[$this->equalTo($event), $this->equalTo('userpreferences.beforeSetValue')],
+				[$this->equalTo($event), $this->equalTo('userpreferences.afterSetValue')],
+				[$this->equalTo($event2), $this->equalTo('userpreferences.beforeSetValue')],
+				[$this->equalTo($event2), $this->equalTo('userpreferences.afterSetValue')],
+				[$this->equalTo($event3), $this->equalTo('userpreferences.beforeDeleteValue')],
+				[$this->equalTo($event3), $this->equalTo('userpreferences.afterDeleteValue')]
 			);
 
 		$config->setUserValue('userSet', 'appSet', 'keySet', 'valueSet');
@@ -381,8 +381,8 @@ class AllConfigTest extends \Test\TestCase {
 		$this->eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('userpreferences.beforeDeleteUser'), $this->equalTo($event)],
-				[$this->equalTo('userpreferences.afterDeleteUser'), $this->equalTo($event)]
+				[$this->equalTo($event), $this->equalTo('userpreferences.beforeDeleteUser')],
+				[$this->equalTo($event), $this->equalTo('userpreferences.afterDeleteUser')]
 			);
 
 		$config->deleteAllUserValues('userFetch3');
@@ -422,10 +422,10 @@ class AllConfigTest extends \Test\TestCase {
 		$this->eventDispatcher->expects($this->exactly(4))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('userpreferences.beforeDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch1']))],
-				[$this->equalTo('userpreferences.afterDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch1']))],
-				[$this->equalTo('userpreferences.beforeDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch2']))],
-				[$this->equalTo('userpreferences.afterDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch2']))]
+				[$this->equalTo(new GenericEvent(null, ['app' => 'appFetch1'])), $this->equalTo('userpreferences.beforeDeleteApp')],
+				[$this->equalTo(new GenericEvent(null, ['app' => 'appFetch1'])), $this->equalTo('userpreferences.afterDeleteApp')],
+				[$this->equalTo(new GenericEvent(null, ['app' => 'appFetch2'])), $this->equalTo('userpreferences.beforeDeleteApp')],
+				[$this->equalTo(new GenericEvent(null, ['app' => 'appFetch2'])), $this->equalTo('userpreferences.afterDeleteApp')]
 			);
 
 		$config->deleteAppFromAllUsers('appFetch1');

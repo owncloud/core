@@ -165,12 +165,15 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 			}
 		}
 
-		$this->dispatcher->dispatch(MapperEvent::EVENT_ASSIGN, new MapperEvent(
-			MapperEvent::EVENT_ASSIGN,
-			$objectType,
-			$objId,
-			$tagIds
-		));
+		$this->dispatcher->dispatch(
+			new MapperEvent(
+				MapperEvent::EVENT_ASSIGN,
+				$objectType,
+				$objId,
+				$tagIds
+			),
+			MapperEvent::EVENT_ASSIGN
+		);
 	}
 
 	/**
@@ -193,12 +196,15 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 			->setParameter('tagids', $tagIds, IQueryBuilder::PARAM_INT_ARRAY)
 			->execute();
 
-		$this->dispatcher->dispatch(MapperEvent::EVENT_UNASSIGN, new MapperEvent(
-			MapperEvent::EVENT_UNASSIGN,
-			$objectType,
-			$objId,
-			$tagIds
-		));
+		$this->dispatcher->dispatch(
+			new MapperEvent(
+				MapperEvent::EVENT_UNASSIGN,
+				$objectType,
+				$objId,
+				$tagIds
+			),
+			MapperEvent::EVENT_UNASSIGN
+		);
 	}
 
 	/**

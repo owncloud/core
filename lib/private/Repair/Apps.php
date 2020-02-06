@@ -241,11 +241,11 @@ class Apps implements IRepairStep {
 			$output->info("Fetching app from market: $app");
 			try {
 				$this->eventDispatcher->dispatch(
-					\sprintf('%s::%s', IRepairStep::class, $event),
 					new GenericEvent(
 						$app,
 						['isMajorUpdate' => $this->isMajorCoreUpdate()]
-					)
+					),
+					\sprintf('%s::%s', IRepairStep::class, $event)
 				);
 			} catch (AppAlreadyInstalledException $e) {
 				$output->info($e->getMessage());

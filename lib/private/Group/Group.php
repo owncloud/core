@@ -156,7 +156,7 @@ class Group implements IGroup {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\Group', 'preAddUser', [$this, $user]);
 		}
-		$this->eventDispatcher->dispatch('group.preAddUser', new GenericEvent($this, ['user' => $user]));
+		$this->eventDispatcher->dispatch(new GenericEvent($this, ['user' => $user]), 'group.preAddUser');
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC\Group\Backend::ADD_TO_GROUP)) {
 				$backend->addToGroup($user->getUID(), $this->gid);
@@ -166,7 +166,7 @@ class Group implements IGroup {
 				if ($this->emitter) {
 					$this->emitter->emit('\OC\Group', 'postAddUser', [$this, $user]);
 				}
-				$this->eventDispatcher->dispatch('group.postAddUser', new GenericEvent($this, ['user' => $user]));
+				$this->eventDispatcher->dispatch(new GenericEvent($this, ['user' => $user]), 'group.postAddUser');
 				return;
 			}
 		}
@@ -182,7 +182,7 @@ class Group implements IGroup {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\Group', 'preRemoveUser', [$this, $user]);
 		}
-		$this->eventDispatcher->dispatch('group.preRemoveUser', new GenericEvent($this, ['user' => $user]));
+		$this->eventDispatcher->dispatch(new GenericEvent($this, ['user' => $user]), 'group.preRemoveUser');
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC\Group\Backend::REMOVE_FROM_GOUP) and $backend->inGroup($user->getUID(), $this->gid)) {
 				$backend->removeFromGroup($user->getUID(), $this->gid);
@@ -193,7 +193,7 @@ class Group implements IGroup {
 			if ($this->emitter) {
 				$this->emitter->emit('\OC\Group', 'postRemoveUser', [$this, $user]);
 			}
-			$this->eventDispatcher->dispatch('group.postRemoveUser', new GenericEvent($this, ['user' => $user]));
+			$this->eventDispatcher->dispatch(new GenericEvent($this, ['user' => $user]), 'group.postRemoveUser');
 			if ($this->users) {
 				foreach ($this->users as $index => $groupUser) {
 					if ($groupUser->getUID() === $user->getUID()) {
@@ -281,7 +281,7 @@ class Group implements IGroup {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\Group', 'preDelete', [$this]);
 		}
-		$this->eventDispatcher->dispatch('group.preDelete', new GenericEvent($this));
+		$this->eventDispatcher->dispatch(new GenericEvent($this), 'group.preDelete');
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC\Group\Backend::DELETE_GROUP)) {
 				$result = true;
@@ -291,7 +291,7 @@ class Group implements IGroup {
 		if ($result and $this->emitter) {
 			$this->emitter->emit('\OC\Group', 'postDelete', [$this]);
 		}
-		$this->eventDispatcher->dispatch('group.postDelete', new GenericEvent($this));
+		$this->eventDispatcher->dispatch(new GenericEvent($this), 'group.postDelete');
 		return $result;
 	}
 

@@ -158,10 +158,10 @@ class Application {
 	 */
 	public function run(InputInterface $input = null, OutputInterface $output = null) {
 		$args = isset($this->request->server['argv']) ? $this->request->server['argv'] : [];
-		$this->dispatcher->dispatch(ConsoleEvent::EVENT_RUN, new ConsoleEvent(
-			ConsoleEvent::EVENT_RUN,
-			$args
-		));
+		$this->dispatcher->dispatch(
+			new ConsoleEvent(ConsoleEvent::EVENT_RUN, $args),
+			ConsoleEvent::EVENT_RUN
+		);
 		return $this->application->run($input, $output);
 	}
 

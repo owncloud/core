@@ -299,8 +299,8 @@ class User implements IUser {
 			if ($this->emitter) {
 				$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
 				\OC::$server->getEventDispatcher()->dispatch(
-					'OCP\User::validatePassword',
-					new GenericEvent(null, ['uid'=> $this->getUID(), 'password' => $password])
+					new GenericEvent(null, ['uid'=> $this->getUID(), 'password' => $password]),
+					'OCP\User::validatePassword'
 				);
 			}
 			if ($this->canChangePassword()) {
@@ -423,7 +423,7 @@ class User implements IUser {
 		$this->mapper->update($this->account);
 
 		if ($this->eventDispatcher) {
-			$this->eventDispatcher->dispatch(self::class . '::postSetEnabled', new GenericEvent($this));
+			$this->eventDispatcher->dispatch(new GenericEvent($this), self::class . '::postSetEnabled');
 		}
 	}
 

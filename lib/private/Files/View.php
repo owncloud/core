@@ -635,7 +635,7 @@ class View {
 			]);
 			if ($run) {
 				$event->setArgument('run', $run);
-				$this->eventDispatcher->dispatch('file.beforeCreate', $event);
+				$this->eventDispatcher->dispatch($event, 'file.beforeCreate');
 				if ($event->getArgument('run') === false) {
 					$run = $event->getArgument('run');
 				}
@@ -647,7 +647,7 @@ class View {
 			]);
 			if ($run) {
 				$event->setArgument('run', $run);
-				$this->eventDispatcher->dispatch('file.beforeUpdate', $event);
+				$this->eventDispatcher->dispatch($event, 'file.beforeUpdate');
 				if ($event->getArgument('run') === false) {
 					$run = $event->getArgument('run');
 				}
@@ -659,7 +659,7 @@ class View {
 		]);
 		if ($run) {
 			$event->setArgument('run', $run);
-			$this->eventDispatcher->dispatch('file.beforeWrite', $event);
+			$this->eventDispatcher->dispatch($event, 'file.beforeWrite');
 			if ($event->getArgument('run') === false) {
 				$run = $event->getArgument('run');
 			}

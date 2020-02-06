@@ -267,7 +267,7 @@ class MailNotifications {
 		$replyTo = $this->getReplyTo($sender->getEMailAddress());
 
 		$event = new GenericEvent(null, ['link' => $link, 'to' => $recipientsAsString]);
-		$this->eventDispatcher->dispatch('share.sendmail', $event);
+		$this->eventDispatcher->dispatch($event, 'share.sendmail');
 		$failedRecipients =  $this->sendLinkShareMailFromBody($recipients, $subject, $htmlBody, $textBody, $from, $replyTo);
 		if (empty($failedRecipients)) {
 			$event = $this->activityManager->generateEvent();

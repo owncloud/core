@@ -222,8 +222,10 @@ class Repair implements IOutput {
 	 */
 	public function emit($scope, $method, array $arguments = []) {
 		if ($this->dispatcher !== null) {
-			$this->dispatcher->dispatch("$scope::$method",
-				new GenericEvent("$scope::$method", $arguments));
+			$this->dispatcher->dispatch(
+				new GenericEvent("$scope::$method", $arguments),
+				"$scope::$method"
+			);
 		}
 	}
 

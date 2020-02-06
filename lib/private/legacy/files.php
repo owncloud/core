@@ -136,7 +136,7 @@ class OC_Files {
 
 			//Dispatch an event to see if any apps have problem with download
 			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['dir' => $dir, 'files' => $files, 'run' => true]);
-			OC::$server->getEventDispatcher()->dispatch('file.beforeCreateZip', $event);
+			OC::$server->getEventDispatcher()->dispatch($event, 'file.beforeCreateZip');
 			if (($event->getArgument('run') === false) or ($event->hasArgument('errorMessage'))) {
 				throw new \OC\ForbiddenException($event->getArgument('errorMessage'));
 			}
@@ -170,7 +170,7 @@ class OC_Files {
 			\set_time_limit($executionTime);
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['result' => 'success', 'dir' => $dir, 'files' => $files]);
-			OC::$server->getEventDispatcher()->dispatch('file.afterCreateZip', $event);
+			OC::$server->getEventDispatcher()->dispatch($event, 'file.afterCreateZip');
 		} catch (\OCP\Lock\LockedException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
@@ -269,7 +269,7 @@ class OC_Files {
 		}
 
 		$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
-		OC::$server->getEventDispatcher()->dispatch('file.beforeGetDirect', $event);
+		OC::$server->getEventDispatcher()->dispatch($event, 'file.beforeGetDirect');
 
 		if (\OC\Files\Filesystem::isReadable($filename) && !$event->hasArgument('errorMessage')) {
 			self::sendHeaders($filename, $name, $rangeArray);

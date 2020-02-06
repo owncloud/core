@@ -251,9 +251,10 @@ class SystemTagManager implements ISystemTagManager {
 			(bool)$editable
 		);
 
-		$this->dispatcher->dispatch(ManagerEvent::EVENT_CREATE, new ManagerEvent(
-			ManagerEvent::EVENT_CREATE, $tag
-		));
+		$this->dispatcher->dispatch(
+			new ManagerEvent(ManagerEvent::EVENT_CREATE, $tag),
+			ManagerEvent::EVENT_CREATE
+		);
 
 		return $tag;
 	}
@@ -319,9 +320,10 @@ class SystemTagManager implements ISystemTagManager {
 			);
 		}
 
-		$this->dispatcher->dispatch(ManagerEvent::EVENT_UPDATE, new ManagerEvent(
-			ManagerEvent::EVENT_UPDATE, $afterUpdate, $beforeUpdate
-		));
+		$this->dispatcher->dispatch(
+			new ManagerEvent(ManagerEvent::EVENT_UPDATE, $afterUpdate, $beforeUpdate),
+			ManagerEvent::EVENT_UPDATE
+		);
 	}
 
 	/**
@@ -364,9 +366,10 @@ class SystemTagManager implements ISystemTagManager {
 			->execute();
 
 		foreach ($tags as $tag) {
-			$this->dispatcher->dispatch(ManagerEvent::EVENT_DELETE, new ManagerEvent(
-				ManagerEvent::EVENT_DELETE, $tag
-			));
+			$this->dispatcher->dispatch(
+				new ManagerEvent(ManagerEvent::EVENT_DELETE, $tag),
+				ManagerEvent::EVENT_DELETE
+			);
 		}
 
 		if ($tagNotFoundException !== null) {
