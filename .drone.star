@@ -239,7 +239,7 @@ config = {
 def main(ctx):
 	initial = initialPipelines()
 
-	before = beforePipelines()
+	before = beforePipelines(ctx)
 	dependsOn(initial, before)
 
 	stages = stagePipelines()
@@ -257,8 +257,8 @@ def main(ctx):
 def initialPipelines():
 	return dependencies()
 
-def beforePipelines():
-	return codestyle() + changelog() + phpstan() + phan()
+def beforePipelines(ctx):
+	return codestyle() + changelog(ctx) + phpstan() + phan()
 
 def stagePipelines():
 	jsPipelines = javascript()
@@ -475,7 +475,8 @@ def codestyle():
 
 	return pipelines
 
-def changelog():
+def changelog(ctx):
+	repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
 	pipelines = []
 
 	result = {
@@ -488,56 +489,22 @@ def changelog():
 		'steps':
 			[
 				{
-					'name': 'clone-master',
+					'name': 'clone',
 					'image': 'plugins/git-action:1',
 					'pull': 'always',
 					'settings': {
 						'actions': [
 							'clone',
-							],
-							'remote': 'https://github.com/owncloud/core.git',
-							'branch': 'master',
-							'path': '/drone/src',
-							'netrc_machine': 'github.com',
-							'netrc_username': {
-								'from_secret': 'github_username',
-							},
-							'netrc_password': {
-								'from_secret': 'github_token',
-							},
-					},
-					'when': {
-						'ref': {
-							'exclude': [
-								'refs/pull/**',
-							],
+						],
+						'remote': 'https://github.com/%s' % (repo_slug),
+						'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
+						'path': '/drone/src',
+						'netrc_machine': 'github.com',
+						'netrc_username': {
+							'from_secret': 'github_username',
 						},
-					},
-				},
-				{
-					'name': 'clone-branch',
-					'image': 'plugins/git-action:1',
-					'pull': 'always',
-					'settings': {
-						'actions': [
-							'clone',
-							],
-							'remote': 'https://github.com/owncloud/core.git',
-							'branch': '${DRONE_SOURCE_BRANCH}',
-							'path': '/drone/src',
-							'netrc_machine': 'github.com',
-							'netrc_username': {
-								'from_secret': 'github_username',
-							},
-							'netrc_password': {
-								'from_secret': 'github_token',
-							},
-					},
-					'when': {
-						'ref': {
-							'exclude': [
-								'refs/heads/master',
-							],
+						'netrc_password': {
+							'from_secret': 'github_token',
 						},
 					},
 				},
