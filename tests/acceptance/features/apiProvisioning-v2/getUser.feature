@@ -110,6 +110,7 @@ Feature: get user
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
 
+  @skipOnOcV10.3
   Scenario: a normal user gets their own information, providing uppercase username in the URL
     Given these users have been created with default attributes and skeleton files:
       | username | displayname |
@@ -120,6 +121,7 @@ Feature: get user
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
 
+  @skipOnOcV10.3
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
     Given these users have been created with default attributes and skeleton files:
       | username | displayname |
