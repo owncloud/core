@@ -216,14 +216,14 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return $group;
 		} else {
 			$this->emit('\OC\Group', 'preCreate', [$gid]);
-			$this->eventDispatcher->dispatch('group.preCreate', new GenericEvent(null, ['gid' => $gid]));
+			$this->eventDispatcher->dispatch(new GenericEvent(null, ['gid' => $gid]), 'group.preCreate');
 			foreach ($this->backends as $backend) {
 				if ($backend->implementsActions(\OC\Group\Backend::CREATE_GROUP)) {
 					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					$backend->createGroup($gid);
 					$group = $this->getGroupObject($gid);
 					$this->emit('\OC\Group', 'postCreate', [$group]);
-					$this->eventDispatcher->dispatch('group.postCreate', new GenericEvent($group, ['gid' => $gid]));
+					$this->eventDispatcher->dispatch(new GenericEvent($group, ['gid' => $gid]), 'group.postCreate');
 					return $group;
 				}
 			}

@@ -50,7 +50,7 @@ class GroupTest extends \Test\TestCase {
 				$eventMap[$eventName][] = $callable;
 			}));
 		$eventDispatcher->method('dispatch')
-			->will($this->returnCallback(function ($eventName, $event) use (&$eventMap) {
+			->will($this->returnCallback(function ($event, $eventName) use (&$eventMap) {
 				if (isset($eventMap[$eventName])) {
 					foreach ($eventMap[$eventName] as $callable) {
 						$callable($event);

@@ -385,7 +385,7 @@ class Log implements ILogger {
 			$this->inEvent = true;
 			$event = new GenericEvent(null);
 			$event->setArguments($eventArgs);
-			$this->eventDispatcher->dispatch('log.beforewrite', $event);
+			$this->eventDispatcher->dispatch($event, 'log.beforewrite');
 		}
 
 		if ($level >= $minLevel) {
@@ -402,7 +402,7 @@ class Log implements ILogger {
 			$event = new GenericEvent(null);
 			$event->setArguments($eventArgs);
 			try {
-				$this->eventDispatcher->dispatch('log.afterwrite', $event);
+				$this->eventDispatcher->dispatch($event, 'log.afterwrite');
 			} finally {
 				$this->inEvent = false;
 			}

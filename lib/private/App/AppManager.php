@@ -251,9 +251,10 @@ class AppManager implements IAppManager {
 
 		$this->installedAppsCache[$appId] = 'yes';
 		$this->appConfig->setValue($appId, 'enabled', 'yes');
-		$this->dispatcher->dispatch(ManagerEvent::EVENT_APP_ENABLE, new ManagerEvent(
-			ManagerEvent::EVENT_APP_ENABLE, $appId
-		));
+		$this->dispatcher->dispatch(
+			new ManagerEvent(ManagerEvent::EVENT_APP_ENABLE, $appId),
+			ManagerEvent::EVENT_APP_ENABLE
+		);
 		$this->clearAppsCache();
 	}
 
@@ -318,9 +319,10 @@ class AppManager implements IAppManager {
 		}, $groups);
 		$this->installedAppsCache[$appId] = \json_encode($groupIds);
 		$this->appConfig->setValue($appId, 'enabled', \json_encode($groupIds));
-		$this->dispatcher->dispatch(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, new ManagerEvent(
-			ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, $appId, $groups
-		));
+		$this->dispatcher->dispatch(
+			new ManagerEvent(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, $appId, $groups),
+			ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS
+		);
 		$this->clearAppsCache();
 	}
 
@@ -336,9 +338,10 @@ class AppManager implements IAppManager {
 		}
 		unset($this->installedAppsCache[$appId]);
 		$this->appConfig->setValue($appId, 'enabled', 'no');
-		$this->dispatcher->dispatch(ManagerEvent::EVENT_APP_DISABLE, new ManagerEvent(
-			ManagerEvent::EVENT_APP_DISABLE, $appId
-		));
+		$this->dispatcher->dispatch(
+			new ManagerEvent(ManagerEvent::EVENT_APP_DISABLE, $appId),
+			ManagerEvent::EVENT_APP_DISABLE
+		);
 		$this->clearAppsCache();
 	}
 

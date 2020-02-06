@@ -496,6 +496,7 @@ class UserTest extends TestCase {
 		$this->eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->with(
+				$this->anything(),
 				$this->callback(
 					function ($eventName) {
 						if ($eventName === User::class . '::postSetEnabled') {
@@ -503,8 +504,7 @@ class UserTest extends TestCase {
 						}
 						return false;
 					}
-				),
-				$this->anything()
+				)
 			)
 		;
 

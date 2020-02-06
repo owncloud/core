@@ -2849,8 +2849,8 @@ class Share extends Constants {
 		}
 
 		\OC::$server->getEventDispatcher()->dispatch(
-			'OCP\Share::validatePassword',
-			new GenericEvent(null, ['password' => $password])
+			new GenericEvent(null, ['password' => $password]),
+			'OCP\Share::validatePassword'
 		);
 	}
 

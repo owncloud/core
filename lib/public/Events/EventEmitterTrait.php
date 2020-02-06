@@ -45,12 +45,12 @@ trait EventEmitterTrait {
 	 */
 	public function emittingCall(\Closure $fn, $arguments, $class, $eventName) {
 		if (isset($arguments['before']) && \count($arguments['before']) > 0) {
-			\OC::$server->getEventDispatcher()->dispatch("$class.before$eventName", new GenericEvent(null, $arguments['before']));
+			\OC::$server->getEventDispatcher()->dispatch(new GenericEvent(null, $arguments['before']), "$class.before$eventName");
 		}
 		$result = isset($arguments['after']) ? $fn($arguments['after']) : $fn([]);
 		if (($result !== false) && ($result !== null) &&
 			(isset($arguments['after']) && \count($arguments['after']) > 0)) {
-			\OC::$server->getEventDispatcher()->dispatch("$class.after$eventName", new GenericEvent(null, $arguments['after']));
+			\OC::$server->getEventDispatcher()->dispatch(new GenericEvent(null, $arguments['after']), "$class.after$eventName");
 		}
 		return $result;
 	}

@@ -201,8 +201,8 @@ class Manager implements IManager {
 		}
 
 		$this->eventDispatcher->dispatch(
-			'OCP\Share::validatePassword',
-			new GenericEvent(null, ['password' => $password])
+			new GenericEvent(null, ['password' => $password]),
+			'OCP\Share::validatePassword'
 		);
 	}
 
@@ -767,7 +767,7 @@ class Manager implements IManager {
 		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
 
 		$beforeEvent = new GenericEvent(null, ['shareData' => $preHookData, 'shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'share.beforeCreate');
 
 		if ($run === false) {
 			throw new \Exception($error);
@@ -797,7 +797,7 @@ class Manager implements IManager {
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
 
 		$afterEvent = new GenericEvent(null, ['shareData' => $postHookData, 'shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
+		$this->eventDispatcher->dispatch($afterEvent, 'share.afterCreate');
 
 		return $share;
 	}
@@ -1044,7 +1044,7 @@ class Manager implements IManager {
 		}
 
 		if ($update === true) {
-			$this->eventDispatcher->dispatch('share.afterupdate', $shareAfterUpdateEvent);
+			$this->eventDispatcher->dispatch($shareAfterUpdateEvent, 'share.afterupdate');
 		}
 		return $share;
 	}
@@ -1123,7 +1123,7 @@ class Manager implements IManager {
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
 
 		$beforeEvent = new GenericEvent(null, ['shareData' => $hookParams, 'shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.beforeDelete', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'share.beforeDelete');
 		// Get all children and delete them as well
 		$deletedShares = $this->deleteChildren($share);
 
@@ -1142,7 +1142,7 @@ class Manager implements IManager {
 		// Emit post hook
 		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
 		$afterEvent = new GenericEvent(null, ['shareData' => $hookParams['deletedShares'], 'shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.afterDelete', $afterEvent);
+		$this->eventDispatcher->dispatch($afterEvent, 'share.afterDelete');
 	}
 
 	/**
@@ -1174,7 +1174,7 @@ class Manager implements IManager {
 			'recipientPath' => $share->getTarget(),
 			'ownerPath' => $share->getNode()->getPath(),
 			'nodeType' => $share->getNodeType()]);
-		$this->eventDispatcher->dispatch('fromself.unshare', $event);
+		$this->eventDispatcher->dispatch($event, 'fromself.unshare');
 	}
 
 	/**

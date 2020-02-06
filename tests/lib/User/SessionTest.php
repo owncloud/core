@@ -268,8 +268,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
-				[$this->equalTo('user.afterlogin'), $this->equalTo($afterEvent)]
+				[$this->equalTo($beforeEvent), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($afterEvent), $this->equalTo('user.afterlogin')]
 			);
 		$userSession->login('foo', 'bar');
 	}
@@ -434,7 +434,7 @@ class SessionTest extends TestCase {
 			->with('token_auth_enforced', false)
 			->will($this->returnValue(true));
 		$this->logger->expects($this->once())->method('warning')->with("Login failed: 'john' (Remote IP: '12.34.56.78')");
-		$eventDispatcher->expects($this->once())->method('dispatch')->with('user.loginfailed', new GenericEvent(null, ['user' => 'john']));
+		$eventDispatcher->expects($this->once())->method('dispatch')->with(new GenericEvent(null, ['user' => 'john']), 'user.loginfailed');
 
 		$userSession->logClientIn('john', 'doe', $request);
 	}
@@ -533,7 +533,7 @@ class SessionTest extends TestCase {
 			->with('john')
 			->will($this->returnValue(true));
 		$this->logger->expects($this->once())->method('warning')->with("Login failed: 'john' (Remote IP: '12.34.56.78')");
-		$eventDispatcher->expects($this->once())->method('dispatch')->with('user.loginfailed', new GenericEvent(null, ['user' => 'john']));
+		$eventDispatcher->expects($this->once())->method('dispatch')->with(new GenericEvent(null, ['user' => 'john']), 'user.loginfailed');
 
 		$userSession->logClientIn('john', 'doe', $request);
 	}
@@ -1199,8 +1199,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeLoginEvent)],
-				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+				[$this->equalTo($beforeLoginEvent), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($failedEvent), $this->equalTo('user.loginfailed')]
 			);
 
 		$userSession->loginWithApache($apacheBackend);
@@ -1243,8 +1243,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeLoginEvent)],
-				[$this->equalTo('user.afterlogin'), $this->equalTo($afterLoginEvent)]
+				[$this->equalTo($beforeLoginEvent), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($afterLoginEvent), $this->equalTo('user.afterlogin')]
 			);
 
 		$this->assertTrue($userSession->loginWithApache($apacheBackend));
@@ -1274,8 +1274,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
-				[$this->equalTo('user.loginfailed'), $this->equalTo($failedLogin)]
+				[$this->equalTo($beforeEvent), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($failedLogin), $this->equalTo('user.loginfailed')]
 			);
 
 		$this->invokePrivate($userSession, 'loginWithPassword', ['foo', 'foo']);
@@ -1315,8 +1315,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
-				[$this->equalTo('user.afterlogin'), $this->equalTo($afterEvent)]
+				[$this->equalTo($beforeEvent), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($afterEvent), $this->equalTo('user.afterlogin')]
 			);
 
 		$result = $this->invokePrivate($userSession, 'loginWithPassword', ['foo', 'foopass']);
@@ -1358,8 +1358,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($event)],
-				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+				[$this->equalTo($event), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($failedEvent), $this->equalTo('user.loginfailed')]
 			);
 
 		$this->invokePrivate($userSession, 'loginWithToken', ['token']);
@@ -1414,8 +1414,8 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
-				[$this->equalTo('user.afterlogin'), $this->equalTo($afterEvent)]
+				[$this->equalTo($beforeEvent), $this->equalTo('user.beforelogin')],
+				[$this->equalTo($afterEvent), $this->equalTo('user.afterlogin')]
 			);
 
 		$result = $this->invokePrivate($userSession, 'loginWithToken', ['token']);
@@ -1549,7 +1549,7 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->once())
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+				[$this->equalTo($failedEvent), $this->equalTo('user.loginfailed')]
 			);
 
 		$this->invokePrivate($userSession, 'loginUser', [null, 'foo']);
@@ -1604,7 +1604,7 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->once())
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+				[$this->equalTo($failedEvent), $this->equalTo('user.loginfailed')]
 			);
 
 		$iUser = $this->createMock(IUser::class);
@@ -1620,7 +1620,7 @@ class SessionTest extends TestCase {
 		$eventDispatcher->expects($this->once())
 			->method('dispatch')
 			->withConsecutive(
-				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+				[$this->equalTo($failedEvent), $this->equalTo('user.loginfailed')]
 			);
 
 		$this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo']);

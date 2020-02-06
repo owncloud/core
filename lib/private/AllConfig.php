@@ -235,8 +235,10 @@ class AllConfig implements IConfig {
 			'uid' => $userId, 'key' => $key, 'value' => $value,
 			'app' => $appName, 'precondition' => $preCondition
 		];
-		$this->eventDispatcher->dispatch('userpreferences.beforeSetValue',
-			new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.beforeSetValue'
+		);
 		$this->connection->setValues('preferences', [
 			'userid' => $userId,
 			'appid' => $appName,
@@ -253,7 +255,10 @@ class AllConfig implements IConfig {
 			$this->userCache[$userId][$appName][$key] = $value;
 		}
 
-		$this->eventDispatcher->dispatch('userpreferences.afterSetValue', new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.afterSetValue'
+		);
 
 		return true;
 	}
@@ -303,8 +308,10 @@ class AllConfig implements IConfig {
 		$this->fixDIInit();
 
 		$arguments = ['uid' => $userId, 'key' => $key, 'app' => $appName];
-		$this->eventDispatcher->dispatch('userpreferences.beforeDeleteValue',
-			new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.beforeDeleteValue'
+		);
 
 		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
@@ -314,8 +321,10 @@ class AllConfig implements IConfig {
 			unset($this->userCache[$userId][$appName][$key]);
 		}
 
-		$this->eventDispatcher->dispatch('userpreferences.afterDeleteValue',
-			new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.afterDeleteValue'
+		);
 		return true;
 	}
 
@@ -330,7 +339,10 @@ class AllConfig implements IConfig {
 		$this->fixDIInit();
 
 		$arguments = ['uid' => $userId];
-		$this->eventDispatcher->dispatch('userpreferences.beforeDeleteUser', new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.beforeDeleteUser'
+		);
 
 		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `userid` = ?';
@@ -338,7 +350,10 @@ class AllConfig implements IConfig {
 
 		unset($this->userCache[$userId]);
 
-		$this->eventDispatcher->dispatch('userpreferences.afterDeleteUser', new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.afterDeleteUser'
+		);
 
 		return true;
 	}
@@ -354,7 +369,10 @@ class AllConfig implements IConfig {
 		$this->fixDIInit();
 
 		$arguments = ['app' => $appName];
-		$this->eventDispatcher->dispatch('userpreferences.beforeDeleteApp', new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.beforeDeleteApp'
+		);
 
 		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `appid` = ?';
@@ -364,7 +382,10 @@ class AllConfig implements IConfig {
 			unset($userCache[$appName]);
 		}
 
-		$this->eventDispatcher->dispatch('userpreferences.afterDeleteApp', new GenericEvent(null, $arguments));
+		$this->eventDispatcher->dispatch(
+			new GenericEvent(null, $arguments),
+			'userpreferences.afterDeleteApp'
+		);
 		return true;
 	}
 

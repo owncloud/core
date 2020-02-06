@@ -135,7 +135,7 @@ class AppsTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->once())->method('dispatch')
 			->willReturnCallback(
-				function ($eventName, $event) use ($appName) {
+				function ($event, $eventName) use ($appName) {
 					$this->assertEquals($appName, $event->getSubject());
 					$this->assertEquals(true, $event->getArgument('isMajorUpdate'));
 				}

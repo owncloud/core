@@ -506,10 +506,10 @@ class Manager implements ICommentsManager {
 			}
 
 			if ($affectedRows > 0 && $comment instanceof IComment) {
-				$this->dispatcher->dispatch(CommentsEvent::EVENT_DELETE, new CommentsEvent(
-					CommentsEvent::EVENT_DELETE,
-					$comment
-				));
+				$this->dispatcher->dispatch(
+					new CommentsEvent(CommentsEvent::EVENT_DELETE, $comment),
+					CommentsEvent::EVENT_DELETE
+				);
 			}
 
 			return ($affectedRows > 0);
@@ -589,10 +589,10 @@ class Manager implements ICommentsManager {
 			$comment->setId(\strval($qb->getLastInsertId()));
 		}
 
-		$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
-			CommentsEvent::EVENT_ADD,
-			$comment
-		));
+		$this->dispatcher->dispatch(
+			new CommentsEvent(CommentsEvent::EVENT_ADD, $comment),
+			CommentsEvent::EVENT_ADD
+		);
 		return $this->emittingCall(function () use ($affectedRows) {
 			return $affectedRows > 0;
 		}, [
@@ -632,10 +632,10 @@ class Manager implements ICommentsManager {
 				throw new NotFoundException('Comment to update does ceased to exist');
 			}
 
-			$this->dispatcher->dispatch(CommentsEvent::EVENT_UPDATE, new CommentsEvent(
-				CommentsEvent::EVENT_UPDATE,
-				$comment
-			));
+			$this->dispatcher->dispatch(
+				new CommentsEvent(CommentsEvent::EVENT_UPDATE, $comment),
+				CommentsEvent::EVENT_UPDATE
+			);
 
 			return $affectedRows > 0;
 		}, [

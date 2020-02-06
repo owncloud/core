@@ -8,4 +8,8 @@ symfony/process
 symfony/routing
 symfony/translation
 
+Symfony EventDispatcher->dispatch() events have been adjusted to conform to the
+Symfony4 standard.
+
 https://github.com/owncloud/core/pull/36881
+https://github.com/owncloud/core/pull/36897

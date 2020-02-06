@@ -462,8 +462,8 @@ class Session implements IUserSession, Emitter {
 			}
 
 			// trigger any other initialization
-			$this->eventDispatcher->dispatch(IUser::class . '::firstLogin', new GenericEvent($this->getUser()));
-			$this->eventDispatcher->dispatch('user.firstlogin', new GenericEvent($this->getUser()));
+			$this->eventDispatcher->dispatch(new GenericEvent($this->getUser()), IUser::class . '::firstLogin');
+			$this->eventDispatcher->dispatch(new GenericEvent($this->getUser()), 'user.firstlogin');
 		}
 	}
 
@@ -514,7 +514,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function loginWithPassword($login, $password) {
 		$beforeEvent = new GenericEvent(null, ['loginType' => 'password', 'login' => $login, 'uid' => $login, '_uid' => 'deprecated: please use \'login\', the real uid is not yet known', 'password' => $password]);
-		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'user.beforelogin');
 		$this->manager->emit('\OC\User', 'preLogin', [$login, $password]);
 
 		$user = $this->manager->checkPassword($login, $password);
@@ -532,7 +532,7 @@ class Session implements IUserSession, Emitter {
 				$this->prepareUserLogin($firstTimeLogin);
 
 				$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
-				$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
+				$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
 
 				return true;
 			}
@@ -573,7 +573,7 @@ class Session implements IUserSession, Emitter {
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
 		$beforeEvent = new GenericEvent(null, ['loginType' => 'token', 'login' => $uid, 'uid' => $uid, 'password' => $password]);
-		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'user.beforelogin');
 
 		$user = $this->manager->get($uid);
 		if ($user === null) {
@@ -593,7 +593,7 @@ class Session implements IUserSession, Emitter {
 		$this->setLoginName($dbToken->getLoginName());
 		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 		$afterEvent = new GenericEvent(null, ['loginType' => 'token', 'user' => $user, 'login' => $user->getUID(), 'uid' => $user->getUID(), 'password' => $password]);
-		$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
+		$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
 
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin();
@@ -655,7 +655,7 @@ class Session implements IUserSession, Emitter {
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, '']);
 		$beforeEvent = new GenericEvent(null, ['loginType' => 'apache', 'login' => $uid, 'uid' => $uid, 'password' => '']);
-		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'user.beforelogin');
 
 		// Die here if not valid
 		if (!$apacheBackend->isSessionActive()) {
@@ -688,7 +688,7 @@ class Session implements IUserSession, Emitter {
 			$firstTimeLogin = $user->updateLastLoginTimestamp();
 			$this->manager->emit('\OC\User', 'postLogin', [$user, '']);
 			$afterEvent = new GenericEvent(null, ['loginType' => 'apache', 'user' => $user, 'login' => $user->getUID(), 'uid' => $user->getUID(), 'password' => '']);
-			$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
+			$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
 				return true;
@@ -1076,7 +1076,7 @@ class Session implements IUserSession, Emitter {
 	public function logout() {
 		return $this->emittingCall(function () {
 			$event = new GenericEvent(null, ['cancel' => false]);
-			$this->eventDispatcher->dispatch('\OC\User\Session::pre_logout', $event);
+			$this->eventDispatcher->dispatch($event, '\OC\User\Session::pre_logout');
 
 			$this->manager->emit('\OC\User', 'preLogout');
 
@@ -1211,7 +1211,7 @@ class Session implements IUserSession, Emitter {
 		$this->manager->emit('\OC\User', 'failedLogin', [$user]);
 
 		$loginFailedEvent = new GenericEvent(null, ['user' => $user]);
-		$this->eventDispatcher->dispatch('user.loginfailed', $loginFailedEvent);
+		$this->eventDispatcher->dispatch($loginFailedEvent, 'user.loginfailed');
 	}
 
 	/**

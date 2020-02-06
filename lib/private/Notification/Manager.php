@@ -144,7 +144,7 @@ class Manager implements IManager {
 
 		$this->builtAppsHolder = [];
 		$registerAppEvent = new RegisterConsumerEventImpl($this);
-		$this->dispatcher->dispatch(RegisterConsumerEvent::NAME, $registerAppEvent);
+		$this->dispatcher->dispatch($registerAppEvent, RegisterConsumerEvent::NAME);
 		$this->apps = \array_merge($this->apps, $this->builtAppsHolder);
 
 		return $this->apps;
@@ -169,7 +169,7 @@ class Manager implements IManager {
 
 		$this->builtNotifiersHolder = [];
 		$registerNotifierEvent = new RegisterNotifierEventImpl($this);
-		$this->dispatcher->dispatch(RegisterNotifierEvent::NAME, $registerNotifierEvent);
+		$this->dispatcher->dispatch($registerNotifierEvent, RegisterNotifierEvent::NAME);
 		foreach ($this->builtNotifiersHolder as $notifierData) {
 			$this->notifiers[] = $notifierData['notifier'];
 		}
@@ -199,7 +199,7 @@ class Manager implements IManager {
 
 		$this->builtNotifiersHolder = [];
 		$registerNotifierEvent = new RegisterNotifierEventImpl($this);
-		$this->dispatcher->dispatch(RegisterNotifierEvent::NAME, $registerNotifierEvent);
+		$this->dispatcher->dispatch($registerNotifierEvent, RegisterNotifierEvent::NAME);
 		foreach ($this->builtNotifiersHolder as $id => $notifierData) {
 			$this->notifiersInfo[$id] = $notifierData['name'];
 		}

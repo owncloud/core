@@ -363,7 +363,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			});
 			$userSession->listen('\OC\User', 'preLogout', function () {
 				$event = new GenericEvent(null, []);
-				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Session::pre_logout', $event);
+				\OC::$server->getEventDispatcher()->dispatch($event, '\OC\User\Session::pre_logout');
 			});
 			$userSession->listen('\OC\User', 'logout', function () {
 				\OC_Hook::emit('OC_User', 'logout', []);
