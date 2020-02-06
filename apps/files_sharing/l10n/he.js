@@ -113,6 +113,7 @@ OC.L10N.register(
     "Accept" : "אישור",
     "Decline" : "סירוב",
     "Automatically accept new incoming local user shares" : "קבלה אוטומטית של שיתופי משתמש מקומי חדשים",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "אפשר השלמה אוטומטית של שמות משתמש בתפריט שיתוף. אם תכונה זו מנוטרלת יש להכניס שם משתמש מלא.",
     "This share is password-protected" : "שיתוף זה מוגן סיסמא",
     "The password is wrong. Try again." : "הסיסמא שגויה. יש לנסות שנית.",
     "Password" : "סיסמא",

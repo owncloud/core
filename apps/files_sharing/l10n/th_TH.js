@@ -113,6 +113,7 @@ OC.L10N.register(
     "Accept" : "ยอมรับ",
     "Decline" : "ลดลง",
     "Automatically accept new incoming local user shares" : "ยอมรับแชร์ที่เข้ามาใหม่จากในเครื่องโดยอัตโนมัติ",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "อนุญาตให้ค้นหาคุณผ่านกล่องข้อความอัตโนมัติ จำเป็นต้องป้อนชื่อผู้ใช้แบบเต็มหากส่วนนี้ถูกปิดใช้งาน",
     "This share is password-protected" : "นี้แชร์การป้องกันด้วยรหัสผ่าน",
     "The password is wrong. Try again." : "รหัสผ่านที่ไม่ถูกต้อง กรุณาลองอีกครั้ง",
     "Password" : "รหัสผ่าน",
