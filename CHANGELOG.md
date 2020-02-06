@@ -69,6 +69,7 @@ Summary
 * Change - Update punic/punic (3.5.0 => 3.5.1): [#36826](https://github.com/owncloud/core/pull/36826)
 * Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
 * Change - Update symfony (3.4.37 => 4.4.4): [#36881](https://github.com/owncloud/core/pull/36881)
+* Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -492,6 +493,10 @@ Details
    symfony/translation
 
    https://github.com/owncloud/core/pull/36881
+
+* Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
+
+   https://github.com/owncloud/core/pull/36895
 
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
