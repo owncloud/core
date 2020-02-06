@@ -167,6 +167,7 @@ class AppConfigurationContext implements Context {
 	 * @Given the user has retrieved the capabilities
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserGetsCapabilitiesCheckResponse() {
 		$this->userGetsCapabilitiesCheckResponse($this->featureContext->getCurrentUser());
@@ -480,8 +481,8 @@ class AppConfigurationContext implements Context {
 	public function theTrustedServerListIsCleared() {
 		$this->theAdministratorDeletesAllTrustedServersUsingTheTestingApi();
 		$statusCode = $this->featureContext->getResponse()->getStatusCode();
-		$contents = $this->featureContext->getResponse()->getBody()->getContents();
 		if ($statusCode !== 204) {
+			$contents = $this->featureContext->getResponse()->getBody()->getContents();
 			throw new \Exception(
 				__METHOD__
 				. "Failed to clear all trusted servers" . $contents

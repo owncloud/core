@@ -43,7 +43,7 @@ class AppManagementContext implements Context {
 	private $cmdOutput;
 
 	/**
-	 * @var string[]
+	 * @var array[]
 	 */
 	private $createdApps = [];
 
@@ -86,10 +86,12 @@ class AppManagementContext implements Context {
 			$this->featureContext->mkDirOnServer($appsPathToAdd['dir']);
 		}
 		$resp = $this->setAppsPaths($appsPathsConfigs);
-		Assert::assertEmpty(
-			$resp['stdErr'],
-			'Expected to set app path but failed due to error: ' . $resp['stdErr']
-		);
+		if (!empty($resp['stdErr'])) {
+			throw new \Exception(
+				__METHOD__
+				. "Expected to set app path but failed due to error: " . $resp['stdErr']
+			);
+		}
 	}
 
 	/**
@@ -154,10 +156,12 @@ class AppManagementContext implements Context {
 		$this->putAppInDir($appId, $version, $dir);
 		$check = SetupHelper::runOcc(['app:list', '--output json']);
 		$appsDisabled = \json_decode($check['stdOut'], true)['disabled'];
-		Assert::assertTrue(
-			\array_key_exists($appId, $appsDisabled),
-			'Expected: ' . $appId . 'to be present in apps(disabled) list, but not found'
-		);
+		if (!\array_key_exists($appId, $appsDisabled)) {
+			throw new \Exception(
+				__METHOD__
+				. 'Expected: ' . $appId . 'to be present in apps(disabled) list, but not found'
+			);
+		}
 	}
 
 	/**
@@ -167,6 +171,7 @@ class AppManagementContext implements Context {
 	 * @param string $appId app id
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminGetsPathForApp($appId) {
 		$this->featureContext->runOcc(
@@ -212,6 +217,7 @@ class AppManagementContext implements Context {
 	 * @When the administrator lists the disabled apps using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminListsTheDisabledApps() {
 		$occStatus = $this->featureContext->runOcc(
@@ -223,6 +229,7 @@ class AppManagementContext implements Context {
 	 * @When the administrator lists the enabled and disabled apps using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminListsTheEnabledAndDisabledApps() {
 		$occStatus = $this->featureContext->runOcc(
@@ -339,11 +346,14 @@ class AppManagementContext implements Context {
 	 * @param string $dir
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function appPathIs($appId, $dir) {
 		Assert::assertEquals(
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
-			\trim($this->cmdOutput)
+			\trim($this->cmdOutput),
+			"Expected: the path to ${appId} should be ${dir} but got "
+			. \trim($this->cmdOutput)
 		);
 	}
 
@@ -354,12 +364,16 @@ class AppManagementContext implements Context {
 	 * @param string $version
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function assertInstalledVersionOfAppIs($appId, $version) {
 		$cmdOutput = SetupHelper::runOcc(
 			['config:app:get', $appId, 'installed_version', '--no-ansi']
 		)['stdOut'];
-		Assert::assertEquals($version, \trim($cmdOutput));
+		Assert::assertEquals(
+			$version, \trim($cmdOutput),
+			"Expected: the installed version of ${appId} should be ${version} but got " . \trim($cmdOutput)
+		);
 	}
 
 	/**
@@ -371,6 +385,7 @@ class AppManagementContext implements Context {
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function prepareParameters(BeforeScenarioScope $scope) {
 		// Get the environment
