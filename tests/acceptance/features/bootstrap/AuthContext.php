@@ -20,7 +20,6 @@
  */
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Context;
@@ -699,7 +698,7 @@ class AuthContext implements Context {
 	 * @param string $hasOrNot
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function tokenAuthHasBeenEnforced($hasOrNot) {
 		$enforce = (($hasOrNot !== "not") && ($hasOrNot !== "does not enforce"));
@@ -713,11 +712,9 @@ class AuthContext implements Context {
 			$value,
 			'boolean'
 		);
-		Assert::assertEquals(
-			"0",
-			$occStatus['code'],
-			"setSystemConfig token_auth_enforced returned error code " . $occStatus['code']
-		);
+		if ($occStatus['code'] !== "0") {
+			throw new \Exception("setSystemConfig token_auth_enforced returned error code " . $occStatus['code']);
+		}
 
 		// Remember that we set this value, so it can be removed after the scenario
 		$this->tokenAuthHasBeenSet = true;
