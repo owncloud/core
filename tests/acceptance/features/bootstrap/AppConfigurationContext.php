@@ -141,17 +141,17 @@ class AppConfigurationContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userGetsCapabilitiesCheckResponse($username) {
 		$this->userGetsCapabilities($username);
 		$statusCode = $this->featureContext->getResponse()->getStatusCode();
-
-		Assert::assertEquals(
-			200,
-			$statusCode,
-			__METHOD__
-			. "'user $username returned unexpected status $statusCode"
-		);
+		if ($statusCode !== 200) {
+			throw new \Exception(
+				__METHOD__
+				. "user $username returned unexpected status $statusCode"
+			);
+		}
 	}
 
 	/**
@@ -475,16 +475,18 @@ class AppConfigurationContext implements Context {
 	 * @Given the trusted server list is cleared
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theTrustedServerListIsCleared() {
 		$this->theAdministratorDeletesAllTrustedServersUsingTheTestingApi();
-		Assert::assertEquals(
-			204,
-			$this->featureContext->getResponse()->getStatusCode(),
-			__METHOD__
-			. "Failed to clear all trusted servers"
-			. $this->featureContext->getResponse()->getBody()->getContents()
-		);
+		$statusCode = $this->featureContext->getResponse()->getStatusCode();
+		$contents = $this->featureContext->getResponse()->getBody()->getContents();
+		if ($statusCode !== 204) {
+			throw new \Exception(
+				__METHOD__
+				. "Failed to clear all trusted servers" . $contents
+			);
+		}
 	}
 
 	/**
