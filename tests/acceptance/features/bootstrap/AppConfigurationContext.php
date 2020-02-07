@@ -25,9 +25,7 @@
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
-use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\SetupHelper;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Context;
 
@@ -186,6 +184,7 @@ class AppConfigurationContext implements Context {
 	 * @Given the administrator has retrieved the capabilities
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorGetsCapabilitiesCheckResponse() {
 		$this->userGetsCapabilitiesCheckResponse($this->featureContext->getAdminUsername());

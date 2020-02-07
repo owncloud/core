@@ -220,7 +220,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheDisabledApps() {
-		$occStatus = $this->featureContext->runOcc(
+		$this->featureContext->runOcc(
 			['app:list', '--disabled', '--no-ansi']
 		);
 	}
@@ -232,7 +232,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheEnabledAndDisabledApps() {
-		$occStatus = $this->featureContext->runOcc(
+		$this->featureContext->runOcc(
 			['app:list', '--enabled', '--disabled', '--no-ansi']
 		);
 	}
