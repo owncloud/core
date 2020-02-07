@@ -154,6 +154,7 @@ class AuthContext implements Context {
 	 * @param string $endPoint
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function verifyStatusCode($ocsCode, $httpCode, $endPoint) {
 		if ($ocsCode !== null) {
@@ -175,6 +176,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
@@ -194,6 +196,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuth($user, $method, TableNode $table) {
 		$this->userRequestsEndpointsWithPassword($user, $method, null, $table);
@@ -207,6 +210,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['body', 'ocs-code']);
@@ -227,6 +231,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
@@ -245,6 +250,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminRequestsEndpoint($method, TableNode $table) {
 		$this->adminRequestsEndpointsWithPassword($method, null, $table);
@@ -258,6 +264,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminRequestsEndpointsWithPassword(
 		$method,
@@ -284,6 +291,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
@@ -301,6 +309,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
@@ -318,6 +327,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
@@ -737,6 +747,7 @@ class AuthContext implements Context {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function deleteTokenAuthEnforcedAfterScenario() {
 		if ($this->tokenAuthHasBeenSet) {
