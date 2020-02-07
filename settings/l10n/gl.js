@@ -216,7 +216,7 @@ OC.L10N.register(
     "Allow users to send mail notification for shared files to other users" : "Permitirlle aos usuarios enviar notificacións por correo a outros usuarios para notificarlles os ficheiros compartidos",
     "Exclude groups from sharing" : "Excluír grupos da compartición",
     "These groups will still be able to receive shares, but not to initiate them." : "Estes grupos poderán recibir comparticións, mais non inicialas.",
-    "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Permitir autocompletar o nome de usuario na xanela de diálogo. Se esta opción está desactivada, debera escribirse o nome de usuario completo. ",
+    "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Permitir autocompletar o nome de usuario no diálogo de compartición. Se esta opción está desactivada, debera escribirse o nome de usuario completo. ",
     "Restrict enumeration to group members" : "Restrinxir a enumeración aos membros do grupo",
     "Default user and group share permissions" : "Permisos predeterminados de compartición de usuarios e grupos",
     "Extra field to display in autocomplete results" : "Campo adicional para amosar nos resultados de autocompletar",

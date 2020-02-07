@@ -113,6 +113,7 @@ OC.L10N.register(
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
     "Automatically accept new incoming local user shares" : "Aceptar automaticamente novas comparticións dos usuarios locais",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "Permite atopar mediante o completado automático no diálogo de compartición. Se esta opción está desactivada, debera escribirse o nome de usuario completo. ",
     "This share is password-protected" : "Esta compartición está protexida con contrasinal",
     "The password is wrong. Try again." : "O contrasinal é incorrecto. Ténteo de novo.",
     "Password" : "Contrasinal",
