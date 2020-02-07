@@ -392,8 +392,11 @@ class Encryption extends Wrapper {
 				// specified in the file header - otherwise we need to fail hard to
 				// prevent data loss on client side
 				if (!empty($encryptionModuleId)) {
-					$targetIsEncrypted = true;
-					$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
+					$data = $this->storage->getCache()->get($path);
+					if (isset($data['encrypted']) && $data['encrypted'] === true) {
+						$targetIsEncrypted = true;
+						$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
+					}
 				}
 
 				if ($this->file_exists($path)) {
