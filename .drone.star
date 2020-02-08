@@ -1566,7 +1566,7 @@ def databaseService(db):
 	if dbName == 'oracle':
 		return [{
 			'name': dbName,
-			'image': 'deepdiver/docker-oracle-xe-11g:latest',
+			'image': 'owncloudci/oracle-xe:latest',
 			'pull': 'always',
 			'environment': {
 				'ORACLE_USER': getDbUsername(db),
