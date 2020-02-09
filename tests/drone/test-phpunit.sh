@@ -59,6 +59,10 @@ if [[ "${COVERAGE}" == "true" ]]; then
     phpunit_cmd="phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit"
 fi
 
+pwd
+ls -l
+ls -l tests
+
 if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
     set_up_external_storage
     $phpunit_cmd --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-external-clover-"${DB_TYPE}".xml
