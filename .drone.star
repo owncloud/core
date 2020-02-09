@@ -25,23 +25,13 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.1',
-			]
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.2',
 				'7.3',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
 			],
 			'coverage': False
 		},
 		'external-samba-windows' : {
 			'phpVersions': [
-				'7.1',
+				'7.3',
 			],
 			'databases': [
 				'sqlite',
@@ -60,7 +50,7 @@ config = {
 		},
 		'external-other' : {
 			'phpVersions': [
-				'7.1',
+				'7.3',
 			],
 			'databases': [
 				'sqlite',
@@ -71,167 +61,6 @@ config = {
 				'scality'
 			],
 			'coverage': True
-		},
-	},
-
-	'acceptance': {
-		'api': {
-			'suites': [
-				'apiAuth',
-				'apiAuthOcs',
-				'apiAuthWebDav',
-				'apiCapabilities',
-				'apiComments',
-				'apiFavorites',
-				'apiMain',
-				'apiProvisioning-v1',
-				'apiProvisioning-v2',
-				'apiProvisioningGroups-v1',
-				'apiProvisioningGroups-v2',
-				'apiShareCreateSpecial1',
-				'apiShareCreateSpecial2',
-				'apiSharees',
-				'apiShareManagement',
-				'apiShareManagementBasic',
-				'apiShareOperations',
-				'apiSharePublicLink1',
-				'apiSharePublicLink2',
-				'apiShareReshare1',
-				'apiShareReshare2',
-				'apiShareUpdate',
-				'apiTags',
-				'apiTrashbin',
-				'apiVersions',
-				'apiWebdavLocks',
-				'apiWebdavLocks2',
-				'apiWebdavMove1',
-				'apiWebdavMove2',
-				'apiWebdavOperations',
-				'apiWebdavProperties',
-				'apiWebdavUpload1',
-				'apiWebdavUpload2',
-			],
-		},
-		'apiNotifications': {
-			'suites': [
-				'apiSharingNotifications',
-			],
-			'extraApps': {
-				'notifications': 'composer install'
-			},
-		},
-		'apiFederation': {
-			'suites': [
-				'apiFederation',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', '10.2.1']
-		},
-		'cli': {
-			'suites': [
-				'cliBackground',
-				'cliLocalStorage',
-				'cliMain',
-				'cliProvisioning',
-				'cliTrashbin',
-			],
-			'emailNeeded': True,
-		},
-		'cliAppManagement': {
-			'suites': [
-				'cliAppManagement',
-			],
-			'testingRemoteSystem': False
-		},
-		'webUI': {
-			'suites': {
-				'webUIAddUsers': '',
-				'webUIAdminSettings': '',
-				'webUIComments': '',
-				'webUICreateDelete': '',
-				'webUIFavorites': '',
-				'webUIFiles': '',
-				'webUILogin': '',
-				'webUIManageQuota': '',
-				'webUIManageUsersGroups': 'webUIManageUsersGrps',
-				'webUIMoveFilesFolders': 'webUIMoveFilesFolder',
-				'webUIPersonalSettings': 'webUIPersonalSetting',
-				'webUIRenameFiles': '',
-				'webUIRenameFolders': '',
-				'webUIRestrictSharing': '',
-				'webUISettingsMenu': '',
-				'webUISharingAcceptShares': 'webUISharingAcceptSh',
-				'webUISharingAutocompletion1': 'webUISharingAutocomp1',
-				'webUISharingAutocompletion2': 'webUISharingAutocomp2',
-				'webUISharingInternalGroups1': 'webUISharingIntGroup1',
-				'webUISharingInternalGroups2': 'webUISharingIntGroup2',
-				'webUISharingInternalUsers1': 'webUISharingIntUsers1',
-				'webUISharingInternalUsers2': 'webUISharingIntUsers2',
-				'webUISharingPublic1': '',
-				'webUISharingPublic2': '',
-				'webUITags': '',
-				'webUITrashbin': '',
-				'webUIUpload': '',
-				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
-				'webUIWebdavLocks': '',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-		},
-		'webUINotifications': {
-			'suites': {
-				'webUISharingNotifications': 'webUISharingNotify',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-			'extraApps': {
-				'notifications': 'composer install'
-			},
-		},
-		'webUIFederation': {
-			'suites': {
-				'webUISharingExternal1': 'webUISharingExt1',
-				'webUISharingExternal2': 'webUISharingExt2',
-			},
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', '10.2.1']
-		},
-		'webUIFirefox': {
-			'suites': {
-				'webUIFirefoxSmoketest': 'webUIFfSmoke',
-			},
-			'browsers': [
-				'firefox'
-			],
-			'emailNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'webUIProxy': {
-			'suites': {
-				'webUIProxySmoketest': 'webUIProxySmoke',
-			},
-			'browsers': [
-				'chrome'
-			],
-			'emailNeeded': True,
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'apiProxy': {
-			'suites': {
-				'apiProxySmoketest': 'apiProxySmoke',
-			},
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
 		},
 	}
 }
