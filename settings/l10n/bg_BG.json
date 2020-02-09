@@ -165,6 +165,7 @@
     "days" : "дена",
     "Allow users to send mail notification for shared files" : "Разреши потребителите да изпращат имейл уведомления за споделени файлове.",
     "Allow users to share file via social media" : "Позволете на потребителите да споделят файлове чрез социални медии",
+    "Automatically accept new incoming local user shares" : "Автоматично приемане на нови входящи локални споделяния от потребители",
     "Allow resharing" : "Разреши пресподеляне.",
     "Allow sharing with groups" : "Разрешаване на споделянето с групи",
     "Restrict users to only share with users in their groups" : "Ограничи потребителите, така че да могат да споделят само с други потребители в своите групи.",

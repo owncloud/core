@@ -14,6 +14,7 @@ OC.L10N.register(
     "Allowed characters {count} of {max}" : "Pieejamais rakstzīmju skaits {count} no {max}",
     "Error occurred while posting comment" : "Radās kļūda, pievienojot komentāru",
     "{count} unread comments" : "{count} nelasīti komentāri",
-    "Comment" : "Komentārs"
+    "Comment" : "Komentārs",
+    "You commented" : "Jūsu komentāri"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
