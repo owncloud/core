@@ -200,6 +200,6 @@ class ConnectionTest extends \Test\TestCase {
 			'textfield' => 'foo'
 		]);
 
-		$this->assertInternalType(IsType::TYPE_INT, $numNewRows);
+		$this->assertIsInt($numNewRows);
 	}
 }
