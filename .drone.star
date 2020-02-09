@@ -967,7 +967,7 @@ def phptests(testType):
 		for phpVersion in params['phpVersions']:
 
 			if testType == 'phpunit':
-				command = 'su-exec www-data bash tests/drone/test-phpunit.sh'
+				command = 'bash tests/drone/test-phpunit.sh'
 			else:
 				command = 'unknown tbd'
 
@@ -1019,7 +1019,6 @@ def phptests(testType):
 							installExtraApps(phpVersion, extraAppsDict) +
 							setupScality(phpVersion, needScality) +
 							params['extraSetup'] +
-							fixPermissions(phpVersion, False) +
 							owncloudLog('server', 'src') +
 						[
 							{
