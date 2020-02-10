@@ -61,9 +61,12 @@ class EmailContext implements Context {
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent
 		);
+		$emailBody = EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address);
 		Assert::assertContains(
 			$expectedContent,
-			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address)
+			$emailBody,
+			"The email address {$address} should have received an email with the body containing {$content}
+			but the received email is {$emailBody}"
 		);
 	}
 
@@ -76,9 +79,11 @@ class EmailContext implements Context {
 	 * @return void
 	 */
 	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
+		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
 		Assert::assertContains(
 			$senderAddress,
-			EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress)
+			$actualSenderAddress,
+			"The sender address is expected to be {$senderAddress} but the actual sender is {$actualSenderAddress}"
 		);
 	}
 
@@ -95,7 +100,7 @@ class EmailContext implements Context {
 			EmailHelper::emailReceived(
 				EmailHelper::getLocalMailhogUrl(), $address
 			),
-			"Email exists with email address: {$address}."
+			"Email exists with email address: {$address} but was not expected to be."
 		);
 	}
 
