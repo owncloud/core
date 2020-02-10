@@ -1790,6 +1790,54 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the information for (user|group) "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" should include$/
+	 *
+	 * @param string $userOrGroup
+	 * @param string $user
+	 * @param string $fileOrFolder
+	 * @param string $fileName
+	 * @param TableNode $body
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFieldsOfTheResponseForUserForResourceShouldInclude(
+		$userOrGroup, $user, $fileOrFolder, $fileName, TableNode $body
+	) {
+		$this->verifyTableNodeColumnsCount($body, 2);
+		$fileName = $fileName[0] === "/" ? $fileName : '/' . $fileName;
+		$data = $this->getAllSharesSharedWithUser($user);
+
+		if (empty($data)) {
+			throw new Exception('No shares found for ' . $user);
+		}
+		$share_id = null;
+		foreach ($data as $share) {
+			if ($share['file_target'] === $fileName && $share['item_type'] === $fileOrFolder) {
+				if (($share['share_type'] === SharingHelper::getShareType($userOrGroup))
+				) {
+					$share_id = $share['id'];
+				}
+			}
+		}
+
+		Assert::assertNotNull($share_id, "Could not find share id for " . $user);
+
+		$fd = $body->getRowsHash();
+		if (\array_key_exists('expiration', $fd) && $fd['expiration'] !== '') {
+			$fd['expiration'] = \date('d-m-Y', \strtotime($fd['expiration']));
+		}
+
+		$this->getShareData($user, $share_id);
+		foreach ($fd as $field => $value) {
+			$value = $this->replaceValuesFromTable($field, $value);
+			Assert::assertTrue(
+				$this->isFieldInResponse($field, $value),
+				"$field doesn't have value '$value'"
+			);
+		}
+	}
+	/**
 	 * @Then /^the last share_id should be included in the response/
 	 *
 	 * @return void
