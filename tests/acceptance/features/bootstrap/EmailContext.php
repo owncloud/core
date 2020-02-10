@@ -65,7 +65,7 @@ class EmailContext implements Context {
 		Assert::assertContains(
 			$expectedContent,
 			$emailBody,
-			"The email address {$address} should have received an email with the body containing {$content}
+			"The email address {$address} should have received an email with the body containing {$expectedContent}
 			but the received email is {$emailBody}"
 		);
 	}
