@@ -347,6 +347,7 @@ function run_behat_tests() {
 	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
+	echo "runsh: Exit code of this run: ${BEHAT_EXIT_STATUS}"
 
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then

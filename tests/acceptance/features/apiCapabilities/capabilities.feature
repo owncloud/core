@@ -26,6 +26,7 @@ Feature: capabilities
 
   Scenario: Check that group sharing can be disabled
     Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "yes"
+    And some other thing has happened
     And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be "1"
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
