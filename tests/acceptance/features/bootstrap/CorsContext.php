@@ -45,6 +45,7 @@ class CorsContext implements Context {
 	 * @param string $domain
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function addDomainToPrivateCORSLists($user, $domain) {
 		$this->featureContext->runOcc(
@@ -96,9 +97,11 @@ class CorsContext implements Context {
 			]
 		);
 		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		Assert::assertContains(
-			$domain, $domains, "CORS domain was not added correctly"
-		);
+		if (!\in_array($domain, $domains)) {
+			throw new \Exception(
+				"domain {$domain} is not included in CORS domain {$domains}, but was expected to be"
+			);
+		}
 	}
 
 	/**
