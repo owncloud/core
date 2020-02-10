@@ -200,7 +200,10 @@ class CommentsContext implements Context {
 		);
 		$messages = $elementList->xpath("//d:prop/oc:message");
 		Assert::assertCount(
-			(int) $numberOfComments, $messages
+			(int) $numberOfComments,
+			$messages,
+			"Expected: {$user} should have {$numberOfComments} on {$path} but got "
+			. \count($messages)
 		);
 	}
 
@@ -288,9 +291,10 @@ class CommentsContext implements Context {
 				}
 			}
 		}
-		if ($found === false) {
-			throw new \Exception("Cannot find property $key with $value");
-		}
+		Assert::assertTrue(
+			$found,
+			"The response does not contain a property {$key} with value {$value}"
+		);
 	}
 
 	/**
@@ -303,11 +307,12 @@ class CommentsContext implements Context {
 	 */
 	public function theResponseShouldContainOnlyComments($number) {
 		$response = $this->featureContext->getResponse();
-		if (\count($response) !== (int) $number) {
-			throw new \Exception(
-				"Found more comments than $number (" . \count($response) . ")"
-			);
-		}
+		Assert::assertEquals(
+			(int) $number,
+			\count($response),
+			"Expected: the response should contain {$number} comments but got "
+			. \count($response)
+		);
 	}
 
 	/**
