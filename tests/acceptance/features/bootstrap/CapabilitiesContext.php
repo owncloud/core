@@ -88,13 +88,15 @@ class CapabilitiesContext implements Context {
 			$this->featureContext->getCurrentUser()
 		);
 		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
+		$actualValue = $this->featureContext->appConfigurationContext->getParameterValueFromXml(
+			$capabilitiesXML,
+			"files_sharing",
+			$pathToElement
+		);
 		Assert::assertEquals(
 			$value === "EMPTY" ? '' : $value,
-			$this->featureContext->appConfigurationContext->getParameterValueFromXml(
-				$capabilitiesXML,
-				"files_sharing",
-				$pathToElement
-			)
+			$actualValue,
+			"Expected {$pathToElement} capability of files sharing app to be {$value}, but got {$actualValue}"
 		);
 	}
 
