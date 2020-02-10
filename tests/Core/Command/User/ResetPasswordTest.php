@@ -286,17 +286,22 @@ class ResetPasswordTest extends TestCase {
 				->method('setPassword')
 				->willReturn(['status' => 'success']);
 
+			$user->method('getEMailAddress')
+				->willReturn('foo@example.com');
+
 			$output->expects($this->once())
 				->method('writeln')
 				->with("<info>Successfully reset password for foo.</info>");
 		} else {
-			$this->lostController->expects($this->once())
-				->method('setPassword')
-				->willReturn("failed");
+			$this->lostController->expects($this->never())
+				->method('setPassword');
+
+			$user->method('getEMailAddress')
+				->willReturn('');
 
 			$output->expects($this->once())
 				->method('writeln')
-				->with("<error>Error while resetting password!</error>");
+				->with("<error>Email address is not set for the user foo</error>");
 		}
 
 		$result = $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]);
