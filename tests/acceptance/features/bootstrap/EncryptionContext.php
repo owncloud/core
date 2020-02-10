@@ -80,6 +80,7 @@ class EncryptionContext implements Context {
 	 */
 	public function encryptionHasBeenEnabled() {
 		$this->featureContext->runOcc(['encryption:enable']);
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -186,7 +187,8 @@ class EncryptionContext implements Context {
 
 		Assert::assertEquals(
 			$fileContentServer,
-			$fileContent
+			$fileContent,
+			"The content of file {$fileName} is {$fileContent}, but was supposed to be non-encypted: {$fileContentServer}"
 		);
 	}
 
@@ -207,10 +209,12 @@ class EncryptionContext implements Context {
 		$parsedResponse = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
 		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
+		$expectedContentStart = "HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true";
 
 		Assert::assertStringStartsWith(
-			"HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true",
-			$fileContent
+			$expectedContentStart,
+			$fileContent,
+			"FileContent: {$fileContent} of file {$fileName} is expected to start with encrypted string {$expectedContentStart}, but does not"
 		);
 	}
 
