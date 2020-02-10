@@ -185,12 +185,11 @@ class ChecksumContext implements Context {
 		 * Maybe we want to do this a bit cleaner ;)
 		 */
 		$checksums = $parsed[0]['value'][1]['value'][0]['value'][0];
-
-		if ($checksum !== $checksums['value'][0]['value']) {
-			throw new \Exception(
-				"Expected $checksum, got " . $checksums['value'][0]['value']
-			);
-		}
+		Assert::assertEquals(
+			$checksum,
+			$checksums['value'][0]['value'],
+			"Expected: webDav checksum should be {$checksum} but got {$checksums['value'][0]['value']}"
+		);
 	}
 
 	/**
@@ -218,12 +217,11 @@ class ChecksumContext implements Context {
 	public function theHeaderChecksumShouldMatch($checksum) {
 		$headerChecksum
 			= $this->featureContext->getResponse()->getHeader('OC-Checksum');
-		if ($headerChecksum !== $checksum) {
-			throw new \Exception(
-				"Expected $checksum, got "
-				. $headerChecksum
-			);
-		}
+		Assert::assertEquals(
+			$checksum,
+			$headerChecksum,
+			"Expected: header checksum should match {$checksum} but got {$headerChecksum}"
+		);
 	}
 
 	/**
@@ -243,12 +241,12 @@ class ChecksumContext implements Context {
 		 * Maybe we want to do this a bit cleaner ;)
 		 */
 		$status = $parsed[0]['value'][1]['value'][1]['value'];
-
-		if ($status !== 'HTTP/1.1 404 Not Found') {
-			throw new \Exception(
-				"Expected 'HTTP/1.1 404 Not Found', got $status"
-			);
-		}
+		$expectedStatus = 'HTTP/1.1 404 Not Found';
+		Assert::assertEquals(
+			$expectedStatus,
+			$status,
+			"Expected status to be {$expectedStatus} but got {$status}"
+		);
 	}
 
 	/**
@@ -258,12 +256,12 @@ class ChecksumContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theOcChecksumHeaderShouldNotBeThere() {
-		if ($this->featureContext->getResponse()->hasHeader('OC-Checksum')) {
-			throw new \Exception(
-				"Expected no checksum header but got "
-				. $this->featureContext->getResponse()->getHeader('OC-Checksum')
-			);
-		}
+		$isHeader = $this->featureContext->getResponse()->hasHeader('OC-Checksum');
+		Assert::assertFalse(
+			$isHeader,
+			"Expected no checksum header but got "
+			. $this->featureContext->getResponse()->getHeader('OC-Checksum')
+		);
 	}
 
 	/**
