@@ -431,18 +431,18 @@ class LoggingContext implements Context {
 	/**
 	 * @Given the owncloud log backend has been set to :backend
 	 *
-	 * @param string $backend (owncloud|syslog|errorlog)
+	 * @param string $expectedBackend (owncloud|syslog|errorlog)
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function owncloudLogBackendHasBeenSetTo($backend) {
-		$this->owncloudLogBackendIsSetTo($backend);
+	public function owncloudLogBackendHasBeenSetTo($expectedBackend) {
+		$this->owncloudLogBackendIsSetTo($expectedBackend);
 		$currentBackend = LoggingHelper::getLogBackend();
 		Assert::assertEquals(
+			$expectedBackend,
 			$currentBackend,
-			$backend,
-			"The owncloud log backend was expected to be set to {$backend} but got {$currentBackend}"
+			"The owncloud log backend was expected to be set to {$expectedBackend} but got {$currentBackend}"
 		);
 	}
 
@@ -461,18 +461,18 @@ class LoggingContext implements Context {
 	/**
 	 * @Given the owncloud log timezone has been set to :timezone
 	 *
-	 * @param string $timezone
+	 * @param string $expectedTimezone
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function owncloudLogTimezoneHasBeenSetTo($timezone) {
-		$this->owncloudLogTimezoneIsSetTo($timezone);
+	public function owncloudLogTimezoneHasBeenSetTo($expectedTimezone) {
+		$this->owncloudLogTimezoneIsSetTo($expectedTimezone);
 		$currentTimezone = LoggingHelper::getLogTimezone();
 		Assert::assertEquals(
+			$expectedTimezone,
 			$currentTimezone,
-			$timezone,
-			"The owncloud log timezone was expected to be set to {$timezone}, but got {$currentTimezone}"
+			"The owncloud log timezone was expected to be set to {$expectedTimezone}, but got {$currentTimezone}"
 		);
 	}
 
