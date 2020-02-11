@@ -409,7 +409,10 @@ class LoggingContext implements Context {
 		$logLevelArray = LoggingHelper::LOG_LEVEL_ARRAY;
 		$logLevelExpected = \array_search($logLevel, $logLevelArray);
 		$logLevelActual = \array_search(LoggingHelper::getLogLevel(), $logLevelArray);
-		Assert::assertEquals($logLevelExpected, $logLevelActual);
+		Assert::assertEquals(
+			$logLevelExpected,
+			$logLevelActual,
+			"The expected log level is {$logLevelExpected} but the log level has been set to {$logLevelActual}");
 	}
 
 	/**
@@ -437,7 +440,8 @@ class LoggingContext implements Context {
 		$currentBackend = LoggingHelper::getLogBackend();
 		Assert::assertEquals(
 			$currentBackend,
-			$backend
+			$backend,
+			"The owncloud log backend was expected to be set to {$backend} but got {$currentBackend}"
 		);
 	}
 
@@ -466,7 +470,8 @@ class LoggingContext implements Context {
 		$currentTimezone = LoggingHelper::getLogTimezone();
 		Assert::assertEquals(
 			$currentTimezone,
-			$timezone
+			$timezone,
+			"The owncloud log timezone was expected to be set to {$timezone}, but got {$currentTimezone}"
 		);
 	}
 
