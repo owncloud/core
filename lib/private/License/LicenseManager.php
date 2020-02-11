@@ -26,7 +26,7 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OC\License\LicenseFetcher;
 
 class LicenseManager implements ILicenseManager {
-	const TRIAL_PERIOD = 60 * 60 * 24;  // 24h
+	const GRACE_PERIOD = 60 * 60 * 24;  // 24h
 
 	/** @var LicenseFetcher */
 	private $licenseFetcher;
@@ -49,41 +49,37 @@ class LicenseManager implements ILicenseManager {
 		$this->timeFactory = $timeFactory;
 	}
 
-	public function getInfoForAllApps() {
-		// taking advantage of the current implementation, we'll check the ownCloud's license
-		// here with a dummy string. Note that this must change if a license per-app is implemented
-		$licenseState = $this->getLicenseStateFor('core');  // TODO: This is very coupled with the current impl
-		$info = [];
-		$appsWithTrial = $this->config->getAppKeys('core-trials');
-		foreach ($appsWithTrial as $appid) {
-			$trialMark = $this->config->getAppValue('core-trials', $appid, null);
-			if ($trialMark === null) {
-				continue;  // unexpected timestamp -> ignore
-			}
-			$info[$appid] = [];
-			$info[$appid]['trial_start'] = $trialMark;
-			$info[$appid]['trial_end'] = $trialMark + self::TRIAL_PERIOD;
-			$info[$appid]['license_state'] = $licenseState;
-		}
-		return $info;
-	}
-
 	/**
 	 * Check if "now" is inside the close interval [t, t+p], where t = $timestamp
-	 * and p = the trial period (24h)
-	 * @param int $timestamp the timestamp when the trial started
+	 * and p = the grace period (24h)
+	 * @param int $timestamp the timestamp when the grace period started
 	 */
-	private function isUnderTrial(int $timestamp) {
+	private function isNowUnderGracePeriod(int $timestamp) {
 		$currentTime = $this->timeFactory->getTime();
-		return $timestamp <= $currentTime && $currentTime <= ($timestamp + self::TRIAL_PERIOD);
+		return $timestamp <= $currentTime && $currentTime <= ($timestamp + self::GRACE_PERIOD);
 	}
 
-	public function isAppUnderTrialPeriod(string $appid) {
-		$trialMark = $this->config->getAppValue('core-trials', $appid, null);
-		if ($trialMark === null) {
-			$trialMark = - self::TRIAL_PERIOD;
+	public function getGracePeriod() {
+		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);
+		$appUsingGacePeriod = $this->config->getAppValue('core', 'grace_period_used_by', null);
+		if ($gracePeriod === null) {
+			return null;
+		} else {
+			return [
+				'app' => $appUsingGacePeriod,
+				'start' => (int)$gracePeriod,
+				'end' => (int)$gracePeriod + self::GRACE_PERIOD,
+			];
 		}
-		return $this->isUnderTrial($trialMark);
+	}
+
+	public function setLicenseString($licenseString) {
+		// we can only set the ownCloud's license for now
+		if ($licenseString !== null) {
+			$this->licenseFetcher->setOwncloudLicense($licenseString);
+		}
+		// remove the "grace_period_used_by" marker
+		$this->config->deleteAppValue('core', 'grace_period_used_by');
 	}
 
 	/**
@@ -112,54 +108,40 @@ class LicenseManager implements ILicenseManager {
 		}
 	}
 
-	public function isThereAnAppUnderWorkingTrial() {
-		// this should be pretty similar to the getInfoForAllApps() method
-
-		// taking advantage of the current implementation, we'll check the ownCloud's license
-		// here with a dummy string. Note that this must change if a license per-app is implemented
-		$licenseState = $this->getLicenseStateFor('core');  // TODO: This is very coupled with the current impl
-		if ($licenseState === ILicenseManager::LICENSE_STATE_VALID) {
-			// if it's a valid license, all the apps will rely on the license to work
-			// it's impossible that an app will rely on the trial to work
-			return false;
-		}
-
-		$appsWithTrial = $this->config->getAppKeys('core-trials');
-		foreach ($appsWithTrial as $appid) {
-			$trialMark = $this->config->getAppValue('core-trials', $appid, null);
-			if ($trialMark === null) {
-				continue;  // unexpected timestamp -> ignore
-			}
-			if ($this->isUnderTrial($trialMark)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public function checkLicenseFor(string $appid) {
 		$currentTime = $this->timeFactory->getTime();
 
-		$trialMark = $this->config->getAppValue('core-trials', $appid, null);
-		if ($trialMark === null) {
+		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);
+		if ($gracePeriod === null) {
 			// always start a trial if needed regardless of the license
 			$callerFile = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'];
 			if (\strpos($callerFile, $this->appManager->getAppPath($appid)) === 0) {
 				// ensure it's the app itself the one starting the trial.
 				// neither core nor other app should be able to start a trial on behalf of another app
-				$this->config->setAppValue('core-trials', $appid, $currentTime);
-				$trialMark = $currentTime;  // set the expected trial mark as now
+				$this->config->setAppValue('core', 'grace_period', $currentTime);
+				$gracePeriod = $currentTime;  // set the expected trial mark as now
 			} else {
-				// the "isUnderTrial" method must always return false in this case
-				$trialMark = - self::TRIAL_PERIOD;
+				// the "isNowUnderGracePeriod" method must always return false in this case
+				$gracePeriod = - self::TRIAL_PERIOD;
 			}
 		}
 
-		// if the app isn't under trial and the license isn't valid, disabled the app
-		if (!$this->isUnderTrial($trialMark) && !($this->getLicenseStateFor($appid) === ILicenseManager::LICENSE_STATE_VALID)) {
-			$this->appManager->disableApp($appid);
-			return false;
+		$licenseState = $this->getLicenseStateFor($appid);
+		if (!$this->isNowUnderGracePeriod($gracePeriod)) {
+			// we aren't under a grace period, so the app must be disabled if the license isn't valid
+			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID) {
+				$this->appManager->disableApp($appid);
+				return false;
+			} else {
+				return true;
+			}
 		} else {
+			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID) {
+				// we're under a grace period but the license for the app isn't valid
+				// mark the app to know there is at least one app using the grace period.
+				// we'll still return true in this case.
+				$this->config->setAppValue('core', 'grace_period_used_by', $appid);
+			}
 			return true;
 		}
 	}

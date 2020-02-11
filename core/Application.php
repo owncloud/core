@@ -33,6 +33,7 @@ use OC\AppFramework\Utility\TimeFactory;
 use OC\Core\Controller\AvatarController;
 use OC\Core\Controller\CloudController;
 use OC\Core\Controller\CronController;
+use OC\Core\Controller\LicenseController;
 use OC\Core\Controller\LoginController;
 use OC\Core\Controller\LostController;
 use OC\Core\Controller\RolesController;
@@ -176,6 +177,14 @@ class Application extends App {
 				$c->query(IConfig::class),
 				$c->query(ILogger::class),
 				$c->query(IJobList::class)
+			);
+		});
+		$container->registerService('LicenseController', static function (SimpleContainer $c) {
+			$server = $c->query('ServerContainer');
+			return new LicenseController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$server->getLicenseManager()
 			);
 		});
 

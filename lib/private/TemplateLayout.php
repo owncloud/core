@@ -71,7 +71,8 @@ class TemplateLayout extends \OC_Template {
 
 			// license notification
 			$licenseManager = \OC::$server->getLicenseManager();
-			if (\OC_User::isAdminUser(\OC_User::getUser()) && $licenseManager->isThereAnAppUnderWorkingTrial()) {
+			$gracePeriod = $licenseManager->getGracePeriod();
+			if (\OC_User::isAdminUser(\OC_User::getUser()) && (!$gracePeriod || \time() < $gracePeriod['end']) && $gracePeriod['app'] !== null) {
 				\OCP\Util::addScript('core', 'license-trial-notification');
 			}
 

@@ -1,8 +1,7 @@
 <?php
 /**
- * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -19,31 +18,35 @@
  *
  */
 
-namespace OC\Settings\Panels\Admin;
+namespace OC\Core\Controller;
 
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
 use OCP\License\ILicenseManager;
-use OCP\Settings\ISettings;
-use OCP\Template;
 
-class Trials implements ISettings {
+class LicenseController extends Controller {
 	/** @var ILicenseManager */
 	private $licenseManager;
 
-	public function __construct(ILicenseManager $licenseManager) {
+	/**
+	 * @param ILicenseManager $licenseManager
+	 */
+	public function __construct($appName, IRequest $request, ILicenseManager $licenseManager) {
+		parent::__construct($appName, $request);
 		$this->licenseManager = $licenseManager;
 	}
 
-	public function getPriority() {
-		return 30;
+	public function getGracePeriod() {
+		$gracePeriod = $this->licenseManager->getGracePeriod();
+		return new JSONResponse($gracePeriod);
 	}
 
-	public function getPanel() {
-		$template = new Template('settings', 'panels/admin/trials');
-		$template->assign('trialInfo', $this->licenseManager->getInfoForAllApps());
-		return $template;
-	}
-
-	public function getSectionID() {
-		return 'general';
+	/**
+	 * @param string|null $licenseString
+	 */
+	public function setNewLicense($licenseString) {
+		$this->licenseManager->setLicenseString($licenseString);
+		return new JSONResponse();
 	}
 }

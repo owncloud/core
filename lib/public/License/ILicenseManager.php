@@ -26,33 +26,30 @@ interface ILicenseManager {
 	const LICENSE_STATE_EXPIRED = 3;
 
 	/**
-	 * Get the information about the trials and licenses. Foreach app that has started a trial
-	 * this function will return the timestamp of the start of the trial, the timestamp
-	 * of the end of the trial, and the license state for the app (one of the LICENSE_STATE_* constants).
-	 * For now, until per-app licenses are implemented, the license state will reflect the ownCloud's
-	 * license state and it will be the same for all the apps
+	 * Return an array with "start" and "end" keys to know when the grace period has
+	 * started and when the grace period will end, or null if the grace period hasn't
+	 * started yet.
 	 *
-	 * The format is expected to be something like:
-	 * [
-	 *  'appid1' => [
-	 *   'trial_start' => 15263548,
-	 *   'trial_end' => 15263888,
-	 *   'license_state' => ILicenseManager::LICENSE_STATE_EXPIRED
-	 *   ],
-	 *  'appid2' => [....],
-	 *  'appid3' => [....]
-	 * ]
-	 * @return array a list of apps with the timestamps of the start and end of the
-	 * trial for that app, as said above
+	 * Both "start" and "end" keys will hold unix timestamps such as
+	 * ['start' => 15263748, 'end' => 15557865].
+	 *
+	 * @return array|null array with "start" and "end" keys to define the grace period interval
+	 * or null if the grace period hasn't started or isn't defined
 	 */
-	public function getInfoForAllApps();
+	public function getGracePeriod();
 
 	/**
-	 * Check if the app is under a trial period. This method won't start a new trial
-	 * @param string $appid the app id to check if it's under the trial period
-	 * @return bool true if the app is NOW under the trial period, false otherwise
+	 * Set a new license through ownCloud. You can use any string as the license.
+	 *
+	 * Use null if you don't want to set a new license but want to run possible cleanup
+	 * routines this method could have. This could be useful if the license is entered manually
+	 * and you don't want the admin to enter the license again; note that cleanup routines
+	 * might need to be run even though the license hasn't changed
+	 *
+	 * @param string|null $licenseString the new license or null if we don't want to change the
+	 * license but run the cleanup routines.
 	 */
-	public function isAppUnderTrialPeriod(string $appid);
+	public function setLicenseString($licenseString);
 
 	/**
 	 * Get the license state for $appid. This function will return one of the LICENSE_STATE_*
@@ -64,18 +61,6 @@ interface ILicenseManager {
 	 * @return int one of the LICENSE_STATE_* constants
 	 */
 	public function getLicenseStateFor(string $appid);
-
-	/**
-	 * Check if there is at least an app under a working trial: this means the app has a trial
-	 * active but not a valid license, so the app is relying on the trial period to work.
-	 * In particular, if the app has a valid license, then it will be skipped by this method.
-	 *
-	 * This method is intended to provide a convenient call instead of having to evaluate the
-	 * information from the `self::getInfoForAllApps()`.
-	 * @return bool true if there is at least an app under a working trial (as defined above),
-	 * false otherwise.
-	 */
-	public function isThereAnAppUnderWorkingTrial();
 
 	/**
 	 * This method is intended to be called only by the apps trying to check if the app

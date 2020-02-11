@@ -48,4 +48,12 @@ class LicenseFetcher {
 
 		return new BasicLicense($licenseKey);  // only BasicLicense is available at the moment
 	}
+
+	/**
+	 * Set the license that ownCloud will use
+	 * @param string $licenseString the license string
+	 */
+	public function setOwncloudLicense(string $licenseString) {
+		$this->config->setSystemValue('license-key', $licenseString);
+	}
 }
