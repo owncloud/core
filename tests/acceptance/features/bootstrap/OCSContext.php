@@ -597,7 +597,9 @@ class OCSContext implements Context {
 			$this->getOCSResponseStatusMessage(
 				$this->featureContext->getResponse()
 			),
-			'Unexpected OCS status message in response'
+			'Unexpected OCS status message :"' . $this->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '" in response'
 		);
 	}
 
@@ -627,7 +629,9 @@ class OCSContext implements Context {
 			$this->getOCSResponseStatusMessage(
 				$this->featureContext->getResponse()
 			),
-			'Unexpected OCS status message in response'
+			'Unexpected OCS status message: "' . $this->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '" in response'
 		);
 	}
 
