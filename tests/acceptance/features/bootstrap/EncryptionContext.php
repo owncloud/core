@@ -188,7 +188,7 @@ class EncryptionContext implements Context {
 		Assert::assertEquals(
 			$fileContentServer,
 			$fileContent,
-			"The content of file {$fileName} is {$fileContent}, but was supposed to be non-encypted: {$fileContentServer}"
+			"The content of file {$fileName} is {$fileContent}, but was supposed to be non-encrypted: {$fileContentServer}"
 		);
 	}
 
