@@ -121,7 +121,9 @@ class FilesVersionsContext implements Context {
 		);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
 		Assert::assertEquals(
-			$length, (int) $xmlPart[$index]
+			$length, (int) $xmlPart[$index],
+			"The content length of file {$path} with version {$index} for user {$user} was 
+			expected to be {$length} but the actual content length is {$xmlPart[$index]}"
 		);
 	}
 
