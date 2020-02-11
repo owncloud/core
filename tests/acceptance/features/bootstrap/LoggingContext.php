@@ -412,7 +412,8 @@ class LoggingContext implements Context {
 		Assert::assertEquals(
 			$logLevelExpected,
 			$logLevelActual,
-			"The expected log level is {$logLevelExpected} but the log level has been set to {$logLevelActual}");
+			"The expected log level is {$logLevelExpected} but the log level has been set to {$logLevelActual}"
+		);
 	}
 
 	/**
