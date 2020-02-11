@@ -1343,7 +1343,9 @@ class FeatureContext extends BehatVariablesContext {
 	public function theXMLKey1Key2ValueShouldBe($key1, $key2, $idText) {
 		Assert::assertEquals(
 			$idText,
-			$this->getXMLKey1Key2Value($this->response, $key1, $key2)
+			$this->getXMLKey1Key2Value($this->response, $key1, $key2),
+			"Expected {$idText} but got "
+			. $this->getXMLKey1Key2Value($this->response, $key1, $key2)
 		);
 	}
 
@@ -1362,7 +1364,9 @@ class FeatureContext extends BehatVariablesContext {
 	) {
 		Assert::assertEquals(
 			$idText,
-			$this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3)
+			$this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3),
+			"Expected {$idText} but got "
+			. $this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3)
 		);
 	}
 
@@ -1993,7 +1997,8 @@ class FeatureContext extends BehatVariablesContext {
 		$jsonExpectedEncoded = \json_encode($jsonExpected->getRaw());
 		$jsonRespondedEncoded = \json_encode((string) $this->response->getBody());
 		Assert::assertEquals(
-			$jsonExpectedEncoded, $jsonRespondedEncoded
+			$jsonExpectedEncoded, $jsonRespondedEncoded,
+			"The json responded: {$jsonRespondedEncoded} doesnot match with json expected: {$jsonExpectedEncoded}"
 		);
 	}
 
@@ -2041,17 +2046,20 @@ class FeatureContext extends BehatVariablesContext {
 			$output = \explode("- ", $this->lastStdOut);
 			$version = \explode(": ", $output[3]);
 			Assert::assertEquals(
-				"version", $version[0]
+				"version", $version[0],
+				"Expected 'version' but got {$version[0]}"
 			);
 			$versionString = \explode(": ", $output[4]);
 			Assert::assertEquals(
-				"versionstring", $versionString[0]
+				"versionstring", $versionString[0],
+				"Expected 'versionstring' but got {$versionString[0]}"
 			);
 			$jsonExpectedDecoded['version'] = \trim($version[1]);
 			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
 			$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
 			Assert::assertEquals(
-				$jsonExpectedEncoded, $jsonRespondedEncoded
+				$jsonExpectedEncoded, $jsonRespondedEncoded,
+				"The json responded: {$jsonRespondedEncoded} does not match with json expected: {$jsonExpectedEncoded}"
 			);
 		} else {
 			Assert::fail(
@@ -2129,7 +2137,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertSame(
 			404,
 			$this->getResponse()->getStatusCode(),
-			"The file '{$path}' exists in the server root"
+			"The file '{$path}' exists in the server root but was not expected to exist"
 		);
 	}
 
@@ -2140,7 +2148,9 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function theResponseBodyShouldBeEmpty() {
 		Assert::assertEmpty(
-			$this->getResponse()->getBody()->getContents()
+			$this->getResponse()->getBody()->getContents(),
+			"The response body was expected to be empty but got "
+			. $this->getResponse()->getBody()->getContents()
 		);
 	}
 
@@ -2459,7 +2469,10 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getOcsApiVersion()
 		);
 		$configkeyValue = \json_decode(\json_encode($this->getResponseXml($response)->data[0]->element->value), 1)[0];
-		Assert::assertEquals($value, $configkeyValue);
+		Assert::assertEquals(
+			$value, $configkeyValue,
+			"The config key {$key} of app {$appID} was expected to have value {$value} but got {$configkeyValue}"
+		);
 	}
 
 	/**
@@ -2540,9 +2553,15 @@ class FeatureContext extends BehatVariablesContext {
 		$should = ($shouldOrNot !== "not");
 
 		if ($should) {
-			Assert::assertTrue($this->checkConfigKeyInApp($key, $appID));
+			Assert::assertTrue(
+				$this->checkConfigKeyInApp($key, $appID),
+				"App {$appID} does not have config key {$key}"
+			);
 		} else {
-			Assert::assertFalse($this->checkConfigKeyInApp($key, $appID));
+			Assert::assertFalse(
+				$this->checkConfigKeyInApp($key, $appID),
+				"App {$appID} has config key {$key} but was not expected to"
+			);
 		}
 	}
 
@@ -2558,11 +2577,17 @@ class FeatureContext extends BehatVariablesContext {
 		$should = ($shouldOrNot !== "not");
 		if ($should) {
 			foreach ($table as $item) {
-				Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+				Assert::assertTrue(
+					$this->checkConfigKeyInApp($item['configkey'], $item['appid']),
+					"{$item['appid']} was expected to have config key {$item['configkey']} but does not"
+				);
 			}
 		} else {
 			foreach ($table as $item) {
-				Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+				Assert::assertFalse(
+					$this->checkConfigKeyInApp($item['configkey'], $item['appid']),
+					"Expected : {$item['appid']} should not have config key {$item['configkey']}"
+				);
 			}
 		}
 	}
