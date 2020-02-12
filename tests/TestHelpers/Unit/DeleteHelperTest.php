@@ -77,11 +77,6 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 		);
 		$this->assertEquals('DELETE', $lastRequest->getMethod());
 		$this->assertEquals('', $lastRequest->getBody()->getContents());
-
-		$this->assertEquals(
-			['Basic ' . \base64_encode('user:password')],
-			$lastRequest->getHeaders()["Authorization"]
-		);
 	}
 
 	/**
@@ -111,11 +106,6 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 		);
 		$this->assertEquals('DELETE', $lastRequest->getMethod());
 		$this->assertEquals('', $lastRequest->getBody()->getContents());
-
-		$this->assertEquals(
-			['Basic ' . \base64_encode('user:password')],
-			$lastRequest->getHeaders()["Authorization"]
-		);
 	}
 
 	/**

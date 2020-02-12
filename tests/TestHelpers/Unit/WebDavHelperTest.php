@@ -91,10 +91,6 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 			$lastRequest->getUri()
 		);
 		$this->assertEquals('GET', $lastRequest->getMethod());
-		$this->assertEquals(
-			['Basic ' . \base64_encode('user1:pass')],
-			$lastRequest->getHeaders()["Authorization"]
-		);
 	}
 
 	/**
