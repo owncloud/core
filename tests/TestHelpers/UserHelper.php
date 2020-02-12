@@ -21,9 +21,8 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\BatchResults;
-use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper to administrate users (and groups) through the provisioning API
@@ -114,13 +113,17 @@ class UserHelper {
 	 * @param string $adminPassword
 	 * @param int $ocsApiVersion
 	 *
-	 * @return BatchResults
+	 * @return array
 	 */
 	public static function editUserBatch(
 		$baseUrl, $editData, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
-		$client = new Client();
 		$requests = [];
+		$client = HttpRequestHelper::createClient(
+			$adminUser,
+			$adminPassword
+		);
+
 		foreach ($editData as $data) {
 			$path = "/cloud/users/" . $data['user'];
 			$body = ["key" => $data['key'], 'value' => $data["value"]];
@@ -141,14 +144,14 @@ class UserHelper {
 		// Send the array of requests at once in parallel.
 		$results =  HttpRequestHelper::sendBatchRequest($requests, $client);
 
-		foreach ($results->getFailures() as $e) {
-			$pathArray = \explode('/', $e->getRequest()->getPath());
-			$failedUser = \end($pathArray);
-			$editData = $e->getRequest()->getBody()->getFields();
-			throw new \Exception(
-				"Could not set '${editData['key']}' to '${editData['value']}' for user '$failedUser' \n"
-				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
-			);
+		foreach ($results as $e) {
+			if ($e instanceof ClientException) {
+				$httpStatusCode = $e->getResponse()->getStatusCode();
+				$reasonPhrase = $e->getResponse()->getReasonPhrase();
+				throw new \Exception(
+					"Unexpected failure when editing a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase"
+				);
+			}
 		}
 		return $results;
 	}

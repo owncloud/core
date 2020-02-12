@@ -20,8 +20,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Exception\ClientException;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
@@ -718,7 +718,10 @@ trait Provisioning {
 	 */
 	public function usersHaveBeenCreated($initialize, $usersAttributes) {
 		$requests = [];
-		$client = new Client();
+		$client = HttpRequestHelper::createClient(
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 
 		foreach ($usersAttributes as $userAttributes) {
 			if ($this->isTestingWithLdap()) {
@@ -742,19 +745,17 @@ trait Provisioning {
 		if (!$this->isTestingWithLdap()) {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Retrieve all failures.
-			foreach ($results->getFailures() as $e) {
-				$failedUser = $e->getRequest()->getBody()->getFields()['userid'];
-				$message = $this->getResponseXml($e->getResponse())->xpath("/ocs/meta/message");
-				if ($message && (string)$message[0] === "User already exists") {
-					Assert::fail(
-						"Could not create user '$failedUser' as it already exists. " .
-						"Please delete the user to run tests again."
+			foreach ($results as $e) {
+				if ($e instanceof ClientException) {
+					$responseXml = $this->getResponseXml($e->getResponse());
+					$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
+					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
+					$httpStatusCode = $e->getResponse()->getStatusCode();
+					$reasonPhrase = $e->getResponse()->getReasonPhrase();
+					throw new Exception(
+						__METHOD__ . "Unexpected failure when creating a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase OCS status $ocsStatusCode OCS message $messageText"
 					);
 				}
-				throw new Exception(
-					__METHOD__ . " could not create user. "
-					. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
-				);
 			}
 		}
 
@@ -1945,7 +1946,10 @@ trait Provisioning {
 	public function initializeUserBatch($users) {
 		$url = "/cloud/users/%s";
 		$requests = [];
-		$client = new Client();
+		$client = HttpRequestHelper::createClient(
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 		foreach ($users as $user) {
 			// create a new request for each user but do not send it yet.
 			// push the newly created request to an array.
@@ -1965,14 +1969,15 @@ trait Provisioning {
 		// Send all the requests in parallel.
 		$response = HttpRequestHelper::sendBatchRequest($requests, $client);
 		// throw an exception if any request fails.
-		foreach ($response->getFailures() as $e) {
-			$pathArray = \explode('/', $e->getRequest()->getPath());
-			$failedUser = \end($pathArray);
-			throw new \Exception(
-				__METHOD__
-				. " Could not initialize user $failedUser \n"
-				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
-			);
+		foreach ($response as $e) {
+			if ($e instanceof ClientException) {
+				$httpStatusCode = $e->getResponse()->getStatusCode();
+				$reasonPhrase = $e->getResponse()->getReasonPhrase();
+				throw new \Exception(
+					__METHOD__ .
+					"Unexpected failure when initializing a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase"
+				);
+			}
 		}
 	}
 

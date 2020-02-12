@@ -23,7 +23,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SharingHelper;

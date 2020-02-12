@@ -21,8 +21,9 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Client;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper to make requests to the OCS API
@@ -81,15 +82,8 @@ class OcsApiHelper {
 		return HttpRequestHelper::createRequest(
 			$fullUrl,
 			$method,
-			$user,
-			$password,
 			$headers,
-			$body,
-			null,
-			null,
-			null,
-			null,
-			$client
+			$body
 		);
 	}
 }

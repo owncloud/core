@@ -20,7 +20,7 @@
  */
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\HttpRequestHelper;
 
 /**

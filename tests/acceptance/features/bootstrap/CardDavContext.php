@@ -21,7 +21,7 @@
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\HttpRequestHelper;
 
 /**
