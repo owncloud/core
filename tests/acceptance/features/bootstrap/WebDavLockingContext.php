@@ -98,7 +98,6 @@ class WebDavLockingContext implements Context {
 		$this->featureContext->setResponse($response);
 		$responseXml = $this->featureContext->getResponseXml();
 		$this->featureContext->setResponseXmlObject($responseXml);
-		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:locktoken/d:href");
 		if (isset($xmlPart[0])) {
 			$this->tokenOfLastLock[$user][$file] = (string) $xmlPart[0];
@@ -447,7 +446,6 @@ class WebDavLockingContext implements Context {
 			$this->featureContext->getDavPathVersion()
 		);
 		$responseXml = $this->featureContext->getResponseXml($response);
-		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:response//d:lockdiscovery/d:activelock");
 		Assert::assertCount(
 			(int) $count, $xmlPart,

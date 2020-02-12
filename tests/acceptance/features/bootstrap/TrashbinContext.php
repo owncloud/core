@@ -204,11 +204,6 @@ class TrashbinContext implements Context {
 		);
 		$this->featureContext->setResponse($response);
 		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
-		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
-		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
-		$responseXmlObject->registerXPathNamespace(
-			'ocs', 'http://open-collaboration-services.org/ns'
-		);
 		$this->featureContext->setResponseXmlObject($responseXmlObject);
 	}
 
