@@ -15,7 +15,7 @@
     "Error occurred while posting comment" : "Es ist ein Fehler beim Veröffentlichen des Kommentars aufgetreten",
     "{count} unread comments" : "{count} ungelesene Kommentare",
     "Comment" : "Kommentar",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Kommentare</strong> für Dateien<em>(immer im Stream aufgelistet)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Kommentare</strong> für Dateien <em>(immer im Stream aufgelistet)</em>",
     "You commented" : "Du hast kommentiert",
     "%1$s commented" : "%1$s kommentierte",
     "You commented on %2$s" : "Du hast %2$s kommentiert",
