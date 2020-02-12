@@ -9,7 +9,7 @@
         "sensiolabs/behat-page-object-extension": "^2.3",
         "symfony/translation": "^4.4",
         "sabre/xml": "^2.2",
-        "guzzlehttp/guzzle": "^5.3",
+        "guzzlehttp/guzzle": "^6.5",
         "phpunit/phpunit": "^7.5",
         "zendframework/zend-ldap": "^2.10"
     }

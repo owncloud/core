@@ -84,20 +84,22 @@ class SearchContext implements Context {
 	}
 
 	/**
-	 * @Then file/folder :path in the search result should contain these properties:
+	 * @Then file/folder :path in the search result of user :user should contain these properties:
 	 *
 	 * @param string $path
+	 * @param string $user
 	 * @param TableNode $properties
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function fileOrFolderInTheSearchResultShouldContainProperties(
-		$path, TableNode $properties
+		$path, $user, TableNode $properties
 	) {
 		$this->featureContext->verifyTableNodeColumns($properties, ['name', 'value']);
 		$properties = $properties->getHash();
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
-			$path
+			$path, $user
 		);
 		Assert::assertNotFalse(
 			$fileResult, "could not find file/folder '$path'"

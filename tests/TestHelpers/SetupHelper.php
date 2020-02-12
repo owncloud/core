@@ -24,7 +24,7 @@ namespace TestHelpers;
 use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
 
 /**
@@ -681,9 +681,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$return = [];
-		$return['code'] = $result->xml()->xpath("//ocs/data/code");
-		$return['stdOut'] = $result->xml()->xpath("//ocs/data/stdOut");
-		$return['stdErr'] = $result->xml()->xpath("//ocs/data/stdErr");
+		$resultXml = \simplexml_load_string($result->getBody()->getContents());
+		$return['code'] = $resultXml->xpath("//ocs/data/code");
+		$return['stdOut'] = $resultXml->xpath("//ocs/data/stdOut");
+		$return['stdErr'] = $resultXml->xpath("//ocs/data/stdErr");
 
 		if (!isset($return['code'][0])) {
 			throw new Exception(

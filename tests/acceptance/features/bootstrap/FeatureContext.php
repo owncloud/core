@@ -27,7 +27,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\OcsApiHelper;
@@ -2477,7 +2477,7 @@ class FeatureContext extends BehatVariablesContext {
 			[],
 			$this->getOcsApiVersion()
 		);
-		$configkeyValue = \json_decode(\json_encode($this->getResponseXml($response)->data[0]->element->value), 1)[0];
+		$configkeyValue = (string) $this->getResponseXml($response)->data[0]->element->value;
 		Assert::assertEquals(
 			$value, $configkeyValue,
 			"The config key {$key} of app {$appID} was expected to have value {$value} but got {$configkeyValue}"

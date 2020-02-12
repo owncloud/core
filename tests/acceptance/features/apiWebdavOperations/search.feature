@@ -25,7 +25,7 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain these entries:
+    And the search result of user "user0" should contain these entries:
       | /upload.txt                   |
       | /just-a-folder/upload.txt     |
       | /upload folder                |
@@ -33,7 +33,7 @@ Feature: Search
       | /फनी näme/upload.txt          |
       | /upload😀 😁                  |
       | /upload😀 😁/upload😀 😁.txt  |
-    But the search result should not contain these entries:
+    But the search result of user "user0" should not contain these entries:
       | /a-image.png |
     Examples:
       | dav_version |
@@ -45,7 +45,7 @@ Feature: Search
     When user "user0" searches for "ol" using the WebDAV API
     Then the HTTP status code should be "207"
     And the search result should contain "4" entries
-    And the search result should contain these entries:
+    And the search result of user "user0" should contain these entries:
       | /just-a-folder           |
       | /upload folder           |
       | /FOLDER                  |
@@ -59,11 +59,11 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "png" using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain these entries:
+    And the search result of user "user0" should contain these entries:
       | /a-image.png               |
       | /just-a-folder/a-image.png |
       | /फनी näme/a-image.png      |
-    But the search result should not contain these entries:
+    But the search result of user "user0" should not contain these entries:
       | /upload.txt                   |
       | /just-a-folder/upload.txt     |
       | /just-a-folder/uploadÜठिF.txt |
@@ -85,7 +85,7 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" and limits the results to "3" items using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain any "3" of these entries:
+    And the search result of user "user0" should contain any "3" of these entries:
       | /just-a-folder/upload.txt     |
       | /just-a-folder/uploadÜठिF.txt |
       | /upload folder                |
@@ -102,7 +102,7 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" and limits the results to "1" items using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain any "1" of these entries:
+    And the search result of user "user0" should contain any "1" of these entries:
       | /just-a-folder/upload.txt     |
       | /just-a-folder/uploadÜठिF.txt |
       | /upload folder                |
@@ -120,7 +120,7 @@ Feature: Search
     When user "user0" searches for "upload" and limits the results to "100" items using the WebDAV API
     Then the HTTP status code should be "207"
     And the search result should contain "7" entries
-    And the search result should contain these entries:
+    And the search result of user "user0" should contain these entries:
       | /upload.txt                   |
       | /just-a-folder/upload.txt     |
       | /upload folder                |
@@ -146,7 +146,7 @@ Feature: Search
       | oc:owner-display-name |
       | oc:size               |
     Then the HTTP status code should be "207"
-    And file "/upload.txt" in the search result should contain these properties:
+    And file "/upload.txt" in the search result of user "user0" should contain these properties:
       | name                                       | value                                                                                             |
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
       | {http://owncloud.org/ns}permissions        | ^(RDNVW\|RMDNVW)$                                                                                 |
@@ -174,7 +174,7 @@ Feature: Search
       | oc:owner-display-name |
       | oc:size               |
     Then the HTTP status code should be "207"
-    And folder "/upload folder" in the search result should contain these properties:
+    And folder "/upload folder" in the search result of user "user0" should contain these properties:
       | name                                       | value                                                                                             |
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
       | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVCK)$                                                                               |
@@ -192,10 +192,10 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "😀 😁" using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain these entries:
+    And the search result of user "user0" should contain these entries:
       | /upload😀 😁                 |
       | /upload😀 😁/upload😀 😁.txt |
-    But the search result should not contain these entries:
+    But the search result of user "user0" should not contain these entries:
       | /a-image.png                  |
       | /upload.txt                   |
       | /just-a-folder/upload.txt     |

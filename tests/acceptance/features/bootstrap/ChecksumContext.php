@@ -51,11 +51,8 @@ class ChecksumContext implements Context {
 	public function userUploadsFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory(
-			\fopen(
-				$this->featureContext->acceptanceTestsDirLocation() . $source,
-				'r'
-			)
+		$file = \file_get_contents(
+			$this->featureContext->acceptanceTestsDirLocation() . $source
 		);
 		$response = $this->featureContext->makeDavRequest(
 			$user,
@@ -217,7 +214,7 @@ class ChecksumContext implements Context {
 	 */
 	public function theHeaderChecksumShouldMatch($checksum) {
 		$headerChecksum
-			= $this->featureContext->getResponse()->getHeader('OC-Checksum');
+			= $this->featureContext->getResponse()->getHeader('OC-Checksum')[0];
 		Assert::assertEquals(
 			$checksum,
 			$headerChecksum,
@@ -281,7 +278,6 @@ class ChecksumContext implements Context {
 		$user, $num, $total, $data, $destination, $checksum
 	) {
 		$num -= 1;
-		$data = \GuzzleHttp\Stream\Stream::factory($data);
 		$file = "$destination-chunking-42-$total-$num";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
