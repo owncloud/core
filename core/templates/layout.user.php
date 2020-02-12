@@ -51,6 +51,7 @@
 			user-display-name="<?php p($_['user_displayname']); ?>"
 			phoenix-url="<?php p($_['phoenixBaseUrl']) ?>"
 			applications-list-url="<?php p($_['phoenixBaseUrl'] . '/navigation.json') ?>"
+			lang="<?php p($_['language']); ?>"
 		/>
 		</header>
 		<?php else: ?>
