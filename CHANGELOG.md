@@ -27,6 +27,7 @@ Summary
 * Bugfix - Fix provisioning API request for user information in mixed case: [#36822](https://github.com/owncloud/core/issues/36822)
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
+* Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -247,6 +248,13 @@ Details
    the language-specific translations.
 
    https://github.com/owncloud/core/pull/36875
+
+* Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
+
+   Downloading was failing with the message "Encryption not ready: Module with id:
+   OC_DEFAULT_MODULE does not exist." if the file was encrypted with another ownCloud instance.
+
+   https://github.com/owncloud/core/pull/36921
 
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 
