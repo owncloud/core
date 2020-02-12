@@ -1,0 +1,7 @@
+Bugfix: It's not possible to download externally encrypted files
+
+Downloading was failing with the message "Encryption not ready: Module
+with id: OC_DEFAULT_MODULE does not exist." if the file was encrypted
+with another ownCloud instance.
+
+https://github.com/owncloud/core/pull/36921
