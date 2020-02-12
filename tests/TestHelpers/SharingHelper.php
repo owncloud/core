@@ -110,11 +110,6 @@ class SharingHelper {
 			}
 		}
 
-		if (OcisHelper::isTestingOnOcis()) {
-			$path = "/home/" . $path;
-			$path = WebDavHelper::sanitizeUrl($path);
-		}
-
 		if ($permissions !== null) {
 			$fd['permissions'] = self::getPermissionSum($permissions);
 		}

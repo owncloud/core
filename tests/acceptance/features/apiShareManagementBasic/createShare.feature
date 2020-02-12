@@ -84,7 +84,7 @@ Feature: sharing
     When user "user0" shares file "textfile0.txt" with user "user1" with permissions <requested_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the OCS status message should be "error searching recipient"
+    And the OCS status message should be "grpc stat request failed"
     Examples:
       | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
       # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
@@ -126,9 +126,72 @@ Feature: sharing
     And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
     When user "user0" shares file "randomfile.txt" with user "user1" with permissions "0" using the sharing API
     Then the OCS status code should be "996"
-    And the OCS status message should be "error searching recipient"
+    And the OCS status message should be "grpc stat request failed"
     And the HTTP status code should be "<http_status_code>"
     And as "user1" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 200              |
+
+  @skipOnOcV10
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario or adjust it, so that it works also with oC10
+  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
+    When user "user0" shares file "/randomfile.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "998"
+    And the OCS status message should be "not found"
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 200              |
+
+  @skipOnOcV10
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario or adjust it, so that it works also with oC10
+  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "/doesNotExist/randomfile.txt" with user "user1" using the sharing API
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 200              |
+
+  @skipOnOcV10
+  @issue-ocis-reva-64
+  #after fixing all issues delete this Scenario or adjust it, so that it works also with oC10
+  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "/NotExistingFile.txt" with user "user1" using the sharing API
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 200              |
+
+  @skipOnOcis
+  @issue-ocis-reva-64
+  #OCIS returns an empty response when sharing with a file inside the /home folder
+  #in that case the sharing step fails completely
+  #after fixing the issue, enable for ocis
+  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "/home"
+    And user "user0" has uploaded file with content "user0 file" to "/home/randomfile.txt"
+    When user "user0" shares file "/home/randomfile.txt" with user "user1" using the sharing API
+    And the HTTP status code should be "<http_status_code>"
+    And as "user1" file "randomfile.txt" should exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -160,7 +223,7 @@ Feature: sharing
     And user "user0" has created folder "/afolder"
     When user "user0" shares folder "afolder" with user "user1" with permissions "0" using the sharing API
     Then the OCS status code should be "996"
-    And the OCS status message should be "error searching recipient"
+    And the OCS status message should be "grpc stat request failed"
     And the HTTP status code should be "<http_status_code>"
     And as "user1" folder "afolder" should not exist
     Examples:
@@ -211,12 +274,12 @@ Feature: sharing
     And user "user0" has created folder "/FOLDER"
     When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
-    And the OCS status message should be "error searching recipient"
+    And the OCS status message should be "not found"
     And the HTTP status code should be "200"
     Examples:
       | ocs_api_version | ocs_status_code |
-      | 1               | 996             |
-      | 2               | 996             |
+      | 1               | 998             |
+      | 2               | 998             |
 
   @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
