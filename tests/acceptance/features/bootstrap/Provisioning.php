@@ -420,6 +420,9 @@ trait Provisioning {
 			$this->ldapPort = OcisHelper::getLdapPort();
 			$useSsl = OcisHelper::useSsl();
 			$this->ldapAdminUser = OcisHelper::getBindDN();
+			if ($useSsl === true) {
+				\putenv('LDAPTLS_REQCERT=never');
+			}
 		} else {
 			$occResult = SetupHelper::runOcc(
 				['ldap:show-config', 'LDAPTestId', '--output=json']
