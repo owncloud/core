@@ -1,4 +1,4 @@
-@api @files_versions-app-required @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-18
+@api @files_versions-app-required @TestAlsoOnExternalUserBackend
 
 Feature: dav-versions
 
@@ -7,10 +7,19 @@ Feature: dav-versions
     And using new DAV path
     And user "user0" has been created with default attributes and without skeleton files
 
+  @skipOnOcis @issue-ocis-reva-22
   Scenario: Upload file and no version is available
     When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
+  @skipOnOcV10 @issue-ocis-reva-22
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: Upload file and no version is available
+    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
+    And user "user0" tries to get versions of file "davtest.txt" from "user0"
+    Then the HTTP status code should be "500"
+
+  @skipOnOcis @issue-ocis-reva-22
   Scenario: Upload file and no version is available using various chunking methods
     When user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     Then the version folder of file "/davtest.txt-olddav-regular" for user "user0" should contain "0" elements
@@ -18,6 +27,7 @@ Feature: dav-versions
     Then the version folder of file "/davtest.txt-olddav-oldchunking" for user "user0" should contain "0" elements
     Then the version folder of file "/davtest.txt-newdav-newchunking" for user "user0" should contain "0" elements
 
+  @skipOnOcis @issue-ocis-reva-22
   Scenario: Upload file and no version is available using async upload
     Given the administrator has enabled async operations
     When user "user0" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
@@ -30,6 +40,7 @@ Feature: dav-versions
     Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder should be "8"
 
+  @skipOnOcis @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Upload a file twice and versions are available using various chunking methods
     When user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     And user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
@@ -38,13 +49,24 @@ Feature: dav-versions
     Then the version folder of file "/davtest.txt-olddav-oldchunking" for user "user0" should contain "1" element
     Then the version folder of file "/davtest.txt-newdav-newchunking" for user "user0" should contain "1" element
 
+  @skipOnOcV10 @issue-ocis-reva-17 @issue-ocis-reva-56
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: Upload a file twice and versions are available using various chunking methods
+    When user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
+    And user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
+    Then the version folder of file "/davtest.txt-olddav-regular" for user "user0" should contain "1" element
+    And the version folder of file "/davtest.txt-newdav-regular" for user "user0" should contain "1" element
+    And as "user0" file "/davtest.txt-olddav-oldchunking" should not exist
+    And as "user0" file "/davtest.txt-newdav-newchunking" should not exist
+
+  @skipOnOcis @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Upload a file twice and versions are available using async upload
     Given the administrator has enabled async operations
     When user "user0" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     And user "user0" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
 
-  @smokeTest
+  @smokeTest @skipOnOcis @issue-ocis-reva-94
   Scenario: Remove a file
     Given user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
     And user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
@@ -52,6 +74,16 @@ Feature: dav-versions
     And user "user0" has deleted file "/davtest.txt"
     When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
+
+  @skipOnOcV10 @issue-ocis-reva-94
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: Remove a file
+    Given user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
+    And user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
+    And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
+    And user "user0" has deleted file "/davtest.txt"
+    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
+    Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
 
   @smokeTest
   Scenario: Restore a file and check, if the content is now in the current file
@@ -70,6 +102,7 @@ Feature: dav-versions
     Then the content of file "/davtest.txt" for user "user0" should be "Back To The Future."
 
   @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
+  @skipOnOcis @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario Outline: Uploading a chunked file does create the correct version that can be restored
     Given using <dav-path> DAV path
     And user "user0" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -84,6 +117,7 @@ Feature: dav-versions
       | old      |
 
   @skipOnStorage:ceph @files_primary_s3-issue-161
+  @skipOnOcis @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Uploading a file asynchronously does create the correct version that can be restored
     Given the administrator has enabled async operations
     And user "user0" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -94,6 +128,7 @@ Feature: dav-versions
     Then the content of file "/textfile0.txt" for user "user0" should be "Dav-Test"
 
   @skipOnStorage:ceph @files_primary_s3-issue-156
+  @skipOnOcis @issue-ocis-reva-57
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
     Given user "user0" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
@@ -123,6 +158,7 @@ Feature: dav-versions
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
@@ -132,6 +168,7 @@ Feature: dav-versions
     And the version folder of file "/sharefile.txt" for user "user0" should contain "1" element
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer of a file can restore the original content of a shared file after the file has been modified by the sharee
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
@@ -143,6 +180,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "user1" should be "user0 content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer can restore a file inside a shared folder modified by sharee
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -155,6 +193,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharee can restore a file inside a shared folder modified by sharee
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -167,6 +206,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -179,6 +219,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharee can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -191,6 +232,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharee
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -203,6 +245,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -215,6 +258,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -229,6 +273,7 @@ Feature: dav-versions
     And the content of file "/received/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "old content" to "/sharefile.txt"
@@ -242,6 +287,7 @@ Feature: dav-versions
     And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/sharingfolder"
@@ -256,6 +302,7 @@ Feature: dav-versions
     And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer can restore a file inside a group shared folder modified by sharee
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and without skeleton files
@@ -274,6 +321,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "user2" should be "user0 content"
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Moving a file (with versions) into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -301,6 +349,7 @@ Feature: dav-versions
       | new         | user1 |
 
   @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Moving a file (with versions) out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -327,6 +376,7 @@ Feature: dav-versions
       | new         | user1 |
 
   @skipOnOcV10.3.0 @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -337,6 +387,7 @@ Feature: dav-versions
     Then the value of the item "//s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required
+  @skipOnOcis @issue-ocis-reva-21
   Scenario: Receiver tries get file versions of shared file from the sharer
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "textfile0" to "textfile0.txt"
