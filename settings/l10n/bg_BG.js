@@ -274,6 +274,7 @@ OC.L10N.register(
     "Done" : "Завършен",
     "Version" : "Версия",
     "New Password" : "Нова Парола",
+    "Confirm Password" : "Потвърдете паролата",
     "Personal" : "Лично",
     "Admin" : "Админ",
     "Other" : "Друга...",
