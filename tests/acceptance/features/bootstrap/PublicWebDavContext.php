@@ -956,6 +956,7 @@ class PublicWebDavContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->occContext = $environment->getContext('OccContext');
+		$this->occContext = new OccContext();
+		$environment->registerContext($this->occContext);
 	}
 }
