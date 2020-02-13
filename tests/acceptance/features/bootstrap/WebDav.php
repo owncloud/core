@@ -3103,19 +3103,23 @@ trait WebDav {
 		// This should be something like /remote.php/webdav/textfile0.txt or
 		// /remote.php/dav/files/user0/textfile0.txt
 		$pathOfFirstEntry = $this->responseXml['value'][0]['value'][0]['value'];
-		// Go up one level to the "directory" above, and just have a "/" at the end
-		// e.g. /remote.php/dav/files/user0/
-		// This
-		$fullWebDavPath = \dirname($pathOfFirstEntry) . "/";
-		// trim any "/" passed by the caller, we can just match the "raw" name
+		// trim any leading "/" passed by the caller, we can just match the "raw" name
 		$entryNameToSearch = \trim($entryNameToSearch, "/");
+		$numLevels = \count(\explode("/", $entryNameToSearch));
+		// Go up numLevels to the "directory" above, and have a "/" at the end
+		// e.g. /remote.php/dav/files/user0/ or /remote.php/webdav/
+		$topWebDavPath = $pathOfFirstEntry;
+		for ($count = 1; $count <= $numLevels; $count++) {
+			$topWebDavPath = \dirname($topWebDavPath);
+		}
+		$topWebDavPath = $topWebDavPath . "/";
 
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
-				$entryName = \str_replace($fullWebDavPath, "", $entryPath);
+				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
 				if ($entryNameToSearch === $entryName) {
 					return $multistatusResult;
