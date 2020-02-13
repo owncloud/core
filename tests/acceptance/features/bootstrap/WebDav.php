@@ -2997,15 +2997,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^the (?:propfind|search) result should (not|)\s?contain these (?:files|entries):$/
-	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $expectedFiles
+	 * @param string|null $user
 	 *
 	 * @return void
 	 */
 	public function propfindResultShouldContainEntries(
-		$shouldOrNot, TableNode $expectedFiles
+		$shouldOrNot, TableNode $expectedFiles, $user = null
 	) {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$elementRows = $expectedFiles->getRows();
@@ -3013,7 +3012,8 @@ trait WebDav {
 
 		foreach ($elementRows as $expectedFile) {
 			$fileFound = $this->findEntryFromPropfindResponse(
-				$expectedFile[0]
+				$expectedFile[0],
+				$user
 			);
 			if ($should) {
 				Assert::assertNotEmpty(
@@ -3027,6 +3027,22 @@ trait WebDav {
 				);
 			}
 		}
+	}
+
+	/**
+	 * @Then /^the (?:propfind|search) result should (not|)\s?contain these (?:files|entries):$/
+	 *
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $expectedFiles
+	 *
+	 * @return void
+	 */
+	public function thePropfindResultShouldContainEntries(
+		$shouldOrNot, TableNode $expectedFiles
+	) {
+		$this->propfindResultShouldContainEntries(
+			$shouldOrNot, $expectedFiles
+		);
 	}
 
 	/**
@@ -3073,10 +3089,19 @@ trait WebDav {
 	) {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$this->propfindResultShouldContainNumEntries($expectedNumber);
-		$elementRows = $expectedFiles->getRowsHash();
+		$elementRows = $expectedFiles->getColumn(0);
+		// Remove any "/" from the front (or back) of the expected values passed
+		// into the step. findEntryFromPropfindResponse returns entries without
+		// any leading (or trailing) slash
+		$expectedEntries = \array_map(
+			function ($value) {
+				return \trim($value, "/");
+			},
+			$elementRows
+		);
 		$resultEntries = $this->findEntryFromPropfindResponse();
 		foreach ($resultEntries as $resultEntry) {
-			Assert::assertArrayHasKey($resultEntry, $elementRows);
+			Assert::assertContains($resultEntry, $expectedEntries);
 		}
 	}
 
@@ -3085,13 +3110,16 @@ trait WebDav {
 	 * and returns found search results if found else returns false
 	 *
 	 * @param string $entryNameToSearch
+	 * @param string|null $user
 	 *
 	 * @return string|array|boolean
 	 * string if $entryNameToSearch is given and is found
 	 * array if $entryNameToSearch is not given
 	 * boolean false if $entryNameToSearch is given and is not found
 	 */
-	public function findEntryFromPropfindResponse($entryNameToSearch = null) {
+	public function findEntryFromPropfindResponse(
+		$entryNameToSearch = null, $user = null
+	) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
 		if (empty($this->responseXml)) {
@@ -3099,21 +3127,15 @@ trait WebDav {
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
 		}
-		// Get the path of the first entry in the propfind response
-		// This should be something like /remote.php/webdav/textfile0.txt or
-		// /remote.php/dav/files/user0/textfile0.txt
-		$pathOfFirstEntry = $this->responseXml['value'][0]['value'][0]['value'];
-		// trim any leading "/" passed by the caller, we can just match the "raw" name
-		$entryNameToSearch = \trim($entryNameToSearch, "/");
-		$numLevels = \count(\explode("/", $entryNameToSearch));
-		// Go up numLevels to the "directory" above, and have a "/" at the end
-		// e.g. /remote.php/dav/files/user0/ or /remote.php/webdav/
-		$topWebDavPath = $pathOfFirstEntry;
-		for ($count = 1; $count <= $numLevels; $count++) {
-			$topWebDavPath = \dirname($topWebDavPath);
+		if ($user === null) {
+			$user = $this->getCurrentUser();
 		}
-		$topWebDavPath = $topWebDavPath . "/";
+		// trim any leading "/" passed by the caller, we can just match the "raw" name
+		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 
+		// topWebDavPath should be something like /remote.php/webdav/ or
+		// /remote.php/dav/files/user0/
+		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {
@@ -3121,7 +3143,7 @@ trait WebDav {
 				$entryPath = $multistatusResult['value'][0]['value'];
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
-				if ($entryNameToSearch === $entryName) {
+				if ($trimmedEntryNameToSearch === $entryName) {
 					return $multistatusResult;
 				}
 				\array_push($results, $entryName);
