@@ -198,9 +198,9 @@ class OccAppManagementContext implements Context {
 			Assert::assertContains(
 				$app,
 				$lastOutputApps,
-				"The apps: "
-				. $lastOutputApps
-				. "returned by the occ command were expected to include {$app}, but does not"
+				"The apps: '"
+				. \implode(', ', $lastOutputApps)
+				. "' returned by the occ command were expected to include '$app', but does not"
 			);
 		}
 	}
