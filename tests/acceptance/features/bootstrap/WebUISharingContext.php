@@ -38,6 +38,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\EmailHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;
+use PHPUnit\Framework\Exception;
 
 require_once 'bootstrap.php';
 
@@ -1914,5 +1915,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				"Expected: " . $filename . " not to be marked as shared but it is"
 			);
 		}
+	}
+
+	/**
+	 * @Then public link share with name :arg1 should be visible
+	 *
+	 * @param string $expectedLinkEntryName
+	 *
+	 * @return void
+	 */
+	public function publicLinkShareWithNameShouldBeVisible($expectedLinkEntryName) {
+		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
+		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
 	}
 }
