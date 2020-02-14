@@ -390,7 +390,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		$this->assertElementNotNull(
 			$expirationDay,
 			__METHOD__ .
-			"could not find user share expiration day field"
+			" could not find user share expiration day field"
 		);
 		return $expirationDay->getValue($expirationDay);
 	}
@@ -403,7 +403,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		$this->assertElementNotNull(
 			$expirationDay,
 			__METHOD__ .
-			"could not find group share expiration day field"
+			" could not find group share expiration day field"
 		);
 		return $expirationDay->getValue($expirationDay);
 	}
@@ -640,21 +640,21 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		$btn = $this->find("xpath", $this->addTrustedServerBtnXpath);
 		$this->assertElementNotNull(
 			$btn,
-			__METHOD__ . "Could not find the button to add trusted server."
+			__METHOD__ . " Could not find the button to add trusted server."
 		);
 		$btn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$input = $this->find("xpath", $this->addTrustedServerInputXpath);
 		$this->assertElementNotNull(
 			$input,
-			__METHOD__ . "Could not find the input to add trusted server."
+			__METHOD__ . " Could not find the input to add trusted server."
 		);
 		$input->setValue($url);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$submit = $this->find("xpath", $this->addTrustedServerConfirmBtnXpath);
 		$this->assertElementNotNull(
 			$submit,
-			__METHOD__ . "Could not find the confirm button to add trusted server."
+			__METHOD__ . " Could not find the confirm button to add trusted server."
 		);
 		$submit->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -676,7 +676,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		);
 		$this->assertElementNotNull(
 			$btn,
-			__METHOD__ . "Could not find the button to delete trusted server."
+			__METHOD__ . " Could not find the button to delete trusted server."
 		);
 		$btn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -695,7 +695,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		);
 		$this->assertElementNotNull(
 			$err,
-			__METHOD__ . "Could not find the error message for trusted servers."
+			__METHOD__ . " Could not find the error message for trusted servers."
 		);
 		return $err->getText();
 	}

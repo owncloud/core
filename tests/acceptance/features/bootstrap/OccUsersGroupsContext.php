@@ -518,7 +518,7 @@ class OccUsersGroupsContext implements Context {
 			$language,
 			\trim($responseLanguage),
 			__METHOD__
-			. "Expected: the language of user '$username' to be '$language', but got '$responseLanguage'"
+			. " Expected: the language of user '$username' to be '$language', but got '$responseLanguage'"
 		);
 	}
 
@@ -548,13 +548,13 @@ class OccUsersGroupsContext implements Context {
 				$row['uid'],
 				$result,
 				__METHOD__
-				. "Failed asserting that key '${row['uid']}' exists"
+				. " Failed asserting that key '${row['uid']}' exists"
 			);
 			Assert::assertContains(
 				$row['display name'],
 				$result,
 				__METHOD__
-				. "Failed asserting that ${row['display name']} exists"
+				. " Failed asserting that ${row['display name']} exists"
 			);
 		}
 	}
@@ -623,7 +623,7 @@ class OccUsersGroupsContext implements Context {
 				$row['group'],
 				$lastOutputGroups,
 				__METHOD__
-				. "Failed asserting that '${row['group']}' exists in '"
+				. " Failed asserting that '${row['group']}' exists in '"
 				. \implode(', ', $lastOutputGroups)
 				. "'"
 			);
@@ -651,7 +651,7 @@ class OccUsersGroupsContext implements Context {
 			$displayName,
 			$lastOutputDisplayName,
 			__METHOD__
-			. "Expected displayname to be '$displayName' but got '$lastOutputDisplayName'"
+			. " Expected displayname to be '$displayName' but got '$lastOutputDisplayName'"
 		);
 	}
 
@@ -672,7 +672,7 @@ class OccUsersGroupsContext implements Context {
 			60,
 			$delta,
 			__METHOD__
-			. "User was expected to be seen recently but wasn't"
+			. " User was expected to be seen recently but wasn't"
 		);
 	}
 
@@ -687,7 +687,7 @@ class OccUsersGroupsContext implements Context {
 			"has never logged in.",
 			$lastOutput,
 			__METHOD__
-			. "'$lastOutput' does not contain 'has never logged in.'"
+			. " '$lastOutput' does not contain 'has never logged in.'"
 		);
 	}
 
@@ -705,7 +705,7 @@ class OccUsersGroupsContext implements Context {
 			$noOfUsers,
 			$actualUsers[1],
 			__METHOD__
-			. "Expected number of users to be '$noOfUsers' but got '${actualUsers[1]}'"
+			. " Expected number of users to be '$noOfUsers' but got '${actualUsers[1]}'"
 		);
 	}
 

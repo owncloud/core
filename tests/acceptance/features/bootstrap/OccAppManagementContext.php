@@ -157,7 +157,7 @@ class OccAppManagementContext implements Context {
 		}
 
 		// if it's neither in the default location, nor in `apps_paths`, where it could be?
-		throw new Exception(__METHOD__ . "App path $appPath was not found in the config.");
+		throw new Exception(__METHOD__ . " App path $appPath was not found in the config.");
 	}
 
 	/**
