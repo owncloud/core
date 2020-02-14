@@ -514,7 +514,12 @@ class OccUsersGroupsContext implements Context {
 			"user:setting $username core lang"
 		);
 		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
-		Assert::assertEquals($language, \trim($responseLanguage));
+		Assert::assertEquals(
+			$language,
+			\trim($responseLanguage),
+			__METHOD__
+			. "Expected: the language of user '$username' to be '$language', but got '$responseLanguage'"
+		);
 	}
 
 	/**
@@ -539,8 +544,18 @@ class OccUsersGroupsContext implements Context {
 			$result = $lastOutputUsers;
 		}
 		foreach ($useridTable as $row) {
-			Assert::assertArrayHasKey($row['uid'], $result);
-			Assert::assertContains($row['display name'], $result);
+			Assert::assertArrayHasKey(
+				$row['uid'],
+				$result,
+				__METHOD__
+				. "Failed asserting that key '${row['uid']}' exists"
+			);
+			Assert::assertContains(
+				$row['display name'],
+				$result,
+				__METHOD__
+				. "Failed asserting that ${row['display name']} exists"
+			);
 		}
 	}
 
@@ -557,7 +572,15 @@ class OccUsersGroupsContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUsers = \json_decode($lastOutput, true);
 
-		Assert::assertEquals(\count($userTable->getColumnsHash()), \count($lastOutputUsers));
+		Assert::assertEquals(
+			\count($userTable->getColumnsHash()),
+			\count($lastOutputUsers),
+			"The expected number of users is '"
+			. \count($userTable->getColumnsHash())
+			. "' but got '"
+			. \count($lastOutputUsers)
+			. "'"
+		);
 
 		$found = false;
 		foreach ($userTable as $row) {
@@ -576,7 +599,10 @@ class OccUsersGroupsContext implements Context {
 					);
 				}
 			}
-			Assert::assertTrue($found);
+			Assert::assertTrue(
+				$found,
+				__METHOD__
+			);
 		}
 	}
 
@@ -593,7 +619,14 @@ class OccUsersGroupsContext implements Context {
 		$lastOutputGroups = \json_decode($lastOutput, true);
 
 		foreach ($groupTableNode as $row) {
-			Assert::assertContains($row['group'], $lastOutputGroups);
+			Assert::assertContains(
+				$row['group'],
+				$lastOutputGroups,
+				__METHOD__
+				. "Failed asserting that '${row['group']}' exists in '"
+				. \implode(', ', $lastOutputGroups)
+				. "'"
+			);
 			$lastOutputGroups = \array_diff($lastOutputGroups, [$row['group']]);
 		}
 		Assert::assertEmpty(
@@ -614,7 +647,12 @@ class OccUsersGroupsContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUser = \json_decode($lastOutput, true);
 		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
-		Assert::assertEquals($displayName, $lastOutputDisplayName);
+		Assert::assertEquals(
+			$displayName,
+			$lastOutputDisplayName,
+			__METHOD__
+			. "Expected displayname to be '$displayName' but got '$lastOutputDisplayName'"
+		);
 	}
 
 	/**
@@ -630,9 +668,12 @@ class OccUsersGroupsContext implements Context {
 		\preg_match("/([\d.]+ [\d:]+)/", $lastOutput, $userCreatedTime);
 		$useCreatedTimeStamp = \strtotime(($userCreatedTime[0]));
 		$delta = $currentTimeStamp - $useCreatedTimeStamp;
-		if ($delta > 60) {
-			throw new Exception(__METHOD__ . "User was expected to be seen recently but wasn't");
-		}
+		Assert::assertLessThanOrEqual(
+			60,
+			$delta,
+			__METHOD__
+			. "User was expected to be seen recently but wasn't"
+		);
 	}
 
 	/**
@@ -644,7 +685,9 @@ class OccUsersGroupsContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertContains(
 			"has never logged in.",
-			$lastOutput
+			$lastOutput,
+			__METHOD__
+			. "'$lastOutput' does not contain 'has never logged in.'"
 		);
 	}
 
@@ -658,7 +701,12 @@ class OccUsersGroupsContext implements Context {
 	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
-		Assert::assertEquals($noOfUsers, $actualUsers[1]);
+		Assert::assertEquals(
+			$noOfUsers,
+			$actualUsers[1],
+			__METHOD__
+			. "Expected number of users to be '$noOfUsers' but got '${actualUsers[1]}'"
+		);
 	}
 
 	/**
