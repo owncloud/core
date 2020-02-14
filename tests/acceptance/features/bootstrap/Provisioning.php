@@ -209,7 +209,8 @@ trait Provisioning {
 		}
 
 		throw new Exception(
-			"user '$username' was not created by this test run"
+			__METHOD__
+			. " user '$username' was not created by this test run"
 		);
 	}
 
@@ -230,7 +231,8 @@ trait Provisioning {
 		}
 
 		throw new Exception(
-			"group '$groupname' was not created by this test run"
+			__METHOD__
+			. " group '$groupname' was not created by this test run"
 		);
 	}
 
@@ -251,7 +253,8 @@ trait Provisioning {
 		}
 
 		throw new Exception(
-			"group '$groupname' was not created by this test run"
+			__METHOD__
+			. " group '$groupname' was not created by this test run"
 		);
 	}
 
@@ -482,7 +485,7 @@ trait Provisioning {
 				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove']
 			);
 			if ($occResult['code'] !== "0") {
-				throw new \Exception("could not sync LDAP users " . $occResult['stdErr']);
+				throw new \Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
 			}
 		}
 	}
@@ -653,7 +656,7 @@ trait Provisioning {
 		);
 		if ($occResult['code'] !== "0") {
 			throw new \Exception(
-				"could not set LDAP setting " . $occResult['stdErr']
+				__METHOD__ . " could not set LDAP setting " . $occResult['stdErr']
 			);
 		}
 	}
@@ -749,7 +752,7 @@ trait Provisioning {
 					);
 				}
 				throw new Exception(
-					"could not create user. "
+					__METHOD__ . " could not create user. "
 					. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
 				);
 			}
@@ -1400,7 +1403,7 @@ trait Provisioning {
 		$this->response = $result;
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
-				"could not change display name of user using key $key "
+				__METHOD__ . " could not change display name of user using key $key "
 				. $result->getStatusCode() . " " . $result->getBody()
 			);
 		}
@@ -1966,7 +1969,8 @@ trait Provisioning {
 			$pathArray = \explode('/', $e->getRequest()->getPath());
 			$failedUser = \end($pathArray);
 			throw new \Exception(
-				"Could not initialize user $failedUser \n"
+				__METHOD__
+				. " Could not initialize user $failedUser \n"
 				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
 			);
 		}
@@ -2116,7 +2120,7 @@ trait Provisioning {
 							);
 						}
 						throw new Exception(
-							"could not create user. "
+							__METHOD__ . " could not create user. "
 							. $result->getStatusCode() . " " . $result->getBody()
 						);
 					}
@@ -2128,7 +2132,7 @@ trait Provisioning {
 				);
 				if ($result["code"] !== "0") {
 					throw new Exception(
-						"could not create user. {$result['stdOut']} {$result['stdErr']}"
+						__METHOD__ . " could not create user. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
 				break;
@@ -2146,13 +2150,13 @@ trait Provisioning {
 					);
 				} catch (LdapException $exception) {
 					throw new Exception(
-						"cannot create a LDAP user with provided data. Error: {$exception}"
+						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"
 					);
 				}
 				break;
 			default:
 				throw new InvalidArgumentException(
-					"Invalid method to create a user"
+					__METHOD__ . " Invalid method to create a user"
 				);
 		}
 
@@ -2247,9 +2251,20 @@ trait Provisioning {
 		$this->theAdministratorGetsAllTheGroupsOfUser($user);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
-		Assert::assertContains($group, $respondedArray);
+		Assert::assertContains(
+			$group,
+			$respondedArray,
+			__METHOD__ . " Group '$group' does not exist in '"
+			. \implode(', ', $respondedArray)
+			. "'"
+		);
 		Assert::assertEquals(
-			200, $this->response->getStatusCode()
+			200,
+			$this->response->getStatusCode(),
+			__METHOD__
+			. " Expected status code is '200' but got '"
+			. $this->response->getStatusCode()
+			. "'"
 		);
 	}
 
