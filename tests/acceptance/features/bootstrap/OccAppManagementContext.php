@@ -117,7 +117,12 @@ class OccAppManagementContext implements Context {
 	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
-		Assert::assertEquals($appName, \key($lastOutputArray['apps']));
+		Assert::assertEquals(
+			$appName,
+			\key($lastOutputArray['apps']),
+			"The app name expected to be returned by the occ command is {$appName} but got "
+			. \key($lastOutputArray['apps'])
+		);
 	}
 
 	/**
@@ -167,7 +172,11 @@ class OccAppManagementContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
-		Assert::assertEquals($appStatus, $actualAppEnabledStatus);
+		Assert::assertEquals(
+			$appStatus,
+			$actualAppEnabledStatus,
+			"The app enabled status of app {$appName} was expected to be {$appStatus}, but the actual status is {$actualAppEnabledStatus}"
+		);
 	}
 
 	/**
@@ -186,7 +195,13 @@ class OccAppManagementContext implements Context {
 		$appsSimplified = $this->featureContext->simplifyArray($apps);
 
 		foreach ($appsSimplified as $app) {
-			Assert::assertContains($app, $lastOutputApps);
+			Assert::assertContains(
+				$app,
+				$lastOutputApps,
+				"The apps: '"
+				. \implode(', ', $lastOutputApps)
+				. "' returned by the occ command were expected to include '$app', but does not"
+			);
 		}
 	}
 
