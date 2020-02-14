@@ -2741,7 +2741,6 @@ class FeatureContext extends BehatVariablesContext {
 	public function deleteAllStorages() {
 		$allStorageIds = \array_keys($this->getStorageIds());
 		foreach ($allStorageIds as $storageId) {
-			print $storageId;
 			SetupHelper::runOcc(
 				[
 					'files_external:delete',
@@ -2750,6 +2749,7 @@ class FeatureContext extends BehatVariablesContext {
 				]
 			);
 		}
+		$this->storageIds = [];
 	}
 
 	/**

@@ -411,6 +411,8 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator lists all local storages mount points using the occ command
+	 *
 	 * List created local storage mount with --short
 	 *
 	 * @return void
@@ -2008,6 +2010,8 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator creates an external mount point with following configuration using the occ command
+	 *
 	 * @param TableNode $settings
 	 *
 	 * necessary attributes inside $settings table:
@@ -2055,18 +2059,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When administrator creates an external mount point with following configuration using the occ command
-	 *
-	 * @param TableNode $settings
-	 *
-	 * @return void
-	 */
-	public function userCreatesAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
-		$this->createExternalMountPointUsingTheOccCommand($settings);
-	}
-
-	/**
-	 * @Given administrator has created an external mount point with following configuration using the occ command
+	 * @Given the administrator has created an external mount point with following configuration using the occ command
 	 *
 	 * @param TableNode $settings
 	 *
@@ -2097,7 +2090,6 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function mountPointShouldNotBeListedAsCreatedExternalStorage($mountPoint) {
-		$this->listLocalStorageMountShort();
 		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $entry) {
 			Assert::assertNotEquals($mountPoint, $entry->mount_point);

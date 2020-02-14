@@ -144,11 +144,11 @@ config = {
 			'testingRemoteSystem': False
 		},
 		'cliExternalStorage': {
-		    'suites': [
-		        'cliExternalStorage',
-            ],
-            'federatedServerNeeded': True,
-            'federatedServerVersions': ['daily-master-qa', '10.2.1']
+			'suites': [
+				'cliExternalStorage',
+			],
+			'federatedServerNeeded': True,
+			'federatedServerVersions': ['daily-master-qa', '10.2.1']
 		},
 		'webUI': {
 			'suites': {
