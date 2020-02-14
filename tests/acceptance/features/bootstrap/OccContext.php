@@ -606,12 +606,11 @@ class OccContext implements Context {
 	 */
 	public function theCommandFailedWithExitCode($exitCode) {
 		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
-		if ($exitStatusCode !== (int) $exitCode) {
-			throw new \Exception(
-				"The command was expected to fail with exit code $exitCode but got "
-				. $exitStatusCode
-			);
-		}
+		Assert::assertEquals(
+			(int) $exitCode,
+			$exitStatusCode,
+			"The command was expected to fail with exit code $exitCode but got {$exitStatusCode}"
+		);
 	}
 
 	/**
@@ -624,15 +623,16 @@ class OccContext implements Context {
 	 */
 	public function theCommandFailedWithExceptionText($exceptionText) {
 		$exceptions = $this->featureContext->findExceptions();
-		if (empty($exceptions)) {
-			throw new \Exception('The command did not throw any exceptions');
-		}
+		Assert::assertNotEmpty(
+			$exceptions,
+			'The command did not throw any exceptions'
+		);
 
-		if (!\in_array($exceptionText, $exceptions)) {
-			throw new \Exception(
-				"The command did not throw any exception with the text '$exceptionText'"
-			);
-		}
+		Assert::assertContains(
+			$exceptionText,
+			$exceptions,
+			"The command did not throw any exception with the text '$exceptionText'"
+		);
 	}
 
 	/**
@@ -695,10 +695,16 @@ class OccContext implements Context {
 	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
 		Assert::assertEquals(
 			\trim($this->featureContext->getStdOutOfOccCommand()),
-			"[]"
+			"[]",
+			"Expected command output to be '[]' but got '"
+			. \trim($this->featureContext->getStdOutOfOccCommand())
+			. "'"
 		);
 		Assert::assertEmpty(
-			$this->featureContext->getStdErrOfOccCommand()
+			$this->featureContext->getStdErrOfOccCommand(),
+			"Expected occ command error to be empty but got '"
+			. $this->featureContext->getStdErrOfOccCommand()
+			. "'"
 		);
 	}
 
@@ -826,7 +832,9 @@ class OccContext implements Context {
 		$commandOutput = \implode("\n", \array_filter(\explode("\n", $commandOutput)));
 		$content = \implode("\n", \array_filter(\explode("\n", $content->getRaw())));
 		Assert::assertEquals(
-			$content, $commandOutput
+			$content,
+			$commandOutput,
+			"The command output was expected to be '$content' but got '$commandOutput'"
 		);
 	}
 
@@ -852,6 +860,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasChangedTheBackgroundJobsModeTo($mode) {
 		$this->changeBackgroundJobsModeUsingTheOccCommand($mode);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -1001,6 +1010,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasScannedTheFilesystemForGroupUsingTheOccCommand($group) {
 		$this->scanFileSystemForAGroupUsingTheOccCommand($group);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -1061,9 +1071,11 @@ class OccContext implements Context {
 	 * @param string $mount
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorHasCreatedTheLocalStorageMountUsingTheOccCommand($mount) {
 		$this->createLocalStorageMountUsingTheOccCommand($mount);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -1253,7 +1265,14 @@ class OccContext implements Context {
 			$createdLocalStorage[$storageEntry->mount_id] = \ltrim($storageEntry->mount_point, '/');
 		}
 		foreach ($expectedLocalStorages as $expectedStorageEntry) {
-			Assert::assertContains($expectedStorageEntry['localStorage'], $createdLocalStorage);
+			Assert::assertContains(
+				$expectedStorageEntry['localStorage'],
+				$createdLocalStorage,
+				"'"
+				. \implode(', ', $createdLocalStorage)
+				. "' does not contain '${expectedStorageEntry['localStorage']}' "
+				. __METHOD__
+			);
 		}
 	}
 
@@ -1274,7 +1293,11 @@ class OccContext implements Context {
 			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
 		}
 		foreach ($expectedLocalStorages as $i) {
-			Assert::assertNotContains($i['localStorage'], $createdLocalStorage);
+			Assert::assertNotContains(
+				$i['localStorage'],
+				$createdLocalStorage,
+				"{$i['localStorage']} exists but was not expected to exist"
+			);
 		}
 	}
 
@@ -1449,7 +1472,13 @@ class OccContext implements Context {
 			}
 		}
 		foreach ($expectedInfo as $element) {
-			Assert::assertEquals($element, \array_map('trim', $ResultArray));
+			Assert::assertEquals(
+				$element,
+				\array_map('trim', $ResultArray),
+				__METHOD__
+				. \implode(', ', $element)
+				. "was expected to be listed, but is not listed in the mount configuration information"
+			);
 		}
 	}
 
@@ -1476,7 +1505,13 @@ class OccContext implements Context {
 			"config:app:get core backgroundjobs_mode"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		Assert::assertEquals($mode, \trim($lastOutput));
+		Assert::assertEquals(
+			$mode,
+			\trim($lastOutput),
+			"The background jobs mode was expected to be {$mode} but got '"
+			. \trim($lastOutput)
+			. "'"
+		);
 	}
 
 	/**
@@ -1492,7 +1527,13 @@ class OccContext implements Context {
 			"config:app:get core OC_Channel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		Assert::assertEquals($value, \trim($lastOutput));
+		Assert::assertEquals(
+			$value,
+			\trim($lastOutput),
+			"The update channel was expected to be '$value' but got '"
+			. \trim($lastOutput)
+			. "'"
+		);
 	}
 
 	/**
@@ -1508,7 +1549,13 @@ class OccContext implements Context {
 			"config:system:get loglevel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		Assert::assertEquals($logLevel, \trim($lastOutput));
+		Assert::assertEquals(
+			$logLevel,
+			\trim($lastOutput),
+			"The log level was expected to be '$logLevel' but got '"
+			. \trim($lastOutput)
+			. "'"
+		);
 	}
 
 	/**
@@ -1701,7 +1748,11 @@ class OccContext implements Context {
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
 		$config = \trim(SetupHelper::getSystemConfigValue($key));
-		Assert::assertSame($value, $config);
+		Assert::assertSame(
+			$value,
+			$config,
+			"The system config key '$key' was expected to have value '$value', but got '$config'"
+		);
 	}
 
 	/**
@@ -1735,7 +1786,10 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function systemConfigKeyShouldNotExist($key) {
-		Assert::assertEmpty(SetupHelper::getSystemConfig($key)['stdOut']);
+		Assert::assertEmpty(
+			SetupHelper::getSystemConfig($key)['stdOut'],
+			"The system config key '$key' was not expected to exist"
+		);
 	}
 
 	/**
@@ -1812,7 +1866,9 @@ class OccContext implements Context {
 		$this->deleteAllVersionsForAllUsersUsingTheOccCommand();
 		Assert::assertContains(
 			"Delete all versions",
-			\trim($this->featureContext->getStdOutOfOccCommand())
+			\trim($this->featureContext->getStdOutOfOccCommand()),
+			"Expected 'Delete all versions' to be contained in the output of occ command: "
+			. \trim($this->featureContext->getStdOutOfOccCommand())
 		);
 	}
 
@@ -1921,7 +1977,8 @@ class OccContext implements Context {
 		$status = \trim($response['stdOut']);
 		Assert::assertEquals(
 			'yes',
-			$status
+			$status,
+			"The external storage was expected to be enabled but got '$status'"
 		);
 	}
 
@@ -1965,7 +2022,10 @@ class OccContext implements Context {
 		$excludedGroupsFromResponse = \trim($excludedGroupsFromResponse, '[]');
 		Assert::assertEquals(
 			$groups,
-			$excludedGroupsFromResponse
+			$excludedGroupsFromResponse,
+			"'$groups' is not added to exclude groups from sharing list: '"
+			. $excludedGroupsFromResponse
+			. "' but was expected to be"
 		);
 	}
 
@@ -2002,7 +2062,8 @@ class OccContext implements Context {
 		$status = \trim($response['stdOut']);
 		Assert::assertEquals(
 			"yes",
-			$status
+			$status,
+			"Exclude groups from sharing was expected to be 'yes'(enabled) but got '$status'"
 		);
 	}
 
