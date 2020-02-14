@@ -104,6 +104,33 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has set the following properties of (?:file|folder|entry) "([^"]*)" using the WebDav API$/
+	 *
+	 * @param string $username
+	 * @param string $path
+	 * @param TableNode|null $propertiesTable with following columns with column header as:
+	 *                                        property: name of prop to be set
+	 *                                        value: value of prop to be set
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasSetFollowingPropertiesUsingProppatch($username, $path, $propertiesTable) {
+		$this->featureContext->verifyTableNodeColumns($propertiesTable, ['property', 'value']);
+		$properties = $propertiesTable->getColumnsHash();
+		$this->featureContext->setResponse(
+			WebDavHelper::proppatchWithMultipleProps(
+				$this->featureContext->getBaseUrl(),
+				$username,
+				$this->featureContext->getPasswordForUser($username),
+				$path,
+				$properties
+			)
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When user :user gets a custom property :propertyName with namespace :namespace of file :path
 	 *
 	 * @param string $user
@@ -127,6 +154,38 @@ class WebDavPropertiesContext implements Context {
 				$this->featureContext->getUserPassword($user), $path,
 				$properties
 			)
+		);
+	}
+
+	/**
+	 * @When user :username gets the following properties of file/folder :path using the WebDav PropFind API
+	 *
+	 * @param string $username
+	 * @param string $path
+	 * @param TableNode $propertiesTable with single column with column header 'property'
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsFollowingPropsWithNamespaceOfFileUsingWebDavAPI(
+		$username, $path, $propertiesTable
+	) {
+		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["property",]);
+		$properties = [];
+		foreach ($propertiesTable->getColumnsHash() as $col) {
+			\array_push($properties, $col["property"]);
+		}
+		$this->featureContext->setResponse(
+			WebDavHelper::propfindWithMultipleProps(
+				$this->featureContext->getBaseUrl(),
+				$username,
+				$this->featureContext->getPasswordForUser($username),
+				$path,
+				$properties
+			)
+		);
+		$this->featureContext->setResponseXmlObject(
+			HttpRequestHelper::getResponseXml($this->featureContext->getResponse())
 		);
 	}
 
@@ -570,6 +629,51 @@ class WebDavPropertiesContext implements Context {
 		if (!$this->featureContext->isEtagValid()) {
 			throw new \Exception(
 				"getetag not found in response"
+			);
+		}
+	}
+
+	/**
+	 * @Then as user :username the last response should have the following properties
+	 *
+	 * @param string $username
+	 * @param TableNode $expectedPropTable with following columns:
+	 *                                     resource: full path of resource(file/folder/entry) from root of your oc storage
+	 *                                     property: expected name of property to be asserted, eg: status, href, customPropName
+	 *                                     value: expected value of expected property
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theResponseShouldHavePropertyWithValue($username, $expectedPropTable) {
+		$this->featureContext->verifyTableNodeColumns($expectedPropTable, ['resource', 'property', 'value']);
+		$responseXmlObject = $this->featureContext->getResponseXmlObject();
+
+		$hrefSplittedUptoUsername = \explode("/", $responseXmlObject->xpath("//d:href")[0]);
+		$xmlHrefSplittedArray = \array_slice(
+			$hrefSplittedUptoUsername,
+			0,
+			\array_search($username, $hrefSplittedUptoUsername) + 1
+		);
+		$xmlHref = \implode("/", $xmlHrefSplittedArray);
+		foreach ($expectedPropTable->getColumnsHash() as $col) {
+			if ($col["property"] === "status") {
+				$xmlPart = $responseXmlObject->xpath(
+					"//d:href[.='" .
+					$xmlHref . $col["resource"] .
+					"']/following-sibling::d:propstat//d:" .
+					$col["property"]
+				);
+			} else {
+				$xmlPart = $responseXmlObject->xpath(
+					"//d:href[.= '" .
+					$xmlHref . $col["resource"] .
+					"']/..//oc:" . $col["property"]
+				);
+			}
+			Assert::assertEquals(
+				$col["value"],
+				$xmlPart[0]
 			);
 		}
 	}

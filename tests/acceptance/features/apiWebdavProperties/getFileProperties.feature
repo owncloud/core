@@ -190,3 +190,49 @@ Feature: get file properties
       | url                                  | message                                      |
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |
+
+  Scenario: add, receive multiple custom meta properties to a file
+    Given user "user0" has created folder "/TestFolder"
+    And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
+    And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
+      | property  | value |
+      | testprop1 | AAAAA |
+      | testprop2 | BBBBB |
+    When user "user0" gets the following properties of file "/TestFolder/test1.txt" using the WebDav PropFind API
+      | property  |
+      | testprop1 |
+      | testprop2 |
+    Then the HTTP status code should be success
+    And as user "user0" the last response should have the following properties
+      | resource              | property  | value           |
+      | /TestFolder/test1.txt | testprop1 | AAAAA           |
+      | /TestFolder/test1.txt | testprop2 | BBBBB           |
+      | /TestFolder/test1.txt | status    | HTTP/1.1 200 OK |
+
+  @issue-36920
+  Scenario: add multiple properties to files inside a folder and do a propfind of the parent folder
+    Given user "user0" has created folder "/TestFolder"
+    And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
+    And user "user0" has uploaded file with content "test data two" to "/TestFolder/test2.txt"
+    And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
+      | property  | value |
+      | testprop1 | AAAAA |
+      | testprop2 | BBBBB |
+    And user "user0" has set the following properties of file "/TestFolder/test2.txt" using the WebDav API
+      | property  | value |
+      | testprop1 | CCCCC |
+      | testprop2 | DDDDD |
+    When user "user0" gets the following properties of folder "/TestFolder" using the WebDav PropFind API
+      | property  |
+      | testprop1 |
+      | testprop2 |
+    Then the HTTP status code should be success
+    And as user "user0" the last response should have the following properties
+      | resource              | property  | value                  |
+      | /TestFolder/test1.txt | testprop1 | CCCCC                  |
+      #| /TestFolder/test1.txt | testprop1 | AAAAA                  |
+      | /TestFolder/test1.txt | testprop2 | BBBBB                  |
+      | /TestFolder/test2.txt | testprop1 | CCCCC                  |
+      | /TestFolder/test2.txt | testprop2 | DDDDD                  |
+      | /TestFolder/          | status    | HTTP/1.1 404 Not Found |
+      #| /TestFolder/          | status    | HTTP/1.1 200 OK        |

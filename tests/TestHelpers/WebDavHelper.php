@@ -143,6 +143,54 @@ class WebDavHelper {
 	}
 
 	/**
+	 * sends HTTP request PROPFIND method with multiple properties
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $path
+	 * @param array $properties
+	 * @param string $namespaceString
+	 * @param int $folderDepth
+	 * @param string $type
+	 * @param int $davPathVersionToUse
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function propfindWithMultipleProps(
+		$baseUrl,
+		$user,
+		$password,
+		$path,
+		$properties,
+		$namespaceString = "oc='http://owncloud.org/ns'",
+		$folderDepth = 0,
+		$type = "files",
+		$davPathVersionToUse = 2
+	) {
+		$propertyBody = "";
+		foreach ($properties as $property) {
+			[$namespacePrefix, $namespace, $property] = self::getPropertyWithNamespaceInfo(
+				$namespaceString,
+				$property
+			);
+			$propertyBody .= "\n\t\t<$namespacePrefix:$property/>";
+		}
+		$body = "<?xml version=\"1.0\"?>
+				<d:propfind
+				   xmlns:d=\"DAV:\"
+				   xmlns:oc=\"http://owncloud.org/ns\"
+				   xmlns:ocs=\"http://open-collaboration-services.org/ns\">
+				    <d:prop>$propertyBody
+				    </d:prop>
+				</d:propfind>";
+		return self::makeDavRequest(
+			$baseUrl, $user, $password, "PROPFIND", $path, null, $body,
+			$davPathVersionToUse, $type
+		);
+	}
+
+	/**
 	 *
 	 * @param string $baseUrl
 	 * @param string $user
@@ -183,7 +231,89 @@ class WebDavHelper {
 				  <d:prop>$propertyBody</d:prop>
 				 </d:set>
 				</d:propertyupdate>";
+		return self::makeDavRequest(
+			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
+			$davPathVersionToUse, $type
+		);
+	}
 
+	/**
+	 * gets namespace-prefix, namespace url and propName from provided namespaceString or property
+	 * or otherwise use default
+	 *
+	 * @param string $namespaceString
+	 * @param string $property
+	 *
+	 * @return array
+	 */
+	public static function getPropertyWithNamespaceInfo($namespaceString = "", $property = "") {
+		$namespace = "";
+		$namespacePrefix = "";
+		if (\is_int($namespaceString)) {
+			//default namespace prefix if the property has no array key
+			//also used if no prefix is given in the property value
+			$namespacePrefix = "d";
+			$namespace = "DAV:";
+		} elseif ($namespaceString) {
+			//calculate the namespace prefix and namespace from the array key
+			$matches = [];
+			\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+			$namespacePrefix = $matches[1];
+			$namespace = $matches[2];
+		}
+		//if a namespace prefix is given in the property value use that
+		if ($property && \strpos($property, ":")) {
+			$propertyParts = \explode(":", $property);
+			$namespacePrefix = $propertyParts[0];
+			$property = $propertyParts[1];
+		}
+		return [$namespacePrefix, $namespace, $property];
+	}
+
+	/**
+	 * sends HTTP request PROPPATCH method with multiple properties
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $path
+	 * @param array $propertiesArray
+	 * @param string $namespaceString
+	 * @param int $davPathVersionToUse
+	 * @param string $type
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function proppatchWithMultipleProps(
+		$baseUrl,
+		$user,
+		$password,
+		$path,
+		$propertiesArray,
+		$namespaceString = "oc='http://owncloud.org/ns'",
+		$davPathVersionToUse = 2,
+		$type="files"
+	) {
+		$propertyBody = "";
+		foreach ($propertiesArray as $propertyArray) {
+			$property = $propertyArray["property"];
+			$value = $propertyArray["value"];
+			[$namespacePrefix, $namespace, $property] = self::getPropertyWithNamespaceInfo(
+				$namespaceString,
+				$property
+			);
+			$propertyBody .= "\n\t<$namespacePrefix:$property>" .
+				"$value" .
+				"</$namespacePrefix:$property>";
+		}
+		$body = "<?xml version=\"1.0\"?>
+				<d:propertyupdate xmlns:d=\"DAV:\"
+				   xmlns:oc=\"http://owncloud.org/ns\">
+				 <d:set>
+				  <d:prop>$propertyBody
+				  </d:prop>
+				 </d:set>
+				</d:propertyupdate>";
 		return self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
 			$davPathVersionToUse, $type
