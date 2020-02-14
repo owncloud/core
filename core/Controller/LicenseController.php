@@ -38,12 +38,14 @@ class LicenseController extends Controller {
 	}
 
 	public function getGracePeriod() {
-		$gracePeriod = $this->licenseManager->getGracePeriod();
+		$gracePeriod = $this->licenseManager->getGracePeriod(true);
+		// change the list of the apps by the counter to avoid exposing info
+		$gracePeriod['apps'] = \count($gracePeriod['apps']);
 		return new JSONResponse($gracePeriod);
 	}
 
 	/**
-	 * @param string|null $licenseString
+	 * @param string $licenseString
 	 */
 	public function setNewLicense($licenseString) {
 		$this->licenseManager->setLicenseString($licenseString);

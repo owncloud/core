@@ -29,14 +29,18 @@ interface ILicenseManager {
 	 * Return an array with "start" and "end" keys to know when the grace period has
 	 * started and when the grace period will end, or null if the grace period hasn't
 	 * started yet.
+	 * Additional keys could be returned if the $includeExtras param is set to true.
+	 * Note that these extras could be expensive to retrieve
 	 *
 	 * Both "start" and "end" keys will hold unix timestamps such as
 	 * ['start' => 15263748, 'end' => 15557865].
 	 *
+	 * @param bool $includeExtras truu to include extra information (potentially expensive), false
+	 * to just retrieve the "start" and "end" period interval
 	 * @return array|null array with "start" and "end" keys to define the grace period interval
 	 * or null if the grace period hasn't started or isn't defined
 	 */
-	public function getGracePeriod();
+	public function getGracePeriod(bool $includeExtras = false);
 
 	/**
 	 * Set a new license through ownCloud. You can use any string as the license.

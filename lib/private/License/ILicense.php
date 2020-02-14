@@ -24,6 +24,12 @@ interface ILicense {
 	const LICENSE_TYPE_DEMO = 1;
 
 	/**
+	 * get the raw license string, such as "owncloud_28731_df987_234sf"
+	 * @return string
+	 */
+	public function getLicenseString();
+
+	/**
 	 * Check if this license is valid
 	 * @return bool
 	 */

@@ -20,6 +20,7 @@
 namespace OC\License;
 
 class BasicLicense implements ILicense {
+	private $rawLicense;
 	private $org;
 	private $date;
 	private $rawCodes;
@@ -27,6 +28,8 @@ class BasicLicense implements ILicense {
 	private $checksum;
 
 	public function __construct(string $licenseKey) {
+		$this->rawLicense = $licenseKey;
+
 		$parts = \explode('-', $licenseKey);
 
 		$this->org = $parts[0];
@@ -34,6 +37,10 @@ class BasicLicense implements ILicense {
 		$this->rawCodes = $parts[2];
 		$this->codes = \str_split(\strtoupper($this->rawCodes), 8);
 		$this->checksum = $parts[3];
+	}
+
+	public function getLicenseString() {
+		return $this->rawLicense;
 	}
 
 	public function isValid() {

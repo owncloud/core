@@ -31,7 +31,6 @@ OC.License = {
 		'  <div style="display:flex">' +
 		'  <input id="license" type="text" placeholder="{{placeholder}}" style="flex:1 1 auto"/>' +
 		'  <button id="license_button">{{license_button_text}}</button>' +
-		'  <button id="bypass_button">{{bypass_button_text}}</button>' +
 		'  </div>' +
 		'</div>',
 
@@ -45,7 +44,7 @@ OC.License = {
 
 		$.get(OC.generateUrl('/license/graceperiod'))
 			.done(function(data) {
-				if (!data) {
+				if (!data || data.apps < 1) {
 					return;
 				}
 				// adjust moment's time thresholds for better accuracy:
@@ -74,8 +73,7 @@ OC.License = {
 						rtime: relativeTime
 					}),
 					placeholder: t('core', 'Enter license key'),
-					license_button_text: t('core', 'Set new key'),
-					bypass_button_text: t('core', 'Manual action')
+					license_button_text: t('core', 'Set new key')
 				}))
 					.appendTo('body')
 					.ocdialog({
@@ -96,13 +94,6 @@ OC.License = {
 			$.post(OC.generateUrl('/license/license'), {
 				licenseString: license
 			}).done(function () {
-				jqDialog.ocdialog('close');
-			})
-		});
-
-		jqDialog.find('#bypass_button').click(function () {
-			$.post(OC.generateUrl('/license/license'))
-			.done(function () {
 				jqDialog.ocdialog('close');
 			})
 		});
