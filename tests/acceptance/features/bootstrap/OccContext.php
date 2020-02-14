@@ -1268,7 +1268,10 @@ class OccContext implements Context {
 			Assert::assertContains(
 				$expectedStorageEntry['localStorage'],
 				$createdLocalStorage,
-				"'$createdLocalStorage' does not contain {$expectedStorageEntry['localStorage']}"
+				"'"
+				. \implode(', ', $createdLocalStorage)
+				. "' does not contain '${expectedStorageEntry['localStorage']}' "
+				. __METHOD__
 			);
 		}
 	}
@@ -1472,7 +1475,9 @@ class OccContext implements Context {
 			Assert::assertEquals(
 				$element,
 				\array_map('trim', $ResultArray),
-				"{$element} was expected to be listed, but is not listed in the mount configuration information"
+				__METHOD__
+				. \implode(', ', $element)
+				. "was expected to be listed, but is not listed in the mount configuration information"
 			);
 		}
 	}
