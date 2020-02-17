@@ -2477,7 +2477,7 @@ class FeatureContext extends BehatVariablesContext {
 			[],
 			$this->getOcsApiVersion()
 		);
-		$configkeyValue = \json_decode(\json_encode($this->getResponseXml($response)->data[0]->element->value), 1)[0];
+		$configkeyValue = (string) $this->getResponseXml($response)->data[0]->element->value;
 		Assert::assertEquals(
 			$value, $configkeyValue,
 			"The config key {$key} of app {$appID} was expected to have value {$value} but got {$configkeyValue}"
