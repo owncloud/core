@@ -39,10 +39,16 @@ class BasicLicense implements ILicense {
 		$this->checksum = $parts[3];
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getLicenseString() {
 		return $this->rawLicense;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function isValid() {
 		$dateString = \date('Ymd', $this->date);
 
@@ -52,10 +58,16 @@ class BasicLicense implements ILicense {
 		return $checksum === $this->checksum && \in_array($dateCode, $this->codes);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getExpirationTime() {
 		return $this->date;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getType() {
 		$hash = \strtoupper(\hash("crc32b", 'demo'));
 		if (\in_array($hash, $this->codes)) {

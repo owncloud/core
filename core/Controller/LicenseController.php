@@ -37,15 +37,24 @@ class LicenseController extends Controller {
 		$this->licenseManager = $licenseManager;
 	}
 
+	/**
+	 * Get the grace period start and end, with the number of apps actively using
+	 * the grace period
+	 * @return JSONResponse
+	 */
 	public function getGracePeriod() {
 		$gracePeriod = $this->licenseManager->getGracePeriod(true);
 		// change the list of the apps by the counter to avoid exposing info
-		$gracePeriod['apps'] = \count($gracePeriod['apps']);
+		if (isset($gracePeriod['apps'])) {
+			$gracePeriod['apps'] = \count($gracePeriod['apps']);
+		}
 		return new JSONResponse($gracePeriod);
 	}
 
 	/**
+	 * Set a new license string to be used by ownCloud
 	 * @param string $licenseString
+	 * @return JSONResponse
 	 */
 	public function setNewLicense($licenseString) {
 		$this->licenseManager->setLicenseString($licenseString);

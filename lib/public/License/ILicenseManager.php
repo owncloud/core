@@ -35,7 +35,7 @@ interface ILicenseManager {
 	 * Both "start" and "end" keys will hold unix timestamps such as
 	 * ['start' => 15263748, 'end' => 15557865].
 	 *
-	 * @param bool $includeExtras truu to include extra information (potentially expensive), false
+	 * @param bool $includeExtras true to include extra information (potentially expensive), false
 	 * to just retrieve the "start" and "end" period interval
 	 * @return array|null array with "start" and "end" keys to define the grace period interval
 	 * or null if the grace period hasn't started or isn't defined
@@ -59,9 +59,7 @@ interface ILicenseManager {
 	 * Get the license state for $appid. This function will return one of the LICENSE_STATE_*
 	 * constants.
 	 *
-	 * Current expected implementation will always check the ownCloud's license and assume the
-	 * license is for all the apps. This might change at some point, if per-app licenses are
-	 * implemented.
+	 * @param string $appid the id of the app to get the license for
 	 * @return int one of the LICENSE_STATE_* constants
 	 */
 	public function getLicenseStateFor(string $appid);
@@ -69,21 +67,22 @@ interface ILicenseManager {
 	/**
 	 * This method is intended to be called only by the apps trying to check if the app
 	 * itself has a valid license and it's allowed to run. Core shouldn't need to call
-	 * this method, nor other different apps ("myApp" should only check for itself)
+	 * this method, nor other different apps ("myApp" should only check for itself).
+	 * Use `getLicenseStateFor` method instead for that purpose.
 	 *
-	 * Check if there is a valid license that can be used for $appid. A trial period
+	 * Check if there is a valid license that can be used for $appid. A grace period
 	 * will start regardless of the license validation (we shouldn't start a
-	 * trial after X days of using the app due to the license expired).
-	 * Note that there will be only one trial period per app, and it won't be possible
-	 * to restart it.
+	 * grace period after X days of using the app due to the license expired).
+	 * The grace period will be global to all the apps, and it will start with the first
+	 * app calling this method
 	 *
-	 * If there no valid license and the app isn't under a trial period, this method
+	 * If there no valid license and the grace period has finished, this method
 	 * will disable the app.
 	 *
 	 * This method will return true if there is a license valid for the app (usually
-	 * the ownCloud's license) or if the app is under a trial period
+	 * the ownCloud's license) or if the grace period is active
 	 * @param string $appid the id of the app we want to check
-	 * @return bool true if there is a valid license or the app is under trial, false
+	 * @return bool true if there is a valid license or the grace period is active, false
 	 * otherwise.
 	 */
 	public function checkLicenseFor(string $appid);

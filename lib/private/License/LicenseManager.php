@@ -50,7 +50,7 @@ class LicenseManager implements ILicenseManager {
 	}
 
 	/**
-	 * Check if "now" is inside the close interval [t, t+p], where t = $timestamp
+	 * Check if "now" is inside the closed interval [t, t+p], where t = $timestamp
 	 * and p = the grace period (24h)
 	 * @param int $timestamp the timestamp when the grace period started
 	 */
@@ -59,6 +59,51 @@ class LicenseManager implements ILicenseManager {
 		return $timestamp <= $currentTime && $currentTime <= ($timestamp + self::GRACE_PERIOD);
 	}
 
+	/**
+	 * Get the apps that are complaining about not having a valid license
+	 */
+	private function getAppComplains() {
+		$apps = [];
+		$appComplains = $this->config->getAppKeys('core-license-complains');
+		foreach ($appComplains as $appComplain) {
+			$appInfo = $this->appManager->getAppInfo($appComplain);
+			if ($this->config->getAppValue($appComplain, 'enabled', 'no') === 'yes' && $this->appManager->getAppPath($appComplain) !== false) {
+				// if the app is installed and hasn't been removed from the FS...
+				$licenseWithState = $this->getLicenseWithState($appComplain);
+				$licenseMatchesStoredOne = false;
+				if ($licenseWithState[0]) {  // license exists for the app
+					$complainedLicense = $this->config->getAppValue('core-license-complains', $appComplain, null);
+					$licenseMatchesStoredOne = $licenseWithState[0]->getLicenseString() === $complainedLicense;
+				}
+
+				if ($licenseMatchesStoredOne) {
+					// if current license key matches the one the app is complaining about, mark the app
+					$apps[] = $appComplain;
+				} else {
+					if ($licenseWithState[1] !== ILicenseManager::LICENSE_STATE_VALID) {
+						// if the new license isn't valid, mark the app
+						$apps[] = $appComplain;
+					} else {
+						// if the new license is valid, remove the previous complain
+						$this->config->deleteAppValue('core-license-complains', $appComplain);
+					}
+				}
+			} else {
+				// missing app -> delete complain
+				$this->config->deleteAppValue('core-license-complains', $appComplain);
+			}
+		}
+		return $apps;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * An additional key 'apps' will be returned with the list of apps actively using
+	 * the grace period if the "includeExtras" is used
+	 *
+	 * @param bool $includeExtras if the 'apps' key is going to be returned
+	 */
 	public function getGracePeriod(bool $includeExtras = false) {
 		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);
 		if ($gracePeriod === null || !$this->isNowUnderGracePeriod($gracePeriod)) {
@@ -66,36 +111,7 @@ class LicenseManager implements ILicenseManager {
 		}
 
 		if ($includeExtras) {
-			$apps = [];
-			$appComplains = $this->config->getAppKeys('core-license-complains');
-			foreach ($appComplains as $appComplain) {
-				$appInfo = $this->appManager->getAppInfo($appComplain);
-				if ($this->config->getAppValue($appComplain, 'enabled', 'no') === 'yes' && $this->appManager->getAppPath($appComplain) !== false) {
-					// if the app is installed and hasn't been removed from the FS...
-					$licenseWithState = $this->getLicenseWithState($appComplain);
-					$licenseMatchesStoredOne = false;
-					if ($licenseWithState[0]) {  // license exists for the app
-						$complainedLicense = $this->config->getAppValue('core-license-complains', $appComplain, null);
-						$licenseMatchesStoredOne = $licenseWithState[0]->getLicenseString() === $complainedLicense;
-					}
-
-					if ($licenseMatchesStoredOne) {
-						// if current license key matches the one the app is complaining about, mark the app
-						$apps[] = $appComplain;
-					} else {
-						if ($licenseWithState[1] !== ILicenseManager::LICENSE_STATE_VALID) {
-							// if the new license isn't valid, mark the app
-							$apps[] = $appComplain;
-						} else {
-							// if the new license is valid, remove the previous complain
-							$this->config->deleteAppValue('core-license-complains', $appComplain);
-						}
-					}
-				} else {
-					// missing app -> delete complain
-					$this->config->deleteAppValue('core-license-complains', $appComplain);
-				}
-			}
+			$apps = $this->getAppComplains();
 
 			return [
 				'apps' => $apps,
@@ -110,6 +126,9 @@ class LicenseManager implements ILicenseManager {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function setLicenseString($licenseString) {
 		// we can only set the ownCloud's license for now
 		if ($licenseString !== null) {
@@ -124,7 +143,7 @@ class LicenseManager implements ILicenseManager {
 	 * Returns an array with the license object and the state of the license (any of the
 	 * ILicenseManager::LICENSE_STATE_* constants). Note that the license object could be null
 	 * if the license is missing.
-	 * @return array [ILicense, ILicenseManager::LICENSE_STATE_*]
+	 * @return array [ILicense|null, ILicenseManager::LICENSE_STATE_*]
 	 */
 	private function getLicenseWithState(string $appid) {
 		// check if license is missing
@@ -149,7 +168,7 @@ class LicenseManager implements ILicenseManager {
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 *
 	 * Per-app licenses aren't implemented at the moment. This method will return the state
 	 * of the ownCloud's license for all apps (including public community apps)
@@ -159,22 +178,20 @@ class LicenseManager implements ILicenseManager {
 		return $info[1];  // license state is the second item.
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * This method will register a "complain" if we're under the grace period but the app
+	 * doesn't have a valid license, This way it's easier to keep track of what apps
+	 * have invalid license during the grace period
+	 */
 	public function checkLicenseFor(string $appid) {
 		$currentTime = $this->timeFactory->getTime();
 
 		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);
 		if ($gracePeriod === null) {
-			// always start a trial if needed regardless of the license
-			$callerFile = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'];
-			if (\strpos($callerFile, $this->appManager->getAppPath($appid)) === 0) {
-				// ensure it's the app itself the one starting the trial.
-				// neither core nor other app should be able to start a trial on behalf of another app
-				$this->config->setAppValue('core', 'grace_period', $currentTime);
-				$gracePeriod = $currentTime;  // set the expected trial mark as now
-			} else {
-				// the "isNowUnderGracePeriod" method must always return false in this case
-				$gracePeriod = - self::TRIAL_PERIOD;
-			}
+			$this->config->setAppValue('core', 'grace_period', $currentTime);
+			$gracePeriod = $currentTime;  // set the expected trial mark as now
 		}
 
 		$licenseWithState = $this->getLicenseWithState($appid);

@@ -16,7 +16,7 @@
  */
 
 /**
- * This gets only loaded if the integrity check has failed and then shows a notification
+ * This gets only loaded if there is a grace period active
  */
 OC.License = {
 	NOTIFICATION_TEMPLATE:
@@ -80,11 +80,11 @@ OC.License = {
 						modal: true
 					});
 
-				self.initializeDialogEvents(dialog);
+				self._initializeDialogEvents(dialog);
 			});
 	},
 
-	initializeDialogEvents: function(jqDialog) {
+	_initializeDialogEvents: function(jqDialog) {
 		jqDialog.on("ocdialogclose", function() {
 			jqDialog.remove();
 		});
