@@ -376,7 +376,12 @@ trait WebDav {
 			$resXml = HttpRequestHelper::getResponseXml($this->getResponse());
 		}
 		$xmlPart = $resXml->xpath("//d:getlastmodified");
-		Assert::assertEquals($number, \count($xmlPart));
+		$actualNumber = \count($xmlPart);
+		Assert::assertEquals(
+			$number,
+			$actualNumber,
+			"Expected number of versions was '$number', but got '$actualNumber'"
+		);
 	}
 
 	/**
@@ -468,6 +473,7 @@ trait WebDav {
 	 * @param string $fileDestination
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasMovedFile(
 		$user, $fileSource, $fileDestination
@@ -478,9 +484,12 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "MOVE", $fileSource, $headers
 		);
-		Assert::assertEquals(
-			201, $this->response->getStatusCode()
-		);
+		if ($this->response->getStatusCode() !== 201) {
+			throw new Exception(
+				__METHOD__ . "Failed moving resource '$fileSource' to '$fileDestination'.
+			Expected status code was '201' but got '" . $this->response->getStatusCode() . "'"
+			);
+		}
 	}
 
 	/**
@@ -749,7 +758,8 @@ trait WebDav {
 			400, $this->getResponse()->getStatusCode(), 'download must fail'
 		);
 		Assert::assertLessThanOrEqual(
-			499, $this->getResponse()->getStatusCode(), '4xx error expected'
+			499, $this->getResponse()->getStatusCode(), '4xx error expected but got status code "'
+			. $this->getResponse()->getStatusCode() . '"'
 		);
 	}
 
@@ -774,8 +784,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function sizeOfDownloadedFileShouldBe($size) {
+		$actualSize = \strlen((string) $this->response->getBody());
 		Assert::assertEquals(
-			$size, \strlen((string) $this->response->getBody())
+			$size,
+			$actualSize,
+			"Expected size of the downloaded file was '$size' but got '$actualSize'"
 		);
 	}
 
@@ -787,8 +800,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldEndWith($content) {
+		$actualContent = \substr((string) $this->response->getBody(), -\strlen($content));
 		Assert::assertEquals(
-			$content, \substr((string) $this->response->getBody(), -\strlen($content))
+			$content,
+			$actualContent,
+			"The downloaded content was expected to end with '$content', but actually ended with '$actualContent'."
 		);
 	}
 
@@ -800,8 +816,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldBe($content) {
+		$actualContent = (string) $this->response->getBody();
 		Assert::assertEquals(
-			$content, (string) $this->response->getBody()
+			$content,
+			$actualContent,
+			"The downloaded content was expected to be '$content', but actually is '$actualContent'."
 		);
 	}
 
@@ -1132,7 +1151,13 @@ trait WebDav {
 		$responseXml = HttpRequestHelper::getResponseXml($this->response);
 		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
-		Assert::assertEquals($size, (string) $xmlPart[0]);
+		$actualSize = (string) $xmlPart[0];
+		Assert::assertEquals(
+			$size,
+			$actualSize,
+			__METHOD__
+			. " Expected size of the file was '$size', but got '$actualSize' instead."
+		);
 	}
 
 	/**
@@ -1153,17 +1178,12 @@ trait WebDav {
 			$expectedHeaderValue = $header['value'];
 			$returnedHeader = $this->response->getHeader($headerName);
 			$expectedHeaderValue = $this->substituteInLineCodes($expectedHeaderValue);
-
-			if ($returnedHeader !== $expectedHeaderValue) {
-				throw new \Exception(
-					\sprintf(
-						"Expected value '%s' for header '%s', got '%s'",
-						$expectedHeaderValue,
-						$headerName,
-						$returnedHeader
-					)
-				);
-			}
+			Assert::assertEquals(
+				$expectedHeaderValue,
+				$returnedHeader,
+				__METHOD__
+				. " Expected value for header '$headerName' was '$expectedHeaderValue', but got '$returnedHeader' instead."
+			);
 		}
 	}
 
@@ -1185,6 +1205,12 @@ trait WebDav {
 				)
 			);
 		}
+		Assert::assertEquals(
+			0,
+			\strpos($this->response->getBody()->getContents(), $start),
+			__METHOD__
+			. " The downloaded content was expected to start with '$start', but actually started with '{$this->response->getBody()->getContents()}'"
+		);
 	}
 
 	/**
@@ -2940,7 +2966,10 @@ trait WebDav {
 	public function userFileShouldHaveStoredId($user, $path) {
 		$currentFileID = $this->getFileIdForPath($user, $path);
 		Assert::assertEquals(
-			$currentFileID, $this->storedFileID
+			$currentFileID,
+			$this->storedFileID,
+			__METHOD__
+			. "User '$user' file '$path' does not have the previously stored id '{$this->storedFileID}', but have '$currentFileID'."
 		);
 	}
 
@@ -3011,7 +3040,15 @@ trait WebDav {
 		if ($multistatusResults === null) {
 			$multistatusResults = [];
 		}
-		Assert::assertEquals((int) $numFiles, \count($multistatusResults));
+		Assert::assertEquals(
+			(int) $numFiles,
+			\count($multistatusResults),
+			"Expected result to contain '"
+			. (int) $numFiles
+			. "' files/entries, but got '"
+			. \count($multistatusResults)
+			. "' files/entries."
+		);
 	}
 
 	/**
