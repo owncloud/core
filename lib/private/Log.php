@@ -113,7 +113,10 @@ class Log implements ILogger {
 		'areCredentialsValid',
 
 		//UserManagement\Controller\UsersController
-		'setPassword'
+		'setPassword',
+
+		//any closure can leak passwords
+		'{closure}'
 
 	];
 

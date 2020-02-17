@@ -9,12 +9,19 @@
 namespace Test;
 
 use OC\Log;
+use OC\User\AccountMapper;
+use OC\User\Manager;
+use OC\User\Session;
+use OC\User\SyncService;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IUserSession;
 use OCP\Util;
+use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Zend\EventManager\Event;
 
 class LoggerTest extends TestCase {
 	/** @var \OCP\ILogger */
@@ -205,7 +212,6 @@ class LoggerTest extends TestCase {
 		}
 	}
 
-	//loginWithPassword
 	/**
 	 * @dataProvider userAndPasswordData
 	 */
@@ -222,6 +228,36 @@ class LoggerTest extends TestCase {
 				$logLine
 			);
 		}
+	}
+
+	public function testPasswordInCallback() {
+		$config = $this->createMock(IConfig::class);
+		$logger = $this->createMock(ILogger::class);
+		$accountMapper = $this->createMock(AccountMapper::class);
+		$syncService = $this->createMock(SyncService::class);
+		$userSearch = $this->createMock(UserSearch::class);
+
+		$manager = new Manager(
+			$config, $logger, $accountMapper, $syncService, $userSearch
+		);
+		$manager->listen('\OC\User', 'preLogin', function ($uid, $password) {
+			$e = new \Exception('test');
+			$this->logger->logException($e);
+			$logLines = $this->getLogs();
+
+			foreach ($logLines as $logLine) {
+				$this->assertStringNotContainsString($uid, $logLine);
+				$this->assertStringNotContainsString($password, $logLine);
+				$this->assertStringContainsString(
+					'{closure}(*** sensitive parameters replaced ***)',
+					$logLine
+				);
+			}
+		});
+
+		$login = 'user1';
+		$password = '123456';
+		$manager->emit('\OC\User', 'preLogin', [$login, $password]);
 	}
 
 	public function testExtraFields() {
