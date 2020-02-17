@@ -304,7 +304,7 @@ trait Sharing {
 		);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
-			"Failed HTTP status code for last share for user $user" . ", Response: " . $this->getResponse()
+			"Failed HTTP status code for last share for user $user" . ", Reason: " . $this->getResponse()->getReasonPhrase()
 		);
 	}
 
