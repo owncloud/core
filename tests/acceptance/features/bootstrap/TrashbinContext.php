@@ -81,7 +81,9 @@ class TrashbinContext implements Context {
 		$response = $this->emptyTrashbin($user);
 
 		Assert::assertEquals(
-			204, $response->getStatusCode()
+			204,
+			$response->getStatusCode(),
+			__METHOD__ . "Expected status code was '204' but got '" . $response->getStatusCode() . "'"
 		);
 	}
 
@@ -423,7 +425,10 @@ class TrashbinContext implements Context {
 
 		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
-		Assert::assertNotNull($firstEntry);
+		Assert::assertNotNull(
+			$firstEntry,
+			"The first trash entry is found null unexpectedly"
+		);
 
 		if (\count($sections) !== 1) {
 			// TODO: handle deeper structures
@@ -450,7 +455,11 @@ class TrashbinContext implements Context {
 			}
 		}
 
-		Assert::assertTrue($found);
+		Assert::assertTrue(
+			$found,
+			__METHOD__
+			. "Could not find expected resource '$path' in the trash"
+		);
 	}
 
 	/**
@@ -601,10 +610,9 @@ class TrashbinContext implements Context {
 	 */
 	public function elementInTrashHasBeenRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
-		Assert::assertFalse(
-			$this->isInTrash($user, $originalPath),
-			"File previously located at $originalPath is still in the trashbin"
-		);
+		if ($this->isInTrash($user, $originalPath)) {
+			throw new Exception("File previously located at $originalPath is still in the trashbin");
+		}
 	}
 
 	/**
