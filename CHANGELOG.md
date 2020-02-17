@@ -28,6 +28,7 @@ Summary
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 * Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
+* Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -258,6 +259,18 @@ Details
    OC_DEFAULT_MODULE does not exist." if the file was encrypted with another ownCloud instance.
 
    https://github.com/owncloud/core/pull/36921
+
+* Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
+
+   When trying to do command: occ user:resetpassword Anne --send-email --password-from-env
+
+   If Anne does not have an email address setup then an error was logged in the ownCloud log.
+
+   This has been corrected. Now the administrator is shown the correct error "Email address is not
+   set for the user Anne"
+
+   https://github.com/owncloud/core/issues/36925
+   https://github.com/owncloud/core/pull/36926
 
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 
