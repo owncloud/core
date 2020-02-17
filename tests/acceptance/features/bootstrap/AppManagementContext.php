@@ -89,7 +89,7 @@ class AppManagementContext implements Context {
 		if (!empty($resp['stdErr'])) {
 			throw new \Exception(
 				__METHOD__
-				. "Expected to set app path but failed due to error: " . $resp['stdErr']
+				. " Expected to set app path but failed due to error: " . $resp['stdErr']
 			);
 		}
 	}
@@ -159,7 +159,7 @@ class AppManagementContext implements Context {
 		if (!\array_key_exists($appId, $appsDisabled)) {
 			throw new \Exception(
 				__METHOD__
-				. 'Expected: ' . $appId . 'to be present in apps(disabled) list, but not found'
+				. ' Expected: ' . $appId . 'to be present in apps(disabled) list, but not found'
 			);
 		}
 	}

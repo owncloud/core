@@ -1476,8 +1476,8 @@ class OccContext implements Context {
 				$element,
 				\array_map('trim', $ResultArray),
 				__METHOD__
-				. \implode(', ', $element)
-				. "was expected to be listed, but is not listed in the mount configuration information"
+				. " '" . \implode(', ', $element)
+				. "' was expected to be listed, but is not listed in the mount configuration information"
 			);
 		}
 	}

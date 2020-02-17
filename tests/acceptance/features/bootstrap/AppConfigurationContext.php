@@ -147,7 +147,7 @@ class AppConfigurationContext implements Context {
 		if ($statusCode !== 200) {
 			throw new \Exception(
 				__METHOD__
-				. "user $username returned unexpected status $statusCode"
+				. " user $username returned unexpected status $statusCode"
 			);
 		}
 	}
@@ -408,7 +408,7 @@ class AppConfigurationContext implements Context {
 		if ($status !== 201) {
 			throw new \Exception(
 				__METHOD__ .
-				"Could not add trusted server " . $this->getUrlStringForMessage($url)
+				" Could not add trusted server " . $this->getUrlStringForMessage($url)
 				. ". The request failed with status $status"
 			);
 		}
@@ -484,7 +484,7 @@ class AppConfigurationContext implements Context {
 			$contents = $this->featureContext->getResponse()->getBody()->getContents();
 			throw new \Exception(
 				__METHOD__
-				. "Failed to clear all trusted servers" . $contents
+				. " Failed to clear all trusted servers" . $contents
 			);
 		}
 	}

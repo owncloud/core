@@ -3233,7 +3233,7 @@ class FeatureContext extends BehatVariablesContext {
 		} elseif ($server === 'REMOTE') {
 			$url = $this->getRemoteBaseUrl();
 		} else {
-			throw new \Exception(__METHOD__ . "Invalid value for server : $server");
+			throw new \Exception(__METHOD__ . " Invalid value for server : $server");
 		}
 		$adminUser = $this->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(

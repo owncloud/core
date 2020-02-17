@@ -393,7 +393,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$this->assertElementNotNull(
 			$selectedAllFilesBtn,
 			__METHOD__ .
-			"could not find button $this->selectAllFilesCheckboxXpath to select all files"
+			" could not find button $this->selectAllFilesCheckboxXpath to select all files"
 		);
 		return $selectedAllFilesBtn;
 	}
