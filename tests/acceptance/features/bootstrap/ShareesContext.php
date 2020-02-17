@@ -100,7 +100,11 @@ class ShareesContext implements Context {
 		$respondedArray = $this->getArrayOfShareesResponded(
 			$this->featureContext->getResponse(), $shareeType
 		);
-		Assert::assertEquals($sharees, $respondedArray);
+		Assert::assertEquals(
+			$sharees,
+			$respondedArray,
+			"Returned sharees do not match the expected ones. See the differences below."
+		);
 	}
 
 	/**
