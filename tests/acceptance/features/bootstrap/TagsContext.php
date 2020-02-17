@@ -675,12 +675,13 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function tagsShouldExistForUser($count, $user) {
-		if ((int) $count !== \count($this->requestTagsForUser($user))) {
-			throw new \Exception(
-				"Expected $count tags, got "
-				. \count($this->requestTagsForUser($user))
-			);
-		}
+		Assert::assertEquals(
+			(int) $count,
+			\count($this->requestTagsforUser($user)),
+			__METHOD__
+			. " Expected $count tags, got "
+			. \count($this->requestTagsForUser($user))
+		);
 	}
 
 	/**
@@ -1342,8 +1343,12 @@ class TagsContext implements Context {
 		$user, $fileName, $sharingUser, $status
 	) {
 		$this->requestTagsForFile($user, $fileName, $sharingUser);
+		$actualStatus = $this->featureContext->getResponse()->getStatusCode();
 		Assert::assertEquals(
-			$status, $this->featureContext->getResponse()->getStatusCode()
+			$status,
+			$actualStatus,
+			__METHOD__
+			. " Expected status is '$status' but got '$actualStatus'"
 		);
 	}
 
@@ -1463,7 +1468,12 @@ class TagsContext implements Context {
 		// The array of tags has a single "empty" item at the start.
 		// If there are no tags, then the array should have just this
 		// one entry.
-		Assert::assertCount(1, $tagList);
+		$numTags = \count($tagList) - 1;
+		Assert::assertEquals(
+			0,
+			$numTags,
+			"Expected no tags for '$fileName', but got '" . $numTags . "' tags"
+		);
 	}
 
 	/**
