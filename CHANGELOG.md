@@ -71,6 +71,9 @@ Summary
 * Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
 * Change - Update symfony (3.4.37 => 4.4.4): [#36881](https://github.com/owncloud/core/pull/36881)
 * Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
+* Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
+* Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
+* Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -509,6 +512,24 @@ Details
 * Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
 
    https://github.com/owncloud/core/pull/36895
+
+* Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
+
+   https://github.com/owncloud/core/pull/36955
+
+* Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
+
+   https://github.com/owncloud/core/pull/36955
+
+* Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
+
+   The following symfony/polyfill components have been updated to version 1.14.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-mbstring symfony/polyfill-php56 symfony/polyfill-php72
+   symfony/polyfill-php73 symfony/polyfill-util
+
+   https://github.com/owncloud/core/pull/36955
 
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
