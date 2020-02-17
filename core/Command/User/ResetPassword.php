@@ -179,6 +179,10 @@ class ResetPassword extends Command {
 		if ($emailLink) {
 			$userId = $user->getUID();
 			list(, $token) = $this->lostController->generateTokenAndLink($userId);
+			if (!$this->hasValidEmailAddress($user->getEMailAddress())) {
+				$output->writeln('<error>Email address is not set for the user ' . $user->getUID() . '</error>');
+				return 1;
+			}
 			$this->config->setUserValue($userId, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
 			$success = $this->lostController->setPassword($token, $userId, $password, false);
 			if (\is_array($success) && isset($success['status']) && $success['status'] === 'success') {

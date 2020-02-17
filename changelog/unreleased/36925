@@ -1,0 +1,13 @@
+Bugfix: user:resetpassword with --send-email --password-from-env
+
+When trying to do command:
+occ user:resetpassword Anne --send-email --password-from-env
+
+If Anne does not have an email address setup then an error was logged in the
+ownCloud log.
+
+This has been corrected. Now the administrator is shown the correct error
+"Email address is not set for the user Anne"
+
+https://github.com/owncloud/core/issues/36925
+https://github.com/owncloud/core/pull/36926

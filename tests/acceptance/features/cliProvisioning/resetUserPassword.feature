@@ -48,6 +48,15 @@ Feature: reset user password
     Then the command should have failed with exit code 1
     And the command output should contain the text "Email address is not set for the user brand-new-user"
 
+  @skipOnOcV10.3
+  Scenario: administrator gets error message while trying to reset specifying user password with send email when the email address of the user is not setup
+    Given these users have been created with skeleton files:
+      | username       | password  | displayname |
+      | brand-new-user | %regular% | New user    |
+    When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text "Email address is not set for the user brand-new-user"
+
   Scenario: user should not get an email when the smtpmode value points to an invalid or missing mail program
     Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
