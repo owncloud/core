@@ -693,7 +693,10 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get($url, $user, $password, $headers);
 		Assert::assertEquals(
 			200,
-			$this->response->getStatusCode()
+			$this->response->getStatusCode(),
+			"Expected status code is '200' but got '"
+			. $this->response->getStatusCode()
+			. "'"
 		);
 
 		$buf = '';
@@ -708,7 +711,9 @@ trait Sharing {
 			$finfo = new finfo;
 			Assert::assertEquals(
 				$mimeType,
-				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
+				$finfo->buffer($buf, FILEINFO_MIME_TYPE),
+				"Expected mimeType '$mimeType' but got '"
+				. $finfo->buffer($buf, FILEINFO_MIME_TYPE)
 			);
 		}
 	}
@@ -725,7 +730,11 @@ trait Sharing {
 		$this->createAPublicShare($sharer, $filepath);
 		Assert::assertEquals(
 			404,
-			$this->ocsContext->getOCSResponseStatusCode($this->response)
+			$this->ocsContext->getOCSResponseStatusCode($this->response),
+			__METHOD__
+			. "Expected response status code is '404' but got '"
+			. $this->ocsContext->getOCSResponseStatusCode($this->response)
+			. "'"
 		);
 	}
 
@@ -1380,7 +1389,9 @@ trait Sharing {
 
 		Assert::assertEquals(
 			true,
-			$this->isUserOrGroupInSharedData($group, "group", $permissions)
+			$this->isUserOrGroupInSharedData($group, "group", $permissions),
+			__METHOD__
+			. "Could not assert that user '$user' has shared '$filepath' with group '$group' with permissions '$permissions'"
 		);
 	}
 
@@ -1866,7 +1877,11 @@ trait Sharing {
 	 */
 	public function checkingTheResponseEntriesCount($count) {
 		$actualCount = \count($this->getResponseXml()->data[0]);
-		Assert::assertEquals($count, $actualCount);
+		Assert::assertEquals(
+			$count,
+			$actualCount,
+			"Expected that the response should contain '$count' entries but got '$actualCount' entries"
+		);
 	}
 
 	/**
@@ -1896,7 +1911,7 @@ trait Sharing {
 	public function theFieldsOfTheLastResponseShouldBeEmpty() {
 		$data = $this->getResponseXml()->data[0];
 		Assert::assertEquals(
-			\count($data->element), 0, "last response contains data"
+			\count($data->element), 0, "last response contains data but was expected to be empty"
 		);
 	}
 
@@ -1967,7 +1982,8 @@ trait Sharing {
 		// check if attributes received from table is subset of actualAttributes
 		Assert::assertArraySubset(
 			$attributes,
-			$actualAttributesArray
+			$actualAttributesArray,
+			"The additional sharing attributes did not include the expected attributes. See the differences below."
 		);
 	}
 
@@ -1985,7 +2001,11 @@ trait Sharing {
 		$receivedErrorMessage = $this->getResponseXml()->xpath('//s:message');
 		if ((bool) $errorMessage) {
 			Assert::assertEquals(
-				$errorMessage, (string) $receivedErrorMessage[0]
+				$errorMessage,
+				(string) $receivedErrorMessage[0],
+				"Expected error message was '$errorMessage' but got '"
+				. (string) $receivedErrorMessage[0]
+				. "'"
 			);
 			return;
 		}
@@ -2089,7 +2109,14 @@ trait Sharing {
 	public function userHasRemovedAllSharesFromTheFileNamedzz($user, $fileName) {
 		$this->removeAllSharesFromResource($user, $fileName);
 		$dataResponded = $this->getShares($user, $fileName);
-		Assert::assertEquals(\count($dataResponded), 0);
+		Assert::assertEquals(
+			0,
+			\count($dataResponded),
+			__METHOD__
+			. "Expected all shares to be removed from '$fileName' but got '"
+			. \count($dataResponded)
+			. "' shares still present"
+		);
 	}
 
 	/**
@@ -2135,11 +2162,19 @@ trait Sharing {
 					if ((string) $elementResponded->name[0] === $expectedElementsArray['name']) {
 						Assert::assertEquals(
 							$expectedElementsArray['path'],
-							(string) $elementResponded->path[0]
+							(string) $elementResponded->path[0],
+							__METHOD__
+							. "Expected '${expectedElementsArray['path']}' but got '"
+							. (string) $elementResponded->path[0]
+							. "'"
 						);
 						Assert::assertEquals(
 							$expectedElementsArray['permissions'],
-							(string) $elementResponded->permissions[0]
+							(string) $elementResponded->permissions[0],
+							__METHOD__
+							. "Expected '${expectedElementsArray['permissions']}' but got '"
+							. (string) $elementResponded->permissions[0]
+							. "'"
 						);
 						$nameFound = true;
 						break;
@@ -2164,7 +2199,14 @@ trait Sharing {
 	public function checkPublicSharesAreEmpty($user, $path) {
 		$dataResponded = $this->getShares($user, $path);
 		//It shouldn't have public shares
-		Assert::assertEquals(\count($dataResponded), 0);
+		Assert::assertEquals(
+			0,
+			\count($dataResponded),
+			__METHOD__
+			. "As '$user', '$path' was expected to have no shares, but got '"
+			. \count($dataResponded)
+			. "' shares present"
+		);
 	}
 
 	/**
@@ -2322,7 +2364,12 @@ trait Sharing {
 			$row['path'] = "/" . \trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
-					Assert::assertArraySubset($row, $share);
+					Assert::assertArraySubset($row,
+						$share,
+						"Expected '"
+						. \ implode(', ', $row )
+					    . "' was not included in the share of the user. See the difference below"
+					);
 					$found = true;
 					break;
 				} catch (PHPUnit\Framework\ExpectationFailedException $e) {
@@ -2348,7 +2395,8 @@ trait Sharing {
 	public function assertThatNoSharesAreSharedWithUser($user) {
 		$usersShares = $this->getAllSharesSharedWithUser($user);
 		Assert::assertEmpty(
-			$usersShares, "user has " . \count($usersShares) . " share(s)"
+			$usersShares,
+			"user has " . \count($usersShares) . " share(s)"
 		);
 	}
 
