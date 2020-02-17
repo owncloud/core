@@ -2364,11 +2364,12 @@ trait Sharing {
 			$row['path'] = "/" . \trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
-					Assert::assertArraySubset($row,
+					Assert::assertArraySubset(
+						$row,
 						$share,
 						"Expected '"
-						. \ implode(', ', $row )
-					    . "' was not included in the share of the user. See the difference below"
+						. \ implode(', ', $row)
+						. "' was not included in the share of the user. See the difference below"
 					);
 					$found = true;
 					break;
