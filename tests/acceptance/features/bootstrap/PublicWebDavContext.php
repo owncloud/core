@@ -522,6 +522,7 @@ class PublicWebDavContext implements Context {
 		$this->checkLastPublicSharedFileWithPasswordDownload(
 			$publicWebDAVAPIVersion, "", $expectedContent
 		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -551,6 +552,8 @@ class PublicWebDavContext implements Context {
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
 		}
+
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -696,6 +699,7 @@ class PublicWebDavContext implements Context {
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
 		}
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
