@@ -2606,7 +2606,7 @@ trait Sharing {
 				'capabilitiesParameter' => 'exclude_groups_from_sharing_list',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_exclude_groups_list',
-				'testingState' => null
+				'testingState' => ''
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
