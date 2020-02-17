@@ -703,6 +703,8 @@ Feature: capabilities
     And group "ordinary-group" has been created
     And user "user0" has been added to group "hash#group"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["group1","hash#group","group-3"]'
+    And the config key "shareapi_exclude_groups" of app "core" should have value "yes"
+    And the config key "shareapi_exclude_groups_list" of app "core" should have value '["group1","hash#group","group-3"]'
     When user "user0" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
@@ -732,6 +734,8 @@ Feature: capabilities
     And group "ordinary-group" has been created
     And user "user1" has been added to group "ordinary-group"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["group1","hash#group","group-3"]'
+    And the config key "shareapi_exclude_groups" of app "core" should have value "yes"
+    And the config key "shareapi_exclude_groups_list" of app "core" should have value '["group1","hash#group","group-3"]'
     When user "user1" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
@@ -762,6 +766,8 @@ Feature: capabilities
     And user "user2" has been added to group "hash#group"
     And user "user2" has been added to group "ordinary-group"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["group1","hash#group","group-3"]'
+    And the config key "shareapi_exclude_groups" of app "core" should have value "yes"
+    And the config key "shareapi_exclude_groups_list" of app "core" should have value '["group1","hash#group","group-3"]'
     When user "user2" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
