@@ -90,6 +90,7 @@ OC.L10N.register(
     "Storage type" : "Speichertyp",
     "Scope" : "Anwendungsbereich",
     "Enable encryption" : "Verschlüsselung aktivieren",
+    "Set read-only" : "Schreibgeschützt festlegen",
     "Enable previews" : "Vorschau aktivieren",
     "Enable sharing" : "Teilen aktivieren",
     "Check for changes" : "Auf Änderungen überprüfen",
