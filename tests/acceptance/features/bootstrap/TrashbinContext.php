@@ -83,7 +83,7 @@ class TrashbinContext implements Context {
 		Assert::assertEquals(
 			204,
 			$response->getStatusCode(),
-			__METHOD__ . "Expected status code was '204' but got '" . $response->getStatusCode() . "'"
+			__METHOD__ . " Expected status code was '204' but got '" . $response->getStatusCode() . "'"
 		);
 	}
 
@@ -458,7 +458,7 @@ class TrashbinContext implements Context {
 		Assert::assertTrue(
 			$found,
 			__METHOD__
-			. "Could not find expected resource '$path' in the trash"
+			. " Could not find expected resource '$path' in the trash"
 		);
 	}
 
