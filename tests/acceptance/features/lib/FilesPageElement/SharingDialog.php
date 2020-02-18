@@ -115,7 +115,7 @@ class SharingDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function openShareActionsDropDown($type, $receiver) {
-		$this->toggleShareActions($type, $receiver);
+		$this->openShareActionsIfNotOpen($type, $receiver);
 		$this->waitTillElementIsNotNull($this->shareWithListDetailsXpath);
 	}
 
@@ -431,7 +431,7 @@ class SharingDialog extends OwncloudPage {
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	public function toggleShareActions($userOrGroup, $shareReceiverName) {
+	public function openShareActionsIfNotOpen($userOrGroup, $shareReceiverName) {
 		if ($userOrGroup == "group") {
 			$xpathLocator = \sprintf(
 				$this->permissionsFieldByGroupName, $shareReceiverName
@@ -489,7 +489,7 @@ class SharingDialog extends OwncloudPage {
 		$permissions,
 		Session $session
 	) {
-		$permissionsField = $this->toggleShareActions($userOrGroup, $shareReceiverName);
+		$permissionsField = $this->openShareActionsIfNotOpen($userOrGroup, $shareReceiverName);
 		foreach ($permissions as $permission => $value) {
 			$value = \strtolower($value);
 
@@ -559,7 +559,7 @@ class SharingDialog extends OwncloudPage {
 		$permissions,
 		Session $session
 	) {
-		$permissionsField = $this->toggleShareActions($userOrGroup, $shareReceiverName);
+		$permissionsField = $this->openShareActionsIfNotOpen($userOrGroup, $shareReceiverName);
 		foreach ($permissions as $permission => $value) {
 			$permissionCheckBox = $permissionsField->findField($permission);
 
