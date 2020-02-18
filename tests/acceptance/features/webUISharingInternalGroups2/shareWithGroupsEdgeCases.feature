@@ -177,7 +177,7 @@ Feature: Sharing files and folders with internal groups
 	  | share_with  | user1          |
 	  | permissions | 31             |
 
-  Scenario: Share file with a user and a group with same name and change sharing permissions of the both user and group
+  Scenario: Share file with a user and a group with same name and change sharing permissions of both user and group
 	Given these users have been created with default attributes and without skeleton files:
 	  | username |
 	  | user1    |
@@ -293,10 +293,15 @@ Feature: Sharing files and folders with internal groups
 	And user "user2" has shared folder "/simple-folder" with group "user1"
 	And user "user2" has logged in using the webUI
 	When the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
-	  | share | no |
+	  | edit    | no |
+	  | create  | no |
 	And the user changes expiration date for share of user "User One" to "+5 days" in the share dialog
+	And the user sets the sharing permissions of group "user1" for "simple-folder" using the webUI to
+	  | delete | no |
+	And the user changes expiration date for share of group "user1" to "+7 days" in the share dialog
 	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User One"
-	  | share | no |
+	  | edit    | no |
+	  | create  | no |
 	And the expiration date input field should be "+5 days" for the user "User One" in the share dialog
 	And the information for user "user1" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
@@ -304,12 +309,9 @@ Feature: Sharing files and folders with internal groups
 	  | expiration  | +5 days        |
 	  | uid_owner   | user2          |
 	  | share_with  | user1          |
-	  | permissions | 15             |
-	When the user sets the sharing permissions of group "user1" for "simple-folder" using the webUI to
-	  | share | no |
-	And the user changes expiration date for share of group "user1" to "+7 days" in the share dialog
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for group "user1"
-	  | share | no |
+	  | permissions | 17             |
+	And the following permissions are seen for "simple-folder" in the sharing dialog for group "user1"
+	  | delete | no |
 	And the expiration date input field should be "+7 days" for the group "user1" in the share dialog
 	And the information for group "user1" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
@@ -317,4 +319,4 @@ Feature: Sharing files and folders with internal groups
 	  | expiration  | +7 days        |
 	  | uid_owner   | user2          |
 	  | share_with  | user1          |
-	  | permissions | 15             |
+	  | permissions | 23             |
