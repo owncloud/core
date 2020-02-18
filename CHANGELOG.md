@@ -75,6 +75,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
+* Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -543,6 +544,13 @@ Details
    symfony/polyfill-php73 symfony/polyfill-util
 
    https://github.com/owncloud/core/pull/36955
+
+* Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
+
+   Sensitive data like passwords are not written to the log when the exception is thrown from
+   within a closure.
+
+   https://github.com/owncloud/core/pull/36961
 
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
