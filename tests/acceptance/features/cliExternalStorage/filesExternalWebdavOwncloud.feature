@@ -12,7 +12,7 @@ So that I can extend my storage service
     And using server "LOCAL"
 
   Scenario: creating a webdav_owncloud external storage
-    When the administrator creates an external mount point with following configuration using the occ command
+    When the administrator creates an external mount point with the following configuration using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -28,7 +28,7 @@ So that I can extend my storage service
     And as "admin" folder "TestMountPoint" should exist
 
   Scenario: using webdav_owncloud as external storage
-    Given the administrator has created an external mount point with following configuration using the occ command
+    Given the administrator has created an external mount point with the following configuration using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -46,7 +46,7 @@ So that I can extend my storage service
     Given using server "REMOTE"
     And user "user1" has created folder "TestMnt1"
     And using server "LOCAL"
-    And the administrator creates an external mount point with following configuration using the occ command
+    And the administrator creates an external mount point with the following configuration using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt1           |
       | secure                 | false              |
@@ -55,7 +55,7 @@ So that I can extend my storage service
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint1    |
       | authentication_backend | password::password |
-    When administrator deletes external storage with mount point "TestMountPoint1"
+    When the administrator deletes external storage with mount point "TestMountPoint1"
     Then the command should have been successful
-    When the administrator lists all local storages mount points using the occ command
-    Then mount point "/TestMountPoint1" should not be listed as created external storages
+    When the administrator lists all local storage mount points using the occ command
+    Then mount point "/TestMountPoint1" should not be listed as an external storage

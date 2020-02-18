@@ -2733,7 +2733,7 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * gets every created storages and deletes them
+	 * deletes all created storages
 	 *
 	 * @return void
 	 * @throws Exception
