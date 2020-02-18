@@ -486,8 +486,8 @@ trait WebDav {
 		);
 		if ($this->response->getStatusCode() !== 201) {
 			throw new Exception(
-				__METHOD__ . "Failed moving resource '$fileSource' to '$fileDestination'.
-			Expected status code was '201' but got '" . $this->response->getStatusCode() . "'"
+				__METHOD__ . " Failed moving resource '$fileSource' to '$fileDestination'."
+				. " Expected status code was '201' but got '" . $this->response->getStatusCode() . "'"
 			);
 		}
 	}
@@ -755,10 +755,14 @@ trait WebDav {
 		$password = $this->getActualPassword($password);
 		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
 		Assert::assertGreaterThanOrEqual(
-			400, $this->getResponse()->getStatusCode(), 'download must fail'
+			400, $this->getResponse()->getStatusCode(),
+			__METHOD__
+			. ' download must fail'
 		);
 		Assert::assertLessThanOrEqual(
-			499, $this->getResponse()->getStatusCode(), '4xx error expected but got status code "'
+			499, $this->getResponse()->getStatusCode(),
+			__METHOD__
+			. ' 4xx error expected but got status code "'
 			. $this->getResponse()->getStatusCode() . '"'
 		);
 	}
@@ -1196,15 +1200,6 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function downloadedContentShouldStartWith($start) {
-		if (\strpos($this->response->getBody()->getContents(), $start) !== 0) {
-			throw new \Exception(
-				\sprintf(
-					"Expected '%s', got '%s'",
-					$start,
-					$this->response->getBody()->getContents()
-				)
-			);
-		}
 		Assert::assertEquals(
 			0,
 			\strpos($this->response->getBody()->getContents(), $start),
@@ -2969,7 +2964,7 @@ trait WebDav {
 			$currentFileID,
 			$this->storedFileID,
 			__METHOD__
-			. "User '$user' file '$path' does not have the previously stored id '{$this->storedFileID}', but have '$currentFileID'."
+			. " User '$user' file '$path' does not have the previously stored id '{$this->storedFileID}', but has '$currentFileID'."
 		);
 	}
 
@@ -3043,7 +3038,8 @@ trait WebDav {
 		Assert::assertEquals(
 			(int) $numFiles,
 			\count($multistatusResults),
-			"Expected result to contain '"
+			__METHOD__
+			. " Expected result to contain '"
 			. (int) $numFiles
 			. "' files/entries, but got '"
 			. \count($multistatusResults)
