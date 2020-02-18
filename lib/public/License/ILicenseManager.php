@@ -19,6 +19,10 @@
  */
 namespace OCP\License;
 
+/**
+ * @since 10.5.0
+ * Holds operations for managing the ownCloud license
+ */
 interface ILicenseManager {
 	const LICENSE_STATE_VALID = 0;
 	const LICENSE_STATE_MISSING = 1;
@@ -26,6 +30,7 @@ interface ILicenseManager {
 	const LICENSE_STATE_EXPIRED = 3;
 
 	/**
+	 * @since 10.5.0
 	 * Return an array with "start" and "end" keys to know when the grace period has
 	 * started and when the grace period will end, or null if the grace period hasn't
 	 * started yet.
@@ -43,6 +48,7 @@ interface ILicenseManager {
 	public function getGracePeriod(bool $includeExtras = false);
 
 	/**
+	 * @since 10.5.0
 	 * Set a new license through ownCloud. You can use any string as the license.
 	 *
 	 * Use null if you don't want to set a new license but want to run possible cleanup
@@ -56,6 +62,7 @@ interface ILicenseManager {
 	public function setLicenseString($licenseString);
 
 	/**
+	 * @since 10.5.0
 	 * Get the license state for $appid. This function will return one of the LICENSE_STATE_*
 	 * constants.
 	 *
@@ -65,6 +72,7 @@ interface ILicenseManager {
 	public function getLicenseStateFor(string $appid);
 
 	/**
+	 * @since 10.5.0
 	 * This method is intended to be called only by the apps trying to check if the app
 	 * itself has a valid license and it's allowed to run. Core shouldn't need to call
 	 * this method, nor other different apps ("myApp" should only check for itself).

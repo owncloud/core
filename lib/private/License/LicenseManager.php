@@ -66,7 +66,6 @@ class LicenseManager implements ILicenseManager {
 		$apps = [];
 		$appComplains = $this->config->getAppKeys('core-license-complains');
 		foreach ($appComplains as $appComplain) {
-			$appInfo = $this->appManager->getAppInfo($appComplain);
 			if ($this->config->getAppValue($appComplain, 'enabled', 'no') === 'yes' && $this->appManager->getAppPath($appComplain) !== false) {
 				// if the app is installed and hasn't been removed from the FS...
 				$licenseWithState = $this->getLicenseWithState($appComplain);

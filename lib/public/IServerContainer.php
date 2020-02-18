@@ -546,6 +546,7 @@ interface IServerContainer extends IContainer {
 
 	/**
 	 * @return \OCP\License\ILicenseManager
+	 * @since 10.5.0
 	 */
 	public function getLicenseManager();
 }
