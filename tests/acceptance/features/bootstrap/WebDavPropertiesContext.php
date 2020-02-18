@@ -613,10 +613,9 @@ class WebDavPropertiesContext implements Context {
 			$user,
 			$path
 		);
-		Assert::assertNotNull(
-			$this->storedETAG[$user][$path],
-			'Expected stored etag to be some string but found null!'
-		);
+		if ($this->storedETAG[$user][$path] === null) {
+			throw new Exception("Expected stored etag to be some string but found null!");
+		}
 	}
 
 	/**
@@ -626,11 +625,11 @@ class WebDavPropertiesContext implements Context {
 	 * @throws \Exception
 	 */
 	public function thePropertiesResponseShouldContainAnEtag() {
-		if (!$this->featureContext->isEtagValid()) {
-			throw new \Exception(
-				"getetag not found in response"
-			);
-		}
+		Assert::assertTrue(
+			$this->featureContext->isEtagValid(),
+			__METHOD__
+			. " getetag not found in response"
+		);
 	}
 
 	/**
@@ -673,7 +672,9 @@ class WebDavPropertiesContext implements Context {
 			}
 			Assert::assertEquals(
 				$col["value"],
-				$xmlPart[0]
+				$xmlPart[0],
+				__METHOD__
+				. " Expected '" . $col["value"] . "' but got '" . $xmlPart[0] . "'"
 			);
 		}
 	}
@@ -693,7 +694,13 @@ class WebDavPropertiesContext implements Context {
 		);
 		Assert::assertEquals(
 			$this->storedETAG[$user][$path],
-			$this->featureContext->getEtagFromResponseXmlObject()
+			$this->featureContext->getEtagFromResponseXmlObject(),
+			__METHOD__
+			. " The etag of element '$path' of user '$user' was not expected to change. The stored etag was '"
+			. $this->storedETAG[$user][$path]
+			. "' but got '"
+			. $this->featureContext->getEtagFromResponseXmlObject()
+			. "' from the response"
 		);
 	}
 
@@ -712,7 +719,13 @@ class WebDavPropertiesContext implements Context {
 		);
 		Assert::assertNotEquals(
 			$this->storedETAG[$user][$path],
-			$this->featureContext->getEtagFromResponseXmlObject()
+			$this->featureContext->getEtagFromResponseXmlObject(),
+			__METHOD__
+			. " The etag of element '$path' of user '$user' was expected to change. The stored etag was '"
+			. $this->storedETAG[$user][$path]
+			. "' and got '"
+			. $this->featureContext->getEtagFromResponseXmlObject()
+			. "' from the response"
 		);
 	}
 
