@@ -58,7 +58,7 @@ if (\stripos(PHP_OS, 'WIN') === 0) {
 function exceptionHandler($exception) {
 	try {
 		// try to log the exception
-		\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
+		\OC::$server->getLogger()->logException($exception, ['app' => 'index']);
 	} catch (\Throwable $ex) {
 		// if we can't log normally, use the crashLog
 		\OC::crashLog($exception);
