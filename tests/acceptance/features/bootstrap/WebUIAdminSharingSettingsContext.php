@@ -157,8 +157,14 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function expirationDateForUserSharesShouldBeSetToXDays($days) {
-		$expectedDays = $this->adminSharingSettingsPage->getUserShareExpirationDays();
-		Assert::assertEquals($days, $expectedDays);
+		$expirationDays = $this->adminSharingSettingsPage->getUserShareExpirationDays();
+		Assert::assertEquals(
+			$days,
+			$expirationDays,
+			__METHOD__
+			. " The expiration date for user shares was expected to be set to '$days' days, "
+			. "but was actually set to '$expirationDays' days"
+		);
 	}
 
 	/**
@@ -169,8 +175,14 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function expirationDateForGroupSharesShouldBeSetToXDays($days) {
-		$expectedDays = $this->adminSharingSettingsPage->getGroupShareExpirationDays();
-		Assert::assertEquals($days, $expectedDays);
+		$expirationDays = $this->adminSharingSettingsPage->getGroupShareExpirationDays();
+		Assert::assertEquals(
+			$days,
+			$expirationDays,
+			__METHOD__
+			. " The expiration date for group shares was expected to be set to '$days' days, "
+			. "but was actually set to '$expirationDays' days"
+		);
 	}
 
 	/**
@@ -484,7 +496,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function aErrorMessageForTrustedServerShouldContain($text) {
 		$msg = $this->adminSharingSettingsPage->getTrustedServerErrorMsg();
-		Assert::assertContains($text, $msg);
+		Assert::assertContains(
+			$text,
+			$msg,
+			__METHOD__
+			. " The text in the trusted server error message was expected to be '$text', but got '$msg' instead "
+		);
 	}
 
 	/**
