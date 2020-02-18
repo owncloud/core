@@ -411,7 +411,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator lists all local storages mount points using the occ command
+	 * @When the administrator lists all local storage mount points using the occ command
 	 *
 	 * List created local storage mount with --short
 	 *
@@ -2071,7 +2071,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator creates an external mount point with following configuration using the occ command
+	 * @When the administrator creates an external mount point with the following configuration using the occ command
 	 *
 	 * @param TableNode $settings
 	 *
@@ -2120,37 +2120,37 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has created an external mount point with following configuration using the occ command
+	 * @Given the administrator has created an external mount point with the following configuration using the occ command
 	 *
 	 * @param TableNode $settings
 	 *
 	 * @return void
 	 */
-	public function userHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
+	public function adminHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
 		$this->createExternalMountPointUsingTheOccCommand($settings);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
-	 * @When administrator deletes external storage with mount point :mountPoint
+	 * @When the administrator deletes external storage with mount point :mountPoint
 	 *
 	 * @param string $mountPoint
 	 *
 	 * @return void
 	 */
-	public function deleteExternalMountPoint($mountPoint) {
+	public function adminDeletesExternalMountPoint($mountPoint) {
 		$mount_id = $this->administratorDeletesFolder($mountPoint);
 		$this->featureContext->popStorageId($mount_id);
 	}
 
 	/**
-	 * @Then mount point :mountPoint should not be listed as created external storages
+	 * @Then mount point :mountPoint should not be listed as an external storage
 	 *
 	 * @param string $mountPoint
 	 *
 	 * @return void
 	 */
-	public function mountPointShouldNotBeListedAsCreatedExternalStorage($mountPoint) {
+	public function mountPointShouldNotBeListedAsAnExternalStorage($mountPoint) {
 		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $entry) {
 			Assert::assertNotEquals($mountPoint, $entry->mount_point);
