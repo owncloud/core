@@ -230,46 +230,46 @@ trait Sharing {
 			['path'],
 			$this->shareFields
 		);
-		$fd = $body->getRowsHash();
-		$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
-		$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
-		$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
-		$fd['password'] = \array_key_exists('password', $fd) ? $this->getActualPassword($fd['password']) : null;
+		$bodyRows = $body->getRowsHash();
+		$bodyRows['name'] = \array_key_exists('name', $bodyRows) ? $bodyRows['name'] : null;
+		$bodyRows['shareWith'] = \array_key_exists('shareWith', $bodyRows) ? $bodyRows['shareWith'] : null;
+		$bodyRows['publicUpload'] = \array_key_exists('publicUpload', $bodyRows) ? $bodyRows['publicUpload'] === 'true' : null;
+		$bodyRows['password'] = \array_key_exists('password', $bodyRows) ? $this->getActualPassword($bodyRows['password']) : null;
 
-		if (\array_key_exists('permissions', $fd)) {
-			if (\is_numeric($fd['permissions'])) {
-				$fd['permissions'] = (int) $fd['permissions'];
+		if (\array_key_exists('permissions', $bodyRows)) {
+			if (\is_numeric($bodyRows['permissions'])) {
+				$bodyRows['permissions'] = (int) $bodyRows['permissions'];
 			} else {
-				$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
+				$bodyRows['permissions'] = $this->splitPermissionsString($bodyRows['permissions']);
 			}
 		} else {
-			$fd['permissions'] = null;
+			$bodyRows['permissions'] = null;
 		}
-		if (\array_key_exists('shareType', $fd)) {
-			if (\is_numeric($fd['shareType'])) {
-				$fd['shareType'] = (int) $fd['shareType'];
+		if (\array_key_exists('shareType', $bodyRows)) {
+			if (\is_numeric($bodyRows['shareType'])) {
+				$bodyRows['shareType'] = (int) $bodyRows['shareType'];
 			}
 		} else {
-			$fd['shareType'] = null;
+			$bodyRows['shareType'] = null;
 		}
 
 		Assert::assertFalse(
-			isset($fd['expireDate'], $fd['expireDateAsString']),
+			isset($bodyRows['expireDate'], $bodyRows['expireDateAsString']),
 			'expireDate and expireDateAsString cannot be set at the same time.'
 		);
-		$needToParse = \array_key_exists('expireDate', $fd);
-		$expireDate = $fd['expireDate'] ?? $fd['expireDateAsString'] ?? null;
-		$fd['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
+		$needToParse = \array_key_exists('expireDate', $bodyRows);
+		$expireDate = $bodyRows['expireDate'] ?? $bodyRows['expireDateAsString'] ?? null;
+		$bodyRows['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
 		$this->createShare(
 			$user,
-			$fd['path'],
-			$fd['shareType'],
-			$fd['shareWith'],
-			$fd['publicUpload'],
-			$fd['password'],
-			$fd['permissions'],
-			$fd['name'],
-			$fd['expireDate']
+			$bodyRows['path'],
+			$bodyRows['shareType'],
+			$bodyRows['shareWith'],
+			$bodyRows['publicUpload'],
+			$bodyRows['password'],
+			$bodyRows['permissions'],
+			$bodyRows['name'],
+			$bodyRows['expireDate']
 		);
 	}
 
@@ -786,20 +786,20 @@ trait Sharing {
 			[],
 			$this->shareFields
 		);
-		$fd = $body->getRowsHash();
-		if (\array_key_exists('expireDate', $fd)) {
-			$dateModification = $fd['expireDate'];
-			$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
+		$bodyRows = $body->getRowsHash();
+		if (\array_key_exists('expireDate', $bodyRows)) {
+			$dateModification = $bodyRows['expireDate'];
+			$bodyRows['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 		}
-		if (\array_key_exists('password', $fd)) {
-			$fd['password'] = $this->getActualPassword($fd['password']);
+		if (\array_key_exists('password', $bodyRows)) {
+			$bodyRows['password'] = $this->getActualPassword($bodyRows['password']);
 		}
-		if (\array_key_exists('permissions', $fd)) {
-			if (\is_numeric($fd['permissions'])) {
-				$fd['permissions'] = (int) $fd['permissions'];
+		if (\array_key_exists('permissions', $bodyRows)) {
+			if (\is_numeric($bodyRows['permissions'])) {
+				$bodyRows['permissions'] = (int) $bodyRows['permissions'];
 			} else {
-				$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
-				$fd['permissions'] = SharingHelper::getPermissionSum($fd['permissions']);
+				$bodyRows['permissions'] = $this->splitPermissionsString($bodyRows['permissions']);
+				$bodyRows['permissions'] = SharingHelper::getPermissionSum($bodyRows['permissions']);
 			}
 		}
 
@@ -809,7 +809,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"PUT",
 			$this->getSharesEndpointPath("/$share_id"),
-			$fd,
+			$bodyRows,
 			$this->ocsApiVersion
 		);
 	}
@@ -1823,13 +1823,13 @@ trait Sharing {
 
 		Assert::assertNotNull($share_id, "Could not find share id for " . $user);
 
-		$fd = $body->getRowsHash();
-		if (\array_key_exists('expiration', $fd) && $fd['expiration'] !== '') {
-			$fd['expiration'] = \date('d-m-Y', \strtotime($fd['expiration']));
+		$bodyRows = $body->getRowsHash();
+		if (\array_key_exists('expiration', $bodyRows) && $bodyRows['expiration'] !== '') {
+			$bodyRows['expiration'] = \date('d-m-Y', \strtotime($bodyRows['expiration']));
 		}
 
 		$this->getShareData($user, $share_id);
-		foreach ($fd as $field => $value) {
+		foreach ($bodyRows as $field => $value) {
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
 				$this->isFieldInResponse($field, $value),
@@ -1943,8 +1943,8 @@ trait Sharing {
 	 */
 	public function checkFields($body) {
 		$this->verifyTableNodeColumnsCount($body, 2);
-		$fd = $body->getRowsHash();
-		foreach ($fd as $field => $value) {
+		$bodyRows = $body->getRowsHash();
+		foreach ($bodyRows as $field => $value) {
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
 				$this->isFieldInResponse($field, $value),
@@ -2071,9 +2071,9 @@ trait Sharing {
 	 */
 	public function checkFieldsNotInResponse($body) {
 		$this->verifyTableNodeColumnsCount($body, 2);
-		$fd = $body->getRowsHash();
+		$bodyRows = $body->getRowsHash();
 
-		foreach ($fd as $field => $value) {
+		foreach ($bodyRows as $field => $value) {
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertFalse(
 				$this->isFieldInResponse($field, $value, false),

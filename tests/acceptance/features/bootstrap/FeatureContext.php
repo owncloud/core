@@ -1172,9 +1172,9 @@ class FeatureContext extends BehatVariablesContext {
 			$cookies = $this->cookieJar;
 		}
 
-		$fd = null;
+		$bodyRows = null;
 		if ($body instanceof TableNode) {
-			$fd = $body->getRowsHash();
+			$bodyRows = $body->getRowsHash();
 		}
 
 		if (isset($this->requestToken)) {
@@ -1182,7 +1182,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		$this->response = HttpRequestHelper::sendRequest(
-			$fullUrl, $verb, $user, $password, $headers, $fd, $config, $cookies
+			$fullUrl, $verb, $user, $password, $headers, $bodyRows, $config, $cookies
 		);
 	}
 

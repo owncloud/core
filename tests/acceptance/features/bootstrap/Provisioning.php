@@ -3808,8 +3808,8 @@ trait Provisioning {
 	 */
 	public function checkUserAttributes($body) {
 		$this->verifyTableNodeRows($body, [], $this->userResponseFields);
-		$fd = $body->getRowsHash();
-		foreach ($fd as $field => $value) {
+		$bodyRows = $body->getRowsHash();
+		foreach ($bodyRows as $field => $value) {
 			$data = $this->getResponseXml()->data[0];
 			$field_array = \explode(' ', $field);
 			foreach ($field_array as $field_name) {
