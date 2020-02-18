@@ -44,6 +44,7 @@ class FilesPage extends FilesPageBasic {
 	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
 	protected $uploadCreatePermissionDeniedMessageSelector = ".notCreatable.notPublic";
+	protected $sharingDialogXpath = "//h3[@data-original-title='%s']/ancestor::div[@id='app-sidebar']//div[@id='shareTabView']";
 
 	/**
 	 *
@@ -193,8 +194,14 @@ class FilesPage extends FilesPageBasic {
 	 * @return SharingDialog
 	 */
 	public function openSharingDialog($fileName, Session $session) {
-		$fileRow = $this->findFileRowByName($fileName, $session);
-		return $fileRow->openSharingDialog($session);
+		$shareDialog = \sprintf($this->sharingDialogXpath, $fileName);
+		$element = $this->find("xpath", $shareDialog);
+		// open sharing dialog only if it is not already open
+		if ($element === null || !$element->isVisible()) {
+			$fileRow = $this->findFileRowByName($fileName, $session);
+			return $fileRow->openSharingDialog($session);
+		}
+		return $this->getSharingDialog();
 	}
 
 	/**

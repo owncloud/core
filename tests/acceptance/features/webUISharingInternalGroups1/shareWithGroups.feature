@@ -138,7 +138,7 @@ Feature: Sharing files and folders with internal groups
     And user "user3" has logged in using the webUI
     And user "user3" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
+    When the user sends the share notification by email for group "grp1" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     And the email address "user1@example.org" should have received an email with the body containing
       """
@@ -155,11 +155,11 @@ Feature: Sharing files and folders with internal groups
     And user "user3" has logged in using the webUI
     And user "user3" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
-    Then the user should not be able to send the share notification by email using the webUI
+    When the user sends the share notification by email for group "grp1" using the webUI
+    Then the user should not be able to send the share notification by email for group "grp1" using the webUI
     When the user reloads the current page of the webUI
     And the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email using the webUI
+    Then the user should not be able to send the share notification by email for group "grp1" using the webUI
 
   @skipOnOcV10.3
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
@@ -167,7 +167,7 @@ Feature: Sharing files and folders with internal groups
     And user "user3" has logged in using the webUI
     And user "user3" has shared file "lorem.txt" with group "grp1"
     When the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email using the webUI
+    Then the user should not be able to send the share notification by email for group "grp1" using the webUI
 
   @mailhog @skipOnLDAP @skipOnOcV10.3
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
@@ -176,7 +176,7 @@ Feature: Sharing files and folders with internal groups
     And user "user3" has logged in using the webUI
     And user "user3" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
+    When the user sends the share notification by email for group "grp1" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     When the administrator adds user "user0" to group "grp1" using the provisioning API
     Then the email address "user0@example.org" should not have received an email
@@ -194,7 +194,7 @@ Feature: Sharing files and folders with internal groups
     And user "user3" has logged in using the webUI
     And user "user3" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
+    When the user sends the share notification by email for group "grp1" using the webUI
     Then dialog should be displayed on the webUI
       | title                       | content                                                                          |
       | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |

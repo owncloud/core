@@ -206,9 +206,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function expirationFieldVisibleForUser($shouldOrNot, $type, $receiver) {
 		$expected = ($shouldOrNot === "");
-		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
 		Assert::assertEquals($this->sharingDialog->isExpirationFieldVisible($receiver, $type), $expected);
-		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
@@ -235,9 +234,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function expirationDateChangedTo($type, $receiver, $days) {
 		$expectedDate = \date('d-m-Y', \strtotime($days));
-		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
 		$this->sharingDialog->setExpirationDateFor($this->getSession(), $receiver, $type, $expectedDate);
-		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
@@ -270,9 +268,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function clearExpirationDate($userOrGroup, $receiver) {
-		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->openShareActionsDropDown($userOrGroup, $receiver);
 		$this->sharingDialog->clearExpirationDateFor($this->getSession(), $receiver, $userOrGroup);
-		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
@@ -1020,35 +1017,43 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @param string $type
+	 * @param string $receiver
+	 *
 	 * @return void
 	 */
-	public function sendShareNotificationByEmailUsingTheWebui() {
+	public function sendShareNotificationByEmailUsingTheWebui($type, $receiver) {
 		Assert::assertNotNull(
 			$this->sharingDialog, "Sharing Dialog is not open"
 		);
-		$this->sharingDialog->openShareActionsDropDown();
+		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
 		$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
-		$this->sharingDialog->closeShareActionsDropDown();
 	}
 
 	/**
-	 * @When the user sends the share notification by email using the webUI
+	 * @When /^the user sends the share notification by email for (user|group) "((?:[^']*)|(?:[^"]*))" using the webUI$/
+	 *
+	 * @param string $type
+	 * @param string $receiver
 	 *
 	 * @return void
 	 */
-	public function theUserSendsTheShareNotificationByEmailUsingTheWebui() {
-		$this->sendShareNotificationByEmailUsingTheWebui();
+	public function theUserSendsTheShareNotificationByEmailForGroupUsingTheWebui($type, $receiver) {
+		$this->sendShareNotificationByEmailUsingTheWebui($type, $receiver);
 	}
 
 	/**
-	 * @Then the user should not be able to send the share notification by email using the webUI
+	 * @Then /^the user should not be able to send the share notification by email for (user|group) "((?:[^']*)|(?:[^"]*))" using the webUI$/
+	 *
+	 * @param string $type
+	 * @param string $receiver
 	 *
 	 * @return void
 	 */
-	public function theUserShouldNotBeAbleToSendTheShareNotificationByEmailUsingTheWebui() {
+	public function theUserShouldNotBeAbleToSendTheShareNotificationByEmailUsingTheWebui($type, $receiver) {
 		$errorMessage = "";
 		try {
-			$this->sendShareNotificationByEmailUsingTheWebui();
+			$this->sendShareNotificationByEmailUsingTheWebui($type, $receiver);
 		} catch (Exception $e) {
 			$errorMessage = $e->getMessage();
 		}

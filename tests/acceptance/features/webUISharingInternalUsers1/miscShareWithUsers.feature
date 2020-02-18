@@ -226,7 +226,7 @@ Feature: misc scenarios on sharing with internal users
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user2"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
+    When the user sends the share notification by email for user "User Two" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     And the email address "user2@example.org" should have received an email with the body containing
       """
@@ -243,7 +243,7 @@ Feature: misc scenarios on sharing with internal users
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user0"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
+    When the user sends the share notification by email for user "user0" using the webUI
     Then dialog should be displayed on the webUI
       | title                       | content                                             |
       | Email notification not sent | Couldn't send mail to following recipient(s): user0 |
@@ -256,11 +256,11 @@ Feature: misc scenarios on sharing with internal users
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user2"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email using the webUI
-    Then the user should not be able to send the share notification by email using the webUI
+    When the user sends the share notification by email for user "User Two" using the webUI
+    Then the user should not be able to send the share notification by email for user "User Two" using the webUI
     When the user reloads the current page of the webUI
     And the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email using the webUI
+    Then the user should not be able to send the share notification by email for user "User Two" using the webUI
 
   @skipOnOcV10.3
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
@@ -270,7 +270,7 @@ Feature: misc scenarios on sharing with internal users
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user2"
     When the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email using the webUI
+    Then the user should not be able to send the share notification by email for user "User Two" using the webUI
 
   @mailhog @skipOnOcV10.3
   Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
@@ -283,7 +283,7 @@ Feature: misc scenarios on sharing with internal users
     And user "user0" has logged in using the webUI
     And user "user0" has shared folder "simple-folder" with user "user1"
     And the user has opened the share dialog for folder "simple-folder"
-    When the user sends the share notification by email using the webUI
+    When the user sends the share notification by email for user "User One" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     And the email address "user1@example.org" should have received an email with the body containing
       """
