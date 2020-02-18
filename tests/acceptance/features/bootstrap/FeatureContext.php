@@ -826,6 +826,15 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @param integer $storageId
+	 *
+	 * @return void
+	 */
+	public function popStorageId($storageId) {
+		unset($this->storageIds[$storageId]);
+	}
+
+	/**
 	 * @param string $sourceIpAddress
 	 *
 	 * @return void
@@ -2724,25 +2733,50 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * gets every created storages and deletes them
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteAllStorages() {
+		$allStorageIds = \array_keys($this->getStorageIds());
+		foreach ($allStorageIds as $storageId) {
+			SetupHelper::runOcc(
+				[
+					'files_external:delete',
+					'-y',
+					$storageId
+				]
+			);
+		}
+		$this->storageIds = [];
+	}
+
+	/**
 	 * @AfterScenario @local_storage
 	 *
 	 * @return void
 	 */
 	public function removeLocalStorageAfter() {
 		if ($this->getStorageIds() !== null) {
-			foreach ($this->getStorageIds() as $storageId => $storageName) {
-				SetupHelper::runOcc(
-					[
-						'files_external:delete',
-						'-y',
-						$storageId
-					]
-				);
-			}
+			$this->deleteAllStorages();
 		}
 		SetupHelper::rmDirOnServer(
 			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
 		);
+	}
+
+	/**
+	 * This will remove test created external mount points
+	 *
+	 * @AfterScenario @external_storage
+	 *
+	 * @return void
+	 */
+	public function removeExternalStorage() {
+		if ($this->getStorageIds() !== null) {
+			$this->deleteAllStorages();
+		}
 	}
 
 	/**
