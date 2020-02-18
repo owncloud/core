@@ -694,7 +694,8 @@ trait Sharing {
 		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode(),
-			"Expected status code is '200' but got '"
+			__METHOD__
+			. " Expected status code is '200' but got '"
 			. $this->response->getStatusCode()
 			. "'"
 		);
@@ -712,7 +713,8 @@ trait Sharing {
 			Assert::assertEquals(
 				$mimeType,
 				$finfo->buffer($buf, FILEINFO_MIME_TYPE),
-				"Expected mimeType '$mimeType' but got '"
+				__METHOD__
+				. " Expected mimeType '$mimeType' but got '"
 				. $finfo->buffer($buf, FILEINFO_MIME_TYPE)
 			);
 		}
@@ -732,7 +734,7 @@ trait Sharing {
 			404,
 			$this->ocsContext->getOCSResponseStatusCode($this->response),
 			__METHOD__
-			. "Expected response status code is '404' but got '"
+			. " Expected response status code is '404' but got '"
 			. $this->ocsContext->getOCSResponseStatusCode($this->response)
 			. "'"
 		);
@@ -1391,7 +1393,7 @@ trait Sharing {
 			true,
 			$this->isUserOrGroupInSharedData($group, "group", $permissions),
 			__METHOD__
-			. "Could not assert that user '$user' has shared '$filepath' with group '$group' with permissions '$permissions'"
+			. " Could not assert that user '$user' has shared '$filepath' with group '$group' with permissions '$permissions'"
 		);
 	}
 
@@ -2106,14 +2108,14 @@ trait Sharing {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasRemovedAllSharesFromTheFileNamedzz($user, $fileName) {
+	public function userHasRemovedAllSharesFromTheFileNamed($user, $fileName) {
 		$this->removeAllSharesFromResource($user, $fileName);
 		$dataResponded = $this->getShares($user, $fileName);
 		Assert::assertEquals(
 			0,
 			\count($dataResponded),
 			__METHOD__
-			. "Expected all shares to be removed from '$fileName' but got '"
+			. " Expected all shares to be removed from '$fileName' but got '"
 			. \count($dataResponded)
 			. "' shares still present"
 		);
@@ -2164,7 +2166,7 @@ trait Sharing {
 							$expectedElementsArray['path'],
 							(string) $elementResponded->path[0],
 							__METHOD__
-							. "Expected '${expectedElementsArray['path']}' but got '"
+							. " Expected '${expectedElementsArray['path']}' but got '"
 							. (string) $elementResponded->path[0]
 							. "'"
 						);
@@ -2172,7 +2174,7 @@ trait Sharing {
 							$expectedElementsArray['permissions'],
 							(string) $elementResponded->permissions[0],
 							__METHOD__
-							. "Expected '${expectedElementsArray['permissions']}' but got '"
+							. " Expected '${expectedElementsArray['permissions']}' but got '"
 							. (string) $elementResponded->permissions[0]
 							. "'"
 						);
@@ -2203,7 +2205,7 @@ trait Sharing {
 			0,
 			\count($dataResponded),
 			__METHOD__
-			. "As '$user', '$path' was expected to have no shares, but got '"
+			. " As '$user', '$path' was expected to have no shares, but got '"
 			. \count($dataResponded)
 			. "' shares present"
 		);
