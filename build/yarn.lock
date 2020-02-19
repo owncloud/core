@@ -29,9 +29,9 @@
   version "1.9.4"
   resolved "https://codeload.github.com/ded/bowser/tar.gz/1fb99ced0e8834fd9662604bad7e0f0c3eba2786"
 
-"@bower_components/browser-update@Graffino/Browser-Update#v2.0.2":
-  version "2.0.2"
-  resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/0edda8c7f53ad2cbe68538c00b8c790513096d60"
+"@bower_components/browser-update@Graffino/Browser-Update#v2.0.3":
+  version "3.3.9"
+  resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/775649ec817501cc5ef9293a77a183673a2439a4"
 
 "@bower_components/clipboard@zenorocha/clipboard.js#v2.0.4":
   version "2.0.4"
