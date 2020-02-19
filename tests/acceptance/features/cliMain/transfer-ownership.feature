@@ -35,7 +35,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" from the last received transfer folder should be "This is"
 
-  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of file shares
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
@@ -46,7 +46,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder shared with third user
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
@@ -70,7 +70,7 @@ Feature: transfer-ownership
     And as "user1" folder "/test" should not exist
     And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" from the last received transfer folder should be "This is"
 
-  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder doubly shared with third user
     Given group "group1" has been created
     And user "user0" has been created with default attributes and skeleton files
@@ -158,7 +158,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And as "user1" folder "/test" should exist in the last received transfer folder
 
-  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of file shares
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
@@ -170,7 +170,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-  @skipOnEncryptionType:user-keys @public_link_share-feature-required @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @public_link_share-feature-required @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder shares which has public link
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
@@ -183,7 +183,7 @@ Feature: transfer-ownership
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "user0 file"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "user0 file"
 
-  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder shared with third user
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
@@ -207,7 +207,7 @@ Feature: transfer-ownership
     And as "user1" folder "/test" should not exist
     And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" from the last received transfer folder should be "This is"
 
-  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder doubly shared with third user
     Given group "group1" has been created
     And user "user0" has been created with default attributes and skeleton files
@@ -235,7 +235,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And as "user1" folder "/sub/test" should not exist in the last received transfer folder
 
-  @skipOnEncryptionType:user-keys @public_link_share-feature-required @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @public_link_share-feature-required @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder shared with transfer recipient and public link created of received share works
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and skeleton files
