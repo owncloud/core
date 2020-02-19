@@ -369,7 +369,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		);
 		Assert::assertContains(
 			$this->getCurrentFolderFilePath(),
-			$style
+			$style,
+			__METHOD__
+			. " Style attribute of details thumbnail does not contain '"
+			. $this->getCurrentFolderFilePath()
+			. "'"
 		);
 	}
 
@@ -572,7 +576,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 		Assert::assertEquals(
 			0,
-			$pageObject->getSizeOfFileFolderList()
+			$pageObject->getSizeOfFileFolderList(),
+			__METHOD__
+			. " Expected no files/folders to be listed on the webUI, but got '"
+			. $pageObject->getSizeOfFileFolderList()
+			. "' files/folders listed"
 		);
 	}
 
@@ -589,7 +597,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 		Assert::assertEquals(
 			$count,
-			$pageObject->getSizeOfFileFolderList()
+			$pageObject->getSizeOfFileFolderList(),
+			__METHOD__
+			. " Exactly '$count' files/folders were expected to be listed on the webUI, but '"
+			. $pageObject->getSizeOfFileFolderList()
+			. "' files/folders are listed"
 		);
 	}
 
@@ -993,8 +1005,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 		$currentUploadedElements = $pageObject->getCompletelyUploadedElements();
 		Assert::assertEqualsCanonicalizing(
+			$expectedElements,
 			$currentUploadedElements,
-			$expectedElements
+			__METHOD__
+			. " The elements expected to be listed as uploaded items on the webUI do not equal the uploaded elements visible in the webUI"
+			. "See the differences below:"
 		);
 	}
 
@@ -1664,7 +1679,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		Assert::assertEquals(
 			$toolTipText,
-			$this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession())
+			$this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession()),
+			__METHOD__
+			. " The tooltip text expected to be displayed near '$name' was '$toolTipText', but actually got '"
+			. $this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession())
+			. "' instead."
 		);
 	}
 
@@ -1692,7 +1711,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$tooltiptext
 	) {
 		$createFolderTooltip = $this->getCurrentPageObject()->getCreateFolderTooltip();
-		Assert::assertSame($tooltiptext, $createFolderTooltip);
+		Assert::assertSame(
+			$tooltiptext,
+			$createFolderTooltip,
+			" The tooltip text expected to be displayed near the folder input field was '$tooltiptext', "
+			. "but actually got '$createFolderTooltip' instead"
+		);
 	}
 
 	/**
@@ -1709,7 +1733,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		} catch (ElementNotFoundException $e) {
 			Assert::assertContains(
 				"could not find button 'Delete' in action Menu",
-				$e->getMessage()
+				$e->getMessage(),
+				__METHOD__
+				. " Expected 'could not find button 'Delete' in action Menu' to be contained in '"
+				. $e->getMessage()
+				. "'"
 			);
 		}
 	}
@@ -1744,9 +1772,17 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$fileRow = $pageObject->findFileRowByName($name, $session);
 		$action = \ucfirst($action);
 		if ($visible) {
-			Assert::assertTrue($fileRow->isActionLabelAvailable($action, $session));
+			Assert::assertTrue(
+				$fileRow->isActionLabelAvailable($action, $session),
+				__METHOD__
+				. " The option to '$action' label is not available on the webUI, but was expected to be present."
+			);
 		} else {
-			Assert::assertFalse($fileRow->isActionLabelAvailable($action, $session));
+			Assert::assertFalse(
+				$fileRow->isActionLabelAvailable($action, $session),
+				__METHOD__
+				. " The option to '$action' label is available on the webUI, but was not expected to be present."
+			);
 		}
 		$fileRow->clickFileActionButton();
 	}
@@ -1762,9 +1798,17 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function uploadButtonShouldNotBeVisible($shouldOrNot) {
 		$visible = $shouldOrNot !== "not";
 		if ($visible) {
-			Assert::assertTrue($this->getCurrentPageObject()->isUploadButtonAvailable());
+			Assert::assertTrue(
+				$this->getCurrentPageObject()->isUploadButtonAvailable(),
+				__METHOD__
+				. " The option to upload file is not available on the webUI, but was expected to be present."
+			);
 		} else {
-			Assert::assertFalse($this->getCurrentPageObject()->isUploadButtonAvailable());
+			Assert::assertFalse(
+				$this->getCurrentPageObject()->isUploadButtonAvailable(),
+				__METHOD__
+				. " The option to upload file is available on the webUI, but was not expected to be present."
+			);
 		}
 	}
 
@@ -1801,7 +1845,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			}
 
 			Assert::assertLessThanOrEqual(
-				$windowHeight, $deleteBtnCoordinates ["top"]
+				$windowHeight,
+				$deleteBtnCoordinates ["top"],
+				__METHOD__
+				. " The delete button coordinates on the top is '{$deleteBtnCoordinates['top']}' "
+				. "which is greater than the window height '$windowHeight'"
 			);
 			//this will close the menu again
 			$this->filesPage->clickFileActionsMenuBtnByNo($i);
@@ -1939,12 +1987,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$fileRow = $this->filesPage->findFileRowByName(
 			$fileOrFolderName, $this->getSession()
 		);
-		if ($fileRow->isMarkedAsFavorite() === false) {
-			throw new Exception(
-				__METHOD__ .
-				" The file $fileOrFolderName is not marked as favorite but should be"
-			);
-		}
+		Assert::assertTrue(
+			$fileRow->isMarkedAsFavorite(),
+			__METHOD__
+			. " The file $fileOrFolderName is not marked as favorite but was expected to be"
+		);
 	}
 
 	/**
@@ -1977,12 +2024,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$fileRow = $this->filesPage->findFileRowByName(
 			$fileOrFolderName, $this->getSession()
 		);
-		if ($fileRow->isMarkedAsFavorite() === true) {
-			throw new Exception(
-				__METHOD__ .
-				" The file $fileOrFolderName is marked as favorite but should not be"
-			);
-		}
+		Assert::assertFalse(
+			$fileRow->isMarkedAsFavorite(),
+			__METHOD__
+			. " The file $fileOrFolderName is marked as favorite but was not expected to be"
+		);
 	}
 
 	/**
@@ -2149,7 +2195,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserShouldSeeFileActionTranslatedToOnTheWebui($action_label, $translated_label) {
 		Assert::assertSame(
 			$translated_label,
-			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
+			$this->openedFileActionMenu->getActionLabelLocalized($action_label),
+			__METHOD__
+			. " The file action label and the translated label do not match. See the differences below."
 		);
 	}
 
@@ -2187,7 +2235,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDetailsDialogShouldBeVisibleOnTheWebui() {
-		Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
+		Assert::assertTrue(
+			$this->filesPage->getDetailsDialog()->isDialogVisible(),
+			__METHOD__
+			. " The details dialog is unexpectedly not visible on the webUI"
+		);
 	}
 
 	/**
@@ -2287,7 +2339,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theVersionsListShouldContainEntries($num) {
 		$versionsList = $this->filesPage->getDetailsDialog()->getVersionsList();
 		$versionsCount = \count($versionsList->findAll("xpath", "//li"));
-		Assert::assertEquals($num, $versionsCount);
+		Assert::assertEquals(
+			$num,
+			$versionsCount,
+			__METHOD__
+			. " Expected '$num' entries in the versions list but got '$versionsCount' entries listed."
+		);
 	}
 
 	/**
@@ -2319,7 +2376,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 		$sharingDialog = $this->filesPage->getSharingDialog();
 		$shareTreeItem = $sharingDialog->getShareTreeItem($type, $name, $item);
-		Assert::assertTrue($shareTreeItem->isVisible());
+		Assert::assertTrue(
+			$shareTreeItem->isVisible(),
+			__METHOD__
+			. " The '$type' '$name' is not listed as share receiver via '$item' on the webUI."
+		);
 	}
 
 	/**
@@ -2333,7 +2394,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$token = $this->featureContext->getLastShareData()->data->token;
 		$sharingDialog = $this->filesPage->getSharingDialog();
 		$shareTreeItem = $sharingDialog->getShareTreeItem("public link", $token, $item);
-		Assert::assertTrue($shareTreeItem->isVisible());
+		Assert::assertTrue(
+			$shareTreeItem->isVisible(),
+			__METHOD__
+			. " The public link with last share token '$token' is not listed as share receiver via '$item' on the webUI."
+		);
 	}
 
 	/**
@@ -2346,6 +2411,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$expectedMsg = "You don’t have permission to upload or create files here";
 		Assert::assertEquals($expectedMsg, $msg, "Expected $expectedMsg but got $msg");
 		$isIconVisible = $this->filesPage->isNewFileIconVisible();
-		Assert::assertFalse($isIconVisible);
+		Assert::assertFalse(
+			$isIconVisible,
+			__METHOD__
+			. " The icon to upload or create files was expected not to be visible for the user, but is visible."
+		);
 	}
 }
