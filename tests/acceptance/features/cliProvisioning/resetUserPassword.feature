@@ -26,6 +26,7 @@ Feature: reset user password
       Use the following link to reset your password: <a href=
       """
 
+  @skipOnEncryption @issue-36985
   Scenario: user should get email when the administrator changes their password and specifies to also send email
     Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
