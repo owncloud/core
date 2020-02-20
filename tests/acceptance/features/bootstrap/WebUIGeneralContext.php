@@ -315,7 +315,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$notificationText
 	) {
 		Assert::assertEquals(
-			$notificationText, $this->owncloudPage->getNotificationText()
+			$notificationText,
+			$this->owncloudPage->getNotificationText(),
+			__METHOD__
+			. " A notification was expected to be displayed on the webUI with the text '$notificationText', but got '"
+			. $this->owncloudPage->getNotificationText()
+			. "' instead"
 		);
 	}
 
@@ -393,7 +398,14 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$currentTime = \microtime(true);
 				$dialogs = $this->owncloudPage->getOcDialogs();
 			}
-			Assert::assertEquals($count, \count($dialogs));
+			Assert::assertEquals(
+				$count,
+				\count($dialogs),
+				__METHOD__
+				. " The expected number of dialogs were '$count' but got '"
+				. \count($dialogs)
+				. "' instead"
+			);
 		}
 		if ($table !== null) {
 			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content']);
@@ -439,7 +451,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
 		Assert::assertStringStartsWith(
-			$title, $this->owncloudPage->getPageTitle()
+			$title,
+			$this->owncloudPage->getPageTitle(),
+			__METHOD__
+			. " Expected title to be '$title' but got '"
+			. $this->owncloudPage->getPageTitle()
+			. "' instead."
 		);
 	}
 
@@ -456,7 +473,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
 		Assert::assertStringStartsWith(
-			$title, $this->generalErrorPage->getPageTitle()
+			$title,
+			$this->generalErrorPage->getPageTitle(),
+			__METHOD__
+			. " Expected to be redirected to the general error webUI page with the title '$title' but got '"
+			. $this->owncloudPage->getPageTitle()
+			. "' instead."
 		);
 	}
 
@@ -469,7 +491,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage($error) {
 		Assert::assertEquals(
-			$error, $this->generalErrorPage->getErrorMessage()
+			$error,
+			$this->generalErrorPage->getErrorMessage(),
+			__METHOD__
+			. " The error expected to be displayed was '$error' but got '"
+			. $this->generalErrorPage->getErrorMessage()
+			. "' instead."
 		);
 	}
 
@@ -486,7 +513,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
 		Assert::assertStringStartsWith(
-			$title, $this->generalExceptionPage->getPageTitle()
+			$title,
+			$this->generalExceptionPage->getPageTitle(),
+			__METHOD__
+			. " Expeceted user to be redirected to the general exception webUI page with the title '$title', but got '"
+			. $this->generalExceptionPage->getPageTitle()
+			. "' as the title"
 		);
 	}
 
@@ -499,7 +531,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function anErrorShouldBeDisplayedOnTheGeneralExceptionPageWithTitle($title) {
 		Assert::assertEquals(
-			$title, $this->generalExceptionPage->getExceptionTitle()
+			$title,
+			$this->generalExceptionPage->getExceptionTitle(),
+			__METHOD__
+			. " The title of the exception on general exception webUI page was expected to be '$title' but found '"
+			. $this->generalExceptionPage->getExceptionTitle()
+			. "' instead."
 		);
 	}
 
@@ -513,7 +550,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function anErrorShouldBeDisplayedOnTheGeneralErrorPageContaining($message) {
 		Assert::assertContains(
 			$message,
-			$this->generalExceptionPage->getExceptionMessage()
+			$this->generalExceptionPage->getExceptionMessage(),
+			__METHOD__
+			. " A message containing '$message' was expected to be displayed on the general exception page, but got '"
+			. $this->generalExceptionPage->getExceptionMessage()
+			. "' instead."
 		);
 	}
 
