@@ -10,6 +10,7 @@ Feature: create local storage from the command line
       | user0    |
       | user1    |
 
+  @skipOnEncryptionType:user-keys @issue-encryption-181
   Scenario: create local storages that are available to specific users
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has created the local storage mount "local_storage3"
@@ -34,6 +35,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage3/file-in-local-storage3.txt" for user "user1" should be "this is a file in local storage3"
     But as "user1" folder "/local_storage2" should not exist
 
+  @skipOnEncryptionType:user-keys @issue-encryption-181
   Scenario: create local storage that is available for more than one user
     And these users have been created with default attributes and without skeleton files:
       | username |
