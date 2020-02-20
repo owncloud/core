@@ -193,7 +193,11 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui() {
-		Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
+		Assert::assertTrue(
+			$this->personalGeneralSettingsPage->isVersionDisplayed(),
+			__METHOD__
+			. " The owncloud version is not displayed on the personal general settings page on the webUI"
+		);
 	}
 
 	/**
@@ -205,7 +209,14 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($user) {
 		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
-		Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
+		Assert::assertEquals(
+			$userFederatedCloudId,
+			$this->personalGeneralSettingsPage->getFederatedCloudID(),
+			__METHOD__
+			. " The expected federated cloud id to be displayed on the personal general settings page for '$user' was '$userFederatedCloudId', but got '"
+			. $this->personalGeneralSettingsPage->getFederatedCloudID()
+			. "' instead"
+		);
 	}
 
 	/**
@@ -216,7 +227,11 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($groupName) {
-		Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
+		Assert::assertTrue(
+			$this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName),
+			__METHOD__
+			. " Group '$groupName' is not displayed on the personal general settings page on the webUI."
+		);
 	}
 
 	/**
@@ -256,7 +271,10 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	) {
 		Assert::assertEquals(
 			$wrongPasswordMessageText,
-			$this->personalGeneralSettingsPage->getWrongPasswordMessageText()
+			$this->personalGeneralSettingsPage->getWrongPasswordMessageText(),
+			" A password error message '$wrongPasswordMessageText' was expected to be displayed on the webUI, but got '"
+			. $this->personalGeneralSettingsPage->getWrongPasswordMessageText()
+			. "' instead."
 		);
 	}
 
@@ -293,11 +311,15 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function thePreviewOfTheProfilePictureShouldBeShownOnTheWebui($shouldOrNot) {
 		if ($shouldOrNot !== "not") {
 			Assert::assertTrue(
-				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed(),
+				__METHOD__
+				. " The preview of the profile picture is not shown on the webUI."
 			);
 		} else {
 			Assert::assertFalse(
-				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed(),
+				__METHOD__
+				. " The preview of the profile picture is shown on the webUI."
 			);
 		}
 	}
@@ -320,9 +342,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserHasDeletedAnyExistingProfilePicture() {
 		$this->theUserDeletesTheExistingProfilePicture();
-		Assert::assertFalse(
-			$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
-		);
+		if ($this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()) {
+			throw new Exception(" The profile picture preview is displayed unexpectedly.");
+		}
 	}
 
 	/**
@@ -357,11 +379,15 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function theUserShouldBeAbleToUploadTheFileAsTheProfilePicture($shouldOrNot) {
 		if ($shouldOrNot !== "not") {
 			Assert::assertFalse(
-				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
+				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible(),
+				__METHOD__
+				. " The user is not able to upload the selected file as the profile picture. File upload error message is shown."
 			);
 		} else {
 			Assert::assertTrue(
-				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
+				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible(),
+				__METHOD__
+				. " The user is able to upload the selected file as the profile picture. File upload error message is not shown."
 			);
 		}
 	}
