@@ -516,7 +516,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$title,
 			$this->generalExceptionPage->getPageTitle(),
 			__METHOD__
-			. " Expeceted user to be redirected to the general exception webUI page with the title '$title', but got '"
+			. " Expected user to be redirected to the general exception webUI page with the title '$title', but got '"
 			. $this->generalExceptionPage->getPageTitle()
 			. "' as the title"
 		);
