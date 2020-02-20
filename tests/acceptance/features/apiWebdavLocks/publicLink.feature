@@ -5,7 +5,7 @@ Feature: persistent-locking in case of a public link
     Given the administrator has enabled DAV tech_preview
     And user "user0" has been created with default attributes and skeleton files
 
-  @issue-36064
+  @smokeTest @issue-36064
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "FOLDER" with change permission
@@ -56,7 +56,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @issue-36064
+  @smokeTest @issue-36064
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT" setting following properties
@@ -71,7 +71,7 @@ Feature: persistent-locking in case of a public link
       #| new                       | shared     |
       #| new                       | exclusive  |
 
-  @issue-36064
+  @smokeTest @issue-36064
   #after fixing the issue delete this Scenario and use the one above
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "user0" has created a public link share of folder "PARENT" with change permission
@@ -118,7 +118,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @skipOnOcV10.3
+  @smokeTest @skipOnOcV10.3
   Scenario Outline: Public locking is not supported
     Given user "user0" has created a public link share of folder "PARENT" with change permission
     When the public locks "/CHILD" in the last public shared folder using the <public-webdav-api-version> public WebDAV API setting following properties

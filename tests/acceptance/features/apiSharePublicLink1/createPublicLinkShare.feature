@@ -168,6 +168,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
+  @smokeTest
   Scenario Outline: Getting the share information of public link share from the OCS API does not expose sensitive information
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings

@@ -20,6 +20,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @smokeTest
   Scenario Outline: deleting a folder moves it to trashbin
     Given using <dav-path> DAV path
     And user "user0" has created folder "/tmp"
@@ -73,7 +74,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
-  @files_sharing-app-required
+  @smokeTest @files_sharing-app-required
   Scenario Outline: deleting a received folder doesn't move it to trashbin
     Given using <dav-path> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -184,7 +185,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
-  @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
+  @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "user60" has been created with default attributes and skeleton files
@@ -210,7 +211,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user504" has deleted file "/textfile0.txt"
     And user "user504" has deleted file "/textfile2.txt"
     And the administrator deletes user "user504" using the provisioning API
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    And these users have been created with default attributes and skeleton files but not initialized:
       | username |
       | user504  |
     And user "user504" has deleted file "/textfile3.txt"
@@ -226,6 +227,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @smokeTest
   Scenario Outline: Get trashbin content with wrong password
     Given using <dav-path> DAV path
     And user "user0" has deleted file "/textfile0.txt"
@@ -239,6 +241,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @smokeTest
   Scenario Outline: Get trashbin content without password
     Given using <dav-path> DAV path
     And user "user0" has deleted file "/textfile0.txt"
