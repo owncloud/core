@@ -4,6 +4,7 @@ Feature: lock folders
   Background:
     Given user "user0" has been created with default attributes and skeleton files
 
+  @smokeTest
   Scenario Outline: upload to a locked folder
     Given using <dav-path> DAV path
     And user "user0" has locked folder "FOLDER" setting following properties
@@ -32,6 +33,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
+  @smokeTest
   Scenario Outline: create folder in a locked folder
     Given using <dav-path> DAV path
     And user "user0" has locked folder "FOLDER" setting following properties

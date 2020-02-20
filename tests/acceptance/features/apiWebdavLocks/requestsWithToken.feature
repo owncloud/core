@@ -4,6 +4,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   Background:
     Given user "user0" has been created with default attributes and skeleton files
 
+  @smokeTest
   Scenario Outline: rename a file in a locked folder
     Given using <dav-path> DAV path
     And user "user0" has locked folder "PARENT" setting following properties
@@ -19,6 +20,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
+  @smokeTest
   Scenario Outline: move a file into a locked folder
     Given using <dav-path> DAV path
     And user "user0" has locked folder "FOLDER" setting following properties
@@ -34,6 +36,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
+  @smokeTest
   Scenario Outline: move a file into a locked folder is impossible when using the wrong token
     Given using <dav-path> DAV path
     And user "user0" has locked folder "FOLDER" setting following properties

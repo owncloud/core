@@ -8,6 +8,7 @@ Feature: delete folder
     Given user "user0" has been created with default attributes and without skeleton files
     And user "user0" creates folder "/PARENT" using the WebDAV API
 
+  @smokeTest
   Scenario Outline: delete a folder
     Given using <dav_version> DAV path
     When user "user0" deletes folder "/PARENT" using the WebDAV API

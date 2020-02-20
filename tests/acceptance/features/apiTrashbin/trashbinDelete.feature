@@ -29,6 +29,7 @@ Feature: files and folders can be deleted from the trashbin
       | old      |
       | new      |
 
+  @smokeTest
   Scenario: delete a single file from the trashbin
     Given user "user0" has deleted file "/textfile0.txt"
     And user "user0" has deleted file "/textfile1.txt"
@@ -41,6 +42,7 @@ Feature: files and folders can be deleted from the trashbin
     And as "user0" the file with original path "/PARENT/parent.txt" should exist in trash
     And as "user0" the file with original path "/PARENT/CHILD/child.txt" should exist in trash
 
+  @smokeTest
   Scenario: delete multiple files from the trashbin and make sure the correct ones are gone
     Given user "user0" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/textfile0.txt"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/child.txt"
