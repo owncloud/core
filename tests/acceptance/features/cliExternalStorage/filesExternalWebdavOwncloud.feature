@@ -27,6 +27,7 @@ So that I can extend my storage service
       | ok     | 0    |         |
     And as "admin" folder "TestMountPoint" should exist
 
+  @skipOnEncryption @issue-encryption-181
   Scenario: using webdav_owncloud as external storage
     Given the administrator has created an external mount point with the following configuration using the occ command
       | host                   | %remote_server%    |
