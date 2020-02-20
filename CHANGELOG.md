@@ -29,6 +29,7 @@ Summary
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 * Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
 * Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
+* Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -273,6 +274,14 @@ Details
 
    https://github.com/owncloud/core/issues/36925
    https://github.com/owncloud/core/pull/36926
+
+* Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
+
+   When doing occ user:resetpassword username --password-from-env --send-email the message
+   "Successfully reset password for username" had a full-stop at the end. Without --send-email
+   there was no full-stop. The full-stop has been removed to make the messages consistent.
+
+   https://github.com/owncloud/core/pull/36984
 
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 
