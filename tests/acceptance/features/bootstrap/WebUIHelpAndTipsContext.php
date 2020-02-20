@@ -120,7 +120,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 		$link = $this->helpAndTipsPage->getLinkByTitle($linkTitle);
 		$this->helpAndTipsPage->assertElementNotNull(
 			$link,
-			"the link with title linkTitle does not exist"
+			"the link with title '$linkTitle' does not exist"
 		);
 	}
 
@@ -134,7 +134,12 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	public function theLinkForShouldBeValid($linkTitle) {
 		$linkUrl = $this->generateHelpLinks($this->getLinkID($linkTitle));
 		$linkOnUI = $this->helpAndTipsPage->getLinkUrlByTitle($linkTitle);
-		Assert::assertSame($linkUrl, $linkOnUI);
+		Assert::assertSame(
+			$linkUrl,
+			$linkOnUI,
+			__METHOD__
+			. " The link url '$linkUrl' and the link on the UI '$linkOnUI' do not match for '$linkTitle'"
+		);
 	}
 
 	/**
