@@ -186,7 +186,7 @@ class ResetPassword extends Command {
 			$this->config->setUserValue($userId, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
 			$success = $this->lostController->setPassword($token, $userId, $password, false);
 			if (\is_array($success) && isset($success['status']) && $success['status'] === 'success') {
-				$output->writeln("<info>Successfully reset password for {$username}.</info>");
+				$output->writeln("<info>Successfully reset password for {$username}</info>");
 				return 0;
 			} else {
 				$output->writeln("<error>Error while resetting password!</error>");

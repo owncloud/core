@@ -291,7 +291,7 @@ class ResetPasswordTest extends TestCase {
 
 			$output->expects($this->once())
 				->method('writeln')
-				->with("<info>Successfully reset password for foo.</info>");
+				->with("<info>Successfully reset password for foo</info>");
 		} else {
 			$this->lostController->expects($this->never())
 				->method('setPassword');
