@@ -1,19 +1,23 @@
 @cli @local_storage @TestAlsoOnExternalUserBackend
 Feature: files checksum command
 
+  @skipOnEncryptionType:user-keys @issue-encryption-182
   Scenario: Administrator verifies the checksum of all the files
     When the administrator invokes occ command "files:checksum:verify"
     Then the command should have been successful
 
+  @skipOnEncryptionType:user-keys @issue-encryption-182
   Scenario: Administrator fixes the mismatched checksums
     When the administrator invokes occ command "files:checksum:verify -r"
     Then the command should have been successful
 
+  @skipOnEncryptionType:user-keys @issue-encryption-182
   Scenario: Administrator verifies the checksum of all the files of a user
     Given user "user0" has been created with default attributes and skeleton files
     When the administrator invokes occ command "files:checksum:verify --user=user0"
     Then the command should have been successful
 
+  @skipOnEncryptionType:user-keys @issue-encryption-182
   Scenario: Administrator fixes the mismatched checksums of all the files of a user
     Given user "user0" has been created with default attributes and skeleton files
     When the administrator invokes occ command "files:checksum:verify -r --user=user0"
