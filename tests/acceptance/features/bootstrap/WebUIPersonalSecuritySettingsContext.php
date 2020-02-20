@@ -92,28 +92,16 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
-		Assert::assertNotEmpty($appTr);
+		Assert::assertNotEmpty(
+			$appTr,
+			__METHOD__
+			. " No apps are listed in the app passwords list on the webUI."
+		);
 		$disconnectButton
 			= $this->personalSecuritySettingsPage->getDisconnectButton($appTr);
-		Assert::assertNotEmpty($disconnectButton);
-	}
-
-	/**
-	 * @Then the user display name and the app password should be displayed on the webUI
-	 *
-	 * @return void
-	 */
-	public function theUserDisplayNameAndAppPasswordShouldBeDisplayedOnTheWebUI() {
-		$result = $this->personalSecuritySettingsPage->getAppPasswordResult();
-		Assert::assertEquals(
-			$this->featureContext->getCurrentUser(),
-			$result[0]->getValue()
-		);
-
-		Assert::assertEquals(
-			1, \preg_match(
-				'/(([A-Z]){5}-){3}([A-Z]){5}/', $result[1]->getValue()
-			)
+		Assert::assertNotEmpty(
+			$disconnectButton,
+			" Disconnect button is not present for the new app."
 		);
 	}
 
