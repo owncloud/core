@@ -493,7 +493,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$expectedString = $string->getRaw();
 		$passwordRecoveryMessage = $this->loginPage->getLostPasswordMessage();
 		Assert::assertEquals(
-			$expectedString, $passwordRecoveryMessage
+			$expectedString,
+			$passwordRecoveryMessage,
+			__METHOD__
+			. " The message expected to be displayed on the webUI was '$expectedString', but got '$passwordRecoveryMessage' instead"
 		);
 	}
 
@@ -510,7 +513,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$expectedString = $string->getRaw();
 		$setPasswordErrorMessage = $this->loginPage->getSetPasswordErrorMessage();
 		Assert::assertEquals(
-			$expectedString, $setPasswordErrorMessage
+			$expectedString,
+			$setPasswordErrorMessage,
+			__METHOD__
+			. " The expected set password error message was '$expectedString', but got '$setPasswordErrorMessage' instead"
 		);
 	}
 
@@ -527,7 +533,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$expectedString = $string->getRaw();
 		$resetPasswordErrorMessage = $this->loginPage->getLostPasswordResetErrorMessage();
 		Assert::assertEquals(
-			$expectedString, $resetPasswordErrorMessage
+			$expectedString,
+			$resetPasswordErrorMessage,
+			__METHOD__
+			. " The expected reset password error message was '$expectedString', but got '$resetPasswordErrorMessage' instead."
 		);
 	}
 
@@ -543,7 +552,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$actualImprintUrl = $this->loginPage->getLegalUrl("Imprint");
 		Assert::assertEquals(
 			$expectedImprintUrl,
-			$actualImprintUrl
+			$actualImprintUrl,
+			__METHOD__
+			. " The imprint url on the login page should link to '$expectedImprintUrl', but got '$actualImprintUrl' instead."
 		);
 	}
 
@@ -559,7 +570,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$actualPrivacyPolicyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
 		Assert::assertEquals(
 			$expectedPrivacyPolicyUrl,
-			$actualPrivacyPolicyUrl
+			$actualPrivacyPolicyUrl,
+			__METHOD__
+			. " The privacy policy url on the login page should link to '$expectedPrivacyPolicyUrl', but got '$actualPrivacyPolicyUrl' instead."
 		);
 	}
 
@@ -673,7 +686,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$expectedString = $string->getRaw();
 		$passwordMismatchMessage = $this->loginPage->getRestPasswordConfirmError();
 		Assert::assertEquals(
-			$expectedString, $passwordMismatchMessage
+			$expectedString,
+			$passwordMismatchMessage,
+			__METHOD__
+			. " The password mismatch message expected to be displayed on the webUI was '$expectedString', but got '$passwordMismatchMessage' instead."
 		);
 	}
 
