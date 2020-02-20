@@ -1,0 +1,8 @@
+Bugfix: Remove full-stop from end of reset password message
+
+When doing occ user:resetpassword username --password-from-env --send-email
+the message "Successfully reset password for username" had a full-stop at the
+end. Without --send-email there was no full-stop. The full-stop has been
+removed to make the messages consistent.
+
+https://github.com/owncloud/core/pull/36984
