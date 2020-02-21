@@ -25,7 +25,6 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
-use function GuzzleHttp\Psr7\str;
 
 /**
  * Admin Sharing Settings page.
