@@ -6,23 +6,25 @@ Feature: Scanning files on local storage
 
   Scenario: Adding a file to local storage and running scan should add files.
     Given user "user0" has been created with default attributes and skeleton files
+    And using new DAV path
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     # issue-33670: Need to re-scan. Config change doesn't come into effect until once scanned
     And the administrator has scanned the filesystem for all users
     When the administrator creates file "hello1.txt" with content "<? php :)" in local storage using the testing API
     And user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should not contain these entries:
+      | /local_storage/hello1.txt |
     When the administrator scans the filesystem for all users using the occ command
     And the administrator creates file "hello2.txt" with content "<? php :(" in local storage using the testing API
     And user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
-    But the propfind result should not contain these entries:
-      | /hello2.txt |
+    Then the propfind result of user "user0" should contain these entries:
+      | /local_storage/hello1.txt |
+    But the propfind result of user "user0" should not contain these entries:
+      | /local_storage/hello2.txt |
 
   Scenario: Adding a file to local storage and running scan for a specific path should add files for only that path.
     Given user "user0" has been created with default attributes and skeleton files
+    And using new DAV path
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     And user "user0" has created folder "/local_storage/folder1"
     And user "user0" has created folder "/local_storage/folder2"
@@ -32,18 +34,18 @@ Feature: Scanning files on local storage
     When the administrator creates file "folder1/hello1.txt" with content "<? php :)" in local storage using the testing API
     And the administrator creates file "folder2/hello2.txt" with content "<? php :(" in local storage using the testing API
     And user "user0" requests "/remote.php/dav/files/user0/local_storage/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should not contain these entries:
+      | /local_storage/folder1/hello1.txt |
     When user "user0" requests "/remote.php/dav/files/user0/local_storage/folder2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello2.txt |
+    Then the propfind result of user "user0" should not contain these entries:
+      | /local_storage/folder2/hello2.txt |
     When the administrator scans the filesystem in path "/user0/files/local_storage/folder1" using the occ command
     And user "user0" requests "/remote.php/dav/files/user0/local_storage/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should contain these entries:
+      | /local_storage/folder1/hello1.txt |
     When user "user0" requests "/remote.php/dav/files/user0/local_storage/folder2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello2.txt |
+    Then the propfind result of user "user0" should not contain these entries:
+      | /local_storage/folder1/hello2.txt |
 
   @files_sharing-app-required
   Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
@@ -51,6 +53,7 @@ Feature: Scanning files on local storage
       | username |
       | user1    |
       | user2    |
+    And using new DAV path
     And group "<groupname>" has been created
     And user "user1" has been added to group "<groupname>"
     And user "user2" has been added to group "<groupname>"
@@ -61,18 +64,18 @@ Feature: Scanning files on local storage
     And the administrator has scanned the filesystem for group "<groupname>"
     When the administrator creates file "folder1/hello1.txt" with content "<? php :)" in local storage using the testing API
     And user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should not contain these entries:
+      | /local_storage/folder1/hello1.txt |
     When user "user2" requests "/remote.php/dav/files/user2/local_storage/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user2" should not contain these entries:
+      | /local_storage/folder1/hello1.txt |
     When the administrator scans the filesystem for group "<groupname>" using the occ command
     And user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
-    When user "user2" requests "/remote.php/dav/files/user2/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should contain these entries:
+      | /local_storage/folder1/hello1.txt |
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage/folder1" with "PROPFIND" using basic auth
+    Then the propfind result of user "user2" should contain these entries:
+      | /local_storage/folder1/hello1.txt |
     Examples:
       | groupname            |
       | grp1                 |
@@ -85,6 +88,7 @@ Feature: Scanning files on local storage
       | user2    |
       | user3    |
       | user4    |
+    And using new DAV path
     And group "grp1" has been created
     And group "grp2" has been created
     And group "grp3" has been created
@@ -110,51 +114,53 @@ Feature: Scanning files on local storage
     And the administrator creates file "folder2/hello2.txt" with content "<? php :)" in local storage "local_storage2" using the testing API
     And the administrator creates file "folder3/hello3.txt" with content "<? php :)" in local storage "local_storage3" using the testing API
     And user "user1" requests "/remote.php/dav/files/user1/local_storage1/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should not contain these entries:
+      | /local_storage1/folder1/hello1.txt |
     When user "user2" requests "/remote.php/dav/files/user2/local_storage2/folder2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello2.txt |
+    Then the propfind result of user "user2" should not contain these entries:
+      | /local_storage2/folder2/hello2.txt |
     When user "user3" requests "/remote.php/dav/files/user3/local_storage3/folder3" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello3.txt |
+    Then the propfind result of user "user3" should not contain these entries:
+      | /local_storage3/folder3/hello3.txt |
     When user "user4" requests "/remote.php/dav/files/user4/local_storage3/folder3" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello3.txt |
+    Then the propfind result of user "user4" should not contain these entries:
+      | /local_storage3/folder3/hello3.txt |
     When the administrator scans the filesystem for groups list "grp2,grp3" using the occ command
     And user "user1" requests "/remote.php/dav/files/user1/local_storage1/folder1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should not contain these entries:
+      | /local_storage1/folder1/hello1.txt |
     When user "user2" requests "/remote.php/dav/files/user2/local_storage2/folder2" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello2.txt |
+    Then the propfind result of user "user2" should contain these entries:
+      | /local_storage2/folder2/hello2.txt |
     When user "user3" requests "/remote.php/dav/files/user3/local_storage3/folder3" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello3.txt |
+    Then the propfind result of user "user3" should contain these entries:
+      | /local_storage3/folder3/hello3.txt |
     When user "user4" requests "/remote.php/dav/files/user4/local_storage3/folder3" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello3.txt |
+    Then the propfind result of user "user4" should contain these entries:
+      | /local_storage3/folder3/hello3.txt |
 
   Scenario: Deleting a file from local storage and running scan for a specific path should remove the file.
     Given user "user0" has been created with default attributes and skeleton files
+    And using new DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/hello1.txt"
     When user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should contain these entries:
+      | /local_storage/hello1.txt |
     When the administrator deletes file "hello1.txt" in local storage using the testing API
     And user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should contain these entries:
+      | /local_storage/hello1.txt |
     When the administrator scans the filesystem for all users using the occ command
     And user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should not contain these entries:
+      | /local_storage/hello1.txt |
 
   Scenario: Adding a file on local storage and running file scan for a specific user should add file for only that user
     Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |
+    And using new DAV path
     And the administrator has created the local storage mount "local_storage1"
     And the administrator has added user "user0" as the applicable user for the last local storage mount
     And the administrator has created the local storage mount "local_storage2"
@@ -165,18 +171,18 @@ Feature: Scanning files on local storage
     When the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage1" using the testing API
     And the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage2" using the testing API
     And user "user0" requests "/remote.php/dav/files/user0/local_storage1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should not contain these entries:
+      | /local_storage1/hello1.txt |
     When user "user1" requests "/remote.php/dav/files/user1/local_storage2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should not contain these entries:
+      | /local_storage2/hello1.txt |
     When the administrator scans the filesystem for user "user0" using the occ command
     And user "user0" requests "/remote.php/dav/files/user0/local_storage1" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user0" should contain these entries:
+      | /local_storage1/hello1.txt |
     When user "user1" requests "/remote.php/dav/files/user1/local_storage2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should not contain these entries:
+      | /local_storage2/hello1.txt |
 
   Scenario: Adding a file on local storage and running file scan for a specific group should add file for only the users of that group
     Given these users have been created with default attributes and skeleton files:
@@ -184,6 +190,7 @@ Feature: Scanning files on local storage
       | user1    |
       | user2    |
       | user3    |
+    And using new DAV path
     And group "grp1" has been created
     And group "grp2" has been created
     And user "user1" has been added to group "grp1"
@@ -199,22 +206,22 @@ Feature: Scanning files on local storage
     When the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage1" using the testing API
     And the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage2" using the testing API
     And user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should not contain these entries:
+      | /local_storage1/hello1.txt |
     When user "user2" requests "/remote.php/dav/files/user2/local_storage1" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user2" should not contain these entries:
+      | /local_storage1/hello1.txt |
     When user "user3" requests "/remote.php/dav/files/user3/local_storage2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user3" should not contain these entries:
+      | /local_storage2/hello1.txt |
     When the administrator scans the filesystem for group "grp1" using the occ command
     And user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user1" should contain these entries:
+      | /local_storage1/hello1.txt |
     When user "user2" requests "/remote.php/dav/files/user2/local_storage1" with "PROPFIND" using basic auth
-    Then the propfind result should contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user2" should contain these entries:
+      | /local_storage1/hello1.txt |
     When user "user3" requests "/remote.php/dav/files/user3/local_storage2" with "PROPFIND" using basic auth
-    Then the propfind result should not contain these entries:
-      | /hello1.txt |
+    Then the propfind result of user "user3" should not contain these entries:
+      | /local_storage2/hello1.txt |
 

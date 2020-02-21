@@ -3030,18 +3030,19 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^the (?:propfind|search) result should (not|)\s?contain these (?:files|entries):$/
+	 * @Then /^the (?:propfind|search) result of user "([^"]*)" should (not|)\s?contain these (?:files|entries):$/
 	 *
+	 * @param string $user
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $expectedFiles
 	 *
 	 * @return void
 	 */
 	public function thePropfindResultShouldContainEntries(
-		$shouldOrNot, TableNode $expectedFiles
+		$user, $shouldOrNot, TableNode $expectedFiles
 	) {
 		$this->propfindResultShouldContainEntries(
-			$shouldOrNot, $expectedFiles
+			$shouldOrNot, $expectedFiles, $user
 		);
 	}
 
@@ -3084,8 +3085,27 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theSearchResultOfShouldContainAnyOfTheseEntries(
+	public function theSearchResultShouldContainAnyOfTheseEntries(
 		$expectedNumber, TableNode $expectedFiles
+	) {
+		$this->theSearchResultOfUserShouldContainAnyOfTheseEntries(
+			$this->getCurrentUser(),
+			$expectedNumber,
+			$expectedFiles
+		);
+	}
+
+	/**
+	 * @Then the propfind/search result of user :user should contain any :expectedNumber of these files/entries:
+	 *
+	 * @param string $user
+	 * @param integer $expectedNumber
+	 * @param TableNode $expectedFiles
+	 *
+	 * @return void
+	 */
+	public function theSearchResultOfUserShouldContainAnyOfTheseEntries(
+		$user, $expectedNumber, TableNode $expectedFiles
 	) {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$this->propfindResultShouldContainNumEntries($expectedNumber);
@@ -3099,7 +3119,7 @@ trait WebDav {
 			},
 			$elementRows
 		);
-		$resultEntries = $this->findEntryFromPropfindResponse();
+		$resultEntries = $this->findEntryFromPropfindResponse(null, $user);
 		foreach ($resultEntries as $resultEntry) {
 			Assert::assertContains($resultEntry, $expectedEntries);
 		}
