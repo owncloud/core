@@ -207,7 +207,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function expirationFieldVisibleForUser($shouldOrNot, $type, $receiver) {
 		$expected = ($shouldOrNot === "");
 		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
-		Assert::assertEquals($this->sharingDialog->isExpirationFieldVisible($receiver, $type), $expected);
+		Assert::assertEquals(
+			$expected,
+			$this->sharingDialog->isExpirationFieldVisible($receiver, $type),
+			__METHOD__
+			. " The visibility of expiration date input field for '$type' '$receiver' in the share dialog is not as expected. "
+		);
 	}
 
 	/**
@@ -220,7 +225,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function expirationFieldEmptyForUser($type, $receiver) {
-		Assert::assertEquals($this->sharingDialog->getExpirationDateFor($receiver, $type), "");
+		$expirationDateInInputField = $this->sharingDialog->getExpirationDateFor($receiver, $type);
+		Assert::assertEquals(
+			"",
+			$expirationDateInInputField,
+			__METHOD__
+			. " The expiration date input field, for the '$type' '$receiver' , in the share dialog is expected to be empty, but got '$expirationDateInInputField'"
+		);
 	}
 
 	/**
@@ -250,9 +261,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function expirationDateShouldBe($days, $type, $receiver) {
 		if (\strtotime($days) !== false) {
+			$expectedExpirationDate = \date('d-m-Y', \strtotime($days));
+			$actualExpirationDate = $this->sharingDialog->getExpirationDateFor($receiver, $type);
 			Assert::assertEquals(
-				\date('d-m-Y', \strtotime($days)),
-				$this->sharingDialog->getExpirationDateFor($receiver, $type)
+				$expectedExpirationDate,
+				$actualExpirationDate,
+				" The expiration date input field, for the '$type' '$receiver', in the share dialog was expected to be '$expectedExpirationDate', "
+				. "but got '$actualExpirationDate'."
 			);
 		} else {
 			throw new Exception("Invalid Format for the expiration date provided.");
@@ -664,7 +679,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$expectedWarningMessage
 	) {
 		$warningMessage = $this->publicShareTab->getWarningMessage();
-		Assert::assertEquals($expectedWarningMessage, $warningMessage);
+		Assert::assertEquals(
+			$expectedWarningMessage,
+			$warningMessage,
+			__METHOD__
+			. " The expected error message on the public link share dialog was '$expectedWarningMessage', but got '$warningMessage' instead."
+		);
 	}
 
 	/**
@@ -678,7 +698,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// update public-sharing popup, as it might not have been set previously.
 		$this->publicSharingPopup = $this->publicShareTab->updateSharingPopup($this->getSession());
 		$errormessage = $this->publicSharingPopup->getErrorMessage();
-		Assert::assertEquals($message, $errormessage);
+		Assert::assertEquals(
+			$message,
+			$errormessage,
+			__METHOD__
+			. " The expected error message on the public link popup was '$message', but got '$errormessage' instead."
+		);
 	}
 
 	/**
@@ -1071,12 +1096,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function thePublicShouldNotGetAccessToPublicShareFile() {
 		$warningMessage = $this->publicLinkFilesPage->getWarningMessage();
-		Assert::assertEquals('The password is wrong. Try again.', $warningMessage);
+		Assert::assertEquals(
+			'The password is wrong. Try again.',
+			$warningMessage,
+			__METHOD__
+			. " The expected warning message was 'The password is wrong. Try again.', but got '$warningMessage'."
+		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$lastCreatedLink = \end($createdPublicLinks);
 		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
 		$currentPath = $this->getSession()->getCurrentUrl();
-		Assert::assertEquals($lastSharePath, $currentPath);
+		Assert::assertEquals(
+			$lastSharePath,
+			$currentPath,
+			__METHOD__
+			. " The url of created public link is '$lastSharePath', but the current url is '$currentPath'"
+		);
 	}
 
 	/**
@@ -1206,7 +1241,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		Assert::assertNotContains(
 			$notToBeListed,
-			$this->sharingDialog->getAutocompleteItemsList()
+			$this->sharingDialog->getAutocompleteItemsList(),
+			__METHOD__
+			. " The autocomplete list contains '$userOrGroup' $notToBeListed' unexpectedly."
 		);
 	}
 
@@ -1216,11 +1253,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUsersOwnNameShouldNotBeListedInTheAutocompleteList() {
+		$ownDisplayName = $this->sharingDialog->userStringsToMatchAutoComplete(
+			$this->filesPage->getMyDisplayname()
+		);
 		Assert::assertNotContains(
-			$this->sharingDialog->userStringsToMatchAutoComplete(
-				$this->filesPage->getMyDisplayname()
-			),
-			$this->sharingDialog->getAutocompleteItemsList()
+			$ownDisplayName,
+			$this->sharingDialog->getAutocompleteItemsList(),
+			__METHOD__
+			. " The autocomplete list contains the users own name '$ownDisplayName' unexpectedly."
 		);
 	}
 
@@ -1285,7 +1325,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function aTooltipWithTheTextShouldBeShownNearTheShareWithField($text) {
 		Assert::assertEquals(
 			$text,
-			$this->sharingDialog->getShareWithTooltip()
+			$this->sharingDialog->getShareWithTooltip(),
+			__METHOD__
+			. " Expected tooltip with the text '$text' to be shown near the share-with-field, but got '"
+			. $this->sharingDialog->getShareWithTooltip()
+			. "' instead."
 		);
 	}
 
@@ -1296,7 +1340,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theAutocompleteListShouldNotBeDisplayed() {
 		Assert::assertEmpty(
-			$this->sharingDialog->getAutocompleteItemsList()
+			$this->sharingDialog->getAutocompleteItemsList(),
+			__METHOD__
+			. " The autocomplete list is unexpectedly displayed on the webUI"
 		);
 	}
 
@@ -1353,29 +1399,47 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$row = $this->filesPage->findFileRowByName($itemName, $this->getSession());
 		$sharingBtn = $row->findSharingButton();
 		Assert::assertSame(
-			$sharerName, $this->filesPage->getTrimmedText($sharingBtn)
+			$sharerName,
+			$this->filesPage->getTrimmedText($sharingBtn),
+			__METHOD__
+			. " The expected sharer name to be displayed is '$sharerName', but got '"
+			. $this->filesPage->getTrimmedText($sharingBtn)
+			. "' instead."
 		);
 		$sharingDialog = $this->filesPage->openSharingDialog(
 			$itemName, $this->getSession()
 		);
 		Assert::assertSame(
-			$sharerName, $sharingDialog->getSharerName()
+			$sharerName,
+			$sharingDialog->getSharerName(),
+			__METHOD__
+			. " The expected sharer name is '$sharerName', but found '"
+			. $sharingDialog->getSharerName()
+			. "' instead."
 		);
 		if ($fileOrFolder === "folder") {
 			Assert::assertContains(
 				"folder-shared.svg",
-				$row->findThumbnail()->getAttribute("style")
+				$row->findThumbnail()->getAttribute("style"),
+				__METHOD__
+				. " 'folder-shared.svg' is expected to be contained in the 'style' attribute of the thumbnail of particular row."
 			);
 			$detailsDialog = $this->filesPage->getDetailsDialog();
 			Assert::assertContains(
 				"folder-shared.svg",
-				$detailsDialog->findThumbnail()->getAttribute("style")
+				$detailsDialog->findThumbnail()->getAttribute("style"),
+				__METHOD__
+				. " 'folder-shared.svg' is expected to be contained in the 'style' attribute of the thumbnail of particular details dialog."
 			);
 		}
 		if ($sharedWithGroup !== "") {
 			Assert::assertSame(
 				$sharedWithGroup,
-				$sharingDialog->getSharedWithGroupName()
+				$sharingDialog->getSharedWithGroupName(),
+				__METHOD__
+				. " Expected to be shared with '$sharedWithGroup' '$sharerName', but got '"
+				. $sharingDialog->getSharedWithGroupName()
+				. "' instead."
 			);
 		}
 	}
@@ -1393,7 +1457,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$fileRow = $this->sharedWithYouPage->findFileRowByName(
 			$item, $this->getSession()
 		);
-		Assert::assertSame($state, $fileRow->getShareState());
+		Assert::assertSame(
+			$state,
+			$fileRow->getShareState(),
+			" The file/folder '$item' is expected to be in state '$state', but is found in state '"
+			. $fileRow->getShareState()
+			. "' instead in the shared-with-you page."
+		);
 	}
 
 	/**
@@ -1422,7 +1492,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		Assert::assertTrue(
 			$found, "could not find item called $item shared by $sharedBy"
 		);
-		Assert::assertSame($state, $currentState);
+		Assert::assertSame(
+			$state,
+			$currentState,
+			" The file/folder '$item' shared by '$sharedBy' is expected to be state '$state', "
+			. "but is actually found in state '$currentState' in the shared-with-you page."
+		);
 	}
 
 	/**
@@ -1512,9 +1587,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				);
 			}
 		}
-		if ($sharingWasPossible === true) {
-			throw new Exception("It was possible to share the file");
-		}
+		Assert::assertFalse(
+			$sharingWasPossible,
+			__METHOD__
+			. "Unexpectedly it was possible to share the file."
+		);
 	}
 
 	/**
@@ -1535,7 +1612,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->generalErrorPage->setPagePath($path);
 		$this->generalErrorPage->open();
 		$actualErrorMsg = $this->generalErrorPage->getErrorMessage();
-		Assert::assertContains($errorMsg, $actualErrorMsg);
+		Assert::assertContains(
+			$errorMsg,
+			$actualErrorMsg,
+			__METHOD__
+			. " The expected error message was '$errorMsg' but got '$actualErrorMsg' instead."
+		);
 	}
 
 	/**
@@ -1639,7 +1721,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
 		$response = $this->thePublicDownloadsAllTheSharedDataUsingTheWebui();
-		Assert::assertEquals(200, $response->getStatusCode());
+		Assert::assertEquals(
+			200,
+			$response->getStatusCode(),
+			__METHOD__
+			. " The expected status code is '200', but got '"
+			. $response->getStatusCode()
+			. "' instead."
+		);
 		$body = $response->getBody()->getContents();
 
 		$user = $this->featureContext->getCurrentUser();
@@ -1647,8 +1736,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$this->featureContext->downloadFileAsUserUsingPassword($user, $originalFile, $password);
 		$originalContent = $this->featureContext->getResponse()->getBody()->getContents();
-
-		Assert::assertSame($originalContent, $body);
+		Assert::assertSame(
+			$originalContent,
+			$body,
+			__METHOD__
+			. " The content of the file shared by the last public link should be '$originalContent', but got '$body'."
+		);
 	}
 
 	/**
@@ -1688,7 +1781,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$lastCreatedPublicLink = \end($createdPublicLinks);
-		Assert::assertContains($lastCreatedPublicLink["url"], $content);
+		Assert::assertContains(
+			$lastCreatedPublicLink["url"],
+			$content,
+			__METHOD__
+			. " The email content '$content' does not contain '"
+			. $lastCreatedPublicLink["url"]
+			. "'"
+		);
 	}
 
 	/**
@@ -1703,7 +1803,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$actualMessage = $sharingDialog->getNoSharingMessage(
 			$this->getSession()
 		);
-		Assert::assertEquals($message, $actualMessage);
+		Assert::assertEquals(
+			$message,
+			$actualMessage,
+			__METHOD__
+			. " The user should see an error message '$message' on the share dialog, but actually found '$actualMessage'."
+		);
 	}
 
 	/**
