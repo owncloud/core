@@ -4,6 +4,7 @@ Feature: reset user password
   I want to be able to reset a user's password
   So that I can secure individual access to resources on the ownCloud server
 
+  @skipOnEncryptionType:user-keys
   Scenario: reset user password
     Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
