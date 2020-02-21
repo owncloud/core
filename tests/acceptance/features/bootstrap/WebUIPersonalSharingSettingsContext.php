@@ -102,7 +102,9 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function autoAcceptingCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui() {
 		Assert::assertFalse(
-			$this->personalSharingSettingsPage->isAutoAcceptLocalSharesCheckboxDisplayed()
+			$this->personalSharingSettingsPage->isAutoAcceptLocalSharesCheckboxDisplayed(),
+			__METHOD__
+			. " User-based auto accepting checkbox is displayed on the personal sharing settings page."
 		);
 	}
 
@@ -113,7 +115,9 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function autoAcceptingFederatedCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui() {
 		Assert::assertFalse(
-			$this->personalSharingSettingsPage->isAutoAcceptFederatedSharesCheckboxDisplayed()
+			$this->personalSharingSettingsPage->isAutoAcceptFederatedSharesCheckboxDisplayed(),
+			__METHOD__
+			. " User-based auto accepting from trusted servers checkbox is displayed on the personal sharing settings page."
 		);
 	}
 
@@ -124,7 +128,9 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function allowFindingYouViaAutocompleteCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPage() {
 		Assert::assertFalse(
-			$this->personalSharingSettingsPage->isAllowFindingYouViaAutocompleteCheckboxDisplayed()
+			$this->personalSharingSettingsPage->isAllowFindingYouViaAutocompleteCheckboxDisplayed(),
+			__METHOD__
+			. " Allow finding you via autocomplete checkbox is displayed on the personal sharing settings page."
 		);
 	}
 }
