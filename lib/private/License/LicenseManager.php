@@ -23,6 +23,7 @@ use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\ILogger;
 use OC\License\LicenseFetcher;
 
 class LicenseManager implements ILicenseManager {
@@ -36,17 +37,21 @@ class LicenseManager implements ILicenseManager {
 	private $appManager;
 	/** @var ITimeFactory */
 	private $timeFactory;
+	/** @var ILogger */
+	private $logger;
 
 	public function __construct(
 		LicenseFetcher $licenseFetcher,
 		IAppManager $appManager,
 		IConfig $config,
-		ITimeFactory $timeFactory
+		ITimeFactory $timeFactory,
+		ILogger $logger
 	) {
 		$this->licenseFetcher = $licenseFetcher;
 		$this->appManager = $appManager;
 		$this->config = $config;
 		$this->timeFactory = $timeFactory;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -200,6 +205,7 @@ class LicenseManager implements ILicenseManager {
 			// we aren't under a grace period, so the app must be disabled if the license isn't valid
 			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID) {
 				$this->appManager->disableApp($appid);
+				$this->logger->warning("$appid has been disabled because the license is not valid", ['app' => 'core']);
 				return false;
 			} else {
 				return true;
@@ -214,6 +220,7 @@ class LicenseManager implements ILicenseManager {
 					$licenseKey = $licenseObj->getLicenseString();
 				}
 				$this->config->setAppValue('core-license-complains', $appid, $licenseKey);
+				$this->logger->debug("$appid has registered a license complain over license $licenseKey", ['app' => 'core']);
 			}
 			return true;
 		}

@@ -21,6 +21,7 @@
 namespace Test\License;
 
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OC\License\ILicense;
@@ -40,18 +41,22 @@ class LicenseManagerTest extends TestCase {
 	private $timeFactory;
 	/** @var LicenseManager */
 	private $licenseManager;
+	/** @var ILogger */
+	private $logger;
 
 	protected function setUp(): void {
 		$this->licenseFetcher = $this->createMock(LicenseFetcher::class);
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
+		$this->logger = $this->createMock(ILogger::class);
 
 		$this->licenseManager = new LicenseManager(
 			$this->licenseFetcher,
 			$this->appManager,
 			$this->config,
-			$this->timeFactory
+			$this->timeFactory,
+			$this->logger
 		);
 	}
 
