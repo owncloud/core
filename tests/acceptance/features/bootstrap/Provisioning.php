@@ -730,12 +730,9 @@ trait Provisioning {
 				// Create a OCS request for creating the user. The request is not sent to the server yet.
 				$request = OcsApiHelper::createOcsRequest(
 					$this->getBaseUrl(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
 					'POST',
 					"/cloud/users",
-					$userAttributes,
-					$client
+					$userAttributes
 				);
 				// Add the request to the $requests array so that they can be sent in parallel.
 				\array_push($requests, $request);

@@ -132,12 +132,9 @@ class UserHelper {
 				$requests,
 				OcsApiHelper::createOcsRequest(
 					$baseUrl,
-					$adminUser,
-					$adminPassword,
 					'PUT',
 					$path,
-					$body,
-					$client
+					$body
 				)
 			);
 		}
