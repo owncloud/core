@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

@@ -23,7 +23,6 @@ namespace TestHelpers;
 
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Stream\Stream;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
