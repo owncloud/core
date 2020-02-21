@@ -22,7 +22,6 @@
 namespace TestHelpers\Asserts;
 
 use SimpleXMLElement;
-use Behat\Gherkin\Node\TableNode;
 use TestHelpers\DownloadHelper;
 use TestHelpers\SetupHelper;
 

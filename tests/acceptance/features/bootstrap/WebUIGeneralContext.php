@@ -32,7 +32,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\AppConfigHelper;
 use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
-use TestHelpers\UploadHelper;
 use Page\GeneralErrorPage;
 use Page\GeneralExceptionPage;
 

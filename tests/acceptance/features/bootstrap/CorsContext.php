@@ -22,7 +22,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
