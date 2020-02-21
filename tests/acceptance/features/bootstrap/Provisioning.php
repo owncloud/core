@@ -783,9 +783,10 @@ trait Provisioning {
 			);
 		}
 
-		// If the users need to be initialized then initialize them in parallel.
 		if ($initialize) {
-			$this->initializeUserBatch($users);
+			// We need to initialize each user using the individual authentication of each user.
+			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
+			$this->initializeUsers($users);
 		}
 	}
 
@@ -1934,50 +1935,25 @@ trait Provisioning {
 	}
 
 	/**
-	 * Make a request about the users to initialize them in parallel.
-	 * This will be faster than sequential requests to initialize the users.
-	 * That will force the server to fully initialize the users, including their skeleton files.
+	 * Touch an API end-point for each user so that their file-system gets setup
 	 *
 	 * @param array $users
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function initializeUserBatch($users) {
+	public function initializeUsers($users) {
 		$url = "/cloud/users/%s";
-		$requests = [];
-		$client = HttpRequestHelper::createClient(
-			$this->getAdminUsername(),
-			$this->getAdminPassword()
-		);
 		foreach ($users as $user) {
-			// create a new request for each user but do not send it yet.
-			// push the newly created request to an array.
-			\array_push(
-				$requests,
-				OcsApiHelper::createOcsRequest(
-					$this->getBaseUrl(),
-					$user,
-					$this->getPasswordForUser($user),
-					$method = 'GET',
-					\sprintf($url, $user),
-					[],
-					$client
-				)
+			$response = OcsApiHelper::sendRequest(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				'GET',
+				\sprintf($url, $user)
 			);
-		}
-		// Send all the requests in parallel.
-		$response = HttpRequestHelper::sendBatchRequest($requests, $client);
-		// throw an exception if any request fails.
-		foreach ($response as $e) {
-			if ($e instanceof ClientException) {
-				$httpStatusCode = $e->getResponse()->getStatusCode();
-				$reasonPhrase = $e->getResponse()->getReasonPhrase();
-				throw new \Exception(
-					__METHOD__ .
-					"Unexpected failure when initializing a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase"
-				);
-			}
+			$this->setResponse($response);
+			$this->theHTTPStatusCodeShouldBe(200);
 		}
 	}
 
