@@ -434,7 +434,16 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'email']);
 		foreach ($table as $row) {
 			$userEmail = $this->usersPage->getEmailOfUser($row['username']);
-			Assert::assertEquals($row['email'], $userEmail);
+			Assert::assertEquals(
+				$row['email'],
+				$userEmail,
+				__METHOD__
+				. " The email of user '"
+				. $row['username']
+				. "' is expected to be '"
+				. $row['email']
+				. "', but got '$userEmail' instead."
+			);
 		}
 	}
 
@@ -449,7 +458,14 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'quota']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
-			Assert::assertEquals(true, $visible);
+			Assert::assertEquals(
+				true,
+				$visible,
+				__METHOD__
+				. " The quota of user '"
+				. $row['username']
+				. "' was expected to be visible to the administrator in the User Management page, but is not."
+			);
 		}
 	}
 
@@ -464,7 +480,14 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
-			Assert::assertEquals(false, $visible);
+			Assert::assertEquals(
+				false,
+				$visible,
+				__METHOD__
+				. " The quota of user '"
+				. $row['username']
+				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
+			);
 		}
 	}
 
@@ -479,7 +502,14 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
-			Assert::assertEquals(true, $visible);
+			Assert::assertEquals(
+				true,
+				$visible,
+				__METHOD__
+				. " The password of user '"
+				. $row['username']
+				. "' was expected to be visible to the administrator in the User Management page, but is not."
+			);
 		}
 	}
 
@@ -494,7 +524,14 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
-			Assert::assertEquals(false, $visible);
+			Assert::assertEquals(
+				false,
+				$visible,
+				__METHOD__
+				. " The password of user '"
+				. $row['username']
+				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
+			);
 		}
 	}
 
@@ -511,7 +548,16 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'storage location']);
 		foreach ($table as $row) {
 			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($row['username']);
-			Assert::assertContains($row['storage location'], $userStorageLocation);
+			Assert::assertContains(
+				$row['storage location'],
+				$userStorageLocation,
+				__METHOD__
+				. "'"
+				. $row['storage location']
+				. "' is not contained in the storage location of '"
+				. $row['username']
+				. "'."
+			);
 		}
 	}
 
@@ -529,7 +575,16 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
 
-			Assert::assertContains($row['last login'], $userLastLogin);
+			Assert::assertContains(
+				$row['last login'],
+				$userLastLogin,
+				__METHOD__
+				. "'"
+				. $row['last login']
+				. "' is not contained in the last login of '"
+				. $row['username']
+				. "'."
+			);
 		}
 	}
 
@@ -683,7 +738,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theUserCountOfGroupShouldDisplayUsersOnTheWebUI($group, $count) {
 		$expectedCount = (int) $count;
 		$actualCount = $this->usersPage->getUserCountOfGroup($group);
-		Assert::assertEquals($expectedCount, $actualCount);
+		Assert::assertEquals(
+			$expectedCount,
+			$actualCount,
+			__METHOD__
+			. " The user count of group '$group' is expected to display '$expectedCount' users, '"
+			. "but got '$actualCount' users instead."
+		);
 	}
 
 	/**
