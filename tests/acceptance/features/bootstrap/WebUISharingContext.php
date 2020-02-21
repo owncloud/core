@@ -1243,7 +1243,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$notToBeListed,
 			$this->sharingDialog->getAutocompleteItemsList(),
 			__METHOD__
-			. " The autocomplete list contains '$userOrGroup' $notToBeListed' unexpectedly."
+			. " The autocomplete list contains '$userOrGroup' '$notToBeListed' unexpectedly."
 		);
 	}
 
@@ -1590,7 +1590,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		Assert::assertFalse(
 			$sharingWasPossible,
 			__METHOD__
-			. "Unexpectedly it was possible to share the file."
+			. " Unexpectedly, it was possible to share the file/folder '$fileName' with '$userOrGroup' '$shareWith'."
 		);
 	}
 
