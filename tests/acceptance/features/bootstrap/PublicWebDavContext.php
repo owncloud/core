@@ -278,7 +278,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publiclyUploadingFile($source, $publicWebDAVAPIVersion) {
-		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
+		$file = \GuzzleHttp\Psr7\stream_for(\fopen($source, 'r'));
 		$this->publicUploadContent(
 			\basename($source), '', $file->getContents(),
 			false, [], $publicWebDAVAPIVersion
