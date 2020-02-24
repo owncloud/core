@@ -191,6 +191,7 @@ Feature: get file properties
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |
 
+  @skipOnOcis @issue-ocis-reva-57
   Scenario: add, receive multiple custom meta properties to a file
     Given user "user0" has created folder "/TestFolder"
     And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
@@ -210,6 +211,7 @@ Feature: get file properties
       | /TestFolder/test1.txt | status    | HTTP/1.1 200 OK |
 
   @issue-36920
+  @skipOnOcis @issue-ocis-reva-57
   Scenario: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given user "user0" has created folder "/TestFolder"
     And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
