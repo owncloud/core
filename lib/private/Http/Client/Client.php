@@ -62,23 +62,28 @@ class Client implements IClient {
 			return;
 		}
 		$this->configured = true;
+		// ToDo: this $config stuff comes from the previous PR for Guzzle6
+		//       But it does not seem to go anywhere. `verify` etc is set, but
+		//       when this function ends the $config array is just thrown away.
+		//       Need to investigate what really should happen with this.
+		$config = $this->client->getConfig();
 		// Either use user bundle or the system bundle if nothing is specified
 		if ($this->certificateManager->listCertificates() !== []) {
-			$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath());
+			$config['verify'] = $this->certificateManager->getAbsoluteBundlePath();
 		} else {
 			// If the instance is not yet setup we need to use the static path as
 			// $this->certificateManager->getAbsoluteBundlePath() tries to instantiiate
 			// a view
 			if ($this->config->getSystemValue('installed', false) && !\OCP\Util::needUpgrade()) {
-				$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath(null));
+				$config['verify'] = $this->certificateManager->getAbsoluteBundlePath(null);
 			} else {
-				$this->client->setDefaultOption('verify', \OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
+				$config['verify'] = \OC::$SERVERROOT . '/resources/config/ca-bundle.crt';
 			}
 		}
 
-		$this->client->setDefaultOption('headers/User-Agent', 'ownCloud Server Crawler');
+		$config['headers/User-Agent'] = 'ownCloud Server Crawler';
 		if ($this->getProxyUri() !== '') {
-			$this->client->setDefaultOption('proxy', $this->getProxyUri());
+			$config['proxy'] = $this->getProxyUri();
 		}
 	}
 
@@ -214,6 +219,10 @@ class Client implements IClient {
 	 */
 	public function post($uri, array $options = []) {
 		$this->setDefaultOptions();
+		if (isset($options['body']) && \is_array($options['body'])) {
+			$options['form_params'] = $options['body'];
+			unset($options['body']);
+		}
 		$response = $this->client->post($uri, $options);
 		return new Response($response);
 	}
