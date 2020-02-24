@@ -20,8 +20,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Exception\ClientException;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
@@ -718,7 +718,10 @@ trait Provisioning {
 	 */
 	public function usersHaveBeenCreated($initialize, $usersAttributes) {
 		$requests = [];
-		$client = new Client();
+		$client = HttpRequestHelper::createClient(
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 
 		foreach ($usersAttributes as $userAttributes) {
 			if ($this->isTestingWithLdap()) {
@@ -727,12 +730,9 @@ trait Provisioning {
 				// Create a OCS request for creating the user. The request is not sent to the server yet.
 				$request = OcsApiHelper::createOcsRequest(
 					$this->getBaseUrl(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
 					'POST',
 					"/cloud/users",
-					$userAttributes,
-					$client
+					$userAttributes
 				);
 				// Add the request to the $requests array so that they can be sent in parallel.
 				\array_push($requests, $request);
@@ -742,19 +742,17 @@ trait Provisioning {
 		if (!$this->isTestingWithLdap()) {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Retrieve all failures.
-			foreach ($results->getFailures() as $e) {
-				$failedUser = $e->getRequest()->getBody()->getFields()['userid'];
-				$message = $this->getResponseXml($e->getResponse())->xpath("/ocs/meta/message");
-				if ($message && (string)$message[0] === "User already exists") {
-					Assert::fail(
-						"Could not create user '$failedUser' as it already exists. " .
-						"Please delete the user to run tests again."
+			foreach ($results as $e) {
+				if ($e instanceof ClientException) {
+					$responseXml = $this->getResponseXml($e->getResponse());
+					$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
+					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
+					$httpStatusCode = $e->getResponse()->getStatusCode();
+					$reasonPhrase = $e->getResponse()->getReasonPhrase();
+					throw new Exception(
+						__METHOD__ . "Unexpected failure when creating a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase OCS status $ocsStatusCode OCS message $messageText"
 					);
 				}
-				throw new Exception(
-					__METHOD__ . " could not create user. "
-					. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
-				);
 			}
 		}
 
@@ -782,9 +780,10 @@ trait Provisioning {
 			);
 		}
 
-		// If the users need to be initialized then initialize them in parallel.
 		if ($initialize) {
-			$this->initializeUserBatch($users);
+			// We need to initialize each user using the individual authentication of each user.
+			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
+			$this->initializeUsers($users);
 		}
 	}
 
@@ -1933,46 +1932,25 @@ trait Provisioning {
 	}
 
 	/**
-	 * Make a request about the users to initialize them in parallel.
-	 * This will be faster than sequential requests to initialize the users.
-	 * That will force the server to fully initialize the users, including their skeleton files.
+	 * Touch an API end-point for each user so that their file-system gets setup
 	 *
 	 * @param array $users
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function initializeUserBatch($users) {
+	public function initializeUsers($users) {
 		$url = "/cloud/users/%s";
-		$requests = [];
-		$client = new Client();
 		foreach ($users as $user) {
-			// create a new request for each user but do not send it yet.
-			// push the newly created request to an array.
-			\array_push(
-				$requests,
-				OcsApiHelper::createOcsRequest(
-					$this->getBaseUrl(),
-					$user,
-					$this->getPasswordForUser($user),
-					$method = 'GET',
-					\sprintf($url, $user),
-					[],
-					$client
-				)
+			$response = OcsApiHelper::sendRequest(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				'GET',
+				\sprintf($url, $user)
 			);
-		}
-		// Send all the requests in parallel.
-		$response = HttpRequestHelper::sendBatchRequest($requests, $client);
-		// throw an exception if any request fails.
-		foreach ($response->getFailures() as $e) {
-			$pathArray = \explode('/', $e->getRequest()->getPath());
-			$failedUser = \end($pathArray);
-			throw new \Exception(
-				__METHOD__
-				. " Could not initialize user $failedUser \n"
-				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
-			);
+			$this->setResponse($response);
+			$this->theHTTPStatusCodeShouldBe(200);
 		}
 	}
 

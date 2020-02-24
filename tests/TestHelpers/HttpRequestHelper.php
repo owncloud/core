@@ -25,11 +25,13 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
 use Sabre\Xml\LibXMLException;
 use Sabre\Xml\Reader;
-use GuzzleHttp\BatchResults;
 use GuzzleHttp\Pool;
 
 /**
@@ -68,25 +70,28 @@ class HttpRequestHelper {
 		$client =  null
 	) {
 		if ($client === null) {
-			$client = new Client();
+			$client = self::createClient(
+				$user,
+				$password,
+				$config,
+				$cookies,
+				$stream,
+				$timeout
+			);
 		}
+		/**
+		 * @var RequestInterface $request
+		 */
 		$request = self::createRequest(
 			$url,
 			$method,
-			$user,
-			$password,
 			$headers,
-			$body,
-			$config,
-			$cookies,
-			$stream,
-			$timeout,
-			$client
+			$body
 		);
 
 		try {
 			$response = $client->send($request);
-		} catch (BadResponseException $ex) {
+		} catch (GuzzleException $ex) {
 			$response = $ex->getResponse();
 
 			//if the response was null for some reason do not return it but re-throw
@@ -103,64 +108,43 @@ class HttpRequestHelper {
 	 * It will send all the requests to the server using the Pool object in guzzle.
 	 *
 	 * @param array $requests
-	 * @param Client|null $client
+	 * @param Client $client
 	 *
-	 * @return BatchResults
+	 * @return array
 	 */
 	public static function sendBatchRequest(
 		$requests,
-		$client = null
+		$client
 	) {
-		if (!isset($client)) {
-			$client = new Client();
-		}
 		$results = Pool::batch($client, $requests);
 		return $results;
 	}
 
 	/**
-	 * Create an http request based on given parameters.
-	 * This creates an RequestInterface object before sending it to the server.
-	 * This also enables to create multiple requests in advance so that we can send them to the server at once in parallel.
+	 * Create a Guzzle Client
+	 * This creates a client object that can be used later to send a request object(s)
 	 *
-	 * @param string $url
-	 * @param string $method
 	 * @param string $user
 	 * @param string $password
-	 * @param array $headers ['X-MyHeader' => 'value']
-	 * @param mixed $body
 	 * @param array $config
 	 * @param CookieJar $cookies
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
 	 * @param int $timeout
-	 * @param Client|null $client
 	 *
-	 * @return RequestInterface
+	 * @return Client
 	 */
-	public static function createRequest(
-		$url,
-		$method = 'GET',
+	public static function createClient(
 		$user = null,
 		$password = null,
-		$headers = null,
-		$body = null,
 		$config = null,
 		$cookies = null,
 		$stream = false,
-		$timeout = 0,
-		$client = null
+		$timeout = 0
 	) {
-		if ($client === null) {
-			$client = new Client();
-		}
-
 		$options = [];
 		if ($user !== null) {
 			$options['auth'] = [$user, $password];
-		}
-		if ($body !== null) {
-			$options['body'] = $body;
 		}
 		if ($config !== null) {
 			$options['config'] = $config;
@@ -171,16 +155,44 @@ class HttpRequestHelper {
 		$options['stream'] = $stream;
 		$options['verify'] = false;
 		$options['timeout'] = $timeout;
-		$request = $client->createRequest($method, $url, $options);
-		if ($headers !== null) {
-			foreach ($headers as $key => $value) {
-				if ($request->hasHeader($key) === true) {
-					$request->setHeader($key, $value);
-				} else {
-					$request->addHeader($key, $value);
-				}
-			}
+		$client = new Client($options);
+		return $client;
+	}
+
+	/**
+	 * Create an http request based on given parameters.
+	 * This creates a RequestInterface object that can be used with a client to send a request.
+	 * This enables us to create multiple requests in advance so that we can send them to the server at once in parallel.
+	 *
+	 * @param string $url
+	 * @param string $method
+	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|array $body either the actual string to send in the body,
+	 *                           or an array of key-value pairs to be converted
+	 *                           into a body with http_build_query.
+	 *
+	 * @return RequestInterface
+	 */
+	public static function createRequest(
+		$url,
+		$method = 'GET',
+		$headers = null,
+		$body = null
+	) {
+		if ($headers === null) {
+			$headers = [];
 		}
+		if (\is_array($body)) {
+			// when creating the client, it is possible to set 'form_params' and
+			// the Client constructor sorts out doing this http_build_query stuff.
+			// But 'new Request' does not have the flexibility to do that.
+			// So we need to do it here.
+			$body = \http_build_query($body, '', '&');
+			$headers['Content-Type'] = 'application/x-www-form-urlencoded';
+		}
+		$request = new Request(
+			$method, $url, $headers, $body
+		);
 		return $request;
 	}
 
@@ -320,7 +332,9 @@ class HttpRequestHelper {
 	 * @return SimpleXMLElement
 	 */
 	public static function getResponseXml($response) {
-		return $response->xml();
+		// rewind just to make sure we can re-parse it in case it was parsed already...
+		$response->getBody()->rewind();
+		return new SimpleXMLElement($response->getBody()->getContents());
 	}
 
 	/**

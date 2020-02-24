@@ -21,11 +21,11 @@
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use Guzzle\Http\Exception\BadResponseException;
 use PHPUnit\Framework\Assert;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
@@ -1182,11 +1182,26 @@ trait WebDav {
 			$expectedHeaderValue = $header['value'];
 			$returnedHeader = $this->response->getHeader($headerName);
 			$expectedHeaderValue = $this->substituteInLineCodes($expectedHeaderValue);
+
+			if (\is_array($returnedHeader)) {
+				if (empty($returnedHeader)) {
+					throw new \Exception(
+						\sprintf(
+							"Missing expected header '%s'",
+							$headerName
+						)
+					);
+				}
+				$headerValue = $returnedHeader[0];
+			} else {
+				$headerValue = $returnedHeader;
+			}
+
 			Assert::assertEquals(
 				$expectedHeaderValue,
-				$returnedHeader,
+				$headerValue,
 				__METHOD__
-				. " Expected value for header '$headerName' was '$expectedHeaderValue', but got '$returnedHeader' instead."
+				. " Expected value for header '$headerName' was '$expectedHeaderValue', but got '$headerValue' instead."
 			);
 		}
 	}
@@ -1218,11 +1233,13 @@ trait WebDav {
 	 */
 	public function jobStatusValuesShouldMatchRegEx($user, $table) {
 		$this->verifyTableNodeColumnsCount($table, 2);
-		$url = $this->response->getHeader("OC-JobStatus-Location");
+		$headerArray = $this->response->getHeader("OC-JobStatus-Location");
+		$url = $headerArray[0];
 		$url = $this->getBaseUrlWithoutPath() . $url;
 		$response = HttpRequestHelper::get($url, $user, $this->getPasswordForUser($user));
-		$result = \json_decode($response->getBody()->getContents(), true);
-		Assert::assertNotNull($result, "'$response' is not valid JSON");
+		$contents = $response->getBody()->getContents();
+		$result = \json_decode($contents, true);
+		PHPUnit\Framework\Assert::assertNotNull($result, "'$contents' is not valid JSON");
 		foreach ($table->getTable() as $row) {
 			$expectedKey = $row[0];
 			Assert::assertArrayHasKey(
@@ -1419,12 +1436,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
-		$file = \GuzzleHttp\Stream\Stream::factory(
-			\fopen(
-				$this->acceptanceTestsDirLocation() . $source,
-				'r'
-			)
-		);
+		$file = \fopen($this->acceptanceTestsDirLocation() . $source, 'r');
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
@@ -1691,7 +1703,7 @@ trait WebDav {
 			Assert::assertEquals(
 				$statusCode,
 				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				'Response did not return expected status code'
 			);
 		}
 	}
@@ -1708,7 +1720,7 @@ trait WebDav {
 			Assert::assertEquals(
 				$reasonPhrase,
 				$response->getReasonPhrase(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected reason phrase'
+				'Response did not return expected reason phrase'
 			);
 		}
 	}
@@ -1756,12 +1768,12 @@ trait WebDav {
 			Assert::assertGreaterThanOrEqual(
 				$minStatusCode,
 				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				'Response did not return expected status code'
 			);
 			Assert::assertLessThanOrEqual(
 				$maxStatusCode,
 				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				'Response did not return expected status code'
 			);
 		}
 	}
@@ -1927,10 +1939,9 @@ trait WebDav {
 	public function uploadFileWithContent(
 		$user, $content, $destination
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
-			$user, "PUT", $destination, [], $file
+			$user, "PUT", $destination, [], $content
 		);
 		$this->lastUploadDeleteTime = \time();
 		return $this->response->getHeader('oc-fileid');
@@ -2011,14 +2022,13 @@ trait WebDav {
 	public function userUploadsAFileWithChecksumAndContentTo(
 		$user, $checksum, $content, $destination
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user,
 			"PUT",
 			$destination,
 			['OC-Checksum' => $checksum],
-			$file
+			$content
 		);
 		$this->lastUploadDeleteTime = \time();
 	}
@@ -2374,7 +2384,6 @@ trait WebDav {
 		$user, $num, $total, $data, $destination
 	) {
 		$num -= 1;
-		$data = \GuzzleHttp\Stream\Stream::factory($data);
 		$file = "$destination-chunking-42-$total-$num";
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
@@ -2566,7 +2575,6 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id) {
-		$data = \GuzzleHttp\Stream\Stream::factory($data);
 		$destination = "/uploads/$user/$id/$num";
 		$this->response = $this->makeDavRequest(
 			$user, 'PUT', $destination, [], $data, "uploads"
@@ -2844,12 +2852,16 @@ trait WebDav {
 		foreach ($table->getColumnsHash() as $header) {
 			$headerName = $header['header'];
 			$headerValue = $this->response->getHeader($headerName);
-			//Note: according to the documentation of getHeader it must return null
-			//if the header does not exist, but its returning an empty string
+			//Note: getHeader returns an empty array if the named header does not exist
+			if (isset($headerValue[0])) {
+				$headerValue0 = $headerValue[0];
+			} else {
+				$headerValue0 = '';
+			}
 			Assert::assertEmpty(
 				$headerValue,
 				"header $headerName should not exist " .
-				"but does and is set to $headerValue"
+				"but does and is set to $headerValue0"
 			);
 		}
 	}
@@ -2871,7 +2883,8 @@ trait WebDav {
 				$expectedHeaderValue, ['preg_quote' => ['/']]
 			);
 
-			$returnedHeader = $this->response->getHeader($headerName);
+			$returnedHeaders = $this->response->getHeader($headerName);
+			$returnedHeader = $returnedHeaders[0];
 			Assert::assertNotFalse(
 				(bool) \preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
@@ -2984,15 +2997,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^the (?:propfind|search) result should (not|)\s?contain these (?:files|entries):$/
-	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $expectedFiles
+	 * @param string|null $user
 	 *
 	 * @return void
 	 */
 	public function propfindResultShouldContainEntries(
-		$shouldOrNot, TableNode $expectedFiles
+		$shouldOrNot, TableNode $expectedFiles, $user = null
 	) {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$elementRows = $expectedFiles->getRows();
@@ -3000,7 +3012,8 @@ trait WebDav {
 
 		foreach ($elementRows as $expectedFile) {
 			$fileFound = $this->findEntryFromPropfindResponse(
-				$expectedFile[0]
+				$expectedFile[0],
+				$user
 			);
 			if ($should) {
 				Assert::assertNotEmpty(
@@ -3014,6 +3027,23 @@ trait WebDav {
 				);
 			}
 		}
+	}
+
+	/**
+	 * @Then /^the (?:propfind|search) result of user "([^"]*)" should (not|)\s?contain these (?:files|entries):$/
+	 *
+	 * @param string $user
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $expectedFiles
+	 *
+	 * @return void
+	 */
+	public function thePropfindResultShouldContainEntries(
+		$user, $shouldOrNot, TableNode $expectedFiles
+	) {
+		$this->propfindResultShouldContainEntries(
+			$shouldOrNot, $expectedFiles, $user
+		);
 	}
 
 	/**
@@ -3055,15 +3085,43 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theSearchResultOfShouldContainAnyOfTheseEntries(
+	public function theSearchResultShouldContainAnyOfTheseEntries(
 		$expectedNumber, TableNode $expectedFiles
+	) {
+		$this->theSearchResultOfUserShouldContainAnyOfTheseEntries(
+			$this->getCurrentUser(),
+			$expectedNumber,
+			$expectedFiles
+		);
+	}
+
+	/**
+	 * @Then the propfind/search result of user :user should contain any :expectedNumber of these files/entries:
+	 *
+	 * @param string $user
+	 * @param integer $expectedNumber
+	 * @param TableNode $expectedFiles
+	 *
+	 * @return void
+	 */
+	public function theSearchResultOfUserShouldContainAnyOfTheseEntries(
+		$user, $expectedNumber, TableNode $expectedFiles
 	) {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$this->propfindResultShouldContainNumEntries($expectedNumber);
-		$elementRows = $expectedFiles->getRowsHash();
-		$resultEntries = $this->findEntryFromPropfindResponse();
+		$elementRows = $expectedFiles->getColumn(0);
+		// Remove any "/" from the front (or back) of the expected values passed
+		// into the step. findEntryFromPropfindResponse returns entries without
+		// any leading (or trailing) slash
+		$expectedEntries = \array_map(
+			function ($value) {
+				return \trim($value, "/");
+			},
+			$elementRows
+		);
+		$resultEntries = $this->findEntryFromPropfindResponse(null, $user);
 		foreach ($resultEntries as $resultEntry) {
-			Assert::assertArrayHasKey($resultEntry, $elementRows);
+			Assert::assertContains($resultEntry, $expectedEntries);
 		}
 	}
 
@@ -3072,13 +3130,16 @@ trait WebDav {
 	 * and returns found search results if found else returns false
 	 *
 	 * @param string $entryNameToSearch
+	 * @param string|null $user
 	 *
 	 * @return string|array|boolean
 	 * string if $entryNameToSearch is given and is found
 	 * array if $entryNameToSearch is not given
 	 * boolean false if $entryNameToSearch is given and is not found
 	 */
-	public function findEntryFromPropfindResponse($entryNameToSearch = null) {
+	public function findEntryFromPropfindResponse(
+		$entryNameToSearch = null, $user = null
+	) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
 		if (empty($this->responseXml)) {
@@ -3086,19 +3147,23 @@ trait WebDav {
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
 		}
-		$fullWebDavPath = \trim(
-			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH),
-			"/"
-		) . "/";
+		if ($user === null) {
+			$user = $this->getCurrentUser();
+		}
+		// trim any leading "/" passed by the caller, we can just match the "raw" name
+		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 
+		// topWebDavPath should be something like /remote.php/webdav/ or
+		// /remote.php/dav/files/user0/
+		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
-				$entryName = \str_replace($fullWebDavPath, "", $entryPath);
+				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
-				if ($entryNameToSearch === $entryName) {
+				if ($trimmedEntryNameToSearch === $entryName) {
 					return $multistatusResult;
 				}
 				\array_push($results, $entryName);

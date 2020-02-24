@@ -23,7 +23,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SharingHelper;
@@ -304,7 +304,7 @@ trait Sharing {
 		);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
-			"Failed HTTP status code for last share for user $user" . ", Response: " . $this->getResponse()
+			"Failed HTTP status code for last share for user $user" . ", Reason: " . $this->getResponse()->getReasonPhrase()
 		);
 	}
 
