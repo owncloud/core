@@ -1,4 +1,4 @@
-@api @local_storage
+@api @local_storage @TestAlsoOnExternalUserBackend
 Feature: external-storage
 
   Background:

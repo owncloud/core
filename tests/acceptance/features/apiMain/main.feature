@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: Other tests related to api
 
   Scenario: robots.txt file should be accessible
