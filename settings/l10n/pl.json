@@ -321,6 +321,7 @@
     "Set password for new users" : "Ustawianie hasła dla nowych użytkowników.",
     "Show email address" : "Pokaż adres email",
     "Show password field" : "Pokaż pole hasła",
+    "Show quota field" : "Pokazuj pola quota",
     "E-Mail" : "E-mail",
     "Admin Recovery Password" : "Odzyskiwanie hasła administratora",
     "Enter the recovery password in order to recover the users files during password change" : "Wpisz hasło odzyskiwania, aby odzyskać pliki użytkowników podczas zmiany hasła",
