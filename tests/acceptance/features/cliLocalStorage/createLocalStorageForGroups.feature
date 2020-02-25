@@ -68,3 +68,25 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "user0" should be "this is a file of user0"
     And as "user1" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "user1" should be "this is a file in local storage2"
+
+  Scenario: users should get access if all the users and groups are removed from the applicable groups
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user2    |
+      | user3    |
+    And these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp2"
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage2.txt"
+    And the administrator has added group "grp1" as the applicable group for local storage mount "local_storage2"
+    And the administrator has added group "grp2" as the applicable group for local storage mount "local_storage2"
+    And the administrator has added user "user3" as the applicable user for local storage mount "local_storage2"
+    When the administrator removes all from the applicable users and groups for local storage mount "local_storage2" using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+    And as "user2" folder "/local_storage2" should exist
+    And as "user3" folder "/local_storage2" should exist

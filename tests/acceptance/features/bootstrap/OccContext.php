@@ -1200,6 +1200,25 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator removes all from the applicable users and groups for local storage mount :localStorage using the occ command
+	 *
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdminRemovesAllForTheMountUsingOccCommand($localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				'files_external:applicable',
+				$mountId,
+				"--remove-all"
+			]
+		);
+	}
+
+	/**
 	 * @Given /^the administrator has (added|removed) (user|group) "([^"]*)" (?:as|from) the applicable (?:user|group) for local storage mount "([^"]*)"$/
 	 *
 	 * @param string $action
