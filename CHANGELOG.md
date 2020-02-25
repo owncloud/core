@@ -78,6 +78,7 @@ Summary
 * Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
 * Change - Update Graffino/Browser-Update from 2.0.2 to 2.0.5: [#36976](https://github.com/owncloud/core/issues/36976)
+* Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -566,6 +567,10 @@ Details
 
    https://github.com/owncloud/core/issues/36976
    https://github.com/owncloud/core/pull/36981
+
+* Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
+
+   https://github.com/owncloud/core/pull/37010
 
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
