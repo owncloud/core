@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-65 @issue-ocis-reva-97
 Feature: Status
 
   @smokeTest

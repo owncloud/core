@@ -28,8 +28,8 @@ Feature: refuse access
     Then the HTTP status code should be "401"
     And there should be no duplicate headers
     And the following headers should be set
-      | header           | value                                                                             |
-      | WWW-Authenticate | Basic realm="%base_url_without_scheme%", Bearer realm="%base_url_without_scheme%" |
+      | header           | value                                   |
+      | WWW-Authenticate | Basic realm="%base_url_without_scheme%" |
     Examples:
       | dav_version |
       | old         |

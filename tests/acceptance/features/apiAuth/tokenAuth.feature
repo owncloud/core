@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-28 @issue-ocis-reva-37
 Feature: tokenAuth
 
   Background:

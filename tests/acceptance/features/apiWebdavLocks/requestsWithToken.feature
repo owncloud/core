@@ -1,4 +1,4 @@
-@api @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-18
+@api @TestAlsoOnExternalUserBackend @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-18
 Feature: actions on a locked item are possible if the token is sent with the request
 
   Background:
