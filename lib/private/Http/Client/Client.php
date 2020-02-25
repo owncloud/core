@@ -142,16 +142,13 @@ class Client implements IClient {
 		if ($isStream) {
 			$proxyHost = $this->config->getSystemValue('proxy', null);
 			if ($proxyHost !== null) {
-				$this->client->setDefaultOption(
-					'proxy',
-					'tcp://' . $proxyHost
-				);
+				$options['proxy'] = 'tcp://' . $proxyHost;
 			}
 
 			$proxyUserPwd = $this->config->getSystemValue('proxyuserpwd', null);
 			if ($proxyUserPwd !== null) {
 				$auth = \base64_encode(\urldecode($proxyUserPwd));
-				$this->client->setDefaultOption('headers/Proxy-Authorization', "Basic $auth");
+				$options['headers/Proxy-Authorization'] = "Basic $auth";
 			}
 		}
 		$response = $this->client->get($uri, $options);
