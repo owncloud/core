@@ -1287,7 +1287,7 @@ def acceptance():
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.1'],
-		'databases': ['mariadb:10.3'],
+		'databases': ['mariadb:10.4'],
 		'federatedServerNeeded': False,
 		'filterTags': '',
 		'logLevel': '2',
