@@ -1287,7 +1287,7 @@ def acceptance():
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.1'],
-		'databases': ['mysql:5.7'],
+		'databases': ['mysql:8.0'],
 		'federatedServerNeeded': False,
 		'filterTags': '',
 		'logLevel': '2',
