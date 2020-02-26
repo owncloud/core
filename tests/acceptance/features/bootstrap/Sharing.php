@@ -1790,19 +1790,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the information for (user|group) "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" should include$/
+	 * @Then /^the information for user "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" should include$/
 	 *
-	 * @param string $userOrGroup
 	 * @param string $user
 	 * @param string $fileOrFolder
 	 * @param string $fileName
-	 * @param TableNode $body
+	 * @param TableNode $body should provide share_type
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theFieldsOfTheResponseForUserForResourceShouldInclude(
-		$userOrGroup, $user, $fileOrFolder, $fileName, TableNode $body
+		$user, $fileOrFolder, $fileName, TableNode $body
 	) {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$fileName = $fileName[0] === "/" ? $fileName : '/' . $fileName;
@@ -1811,10 +1810,14 @@ trait Sharing {
 		if (empty($data)) {
 			throw new Exception('No shares found for ' . $user);
 		}
+
+		$bodyRows = $body->getRowsHash();
+		Assert::assertArrayHasKey('share_type', $bodyRows, 'share_type is not provided');
+
 		$share_id = null;
 		foreach ($data as $share) {
 			if ($share['file_target'] === $fileName && $share['item_type'] === $fileOrFolder) {
-				if (($share['share_type'] === SharingHelper::getShareType($userOrGroup))
+				if (($share['share_type'] === SharingHelper::getShareType($bodyRows['share_type']))
 				) {
 					$share_id = $share['id'];
 				}
@@ -1823,7 +1826,6 @@ trait Sharing {
 
 		Assert::assertNotNull($share_id, "Could not find share id for " . $user);
 
-		$bodyRows = $body->getRowsHash();
 		if (\array_key_exists('expiration', $bodyRows) && $bodyRows['expiration'] !== '') {
 			$bodyRows['expiration'] = \date('d-m-Y', \strtotime($bodyRows['expiration']));
 		}
