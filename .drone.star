@@ -1774,7 +1774,7 @@ def getDbUsername(db):
 	if name == 'oracle':
 		return 'system'
 
-	return 'owncloud'
+	return 'owncloud.user'
 
 def getDbPassword(db):
 	name = getDbName(db)
@@ -1793,7 +1793,7 @@ def getDbDatabase(db):
 	if name == 'oracle':
 		return 'XE'
 
-	return 'owncloud'
+	return 'own.cloud.database'
 
 def getDbType(db):
 	dbName = getDbName(db)
