@@ -1287,7 +1287,7 @@ def acceptance():
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.1'],
-		'databases': ['postgres:10.3'],
+		'databases': ['postgres:9.4'],
 		'federatedServerNeeded': False,
 		'filterTags': '',
 		'logLevel': '2',
