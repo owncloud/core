@@ -101,6 +101,36 @@ $application->registerRoutes($this, [
 			'url' => '/api/v1/notification/notify-public-link-by-email',
 			'verb' => 'POST'
 		],
+		[
+			'name' => 'RemoteOcs#getShares',
+			'url' => '/api/v1/remote_shares',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'RemoteOcs#getOpenShares',
+			'url' => '/api/v1/remote_shares/pending',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'RemoteOcs#acceptShare',
+			'url' => '/api/v1/remote_shares/pending/{id}',
+			'verb' => 'POST'
+		],
+		[
+			'name' => 'RemoteOcs#declineShare',
+			'url' => '/api/v1/remote_shares/pending/{id}',
+			'verb' => 'DELETE'
+		],
+		[
+			'name' => 'RemoteOcs#getShare',
+			'url' => '/api/v1/remote_shares/{id}',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'RemoteOcs#unshare',
+			'url' => '/api/v1/remote_shares/{id}',
+			'verb' => 'DELETE'
+		],
 	]
 ]);
 
@@ -118,36 +148,3 @@ $this->create('sharing_external_shareinfo', '/shareinfo')
 	->actionInclude('files_sharing/ajax/shareinfo.php');
 $this->create('sharing_external_add', '/external')
 	->actionInclude('files_sharing/ajax/external.php');
-
-// OCS API
-//TODO: SET: mail notification, waiting for PR #4689 to be accepted
-
-API::register('get',
-		'/apps/files_sharing/api/v1/remote_shares',
-		['\OCA\Files_Sharing\API\Remote', 'getShares'],
-		'files_sharing');
-
-API::register('get',
-		'/apps/files_sharing/api/v1/remote_shares/pending',
-		['\OCA\Files_Sharing\API\Remote', 'getOpenShares'],
-		'files_sharing');
-
-API::register('post',
-		'/apps/files_sharing/api/v1/remote_shares/pending/{id}',
-		['\OCA\Files_Sharing\API\Remote', 'acceptShare'],
-		'files_sharing');
-
-API::register('delete',
-		'/apps/files_sharing/api/v1/remote_shares/pending/{id}',
-		['\OCA\Files_Sharing\API\Remote', 'declineShare'],
-		'files_sharing');
-
-API::register('get',
-		'/apps/files_sharing/api/v1/remote_shares/{id}',
-		['\OCA\Files_Sharing\API\Remote', 'getShare'],
-		'files_sharing');
-
-API::register('delete',
-		'/apps/files_sharing/api/v1/remote_shares/{id}',
-		['\OCA\Files_Sharing\API\Remote', 'unshare'],
-		'files_sharing');
