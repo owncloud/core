@@ -22,13 +22,13 @@ declare -x DB_PREFIX
 [[ -z "${DB_PREFIX}" ]] && DB_PREFIX="oc_"
 
 declare -x DB_USERNAME
-[[ -z "${DB_USERNAME}" ]] && DB_USERNAME="owncloud"
+[[ -z "${DB_USERNAME}" ]] && DB_USERNAME="owncloud.user"
 
 declare -x DB_PASSWORD
 [[ -z "${DB_PASSWORD}" ]] && DB_PASSWORD="owncloud"
 
 declare -x DB_NAME
-[[ -z "${DB_NAME}" ]] && DB_NAME="owncloud"
+[[ -z "${DB_NAME}" ]] && DB_NAME="own.cloud.database"
 
 PLUGIN_DB_TIMEOUT=45
 plugin_wait_for_oracle() {
