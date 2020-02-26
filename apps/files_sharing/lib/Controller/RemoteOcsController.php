@@ -21,133 +21,140 @@
 
 namespace OCA\Files_Sharing\Controller;
 
-
-use OC\Files\Filesystem;
+use OC\OCS\Result;
 use OCA\Files_Sharing\External\Manager;
 use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 
 class RemoteOcsController extends OCSController {
+	/** @var IRequest */
+	protected $request;
+
+	/** @var Manager */
+	protected $externalManager;
+
+	/** @var string */
+	protected $uid;
+
+	/**
+	 * RemoteOcsController constructor.
+	 *
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param Manager $externalManager
+	 * @param string $uid
+	 */
 	public function __construct(
 		$appName,
-		IRequest $request
+		IRequest $request,
+		Manager $externalManager,
+		$uid
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
+		$this->externalManager = $externalManager;
+		$this->uid = $uid;
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @return Result
+	 */
 	public function getOpenShares() {
-		$externalManager = new Manager(
-			\OC::$server->getDatabaseConnection(),
-			Filesystem::getMountManager(),
-			Filesystem::getLoader(),
-			\OC::$server->getNotificationManager(),
-			\OC::$server->getEventDispatcher(),
-			\OC_User::getUser()
+		return new Result(
+			$this->externalManager->getOpenShares()
 		);
-
-		return new \OC_OCS_Result($externalManager->getOpenShares());
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @param int $id
+	 *
+	 * @return Result
+	 */
 	public function acceptShare($id) {
-		$externalManager = new Manager(
-			\OC::$server->getDatabaseConnection(),
-			Filesystem::getMountManager(),
-			Filesystem::getLoader(),
-			\OC::$server->getNotificationManager(),
-			\OC::$server->getEventDispatcher(),
-			\OC_User::getUser()
-		);
-
-		if ($externalManager->acceptShare((int) $id)) {
-			return new \OC_OCS_Result();
+		if ($this->externalManager->acceptShare((int) $id)) {
+			return new Result();
 		}
 
 		// Make sure the user has no notification for something that does not exist anymore.
-		$externalManager->processNotification((int) $id);
+		$this->externalManager->processNotification((int) $id);
 
-		return new \OC_OCS_Result(null, 404, "wrong share ID, share doesn't exist.");
+		return new Result(null, 404, "wrong share ID, share doesn't exist.");
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @param int $id
+	 *
+	 * @return Result
+	 */
 	public function declineShare($id) {
-		$externalManager = new Manager(
-			\OC::$server->getDatabaseConnection(),
-			Filesystem::getMountManager(),
-			Filesystem::getLoader(),
-			\OC::$server->getNotificationManager(),
-			\OC::$server->getEventDispatcher(),
-			\OC_User::getUser()
-		);
-
-		if ($externalManager->declineShare((int) $id)) {
-			return new \OC_OCS_Result();
+		if ($this->externalManager->declineShare((int) $id)) {
+			return new Result();
 		}
 
 		// Make sure the user has no notification for something that does not exist anymore.
-		$externalManager->processNotification((int) $id);
+		$this->externalManager->processNotification((int) $id);
 
-		return new \OC_OCS_Result(null, 404, "wrong share ID, share doesn't exist.");
+		return new Result(null, 404, "wrong share ID, share doesn't exist.");
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @return Result
+	 */
 	public function getShares() {
-		$externalManager = new Manager(
-			\OC::$server->getDatabaseConnection(),
-			Filesystem::getMountManager(),
-			Filesystem::getLoader(),
-			\OC::$server->getNotificationManager(),
-			\OC::$server->getEventDispatcher(),
-			\OC_User::getUser()
-		);
-
-		$shares = $externalManager->getAcceptedShares();
-
+		$shares = $this->externalManager->getAcceptedShares();
 		$shares = \array_map([$this, 'extendShareInfo'], $shares);
 
-		return new \OC_OCS_Result($shares);
+		return new Result($shares);
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @param int $id
+	 *
+	 * @return Result
+	 */
 	public function getShare($id) {
-		$externalManager = new Manager(
-			\OC::$server->getDatabaseConnection(),
-			Filesystem::getMountManager(),
-			Filesystem::getLoader(),
-			\OC::$server->getNotificationManager(),
-			\OC::$server->getEventDispatcher(),
-			\OC_User::getUser()
-		);
-
-		$shareInfo = $externalManager->getShare($id);
+		$shareInfo = $this->externalManager->getShare($id);
 
 		if ($shareInfo === false) {
-			return new \OC_OCS_Result(null, 404, 'share does not exist');
+			return new Result(null, 404, 'share does not exist');
 		} else {
 			$shareInfo = $this->extendShareInfo($shareInfo);
-			return new \OC_OCS_Result($shareInfo);
+			return new Result($shareInfo);
 		}
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @param int $id
+	 *
+	 * @return Result
+	 */
 	public function unshare($id) {
-		$externalManager = new Manager(
-			\OC::$server->getDatabaseConnection(),
-			Filesystem::getMountManager(),
-			Filesystem::getLoader(),
-			\OC::$server->getNotificationManager(),
-			\OC::$server->getEventDispatcher(),
-			\OC_User::getUser()
-		);
-
-		$shareInfo = $externalManager->getShare($id);
+		$shareInfo = $this->externalManager->getShare($id);
 
 		if ($shareInfo === false) {
-			return new \OC_OCS_Result(null, 404, 'Share does not exist');
+			return new Result(null, 404, 'Share does not exist');
 		}
 
-		$mountPoint = '/' . \OC_User::getUser() . '/files' . $shareInfo['mountpoint'];
+		$mountPoint = '/' . $this->uid . '/files' . $shareInfo['mountpoint'];
 
-		if ($externalManager->removeShare($mountPoint) === true) {
-			return new \OC_OCS_Result(null);
+		if ($this->externalManager->removeShare($mountPoint) === true) {
+			return new Result(null);
 		} else {
-			return new \OC_OCS_Result(null, 403, 'Could not unshare');
+			return new Result(null, 403, 'Could not unshare');
 		}
 	}
 
@@ -156,7 +163,7 @@ class RemoteOcsController extends OCSController {
 	 * @return array enriched share info with data from the filecache
 	 */
 	private function extendShareInfo($share) {
-		$view = new \OC\Files\View('/' . \OC_User::getUser() . '/files/');
+		$view = new \OC\Files\View('/' . $this->uid . '/files/');
 		$info = $view->getFileInfo($share['mountpoint']);
 
 		$share['mimetype'] = $info->getMimetype();
