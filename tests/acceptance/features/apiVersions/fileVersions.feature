@@ -93,7 +93,7 @@ Feature: dav-versions
     When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
     Then the content of file "/davtest.txt" for user "user0" should be "Test Content."
 
-  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-278
+  @smokeTest @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-278
   Scenario: Restore a file back to bigger content and check, if the content is now in the current file
     Given user "user0" has uploaded file with content "Back To The Future." to "/davtest.txt"
     And user "user0" has uploaded file with content "Update Content." to "/davtest.txt"
@@ -127,7 +127,7 @@ Feature: dav-versions
     When user "user0" restores version index "1" of file "/textfile0.txt" using the WebDAV API
     Then the content of file "/textfile0.txt" for user "user0" should be "Dav-Test"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-156
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
   @skipOnOcis @issue-ocis-reva-57
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
     Given user "user0" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"

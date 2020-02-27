@@ -348,7 +348,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-224
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224
   @skipOnOcis @issue-ocis-reva-57
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
@@ -370,7 +370,7 @@ Feature: checksums
     Then the HTTP status code should be "204"
     And the content of file "/textfile0.txt" for user "user0" should be "BBBBBCCCCC"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-224
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224
   @skipOnOcis @issue-ocis-reva-56
   Scenario: Upload overwriting a file with new chunking and invalid checksum
     Given using new DAV path
