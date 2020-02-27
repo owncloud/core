@@ -1151,26 +1151,30 @@ class Session implements IUserSession, Emitter {
 
 	public function verifyAuthHeaders($request) {
 		$shallLogout = false;
-		try {
-			$lastUser = null;
-			foreach ($this->getAuthModules(true) as $module) {
+		$lastUser = null;
+		foreach ($this->getAuthModules(true) as $module) {
+			try {
 				$user = $module->auth($request);
-				if ($user !== null) {
-					if ($this->isLoggedIn() && $this->getUser()->getUID() !== $user->getUID()) {
-						$shallLogout = true;
-						break;
-					}
-					if ($lastUser !== null && $user->getUID() !== $lastUser->getUID()) {
-						$shallLogout = true;
-						break;
-					}
-					$lastUser = $user;
-				}
+			} catch (Exception $ex) {
+				// convert to no user so all IAuthModule implementations can check
+				// TODO log exception
+				$user = null;
 			}
-		} catch (Exception $ex) {
-			$shallLogout = true;
+			if ($user !== null) {
+				// check if the logged in user is the same as the one found by the auth module
+				if ($this->isLoggedIn() && $this->getUser()->getUID() !== $user->getUID()) {
+					$shallLogout = true;
+					break;
+				}
+				// check if the auth modules all agree on the same user
+				if ($lastUser !== null && $user->getUID() !== $lastUser->getUID()) {
+					$shallLogout = true;
+					break;
+				}
+				$lastUser = $user;
+			}
 		}
-		if ($shallLogout) {
+		if ($shallLogout || $lastUser === null) {
 			// the session is bad -> kill it
 			$this->logout();
 			return false;
