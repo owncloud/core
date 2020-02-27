@@ -289,6 +289,7 @@ Feature: Sharing files and folders with internal groups
 	Given these groups have been created:
 	  | groupname |
 	  | grp1      |
+	And user "user1" has been added to group "grp1"
 	And user "user2" has been added to group "grp1"
 	And user "user3" has shared folder "/simple-folder" with user "user1"
 	And user "user3" has shared folder "/simple-folder" with group "grp1"
@@ -303,12 +304,14 @@ Feature: Sharing files and folders with internal groups
 	  | uid_owner   | user3          |
 	  | share_with  | grp1           |
 	  | expiration  | +5 days        |
+	  | permissions | 17             |
 	And the information for user "user1" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | user3          |
 	  | share_with  | user1          |
 	  | expiration  |                |
+	  | permissions | 31             |
 
   Scenario: share with multiple groups and change the sharing permissions and expiration date
 	Given these groups have been created:

@@ -955,7 +955,6 @@ trait Sharing {
 					) . " 00:00:00";
 			}
 		}
-
 		$contentExpected = (string) $contentExpected;
 
 		if (\count($data->element) > 0) {
@@ -1806,14 +1805,10 @@ trait Sharing {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$fileName = $fileName[0] === "/" ? $fileName : '/' . $fileName;
 		$data = $this->getAllSharesSharedWithUser($user);
-
-		if (empty($data)) {
-			throw new Exception('No shares found for ' . $user);
-		}
+		Assert::assertNotEmpty($data, 'No shares found for ' . $user);
 
 		$bodyRows = $body->getRowsHash();
 		Assert::assertArrayHasKey('share_type', $bodyRows, 'share_type is not provided');
-
 		$share_id = null;
 		foreach ($data as $share) {
 			if ($share['file_target'] === $fileName && $share['item_type'] === $fileOrFolder) {

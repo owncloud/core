@@ -303,3 +303,34 @@ Feature: misc scenarios on sharing with internal users
     When the user re-logs in as "user1" using the webUI
     Then the content of "lorem.txt" should be the same as the original "lorem.txt"
 #   And the content of file "lorem.txt" for user "user1" should be "edited original content"
+
+  Scenario: share with two users having same display name
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user3" has been created with default attributes and skeleton files
+    And the administrator has changed the display name of user "user1" to "USER"
+    And the administrator has changed the display name of user "user2" to "USER"
+    And parameter "user_additional_info_field" of app "core" has been set to "id"
+    And user "user3" has shared folder "/simple-folder" with user "user1"
+    And user "user3" has shared folder "/simple-folder" with user "user2"
+    And user "user3" has logged in using the webUI
+    When the user sets the sharing permissions of user "USER (user2)" for "simple-folder" using the webUI to
+      | edit    | no |
+      | create  | no |
+    And the user sets the sharing permissions of user "USER (user1)" for "simple-folder" using the webUI to
+      | share    | no |
+      | delete   | no |
+    Then the information for user "user1" about the received share of folder "simple-folder" should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | uid_owner   | user3          |
+      | share_with  | user1          |
+      | permissions | 7              |
+    And the information for user "user2" about the received share of folder "simple-folder" should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | uid_owner   | user3          |
+      | share_with  | user2          |
+      | permissions | 17             |
