@@ -137,3 +137,6 @@ clover.xml
 
 # CI
 .cache
+
+# Generated from .drone.star
+.drone.yml
