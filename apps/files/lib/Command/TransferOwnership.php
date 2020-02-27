@@ -29,6 +29,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 use OC\Share20\ProviderFactory;
 use OCP\Files\FileInfo;
+use OCP\Files\IRootFolder;
 use OCP\Files\Mount\IMountManager;
 use OCP\IUserManager;
 use OCP\Share\IManager;
@@ -50,6 +51,9 @@ class TransferOwnership extends Command {
 
 	/** @var IMountManager */
 	private $mountManager;
+
+	/** @var IRootFolder */
+	private $rootFolder;
 
 	/** @var Manager  */
 	private $encryptionManager;
@@ -81,10 +85,18 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ProviderFactory $shareProviderFactory) {
+	public function __construct(
+		IUserManager $userManager,
+		IManager $shareManager,
+		IMountManager $mountManager,
+		IRootFolder $rootFolder,
+		Manager $encryptionManager,
+		ProviderFactory $shareProviderFactory
+	) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
+		$this->rootFolder = $rootFolder;
 		$this->encryptionManager = $encryptionManager;
 		$this->shareProviderFactory = $shareProviderFactory;
 		parent::__construct();
@@ -109,6 +121,12 @@ class TransferOwnership extends Command {
 				null,
 				InputOption::VALUE_REQUIRED,
 				'selectively provide the path to transfer. For example --path="folder_name"'
+			)
+			->addOption(
+				'force-user-init',
+				null,
+				InputOption::VALUE_NONE,
+				'force the initialization of the destination user if he hasn\'t logged in yet'
 			);
 	}
 
@@ -130,6 +148,18 @@ class TransferOwnership extends Command {
 		$this->inputPath = \ltrim($this->inputPath, '/');
 
 		// target user has to be ready
+		if ($destinationUserObject->getLastLogin() === 0) {
+			if ($input->getOption('force-user-init')) {
+				// based on \OC\User\Session->prepareUserLogin
+				\OC_Util::setupFS($this->destinationUser);
+				$userFolder = $this->rootFolder->getUserFolder($this->destinationUser);
+				\OC_Util::copySkeleton($this->destinationUser, $userFolder);  // exceptions might be thrown here
+				\OC_Util::tearDownFS();
+			} else {
+				$output->writeln("<error>Cannot transfer to $this->destinationUser because the user hasn't logged in</error>");
+				return 1;
+			}
+		}
 		if (!$this->encryptionManager->isReadyForUser($this->destinationUser)) {
 			$output->writeln("<error>The target user is not ready to accept files. The user has at least to be logged in once.</error>");
 			return 2;
