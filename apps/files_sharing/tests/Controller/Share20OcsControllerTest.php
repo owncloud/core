@@ -22,10 +22,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\Files_Sharing\Tests\API;
+namespace OCA\Files_Sharing\Tests\Controller;
 
 use OC\OCS\Result;
-use OC\Share\Constants;
 use OC\Share20\Manager;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
@@ -54,8 +53,6 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IShare;
 use OCP\Share\IAttributes as IShareAttributes;
 use OCP\Share\IManager;
-use OCP\Files\File;
-use OCP\Files\Storage;
 
 /**
  * Class Share20OcsControllerTest
@@ -160,10 +157,6 @@ class Share20OcsControllerTest extends TestCase {
 			$this->eventDispatcher,
 			$this->sharingBlacklist
 		);
-	}
-
-	public function tearDown(): void {
-		parent::tearDown();
 	}
 
 	/**
