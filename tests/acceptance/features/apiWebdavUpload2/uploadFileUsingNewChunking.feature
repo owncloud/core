@@ -132,6 +132,7 @@ Feature: upload file using new chunking
     And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
     Examples:
       | file-name |
+      | 0         |
       | &#?       |
       | TIÄFÜ     |
 
@@ -155,18 +156,6 @@ Feature: upload file using new chunking
       | file-name |
       | &#?       |
       | TIÄFÜ     |
-
-  # The bug for this scenario was fixed by https://github.com/owncloud/core/pull/33276
-  # The fix is released in 10.1 - all 10.0.* versions will fail this scenario
-  @skipOnOcV10.0
-  Scenario: Upload a file called "0" using new chunking
-    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
-    And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
-    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
-    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
-    And user "user0" moves new chunk file with id "chunking-42" to "/0" using the WebDAV API
-    And as "user0" file "/0" should exist
-    And the content of file "/0" for user "user0" should be "AAAAABBBBBCCCCC"
 
   Scenario: Upload a file to a filename that is banned by default using new chunking
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
