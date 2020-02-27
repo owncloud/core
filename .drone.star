@@ -1959,7 +1959,10 @@ def installServer(phpVersion, db, logLevel, federatedServerNeeded = False, proxy
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'DB_TYPE': getDbName(db)
+			'DB_TYPE': getDbName(db),
+			'DB_USERNAME': getDbUsername(db),
+			'DB_PASSWORD': getDbPassword(db),
+			'DB_NAME': getDbDatabase(db)
 		},
 		'commands': [
 			'bash tests/drone/install-server.sh',
