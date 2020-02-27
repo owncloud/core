@@ -16,6 +16,8 @@ use OCP\App\IAppManager;
  * @group DB
  */
 class UtilTest extends \Test\TestCase {
+	public $skeletonDirectoryWasSet = false;
+
 	public function testGetVersion() {
 		$version = \OCP\Util::getVersion();
 		$this->assertIsArray($version);
@@ -377,10 +379,9 @@ class UtilTest extends \Test\TestCase {
 
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
+		$this->skeletonDirectoryWasSet = true;
 		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
-
-		$config->deleteSystemValue('skeletondirectory');
 	}
 
 	/**
@@ -400,10 +401,9 @@ class UtilTest extends \Test\TestCase {
 		\chmod($skeletonDir, 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
+		$this->skeletonDirectoryWasSet = true;
 		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
-
-		$config->deleteSystemValue('skeletondirectory');
 	}
 
 	/**
@@ -423,10 +423,9 @@ class UtilTest extends \Test\TestCase {
 		\chmod($skeletonDir . '/a-file', 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
+		$this->skeletonDirectoryWasSet = true;
 		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
-
-		$config->deleteSystemValue('skeletondirectory');
 	}
 
 	protected function setUp(): void {
@@ -440,6 +439,11 @@ class UtilTest extends \Test\TestCase {
 
 		\OC_Util::$scripts = [];
 		\OC_Util::$styles = [];
+
+		if ($this->skeletonDirectoryWasSet) {
+			$config = \OC::$server->getConfig();
+			$config->deleteSystemValue('skeletondirectory');
+		}
 	}
 
 	public function testAddScript() {
