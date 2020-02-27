@@ -21,10 +21,12 @@
 
 namespace OCA\Files_Sharing\Controller;
 
+use OC\Files\View;
 use OC\OCS\Result;
 use OCA\Files_Sharing\External\Manager;
 use OCP\AppFramework\OCSController;
 use OCP\IRequest;
+use OCP\Share;
 
 class RemoteOcsController extends OCSController {
 	/** @var IRequest */
@@ -77,7 +79,13 @@ class RemoteOcsController extends OCSController {
 	 */
 	public function acceptShare($id) {
 		if ($this->externalManager->acceptShare((int) $id)) {
-			return new Result();
+			$share = $this->externalManager->getShare($id);
+			return new Result(
+				[[
+					'state' => Share::STATE_ACCEPTED,
+					'file_target' => $share['mountpoint']
+				]]
+			);
 		}
 
 		// Make sure the user has no notification for something that does not exist anymore.
@@ -108,13 +116,47 @@ class RemoteOcsController extends OCSController {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
+	 * @param bool $includingPending
 	 * @return Result
 	 */
-	public function getShares() {
-		$shares = $this->externalManager->getAcceptedShares();
-		$shares = \array_map([$this, 'extendShareInfo'], $shares);
+	public function getShares($includingPending = false) {
+		$shares = \array_map(
+			[$this, 'extendShareInfo'],
+			$this->externalManager->getAcceptedShares()
+		);
+
+		if ($includingPending === true) {
+			/**
+			 * pending shares have mountpoint looking like
+			 * {{TemporaryMountPointName#/filename.ext}}
+			 * so we need to cut it off
+			 */
+			$openShares = \array_map(
+				function ($share) {
+					$share['mountpoint'] = \substr(
+						$share['mountpoint'],
+						\strlen('{{TemporaryMountPointName#')
+					);
+
+					$share['mountpoint'] = \rtrim($share['mountpoint'], '}');
+					return $share;
+				},
+				$this->externalManager->getOpenShares()
+			);
+			$shares = \array_merge($shares, $openShares);
+		}
 
 		return new Result($shares);
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @return Result
+	 */
+	public function getAllShares() {
+		return $this->getShares(true);
 	}
 
 	/**
@@ -161,17 +203,25 @@ class RemoteOcsController extends OCSController {
 	/**
 	 * @param array $share Share with info from the share_external table
 	 * @return array enriched share info with data from the filecache
+	 * @throws \Exception
 	 */
 	private function extendShareInfo($share) {
-		$view = new \OC\Files\View('/' . $this->uid . '/files/');
-		$info = $view->getFileInfo($share['mountpoint']);
-
+		$info = $this->getFileInfo($share['mountpoint']);
 		$share['mimetype'] = $info->getMimetype();
 		$share['mtime'] = $info->getMtime();
 		$share['permissions'] = $info->getPermissions();
 		$share['type'] = $info->getType();
 		$share['file_id'] = $info->getId();
-
 		return $share;
+	}
+
+	/**
+	 * @param string $mountpoint
+	 * @return false|\OC\Files\FileInfo
+	 * @throws \Exception
+	 */
+	protected function getFileInfo($mountpoint) {
+		$view = new View('/' . $this->uid . '/files/');
+		return $view->getFileInfo($mountpoint);
 	}
 }

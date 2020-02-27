@@ -21,6 +21,8 @@
 
 namespace OCA\Files_Sharing\Tests\Controller;
 
+use OC\Files\FileInfo;
+use OC\Files\View;
 use OCA\Files_Sharing\Controller\RemoteOcsController;
 use OCA\Files_Sharing\External\Manager;
 use OCP\IRequest;
@@ -37,7 +39,7 @@ class RemoteOcsControllerTest extends TestCase {
 	/** @var Manager */
 	protected $externalManager;
 
-	/** @var RemoteOcsController */
+	/** @var RemoteOcsController | MockObject */
 	protected $controller;
 
 	protected function setUp(): void {
@@ -125,9 +127,21 @@ class RemoteOcsControllerTest extends TestCase {
 		$this->assertEquals(100, $result->getStatusCode());
 	}
 
+	public function testGetAllShares() {
+		$this->externalManager->expects($this->once())
+			->method('getAcceptedShares')
+			->willReturn([]);
+		$this->externalManager->expects($this->once())
+			->method('getOpenShares')
+			->willReturn([['mountpoint' => '{{TemporaryMountPointName#/filename.ext}}']]);
+		$result = $this->controller->getAllShares();
+		$this->assertEquals(100, $result->getStatusCode());
+	}
+
 	public function getShareDataProvider() {
 		return [
 			[false, 404],
+			[['mountpoint' => '/share'], 100],
 		];
 	}
 
@@ -143,6 +157,22 @@ class RemoteOcsControllerTest extends TestCase {
 			->method('getShare')
 			->with($shareId)
 			->willReturn($getShareResult);
+
+		if ($getShareResult !== false) {
+			$this->controller = $this->getMockBuilder(RemoteOcsController::class)
+				->setConstructorArgs([
+					$this->appName,
+					$this->request,
+					$this->externalManager,
+					'user'
+				])
+				->setMethods(['getFileInfo'])
+				->getMock();
+			$fileInfo = $this->createMock(FileInfo::class);
+			$this->controller->expects($this->once())
+				->method('getFileInfo')
+				->willReturn($fileInfo);
+		}
 
 		$result = $this->controller->getShare($shareId);
 		$this->assertEquals($expectedStatusCode, $result->getStatusCode());

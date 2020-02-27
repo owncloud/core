@@ -107,6 +107,11 @@ $application->registerRoutes($this, [
 			'verb' => 'GET'
 		],
 		[
+			'name' => 'RemoteOcs#getAllShares',
+			'url' => '/api/v1/remote_shares/all',
+			'verb' => 'GET'
+		],
+		[
 			'name' => 'RemoteOcs#getOpenShares',
 			'url' => '/api/v1/remote_shares/pending',
 			'verb' => 'GET'

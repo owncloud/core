@@ -244,7 +244,7 @@
 
 			if (!!this._sharedWithUser) {
 				var remoteShares = $.ajax({
-					url: OC.linkToOCS('apps/files_sharing/api/v1') + 'remote_shares',
+					url: OC.linkToOCS('apps/files_sharing/api/v1') + 'remote_shares/all',
 					/* jshint camelcase: false */
 					data: {
 						format: 'json',
@@ -339,7 +339,7 @@
 				.map(function(share) {
 					var file = {
 						shareOwner: share.owner + '@' + share.remote.replace(/.*?:\/\//g, ""),
-						shareState: share.accepted ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,
+						shareState: !!parseInt(share.accepted) ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,
 						name: OC.basename(share.mountpoint),
 						mtime: share.mtime * 1000,
 						mimetype: share.mimetype,
