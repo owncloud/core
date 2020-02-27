@@ -1771,16 +1771,18 @@ def getDbName(db):
 def getDbUsername(db):
 	name = getDbName(db)
 
+	# The Oracle image has the Db Username hardcoded
 	if name == 'oracle':
-		return 'system'
+		return 'autotest'
 
 	return 'owncloud'
 
 def getDbPassword(db):
 	name = getDbName(db)
 
+	# The Oracle image has the Db Password hardcoded
 	if name == 'oracle':
-		return 'oracle'
+		return 'owncloud'
 
 	return 'owncloud'
 
@@ -1790,6 +1792,7 @@ def getDbRootPassword():
 def getDbDatabase(db):
 	name = getDbName(db)
 
+	# The Oracle image has the Db Name hardcoded
 	if name == 'oracle':
 		return 'XE'
 
@@ -1959,7 +1962,10 @@ def installServer(phpVersion, db, logLevel, federatedServerNeeded = False, proxy
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'DB_TYPE': getDbName(db)
+			'DB_TYPE': getDbName(db),
+			'DB_USERNAME': getDbUsername(db),
+			'DB_PASSWORD': getDbPassword(db),
+			'DB_NAME': getDbDatabase(db)
 		},
 		'commands': [
 			'bash tests/drone/install-server.sh',
