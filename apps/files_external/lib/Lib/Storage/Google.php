@@ -288,7 +288,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 						} elseif ($child->getMimeType() !== self::FOLDER) {
 							$extension = $this->getGoogleDocExtension($child->getMimeType());
 							// don't append an empty extension as they will create broken paths
-							if ($extension != '')) {
+							if ($extension != '') {
 								$name .= '.'.$extension;
 							}
 						}
