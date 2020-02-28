@@ -10,12 +10,15 @@ Feature: set timeouts of LOCKS
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "user0" gets the following properties of folder "PARENT" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When user "user0" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When user "user0" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
@@ -40,12 +43,15 @@ Feature: set timeouts of LOCKS
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "user1" gets the following properties of folder "PARENT (2)" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When user "user1" gets the following properties of folder "PARENT (2)/CHILD" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When user "user1" gets the following properties of folder "PARENT (2)/parent.txt" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
@@ -70,12 +76,15 @@ Feature: set timeouts of LOCKS
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "user0" gets the following properties of folder "PARENT" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When user "user0" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When user "user0" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
@@ -99,12 +108,15 @@ Feature: set timeouts of LOCKS
       | lockscope | shared    |
       | timeout   | <timeout> |
     And the public gets the following properties of entry "/" in the last created public link using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     When the public gets the following properties of entry "/parent.txt" in the last created public link using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:

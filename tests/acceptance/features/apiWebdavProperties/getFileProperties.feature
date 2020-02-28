@@ -62,6 +62,7 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test"
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName   |
       | oc:share-types |
     Then the response should contain an empty property "oc:share-types"
     Examples:
@@ -81,6 +82,7 @@ Feature: get file properties
       | permissions | all   |
       | shareWith   | user1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
       | 0 |
@@ -101,6 +103,7 @@ Feature: get file properties
       | permissions | all   |
       | shareWith   | grp1  |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
       | 1 |
@@ -118,6 +121,7 @@ Feature: get file properties
       | path        | test |
       | permissions | all  |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
       | 3 |
@@ -147,6 +151,7 @@ Feature: get file properties
       | path        | test |
       | permissions | all  |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
       | 0 |
@@ -174,6 +179,7 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
+      | propertyName   |
       | oc:privatelink |
     Then the single response should contain a property "oc:privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
     Examples:
@@ -196,19 +202,19 @@ Feature: get file properties
     Given user "user0" has created folder "/TestFolder"
     And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
     And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
-      | property  | value |
-      | testprop1 | AAAAA |
-      | testprop2 | BBBBB |
+      | propertyName | propertyValue |
+      | testprop1    | AAAAA         |
+      | testprop2    | BBBBB         |
     When user "user0" gets the following properties of file "/TestFolder/test1.txt" using the WebDAV API
-      | property     |
+      | propertyName |
       | oc:testprop1 |
       | oc:testprop2 |
     Then the HTTP status code should be success
     And as user "user0" the last response should have the following properties
-      | resource              | property  | value           |
-      | /TestFolder/test1.txt | testprop1 | AAAAA           |
-      | /TestFolder/test1.txt | testprop2 | BBBBB           |
-      | /TestFolder/test1.txt | status    | HTTP/1.1 200 OK |
+      | resource              | propertyName | propertyValue   |
+      | /TestFolder/test1.txt | testprop1    | AAAAA           |
+      | /TestFolder/test1.txt | testprop2    | BBBBB           |
+      | /TestFolder/test1.txt | status       | HTTP/1.1 200 OK |
 
   @issue-36920
   @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcis @issue-ocis-reva-57
@@ -217,22 +223,22 @@ Feature: get file properties
     And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
     And user "user0" has uploaded file with content "test data two" to "/TestFolder/test2.txt"
     And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
-      | property  | value |
-      | testprop1 | AAAAA |
-      | testprop2 | BBBBB |
+      | propertyName | propertyValue |
+      | testprop1    | AAAAA         |
+      | testprop2    | BBBBB         |
     And user "user0" has set the following properties of file "/TestFolder/test2.txt" using the WebDav API
-      | property  | value |
-      | testprop1 | CCCCC |
-      | testprop2 | DDDDD |
+      | propertyName | propertyValue |
+      | testprop1    | CCCCC         |
+      | testprop2    | DDDDD         |
     When user "user0" gets the following properties of folder "/TestFolder" using the WebDAV API
-      | property     |
+      | propertyName |
       | oc:testprop1 |
       | oc:testprop2 |
     Then the HTTP status code should be success
     And as user "user0" the last response should have the following properties
-      | resource              | property  | value                  |
-      | /TestFolder/test1.txt | testprop1 | AAAAA                  |
-      | /TestFolder/test1.txt | testprop2 | BBBBB                  |
-      | /TestFolder/test2.txt | testprop1 | CCCCC                  |
-      | /TestFolder/test2.txt | testprop2 | DDDDD                  |
-      | /TestFolder/          | status    | HTTP/1.1 404 Not Found |
+      | resource              | propertyName | propertyValue          |
+      | /TestFolder/test1.txt | testprop1    | AAAAA                  |
+      | /TestFolder/test1.txt | testprop2    | BBBBB                  |
+      | /TestFolder/test2.txt | testprop1    | CCCCC                  |
+      | /TestFolder/test2.txt | testprop2    | DDDDD                  |
+      | /TestFolder/          | status       | HTTP/1.1 404 Not Found |

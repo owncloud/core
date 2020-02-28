@@ -40,6 +40,7 @@ Feature: get quota
       | permissions | all       |
       | shareWith   | user0     |
     When user "user0" gets the following properties of folder "/testquota" using the WebDAV API
+      | propertyName            |
       | d:quota-available-bytes |
     Then the single response should contain a property "d:quota-available-bytes" with value "10485406"
     Examples:
@@ -52,6 +53,7 @@ Feature: get quota
     And the quota of user "user0" has been set to "1 KB"
     And user "user0" has uploaded file "/prueba.txt" of size 93 bytes
     When user "user0" gets the following properties of folder "/" using the WebDAV API
+      | propertyName            |
       | d:quota-available-bytes |
     Then the single response should contain a property "d:quota-available-bytes" with value "577"
     Examples:
@@ -67,6 +69,7 @@ Feature: get quota
     And user "user0" has uploaded file "/user0.txt" of size 93 bytes
     And user "user0" has shared file "user0.txt" with user "user1"
     When user "user1" gets the following properties of folder "/" using the WebDAV API
+      | propertyName            |
       | d:quota-available-bytes |
     Then the single response should contain a property "d:quota-available-bytes" with value "670"
     Examples:

@@ -252,8 +252,8 @@ class WebDavHelper {
 	) {
 		$propertyBody = "";
 		foreach ($propertiesArray as $propertyArray) {
-			$property = $propertyArray["property"];
-			$value = $propertyArray["value"];
+			$property = $propertyArray["propertyName"];
+			$value = $propertyArray["propertyValue"];
 			[$namespacePrefix, $namespace, $property] = self::getPropertyWithNamespaceInfo(
 				$namespaceString,
 				$property

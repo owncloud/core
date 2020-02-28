@@ -139,6 +139,7 @@ class CommentsContext implements Context {
 	public function checkComments($user, $path, $expectedElements) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
+		// limiting number of results and start from first (offset)
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
 			$user, $commentsPath, $properties
@@ -424,6 +425,64 @@ class CommentsContext implements Context {
 			$body, $this->featureContext->getDavPathVersion(), "comments"
 		);
 		return HttpRequestHelper::getResponseXml($response);
+	}
+
+	/**
+	 * @When the user gets all information about the comments on file :arg1 using the WebDAV REPORT API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($path) {
+		$user = $this->featureContext->getCurrentUser();
+		$fileId = $this->featureContext->getFileIdForPath($user, $path);
+		$commentsPath = "/comments/files/$fileId/";
+		$this->featureContext->setResponseXmlObject(
+			$this->reportElementComments(
+				$user,
+				$commentsPath,
+				'<oc:limit>200</oc:limit><oc:offset>0</oc:offset>'
+			)
+		);
+	}
+
+	/**
+	 * @Then the following comment properties should be listed
+	 *
+	 * @param TableNode $expectedProperties
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function followingPropertiesShouldBeListed($expectedProperties) {
+		$this->featureContext->verifyTableNodeColumns(
+			$expectedProperties,
+			["propertyName", "propertyValue"]
+		);
+		$expectedProperties = $expectedProperties->getColumnsHash();
+		Assert::assertGreaterThanOrEqual(1, \count($expectedProperties));
+		$responseXmlObject = $this->featureContext->getResponseXmlObject();
+		$responses = $responseXmlObject->xpath("//d:response");
+		$found = false;
+		foreach ($responses as $response) {
+			foreach ($expectedProperties as $expectedProperty) {
+				$xmlPart = $response->xpath(
+					"//d:prop/oc:" . $expectedProperty["propertyName"]
+				);
+				if ((string)\end($xmlPart) !== $expectedProperty["propertyValue"]) {
+					$found = false;
+					break;
+				} else {
+					$found = true;
+				}
+			}
+			if ($found) {
+				break;
+			}
+		}
+		Assert::assertTrue($found, "Could not find expected properties in" . $response->asXML());
 	}
 
 	/**

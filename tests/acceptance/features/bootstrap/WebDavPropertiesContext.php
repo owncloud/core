@@ -77,10 +77,11 @@ class WebDavPropertiesContext implements Context {
 		$user, $path, $propertiesTable
 	) {
 		$properties = null;
+		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["propertyName"]);
 		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);
 		if ($propertiesTable instanceof TableNode) {
-			foreach ($propertiesTable->getRows() as $row) {
-				$properties[] = $row[0];
+			foreach ($propertiesTable->getColumnsHash() as $row) {
+				$properties[] = $row["propertyName"];
 			}
 		}
 		$depth = 0;
@@ -90,6 +91,39 @@ class WebDavPropertiesContext implements Context {
 		}
 		$this->featureContext->setResponseXmlObject(
 			$this->featureContext->listFolder($user, $path, $depth, $properties)
+		);
+	}
+
+	/**
+	 * @When the user gets the following comment properties of file :arg1 using the WebDAV PROPFIND API
+	 *
+	 * @param string $path
+	 * @param TableNode $propertiesTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi($path, $propertiesTable) {
+		$properties = null;
+		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["propertyName"]);
+		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);
+		if ($propertiesTable instanceof TableNode) {
+			foreach ($propertiesTable->getColumnsHash() as $row) {
+				$properties[] = $row["propertyName"];
+			}
+		}
+		$depth = 0;
+		$user = $this->featureContext->getCurrentUser();
+		$fileId = $this->featureContext->getFileIdForPath($user, $path);
+		$commentsPath = "/comments/files/$fileId/";
+		if (\count($properties) > 1) {
+			$depth = 'infinity';
+			$this->featureContext->usingNewDavPath();
+		}
+		$this->featureContext->setResponseXmlObject(
+			$this->featureContext->listFolder(
+				$user, $commentsPath, $depth, $properties, "comments"
+			)
 		);
 	}
 
@@ -124,7 +158,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasSetFollowingPropertiesUsingProppatch($username, $path, $propertiesTable) {
-		$this->featureContext->verifyTableNodeColumns($propertiesTable, ['property', 'value']);
+		$this->featureContext->verifyTableNodeColumns($propertiesTable, ['propertyName', 'propertyValue']);
 		$properties = $propertiesTable->getColumnsHash();
 		$this->featureContext->setResponse(
 			WebDavHelper::proppatchWithMultipleProps(
@@ -551,7 +585,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function storeEtagOfElement($user, $path) {
-		$propertiesTable = new TableNode([['getetag']]);
+		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
@@ -623,7 +657,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function theResponseShouldHavePropertyWithValue($username, $expectedPropTable) {
-		$this->featureContext->verifyTableNodeColumns($expectedPropTable, ['resource', 'property', 'value']);
+		$this->featureContext->verifyTableNodeColumns($expectedPropTable, ['resource', 'propertyName', 'propertyValue']);
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 
 		$hrefSplittedUptoUsername = \explode("/", $responseXmlObject->xpath("//d:href")[0]);
@@ -634,25 +668,25 @@ class WebDavPropertiesContext implements Context {
 		);
 		$xmlHref = \implode("/", $xmlHrefSplittedArray);
 		foreach ($expectedPropTable->getColumnsHash() as $col) {
-			if ($col["property"] === "status") {
+			if ($col["propertyName"] === "status") {
 				$xmlPart = $responseXmlObject->xpath(
 					"//d:href[.='" .
 					$xmlHref . $col["resource"] .
 					"']/following-sibling::d:propstat//d:" .
-					$col["property"]
+					$col["propertyName"]
 				);
 			} else {
 				$xmlPart = $responseXmlObject->xpath(
 					"//d:href[.= '" .
 					$xmlHref . $col["resource"] .
-					"']/..//oc:" . $col["property"]
+					"']/..//oc:" . $col["propertyName"]
 				);
 			}
 			Assert::assertEquals(
-				$col["value"],
+				$col["propertyValue"],
 				$xmlPart[0],
 				__METHOD__
-				. " Expected '" . $col["value"] . "' but got '" . $xmlPart[0] . "'"
+				. " Expected '" . $col["propertyValue"] . "' but got '" . $xmlPart[0] . "'"
 			);
 		}
 	}
@@ -666,7 +700,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
-		$propertiesTable = new TableNode([['getetag']]);
+		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
@@ -691,7 +725,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
-		$propertiesTable = new TableNode([['getetag']]);
+		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
