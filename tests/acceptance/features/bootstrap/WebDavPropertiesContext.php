@@ -83,7 +83,11 @@ class WebDavPropertiesContext implements Context {
 				$properties[] = $row[0];
 			}
 		}
-		$depth = \count($properties) > 1 ? 'infinity' : 0;
+		$depth = 0;
+		if (\count($properties) > 1) {
+			$depth = 'infinity';
+			$this->featureContext->usingNewDavPath();
+		}
 		$this->featureContext->setResponseXmlObject(
 			$this->featureContext->listFolder($user, $path, $depth, $properties)
 		);

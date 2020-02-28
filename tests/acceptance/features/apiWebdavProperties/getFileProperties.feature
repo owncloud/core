@@ -194,7 +194,6 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-57
   Scenario: add, receive multiple custom meta properties to a file
     Given user "user0" has created folder "/TestFolder"
-    And using new dav path
     And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
     And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
       | property  | value |
