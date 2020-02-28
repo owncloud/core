@@ -287,7 +287,10 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 							continue; // No method known to transfer map files, ignore it
 						} elseif ($child->getMimeType() !== self::FOLDER) {
 							$extension = $this->getGoogleDocExtension($child->getMimeType());
-							if (!empty($extension)) $name .= '.'.$extension;
+							// don't append an empty extension as they will create broken paths
+							if ($extension != '')) {
+								$name .= '.'.$extension;
+							}
 						}
 					}
 					if ($path === '') {
