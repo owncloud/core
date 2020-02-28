@@ -83,8 +83,9 @@ class WebDavPropertiesContext implements Context {
 				$properties[] = $row[0];
 			}
 		}
+		$depth = \count($properties) > 1 ? 'infinity' : 0;
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder($user, $path, 0, $properties)
+			$this->featureContext->listFolder($user, $path, $depth, $properties)
 		);
 	}
 
@@ -105,6 +106,9 @@ class WebDavPropertiesContext implements Context {
 
 	/**
 	 * @Given /^user "([^"]*)" has set the following properties of (?:file|folder|entry) "([^"]*)" using the WebDav API$/
+	 *
+	 * if no namespace prefix is provided before property, default `oc:` prefix is set for added props
+	 * only and everything rest on xml is set to prefix `d:`
 	 *
 	 * @param string $username
 	 * @param string $path
@@ -154,38 +158,6 @@ class WebDavPropertiesContext implements Context {
 				$this->featureContext->getUserPassword($user), $path,
 				$properties
 			)
-		);
-	}
-
-	/**
-	 * @When user :username gets the following properties of file/folder :path using the WebDav PropFind API
-	 *
-	 * @param string $username
-	 * @param string $path
-	 * @param TableNode $propertiesTable with single column with column header 'property'
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function userGetsFollowingPropsWithNamespaceOfFileUsingWebDavAPI(
-		$username, $path, $propertiesTable
-	) {
-		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["property",]);
-		$properties = [];
-		foreach ($propertiesTable->getColumnsHash() as $col) {
-			\array_push($properties, $col["property"]);
-		}
-		$this->featureContext->setResponse(
-			WebDavHelper::propfindWithMultipleProps(
-				$this->featureContext->getBaseUrl(),
-				$username,
-				$this->featureContext->getPasswordForUser($username),
-				$path,
-				$properties
-			)
-		);
-		$this->featureContext->setResponseXmlObject(
-			HttpRequestHelper::getResponseXml($this->featureContext->getResponse())
 		);
 	}
 
@@ -634,6 +606,8 @@ class WebDavPropertiesContext implements Context {
 
 	/**
 	 * @Then as user :username the last response should have the following properties
+	 *
+	 * only supports new dav version
 	 *
 	 * @param string $username
 	 * @param TableNode $expectedPropTable with following columns:

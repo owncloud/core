@@ -194,15 +194,16 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-57
   Scenario: add, receive multiple custom meta properties to a file
     Given user "user0" has created folder "/TestFolder"
+    And using new dav path
     And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
     And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
       | property  | value |
       | testprop1 | AAAAA |
       | testprop2 | BBBBB |
-    When user "user0" gets the following properties of file "/TestFolder/test1.txt" using the WebDav PropFind API
-      | property  |
-      | testprop1 |
-      | testprop2 |
+    When user "user0" gets the following properties of file "/TestFolder/test1.txt" using the WebDAV API
+      | property     |
+      | oc:testprop1 |
+      | oc:testprop2 |
     Then the HTTP status code should be success
     And as user "user0" the last response should have the following properties
       | resource              | property  | value           |
@@ -224,10 +225,10 @@ Feature: get file properties
       | property  | value |
       | testprop1 | CCCCC |
       | testprop2 | DDDDD |
-    When user "user0" gets the following properties of folder "/TestFolder" using the WebDav PropFind API
-      | property  |
-      | testprop1 |
-      | testprop2 |
+    When user "user0" gets the following properties of folder "/TestFolder" using the WebDAV API
+      | property     |
+      | oc:testprop1 |
+      | oc:testprop2 |
     Then the HTTP status code should be success
     And as user "user0" the last response should have the following properties
       | resource              | property  | value                  |

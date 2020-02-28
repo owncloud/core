@@ -146,55 +146,6 @@ class WebDavHelper {
 			$davPathVersionToUse, $type
 		);
 	}
-
-	/**
-	 * sends HTTP request PROPFIND method with multiple properties
-	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $path
-	 * @param array $properties
-	 * @param string $namespaceString
-	 * @param int $folderDepth
-	 * @param string $type
-	 * @param int $davPathVersionToUse
-	 *
-	 * @return ResponseInterface
-	 */
-	public static function propfindWithMultipleProps(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$properties,
-		$namespaceString = "oc='http://owncloud.org/ns'",
-		$folderDepth = 0,
-		$type = "files",
-		$davPathVersionToUse = 2
-	) {
-		$propertyBody = "";
-		foreach ($properties as $property) {
-			[$namespacePrefix, $namespace, $property] = self::getPropertyWithNamespaceInfo(
-				$namespaceString,
-				$property
-			);
-			$propertyBody .= "\n\t\t<$namespacePrefix:$property/>";
-		}
-		$body = "<?xml version=\"1.0\"?>
-				<d:propfind
-				   xmlns:d=\"DAV:\"
-				   xmlns:oc=\"http://owncloud.org/ns\"
-				   xmlns:ocs=\"http://open-collaboration-services.org/ns\">
-				    <d:prop>$propertyBody
-				    </d:prop>
-				</d:propfind>";
-		return self::makeDavRequest(
-			$baseUrl, $user, $password, "PROPFIND", $path, null, $body,
-			$davPathVersionToUse, $type
-		);
-	}
-
 	/**
 	 *
 	 * @param string $baseUrl
