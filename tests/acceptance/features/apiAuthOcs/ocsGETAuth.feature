@@ -7,6 +7,7 @@ Feature: auth
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
@@ -32,6 +33,7 @@ Feature: auth
   @skipOnOcV10
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication then the status codes should be as listed
@@ -119,6 +121,7 @@ Feature: auth
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   Scenario: using OCS as normal user with wrong password
     When user "user0" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
@@ -144,6 +147,7 @@ Feature: auth
   @skipOnOcV10
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: using OCS as normal user with wrong password
     When user "user0" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed

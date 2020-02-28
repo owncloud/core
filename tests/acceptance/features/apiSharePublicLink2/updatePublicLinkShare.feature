@@ -5,6 +5,7 @@ Feature: update a public link share
     Given using OCS API version "1"
     And user "user0" has been created with default attributes and skeleton files
 
+  @smokeTest
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"

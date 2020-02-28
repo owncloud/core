@@ -4,6 +4,7 @@ Feature: UNLOCK locked items
   Background:
     Given user "user0" has been created with default attributes and skeleton files
 
+  @smokeTest
   Scenario Outline: unlock a single lock set by the user itself
     Given using <dav-path> DAV path
     And user "user0" has locked folder "PARENT" setting following properties

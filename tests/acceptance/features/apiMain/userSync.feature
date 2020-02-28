@@ -42,7 +42,7 @@ Feature: Users sync
       | 1               |
       | 2               |
 
-  @TestAlsoOnExternalUserBackend
+  @smokeTest @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user by non admin user
     Given using OCS API version "<ocs-api-version>"
     When user "user0" tries to sync user "user1" using the OCS API
