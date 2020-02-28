@@ -433,6 +433,41 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * List available backends
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listAvailableBackends() {
+		$this->invokingTheCommand('files_external:backends --output=json');
+	}
+
+	/**
+	 * List available backends of type
+	 *
+	 * @param String $type
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listAvailableBackendsOfType($type) {
+		$this->invokingTheCommand('files_external:backends ' . $type . ' --output=json');
+	}
+
+	/**
+	 * List backend of type
+	 *
+	 * @param String $type
+	 * @param String $backend
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listBackendOfType($type, $backend) {
+		$this->invokingTheCommand('files_external:backends ' . $type . ' ' . $backend . ' --output=json');
+	}
+
+	/**
 	 * List created local storage mount with --show-password
 	 *
 	 * @return void
@@ -1274,6 +1309,41 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator lists the available backends using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsAvailableBackendsUsingTheOccCommand() {
+		$this->listAvailableBackends();
+	}
+
+	/**
+	 * @When the administrator lists the available backends of type :type using the occ command
+	 *
+	 * @param String $type
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsAvailableBackendsOfTypeUsingTheOccCommand($type) {
+		$this->listAvailableBackendsOfType($type);
+	}
+
+	/**
+	 * @When the adminstrator lists the :backend backend of type :backendType using the occ command
+	 *
+	 * @param String $backend
+	 * @param String $backendType
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsBackendOfTypeUsingTheOccCommand($backend, $backendType) {
+		$this->listBackendOfType($backendType, $backend);
+	}
+
+	/**
 	 * @When the administrator lists configurations with the existing key :key for the local storage mount :localStorage
 	 *
 	 * @param string $key
@@ -1403,6 +1473,108 @@ class OccContext implements Context {
 				$i['localStorage'],
 				$createdLocalStorage,
 				"{$i['localStorage']} exists but was not expected to exist"
+			);
+		}
+	}
+	
+	/**
+	 * @Then the following backend types should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingBackendTypesShouldBeListed($table) {
+		$expectedBackendTypes = $table->getColumnsHash();
+		foreach ($expectedBackendTypes as $expectedBackendTypeEntry) {
+			Assert::assertArrayHasKey(
+				'backend-type',
+				$expectedBackendTypeEntry,
+				__METHOD__
+				. " The provided expected backend type entry '"
+				. \implode(', ', $expectedBackendTypeEntry)
+				. "' do not have key 'backend-type'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = \array_keys((array) $commandOutput);
+		foreach ($expectedBackendTypes as $backendTypesEntry) {
+			Assert::assertContains(
+				$backendTypesEntry['backend-type'],
+				$keys,
+				__METHOD__
+				. " ${backendTypesEntry['backend-type']} is not contained in '"
+				. \implode(', ', $keys)
+				. "' but was expected to be."
+			);
+		}
+	}
+
+	/**
+	 * @Then the following authentication/storage backends should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingBackendsShouldBeListed($table) {
+		$expectedBackends = $table->getColumnsHash();
+		foreach ($expectedBackends as $expectedBackendEntry) {
+			Assert::assertArrayHasKey(
+				'backends',
+				$expectedBackendEntry,
+				__METHOD__
+				. " The provided expected backend entry '"
+				. \implode(', ', $expectedBackendEntry)
+				. "' do not have key 'backends'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = \array_keys((array) $commandOutput);
+		foreach ($expectedBackends as $backendsEntry) {
+			Assert::assertContains(
+				$backendsEntry['backends'],
+				$keys,
+				__METHOD__
+				. " ${backendsEntry['backends']} is not contained in '"
+				. \implode(', ', $keys)
+				. "' but was expected to be."
+			);
+		}
+	}
+
+	/**
+	 * @Then the following authentication/storage backend keys should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingBackendKeysOfTypeShouldBeListed($table) {
+		$expectedBackendKeys = $table->getColumnsHash();
+		foreach ($expectedBackendKeys as $expectedBackendKeyEntry) {
+			Assert::assertArrayHasKey(
+				'backend-keys',
+				$expectedBackendKeyEntry,
+				__METHOD__
+				. " The provided expected backend key entry '"
+				. \implode(', ', $expectedBackendKeyEntry)
+				. "' do not have key 'backend-keys'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = \array_keys((array) $commandOutput);
+		foreach ($expectedBackendKeys as $backendKeysEntry) {
+			Assert::assertContains(
+				$backendKeysEntry['backend-keys'],
+				$keys,
+				__METHOD__
+				. " ${backendKeysEntry['backend-keys']} is not contained in '"
+				. \implode(', ', $keys)
+				. "' but was expected to be."
 			);
 		}
 	}
