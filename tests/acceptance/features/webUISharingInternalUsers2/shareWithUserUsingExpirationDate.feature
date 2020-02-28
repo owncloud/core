@@ -272,3 +272,30 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | +15 days |
       | +1 days  |
       | today    |
+
+  Scenario: share with multiple users and change the sharing permissions and expiration date
+    Given user "user3" has shared folder "/simple-folder" with user "user1"
+    And user "user3" has shared folder "/simple-folder" with user "user2"
+    And user "user3" has logged in using the webUI
+    When the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
+      | edit    | no |
+      | create  | no |
+    And the user changes expiration date for share of user "User One" to "+5 days" in the share dialog
+    Then the information for user "user1" about the received share of folder "simple-folder" should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | expiration  | +5 days        |
+      | uid_owner   | user3          |
+      | share_with  | user1          |
+      | permissions | 17             |
+    When the user sets the sharing permissions of user "User Two" for "simple-folder" using the webUI to
+      | share    | no |
+      | delete   | no |
+    And the user changes expiration date for share of user "User Two" to "+7 days" in the share dialog
+    Then the information for user "user2" about the received share of folder "simple-folder" should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | expiration  | +7 days        |
+      | uid_owner   | user3          |
+      | share_with  | user2          |
+      | permissions | 7              |
