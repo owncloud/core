@@ -433,6 +433,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * List created local storage mount with --show-password
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listLocalStorageShowPassword() {
+		$this->invokingTheCommand('files_external:list --show-password --output=json');
+	}
+
+	/**
 	 * @When the administrator enables DAV tech_preview
 	 *
 	 * @return void
@@ -1242,6 +1252,71 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator configures the key :key with value :value for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminConfiguresLocalStorageMountUsingTheOccCommand($key, $value, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:config",
+				$mountId,
+				$key,
+				$value
+			]
+		);
+	}
+
+	/**
+	 * @When the administrator lists configurations with the existing key :key for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsConfigurationsWithExistingKeyForLocalStorageMountUsingTheOccCommand($key, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:config",
+				$mountId,
+				$key,
+			]
+		);
+	}
+
+	/**
+	 * @Given the administrator has configured the key :key with value :value for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminConfiguredLocalStorageMountUsingTheOccCommand($key, $value, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:config",
+				$mountId,
+				$key,
+				$value
+			]
+		);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
 	 * @When the administrator lists the local storage using the occ command
 	 *
 	 * @return void
@@ -1269,6 +1344,16 @@ class OccContext implements Context {
 	 */
 	public function adminListsLocalStorageMountOptionsUsingTheOccCommand() {
 		$this->listLocalStorageMountOptions();
+	}
+
+	/**
+	 * @When the administrator lists the local storage with --show-password using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsLocalStorageShowPasswordUsingTheOccCommand() {
+		$this->listLocalStorageShowPassword();
 	}
 
 	/**
@@ -1411,6 +1496,71 @@ class OccContext implements Context {
 			}
 			Assert::assertTrue($isStorageEntryListed, "Expected local storage {$expectedStorageEntry['MountPoint']} not found");
 		}
+	}
+
+	/**
+	 * @Then the configuration output should be :expectedOutput
+	 *
+	 * @param string $expectedOutput
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theConfigurationOutputShouldBe($expectedOutput) {
+		$actualOutput = $this->featureContext->getStdOutOfOccCommand();
+		$trimmedOutput = \trim($actualOutput);
+		Assert::assertEquals(
+			$expectedOutput,
+			$trimmedOutput,
+			__METHOD__
+			. " The expected configuration output was '$expectedOutput', but got '$actualOutput' instead."
+		);
+	}
+
+	/**
+	 * @Then the following should be included in the configuration of local storage :localStorage:
+	 *
+	 * @param string $localStorage
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingShouldBeIncludedInTheConfigurationOfLocalStorage($localStorage, TableNode $table) {
+		$expectedConfigurations = $table->getColumnsHash();
+		foreach ($expectedConfigurations as $expectedConfigurationEntry) {
+			Assert::assertArrayHasKey(
+				'configuration',
+				$expectedConfigurationEntry,
+				__METHOD__
+				. " The provided expected configuration entry '"
+				. \implode(', ', $expectedConfigurationEntry)
+				. "' do not have key 'configuration'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$isStorageEntryListed = false;
+		foreach ($commandOutput as $listedStorageEntry) {
+			if ($listedStorageEntry->mount_point === $localStorage) {
+				$isStorageEntryListed = true;
+				$configurations = $listedStorageEntry->configuration;
+				$configurationsSplitted = \explode(', ', $configurations);
+				foreach ($expectedConfigurations as $expectedConfigArray) {
+					foreach ($expectedConfigArray as $expectedConfigEntry) {
+						Assert::assertContains(
+							$expectedConfigEntry,
+							$configurationsSplitted,
+							__METHOD__
+							. " $expectedConfigEntry is not contained in '"
+							. \implode(', ', $configurationsSplitted)
+							. "' but was expected to be."
+						);
+					}
+				}
+				break;
+			}
+		}
+		Assert::assertTrue($isStorageEntryListed, "Expected local storage '$localStorage' not found ");
 	}
 
 	/**
