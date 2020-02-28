@@ -410,7 +410,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in the trashbin$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -463,7 +463,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * Function to check if an element is in trashbin
+	 * Function to check if an element is in the trashbin
 	 *
 	 * @param string $user
 	 * @param string $originalPath
@@ -631,7 +631,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should exist in the trashbin$/
 	 *
 	 * @param string $user
 	 * @param string $originalPath
@@ -648,7 +648,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should not exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should not exist in the trashbin/
 	 *
 	 * @param string $user
 	 * @param string $originalPath

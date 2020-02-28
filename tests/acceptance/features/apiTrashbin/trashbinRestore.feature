@@ -22,7 +22,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in trash
+    And as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in the trashbin
     And user "user1" should see the following elements
       | /renamed_shared/                |
       | /renamed_shared/shared_file.txt |
@@ -42,12 +42,12 @@ Feature: Restore deleted files/folders
     And user "user0" has uploaded file with content "to delete" to "/textfile3.txt"
     And user "user0" has uploaded file with content "to delete" to "/textfile4.txt"
     And user "user0" has deleted file "/textfile0.txt"
-    And as "user0" file "/textfile0.txt" should exist in trash
+    And as "user0" file "/textfile0.txt" should exist in the trashbin
     When user "user0" restores the folder with original path "/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And as "user0" the folder with original path "/textfile0.txt" should not exist in trash
+    And as "user0" the folder with original path "/textfile0.txt" should not exist in the trashbin
     And user "user0" should see the following elements
       | /FOLDER/           |
       | /PARENT/           |
@@ -69,7 +69,7 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/new-folder/new-file.txt"
     When user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then the HTTP status code should be "201"
-    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in the trashbin
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
@@ -85,7 +85,7 @@ Feature: Restore deleted files/folders
     When user "user0" restores the folder with original path "/new-folder" using the trashbin API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then the HTTP status code should be "201"
-    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in the trashbin
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
@@ -103,7 +103,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And as "user0" the file with original path "<delete-path>" should not exist in trash
+    And as "user0" the file with original path "<delete-path>" should not exist in the trashbin
     And as "user0" file "<restore-path>" should exist
     And as "user0" file "<delete-path>" should not exist
     Examples:
@@ -126,7 +126,7 @@ Feature: Restore deleted files/folders
     # Sometimes "/PARENT/textfile0.txt" is found in the trashbin. Should it? Or not?
     # That seems to be what happens when the restore-overwrite happens properly,
     # The original /PARENT/textfile0.txt seems to be "deleted" and so goes to the trashbin
-    #And as "user0" the file with original path "/PARENT/textfile0.txt" should not exist in trash
+    #And as "user0" the file with original path "/PARENT/textfile0.txt" should not exist in the trashbin
     And as "user0" file "/PARENT/textfile0.txt" should exist
     # sometimes the restore from trashbin does overwrite the existing file, but sometimes it does not. That is also surprising.
     # the current observed behavior is that if the original /PARENT/textfile0.txt ended up in the trashbin,
@@ -150,8 +150,8 @@ Feature: Restore deleted files/folders
     When user "user0" restores the file with original path "/textfile0.txt" to "/shareFolderParent/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     #Then the HTTP status code should be "403"
-    And as "user0" the file with original path "/textfile0.txt" should not exist in trash
-    #And as "user0" the file with original path "/textfile0.txt" should exist in trash
+    And as "user0" the file with original path "/textfile0.txt" should not exist in the trashbin
+    #And as "user0" the file with original path "/textfile0.txt" should exist in the trashbin
     And as "user0" file "/shareFolderParent/textfile0.txt" should exist
     #And as "user0" file "/shareFolderParent/textfile0.txt" should not exist
     And as "user1" file "/shareFolderParent/textfile0.txt" should exist
@@ -173,8 +173,8 @@ Feature: Restore deleted files/folders
     When user "user0" restores the file with original path "/textfile0.txt" to "/shareFolderParent/shareFolderChild/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     #Then the HTTP status code should be "403"
-    And as "user0" the file with original path "/textfile0.txt" should not exist in trash
-    #And as "user0" the file with original path "/textfile0.txt" should exist in trash
+    And as "user0" the file with original path "/textfile0.txt" should not exist in the trashbin
+    #And as "user0" the file with original path "/textfile0.txt" should exist in the trashbin
     And as "user0" file "/shareFolderParent/shareFolderChild/textfile0.txt" should exist
     #And as "user0" file "/shareFolderParent/shareFolderChild/textfile0.txt" should not exist
     And as "user1" file "/shareFolderParent/shareFolderChild/textfile0.txt" should exist
@@ -195,7 +195,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in the trashbin
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
@@ -211,12 +211,12 @@ Feature: Restore deleted files/folders
     And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
-    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in the trashbin
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
     And user "user0" should see the following elements
       | /local_storage/                  |
       | /local_storage/tmp/              |
@@ -236,10 +236,10 @@ Feature: Restore deleted files/folders
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has uploaded chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
-    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in the trashbin
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
-    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
 
   @local_storage
@@ -254,10 +254,10 @@ Feature: Restore deleted files/folders
       | number | content |
       | 1      | AA      |
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
-    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in the trashbin
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
-    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
 
   @smokeTest @skipOnOcV10.3
@@ -267,7 +267,7 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/textfile0.txt"
     When user "user1" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the trashbin API
     Then the HTTP status code should be "401"
-    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And as "user0" the folder with original path "/textfile0.txt" should exist in the trashbin
     And user "user0" should not see the following elements
       | /textfile0.txt |
     Examples:
@@ -282,7 +282,7 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "invalid" and the trashbin API
     Then the HTTP status code should be "401"
-    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And as "user0" the folder with original path "/textfile0.txt" should exist in the trashbin
     And user "user0" should not see the following elements
       | /textfile0.txt |
     Examples:
@@ -297,7 +297,7 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "user0" using the password "" and the trashbin API
     Then the HTTP status code should be "401"
-    And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+    And as "user0" the folder with original path "/textfile0.txt" should exist in the trashbin
     And user "user0" should not see the following elements
       | /textfile0.txt |
     Examples:

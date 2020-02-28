@@ -30,7 +30,7 @@ Feature: sharing
     When user "user1" moves file "/shared_renamed/shared_file.txt" to "/taken_out.txt" using the WebDAV API
     Then as "user1" file "/taken_out.txt" should exist
     And as "user0" file "/shared/shared_file.txt" should not exist
-    And as "user0" file "/shared_file.txt" should exist in trash
+    And as "user0" file "/shared_file.txt" should exist in the trashbin
     Examples:
       | dav-path-version |
       | old              |
@@ -47,8 +47,8 @@ Feature: sharing
     When user "user1" moves folder "/shared_renamed/sub" to "/taken_out" using the WebDAV API
     Then as "user1" file "/taken_out" should exist
     And as "user0" folder "/shared/sub" should not exist
-    And as "user0" folder "/sub" should exist in trash
-    And as "user0" file "/sub/shared_file.txt" should exist in trash
+    And as "user0" folder "/sub" should exist in the trashbin
+    And as "user0" file "/sub/shared_file.txt" should exist in the trashbin
     Examples:
       | dav-path-version |
       | old              |
