@@ -1468,20 +1468,32 @@ class OccContext implements Context {
 						);
 					}
 					if (isset($expectedStorageEntry['ApplicableUsers'])) {
-						Assert::assertEquals(
-							$expectedStorageEntry['ApplicableUsers'],
-							$listedStorageEntry->applicable_users,
-							"ApplicableUsers column does not have the expected value for storage "
-							. $expectedStorageEntry['MountPoint']
-						);
+						$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
+						$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
+						foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
+							Assert::assertContains(
+								$expectedApplicableUserEntry,
+								$listedApplicableUsers,
+								__METHOD__
+								. " '$expectedApplicableUserEntry' is not listed in '"
+								. \implode(', ', $listedApplicableUsers)
+								. "'"
+							);
+						}
 					}
 					if (isset($expectedStorageEntry['ApplicableGroups'])) {
-						Assert::assertEquals(
-							$expectedStorageEntry['ApplicableGroups'],
-							$listedStorageEntry->applicable_groups,
-							"ApplicableGroups column does not have the expected value for storage "
-							. $expectedStorageEntry['MountPoint']
-						);
+						$listedApplicableGroups = \explode(', ', $listedStorageEntry->applicable_groups);
+						$expectedApplicableGroups = \explode(', ', $expectedStorageEntry['ApplicableGroups']);
+						foreach ($expectedApplicableGroups as $expectedApplicableGroupEntry) {
+							Assert::assertContains(
+								$expectedApplicableGroupEntry,
+								$listedApplicableGroups,
+								__METHOD__
+								. " '$expectedApplicableGroupEntry' is not listed in '"
+								. \implode(', ', $listedApplicableGroups)
+								. "'"
+							);
+						}
 					}
 					if (isset($expectedStorageEntry['Type'])) {
 						Assert::assertEquals(
@@ -1492,9 +1504,10 @@ class OccContext implements Context {
 						);
 					}
 					$isStorageEntryListed = true;
+					break;
 				}
 			}
-			Assert::assertTrue($isStorageEntryListed, "Expected local storage {$expectedStorageEntry['MountPoint']} not found");
+			Assert::assertTrue($isStorageEntryListed, __METHOD__ . " Expected local storage {$expectedStorageEntry['MountPoint']} not found");
 		}
 	}
 
