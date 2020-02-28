@@ -1,0 +1,6 @@
+Bugfix: Fix Google drive files without extension 404
+
+Seemingly for at least the past two years, any Google Drive files without a file extension (".git/HEAD" for example) would result in a 404 response from the Web UI or desktop client. This bug was a result of a dot being appended to filename without a trailing extension. This fix simply doesn't append a trailing dot if file has no extension.
+
+https://github.com/owncloud/core/issues/37044
+https://github.com/owncloud/core/pull/37045
