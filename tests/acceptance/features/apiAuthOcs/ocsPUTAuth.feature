@@ -3,6 +3,7 @@ Feature: auth
 
   @skipOnOcis
   @issue-ocis-reva-30
+  @smokeTest
   Scenario: send PUT request to OCS endpoints as admin with wrong password
     When the administrator requests these endpoints with "PUT" with body using password "invalid" then the status codes should be as listed
       | endpoint                                         | ocs-code | http-code | body          |
@@ -17,6 +18,7 @@ Feature: auth
 
   @skipOnOcV10
   @issue-ocis-reva-30
+  @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send PUT request to OCS endpoints as admin with wrong password
     When the administrator requests these endpoints with "PUT" with body using password "invalid" then the status codes should be as listed

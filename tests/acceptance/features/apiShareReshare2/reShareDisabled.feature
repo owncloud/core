@@ -5,6 +5,7 @@ Feature: resharing can be disabled
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
 
+  @smokeTest
   Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files

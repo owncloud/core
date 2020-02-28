@@ -1,7 +1,7 @@
 @api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: auth
 
-  @issue-32068 @skipOnOcis @issue-ocis-reva-30 @issue-ocis-reva-65
+  @smokeTest @issue-32068 @skipOnOcis @issue-ocis-reva-30 @issue-ocis-reva-65
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
     When the administrator requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed
       | endpoint                                                        | ocs-code | http-code |
@@ -23,7 +23,7 @@ Feature: auth
       | /ocs/v1.php/cloud/users/user0/subadmins                         | 997      | 401       |
       | /ocs/v2.php/cloud/users/user0/subadmins                         | 997      | 401       |
 
-  @skipOnOcV10 @issue-ocis-reva-30 @issue-ocis-reva-65
+  @smokeTest @skipOnOcV10 @issue-ocis-reva-30 @issue-ocis-reva-65
    #after fixing all issues delete this Scenario and use the one above
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
     When the administrator requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed

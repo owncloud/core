@@ -10,6 +10,7 @@ Feature: get file info using PUT
     And user "user0" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And user "user1" has been created with default attributes and without skeleton files
 
+  @smokeTest
   Scenario: send PUT requests to webDav endpoints as normal user with wrong password
     When user "user0" requests these endpoints with "PUT" including body using password "invalid" then the status codes should be as listed
       | endpoint                                      | http-code | body          |
@@ -19,6 +20,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
+  @smokeTest
   Scenario: send PUT requests to webDav endpoints as normal user with no password
     When user "user0" requests these endpoints with "PUT" including body using password "" then the status codes should be as listed
       | endpoint                                      | http-code | body          |
@@ -63,6 +65,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
+  @smokeTest
   Scenario: send PUT requests to webDav endpoints without any authentication
     When a user requests these endpoints with "PUT" and no authentication then the status codes should be as listed
       | endpoint                                      | http-code | body          |

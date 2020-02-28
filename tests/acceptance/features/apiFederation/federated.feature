@@ -7,6 +7,7 @@ Feature: federated
     And using server "LOCAL"
     And user "user1" has been created with default attributes and skeleton files
 
+  @smokeTest
   Scenario Outline: Federate share a file with another server
     Given using OCS API version "<ocs-api-version>"
     When user "user1" from server "LOCAL" shares "/textfile0.txt" with user "user0" from server "REMOTE" using the sharing API
@@ -33,6 +34,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+  @smokeTest
   Scenario Outline: Federate share a file with local server
     Given using OCS API version "<ocs-api-version>"
     When user "user0" from server "REMOTE" shares "/textfile0.txt" with user "user1" from server "LOCAL" using the sharing API
