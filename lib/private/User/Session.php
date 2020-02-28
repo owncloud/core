@@ -967,7 +967,15 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function tryAuthModuleLogin(IRequest $request) {
 		foreach ($this->getAuthModules(false) as $authModule) {
-			$user = $authModule->auth($request);
+			try {
+				$user = $authModule->auth($request);
+			} catch (Exception $ex) {
+				if ($this->config->getSystemValue('loglevel', Util::INFO) === Util::DEBUG) {
+					$this->logger->logException($ex, ['app' => __METHOD__]);
+				}
+				// convert to no user
+				$user = null;
+			}
 			if ($user !== null) {
 				$uid = $user->getUID();
 				$password = $authModule->getUserPassword($request);
@@ -1156,8 +1164,10 @@ class Session implements IUserSession, Emitter {
 			try {
 				$user = $module->auth($request);
 			} catch (Exception $ex) {
+				if ($this->config->getSystemValue('loglevel', Util::INFO) === Util::DEBUG) {
+					$this->logger->logException($ex, ['app' => __METHOD__]);
+				}
 				// convert to no user so all IAuthModule implementations can check
-				// TODO log exception
 				$user = null;
 			}
 			if ($user !== null) {
