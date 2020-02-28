@@ -12,9 +12,9 @@ Feature: files and folders can be deleted from the trashbin
     When the administrator empties the trashbin of user "user0" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Remove deleted files of   user0'
-    Then as "user0" the file with original path "/textfile0.txt" should not exist in trash
-    And as "user0" the file with original path "/textfile1.txt" should not exist in trash
-    And as "user0" the folder with original path "/PARENT" should not exist in trash
+    Then as "user0" the file with original path "/textfile0.txt" should not exist in the trashbin
+    And as "user0" the file with original path "/textfile1.txt" should not exist in the trashbin
+    And as "user0" the folder with original path "/PARENT" should not exist in the trashbin
 
   Scenario: delete files and folder of all user from the trashbin
     Given user "user0" has been created with default attributes and skeleton files
@@ -25,6 +25,6 @@ Feature: files and folders can be deleted from the trashbin
     When the administrator empties the trashbin of all users using the occ command
     Then the command should have been successful
     And the command output should contain the text "Remove all deleted files"
-    Then as "user0" the file with original path "/textfile0.txt" should not exist in trash
-    And as "user1" the file with original path "/textfile1.txt" should not exist in trash
-    And as "user1" the folder with original path "/PARENT" should not exist in trash
+    Then as "user0" the file with original path "/textfile0.txt" should not exist in the trashbin
+    And as "user1" the file with original path "/textfile1.txt" should not exist in the trashbin
+    And as "user1" the folder with original path "/PARENT" should not exist in the trashbin

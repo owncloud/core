@@ -95,8 +95,8 @@ Feature: sharing
     Then the HTTP status code should be "204"
     And as "user1" file "/shared/shared_file.txt" should not exist
     And as "user0" file "/shared/shared_file.txt" should not exist
-    And as "user0" file "/shared_file.txt" should exist in trash
-    And as "user1" file "/shared_file.txt" should exist in trash
+    And as "user0" file "/shared_file.txt" should exist in the trashbin
+    And as "user1" file "/shared_file.txt" should exist in the trashbin
 
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
@@ -111,10 +111,10 @@ Feature: sharing
     Then the HTTP status code should be "204"
     And as "user1" folder "/shared/sub" should not exist
     And as "user0" folder "/shared/sub" should not exist
-    And as "user0" folder "/sub" should exist in trash
-    And as "user0" file "/sub/shared_file.txt" should exist in trash
-    And as "user1" folder "/sub" should exist in trash
-    And as "user1" file "/sub/shared_file.txt" should exist in trash
+    And as "user0" folder "/sub" should exist in the trashbin
+    And as "user0" file "/sub/shared_file.txt" should exist in the trashbin
+    And as "user1" folder "/sub" should exist in the trashbin
+    And as "user1" file "/sub/shared_file.txt" should exist in the trashbin
 
   @smokeTest
   Scenario: unshare from self
