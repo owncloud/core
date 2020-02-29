@@ -120,7 +120,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Non se atoparon entradas neste cartafol",
     "Name" : "Nome",
     "State" : "Estado:",
-    "Share time" : "Compartir o tempo",
+    "Share time" : "Compartido o",
     "Expiration date" : "Data de caducidade",
     "Sorry, this link doesn’t seem to work anymore." : "Semella que esta ligazón non funciona.",
     "Reasons might be:" : "As razóns poderían ser:",
