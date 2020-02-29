@@ -285,6 +285,7 @@ Feature: Sharing files and folders with internal groups
 	  | share_with  | user1          |
 	  | permissions | 23             |
 
+  @skipOnOcV10.3
   Scenario: Check share permissions and expiration date of a group and the member of the same group
 	Given these groups have been created:
 	  | groupname |
@@ -313,6 +314,7 @@ Feature: Sharing files and folders with internal groups
 	  | expiration  |                |
 	  | permissions | 31             |
 
+  @skipOnOcV10.3
   Scenario: share with multiple groups and change the sharing permissions and expiration date
 	Given these groups have been created:
 	  | groupname |

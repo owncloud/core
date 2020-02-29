@@ -304,6 +304,7 @@ Feature: misc scenarios on sharing with internal users
     Then the content of "lorem.txt" should be the same as the original "lorem.txt"
 #   And the content of file "lorem.txt" for user "user1" should be "edited original content"
 
+  @skipOnOcV10.3
   Scenario: share with two users having same display name
     Given these users have been created with default attributes and without skeleton files:
       | username |
