@@ -29,6 +29,7 @@ Summary
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
 * Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
 * Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
+* Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
 * Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
@@ -277,6 +278,16 @@ Details
 
    https://github.com/owncloud/core/issues/36925
    https://github.com/owncloud/core/pull/36926
+
+* Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
+
+   After a long download, we needed to return the filesize, which needed a connection to the DB. The
+   DB could have ended the connection due to an inactivity timeout. Now, the filesize is fetched
+   before starting the download, so this timeout shouldn't happen any longer. We still need to
+   update the checksum after the download is finished. In this case, we just log an error message
+   and keep going.
+
+   https://github.com/owncloud/core/pull/36978
 
 * Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
 
