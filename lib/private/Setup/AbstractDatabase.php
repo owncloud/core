@@ -72,9 +72,6 @@ abstract class AbstractDatabase {
 		} elseif (empty($config['dbname'])) {
 			$errors[] = $this->trans->t("%s enter the database name.", [$this->dbprettyname]);
 		}
-		if (\substr_count($config['dbname'], '.') >= 1) {
-			$errors[] = $this->trans->t("%s you may not use dots in the database name", [$this->dbprettyname]);
-		}
 		return $errors;
 	}
 
