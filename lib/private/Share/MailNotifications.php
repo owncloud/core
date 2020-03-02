@@ -112,12 +112,13 @@ class MailNotifications {
 	 * @param Node shared node
 	 * @param string $shareType share type
 	 * @param IUser[] $recipientList list of recipients
-	 * @throws GenericShareException
 	 * @return array list of user to whom the mail send operation failed
+	 * @throws \OCP\Files\NotFoundException
+	 * @throws GenericShareException
 	 */
-	public function sendInternalShareMail($sender, $node, $shareType, $recipientList) {
+	public function sendInternalShareMail($sender, $node, $shareType, $recipientList): array {
 		if ($this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no') !== 'yes') {
-			$message_t = $this->l->t("Internal mail notification for shared files is not allowed");
+			$message_t = $this->l->t('Internal mail notification for shared files is not allowed');
 			throw new GenericShareException($message_t, $message_t, 403);
 		}
 		$noMail = [];
@@ -162,13 +163,12 @@ class MailNotifications {
 			]);
 
 			$unescapedFilename = $filename;
-			$filename = $filter->getFile();
 			$link = $filter->getLink();
 
 			$recipientLanguageCode = $this->config->getUserValue($recipient->getUID(), 'core', 'lang', 'en');
-			$recipientL10N = \OC::$server->getL10N('core');
+			$recipientL10N = \OC::$server->getL10N('lib');
 			if ($this->l->getLanguageCode() !== $recipientLanguageCode) {
-				$recipientL10N = \OC::$server->getL10N('core', $recipientLanguageCode);
+				$recipientL10N = \OC::$server->getL10N('lib', $recipientLanguageCode);
 				$subject = (string)$recipientL10N->t('%s shared »%s« with you', [$filter->getSenderDisplayName(), $unescapedFilename]);
 			} else {
 				$subject = (string)$this->l->t('%s shared »%s« with you', [$filter->getSenderDisplayName(), $unescapedFilename]);
@@ -216,7 +216,7 @@ class MailNotifications {
 	 */
 	public function sendLinkShareMail($sender, $recipients, $link, $personalNote = null) {
 		if ($this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no') !== 'yes') {
-			$message_t = $this->l->t("Public link mail notification is not allowed");
+			$message_t = $this->l->t('Public link mail notification is not allowed');
 			throw new GenericShareException($message_t, $message_t, 403);
 		}
 		$recipientsAsString = \implode(', ', $recipients);
@@ -404,7 +404,7 @@ class MailNotifications {
 			)
 		];
 	}
-		
+
 	/**
 	 * @param string $senderMailAddress
 	 * @return string
