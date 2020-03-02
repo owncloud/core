@@ -248,7 +248,6 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		$sql .= ' AND `propertyname` in (?) ORDER BY `propertyname`';
 
 		$fileIdChunks = $this->getChunks($childrenIds, \count($requestedProperties));
-		$props = [];
 		foreach ($fileIdChunks as $chunk) {
 			$result = $this->connection->executeQuery(
 				$sql,
@@ -256,6 +255,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 				[Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
 			);
 			while ($row = $result->fetch()) {
+				$props = $this->offsetGet($row['fileid']) ?? [];
 				$props[$row['propertyname']] = $row['propertyvalue'];
 				$this->offsetSet($row['fileid'], $props);
 			}

@@ -231,10 +231,8 @@ Feature: get file properties
     Then the HTTP status code should be success
     And as user "user0" the last response should have the following properties
       | resource              | property  | value                  |
-      | /TestFolder/test1.txt | testprop1 | CCCCC                  |
-      #| /TestFolder/test1.txt | testprop1 | AAAAA                  |
+      | /TestFolder/test1.txt | testprop1 | AAAAA                  |
       | /TestFolder/test1.txt | testprop2 | BBBBB                  |
       | /TestFolder/test2.txt | testprop1 | CCCCC                  |
       | /TestFolder/test2.txt | testprop2 | DDDDD                  |
       | /TestFolder/          | status    | HTTP/1.1 404 Not Found |
-      #| /TestFolder/          | status    | HTTP/1.1 200 OK        |
