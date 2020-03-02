@@ -563,23 +563,27 @@ class MailNotificationsTest extends TestCase {
 		return $share;
 	}
 
-	public function providesLanguages() {
+	public function providesLanguages(): array {
 		return [
-			['es', 'en'],
-			['en', 'en']
+			['es', 'en', 'TestUser ha compartido »<welcome>.txt« contigo'],
+			['en', 'en', 'TestUser shared »<welcome>.txt« with you']
 		];
 	}
+
 	/**
 	 * @dataProvider providesLanguages
 	 * @param string $recipientLanguage
 	 * @param string $senderLanguage
+	 * @param string $expectedSubject
+	 * @throws \OCP\Files\NotFoundException
+	 * @throws \OCP\Share\Exceptions\GenericShareException
 	 */
-	public function testSendInternalShareWithRecipientLanguageCode($recipientLanguage, $senderLanguage) {
+	public function testSendInternalShareWithRecipientLanguageCode($recipientLanguage, $senderLanguage, $expectedSubject) {
 		$this->config
 			->method('getAppValue')
 			->with('core', 'shareapi_allow_mail_notification', 'no')
 			->willReturn('yes');
-		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', false);
+		$this->setupMailerMock($expectedSubject, false);
 		$shareMock = $this->getShareMock(
 			['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z']
 		);
@@ -595,6 +599,10 @@ class MailNotificationsTest extends TestCase {
 			->willReturn('Recipient');
 		$recipient->method('getUID')
 			->willReturn('Recipient');
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('default_language', 'en')
+			->willReturn('en');
 		$this->config->expects($this->once())
 			->method('getUserValue')
 			->with('Recipient', 'core', 'lang', 'en')

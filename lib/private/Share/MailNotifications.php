@@ -165,7 +165,8 @@ class MailNotifications {
 			$unescapedFilename = $filename;
 			$link = $filter->getLink();
 
-			$recipientLanguageCode = $this->config->getUserValue($recipient->getUID(), 'core', 'lang', 'en');
+			$defaultLang = $this->config->getSystemValue('default_language', 'en');
+			$recipientLanguageCode = $this->config->getUserValue($recipient->getUID(), 'core', 'lang', $defaultLang);
 			$recipientL10N = \OC::$server->getL10N('lib');
 			if ($this->l->getLanguageCode() !== $recipientLanguageCode) {
 				$recipientL10N = \OC::$server->getL10N('lib', $recipientLanguageCode);
