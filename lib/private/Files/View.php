@@ -472,11 +472,11 @@ class View {
 		$handle = $this->fopen($path, 'rb');
 		if ($handle) {
 			$chunkSize = 8192; // 8 kB chunks
+			$size = $this->filesize($path);
 			while (!\feof($handle)) {
 				echo \fread($handle, $chunkSize);
 				\flush();
 			}
-			$size = $this->filesize($path);
 			return $size;
 		}
 		return false;

@@ -21,6 +21,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use Icewind\Streams\CallbackWrapper;
+use Doctrine\DBAL\Exception\DriverException;
 use OC\Files\Stream\Checksum as ChecksumStream;
 use OCP\Files\IHomeStorage;
 
@@ -131,14 +132,18 @@ class Checksum extends Wrapper {
 	 */
 	public function onClose() {
 		$cache = $this->getCache();
-		foreach ($this->pathsInCacheWithoutChecksum as $cacheId => $path) {
-			$cache->update(
-				$cacheId,
-				['checksum' => self::getChecksumsInDbFormat($path)]
-			);
-		}
+		try {
+			foreach ($this->pathsInCacheWithoutChecksum as $cacheId => $path) {
+				$cache->update(
+					$cacheId,
+					['checksum' => self::getChecksumsInDbFormat($path)]
+				);
+			}
 
-		$this->pathsInCacheWithoutChecksum = [];
+			$this->pathsInCacheWithoutChecksum = [];
+		} catch (DriverException $ex) {
+			\OC::$server->getLogger()->error($ex->getMessage(), ['app' => 'checksum']);
+		}
 	}
 
 	/**
