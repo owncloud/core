@@ -228,22 +228,11 @@ class TransferOwnershipTest extends TestCase {
 		$this->assertCount($expectedTargetShareCount, $targetShares);
 	}
 
-	public function testTransferToUnloggedUser() {
+	public function testTransferAllFilesToUnlogged() {
 		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
 		$input = [
 			'source-user' => $this->sourceUser->getUID(),
 			'destination-user' => $this->unloggedUser->getUID(),
-		];
-		$this->commandTester->execute($input);
-		$this->assertSame(1, $this->commandTester->getStatusCode());
-	}
-
-	public function testTransferAllFilesToUnloggedUserForcing() {
-		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
-		$input = [
-			'source-user' => $this->sourceUser->getUID(),
-			'destination-user' => $this->unloggedUser->getUID(),
-			'--force-user-init' => null,
 		];
 		$this->commandTester->execute($input);
 		$this->assertSame(0, $this->commandTester->getStatusCode());
