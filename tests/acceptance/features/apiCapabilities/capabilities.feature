@@ -72,6 +72,8 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
       | files_sharing | user@@@send_mail                          | EMPTY             |
       | files         | bigfilechunking                           | 1                 |
+      | files         | privateLinks                              | 1                 |
+      | files         | privateLinksDetailsParam                  | 1                 |
 
   @smokeTest @skipOnOcV10.3
   # These are new capabilities in 10.4
