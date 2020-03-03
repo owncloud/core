@@ -61,7 +61,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	public function __construct($params) {
 		if (isset($params['configured']) && $params['configured'] === 'true'
 			&& isset($params['client_id'], $params['client_secret'], $params['token'])
-			 
+
 		) {
 			$this->client = new \Google_Client();
 			$this->client->setClientId($params['client_id']);
@@ -82,6 +82,13 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		} else {
 			throw new \Exception('Creating Google storage failed');
 		}
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function needsPartFile() {
+		return false;
 	}
 
 	public function getId() {

@@ -1,0 +1,6 @@
+Bugfix: Google Drive file modifications should not create duplicate files
+
+Existing files in Google Drive that were modified and saved (uploaded) would result in duplicate files of the same name. The root cause was appending .part to filenames for upload.
+
+https://github.com/owncloud/core/issues/25826
+https://github.com/owncloud/core/pull/37062

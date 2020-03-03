@@ -151,6 +151,14 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		return $this->isReadable($path);
 	}
 
+	/**
+	 * needsPartFile - allows a storage to opt-out of .part upload and rename
+	 * @return boolean
+	 */
+	public function needsPartFile() {
+		return true;
+	}
+
 	public function getPermissions($path) {
 		$permissions = 0;
 		if ($this->isCreatable($path)) {
