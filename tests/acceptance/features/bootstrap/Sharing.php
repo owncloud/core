@@ -2786,6 +2786,13 @@ trait Sharing {
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@send_mail',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_mail_notification',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'user@@@expire_date@@@enabled',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_default_expire_date_user_share',
