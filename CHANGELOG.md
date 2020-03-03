@@ -3,13 +3,135 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.3.2...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.4.0...master
+
+Summary
+-------
+
+* Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
+* Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
+* Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
+* Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
+* Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
+* Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
+* Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
+* Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
+* Change - Update Graffino/Browser-Update from 2.0.2 to 2.0.5: [#36976](https://github.com/owncloud/core/issues/36976)
+* Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
+* Change - Update phpseclib/phpseclib (2.0.24 => 2.0.25): [#37014](https://github.com/owncloud/core/pull/37014)
+* Change - Allow dot in database name: [#20381](https://github.com/owncloud/core/issues/20381)
+* Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
+* Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
+
+Details
+-------
+
+* Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
+
+   Downloading was failing with the message "Encryption not ready: Module with id:
+   OC_DEFAULT_MODULE does not exist." if the file was encrypted with another ownCloud instance.
+
+   https://github.com/owncloud/core/pull/36921
+
+* Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
+
+   When trying to do command: occ user:resetpassword Anne --send-email --password-from-env
+
+   If Anne does not have an email address setup then an error was logged in the ownCloud log.
+
+   This has been corrected. Now the administrator is shown the correct error "Email address is not
+   set for the user Anne"
+
+   https://github.com/owncloud/core/issues/36925
+   https://github.com/owncloud/core/pull/36926
+
+* Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
+
+   After a long download, we needed to return the filesize, which needed a connection to the DB. The
+   DB could have ended the connection due to an inactivity timeout. Now, the filesize is fetched
+   before starting the download, so this timeout shouldn't happen any longer. We still need to
+   update the checksum after the download is finished. In this case, we just log an error message
+   and keep going.
+
+   https://github.com/owncloud/core/pull/36978
+
+* Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
+
+   When doing occ user:resetpassword username --password-from-env --send-email the message
+   "Successfully reset password for username" had a full-stop at the end. Without --send-email
+   there was no full-stop. The full-stop has been removed to make the messages consistent.
+
+   https://github.com/owncloud/core/pull/36984
+
+* Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
+
+   https://github.com/owncloud/core/pull/36955
+
+* Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
+
+   https://github.com/owncloud/core/pull/36955
+
+* Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
+
+   The following symfony/polyfill components have been updated to version 1.14.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-mbstring symfony/polyfill-php56 symfony/polyfill-php72
+   symfony/polyfill-php73 symfony/polyfill-util
+
+   https://github.com/owncloud/core/pull/36955
+
+* Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
+
+   Sensitive data like passwords are not written to the log when the exception is thrown from
+   within a closure.
+
+   https://github.com/owncloud/core/pull/36961
+
+* Change - Update Graffino/Browser-Update from 2.0.2 to 2.0.5: [#36976](https://github.com/owncloud/core/issues/36976)
+
+   https://github.com/owncloud/core/issues/36976
+   https://github.com/owncloud/core/pull/36981
+
+* Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
+
+   https://github.com/owncloud/core/pull/37010
+
+* Change - Update phpseclib/phpseclib (2.0.24 => 2.0.25): [#37014](https://github.com/owncloud/core/pull/37014)
+
+   https://github.com/owncloud/core/pull/37014
+
+* Change - Allow dot in database name: [#20381](https://github.com/owncloud/core/issues/20381)
+
+   When installing ownCloud the database name is now allowed to contain a dot.
+
+   https://github.com/owncloud/core/issues/20381
+   https://github.com/owncloud/core/pull/37020
+
+* Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
+
+   The following Symfony components have been updated to version 4.4.5: - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/37052
+   https://symfony.com/blog/symfony-4-4-5-released
+
+* Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
+
+   https://github.com/owncloud/core/issues/36920
+   https://github.com/owncloud/core/pull/37058
+
+Changelog for ownCloud Core [10.4.0] (2020-02-10)
+=======================================
+The following sections list the changes in ownCloud core 10.4.0 relevant to
+ownCloud admins and users.
+
+[10.4.0]: https://github.com/owncloud/core/compare/v10.3.2...v10.4.0
 
 Summary
 -------
 
 * Bugfix - Fix links in setupchecks.js: [#36315](https://github.com/owncloud/core/pull/36315)
-* Bugfix - Inform the admin if they enable an enterprise app without valid key: [#36351](https://github.com/owncloud/core/issues/36351)
 * Bugfix - Set 599 HTTP code on error: [#36413](https://github.com/owncloud/core/pull/36413)
 * Bugfix - Fix "files:transfer-ownership" in S3 multi-bucket setups: [#36464](https://github.com/owncloud/core/pull/36464)
 * Bugfix - Fix Trash-bin api access: [#36378](https://github.com/owncloud/core/issues/36378)
@@ -27,10 +149,6 @@ Summary
 * Bugfix - Fix provisioning API request for user information in mixed case: [#36822](https://github.com/owncloud/core/issues/36822)
 * Bugfix - Fix output of files_external:list command: [#36839](https://github.com/owncloud/core/issues/36839)
 * Bugfix - Add translation code for the Personal->Sharing section: [#36875](https://github.com/owncloud/core/pull/36875)
-* Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
-* Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
-* Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
-* Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 * Change - Drop PHP 7.0 support across the platform: [#36290](https://github.com/owncloud/core/pull/36290)
 * Change - Don't report locking support in public.php and public-files endpoints: [#36402](https://github.com/owncloud/core/pull/36402)
@@ -74,16 +192,6 @@ Summary
 * Change - Update sabre dependencies: [#36866](https://github.com/owncloud/core/pull/36866)
 * Change - Update symfony (3.4.37 => 4.4.4): [#36881](https://github.com/owncloud/core/pull/36881)
 * Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
-* Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
-* Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
-* Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
-* Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
-* Change - Update Graffino/Browser-Update from 2.0.2 to 2.0.5: [#36976](https://github.com/owncloud/core/issues/36976)
-* Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
-* Change - Update phpseclib/phpseclib (2.0.24 => 2.0.25): [#37014](https://github.com/owncloud/core/pull/37014)
-* Change - Allow dot in database name: [#20381](https://github.com/owncloud/core/issues/20381)
-* Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
-* Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 * Enhancement - PostgreSQL 10 support: [#33187](https://github.com/owncloud/core/issues/33187)
 * Enhancement - Regex version for blacklisted_files and excluded_directories: [#36360](https://github.com/owncloud/core/pull/36360)
@@ -112,16 +220,6 @@ Details
 
    https://github.com/owncloud/core/issues/36238
    https://github.com/owncloud/core/pull/36315
-
-* Bugfix - Inform the admin if they enable an enterprise app without valid key: [#36351](https://github.com/owncloud/core/issues/36351)
-
-   Previously no message was displayed but the app was not enabled.
-
-   Now, when the admin tries to enable an enterprise app when the enterprise key is invalid, the
-   message "cannot be enabled because of invalid enterprise key" is displayed.
-
-   https://github.com/owncloud/core/issues/36351
-   https://github.com/owncloud/core/pull/36399
 
 * Bugfix - Set 599 HTTP code on error: [#36413](https://github.com/owncloud/core/pull/36413)
 
@@ -261,43 +359,6 @@ Details
    the language-specific translations.
 
    https://github.com/owncloud/core/pull/36875
-
-* Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
-
-   Downloading was failing with the message "Encryption not ready: Module with id:
-   OC_DEFAULT_MODULE does not exist." if the file was encrypted with another ownCloud instance.
-
-   https://github.com/owncloud/core/pull/36921
-
-* Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
-
-   When trying to do command: occ user:resetpassword Anne --send-email --password-from-env
-
-   If Anne does not have an email address setup then an error was logged in the ownCloud log.
-
-   This has been corrected. Now the administrator is shown the correct error "Email address is not
-   set for the user Anne"
-
-   https://github.com/owncloud/core/issues/36925
-   https://github.com/owncloud/core/pull/36926
-
-* Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
-
-   After a long download, we needed to return the filesize, which needed a connection to the DB. The
-   DB could have ended the connection due to an inactivity timeout. Now, the filesize is fetched
-   before starting the download, so this timeout shouldn't happen any longer. We still need to
-   update the checksum after the download is finished. In this case, we just log an error message
-   and keep going.
-
-   https://github.com/owncloud/core/pull/36978
-
-* Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
-
-   When doing occ user:resetpassword username --password-from-env --send-email the message
-   "Successfully reset password for username" had a full-stop at the end. Without --send-email
-   there was no full-stop. The full-stop has been removed to make the messages consistent.
-
-   https://github.com/owncloud/core/pull/36984
 
 * Change - Validate reshare permissions and attributes based on supershare: [#36265](https://github.com/owncloud/core/pull/36265)
 
@@ -552,64 +613,6 @@ Details
 * Change - Update league/flysystem (1.0.63 => 1.0.64): [#36895](https://github.com/owncloud/core/pull/36895)
 
    https://github.com/owncloud/core/pull/36895
-
-* Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
-
-   https://github.com/owncloud/core/pull/36955
-
-* Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
-
-   https://github.com/owncloud/core/pull/36955
-
-* Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
-
-   The following symfony/polyfill components have been updated to version 1.14.0:
-
-   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
-   symfony/polyfill-mbstring symfony/polyfill-php56 symfony/polyfill-php72
-   symfony/polyfill-php73 symfony/polyfill-util
-
-   https://github.com/owncloud/core/pull/36955
-
-* Change - Don't write potential sensitive data to the log file: [#36961](https://github.com/owncloud/core/pull/36961)
-
-   Sensitive data like passwords are not written to the log when the exception is thrown from
-   within a closure.
-
-   https://github.com/owncloud/core/pull/36961
-
-* Change - Update Graffino/Browser-Update from 2.0.2 to 2.0.5: [#36976](https://github.com/owncloud/core/issues/36976)
-
-   https://github.com/owncloud/core/issues/36976
-   https://github.com/owncloud/core/pull/36981
-
-* Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
-
-   https://github.com/owncloud/core/pull/37010
-
-* Change - Update phpseclib/phpseclib (2.0.24 => 2.0.25): [#37014](https://github.com/owncloud/core/pull/37014)
-
-   https://github.com/owncloud/core/pull/37014
-
-* Change - Allow dot in database name: [#20381](https://github.com/owncloud/core/issues/20381)
-
-   When installing ownCloud the database name is now allowed to contain a dot.
-
-   https://github.com/owncloud/core/issues/20381
-   https://github.com/owncloud/core/pull/37020
-
-* Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
-
-   The following Symfony components have been updated to version 4.4.5: - console -
-   event-dispatcher - process - routing - translation
-
-   https://github.com/owncloud/core/pull/37052
-   https://symfony.com/blog/symfony-4-4-5-released
-
-* Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
-
-   https://github.com/owncloud/core/issues/36920
-   https://github.com/owncloud/core/pull/37058
 
 * Enhancement - MariaDB 10.3 support: [#29483](https://github.com/owncloud/core/issues/29483)
 
