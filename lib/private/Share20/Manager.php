@@ -946,9 +946,9 @@ class Manager implements IManager {
 
 		$this->generalChecks($share);
 
-		//Verify the expiration date
-		$this->validateExpirationDate($share);
 		if ($share->getExpirationDate() != $originalShare->getExpirationDate()) {
+			//Verify the expiration date
+			$this->validateExpirationDate($share);
 			$expirationDateUpdated = true;
 		}
 
