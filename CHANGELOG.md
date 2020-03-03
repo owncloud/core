@@ -20,6 +20,8 @@ Summary
 * Change - Update phpseclib/phpseclib (2.0.23 => 2.0.24): [#37010](https://github.com/owncloud/core/pull/37010)
 * Change - Update phpseclib/phpseclib (2.0.24 => 2.0.25): [#37014](https://github.com/owncloud/core/pull/37014)
 * Change - Allow dot in database name: [#20381](https://github.com/owncloud/core/issues/20381)
+* Change - Respect default_language when sending email notifications: [#37039](https://github.com/owncloud/core/issues/37039)
+* Change - Lookup email subject in correct translation context: [#37040](https://github.com/owncloud/core/issues/37040)
 * Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
 * Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
 
@@ -107,6 +109,16 @@ Details
 
    https://github.com/owncloud/core/issues/20381
    https://github.com/owncloud/core/pull/37020
+
+* Change - Respect default_language when sending email notifications: [#37039](https://github.com/owncloud/core/issues/37039)
+
+   https://github.com/owncloud/core/issues/37039
+
+* Change - Lookup email subject in correct translation context: [#37040](https://github.com/owncloud/core/issues/37040)
+
+   Use 'lib' instead of 'core' to get the translations.
+
+   https://github.com/owncloud/core/issues/37040
 
 * Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
 
