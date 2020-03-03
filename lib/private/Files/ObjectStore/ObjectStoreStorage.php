@@ -75,6 +75,13 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function usePartFile() {
+		return false;
+	}
+
+	/**
 	 * This is intended to be used during the moveFromStorage call. While moving, this is needed
 	 * for the sourceStorage to know we're moving stuff and it shouldn't change the cache
 	 * until it's finished.

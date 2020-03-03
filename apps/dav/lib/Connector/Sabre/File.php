@@ -65,7 +65,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class File extends Node implements IFile, IFileNode {
 	use EventEmitterTrait;
 	protected $request;
-	
+
 	/**
 	 * Sets up the node, expects a full path name
 	 *
@@ -90,7 +90,7 @@ class File extends Node implements IFile, IFileNode {
 	 */
 	private function handleMetadataUpdate(\OC\Files\Storage\Storage $targetStorage, $targetInternalPath) {
 		// since we skipped the view we need to scan and emit the hooks ourselves
-		
+
 		// allow sync clients to send the mtime along in a header
 		if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
 			$mtime = $this->sanitizeMtime(
@@ -166,9 +166,9 @@ class File extends Node implements IFile, IFileNode {
 		}
 
 		list($partStorage) = $this->fileView->resolvePath($this->path);
-		$needsPartFile = $this->needsPartFile($partStorage) && (\strlen($this->path) > 1);
+		$usePartFile = $this->usePartFile($partStorage) && (\strlen($this->path) > 1);
 
-		if ($needsPartFile) {
+		if ($usePartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
 			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . \rand() . '.part';
 		} else {
@@ -185,7 +185,7 @@ class File extends Node implements IFile, IFileNode {
 			try {
 				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
 			} catch (LockedException $e) {
-				if ($needsPartFile) {
+				if ($usePartFile) {
 					$partStorage->unlink($internalPartPath);
 				}
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
@@ -230,7 +230,7 @@ class File extends Node implements IFile, IFileNode {
 				}
 			}
 		} catch (\Exception $e) {
-			if ($needsPartFile) {
+			if ($usePartFile) {
 				$partStorage->unlink($internalPartPath);
 			}
 			$this->convertToSabreException($e);
@@ -251,13 +251,13 @@ class File extends Node implements IFile, IFileNode {
 			try {
 				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
 			} catch (LockedException $e) {
-				if ($needsPartFile) {
+				if ($usePartFile) {
 					$partStorage->unlink($internalPartPath);
 				}
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
-			if ($needsPartFile) {
+			if ($usePartFile) {
 				// rename to correct path
 				try {
 					if ($run) {
@@ -500,7 +500,7 @@ class File extends Node implements IFile, IFileNode {
 
 		if ($chunk_handler->isComplete()) {
 			list($storage, ) = $this->fileView->resolvePath($path);
-			$needsPartFile = $this->needsPartFile($storage);
+			$usePartFile = $this->usePartFile($storage);
 			$partFile = null;
 
 			$targetPath = $path . '/' . $info['name'];
@@ -527,7 +527,7 @@ class File extends Node implements IFile, IFileNode {
 				/** @var \OC\Files\Storage\Storage $targetStorage */
 				list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
-				if ($needsPartFile) {
+				if ($usePartFile) {
 					// we first assembly the target file as a part file
 					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
 					/** @var \OC\Files\Storage\Storage $targetStorage */
@@ -633,15 +633,11 @@ class File extends Node implements IFile, IFileNode {
 	 * target storage.
 	 *
 	 * @param \OCP\Files\Storage $storage
-	 * @return bool true if the storage needs part file handling
+	 * @return bool true if the storage uses part file handling
 	 */
-	private function needsPartFile($storage) {
+	private function usePartFile($storage) {
 		// TODO: in the future use ChunkHandler provided by storage
-		// and/or add method on Storage called "needsPartFile()"
-		return !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage') &&
-			!$storage->instanceOfStorage('OCA\Files_external\Lib\Storage\OwnCloud') &&
-			!$storage->instanceOfStorage('OCA\Files_external\Lib\Storage\Google') &&
-			!$storage->instanceOfStorage('OC\Files\ObjectStore\ObjectStoreStorage');
+		return $storage->usePartFile();
 	}
 
 	/**

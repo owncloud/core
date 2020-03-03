@@ -47,6 +47,13 @@ use OCP\Files\StorageNotAvailableException;
 interface IStorage {
 
 	/**
+	 * usePartFile - allows a storage to opt-out of .part upload and rename
+	 * @return boolean
+	 * @since 10.5.1
+	 */
+	public function usePartFile();
+
+	/**
 	 * Get the identifier for the storage,
 	 * the returned id should be the same for every storage object that is created with the same parameters
 	 * and two storage objects with the same id should refer to two storages that display the same files.
