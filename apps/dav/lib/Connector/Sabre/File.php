@@ -65,7 +65,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class File extends Node implements IFile, IFileNode {
 	use EventEmitterTrait;
 	protected $request;
-	
+
 	/**
 	 * Sets up the node, expects a full path name
 	 *
@@ -90,7 +90,7 @@ class File extends Node implements IFile, IFileNode {
 	 */
 	private function handleMetadataUpdate(\OC\Files\Storage\Storage $targetStorage, $targetInternalPath) {
 		// since we skipped the view we need to scan and emit the hooks ourselves
-		
+
 		// allow sync clients to send the mtime along in a header
 		if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
 			$mtime = $this->sanitizeMtime(
@@ -637,11 +637,7 @@ class File extends Node implements IFile, IFileNode {
 	 */
 	private function needsPartFile($storage) {
 		// TODO: in the future use ChunkHandler provided by storage
-		// and/or add method on Storage called "needsPartFile()"
-		return !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage') &&
-			!$storage->instanceOfStorage('OCA\Files_external\Lib\Storage\OwnCloud') &&
-			!$storage->instanceOfStorage('OCA\Files_external\Lib\Storage\Google') &&
-			!$storage->instanceOfStorage('OC\Files\ObjectStore\ObjectStoreStorage');
+		return $storage->needsPartFile();
 	}
 
 	/**

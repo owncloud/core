@@ -52,6 +52,13 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function needsPartFile() {
+		return $this->getWrapperStorage()->needsPartFile();
+	}
+
+	/**
 	 * @return \OC\Files\Storage\Storage
 	 */
 	public function getWrapperStorage() {
