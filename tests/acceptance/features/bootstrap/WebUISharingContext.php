@@ -1636,11 +1636,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function createPublicShareLink($name, $settings = null) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		//close any open sharing dialog
-		//if there is no dialog open and we try to close it
-		//an exception will be thrown, but we do not care
 		try {
 			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
+		} catch (ElementNotFoundException $e) {
+			//if there is no dialog open and we try to close it
+			//an exception will be thrown, but we do not care
 		}
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
@@ -1914,5 +1914,34 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				"Expected: " . $filename . " not to be marked as shared but it is"
 			);
 		}
+	}
+
+	/**
+	 * @Then a public link share with name :arg1 should be visible on the webUI
+	 *
+	 * @param string $expectedLinkEntryName
+	 *
+	 * @return void
+	 */
+	public function publicLinkShareWithNameShouldBeVisibleOnTheWebUI($expectedLinkEntryName) {
+		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
+		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
+	}
+
+	/**
+	 * @Then :arg1 public link shares with name :arg2 should be visible on the webUI
+	 *
+	 * @param string $expectedCount
+	 * @param string $expectedLinkEntryName
+	 *
+	 * @return void
+	 */
+	public function publicLinkSharesWithNameShouldBeVisibleOnTheWebUI($expectedCount, $expectedLinkEntryName) {
+		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
+		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
+		Assert::assertEquals(
+			\array_count_values($actualNamesArrayOfPublicLinks)[$expectedLinkEntryName],
+			$expectedCount
+		);
 	}
 }

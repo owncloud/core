@@ -260,3 +260,36 @@ Feature: Sharing files and folders with internal users
     And file "textfile.txt" should be listed on the webUI
     And the content of "textfile.txt" should be the same as the local "textfile.txt"
     And it should not be possible to share file "textfile.txt" using the webUI
+
+  Scenario: reshare indicators of public links to the original share owner
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    And user "user0" has uploaded file with content "uploaded content" to "lorem.txt"
+    And user "user0" has shared file "lorem.txt" with user "user1"
+    And user "user1" has created a public link share with settings
+      | path | /lorem.txt  |
+      | name | Public link |
+    And user "user0" has logged in using the webUI
+    When the user opens the share dialog for file "lorem.txt"
+    And the user opens the public link share tab
+    Then a public link share with name "Public link" should be visible on the webUI
+
+  Scenario: reshare indicators of multiple public links with same name to the original share owner
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    And user "user0" has uploaded file with content "uploaded content" to "lorem.txt"
+    And user "user0" has shared file "lorem.txt" with user "user1"
+    And user "user0" has created a public link share with settings
+      | path | /lorem.txt  |
+      | name | Public link |
+    And user "user1" has created a public link share with settings
+      | path | lorem.txt  |
+      | name | Public link |
+    And user "user0" has logged in using the webUI
+    When the user opens the share dialog for file "lorem.txt"
+    And the user opens the public link share tab
+    Then 2 public link shares with name "Public link" should be visible on the webUI
