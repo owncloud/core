@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Show re-share public links to share-owner: [#36865](https://github.com/owncloud/core/pull/36865)
 * Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
 * Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
 * Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
@@ -27,6 +28,13 @@ Summary
 
 Details
 -------
+
+* Bugfix - Show re-share public links to share-owner: [#36865](https://github.com/owncloud/core/pull/36865)
+
+   Public links created by share-recipient were not visible to share-owner. This problem has
+   been resolved.
+
+   https://github.com/owncloud/core/pull/36865
 
 * Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
 
