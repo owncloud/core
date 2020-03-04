@@ -267,18 +267,17 @@ class SyncBackend extends Command {
 		$dummy = new Account(); // to prevent null pointer when writing messages
 
 		if ($userToSync !== null) {
-			// Run the sync using the internal username if mapped
-			$syncService->run($backend, new \ArrayIterator([$userToSync]));
+			if ($input->getOption('re-enable') && !$userToSync->isEnabled()) {
+				$this->reEnableUsers([$uid => $dummy], $output);
+			} else {
+				// Run the sync using the internal username if mapped
+				$syncService->run($backend, new \ArrayIterator([$userToSync]));
+			}
 		} else {
 			// Not found
 			$this->handleRemovedUsers([$uid => $dummy], $input, $output, $missingAccountsAction);
 		}
-
 		$output->writeln('');
-
-		if ($input->getOption('re-enable')) {
-			$this->reEnableUsers([$uid => $dummy], $output);
-		}
 	}
 	/**
 	 * @param $backend
