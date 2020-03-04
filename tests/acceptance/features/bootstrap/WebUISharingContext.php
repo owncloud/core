@@ -38,7 +38,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\EmailHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;
-use PHPUnit\Framework\Exception;
 
 require_once 'bootstrap.php';
 
@@ -1637,11 +1636,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function createPublicShareLink($name, $settings = null) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		//close any open sharing dialog
-		//if there is no dialog open and we try to close it
-		//an exception will be thrown, but we do not care
 		try {
 			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
+		} catch (ElementNotFoundException $e) {
+			//if there is no dialog open and we try to close it
+			//an exception will be thrown, but we do not care
 		}
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
