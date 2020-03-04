@@ -59,7 +59,6 @@
     "%s enter the database username and name." : "%s введіть назву бази даних та ім'я користувача.",
     "%s enter the database username." : "%s введіть ім'я користувача бази даних.",
     "%s enter the database name." : "%s введіть назву бази даних.",
-    "%s you may not use dots in the database name" : "%s не можна використовувати крапки в назві бази даних",
     "Oracle connection could not be established" : "Не можемо з'єднатися з Oracle ",
     "Oracle username and/or password not valid" : "Oracle ім'я користувача та/або пароль не дійсні",
     "DB Error: \"%s\"" : "Помилка БД: \"%s\"",

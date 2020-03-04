@@ -63,7 +63,6 @@
     "Search" : "Etsi",
     "%s enter the database username." : "%s anna tietokannan käyttäjätunnus.",
     "%s enter the database name." : "%s anna tietokannan nimi.",
-    "%s you may not use dots in the database name" : "%s et voi käyttää pisteitä tietokannan nimessä",
     "Oracle connection could not be established" : "Oracle-yhteyttä ei voitu muodostaa",
     "Oracle username and/or password not valid" : "Oraclen käyttäjätunnus ja/tai salasana on väärin",
     "DB Error: \"%s\"" : "Tietokantavirhe: \"%s\"",

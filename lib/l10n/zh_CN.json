@@ -57,7 +57,6 @@
     "Help & Tips" : "帮助",
     "%s enter the database username." : "%s 输入数据库用户名。",
     "%s enter the database name." : "%s 输入数据库名称。",
-    "%s you may not use dots in the database name" : "%s 您不能在数据库名称中使用英文句号。",
     "Oracle connection could not be established" : "不能建立甲骨文连接",
     "Oracle username and/or password not valid" : "Oracle 数据库用户名和/或密码无效",
     "DB Error: \"%s\"" : "数据库错误：\"%s\"",

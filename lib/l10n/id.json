@@ -60,7 +60,6 @@
     "Search" : "Cari",
     "%s enter the database username." : "%s masukkan nama pengguna basis data.",
     "%s enter the database name." : "%s masukkan nama basis data.",
-    "%s you may not use dots in the database name" : "%s anda tidak boleh menggunakan karakter titik pada nama basis data",
     "Oracle connection could not be established" : "Koneksi Oracle tidak dapat dibuat",
     "Oracle username and/or password not valid" : "Nama pengguna dan/atau sandi Oracle tidak sah",
     "DB Error: \"%s\"" : "Kesalahan Basis Data: \"%s\"",

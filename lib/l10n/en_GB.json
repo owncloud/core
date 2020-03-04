@@ -71,7 +71,6 @@
     "%s enter the database username and name." : "%s enter the database username and name.",
     "%s enter the database username." : "%s enter the database username.",
     "%s enter the database name." : "%s enter the database name.",
-    "%s you may not use dots in the database name" : "%s you may not use dots in the database name",
     "%s enter the database name or connection string." : "%s enter the database name or connection string.",
     "Oracle connection could not be established" : "Oracle connection could not be established",
     "Oracle username and/or password not valid" : "Oracle username and/or password not valid",

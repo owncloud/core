@@ -71,7 +71,6 @@
     "%s enter the database username and name." : "%s settu inn notandanafn og nafn á gagnagrunni.",
     "%s enter the database username." : "%s settu inn notandanafn í gagnagrunni.",
     "%s enter the database name." : "%s settu inn nafn á gagnagrunni.",
-    "%s you may not use dots in the database name" : "%s þú mátt ekki nota punkta í nafni á gagnagrunni",
     "Oracle connection could not be established" : "Ekki tókst að koma tengingu á við Oracle",
     "Oracle username and/or password not valid" : "Notandanafn eða lykilorð Oracle er ekki gilt",
     "DB Error: \"%s\"" : "Gagnagrunnsvilla: \"%s\"",

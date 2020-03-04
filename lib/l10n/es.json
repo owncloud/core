@@ -71,7 +71,6 @@
     "%s enter the database username and name." : "%s introduzca el nombre de usuario y la contraseña de la BBDD.",
     "%s enter the database username." : "%s ingresar el usuario de la base de datos.",
     "%s enter the database name." : "%s ingresar el nombre de la base de datos",
-    "%s you may not use dots in the database name" : "%s puede utilizar puntos en el nombre de la base de datos",
     "%s enter the database name or connection string." : "%s introduzca el nombre de la base de datos o cadena de conexión.",
     "Oracle connection could not be established" : "No se pudo establecer la conexión a Oracle",
     "Oracle username and/or password not valid" : "Usuario y/o contraseña de Oracle no válidos",

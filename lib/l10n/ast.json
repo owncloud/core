@@ -66,7 +66,6 @@
     "%s enter the database username and name." : "%s introducir el nome d'usuariu y el nome de la base de datos .",
     "%s enter the database username." : "%s introducir l'usuariu de la base de datos.",
     "%s enter the database name." : "%s introducir nome de la base de datos.",
-    "%s you may not use dots in the database name" : "%s nun pues usar puntos nel nome de la base de datos",
     "Oracle connection could not be established" : "Nun pudo afitase la conexón d'Oracle",
     "Oracle username and/or password not valid" : "Nome d'usuariu o contraseña d'Oracle non válidos",
     "DB Error: \"%s\"" : "Fallu BD: \"%s\"",
