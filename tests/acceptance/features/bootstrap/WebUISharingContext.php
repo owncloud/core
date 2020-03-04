@@ -1918,14 +1918,31 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then public link share with name :arg1 should be visible
+	 * @Then a public link share with name :arg1 should be visible on the webUI
 	 *
 	 * @param string $expectedLinkEntryName
 	 *
 	 * @return void
 	 */
-	public function publicLinkShareWithNameShouldBeVisible($expectedLinkEntryName) {
+	public function publicLinkShareWithNameShouldBeVisibleOnTheWebUI($expectedLinkEntryName) {
 		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
 		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
+	}
+
+	/**
+	 * @Then :arg1 public link shares with name :arg2 should be visible on the webUI
+	 *
+	 * @param string $expectedCount
+	 * @param string $expectedLinkEntryName
+	 *
+	 * @return void
+	 */
+	public function publicLinkSharesWithNameShouldBeVisibleOnTheWebUI($expectedCount, $expectedLinkEntryName) {
+		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
+		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
+		Assert::assertEquals(
+			\array_count_values($actualNamesArrayOfPublicLinks)[$expectedLinkEntryName],
+			$expectedCount
+		);
 	}
 }

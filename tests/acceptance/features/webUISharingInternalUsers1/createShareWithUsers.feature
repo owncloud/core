@@ -266,12 +266,30 @@ Feature: Sharing files and folders with internal users
       | username |
       | user0    |
       | user1    |
-      | user2    |
     And user "user0" has uploaded file with content "uploaded content" to "lorem.txt"
     And user "user0" has shared file "lorem.txt" with user "user1"
-    And user "user1" has shared file "lorem.txt" with user "user2"
-    And user "user1" has created a public link share of file "lorem.txt"
+    And user "user1" has created a public link share with settings
+      | path | /lorem.txt  |
+      | name | Public link |
     And user "user0" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
     And the user opens the public link share tab
-    Then public link share with name "Public link" should be visible
+    Then a public link share with name "Public link" should be visible on the webUI
+
+  Scenario: reshare indicators of multiple public links with same name to the original share owner
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    And user "user0" has uploaded file with content "uploaded content" to "lorem.txt"
+    And user "user0" has shared file "lorem.txt" with user "user1"
+    And user "user0" has created a public link share with settings
+      | path | /lorem.txt  |
+      | name | Public link |
+    And user "user1" has created a public link share with settings
+      | path | lorem.txt  |
+      | name | Public link |
+    And user "user0" has logged in using the webUI
+    When the user opens the share dialog for file "lorem.txt"
+    And the user opens the public link share tab
+    Then 2 public link shares with name "Public link" should be visible on the webUI
