@@ -13,6 +13,7 @@ Summary
 * Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
 * Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
 * Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
+* Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -72,6 +73,14 @@ Details
    there was no full-stop. The full-stop has been removed to make the messages consistent.
 
    https://github.com/owncloud/core/pull/36984
+
+* Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
+
+   Google Drive files without a file extension (".git/HEAD" for example) would result in a 404
+   response from the Web UI or desktop client. The problem has been fixed.
+
+   https://github.com/owncloud/core/issues/37044
+   https://github.com/owncloud/core/pull/37045
 
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 
