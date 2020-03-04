@@ -13,6 +13,7 @@ Summary
 * Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
 * Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
 * Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
+* Bugfix - Initialize the user before the transfer command: [#37038](https://github.com/owncloud/core/pull/37038)
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -73,6 +74,16 @@ Details
    there was no full-stop. The full-stop has been removed to make the messages consistent.
 
    https://github.com/owncloud/core/pull/36984
+
+* Bugfix - Initialize the user before the transfer command: [#37038](https://github.com/owncloud/core/pull/37038)
+
+   Trying to transfer the ownership of files to a user who hadn't logged in was causing problems
+   because the FS of such user wasn't initialized and it wasn't possible to move the files there.
+   The command appeared to work, but the files weren't moved.
+
+   Now such user has the FS initialized so the transfer can be completed normally.
+
+   https://github.com/owncloud/core/pull/37038
 
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 
