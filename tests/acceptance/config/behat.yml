@@ -388,6 +388,13 @@ default:
         - OccContext:
         - PublicWebDavContext:
 
+    apiTranslation:
+      paths:
+        - '%paths.base%/../features/apiTranslation'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     cliAppManagement:
       paths:
         - '%paths.base%/../features/cliAppManagement'
