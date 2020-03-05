@@ -586,7 +586,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		if ($includeTags) {
-			$formatted = \OCA\Files\Helper::populateTags($formatted, 'file_source');
+			$formatted = \OCA\Files\Helper::populateTagsForShares($formatted);
 		}
 
 		return new Result($formatted);
@@ -716,7 +716,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		if ($includeTags) {
-			$formatted = \OCA\Files\Helper::populateTags($formatted, 'file_source');
+			$formatted = \OCA\Files\Helper::populateTagsForShares($formatted);
 		}
 
 		if ($path !== null) {

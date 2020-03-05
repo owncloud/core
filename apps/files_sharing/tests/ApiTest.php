@@ -439,12 +439,15 @@ class ApiTest extends TestCase {
 
 		$share = $this->shareManager->createShare($share);
 
-		$request = $this->createRequest([]);
+		$request = $this->createRequest(['include_tags' => true]);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
 		$result = $ocs->getShares();
 
 		$this->assertTrue($result->succeeded());
 		$this->assertCount(1, $result->getData());
+		foreach ($result->getData() as $shareWithTags) {
+			$this->assertArrayHasKey('tags', $shareWithTags);
+		}
 
 		$this->shareManager->deleteShare($share);
 	}
@@ -469,12 +472,18 @@ class ApiTest extends TestCase {
 			->setPermissions(31);
 		$share2 = $this->shareManager->createShare($share2);
 
-		$request = $this->createRequest(['shared_with_me' => 'true']);
+		$request = $this->createRequest([
+			'shared_with_me' => 'true',
+			'include_tags' => true
+		]);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER2);
 		$result = $ocs->getShares();
 
 		$this->assertTrue($result->succeeded());
 		$this->assertCount(2, $result->getData());
+		foreach ($result->getData() as $shareWithTags) {
+			$this->assertArrayHasKey('tags', $shareWithTags);
+		}
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
