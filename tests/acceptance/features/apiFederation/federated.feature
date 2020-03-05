@@ -592,8 +592,8 @@ Feature: federated
     And user "user0" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
     And user "user0" from server "REMOTE" has shared "file-to-share" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
-    When using OCS API version "<ocs-api-version>"
-    And using server "LOCAL"
+    And using OCS API version "<ocs-api-version>"
+    When using server "LOCAL"
     Then the content of file "/file-to-share" for user "user1" should be "thisContentIsVisible"
     Examples:
       | ocs-api-version |
@@ -606,8 +606,8 @@ Feature: federated
     And user "user0" has uploaded file with content "thisContentIsVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "user0" from server "REMOTE" has shared "/PARENT/RandomFolder/file-to-share" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
-    When using OCS API version "<ocs-api-version>"
-    And using server "LOCAL"
+    And using OCS API version "<ocs-api-version>"
+    When using server "LOCAL"
     Then the content of file "/file-to-share" for user "user1" should be "thisContentIsVisible"
     Examples:
       | ocs-api-version |
