@@ -27,6 +27,7 @@ Summary
 * Change - Lookup email subject in correct translation context: [#37040](https://github.com/owncloud/core/issues/37040)
 * Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
 * Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
+* Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
 
 Details
 -------
@@ -160,6 +161,10 @@ Details
 
    https://github.com/owncloud/core/issues/36920
    https://github.com/owncloud/core/pull/37058
+
+* Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
+
+   https://github.com/owncloud/core/pull/37082
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
