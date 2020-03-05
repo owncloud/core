@@ -279,3 +279,23 @@ Feature: move (rename) file
       | #oc ab?cd=ef# |
       | *a@b#c$e%f&g* |
       | 1 2 3##.##    |
+
+  Scenario Outline: renaming file with dots in the path
+    Given using <dav_version> DAV path
+    And user "user0" has created folder "<folder_name>"
+    When user "user0" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>" using the WebDAV API
+    And user "user0" moves file "/<folder_name>/<file_name>" to "/<renamed_file>" using the WebDAV API
+    Then the HTTP status code should be "<http-code>"
+    Examples:
+      | dav_version | folder_name   | file_name   | renamed_file | http-code |
+      | old         | /upload.      | abc.        | abc.txt      | 201       |
+      | old         | /upload.      | abc .       | abc.txt      | 201       |
+      | old         | /upload.1     | abc.txt     | abc.txt      | 201       |
+      | old         | /upload...1.. | abc...txt.. | abc.txt      | 201       |
+      | old         | /...          | abcd.txt    | abc.txt      | 201       |
+      | new         | /upload.      | abc.        | abc.txt      | 201       |
+      | new         | /upload.      | abc .       | abc.txt      | 201       |
+      | new         | /upload.1     | abc.txt     | abc.txt      | 201       |
+      | new         | /upload...1.. | abc...txt.. | abc.txt      | 201       |
+      | new         | /...          | ...         | abc.txt      | 201       |
+      | new         | /..upload     | ..abc       | abc.txt      | 201       |
