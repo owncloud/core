@@ -16,7 +16,7 @@ class ZIPTest extends TestBase {
 	}
 
 	protected function getExisting() {
-		$dir = \OC::$SERVERROOT . '/tests/data';
+		$dir = \OC::$SERVERROOT . '/tests/data/archive';
 		return new ZIP($dir . '/data.zip');
 	}
 

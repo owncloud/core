@@ -53,7 +53,7 @@ abstract class TestBase extends \Test\TestCase {
 
 	public function testContent() {
 		$this->instance=$this->getExisting();
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$textFile=$dir.'/lorem.txt';
 		$this->assertStringEqualsFile($textFile, $this->instance->getFile('lorem.txt'));
 
@@ -63,7 +63,7 @@ abstract class TestBase extends \Test\TestCase {
 	}
 
 	public function testWrite() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$textFile=$dir.'/lorem.txt';
 		$this->instance=$this->getNew();
 		$this->assertCount(0, $this->instance->getFiles());
@@ -78,7 +78,7 @@ abstract class TestBase extends \Test\TestCase {
 	}
 
 	public function testReadStream() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$this->instance=$this->getExisting();
 		$fh=$this->instance->getStream('lorem.txt', 'r');
 		$this->assertTrue((bool)$fh);
@@ -87,7 +87,7 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertStringEqualsFile($dir.'/lorem.txt', $content);
 	}
 	public function testWriteStream() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$this->instance=$this->getNew();
 		$fh=$this->instance->getStream('lorem.txt', 'w');
 		$source=\fopen($dir.'/lorem.txt', 'r');
@@ -109,7 +109,7 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertFalse($this->instance->fileExists('/test/'));
 	}
 	public function testExtract() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$this->instance=$this->getExisting();
 		$tmpDir=\OCP\Files::tmpFolder();
 		$this->instance->extract($tmpDir);
@@ -120,7 +120,7 @@ abstract class TestBase extends \Test\TestCase {
 		\OCP\Files::rmdirr($tmpDir);
 	}
 	public function testMoveRemove() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$textFile=$dir.'/lorem.txt';
 		$this->instance=$this->getNew();
 		$this->instance->addFile('lorem.txt', $textFile);
@@ -133,7 +133,7 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertFalse($this->instance->fileExists('target.txt'));
 	}
 	public function testRecursive() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$dir=\OC::$SERVERROOT.'/tests/data/archive';
 		$this->instance=$this->getNew();
 		$this->instance->addRecursive('/dir', $dir);
 		$this->assertTrue($this->instance->fileExists('/dir/lorem.txt'));
