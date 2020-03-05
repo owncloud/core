@@ -101,6 +101,7 @@ config = {
 				'apiShareUpdate',
 				'apiTags',
 				'apiTrashbin',
+				'apiTranslation',
 				'apiVersions',
 				'apiWebdavLocks',
 				'apiWebdavLocks2',

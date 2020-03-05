@@ -1528,16 +1528,18 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets the info of the last share in language "([^"]*)" using the sharing API$/
 	 * @When /^user "([^"]*)" gets the info of the last share using the sharing API$/
 	 *
 	 * @param string $user
+	 * @param string $language
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
+	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
 		$share_id = $this->getLastShareIdOf($user);
-		$this->getShareData($user, $share_id);
+		$this->getShareData($user, $share_id, $language);
 	}
 
 	/**
@@ -1604,13 +1606,18 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param int $share_id
+	 * @param string $language
 	 *
 	 * @return void
 	 */
-	public function getShareData($user, $share_id) {
+	public function getShareData($user, $share_id, $language=null) {
 		$url = $this->getSharesEndpointPath("/$share_id");
+		$headers = [];
+		if ($language !== null) {
+			$headers['Accept-Language'] = $language;
+		}
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, "GET", $url, null
+			$user, "GET", $url, null, null, $headers
 		);
 	}
 
