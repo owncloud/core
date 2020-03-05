@@ -390,7 +390,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getURLGenerator(),
 				$c->getL10NFactory(),
 				$c->getUserSession(),
-				$c->getGroupManager());
+				$c->getGroupManager(),
+				$c->getConfig());
 		});
 		$this->registerAlias(IConfig::class, 'AllConfig');
 		$this->registerService('AllConfig', function (Server $c) {
