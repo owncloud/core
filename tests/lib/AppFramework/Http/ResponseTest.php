@@ -95,7 +95,7 @@ class ResponseTest extends TestCase {
 
 	public function testCacheHeadersAreDisabledByDefault() {
 		$headers = $this->childResponse->getHeaders();
-		$this->assertEquals('no-cache, must-revalidate', $headers['Cache-Control']);
+		$this->assertEquals('no-cache, no-store, must-revalidate', $headers['Cache-Control']);
 	}
 
 	public function testAddCookie() {
