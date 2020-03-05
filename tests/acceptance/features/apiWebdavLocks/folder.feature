@@ -98,6 +98,7 @@ Feature: lock folders
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
     When user "user0" gets the following properties of folder "PARENT" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "<lock-root>"
     And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:[a-z0-9-]+$/"

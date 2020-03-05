@@ -13,6 +13,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     When user "user0" gets the following properties of file "/tmp.txt" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "19"
     Examples:
@@ -25,6 +26,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has shared file "/tmp.txt" with user "user1"
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "19"
     Examples:
@@ -43,6 +45,7 @@ Feature: sharing
       | permissions | share,update,read |
       | shareWith   | grp1              |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "19"
     Examples:
@@ -73,6 +76,7 @@ Feature: sharing
       | permissions | update,read |
       | shareWith   | grp1        |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "3"
     Examples:
@@ -103,6 +107,7 @@ Feature: sharing
       | permissions | share,read |
       | shareWith   | grp1       |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "17"
     Examples:
@@ -114,6 +119,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And user "user0" has created folder "/tmp"
     When user "user0" gets the following properties of folder "/" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "31"
     Examples:
@@ -126,6 +132,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "31"
     Examples:
@@ -143,6 +150,7 @@ Feature: sharing
       | shareType | group |
       | shareWith | grp1  |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "31"
     Examples:
@@ -173,6 +181,7 @@ Feature: sharing
       | shareWith   | grp1                     |
       | permissions | share,delete,create,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "29"
     Examples:
@@ -203,6 +212,7 @@ Feature: sharing
       | shareWith   | grp1                     |
       | permissions | share,delete,update,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "27"
     Examples:
@@ -233,6 +243,7 @@ Feature: sharing
       | shareWith   | grp1                     |
       | permissions | share,create,update,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "23"
     Examples:
@@ -263,6 +274,7 @@ Feature: sharing
       | shareWith   | grp1   |
       | permissions | change |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
+      | propertyName          |
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "15"
     Examples:
