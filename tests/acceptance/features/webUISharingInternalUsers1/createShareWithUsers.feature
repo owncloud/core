@@ -261,6 +261,7 @@ Feature: Sharing files and folders with internal users
     And the content of "textfile.txt" should be the same as the local "textfile.txt"
     And it should not be possible to share file "textfile.txt" using the webUI
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario: reshare indicators of public links to the original share owner
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -276,6 +277,7 @@ Feature: Sharing files and folders with internal users
     And the user opens the public link share tab
     Then a public link share with name "Public link" should be visible on the webUI
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario: reshare indicators of multiple public links with same name to the original share owner
     Given these users have been created with default attributes and without skeleton files:
       | username |
