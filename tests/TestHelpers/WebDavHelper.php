@@ -418,6 +418,9 @@ class WebDavHelper {
 		if ($type === "archive") {
 			return "remote.php/dav/archive/$user/files";
 		}
+		if ($type === "customgroups") {
+			return "remote.php/dav/";
+		}
 		if ($davPathVersionToUse === 1) {
 			$path = "remote.php/webdav/";
 			return $path;
