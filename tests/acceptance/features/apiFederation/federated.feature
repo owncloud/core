@@ -614,6 +614,127 @@ Feature: federated
       | 1               |
       | 2               |
 
+  Scenario Outline: remote federated share receiver adds files/folders in the federated share
+    Given user "user1" has created folder "/PARENT/RandomFolder"
+    And user "user1" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user1" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "user0" from server "REMOTE"
+    And user "user0" from server "REMOTE" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "REMOTE"
+    When user "user0" uploads file with content "thisContentIsFinal" to "/RandomFolder/new-file" using the WebDAV API
+    And user "user0" creates folder "/RandomFolder/sub-folder" using the WebDAV API
+    And using server "LOCAL"
+    Then as "user1" file "/PARENT/RandomFolder/new-file" should exist
+    And as "user1" file "/PARENT/RandomFolder/file-to-share" should exist
+    And as "user1" folder "/PARENT/RandomFolder/sub-folder" should exist
+    And the content of file "/PARENT/RandomFolder/new-file" for user "user1" should be "thisContentIsFinal"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: local federated share receiver adds files/folders in the federated share
+    Given using server "REMOTE"
+    And user "user0" has created folder "/PARENT/RandomFolder"
+    And user "user0" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user0" from server "REMOTE" has shared "/PARENT/RandomFolder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "LOCAL"
+    When user "user1" uploads file with content "thisContentIsFinal" to "/RandomFolder/new-file" using the WebDAV API
+    And user "user1" creates folder "/RandomFolder/sub-folder" using the WebDAV API
+    And using server "REMOTE"
+    Then as "user0" file "/PARENT/RandomFolder/new-file" should exist
+    And as "user0" file "/PARENT/RandomFolder/file-to-share" should exist
+    And as "user0" folder "/PARENT/RandomFolder/sub-folder" should exist
+    And the content of file "/PARENT/RandomFolder/new-file" for user "user0" should be "thisContentIsFinal"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: local federated share receiver deletes files/folders of the received share
+    Given using server "REMOTE"
+    And user "user0" has created folder "/PARENT/RandomFolder"
+    And user "user0" has created folder "/PARENT/RandomFolder/sub-folder"
+    And user "user0" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user0" from server "REMOTE" has shared "/PARENT/RandomFolder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "LOCAL"
+    When user "user1" deletes folder "/RandomFolder/sub-folder" using the WebDAV API
+    And user "user1" deletes file "/RandomFolder/file-to-share" using the WebDAV API
+    And using server "REMOTE"
+    Then as "user0" file "/PARENT/RandomFolder/file-to-share" should not exist
+    And as "user0" folder "/PARENT/RandomFolder/sub-folder" should not exist
+    But as "user0" folder "/PARENT/RandomFolder" should exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: remote federated share receiver deletes files/folders of the received share
+    Given user "user1" has created folder "/PARENT/RandomFolder"
+    And user "user1" has created folder "/PARENT/RandomFolder/sub-folder"
+    And user "user1" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user1" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "user0" from server "REMOTE"
+    And user "user0" from server "REMOTE" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "REMOTE"
+    When user "user0" deletes folder "/RandomFolder/sub-folder" using the WebDAV API
+    And user "user0" deletes file "/RandomFolder/file-to-share" using the WebDAV API
+    And using server "LOCAL"
+    Then as "user1" file "/PARENT/RandomFolder/file-to-share" should not exist
+    And as "user1" folder "/PARENT/RandomFolder/sub-folder" should not exist
+    But as "user1" folder "/PARENT/RandomFolder" should exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: local federated share receiver renames files/folders of the received share
+    Given using server "REMOTE"
+    And user "user0" has created folder "/PARENT/RandomFolder"
+    And user "user0" has created folder "/PARENT/RandomFolder/sub-folder"
+    And user "user0" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user0" from server "REMOTE" has shared "/PARENT/RandomFolder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "LOCAL"
+    When user "user1" moves folder "/RandomFolder/sub-folder" to "/RandomFolder/renamed-sub-folder" using the WebDAV API
+    And user "user1" moves file "/RandomFolder/file-to-share" to "/RandomFolder/renamedFile" using the WebDAV API
+    And using server "REMOTE"
+    Then as "user0" file "/PARENT/RandomFolder/file-to-share" should not exist
+    But as "user0" file "/PARENT/RandomFolder/renamedFile" should exist
+    And the content of file "/PARENT/RandomFolder/renamedFile" for user "user0" should be "thisContentShouldBeVisible"
+    And as "user0" folder "/PARENT/RandomFolder/sub-folder" should not exist
+    But as "user0" folder "/PARENT/RandomFolder/renamed-sub-folder" should exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: remote federated share receiver renames files/folders of the received share
+    Given user "user1" has created folder "/PARENT/RandomFolder"
+    And user "user1" has created folder "/PARENT/RandomFolder/sub-folder"
+    And user "user1" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user1" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "user0" from server "REMOTE"
+    And user "user0" from server "REMOTE" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "REMOTE"
+    When user "user0" moves folder "/RandomFolder/sub-folder" to "/RandomFolder/renamed-sub-folder" using the WebDAV API
+    And user "user0" moves file "/RandomFolder/file-to-share" to "/RandomFolder/renamedFile" using the WebDAV API
+    And using server "LOCAL"
+    Then as "user1" file "/PARENT/RandomFolder/file-to-share" should not exist
+    But as "user1" file "/PARENT/RandomFolder/renamedFile" should exist
+    And the content of file "/PARENT/RandomFolder/renamedFile" for user "user1" should be "thisContentShouldBeVisible"
+    And as "user1" folder "/PARENT/RandomFolder/sub-folder" should not exist
+    But as "user1" folder "/PARENT/RandomFolder/renamed-sub-folder" should exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
   Scenario Outline: sharer modifies the share which was shared to the federated share receiver
     Given using server "REMOTE"
     And user "user0" has created folder "/PARENT/RandomFolder"
