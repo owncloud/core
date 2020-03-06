@@ -16,6 +16,7 @@ Summary
 * Bugfix - Initialize the user before the transfer command: [#37038](https://github.com/owncloud/core/pull/37038)
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Bugfix - Fix public link upload remaining time estimation: [#37053](https://github.com/owncloud/core/pull/37053)
+* Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update symfony/polyfill (1.13.1 => 1.14.0): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -102,6 +103,10 @@ Details
 
    https://github.com/owncloud/core/issues/25053
    https://github.com/owncloud/core/pull/37053
+
+* Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
+
+   https://github.com/owncloud/core/pull/36749
 
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 
