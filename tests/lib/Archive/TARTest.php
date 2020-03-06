@@ -16,8 +16,7 @@ class TARTest extends TestBase {
 	}
 
 	protected function getExisting() {
-		$dir = \OC::$SERVERROOT . '/tests/data/archive';
-		return new TAR($dir . '/data.tar.gz');
+		return new TAR($this->getArchiveTestDataDir() . '/data.tar.gz');
 	}
 
 	protected function getNew() {
