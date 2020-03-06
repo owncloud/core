@@ -47,7 +47,7 @@ Feature: Scanning files on local storage
     Then the propfind result of user "user0" should not contain these entries:
       | /local_storage/folder1/hello2.txt |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnLDAP
   Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
     Given these users have been created with default attributes and skeleton files:
       | username |
