@@ -586,3 +586,30 @@ Feature: federated
     When the administrator sets parameter "autoAddServers" of app "federation" to "0"
     And user "user0" from server "REMOTE" shares "/textfile1.txt" with user "user1" from server "LOCAL" using the sharing API
     And as "user1" file "textfile1 (2).txt" should not exist
+
+  Scenario Outline: federated share receiver sees the original content of a received file
+    Given using server "REMOTE"
+    And user "user0" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And user "user0" from server "REMOTE" has shared "file-to-share" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    When using server "LOCAL"
+    Then the content of file "/file-to-share" for user "user1" should be "thisContentIsVisible"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: federated share receiver sees the original content of a received file in multiple levels of folders
+    Given using server "REMOTE"
+    And user "user0" has created folder "/PARENT/RandomFolder"
+    And user "user0" has uploaded file with content "thisContentIsVisible" to "/PARENT/RandomFolder/file-to-share"
+    And user "user0" from server "REMOTE" has shared "/PARENT/RandomFolder/file-to-share" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    When using server "LOCAL"
+    Then the content of file "/file-to-share" for user "user1" should be "thisContentIsVisible"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
