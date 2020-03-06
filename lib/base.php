@@ -632,10 +632,6 @@ class OC {
 		// set back user
 		\OC::$server->getSession()->set('user_id', $uid);
 
-		//try to set the session lifetime
-		$sessionLifeTime = self::getSessionLifeTime();
-		@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
-
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		// User and Groups

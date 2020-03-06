@@ -169,8 +169,19 @@ class Internal extends Session {
 			if ($this->getServerProtocol() === 'https') {
 				\ini_set('session.cookie_secure', true);
 			}
+
+			//try to set the session lifetime
+			$sessionLifeTime = self::getSessionLifeTime();
+			@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
 		}
 		\session_start();
+	}
+
+	/**
+	 * @return string
+	 */
+	private static function getSessionLifeTime() {
+		return \OC::$server->getConfig()->getSystemValue('session_lifetime', 60 * 20);
 	}
 
 	private function getServerProtocol() {
