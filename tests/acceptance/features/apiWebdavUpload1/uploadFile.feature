@@ -77,3 +77,23 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: upload a file into a folder with dots in the path and check download content
+    Given using <dav_version> DAV path
+    And user "user0" has created folder "<folder_name>"
+    When user "user0" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>" using the WebDAV API
+    Then as "user0" file "/<folder_name>/<file_name>" should exist
+    And the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content for file name ending with a dot"
+    Examples:
+      | dav_version | folder_name   | file_name   |
+      | old         | /upload.      | abc.        |
+      | old         | /upload.      | abc .       |
+      | old         | /upload.1     | abc.txt     |
+      | old         | /upload...1.. | abc...txt.. |
+      | old         | /...          | ...         |
+      | new         | /..upload     | ..abc       |
+      | new         | /upload.      | abc.        |
+      | new         | /upload.      | abc .       |
+      | new         | /upload.1     | abc.txt     |
+      | new         | /upload...1.. | abc...txt.. |
+      | new         | /...          | ...         |
