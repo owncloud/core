@@ -55,3 +55,23 @@ Feature: move (rename) folder
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: renaming folder with dots in the path
+    Given using <dav_version> DAV path
+    And user "user0" has created folder "<folder_name>"
+    When user "user0" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/abc.txt" using the WebDAV API
+    And user "user0" moves file "/<folder_name>" to "/<renamed_folder>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    Examples:
+      | dav_version | folder_name   | renamed_folder |
+      | old         | /upload.      | uploadFolder   |
+      | old         | /upload.      | uploadFolder   |
+      | old         | /upload.1     | uploadFolder   |
+      | old         | /upload...1.. | uploadFolder   |
+      | old         | /...          | uploadFolder   |
+      | new         | /upload.      | uploadFolder   |
+      | new         | /upload.      | uploadFolder   |
+      | new         | /upload.1     | uploadFolder   |
+      | new         | /upload...1.. | uploadFolder   |
+      | new         | /...          | uploadFolder   |
+      | new         | /..upload     | uploadFolder   |
