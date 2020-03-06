@@ -97,4 +97,3 @@ Feature: upload file
       | new         | /upload.1     | abc.txt     |
       | new         | /upload...1.. | abc...txt.. |
       | new         | /...          | ...         |
-      | new         | /..upload     | ..abc       |
