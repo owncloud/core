@@ -1269,12 +1269,11 @@ OC.Uploader.prototype = _.extend({
 
 			if (this._supportAjaxUploadWithProgress()) {
 				//remaining time
-				var lastUpdate = new Date().getMilliseconds();
-				var lastSize = 0;
 				var bufferSize = 20;
 				var buffer = [];
 				var bufferIndex = 0;
 				var bufferTotal = 0;
+				var filledBufferSize = 0;
 				for(var i = 0; i < bufferSize;i++){
 					buffer[i] = 0;
 				}
@@ -1308,19 +1307,20 @@ OC.Uploader.prototype = _.extend({
 				fileupload.on('fileuploadprogressall', function(e, data) {
 					self.log('progress handle fileuploadprogressall', e, data);
 					var progress = (data.loaded / data.total) * 100;
-					var thisUpdate = new Date().getMilliseconds();
-					var diffUpdate = (thisUpdate - lastUpdate)/1000; // eg. 2s
-					lastUpdate = thisUpdate;
-					var diffSize = data.loaded - lastSize;
-					lastSize = data.loaded;
-					diffSize = diffSize / diffUpdate; // apply timing factor, eg. 1mb/2s = 0.5mb/s
-					var remainingSeconds = ((data.total - data.loaded) / diffSize);
+					var remainingBits = (data.total - data.loaded) * 8;
+					var remainingSeconds = remainingBits / data.bitrate;
+
+					//Take the average remaining seconds of the last bufferSize events
+					//to prevent fluctuation and provide a smooth experience
 					if (isFinite(remainingSeconds) && remainingSeconds >= 0) {
 						bufferTotal = bufferTotal - (buffer[bufferIndex]) + remainingSeconds;
-						buffer[bufferIndex] = remainingSeconds; //buffer to make it smoother
+						buffer[bufferIndex] = remainingSeconds;
 						bufferIndex = (bufferIndex + 1) % bufferSize;
+						if (filledBufferSize < bufferSize) {
+							filledBufferSize++;
+						}
 					}
-					var smoothRemainingSeconds = (bufferTotal / bufferSize); //seconds
+					var smoothRemainingSeconds = (bufferTotal / filledBufferSize);
 					var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
 					self.$uploadprogressbar.attr('data-loaded', data.loaded);
 					self.$uploadprogressbar.attr('data-total', data.total);
