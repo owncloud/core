@@ -16,6 +16,7 @@ Summary
 * Bugfix - Initialize the user before the transfer command: [#37038](https://github.com/owncloud/core/pull/37038)
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Bugfix - Fix public link upload remaining time estimation: [#37053](https://github.com/owncloud/core/pull/37053)
+* Bugfix - Fix OCS Share API response for requests contain "include_tags" parameter: [#37084](https://github.com/owncloud/core/issues/37084)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
 * Change - Update webmozart/assert (1.6.0 => 1.7.0): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -104,6 +105,16 @@ Details
 
    https://github.com/owncloud/core/issues/25053
    https://github.com/owncloud/core/pull/37053
+
+* Bugfix - Fix OCS Share API response for requests contain "include_tags" parameter: [#37084](https://github.com/owncloud/core/issues/37084)
+
+   Sending "include_tags" request parameter for OCS Share API was led to duplicated share
+   entries in API response. This bug has been fixed by using share_id instead of file_id when
+   populating tags. Also, the tag generation helper method simplified by customizing it for only
+   shares.
+
+   https://github.com/owncloud/core/issues/37084
+   https://github.com/owncloud/core/pull/37088
 
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 
