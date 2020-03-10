@@ -148,7 +148,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	);
 
 	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer()));
-	$application->add(new OC\Core\Command\User\Delete(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\Delete(\OC::$server->getUserManager(), \OC::$server->getRootFolder()));
 	$application->add(new OC\Core\Command\User\Disable(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Enable(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));

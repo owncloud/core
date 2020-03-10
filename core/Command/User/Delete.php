@@ -24,9 +24,12 @@
 
 namespace OC\Core\Command\User;
 
+use OCP\Files\IRootFolder;
+use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -34,11 +37,16 @@ class Delete extends Command {
 	/** @var IUserManager */
 	protected $userManager;
 
+	/** @var IRootFolder */
+	protected $rootFolder;
+
 	/**
 	 * @param IUserManager $userManager
+	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct(IUserManager $userManager) {
+	public function __construct(IUserManager $userManager, IRootFolder $rootFolder) {
 		$this->userManager = $userManager;
+		$this->rootFolder = $rootFolder;
 		parent::__construct();
 	}
 
@@ -50,13 +58,28 @@ class Delete extends Command {
 				'uid',
 				InputArgument::REQUIRED,
 				'The username.'
-			);
+			)
+			->addOption(
+				'force',
+				'f',
+				InputOption::VALUE_NONE,
+				'Delete the home folder of the user if available.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
 		$user = $this->userManager->get($uid);
 		if ($user === null) {
+			try {
+				if ($input->getOption('force')) {
+					$userFolderNode = $this->rootFolder->get("/{$uid}");
+					$userFolderNode->delete();
+					$output->writeln("<info>User folder is deleted.</info>");
+					return 0;
+				}
+			} catch (\Exception $e) {
+				// The folder does not exist and lets return
+			}
 			$output->writeln("<error>User with uid '$uid' does not exist</error>");
 			return 1;
 		}

@@ -1,0 +1,12 @@
+Bugfix: Add force option to delete user home folder
+
+When the command:
+./occ user:delete -f foo
+
+If the user foo is not available then the command would
+check if the home folder exists for the user foo, when 
+-f or force option is provided. If so then it would
+delete the home folder of foo.
+
+https://github.com/owncloud/core/pull/37103
+
