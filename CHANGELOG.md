@@ -30,6 +30,7 @@ Summary
 * Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
 * Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
 * Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
+* Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
 
 Details
 -------
@@ -179,6 +180,10 @@ Details
 * Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
 
    https://github.com/owncloud/core/pull/37082
+
+* Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
+
+   https://github.com/owncloud/core/pull/37096
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
