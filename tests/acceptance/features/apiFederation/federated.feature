@@ -809,13 +809,17 @@ Feature: federated
       | 1               |
       | 2               |
 
-  Scenario: sharer unshares the federated share and the receiver no longer sees the files/folders
+  Scenario Outline: sharer unshares the federated share and the receiver no longer sees the files/folders
     Given user "user1" has created folder "/PARENT/RandomFolder"
     And user "user1" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "user1" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "user0" from server "REMOTE"
     And user "user0" from server "REMOTE" has accepted the last pending share
-    And using OCS API version "1"
+    And using OCS API version "<ocs-api-version>"
     When user "user1" deletes the last share using the sharing API
     And using server "REMOTE"
     Then as "user0" file "/RandomFolder/file-to-share" should not exist
     And as "user0" folder "/RandomFolder" should not exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
