@@ -211,7 +211,7 @@ OC.L10N.register(
     "Automatically accept new incoming local user shares" : "Neue lokale Benutzerfreigaben automatisch akzeptieren",
     "Allow resharing" : "Weiterverteilen erlauben",
     "Allow sharing with groups" : "Mit Gruppen teilen erlauben",
-    "Restrict users to only share with users in their groups" : "Benutzern auf das Teilen mit Benutzern in ihren Gruppen beschränken.",
+    "Restrict users to only share with users in their groups" : "Benutzer auf das Teilen mit Benutzern in ihren Gruppen beschränken",
     "Restrict users to only share with groups they are member of" : "Benutzer auf das Teilen mit Gruppen, in denen sie Mitglied sind beschränken",
     "Allow users to send mail notification for shared files to other users" : "Benutzern erlauben, E-Mail-Benachrichtigungen für geteilte Dateien an andere Benutzer zu senden",
     "Exclude groups from sharing" : "Gruppen von Freigaben ausschließen",

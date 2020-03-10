@@ -111,7 +111,7 @@
     "Changed by %2$s" : "%2$s tarafından değiştirildi",
     "Deleted by %2$s" : "%2$s tarafından silindi",
     "Restored by %2$s" : "%2$s tarafından geri yüklendi",
-    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Bu dosyaya/klasöre erişim izniniz yok - Lütfen sizinle paylaşmak için sahibiyle bağlantı kurun.",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Bu dosyaya/klasöre erişim izniniz yok - Lütfen sizinle paylaşması için sahibiyle bağlantı kurun.",
     "Upload (max. %s)" : "Yükle (azami: %s)",
     "Settings" : "Ayarlar",
     "Show hidden files" : "Gizli dosyaları göster",
