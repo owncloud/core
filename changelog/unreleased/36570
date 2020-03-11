@@ -1,0 +1,3 @@
+Change: Write crash log in case of parse error in config.php
+
+https://github.com/owncloud/core/issues/36570

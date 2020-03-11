@@ -1010,10 +1010,15 @@ class OC {
 	 *
 	 * Note: This is mainly for internal purposes. You're encouraged to use the ownCloud's logger
 	 * for anything you need to log.
+	 *
+	 * @param Throwable $ex
 	 */
-	public static function crashLog(\Throwable $ex) {
-		$dataDir = self::$config->getValue('datadirectory', self::$SERVERROOT . '/data');
-		$crashDir = self::$config->getValue('crashdirectory', $dataDir);
+	public static function crashLog(\Throwable $ex): void {
+		$crashDir = self::$SERVERROOT . '/data';
+		if (self::$config) {
+			$dataDir = self::$config->getValue('datadirectory', self::$SERVERROOT . '/data');
+			$crashDir = self::$config->getValue('crashdirectory', $dataDir);
+		}
 
 		$filename = "${crashDir}/crash-" . \date('Y-m-d') . '.log';
 
@@ -1025,7 +1030,7 @@ class OC {
 			'id' => $currentEntryId,
 			'class' => \get_class($ex),
 			'message' => $ex->getMessage(),
-			'stacktrace' => \array_map(function ($elem) {
+			'stacktrace' => \array_map(static function ($elem) {
 				unset($elem['args'], $elem['type']);
 				return $elem;
 			}, $ex->getTrace()),
@@ -1041,7 +1046,7 @@ class OC {
 				'id' => $currentEntryId,
 				'class' => \get_class($ex),
 				'message' => $ex->getMessage(),
-				'stacktrace' => \array_map(function ($elem) {
+				'stacktrace' => \array_map(static function ($elem) {
 					unset($elem['args'], $elem['type']);
 					return $elem;
 				}, $ex->getTrace()),
