@@ -139,11 +139,7 @@ class SecurityMiddleware extends Middleware {
 
 		// CSRF check - also registers the CSRF token since the session may be closed later
 		Util::callRegister();
-		if (!$this->reflector->hasAnnotation('NoCSRFRequired')) {
-			if (!$this->request->passesCSRFCheck()) {
-				throw new CrossSiteRequestForgeryException();
-			}
-		}
+		$this->verifyCSRF($controller);
 
 		/**
 		 * FIXME: Use DI once available
@@ -239,5 +235,41 @@ class SecurityMiddleware extends Middleware {
 		}
 
 		throw $exception;
+	}
+
+	/**
+	 * @param $controller
+	 * @throws CrossSiteRequestForgeryException
+	 * @throws NotLoggedInException
+	 */
+	private function verifyCSRF($controller): void {
+		$isOCSRequest = $controller instanceof OCSController;
+		$isCSRFRequired = !$this->reflector->hasAnnotation('NoCSRFRequired');
+
+		// ocs request
+		if ($isOCSRequest) {
+			// OCS_APIREQUEST header check
+			if ($this->request->getHeader('OCS-APIREQUEST') === null ) {
+				throw new NotLoggedInException();
+			}
+			// in case a csrf token is submitted (ownCloud web client does so) or
+			// the csrf check is required on controller level -> we perform a csrf check
+			$hasCSRFToken = isset($this->request['requesttoken']);
+			if ($isCSRFRequired || $hasCSRFToken) {
+				if (!$this->request->passesCSRFCheck()) {
+					throw new CrossSiteRequestForgeryException();
+				}
+			}
+			return;
+		}
+
+		// no ocs request
+		if ($isCSRFRequired) {
+			if (!$this->request->passesCSRFCheck()) {
+				throw new CrossSiteRequestForgeryException();
+			}
+			return;
+		}
+		// nothing to do if csrf is not required
 	}
 }
