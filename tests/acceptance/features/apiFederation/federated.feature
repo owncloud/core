@@ -868,3 +868,127 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
+  Scenario Outline: Incoming and Outgoing federation shares are enabled
+    Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And user "user1" from server "LOCAL" has shared "file-to-share" with user "user0" from server "REMOTE"
+    And user "user0" from server "REMOTE" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    When using server "REMOTE"
+    Then as "user0" file "/file-to-share" should exist
+    And the content of file "/file-to-share" for user "user0" should be "thisContentIsVisible"
+    When user "user0" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
+    And user "user0" from server "REMOTE" shares "/newFile" with user "user1" from server "LOCAL" using the sharing API
+    And using server "LOCAL"
+    When user "user1" from server "LOCAL" accepts the last pending share using the sharing API
+    Then as "user1" file "/newFile" should exist
+    And the content of file "/newFile" for user "user1" should be "thisFileIsShared"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: Incoming federation shares are enabled but outgoing federation shares are disabled
+    Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" from server "LOCAL" shares "file-to-share" with user "user0" from server "REMOTE" using the sharing API
+    And using server "REMOTE"
+    Then user "user0" should have no last pending federated cloud share
+    And as "user0" file "/file-to-share" should not exist
+    When user "user0" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
+    And user "user0" from server "REMOTE" shares "/newFile" with user "user1" from server "LOCAL" using the sharing API
+    And using server "LOCAL"
+    When user "user1" from server "LOCAL" accepts the last pending share using the sharing API
+    Then as "user1" file "/newFile" should exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: Incoming federation shares are disabled but outgoing federation shares are enabled
+    Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" from server "LOCAL" shares "/file-to-share" with user "user0" from server "REMOTE" using the sharing API
+    And using server "REMOTE"
+    And user "user0" from server "REMOTE" accepts the last pending share using the sharing API
+    Then as "user0" file "/file-to-share" should exist
+    When user "user0" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
+    And user "user0" from server "REMOTE" shares "/newFile" with user "user1" from server "LOCAL" using the sharing API
+    And using server "LOCAL"
+    Then user "user1" should have no last pending federated cloud share
+    And as "user1" file "/newFile" should not exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: Incoming and outgoing federation shares are disabled
+    Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" from server "LOCAL" shares "/file-to-share" with user "user0" from server "REMOTE" using the sharing API
+    And using server "REMOTE"
+    Then user "user0" should have no last pending federated cloud share
+    And as "user0" file "/file-to-share" should not exist
+    When user "user0" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
+    And user "user0" from server "REMOTE" shares "/newFile" with user "user1" from server "LOCAL" using the sharing API
+    And using server "LOCAL"
+    Then user "user1" should have no last pending federated cloud share
+    And as "user1" file "/newFile" should not exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: Incoming and outgoing federation shares are enabled for local server but incoming federation shares is disabled for remote server
+    Given using server "REMOTE"
+    And parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And using server "LOCAL"
+    And parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" from server "LOCAL" shares "/file-to-share" with user "user0" from server "REMOTE" using the sharing API
+    And using server "REMOTE"
+    Then user "user0" should have no last pending federated cloud share
+    And as "user0" file "/file-to-share" should not exist
+    When user "user0" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
+    And user "user0" from server "REMOTE" shares "/newFile" with user "user1" from server "LOCAL" using the sharing API
+    And using server "LOCAL"
+    And user "user1" from server "LOCAL" accepts the last pending share using the sharing API
+    Then as "user1" file "/newFile" should exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: Incoming and outgoing federation shares are enabled for local server but outgoing federation shares is disabled for remote server
+    Given using server "REMOTE"
+    And parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And using server "LOCAL"
+    And parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" from server "LOCAL" shares "/file-to-share" with user "user0" from server "REMOTE" using the sharing API
+    And using server "REMOTE"
+    And user "user0" from server "REMOTE" accepts the last pending share using the sharing API
+    Then as "user0" file "/file-to-share" should exist
+    When user "user0" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
+    And user "user0" from server "REMOTE" shares "/newFile" with user "user1" from server "LOCAL" using the sharing API
+    And using server "LOCAL"
+    Then user "user1" should have no last pending federated cloud share
+    And as "user1" file "/newFile" should not exist
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
