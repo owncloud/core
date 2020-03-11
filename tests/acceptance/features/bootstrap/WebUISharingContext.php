@@ -1654,6 +1654,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				['name', 'permission', 'password', 'expiration', 'email', 'personalMessage', 'emailToSelf']
 			);
 			$settingsArray = $settings->getRowsHash();
+			if (\array_key_exists('expiration', $settingsArray) && $settingsArray['expiration'] !== '') {
+				$settingsArray['expiration'] = \date('d-m-Y', \strtotime($settingsArray['expiration']));
+			}
 			if (!isset($settingsArray['name'])) {
 				$settingsArray['name'] = null;
 			}
