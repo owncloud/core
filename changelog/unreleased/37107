@@ -1,0 +1,6 @@
+Change: Include reshares in the webdav response when asking for share types
+
+Previously, only shares initiated by the user were being returned when asked for
+the shares. Now, reshares are also included in the response
+
+https://github.com/owncloud/core/pull/37107
