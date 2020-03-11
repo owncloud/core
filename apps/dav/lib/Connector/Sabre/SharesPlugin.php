@@ -140,7 +140,8 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 		$allShares = $this->shareManager->getAllSharesBy(
 			$this->userId,
 			$requestedShareTypes,
-			$nodeIDs
+			$nodeIDs,
+			true
 		);
 		
 		return $allShares;
