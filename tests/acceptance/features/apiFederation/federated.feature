@@ -823,3 +823,48 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
+  Scenario Outline: federated share receiver can move the location of the received share and changes are correctly seen at both ends
+    Given user "user1" has created folder "/PARENT/RandomFolder"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "PARENT/RandomFolder/file-to-share"
+    And user "user1" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "user0" from server "REMOTE"
+    And user "user0" from server "REMOTE" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    And using server "REMOTE"
+    When user "user0" creates folder "/CHILD" using the WebDAV API
+    And user "user0" creates folder "/CHILD/newRandomFolder" using the WebDAV API
+    And user "user0" moves folder "/RandomFolder" to "/CHILD/newRandomFolder/RandomFolder" using the WebDAV API
+    Then as "user0" file "/CHILD/newRandomFolder/RandomFolder/file-to-share" should exist
+    When using server "LOCAL"
+    Then as "user1" file "/PARENT/RandomFolder/file-to-share" should exist
+    When user "user1" uploads file with content "thisIsTheContentOfNewFile" to "/PARENT/RandomFolder/newFile" using the WebDAV API
+    And user "user1" uploads file with content "theContentIsChanged" to "/PARENT/RandomFolder/file-to-share" using the WebDAV API
+    And using server "REMOTE"
+    Then as "user0" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
+    And the content of file "/CHILD/newRandomFolder/RandomFolder/file-to-share" for user "user0" should be "theContentIsChanged"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: federated sharer can move the location of the received share and changes are correctly seen at both ends
+    Given user "user1" has created folder "/PARENT/RandomFolder"
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "PARENT/RandomFolder/file-to-share"
+    And user "user1" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "user0" from server "REMOTE"
+    And user "user0" from server "REMOTE" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" creates folder "/CHILD" using the WebDAV API
+    And user "user1" creates folder "/CHILD/newRandomFolder" using the WebDAV API
+    And user "user1" moves folder "PARENT/RandomFolder" to "/CHILD/newRandomFolder/RandomFolder" using the WebDAV API
+    Then as "user1" file "/CHILD/newRandomFolder/RandomFolder/file-to-share" should exist
+    When using server "REMOTE"
+    Then as "user0" file "/RandomFolder/file-to-share" should exist
+    When user "user0" uploads file with content "thisIsTheContentOfNewFile" to "/RandomFolder/newFile" using the WebDAV API
+    And user "user0" uploads file with content "theContentIsChanged" to "/RandomFolder/file-to-share" using the WebDAV API
+    And using server "LOCAL"
+    Then as "user1" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
+    And the content of file "/CHILD/newRandomFolder/RandomFolder/file-to-share" for user "user1" should be "theContentIsChanged"
+    Examples:
+      | ocs-api-version |
+      | 1               |
+      | 2               |
