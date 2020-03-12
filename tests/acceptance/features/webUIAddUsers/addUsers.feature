@@ -8,11 +8,17 @@ Feature: add users
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
-  Scenario: use the webUI to create a simple user
-    When the administrator creates a user with the name "guiusr1" and the password "%regular%" using the webUI
+  Scenario Outline: use the webUI to create a simple user
+    When the administrator creates a user with the name "<username>" and the password "<password>" using the webUI
     And the administrator logs out of the webUI
-    And user "guiusr1" logs in using the webUI
+    And user "<username>" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | username | password  |
+      | guiusr1  | %regular% |
+      | user-1   | %regular% |
+      | null     | %regular% |
+      | nil      | %regular% |
 
   @skipOnOcV10.3
   Scenario: use the webUI to create a user with special valid characters
@@ -45,6 +51,7 @@ Feature: add users
       | user | password    |
       | "a"  | "%regular%" |
       | "a1" | "%alt1%"    |
+      | "-1" | "%alt1%"    |
 
   @smokeTest
   Scenario: use the webUI to create a simple user with an Email address but without a password
