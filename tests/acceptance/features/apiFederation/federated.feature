@@ -873,8 +873,8 @@ Feature: federated
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
     And using OCS API version "<ocs-api-version>"
-    When user "user1" uploads file with content "thisContentIsVisible" to "/file-to-share" using the WebDAV API
-    And user "user1" from server "LOCAL" shares "file-to-share" with user "user0" from server "REMOTE" using the sharing API
+    And user "user1" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
+    When user "user1" from server "LOCAL" shares "file-to-share" with user "user0" from server "REMOTE" using the sharing API
     And user "user0" from server "REMOTE" accepts the last pending share using the sharing API
     And using server "REMOTE"
     Then as "user0" file "/file-to-share" should exist
