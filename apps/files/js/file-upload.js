@@ -402,7 +402,7 @@ OC.FileUpload.prototype = {
 			if (response.errorThrown === 'timeout') {
 				return {
 					status: 0,
-					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
+					message: t('files', 'Upload timeout for file "{file}"', {file: this.getFileName()})
 				};
 			}
 
@@ -430,17 +430,17 @@ OC.FileUpload.prototype = {
 			}
 		} else if (response.result) {
 			response = response.result;
-		} else {
+		} else if (response.jqXHR) {
 			if (response.jqXHR.status === 0 && response.jqXHR.statusText === 'error') {
 				// timeout (IE11)
 				return {
 					status: 0,
-					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
+					message: t('files', 'Upload timeout for file "{file}"', {file: this.getFileName()})
 				};
 			}
 			return {
 				status: response.jqXHR.status,
-				message: t('core', 'Unknown error "{error}" uploading file "{file}"', {error: response.jqXHR.statusText, file: this.getFileName()})
+				message: t('files', 'Unknown error "{error}" uploading file "{file}"', {error: response.jqXHR.statusText, file: this.getFileName()})
 			};
 		}
 		return response;
@@ -893,7 +893,7 @@ OC.Uploader.prototype = _.extend({
 		} else {
 			if (progress >= total) {
 				// change message if we stalled at 100%
-				this.$uploadprogressbar.find('.label .desktop').text(t('core', 'Processing files...'));
+				this.$uploadprogressbar.find('.label .desktop').text(t('files', 'Processing files...'));
 			}
 			if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
 				// TODO: move to "fileuploadprogress" event instead and use data.uploadedBytes
@@ -1201,6 +1201,10 @@ OC.Uploader.prototype = _.extend({
 					} else if (status === 412) {
 						// file already exists
 						self.showConflict(upload);
+					} else if (status === 403) {
+						// not enough space
+						const message = t('files', 'You don’t have permission to upload or create files here');
+						OC.Notification.show(message, {type: 'error'});
 					} else if (status === 404) {
 						// target folder does not exist any more
 						var dir = upload.getFullPath();

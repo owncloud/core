@@ -1183,7 +1183,7 @@ OC.Notification = {
 	 *
 	 * @param {string} text Message to display
 	 * @param {Object} [options] options
-	 * @param {string] [options.type] notification type
+	 * @param {string} [options.type] notification type
 	 * @param {int} [options.timeout=0] timeout value, defaults to 0 (permanent)
 	 * @return {jQuery} jQuery element for notification row
 	 */
@@ -1769,7 +1769,7 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
-	
+
 	/**
 	* regular expression to parse size in bytes from a humanly readable string
 	* see computerFileSize(string)
@@ -1792,7 +1792,7 @@ OC.Util = {
 
 		var s = string.toLowerCase().trim();
 		var bytes = null;
-		
+
 		var bytesArray = {
 			'b': 1,
 			'k': 1024,
@@ -2036,19 +2036,19 @@ OC.Util = {
 		}
 		return false;
 	},
-	
+
 	/**
 	 * Checks if an element is completely visible and scrolls the screen if not
-	 * @param {jQuery} jQuery element that has to be displayed 
+	 * @param {jQuery} jQuery element that has to be displayed
 	 * @param {jQuery} scroll container if null scrollContainer will be set to $('#app-content')
 	 */
 	scrollIntoView: function (toViewEl, scrollContainer) {
-		
+
 		var toViewElTopLocation = toViewEl.offset().top;
 		var toViewElHeight = toViewEl.outerHeight();
 		var toViewElBottomLocation = toViewElTopLocation + toViewElHeight + 50;
 		var windowHeight = $(window).height();
-		
+
 		if (scrollContainer === null) {
 			scrollContainer = $('#app-content');
 		}

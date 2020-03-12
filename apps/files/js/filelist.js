@@ -170,7 +170,7 @@
 
 		/**
 		 * Stores shareTree items and infos
-		 * 
+		 *
 		 * @type Array
 		 */
 		_shareTreeCache: {},
@@ -1056,7 +1056,7 @@
 			$(window).scrollTop(0);
 
 			this.$fileList.trigger(jQuery.Event('updated'));
-			
+
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
@@ -1890,12 +1890,12 @@
 					var shareWith = share.share_with_displayname;
 
 					if (share.share_type === OC.Share.SHARE_TYPE_GROUP) {
-						shareWith += ' (' + t('core', 'group') + ')';
+						shareWith += ' (' + t('files', 'group') + ')';
 					} else if (share.share_type === OC.Share.SHARE_TYPE_REMOTE) {
 						shareWith += ' (' + t('files_sharing', 'Remote share') + ')';
 					}
 
-					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name });
+					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith });
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' });
 
@@ -1933,7 +1933,7 @@
 
 					var shareName = (!_.isEmpty(share.name)) ? share.name : share.token;
 
-					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('core', 'via') + " " + folder.name });
+					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareName });
 					var $icon = $('<span>',   { class : 'shareTree-item-icon link-entry--icon icon-public-white' });
 
@@ -2351,7 +2351,7 @@
 											targetName: newName,
 											dir: self.getCurrentDirectory(),
 										}),
-										{	
+										{
 											type: 'error'
 										}
 									);
@@ -2971,7 +2971,7 @@
 		 * Shows a "permission denied" notification
 		 */
 		_showPermissionDeniedNotification: function() {
-			var message = t('core', 'You don’t have permission to upload or create files here');
+			const message = t('files', 'You don’t have permission to upload or create files here');
 			OC.Notification.show(message, {type: 'error'});
 		},
 
