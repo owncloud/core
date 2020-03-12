@@ -204,7 +204,7 @@ class FederationContext implements Context {
 	}
 
 	/**
-	 * @Then user :user should have no last pending federated cloud share
+	 * @Then user :user should not have any pending federated cloud share
 	 *
 	 * @param string $user
 	 *
