@@ -1,9 +1,10 @@
 {
     "require": {
         "behat/behat": "^3.6",
+        "behat/mink": "1.7.1",
         "behat/mink-extension": "^2.3",
         "behat/mink-goutte-driver": "^1.2",
-        "behat/mink-selenium2-driver": "dev-master",
+        "behat/mink-selenium2-driver": "^1.4",
         "jarnaiz/behat-junit-formatter": "^1.3",
         "rdx/behat-variables": "^1.2",
         "sensiolabs/behat-page-object-extension": "^2.3",
