@@ -181,7 +181,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new Encryption\Manager(
 				$c->getConfig(),
 				$c->getLogger(),
-				$c->getL10N('core'),
+				$c->getL10N('lib'),
 				new View(),
 				$util,
 				new ArrayCache()
@@ -880,7 +880,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getHasher(),
 				$c->getMountManager(),
 				$c->getGroupManager(),
-				$c->getL10N('core'),
+				$c->getL10N('lib'),
 				$factory,
 				$c->getUserManager(),
 				$c->getLazyRootFolder(),

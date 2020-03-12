@@ -29,16 +29,4 @@ namespace OCP\Files\ObjectStore;
  * @since 10.3.0
  */
 class ObjectStoreOperationException extends ObjectStoreException {
-	/**
-	 * ObjectStoreOperationException constructor.
-	 *
-	 * @param string $message
-	 * @param int $statusCode
-	 * @param int $code
-	 * @param \Exception|null $previous
-	 * @since 10.3.0
-	 */
-	public function __construct($message = "", $code = 0, \Exception $previous = null) {
-		parent::__construct($message, $code, $previous);
-	}
 }
