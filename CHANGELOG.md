@@ -33,6 +33,7 @@ Summary
 * Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
 * Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
+* Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
 
 Details
 -------
@@ -200,6 +201,13 @@ Details
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
 
    https://github.com/owncloud/core/pull/37096
+
+* Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
+
+   Some translations are now properly displayed and in an empty readonly folder a message is
+   displayed that no files can be uploaded.
+
+   https://github.com/owncloud/core/pull/37116
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
