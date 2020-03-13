@@ -33,6 +33,7 @@ Summary
 * Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
 * Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
+* Change - Include reshares in the webdav response when asking for share types: [#37107](https://github.com/owncloud/core/pull/37107)
 * Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
 
 Details
@@ -201,6 +202,13 @@ Details
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
 
    https://github.com/owncloud/core/pull/37096
+
+* Change - Include reshares in the webdav response when asking for share types: [#37107](https://github.com/owncloud/core/pull/37107)
+
+   Previously, only shares initiated by the user were being returned when asked for the shares.
+   Now, reshares are also included in the response
+
+   https://github.com/owncloud/core/pull/37107
 
 * Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
 
