@@ -182,6 +182,7 @@
     "Storage incomplete configuration. %s" : "Formësim jo i plotë i depozitës. %s",
     "Storage connection error. %s" : "Gabim lidhje te depozita. %s",
     "Storage is temporarily not available" : "Depozita është përkohësisht jashtë pune",
-    "Storage connection timeout. %s" : "Mbarim kohe lidhjeje për depozitën. %s"
+    "Storage connection timeout. %s" : "Mbarim kohe lidhjeje për depozitën. %s",
+    "\"%s\" is locked" : "\"%s\" është i kyçur"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

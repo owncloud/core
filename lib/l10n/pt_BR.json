@@ -182,6 +182,7 @@
     "Storage incomplete configuration. %s" : "Incompleta configuração de armazenamento. %s",
     "Storage connection error. %s" : "Erro na conexão de armazenamento. %s",
     "Storage is temporarily not available" : "O armazenamento está temporariamente indisponível",
-    "Storage connection timeout. %s" : "Tempo limite de conexão de armazenamento. %s"
+    "Storage connection timeout. %s" : "Tempo limite de conexão de armazenamento. %s",
+    "\"%s\" is locked" : "\"%s\" está bloqueado"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }
