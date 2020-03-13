@@ -25,6 +25,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\SharingHelper;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -199,6 +200,24 @@ class FederationContext implements Context {
 			'GET',
 			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
 			null
+		);
+	}
+
+	/**
+	 * @Then user :user should not have any pending federated cloud share
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userShouldHaveNoLastPendingFederatedCloudShare($user) {
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		$responseXml = $this->featureContext->getResponseXml();
+		$xmlPart = $responseXml->xpath("//data/element[last()]/id");
+		Assert::assertTrue(
+			!\is_array($xmlPart) || (\count($xmlPart) === 0),
+			__METHOD__
+			. " No pending federated cloud shares were expected, but got unexpectedly."
 		);
 	}
 
