@@ -128,7 +128,10 @@ class ZIP extends Archive {
 		$fileCount=$this->zip->numFiles;
 		$files= [];
 		for ($i=0;$i<$fileCount;$i++) {
-			$files[]=$this->zip->getNameIndex($i);
+			$name = $this->zip->getNameIndex($i);
+			if ($name !== false) {
+				$files[] = $name;
+			}
 		}
 		return $files;
 	}
