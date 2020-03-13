@@ -1913,6 +1913,32 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @When the administrator creates a file :path with the last exported content using the testing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCreatesFileWithLastExportedContent(
+		$path
+	) {
+		$commandOutput = $this->getStdOutOfOccCommand();
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/file",
+			[
+				'file' => "/$path",
+				'content' => $commandOutput
+			],
+			$this->getOcsApiVersion()
+		);
+	}
+
+	/**
 	 * @Given the administrator has created file :path with content :content in local storage :mountPount
 	 *
 	 * @param string $path
@@ -2120,6 +2146,18 @@ class FeatureContext extends BehatVariablesContext {
 			$fileContent,
 			"The content of the file does not match with '{$content}'"
 		);
+	}
+
+	/**
+	 * @Then the file :path with the last exported content should exist in the server root
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theFileWithLastExportedContentShouldExistInTheServerRoot($path) {
+		$lastExportedContent = $this->getStdOutOfOccCommand();
+		$this->theFileWithContentShouldExistInTheServerRoot($path, $lastExportedContent);
 	}
 
 	/**
