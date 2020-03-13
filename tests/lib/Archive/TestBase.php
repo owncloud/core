@@ -25,6 +25,18 @@ abstract class TestBase extends \Test\TestCase {
 	 */
 	abstract protected function getNew();
 
+	protected function tearDown(): void {
+		// when the archive is empty, getFiles() can return an empty array or an array with [0] => bool(false)
+		$files = $this->instance->getFiles();
+		if ((\count($files) === 0) || ($files[0] === false)) {
+			// make sure to leave the archive with something in it, otherwise PHP ZipArchive cleanup emits:
+			// PHP Warning: Unknown: Cannot destroy the zip context: Can't remove file: No such file or directory in Unknown on line 0
+			// which can cause the unit test run to finish with error status
+			$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
+			$this->instance->addFile('lorem.txt', $textFile);
+		}
+		parent::tearDown();
+	}
 	protected function getArchiveTestDataDir() {
 		return \OC::$SERVERROOT . '/tests/data/archive';
 	}
