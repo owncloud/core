@@ -279,3 +279,20 @@ Feature: Share by public link
     When the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "original content"
     And all the links to download the public share should be the same
+
+  Scenario Outline: user with unusual username performs simple sharing by public link
+    Given user "<username>" has been created with default attributes and without skeleton files
+    Given user "<username>" has created folder "/simple-folder"
+    And user "<username>" has uploaded file with content "test" to "/simple-folder/lorem.txt"
+    And user "<username>" has logged in using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI
+    And the public accesses the last created public link using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    Examples:
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |

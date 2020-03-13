@@ -104,3 +104,19 @@ Feature: add user
     Then the OCS status code should be "102"
     And the HTTP status code should be "200"
     And the API should not return any data
+
+  Scenario Outline: admin creates a user with unusual username
+    Given user "<username>" has been deleted
+    When the administrator sends a user creation request for user "<username>" password "%alt1%" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "<username>" should exist
+    And user "<username>" should be able to access a skeleton file
+    Examples:
+      | username      |
+      | user-1        |
+      | null          |
+      | nil           |
+      | 123           |
+      | -123          |
+      | 0.0           |

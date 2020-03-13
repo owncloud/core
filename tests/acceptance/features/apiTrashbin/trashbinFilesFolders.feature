@@ -254,3 +254,25 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | old      |
       | new      |
+
+  Scenario Outline: user with unusual username deletes a file
+    Given user "<username>" has been created with default attributes and without skeleton files
+    And user "<username>" has uploaded file with content "to delete" to "/textfile0.txt"
+    And using <dav-path> DAV path
+    When user "<username>" deletes file "/textfile0.txt" using the WebDAV API
+    Then as "<username>" file "/textfile0.txt" should exist in the trashbin
+    But as "<username>" file "/textfile0.txt" should not exist
+    Examples:
+      | dav-path | username |
+      | old      | user-1   |
+      | old      | null     |
+      | old      | nil      |
+      | old      | 123      |
+      | old      | -123     |
+      | old      | 0.0      |
+      | new      | user-1   |
+      | new      | null     |
+      | new      | nil      |
+      | new      | 123      |
+      | new      | -123     |
+      | new      | 0.0      |
