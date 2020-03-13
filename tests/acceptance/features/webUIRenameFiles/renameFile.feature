@@ -31,11 +31,13 @@ Feature: rename files
     When the user reloads the current page of the webUI
     Then file "लोरेम।तयक्स्त? $%#&@" should be listed on the webUI
     Examples:
-      | username     |
-      | user-1       |
-      | null         |
-      | nil          |
-      | dropdatabase |
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
 
   Scenario Outline: Rename a file that has special characters in its name
     Given user "user1" has uploaded file with content "some content" to <from_name>

@@ -17,11 +17,13 @@ Feature: File Upload
     And file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
     Examples:
-      | username     |
-      | user-1       |
-      | null         |
-      | nil          |
-      | dropdatabase |
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
 
   @smokeTest
   Scenario: chunking upload

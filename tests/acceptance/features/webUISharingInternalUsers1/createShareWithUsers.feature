@@ -295,3 +295,27 @@ Feature: Sharing files and folders with internal users
     When the user opens the share dialog for file "lorem.txt"
     And the user opens the public link share tab
     Then 2 public link shares with name "Public link" should be visible on the webUI
+
+  Scenario Outline: user with unusual username shares a file & folder with another internal user
+    Given these users have been created with default attributes and skeleton files:
+      | username   |
+      | user1      |
+      | <username> |
+    And user "<username>" has shared folder "simple-folder" with user "user1"
+    And user "<username>" has shared file "testimage.jpg" with user "user1"
+    When user "user1" logs in using the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+    And folder "simple-folder (2)" should be marked as shared by "Regular User" on the webUI
+    And file "testimage (2).jpg" should be listed on the webUI
+    And file "testimage (2).jpg" should be marked as shared by "Regular User" on the webUI
+    When the user opens folder "simple-folder (2)" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    But folder "simple-folder (2)" should not be listed on the webUI
+    Examples:
+       | username |
+       | user-1   |
+       | null     |
+       | nil      |
+       | 123      |
+       | -123     |
+       | 0.0      |

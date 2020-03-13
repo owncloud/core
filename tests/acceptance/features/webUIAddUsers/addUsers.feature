@@ -17,6 +17,9 @@ Feature: add users
       | username | password  |
       | guiusr1  | %regular% |
       | user-1   | %regular% |
+      | 0.0      | %regular% |
+      | 123      | %regular% |
+      | -123     | %regular% |
       | null     | %regular% |
       | nil      | %regular% |
 
