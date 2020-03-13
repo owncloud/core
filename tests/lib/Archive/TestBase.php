@@ -109,6 +109,10 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance->remove('/test');
 		$this->assertFalse($this->instance->fileExists('/test'));
 		$this->assertFalse($this->instance->fileExists('/test/'));
+		// leave the archive with something in it, otherwise PHP ZipArchive cleanup emits:
+		// PHP Warning: Unknown: Cannot destroy the zip context: Can't remove file: No such file or directory in Unknown on line 0
+		// which can cause the unit test run to finish with error status
+		$this->instance->addFolder('/test');
 	}
 	public function testExtract() {
 		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
@@ -132,6 +136,10 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertStringEqualsFile($textFile, $this->instance->getFile('target.txt'));
 		$this->instance->remove('target.txt');
 		$this->assertFalse($this->instance->fileExists('target.txt'));
+		// leave the archive with something in it, otherwise PHP ZipArchive cleanup emits:
+		// PHP Warning: Unknown: Cannot destroy the zip context: Can't remove file: No such file or directory in Unknown on line 0
+		// which can cause the unit test run to finish with error status
+		$this->instance->addFile('lorem.txt', $textFile);
 	}
 	public function testRecursive() {
 		$this->instance=$this->getNew();
