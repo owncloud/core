@@ -9,12 +9,21 @@ Feature: File Upload
     Given user "user1" has been created with default attributes and without skeleton files
 
   @smokeTest
-  Scenario: simple upload of a file that does not exist before
-    Given user "user1" has logged in using the webUI
+  Scenario Outline: simple upload of a file that does not exist before
+    Given user "<username>" has been created with default attributes and without skeleton files
+    And user "<username>" has logged in using the webUI
     When the user uploads file "new-lorem.txt" using the webUI
     Then no notification should be displayed on the webUI
     And file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
+    Examples:
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
 
   @smokeTest
   Scenario: chunking upload

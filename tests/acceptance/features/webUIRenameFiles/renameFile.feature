@@ -22,6 +22,23 @@ Feature: rename files
       | "'quotes2'"            |
       | "?quot=OC&OC2 #OC%  3" |
 
+  Scenario Outline: user with unusual username renames a file using special characters
+    Given user "<username>" has been created with default attributes and without skeleton files
+    And user "<username>" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "<username>" has logged in using the webUI
+    When the user renames file "randomfile.txt" to "लोरेम।तयक्स्त? $%#&@" using the webUI
+    Then file "लोरेम।तयक्स्त? $%#&@" should be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then file "लोरेम।तयक्स्त? $%#&@" should be listed on the webUI
+    Examples:
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
+
   Scenario Outline: Rename a file that has special characters in its name
     Given user "user1" has uploaded file with content "some content" to <from_name>
     And user "user1" has logged in using the webUI
