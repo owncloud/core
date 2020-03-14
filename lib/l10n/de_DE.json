@@ -182,6 +182,7 @@
     "Storage incomplete configuration. %s" : "Speicher-Konfiguration unvollständig. %s",
     "Storage connection error. %s" : "Speicher-Verbindungsfehler. %s",
     "Storage is temporarily not available" : "Speicher ist vorübergehend nicht verfügbar",
-    "Storage connection timeout. %s" : "Speicher-Verbindungszeitüberschreitung. %s"
+    "Storage connection timeout. %s" : "Speicher-Verbindungszeitüberschreitung. %s",
+    "\"%s\" is locked" : "\"%s\" wird im Hintergrund bearbeitet und wird angezeigt, sobald der Vorgang abgeschlossen ist."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
