@@ -370,6 +370,20 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given the administrator has set the system language to :defaultLanguage
+	 *
+	 * @param $defaultLanguage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasSetTheSystemLanguagaeTo($defaultLanguage) {
+		$this->runOcc(
+			["config:system:set default_language --value $defaultLanguage"]
+		);
+	}
+
+	/**
 	 *
 	 * @param string $path
 	 *
