@@ -17,8 +17,3 @@ Feature: export created local storage mounts from the command line
       | /local_storage2    | Local   | None               | datadir:      |                      | All             |                  |
       | /new_local_storage | Local   | None               | datadir:      |                      | All             |                  |
       | /local_storage     | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
-
-  Scenario: export the created mounts to a file
-    When the administrator exports the local storage mounts using the occ command
-    And the administrator creates a file "data/exportedMounts.json" with the last exported content using the testing API
-    Then the file "data/exportedMounts.json" with the last exported content should exist in the server root
