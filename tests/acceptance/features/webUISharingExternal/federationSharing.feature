@@ -270,6 +270,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "user2" folder "/simple-folder (2)" should exist
     And as "user2" file "/simple-folder (2)/lorem.txt" should exist
 
+  @skipOnOcV10.3
   Scenario: test resharing folder as readonly and set it as readonly by resharer
     Given using server "LOCAL"
     And user "user2" has been created with default attributes and without skeleton files
