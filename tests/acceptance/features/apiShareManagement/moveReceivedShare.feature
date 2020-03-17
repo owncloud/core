@@ -61,3 +61,33 @@ Feature: sharing
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a  |
       | @a#8a=b?c=d   | @a#8a=b?c=d grp | ?a#8 a=b?c=d    |
 
+  Scenario: receiver renames a received share with share, read, change permissions
+    Given user "user0" has created folder "folderToShare"
+    And user "user0" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
+    And user "user0" has shared folder "folderToShare" with user "user1" with permissions "share,read,change"
+    When user "user1" moves folder "folderToShare" to "myFolder" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user1" folder "myFolder" should exist
+    But as "user0" folder "myFolder" should not exist
+    When user "user1" moves file "/myFolder/fileInside" to "/myFolder/renamedFile" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "user1" file "/myFolder/renamedFile" should exist
+    And as "user0" file "/folderToShare/renamedFile" should exist
+    But as "user0" file "/folderToShare/fileInside" should not exist
+
+  @issue-30325
+  Scenario: receiver tries to rename a received share with share, read permissions
+    Given user "user0" has created folder "folderToShare"
+    And user "user0" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
+    And user "user0" has shared folder "folderToShare" with user "user1" with permissions "share,read"
+    When user "user1" moves folder "folderToShare" to "myFolder" using the WebDAV API
+    Then the HTTP status code should be "403"
+#    Then the HTTP status code should be "201"
+    And as "user1" folder "myFolder" should not exist
+#    And as "user1" folder "myFolder" should exist
+    But as "user0" folder "myFolder" should not exist
+#    When user "user1" moves file "/myFolder/fileInside" to "/myFolder/renamedFile" using the WebDAV API
+    When user "user1" moves file "/folderToShare/fileInside" to "/folderToShare/renamedFile" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "user1" file "/folderToShare/renamedFile" should not exist
+    But as "user1" file "/folderToShare/fileInside" should exist
