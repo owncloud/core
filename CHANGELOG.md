@@ -35,6 +35,7 @@ Summary
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
 * Change - Include reshares in the webdav response when asking for share types: [#37107](https://github.com/owncloud/core/pull/37107)
 * Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
+* Change - Update laminas/laminas-validator (2.13.1 => 2.13.2): [#37131](https://github.com/owncloud/core/pull/37131)
 
 Details
 -------
@@ -216,6 +217,10 @@ Details
    displayed that no files can be uploaded.
 
    https://github.com/owncloud/core/pull/37116
+
+* Change - Update laminas/laminas-validator (2.13.1 => 2.13.2): [#37131](https://github.com/owncloud/core/pull/37131)
+
+   https://github.com/owncloud/core/pull/37131
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
