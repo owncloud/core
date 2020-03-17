@@ -469,6 +469,7 @@ class Manager implements IManager {
 			'accepted' => &$accepted,
 			'message' => &$message,
 			'passwordSet' => $share->getPassword() !== null,
+			'shareType' => $share->getShareType(),
 		]);
 
 		if (!$accepted) {
