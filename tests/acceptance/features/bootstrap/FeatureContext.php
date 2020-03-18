@@ -1913,6 +1913,34 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @Given the administrator has created a file :path with the last exported content using the testing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasCreatedAFileWithLastExportedContent(
+		$path
+	) {
+		$commandOutput = $this->getStdOutOfOccCommand();
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/file",
+			[
+				'file' => "/$path",
+				'content' => $commandOutput
+			],
+			$this->getOcsApiVersion()
+		);
+		$lastExportedContent = $this->getStdOutOfOccCommand();
+		$this->theFileWithContentShouldExistInTheServerRoot($path, $lastExportedContent);
+	}
+
+	/**
 	 * @Given the administrator has created file :path with content :content in local storage :mountPount
 	 *
 	 * @param string $path

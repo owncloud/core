@@ -1891,6 +1891,34 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator has deleted local storage :folder using the occ command
+	 *
+	 * @param string $folder
+	 *
+	 * @return integer
+	 * @throws Exception
+	 */
+	public function administratorHasDeletedFolder($folder) {
+		$createdLocalStorage = [];
+		$this->listLocalStorageMount();
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($commandOutput as $i) {
+			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
+		}
+		foreach ($createdLocalStorage as $key => $value) {
+			if ($value === $folder) {
+				$mount_id = $key;
+			}
+		}
+		if (!isset($mount_id)) {
+			throw  new Exception("Id not found for folder to be deleted");
+		}
+		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
+		$this->theCommandShouldHaveBeenSuccessful();
+		return (int) $mount_id;
+	}
+
+	/**
 	 * @When the administrator exports the local storage mounts using the occ command
 	 *
 	 * @return void
@@ -1898,6 +1926,29 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorExportsTheMountsUsingTheOccCommand() {
 		$this->invokingTheCommand('files_external:export');
+	}
+
+	/**
+	 * @When the administrator imports the local storage mount from file :file using the occ command
+	 *
+	 * @param $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorImportsTheMountFromFileUsingTheOccCommand($file) {
+		$this->invokingTheCommand('files_external:import ' . $file);
+	}
+
+	/**
+	 * @When the administrator has exported the local storage mounts using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasExportedTheMountsUsingTheOccCommand() {
+		$this->invokingTheCommand('files_external:export');
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
