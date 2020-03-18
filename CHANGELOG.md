@@ -17,6 +17,7 @@ Summary
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Bugfix - Fix public link upload remaining time estimation: [#37053](https://github.com/owncloud/core/pull/37053)
 * Bugfix - Fix OCS Share API response for requests contain "include_tags" parameter: [#37084](https://github.com/owncloud/core/issues/37084)
+* Bugfix - Add share type to the verifyExpirationDate hook: [#287](https://github.com/owncloud/password_policy/issues/287)
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -120,6 +121,16 @@ Details
 
    https://github.com/owncloud/core/issues/37084
    https://github.com/owncloud/core/pull/37088
+
+* Bugfix - Add share type to the verifyExpirationDate hook: [#287](https://github.com/owncloud/password_policy/issues/287)
+
+   The verifyExpirationDate hook notifies the password_policy app about proposed expiration
+   dates of shares. The share type was not being passed in the hook. This meant that the
+   password_policy app incorrectly processed user and group share expiration dates. See the
+   linked issue for details. The problem has been corrected.
+
+   https://github.com/owncloud/password_policy/issues/287
+   https://github.com/owncloud/core/pull/37135
 
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 
