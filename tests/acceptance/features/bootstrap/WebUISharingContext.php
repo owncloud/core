@@ -555,6 +555,32 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user changes the expiration of the public link :linkName of file/folder :name to :expiration
+	 *
+	 * @param string $linkName
+	 * @param string $name
+	 * @param string $expiration
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserChangesTheExpirationOfThePublicLinkToCertainDate($linkName, $name, $expiration) {
+		$session = $this->getSession();
+		$this->theUserOpensTheShareDialogForFileFolder($name);
+		$this->theUserHasOpenedThePublicLinkShareTab();
+		$expiration = \date('d-m-Y', \strtotime($expiration));
+		$this->publicSharingPopup = $this->publicShareTab->editLink(
+			$session,
+			$linkName,
+			null,
+			null,
+			null,
+			$expiration
+		);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
 	 * @When the user opens the create public link share popup
 	 *
 	 * @return void
