@@ -13,6 +13,7 @@ Summary
 * Bugfix - User:resetpassword with --send-email --password-from-env: [#36925](https://github.com/owncloud/core/issues/36925)
 * Bugfix - Avoid unneeded DB connections after a long download: [#36978](https://github.com/owncloud/core/pull/36978)
 * Bugfix - Remove full-stop from end of reset password message: [#36984](https://github.com/owncloud/core/pull/36984)
+* Bugfix - Show pending remote shares at the Shared with you tab: [#37022](https://github.com/owncloud/core/pull/37022)
 * Bugfix - Initialize the user before the transfer command: [#37038](https://github.com/owncloud/core/pull/37038)
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Bugfix - Fix public link upload remaining time estimation: [#37053](https://github.com/owncloud/core/pull/37053)
@@ -85,6 +86,12 @@ Details
    there was no full-stop. The full-stop has been removed to make the messages consistent.
 
    https://github.com/owncloud/core/pull/36984
+
+* Bugfix - Show pending remote shares at the Shared with you tab: [#37022](https://github.com/owncloud/core/pull/37022)
+
+   Fixed missing pending remote shares in the file list at the Shared with you tab.
+
+   https://github.com/owncloud/core/pull/37022
 
 * Bugfix - Initialize the user before the transfer command: [#37038](https://github.com/owncloud/core/pull/37038)
 
