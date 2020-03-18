@@ -201,14 +201,15 @@ OCA.Sharing.App = {
 		fileList.fileSummary.$el.find('.filesize').remove();
 	},
 
-	_setShareState: function(fileId, state) {
+	_setShareState: function(fileId, state, isRemote) {
 		var method = 'POST';
 		if (state === OC.Share.STATE_REJECTED) {
 			method = 'DELETE';
 		}
 
+		var endPoint = isRemote === true ? 'remote_shares/pending/' : 'shares/pending/';
 		var xhr = $.ajax({
-			url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares/pending/' + encodeURIComponent(fileId) + '?format=json',
+			url: OC.linkToOCS('apps/files_sharing/api/v1') + endPoint + encodeURIComponent(fileId) + '?format=json',
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
@@ -225,12 +226,18 @@ OCA.Sharing.App = {
 	},
 
 	_shareStateActionHandler: function(context, newState) {
+		var targetFileData = context.fileList.elementToFile(context.$file);
+		var isRemote = targetFileData.shareLocationType === 'remote';
 		function responseCallback(response, status) {
 			if (status === 'success') {
 				// note: there could be multiple shares/responses but
 				// we assume that the relevant content is the same
 				// for all (state, file_target)
 				var data = response.ocs.data[0];
+				// If we declined a remote share we need to hide it from the list
+				if (isRemote === true && newState === OC.Share.STATE_REJECTED) {
+					return context.fileList.remove(context.$file.attr('data-file'), {updateSummary:true});
+				}
 				var meta = response.ocs.meta;
 				if (meta.status === 'ok') {
 					context.fileInfoModel.set({
@@ -246,7 +253,7 @@ OCA.Sharing.App = {
 		}
 
 		context.fileList.showFileBusyState(context.$file, true);
-		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState)
+		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote)
 			.then(responseCallback);
 	},
 
@@ -287,8 +294,16 @@ OCA.Sharing.App = {
 			var targetFileData = context.fileList.elementToFile(context.$file);
 			if (targetFileData.shareLocationType === 'remote') {
 				// accept and reject will be removed for remote shares
-				delete(actions.Accept);
-				delete(actions.Reject);
+				if (shareState === OC.Share.STATE_PENDING) {
+					delete(actions.Download);
+					delete(actions.Details);
+					delete(actions.Delete);
+					delete(actions.Unshare);
+				} else {
+					delete(actions.Accept);
+					delete(actions.Reject);
+				}
+
 				return actions;
 			}
 

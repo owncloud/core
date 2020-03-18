@@ -1,0 +1,5 @@
+Bugfix: Show pending remote shares at the Shared with you tab
+
+Fixed missing pending remote shares in the file list at the Shared with you tab.
+
+https://github.com/owncloud/core/pull/37022
