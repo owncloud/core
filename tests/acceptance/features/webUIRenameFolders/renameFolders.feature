@@ -121,6 +121,7 @@ Feature: rename folders
     When the user renames folder "a-folder" to "a.part" using the webUI
     Then near folder "a-folder" a tooltip with the text '"a.part" has a forbidden file type/extension.' should be displayed on the webUI
 
+  @issue-30325
   Scenario: Rename a folder which is received as a share (without change permission)
     Given user "user2" has been created with default attributes and without skeleton files
     And user "user2" has created folder "RandomFolder"
@@ -128,8 +129,10 @@ Feature: rename folders
     And user "user2" has shared folder "RandomFolder" with user "user1" with permissions "read, share"
     And user "user1" has logged in using the webUI
     When the user renames folder "RandomFolder" to "renamedFolder" using the webUI
+#   Then folder "renamedFolder" should be listed on the webUI
     Then a notification should be displayed on the webUI with the text 'Could not rename "RandomFolder"'
     When the user opens folder "/RandomFolder" using the webUI
+#   When the user opens folder "/renamedFolder" using the webUI
     Then the option to rename file "newFile" should not be available on the webUI
 
   Scenario: Rename a folder which is received as a share (with change permission)
