@@ -80,11 +80,14 @@ class RemoteOcsController extends OCSController {
 	public function acceptShare($id) {
 		if ($this->externalManager->acceptShare((int) $id)) {
 			$share = $this->externalManager->getShare($id);
+			// Frontend part expects a list of accepted shares having state and mountpoint at least
 			return new Result(
-				[[
-					'state' => Share::STATE_ACCEPTED,
-					'file_target' => $share['mountpoint']
-				]]
+				[
+					[
+						'state' => Share::STATE_ACCEPTED,
+						'file_target' => $share['mountpoint']
+					]
+				]
 			);
 		}
 
@@ -191,7 +194,7 @@ class RemoteOcsController extends OCSController {
 			return new Result(null, 404, 'Share does not exist');
 		}
 
-		$mountPoint = '/' . $this->uid . '/files' . $shareInfo['mountpoint'];
+		$mountPoint = "/{$this->uid}/files{$shareInfo['mountpoint']}";
 
 		if ($this->externalManager->removeShare($mountPoint) === true) {
 			return new Result(null);

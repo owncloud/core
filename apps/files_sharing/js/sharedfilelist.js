@@ -339,7 +339,7 @@
 				.map(function(share) {
 					var file = {
 						shareOwner: share.owner + '@' + share.remote.replace(/.*?:\/\//g, ""),
-						shareState: !!parseInt(share.accepted) ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,
+						shareState: !!parseInt(share.accepted, 10) ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,
 						name: OC.basename(share.mountpoint),
 						mtime: share.mtime * 1000,
 						mimetype: share.mimetype,
