@@ -309,7 +309,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  Scenario Outline: File with strange names and can be restored
+  Scenario Outline: Files with strange names can be restored
     Given using <dav-path> DAV path
     And user "user0" has uploaded file with content "file original content" to "<file-to-upload>"
     And user "user0" has deleted file "<file-to-upload>"
@@ -319,14 +319,8 @@ Feature: Restore deleted files/folders
     And as "user0" file "<file-to-upload>" should exist
     And the content of file "<file-to-upload>" for user "user0" should be "file original content"
     Examples:
-      | dav-path | file-to-upload      |
-      | old      | 😛 😜               |
-      | new      | 😛 😜               |
-      | old      | 🐱 🐭 😜            |
-      | new      | 🐱 🐭 😜            |
-      | old      | ⌚️                  |
-      | new      | ⌚️                  |
-      | old      | ♀️ 🚴‍♂️                |
-      | new      | ♀️ 🚴‍♂️                |
-      | old      | strängé नेपाली file  |
-      | new      | strängé नेपाली file  |
+      | dav-path | file-to-upload        |
+      | old      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
+      | new      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
+      | old      | strängé नेपाली file     |
+      | new      | strängé नेपाली file     |
