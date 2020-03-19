@@ -26,9 +26,7 @@ abstract class TestBase extends \Test\TestCase {
 	abstract protected function getNew();
 
 	protected function tearDown(): void {
-		// when the archive is empty, getFiles() can return an empty array or an array with [0] => bool(false)
-		$files = $this->instance->getFiles();
-		if ((\count($files) === 0) || ($files[0] === false)) {
+		if (\count($this->instance->getFiles()) === 0) {
 			// make sure to leave the archive with something in it, otherwise PHP ZipArchive cleanup emits:
 			// PHP Warning: Unknown: Cannot destroy the zip context: Can't remove file: No such file or directory in Unknown on line 0
 			// which can cause the unit test run to finish with error status
@@ -65,6 +63,21 @@ abstract class TestBase extends \Test\TestCase {
 		foreach ($expected as $file) {
 			$this->assertContains($file, $dirContent, 'cant find '.  $file . ' in archive');
 		}
+	}
+
+	public function testGetFilesFromEmptyArchive() {
+		$this->instance=$this->getNew();
+		$allFiles=$this->instance->getFiles();
+		$this->assertCount(0, $allFiles, 'found ' . \count($allFiles) . ' files but expected no files');
+	}
+
+	public function testGetFilesFromEmptiedArchive() {
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
+		$this->instance=$this->getNew();
+		$this->instance->addFile('lorem.txt', $textFile);
+		$this->instance->remove('lorem.txt');
+		$allFiles=$this->instance->getFiles();
+		$this->assertCount(0, $allFiles, 'found ' . \count($allFiles) . ' files but expected no files');
 	}
 
 	public function testContent() {
