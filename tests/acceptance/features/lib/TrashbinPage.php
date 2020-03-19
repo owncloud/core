@@ -148,7 +148,7 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	public function restore($fname, Session $session) {
 		$row = $this->findFileRowByName($fname, $session);
-		$row->restore();
+		$row->restore($session);
 	}
 
 	/**
