@@ -410,9 +410,11 @@ class FileRow extends OwncloudPage {
 	/**
 	 * restore the current deleted file and folder by clicking on the restore link
 	 *
+	 * @param Session $session
+	 *
 	 * @return void
 	 */
-	public function restore() {
+	public function restore($session) {
 		$rowElement = $this->rowElement->find('xpath', $this->restoreLinkXpath);
 		$this->assertElementNotNull(
 			$rowElement,
@@ -421,6 +423,7 @@ class FileRow extends OwncloudPage {
 			" could not find restore link to '" . $this->getNameAsString() . "'"
 		);
 		$rowElement->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
