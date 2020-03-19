@@ -106,6 +106,7 @@ Feature: Restore deleted files/folders
     And as "user0" the file with original path "<delete-path>" should not exist in the trashbin
     And as "user0" file "<restore-path>" should exist
     And as "user0" file "<delete-path>" should not exist
+    And the content of file "<restore-path>" for user "user0" should be "to delete"
     Examples:
       | dav-path | delete-path             | restore-path         |
       | old      | /PARENT/parent.txt      | parent.txt           |
@@ -117,27 +118,30 @@ Feature: Restore deleted files/folders
 
   @issue-35974
   Scenario Outline: restoring a file to an already existing path overrides the file
-    Given using <dav-path> DAV path
+    Given user "user0" has uploaded file with content "file to delete" to "/.hiddenfile0.txt"
+    And using <dav-path> DAV path
     And user "user0" has created folder "/PARENT"
-    And user "user0" has uploaded file with content "PARENT textfile0 content" to "/PARENT/textfile0.txt"
-    And user "user0" has deleted file "/textfile0.txt"
-    When user "user0" restores the file with original path "/textfile0.txt" to "/PARENT/textfile0.txt" using the trashbin API
+    And user "user0" has uploaded file with content "PARENT file content" to <upload-path>
+    And user "user0" has deleted file <delete-path>
+    When user "user0" restores the file with original path <delete-path> to <upload-path> using the trashbin API
     Then the HTTP status code should be "204"
-    # Sometimes "/PARENT/textfile0.txt" is found in the trashbin. Should it? Or not?
+    # Sometimes <upload-path> is found in the trashbin. Should it? Or not?
     # That seems to be what happens when the restore-overwrite happens properly,
-    # The original /PARENT/textfile0.txt seems to be "deleted" and so goes to the trashbin
-    #And as "user0" the file with original path "/PARENT/textfile0.txt" should not exist in the trashbin
-    And as "user0" file "/PARENT/textfile0.txt" should exist
+    # The original <upload-path> seems to be "deleted" and so goes to the trashbin
+    #And as "user0" the file with original path <upload-path> should not exist in the trashbin
+    And as "user0" file <upload-path> should exist
     # sometimes the restore from trashbin does overwrite the existing file, but sometimes it does not. That is also surprising.
-    # the current observed behavior is that if the original /PARENT/textfile0.txt ended up in the trashbin,
-    # then the new /PARENT/textfile0.txt has the "file to delete" content.
-    # otherwise /PARENT/textfile0.txt has its old content
-    And the content of file "/PARENT/textfile0.txt" for user "user0" if the file is also in the trashbin should be "file to delete" otherwise "PARENT textfile0 content"
-    #And the content of file "/PARENT/textfile0.txt" for user "user0" should be "file to delete"
+    # the current observed behavior is that if the original <upload-path> ended up in the trashbin,
+    # then the new <upload-path> has the "file to delete" content.
+    # otherwise <upload-path> has its old content
+    And the content of file <upload-path> for user "user0" if the file is also in the trashbin should be "file to delete" otherwise "PARENT file content"
+    #And the content of file <upload-path> for user "user0" should be "file to delete"
     Examples:
-      | dav-path |
-      | old      |
-      | new      |
+      | dav-path | upload-path                | delete-path        |
+      | old      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
+      | new      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
+      | old      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
+      | new      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
 
   @issue-35900 @files_sharing-app-required
   Scenario Outline: restoring a file to a read-only folder
@@ -304,3 +308,19 @@ Feature: Restore deleted files/folders
       | dav-path |
       | old      |
       | new      |
+
+  Scenario Outline: Files with strange names can be restored
+    Given using <dav-path> DAV path
+    And user "user0" has uploaded file with content "file original content" to "<file-to-upload>"
+    And user "user0" has deleted file "<file-to-upload>"
+    And user "user0" restores the file with original path "<file-to-upload>" using the trashbin API
+    Then the HTTP status code should be "201"
+    And as "user0" the file with original path "<file-to-upload>" should not exist in the trashbin
+    And as "user0" file "<file-to-upload>" should exist
+    And the content of file "<file-to-upload>" for user "user0" should be "file original content"
+    Examples:
+      | dav-path | file-to-upload        |
+      | old      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
+      | new      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
+      | old      | strängé नेपाली file     |
+      | new      | strängé नेपाली file     |
