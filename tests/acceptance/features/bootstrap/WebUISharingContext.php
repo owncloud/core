@@ -1973,4 +1973,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$expectedCount
 		);
 	}
+
+	/**
+	 * @When the user closes the federation sharing dialog
+	 *
+	 * @return void
+	 */
+	public function theUserClosesFederationShareDialog() {
+		$this->filesPage->closeFederationDialog();
+	}
+
+	/**
+	 * @When the user accepts the pending remote share using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserAcceptsThePendingRemoteSharesUsingTheWebui() {
+		$this->sharedWithYouPage->acceptPendingShare();
+	}
 }

@@ -45,6 +45,7 @@ class FilesPage extends FilesPageBasic {
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
 	protected $uploadCreatePermissionDeniedMessageSelector = ".notCreatable.notPublic";
 	protected $sharingDialogXpath = "//h3[@data-original-title='%s']/ancestor::div[@id='app-sidebar']//div[@id='shareTabView']";
+	protected $closeOCDialogXpath = "//div/a[@class='oc-dialog-close']";
 
 	/**
 	 *
@@ -443,5 +444,21 @@ class FilesPage extends FilesPageBasic {
 	public function isNewFileIconVisible() {
 		$newFileIcon = $this->find("xpath", $this->newFileFolderButtonXpath);
 		return $newFileIcon->isVisible();
+	}
+
+	/**
+	 * Closes the federated Share dialog
+	 *
+	 * @return bool
+	 */
+	public function closeFederationDialog() {
+		$closeIcon = $this->find("xpath", $this->closeOCDialogXpath);
+		$this->assertElementNotNull(
+			$closeIcon,
+			__METHOD__ .
+			" xpath $this->closeOCDialogXpath " .
+			"could not find OC-dialog close icon."
+		);
+		$closeIcon->click();
 	}
 }
