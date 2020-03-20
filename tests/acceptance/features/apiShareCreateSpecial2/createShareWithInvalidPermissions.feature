@@ -44,14 +44,14 @@ Feature: cannot share resources with invalid permissions
     And as "user1" entry "<item>" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | item          | permissions |
-      | 1               | 996             | 200              | textfile0.txt | 0           |
-      | 2               | 996             | 200              | textfile0.txt | 0           |
-      | 1               | 996             | 200              | PARENT        | 0           |
-      | 2               | 996             | 200              | PARENT        | 0           |
-      | 1               | 996             | 200              | textfile0.txt | 32          |
-      | 2               | 996             | 200              | textfile0.txt | 32          |
-      | 1               | 996             | 200              | PARENT        | 32          |
-      | 2               | 996             | 200              | PARENT        | 32          |
+      | 1               | 400             | 200              | textfile0.txt | 0           |
+      | 2               | 400             | 200              | textfile0.txt | 0           |
+      | 1               | 400             | 200              | PARENT        | 0           |
+      | 2               | 400             | 200              | PARENT        | 0           |
+      | 1               | 400             | 200              | textfile0.txt | 32          |
+      | 2               | 400             | 200              | textfile0.txt | 32          |
+      | 1               | 400             | 200              | PARENT        | 32          |
+      | 2               | 400             | 200              | PARENT        | 32          |
 
   @skipOnOcis @issue-ocis-reva-45 @issue-ocis-reva-64
   Scenario Outline: Cannot create a share of a file with a user with only create permission
@@ -85,8 +85,8 @@ Feature: cannot share resources with invalid permissions
     And as "user1" entry "textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 996             | 200              |
-      | 2               | 996             | 200              |
+      | 1               | 100             | 200              |
+      | 2               | 100             | 200              |
 
   @skipOnOcis @issue-ocis-reva-45 @issue-ocis-reva-64
   Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
@@ -122,10 +122,10 @@ Feature: cannot share resources with invalid permissions
     And as "user1" entry "textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
-      | 1               | 996             | 200              | delete        |
-      | 2               | 996             | 200              | delete        |
-      | 1               | 996             | 200              | create,delete |
-      | 2               | 996             | 200              | create,delete |
+      | 1               | 100             | 200              | delete        |
+      | 2               | 100             | 200              | delete        |
+      | 1               | 100             | 200              | create,delete |
+      | 2               | 100             | 200              | create,delete |
 
   @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Cannot create a share of a file with a group with only create permission
