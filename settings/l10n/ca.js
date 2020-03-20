@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "The new password cannot be the same as the previous one" : "La nova contrasenya ha de ser diferent a la vella",
     "No user supplied" : "No heu proporcionat cap usuari",
     "Authentication error" : "Error d'autenticació",
     "Wrong admin recovery password. Please check the password and try again." : "La contrasenya de recuperació d'administrador és incorrecta. Comproveu-la i torneu-ho a intentar.",
