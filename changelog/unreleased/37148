@@ -1,0 +1,7 @@
+Bugfix: Fix CLI zero exit code on startup errors
+
+Zero exit code was returned on startup with a missing app directory
+or a non-writable config directory. Now exit code is 1.
+
+https://github.com/owncloud/core/issues/37098
+https://github.com/owncloud/core/pull/37148
