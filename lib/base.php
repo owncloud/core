@@ -251,7 +251,7 @@ class OC {
 				echo $l->t('This can usually be fixed by giving the webserver write access to the config directory')."\n";
 				echo "\n";
 				echo $l->t('See %s', [ $urlGenerator->linkToDocs('admin-dir_permissions') ])."\n";
-				exit;
+				exit(1);
 			} else {
 				OC_Template::printErrorPage(
 					$l->t('Cannot write into "config" directory!'),
@@ -530,7 +530,7 @@ class OC {
 			// we can't use the template error page here, because this needs the
 			// DI container which isn't available yet
 			print($e->getMessage());
-			exit();
+			exit(1);
 		}
 
 		// setup the basic server
