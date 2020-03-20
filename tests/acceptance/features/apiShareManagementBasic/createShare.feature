@@ -84,21 +84,21 @@ Feature: sharing
     When user "user0" shares file "textfile0.txt" with user "user1" with permissions <requested_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the OCS status message should be "grpc stat request failed"
+    And the OCS status message should be "OK"
     Examples:
       | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
       # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
-      | 1               | 31                    | 31                  | 996             |
-      | 2               | 31                    | 31                  | 996             |
+      | 1               | 31                    | 31                  | 100             |
+      | 2               | 31                    | 31                  | 100             |
       # Ask for read, share (17), create and delete. You get share plus read
-      | 1               | 29                    | 31                  | 996             |
-      | 2               | 29                    | 31                  | 996             |
+      | 1               | 29                    | 31                  | 100             |
+      | 2               | 29                    | 31                  | 100             |
       # Ask for read, update, create, delete. You get read plus update.
-      | 1               | 15                    | 15                  | 996             |
-      | 2               | 15                    | 15                  | 996             |
+      | 1               | 15                    | 15                  | 100             |
+      | 2               | 15                    | 15                  | 100             |
       # Ask for just update. You get exactly update (you do not get read or anything else)
-      | 1               | 2                     | 2                   | 996             |
-      | 2               | 2                     | 2                   | 996             |
+      | 1               | 2                     | 2                   | 100             |
+      | 2               | 2                     | 2                   | 100             |
 
   @skipOnOcis
   @issue-ocis-reva-45
@@ -125,8 +125,8 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
     When user "user0" shares file "randomfile.txt" with user "user1" with permissions "0" using the sharing API
-    Then the OCS status code should be "996"
-    And the OCS status message should be "grpc stat request failed"
+    Then the OCS status code should be "400"
+    And the OCS status message should be "permissions 0 out of range 1 - 31"
     And the HTTP status code should be "<http_status_code>"
     And as "user1" file "randomfile.txt" should not exist
     Examples:
@@ -142,8 +142,8 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
     When user "user0" shares file "/randomfile.txt" with user "user1" using the sharing API
-    Then the OCS status code should be "998"
-    And the OCS status message should be "not found"
+    Then the OCS status code should be "100"
+    And the OCS status message should be "OK"
     And the HTTP status code should be "<http_status_code>"
     And as "user1" file "randomfile.txt" should not exist
     Examples:
@@ -222,8 +222,8 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/afolder"
     When user "user0" shares folder "afolder" with user "user1" with permissions "0" using the sharing API
-    Then the OCS status code should be "996"
-    And the OCS status message should be "grpc stat request failed"
+    Then the OCS status code should be "400"
+    And the OCS status message should be "permissions 0 out of range 1 - 31"
     And the HTTP status code should be "<http_status_code>"
     And as "user1" folder "afolder" should not exist
     Examples:
@@ -274,12 +274,12 @@ Feature: sharing
     And user "user0" has created folder "/FOLDER"
     When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
-    And the OCS status message should be "not found"
+    And the OCS status message should be "OK"
     And the HTTP status code should be "200"
     Examples:
       | ocs_api_version | ocs_status_code |
-      | 1               | 998             |
-      | 2               | 998             |
+      | 1               | 100             |
+      | 2               | 100             |
 
   @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
@@ -620,7 +620,7 @@ Feature: sharing
       | /common/sub/textfile0.txt |
       | /textfile0.txt            |
 
-  @issue-enterprise-3896
+  @skipOnOcis @issue-enterprise-3896
   Scenario: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -635,7 +635,7 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And as "user1" folder "userOneFolder" should not exist
 
-  @issue-enterprise-3896
+  @skipOnOcis @issue-enterprise-3896
   Scenario: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
