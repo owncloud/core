@@ -3120,6 +3120,26 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string|null $user
+	 *
+	 * @return array
+	 */
+	public function findEntryFromReportResponse($user) {
+		$responseXmlObj = $this->getResponseXmlObject();
+		$responseResources = [];
+		$hrefs = $responseXmlObj->xpath('//d:href');
+		foreach ($hrefs as $href) {
+			$hrefParts = \explode("/", $href[0]);
+			if (\in_array($user, $hrefParts)) {
+				\array_push($responseResources, \end($hrefParts));
+			} else {
+				throw new Error("Expected user: $hrefParts[5] but found: $user");
+			}
+		}
+		return $responseResources;
+	}
+
+	/**
 	 * parses a PROPFIND response from $this->response into xml
 	 * and returns found search results if found else returns false
 	 *

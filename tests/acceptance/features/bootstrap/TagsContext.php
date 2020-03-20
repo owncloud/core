@@ -1627,6 +1627,39 @@ class TagsContext implements Context {
 	}
 
 	/**
+	 * @When user :user searches for tag :tagName using the webDAV API
+	 *
+	 * @param {string} $user
+	 * @param {string} $tagName
+	 *
+	 * @return void
+	 */
+	public function userSearchesForTagUsingWebDavAPI($user, $tagName) {
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$password = $this->featureContext->getPasswordForUser($user);
+		$createdTagsArray = $this->getListOfCreatedTags();
+		$systemTagIds = \array_keys($createdTagsArray);
+		$body = "<?xml version='1.0' encoding='utf-8' ?>\n" .
+			"	<oc:filter-files xmlns:d='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
+			"		<oc:filter-rules>\n";
+		foreach ($systemTagIds as $systemTagId) {
+			$body .=
+				"			<oc:systemtag>$systemTagId</oc:systemtag>\n";
+		}
+		$body .=
+			"		</oc:filter-rules>\n" .
+			"	</oc:filter-files>";
+		$response = WebDavHelper::makeDavRequest(
+			$baseUrl, $user, $password, "REPORT", null, null, $body, 2
+		);
+		$this->featureContext->setResponse($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
+		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
+		$this->featureContext->setResponseXmlObject($responseXmlObject);
+	}
+
+	/**
 	 * @AfterScenario
 	 *
 	 * @return void

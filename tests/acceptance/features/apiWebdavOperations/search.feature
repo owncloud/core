@@ -206,3 +206,14 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
+
+  Scenario: search for entry by tags using REPORT method
+    Given user "user0" has created a "normal" tag with name "JustARegularTagName"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "myFileToTag.txt"
+    And user "user0" has added tag "JustARegularTagName" to file "myFileToTag.txt"
+    And user "user0" has added tag "JustARegularTagName" to folder "just-a-folder"
+    When user "user0" searches for tag "JustARegularTagName" using the webDAV API
+    Then the HTTP status code should be "207"
+    And the search result by tags for user "user0" should contain these entries:
+      | myFileToTag.txt |
+      | just-a-folder   |
