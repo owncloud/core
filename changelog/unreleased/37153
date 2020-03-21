@@ -1,0 +1,6 @@
+Bugfix: Respect sharing.federation.allowHttpFallback config option
+
+Federated share can be created for server without SSL, by setting config
+option sharing.federation.allowHttpFallback=true.
+
+https://github.com/owncloud/core/pull/37153
