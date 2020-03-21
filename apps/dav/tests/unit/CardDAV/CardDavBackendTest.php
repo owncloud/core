@@ -484,9 +484,12 @@ class CardDavBackendTest extends TestCase {
 	 *
 	 * @param string $pattern
 	 * @param array $properties
+	 * @param array $matchModes
 	 * @param array $expected
+	 * @param array $limit
+	 * @param array $offset
 	 */
-	public function testSearch($pattern, $properties, $expected, $limit, $offset) {
+	public function testSearch($pattern, $properties, $matchModes, $expected, $limit, $offset) {
 		/** @var VCard $vCards */
 		$vCards = [];
 		$vCards[0] = new VCard();
@@ -548,33 +551,53 @@ class CardDavBackendTest extends TestCase {
 				]
 			);
 		$query->execute();
+		
+		foreach ($matchModes as $matchMode) {
+			if ($matchMode !== null) {
+				$result = $this->backend->searchEx(0, $pattern, $properties, ['matchMode' => $matchMode], $limit, $offset);
+			} else {
+				$result = $this->backend->search(0, $pattern, $properties, $limit, $offset);
+			}
 
-		$result = $this->backend->search(0, $pattern, $properties, $limit, $offset);
+			// check result
+			$this->assertCount(\count($expected), $result);
 
-		// check result
-		$this->assertCount(\count($expected), $result);
-		$found = [];
-		foreach ($result as $r) {
-			foreach ($expected as $exp) {
-				if ($r['uri'] === $exp[0] && \strpos($r['carddata'], $exp[1]) > 0) {
-					$found[$exp[1]] = true;
-					break;
+			$found = [];
+			foreach ($result as $r) {
+				foreach ($expected as $exp) {
+					if ($r['uri'] === $exp[0] && \strpos($r['carddata'], $exp[1]) > 0) {
+						$found[$exp[1]] = true;
+						break;
+					}
 				}
 			}
-		}
 
-		$this->assertCount(\count($expected), $found);
+			$this->assertCount(\count($expected), $found);
+		}
 	}
 
 	public function dataTestSearch() {
 		return [
-				['John', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
-				['M. Doe', ['FN'], [['uri1', 'John M. Doe']], 100, 0],
-				['Do', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
-				'check if duplicates are handled correctly' => ['John', ['FN', 'CLOUD'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
-				'case insensitive' => ['john', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
-				'search limit' => ['John', ['FN'], [['uri0', 'John Doe']], 1, 0],
-				'search offset' => ['John', ['FN'], [['uri1', 'John M. Doe']], 1, 1],
+				// test medial and end wildcard with name
+				['John', ['FN'], [null, 'START', 'ANY'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				// test start wildcard or exact with just name will return no results
+				['John', ['FN'], ['END', 'EXACT'], [], 100, 0],
+				// test start wildcard with name ending will return results
+				['Doe', ['FN'], ['END'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				// test exact with full name will return result
+				['John Doe', ['FN'], ['EXACT'], [['uri0', 'John Doe']], 100, 0],
+				// test medial with surname
+				['M. Doe', ['FN'], [ null ], [['uri1', 'John M. Doe']], 100, 0],
+				// test medial with part of surname
+				['Do', ['FN'], [ null ], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				// check if duplicates are handled correctly
+				['John', ['FN', 'CLOUD'], [ null ], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				// case insensitive
+				['john', ['FN'], [ null ], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				// search limit
+				['John', ['FN'], [ null ], [['uri0', 'John Doe']], 1, 0],
+				// search offset
+				['John', ['FN'], [ null ], [['uri1', 'John M. Doe']], 1, 1],
 		];
 	}
 
