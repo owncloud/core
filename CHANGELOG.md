@@ -40,6 +40,8 @@ Summary
 * Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
 * Change - Update laminas/laminas-validator (2.13.1 => 2.13.2): [#37131](https://github.com/owncloud/core/pull/37131)
 * Change - Update league/flysystem (1.0.65 => 1.0.66): [#37136](https://github.com/owncloud/core/pull/37136)
+* Change - Update minimist (1.2.2 => 1.2.3): [#37138](https://github.com/owncloud/core/pull/37138)
+* Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
 
 Details
 -------
@@ -253,6 +255,15 @@ Details
 * Change - Update league/flysystem (1.0.65 => 1.0.66): [#37136](https://github.com/owncloud/core/pull/37136)
 
    https://github.com/owncloud/core/pull/37136
+
+* Change - Update minimist (1.2.2 => 1.2.3): [#37138](https://github.com/owncloud/core/pull/37138)
+
+   https://github.com/owncloud/core/pull/37138
+
+* Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
+
+   https://github.com/owncloud/core/pull/37151
+   https://github.com/sabre-io/dav/releases/tag/4.1.0
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
