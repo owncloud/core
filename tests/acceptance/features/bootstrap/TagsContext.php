@@ -1655,7 +1655,7 @@ class TagsContext implements Context {
 		} else {
 			throw new Error(
 				"Expected: Tag with name $tagName to be in created list, but not found!" .
-				"List of created Tags: " . \implode(",", $createdTagsArray)
+				"List of created Tags: " . \implode(",", $tagNames)
 			);
 		}
 		$body .=
