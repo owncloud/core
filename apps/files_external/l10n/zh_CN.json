@@ -19,6 +19,7 @@
     "Disable external storage" : "停用外部存储",
     "No URL provided by backend " : "后端未提供 URL",
     "Empty response from the server" : "服务器未返回数据",
+    "Couldn't access. Please logout and login to activate this mount point" : "无法访问。请登出再登录来激活挂载点",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "无法从 ownCloud 服务器获取信息：{code} {type}",
     "Couldn't get the list of external mount points: {type}" : "无法获取外部挂载点列表：{type}",
     "There was an error with message: " : "发生错误：",
