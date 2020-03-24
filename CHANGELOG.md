@@ -20,6 +20,7 @@ Summary
 * Bugfix - Fix OCS Share API response for requests contain "include_tags" parameter: [#37084](https://github.com/owncloud/core/issues/37084)
 * Bugfix - Add share type to the verifyExpirationDate hook: [#287](https://github.com/owncloud/password_policy/issues/287)
 * Bugfix - Fix CLI zero exit code on startup errors: [#37098](https://github.com/owncloud/core/issues/37098)
+* Bugfix - Respect sharing.federation.allowHttpFallback config option: [#37153](https://github.com/owncloud/core/pull/37153)
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -150,6 +151,13 @@ Details
 
    https://github.com/owncloud/core/issues/37098
    https://github.com/owncloud/core/pull/37148
+
+* Bugfix - Respect sharing.federation.allowHttpFallback config option: [#37153](https://github.com/owncloud/core/pull/37153)
+
+   Federated share can be created for server without SSL, by setting config option
+   sharing.federation.allowHttpFallback=true.
+
+   https://github.com/owncloud/core/pull/37153
 
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 
