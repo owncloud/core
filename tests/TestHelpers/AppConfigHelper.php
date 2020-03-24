@@ -76,7 +76,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$testingState ? 'yes' : 'no',
 			$ocsApiVersion
 		);
-		
+
 		return [
 			'appid' => $testingApp,
 			'configkey' => $testingParameter,
@@ -286,6 +286,13 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password, $appParameterValues, $ocsApiVersion = 2
 	) {
+		if(is_array($appParameterValues)){
+			foreach ($appParameterValues as $key=>$value){
+				if(isset($value['value']) && is_array($value['value'])){
+					$appParameterValues[$key]['value'] = implode("", $appParameterValues[$key]['value']);
+				}
+			}
+		}
 		$body = ['values' => $appParameterValues];
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -392,7 +399,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 				"100", self::getOCSResponse($response)
 			);
 		}
-			
+		
 		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
 		$response = \json_decode(\json_encode($responseXml), true)['element'];
 		return $response;
