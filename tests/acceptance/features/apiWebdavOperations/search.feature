@@ -222,3 +222,28 @@ Feature: Search
     Then the HTTP status code should be "207"
     And the search result by tags for user "user0" should contain these entries:
       | upload.txt |
+
+  Scenario: share a tagged resource to another internal user and sharee search for tag using REPORT method
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has created a "normal" tag with name "JustARegularTag1"
+    And user "user0" has created a "normal" tag with name "JustARegularTag2"
+    And user "user0" has added tag "JustARegularTag1" to folder "फनी näme"
+    And user "user0" has added tag "JustARegularTag1" to file "upload.txt"
+    And user "user0" has added tag "JustARegularTag2" to file "upload.txt"
+    And user "user0" has shared file "फनी näme" with user "user1"
+    And user "user0" has shared file "upload.txt" with user "user1"
+    When user "user1" searches for tag "JustARegularTag1" using the webDAV API
+    Then the HTTP status code should be "207"
+    And the search result by tags for user "user1" should contain these entries:
+      | फनी näme   |
+      | upload.txt |
+    When user "user1" searches for tag "JustARegularTag2" using the webDAV API
+    Then the HTTP status code should be "207"
+    And the search result by tags for user "user1" should contain these entries:
+      | upload.txt |
+    When user "user1" searches for following tag using the webDAV API
+      | JustARegularTag1 |
+      | JustARegularTag2 |
+    Then the HTTP status code should be "207"
+    And as user "user1" the response should contain file "upload.txt"
+    And as user "user1" the response should not contain file "फनी näme"
