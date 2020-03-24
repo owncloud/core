@@ -44,6 +44,7 @@ Summary
 * Change - Update minimist (1.2.2 => 1.2.3): [#37138](https://github.com/owncloud/core/pull/37138)
 * Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
+* Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
 
 Details
 -------
@@ -277,6 +278,10 @@ Details
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 
    https://github.com/owncloud/core/pull/37155
+
+* Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
+
+   https://github.com/owncloud/core/pull/37161
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
