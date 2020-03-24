@@ -1638,13 +1638,25 @@ class TagsContext implements Context {
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
 		$createdTagsArray = $this->getListOfCreatedTags();
-		$systemTagIds = \array_keys($createdTagsArray);
 		$body = "<?xml version='1.0' encoding='utf-8' ?>\n" .
 			"	<oc:filter-files xmlns:d='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
 			"		<oc:filter-rules>\n";
-		foreach ($systemTagIds as $systemTagId) {
+		$tagIds = [];
+		$tagNames = [];
+		foreach ($createdTagsArray as $tagId => $tagArray) {
+			\array_push($tagIds, $tagId);
+			\array_push($tagNames, $tagArray['name']);
+		}
+		$found = \in_array($tagName, $tagNames);
+		if ($found) {
+			$index = \array_search($tagName, $tagNames);
 			$body .=
-				"			<oc:systemtag>$systemTagId</oc:systemtag>\n";
+				"			<oc:systemtag>$tagIds[$index]</oc:systemtag>\n";
+		} else {
+			throw new Error(
+				"Expected: Tag with name $tagName to be in created list, but not found!" .
+				"List of created Tags: " . \implode(",", $createdTagsArray)
+			);
 		}
 		$body .=
 			"		</oc:filter-rules>\n" .
