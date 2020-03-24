@@ -209,11 +209,12 @@ Feature: Search
 
   Scenario: search for entry by tags using REPORT method
     Given user "user0" has created a "normal" tag with name "JustARegularTagName"
-    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "myFileToTag.txt"
-    And user "user0" has added tag "JustARegularTagName" to file "myFileToTag.txt"
-    And user "user0" has added tag "JustARegularTagName" to folder "just-a-folder"
+    And user "user0" has added tag "JustARegularTagName" to folder "फनी näme"
+    And user "user0" has added tag "JustARegularTagName" to file "upload.txt"
+    And user "user0" has added tag "JustARegularTagName" to file "a-image.png"
     When user "user0" searches for tag "JustARegularTagName" using the webDAV API
     Then the HTTP status code should be "207"
     And the search result by tags for user "user0" should contain these entries:
-      | myFileToTag.txt |
-      | just-a-folder   |
+      | फनी näme    |
+      | upload.txt  |
+      | a-image.png |
