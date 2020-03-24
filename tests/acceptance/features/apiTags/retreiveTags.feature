@@ -27,3 +27,10 @@ Feature: tags
       | name      | type   |
       | StaticTag | static |
     And the HTTP status when user "user1" requests tags for file "/myFileToTag.txt" owned by "user0" should be "404"
+
+  Scenario: Retrieve tag on a resource using REPORT method
+    Given the administrator has created a "normal" tag with name "NormalTag"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "myFileToTag.txt"
+    And user "user0" has added tag "NormalTag" to file "myFileToTag.txt"
+    When user reports for tag "NormalTag" using the webDAV API
+    Then as user "user0" the response should contain file "myFileToTag.txt"

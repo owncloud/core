@@ -1672,6 +1672,37 @@ class TagsContext implements Context {
 	}
 
 	/**
+	 * @When user reports for tag :tagName using the webDAV API
+	 *
+	 * @param $tagName
+	 *
+	 * @return void
+	 */
+	public function userReportsForTagsOnFileUsingTheWebDavApi($tagName) {
+		$this->userSearchesForTagUsingWebDavAPI(
+			$this->featureContext->getCurrentUser(),
+			$tagName
+		);
+	}
+
+	/**
+	 * @Then as user :user the response should contain file/folder :path
+	 *
+	 * @param $user
+	 * @param $path
+	 *
+	 * @return void
+	 */
+	public function asUserFileShouldBeTaggedWithTagName($user, $path) {
+		$responseResourcesArray = $this->featureContext->findEntryFromReportResponse($user);
+		Assert::assertTrue(
+			\in_array($path, $responseResourcesArray),
+			"Expected: $path to be present in last response, but not found! \n" .
+			"Resource from response: " . \implode(",", $responseResourcesArray)
+		);
+	}
+
+	/**
 	 * @AfterScenario
 	 *
 	 * @return void
