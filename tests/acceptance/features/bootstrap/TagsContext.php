@@ -1659,7 +1659,7 @@ class TagsContext implements Context {
 			} else {
 				throw new Error(
 					"Expected: Tag with name $tagName[0] to be in created list, but not found!" .
-					"List of created Tags: " . \implode(",", $tagNames)
+					"List of created Tags: " . \implode(",", $createdTagNames)
 				);
 			}
 		}
@@ -1677,7 +1677,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @When user :user searches for following tag using the webDAV API
+	 * @When user :user searches for resources tagged with all of the following tags using the webDAV API
 	 *
 	 * @param string $user
 	 * @param TableNode $tagNames
@@ -1692,7 +1692,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @When user :user searches for tag :tagName using the webDAV API
+	 * @When user :user searches for resources tagged with tag :tagName using the webDAV API
 	 *
 	 * @param string $user
 	 * @param string $tagName
