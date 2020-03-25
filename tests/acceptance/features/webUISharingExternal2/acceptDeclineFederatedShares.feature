@@ -87,3 +87,17 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" from server "REMOTE" shares "/lorem.txt" with user "user1" from server "LOCAL" using the sharing API
     Then user "user1" should not see the following elements
       | /lorem%20(2).txt |
+
+  Scenario: Local user accepts a pending federated share on the webUI
+    Given user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
+    When the user browses to the shared-with-you page
+    And the user closes the federation sharing dialog
+    And the user accepts the pending remote share using the webUI
+    Then file "lorem (2).txt" should be listed in the shared-with-you page on the webUI
+
+  Scenario: Federated share from Local user to remote user
+    Given user "user1" from server "LOCAL" has shared "/lorem.txt" with user "user1" from server "REMOTE"
+    And user "user1" from server "REMOTE" has accepted the last pending share
+    When the user browses to the shared-with-others page
+    Then user "user1" should see the following elements
+      | lorem.txt |

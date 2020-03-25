@@ -38,6 +38,7 @@ class SharedWithYouPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-sharingin']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharingin']//div[@id='emptycontent']";
+	protected $acceptPendingFederatedXpath = "//table//a[@class='action action-accept permanent']";
 
 	/**
 	 * @return string
@@ -132,5 +133,19 @@ class SharedWithYouPage extends FilesPageBasic {
 			echo $message;
 			\error_log($message);
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function acceptPendingShare() {
+		$acceptShareElement = $this->find("xpath", $this->acceptPendingFederatedXpath);
+		$this->assertElementNotNull(
+			$acceptShareElement,
+			__METHOD__ .
+			" xpath $this->acceptPendingFederatedXpath " .
+			"could not find accept element."
+		);
+		$acceptShareElement->click();
 	}
 }
