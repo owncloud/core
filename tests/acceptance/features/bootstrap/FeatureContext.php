@@ -2124,24 +2124,46 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * send request to list a server file
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function listTrashbinFileInServerRoot($path) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/dir?dir={$path}"
+		);
+		$this->setResponse($response);
+	}
+
+	/**
 	 * @Then the file :path with content :content should exist in the server root
 	 *
 	 * @param string $path
 	 * @param string $content
+	 * @param bool $trash
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function theFileWithContentShouldExistInTheServerRoot($path, $content) {
+	public function theFileWithContentShouldExistInTheServerRoot($path, $content, $trash = false) {
 		$this->readFileInServerRoot($path);
 		Assert::assertSame(
 			200,
 			$this->getResponse()->getStatusCode(),
 			"Failed to read the file {$path}"
 		);
-
 		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
 		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($fileContent);
+
+		if ($trash) {
+			return $fileContent;
+		}
 
 		Assert::assertSame(
 			$content,
