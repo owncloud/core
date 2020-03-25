@@ -649,3 +649,20 @@ Feature: sharing
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
     And as "user0" folder "userOneFolder" should not exist
+
+  @skipOnOcis @issue-enterprise-3896
+  Scenario: sharing a subfolder to a user that already received parent folder share
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user0" has created folder "userZeroFolder"
+    And user "user0" has shared folder "userZeroFolder" with user "user1"
+    And user "user0" has shared folder "userZeroFolder" with user "user2"
+    And user "user1" has created folder "userZeroFolder/userOneFolder"
+    When user "user1" shares folder "userZeroFolder/userOneFolder" with user "user3" with permissions "read, share" using the sharing API
+    And user "user3" shares folder "userOneFolder" with user "user2" using the sharing API
+    Then the HTTP status code should be "200"
+#    Then the HTTP status code should be "405"
+    And as "user2" folder "userOneFolder" should not exist
