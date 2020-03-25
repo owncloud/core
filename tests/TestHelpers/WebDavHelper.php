@@ -365,8 +365,8 @@ class WebDavHelper {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
 		//replace %, # and ? and in the path, Guzzle will not encode them
-		$urlSpecialChar = [['%', '#', '?'],['%25', '%23', '%3F']];
-		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+		//      $urlSpecialChar = [['%', '#', '?'],['%25', '%23', '%3F']];
+		//      $path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 
 		if ($authType === 'bearer') {

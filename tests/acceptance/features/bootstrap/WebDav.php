@@ -2926,6 +2926,36 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user downloads the preview of :path with width :width and height :height using the WebDAV API
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function downloadPreview($user, $path, $width, $height) {
+		$this->response = $this->makeDavRequest(
+			$user, "GET", $path . "?x=$width&y=$height&forceIcon=0&preview=1", [], null, "files", 2
+		);
+	}
+
+	/**
+	 * @Then the downloaded image should be :width pixel wide and :height pixel high
+	 *
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function imageDimensionsShouldBe($width, $height) {
+		$size = \getimagesizefromstring($this->response->getBody()->getContents());
+		Assert::assertNotFalse($size, "could not get size of image");
+		Assert::assertEquals($width, $size[0], "width not as expected");
+		Assert::assertEquals($height, $size[1], "height not as expected");
+	}
+	/**
 	 * @param string $user
 	 * @param string $path
 	 *

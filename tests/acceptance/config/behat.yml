@@ -350,6 +350,14 @@ default:
         - WebDavPropertiesContext:
         - TagsContext:
 
+    apiWebdavPreviews:
+      paths:
+        - '%paths.base%/../features/apiWebdavPreviews'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
+
     apiWebdavProperties:
       paths:
         - '%paths.base%/../features/apiWebdavProperties'
