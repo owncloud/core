@@ -1275,14 +1275,14 @@ trait WebDav {
 			$this->getPasswordForUser($user), 'GET', $path,
 			[], null, 2, $type
 		);
-		
+
 		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
 			throw new \Exception(
 				"$entry '$path' expected to not exist " .
 				"(status code {$response->getStatusCode()}, expected 401 - 404)"
 			);
 		}
-		
+
 		return $response;
 	}
 
@@ -3117,6 +3117,27 @@ trait WebDav {
 		foreach ($resultEntries as $resultEntry) {
 			Assert::assertContains($resultEntry, $expectedEntries);
 		}
+	}
+
+	/**
+	 * @param string|null $user
+	 *
+	 * @return array
+	 */
+	public function findEntryFromReportResponse($user) {
+		$responseXmlObj = $this->getResponseXmlObject();
+		$responseResources = [];
+		$hrefs = $responseXmlObj->xpath('//d:href');
+		foreach ($hrefs as $href) {
+			$hrefParts = \explode("/", $href[0]);
+			if (\in_array($user, $hrefParts)) {
+				$entry = \urldecode(\end($hrefParts));
+				\array_push($responseResources, $entry);
+			} else {
+				throw new Error("Expected user: $hrefParts[5] but found: $user");
+			}
+		}
+		return $responseResources;
 	}
 
 	/**

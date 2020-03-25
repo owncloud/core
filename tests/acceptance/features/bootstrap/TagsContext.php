@@ -1627,6 +1627,51 @@ class TagsContext implements Context {
 	}
 
 	/**
+	 * @When user :user searches for tag :tagName using the webDAV API
+	 *
+	 * @param {string} $user
+	 * @param {string} $tagName
+	 *
+	 * @return void
+	 */
+	public function userSearchesForTagUsingWebDavAPI($user, $tagName) {
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$password = $this->featureContext->getPasswordForUser($user);
+		$createdTagsArray = $this->getListOfCreatedTags();
+		$body = "<?xml version='1.0' encoding='utf-8' ?>\n" .
+			"	<oc:filter-files xmlns:d='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
+			"		<oc:filter-rules>\n";
+		$tagIds = [];
+		$tagNames = [];
+		foreach ($createdTagsArray as $tagId => $tagArray) {
+			\array_push($tagIds, $tagId);
+			\array_push($tagNames, $tagArray['name']);
+		}
+		$found = \in_array($tagName, $tagNames);
+		if ($found) {
+			$index = \array_search($tagName, $tagNames);
+			$body .=
+				"			<oc:systemtag>$tagIds[$index]</oc:systemtag>\n";
+		} else {
+			throw new Error(
+				"Expected: Tag with name $tagName to be in created list, but not found!" .
+				"List of created Tags: " . \implode(",", $tagNames)
+			);
+		}
+		$body .=
+			"		</oc:filter-rules>\n" .
+			"	</oc:filter-files>";
+		$response = WebDavHelper::makeDavRequest(
+			$baseUrl, $user, $password, "REPORT", null, null, $body, 2
+		);
+		$this->featureContext->setResponse($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
+		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
+		$this->featureContext->setResponseXmlObject($responseXmlObject);
+	}
+
+	/**
 	 * @AfterScenario
 	 *
 	 * @return void
