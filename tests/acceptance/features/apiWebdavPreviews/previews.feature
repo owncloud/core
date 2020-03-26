@@ -63,6 +63,12 @@ Feature: previews of files downloaded thought the webdav API
   Scenario: download previews of different file types
 
   Scenario: download previews of shared files
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    And user "user0" has shared file "/parent.txt" with user "user1"
+    When user "user1" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded image should be "32" pixel wide and "32" pixel high
 
   Scenario: download previews of other users files
 
