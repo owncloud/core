@@ -46,6 +46,7 @@ Summary
 * Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
+* Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
 Details
 -------
@@ -287,6 +288,23 @@ Details
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
 
    https://github.com/owncloud/core/pull/37161
+
+* Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
+
+   This is a new occ command mainly for objectstores (objectstore and files_primary_s3 apps) as
+   primary storages, but it can be used also for local primary storage.
+
+   The use case is when a file is deleted directly from the primary storage without going through
+   ownCloud. This is a scenario that shouldn't happen (modifying the primary storage outside of
+   ownCloud isn't supported).
+
+   The command will check if the target file can be accessed, and if not you can delete the
+   information that ownCloud has (the command provides an option for this).
+
+   The command will only work for the primary storage. It will ignore files that are accessible
+   through a share (they need to be accessed directly), or files that are in an external storage.
+
+   https://github.com/owncloud/core/pull/37067
 
 Changelog for ownCloud Core [10.4.0] (2020-02-10)
 =======================================
