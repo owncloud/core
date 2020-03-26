@@ -58,15 +58,20 @@ class ConfigTest extends TestCase {
 
 	public function testGetValueReturnsEnvironmentValueIfSet() {
 		$this->assertEquals('bar', $this->config->getValue('foo'));
-		\putenv('OC_foo=baz');
-		$this->assertEquals('baz', $this->config->getValue('foo'));
+		try {
+			\putenv('OC_foo=baz');
+			$this->assertEquals('baz', $this->config->getValue('foo'));
+		} finally {
+			// Always remove the env var, otherwise it will effect later tests
+			\putenv('OC_foo');
+		}
 	}
 
 	public function testSetValue() {
 		$this->config->setValue('foo', 'moo');
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['foo'] = 'moo';
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$this->checkConfigMatchesExpected($expectedConfig);
 
 		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
@@ -89,7 +94,7 @@ class ConfigTest extends TestCase {
 		$this->config->setValue('apps', ['files', 'gallery']);
 		$expectedConfig['bar'] = 'red';
 		$expectedConfig['apps'] = ['files', 'gallery'];
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$this->checkConfigMatchesExpected($expectedConfig);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeSetValue[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterSetValue[1]);
 		$this->assertEquals('config.beforesetvalue', $calledBeforeSetValue[0]);
@@ -117,7 +122,7 @@ class ConfigTest extends TestCase {
 			'not_exists'	=> null,
 		]);
 
-		$this->assertAttributeEquals($this->initialConfig, 'cache', $this->config);
+		$this->checkConfigMatchesExpected($this->initialConfig);
 		$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
 
 		$calledBeforeUpdate = [];
@@ -139,7 +144,7 @@ class ConfigTest extends TestCase {
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['foo'] = 'moo';
 		unset($expectedConfig['alcohol_free']);
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$this->checkConfigMatchesExpected($expectedConfig);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUpdate[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
 		$this->assertEquals('config.beforesetvalue', $calledBeforeUpdate[0]);
@@ -207,7 +212,7 @@ class ConfigTest extends TestCase {
 		$this->config->deleteKey('foo');
 		$expectedConfig = $this->initialConfig;
 		unset($expectedConfig['foo']);
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$this->checkConfigMatchesExpected($expectedConfig);
 
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteValue[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteValue[1]);
@@ -243,5 +248,11 @@ class ConfigTest extends TestCase {
 
 		// Cleanup
 		\unlink($additionalConfigPath);
+	}
+
+	private function checkConfigMatchesExpected($expectedConfig) {
+		foreach ($expectedConfig as $key => $value) {
+			$this->assertEquals($value, $this->config->getValue($key));
+		}
 	}
 }
