@@ -24,6 +24,7 @@ namespace OCA\DAV\Tests\unit\DAV;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\DAV\CopyPlugin;
+use OCA\DAV\Meta\MetaFile;
 use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Server;
@@ -90,7 +91,7 @@ class CopyPluginTest extends TestCase {
 
 	public function testCopyPluginReturnFalse() {
 		$destinationNode = $this->createMock(File::class);
-		$sourceNode = $this->createMock([IFile::class, ICopySource::class]);
+		$sourceNode = $this->createMock(MetaFile::class);
 
 		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
 		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
@@ -125,7 +126,7 @@ class CopyPluginTest extends TestCase {
 		$this->expectExceptionMessage('Test exception');
 
 		$destinationNode = $this->createMock(File::class);
-		$sourceNode = $this->createMock([ICopySource::class, IFile::class]);
+		$sourceNode = $this->createMock(MetaFile::class);
 
 		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
 		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([

@@ -38,6 +38,9 @@ use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\ObjectTree;
 use OC\Files\View;
 
+interface IPersistentLockingStorageTest extends IPersistentLockingStorage, IStorage {
+}
+
 class FileLocksBackendTest extends TestCase {
 	const CREATION_TIME = 164419200;
 	const CURRENT_TIME = 164419800;
@@ -52,7 +55,7 @@ class FileLocksBackendTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->storageOfFileToBeLocked = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+		$this->storageOfFileToBeLocked = $this->createMock(IPersistentLockingStorageTest::class);
 
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
@@ -61,7 +64,7 @@ class FileLocksBackendTest extends TestCase {
 		$this->tree->method('getNodeForPath')->willReturnCallback(function ($uri) {
 			// root node
 			if ($uri === '') {
-				$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+				$storage = $this->createMock(IPersistentLockingStorageTest::class);
 				$storage->method('instanceOfStorage')->willReturn(true);
 				$storage->method('getLocks')->willReturn([]);
 				$fileInfo = $this->createMock(FileInfo::class);
@@ -86,7 +89,7 @@ class FileLocksBackendTest extends TestCase {
 				return $file;
 			}
 			if ($uri === 'locked-file.txt') {
-				$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+				$storage = $this->createMock(IPersistentLockingStorageTest::class);
 				$storage->method('instanceOfStorage')->willReturn(true);
 				$storage->method('getLocks')->willReturnCallback(function () {
 					$lock = new Lock();
@@ -121,7 +124,7 @@ class FileLocksBackendTest extends TestCase {
 			}
 
 			if ($uri === 'locked-collection-infinite') {
-				$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+				$storage = $this->createMock(IPersistentLockingStorageTest::class);
 				$storage->method('instanceOfStorage')->willReturn(true);
 				$storage->method('getLocks')->willReturnCallback(function () {
 					$lock = new Lock();
@@ -224,7 +227,7 @@ class FileLocksBackendTest extends TestCase {
 		$lock->setTimeout(1000);
 		$lock->setCreatedAt(self::CREATION_TIME);
 
-		$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+		$storage = $this->createMock(IPersistentLockingStorageTest::class);
 		$storage->method('instanceOfStorage')->willReturn(true);
 		$storage->method('getLocks')
 			->with($storageGetLocksPath)

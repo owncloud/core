@@ -34,6 +34,9 @@ use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
 use Test\TestCase;
 
+interface IObjectStoreTest extends IObjectStore, IVersionedObjectStorage {
+}
+
 /**
  * Class ObjectStoreTest
  *
@@ -43,14 +46,14 @@ use Test\TestCase;
  */
 class ObjectStoreTest extends TestCase {
 
-	/** @var IObjectStore | IVersionedObjectStorage | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IObjectStoreTest | \PHPUnit\Framework\MockObject\MockObject */
 	private $impl;
 	/** @var ObjectStoreStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $objectStore;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->impl = $this->createMock([IObjectStore::class, IVersionedObjectStorage::class]);
+		$this->impl = $this->createMock(IObjectStoreTest::class);
 		$this->impl->expects($this->any())
 			->method('getStorageId')
 			->willReturn('object-store-test');

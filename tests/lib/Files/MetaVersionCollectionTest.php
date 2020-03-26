@@ -21,6 +21,7 @@
 
 namespace Test\Files;
 
+use OC\Files\Storage\Common;
 use Test\TestCase;
 use OCP\Files\Node;
 use OC\Files\Meta\MetaVersionCollection;
@@ -53,7 +54,7 @@ class MetaVersionCollectionTest extends TestCase {
 	private $collection;
 
 	/**
-	 * @var IStorage|IVersionedStorage
+	 * @var Common
 	 */
 	private $storage;
 
@@ -62,7 +63,7 @@ class MetaVersionCollectionTest extends TestCase {
 
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->node = $this->createMock(Node::class);
-		$this->storage = $this->createMock([IStorage::class, IVersionedStorage::class]);
+		$this->storage = $this->createMock(Common::class);
 		$this->node->method('getStorage')->willReturn($this->storage);
 		$this->collection = new MetaVersionCollection($this->rootFolder, $this->node);
 	}
