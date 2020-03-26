@@ -14,6 +14,7 @@ namespace Test;
 
 use OC\NavigationManager;
 use OCP\App\IAppManager;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -31,7 +32,7 @@ class NavigationManagerTest extends TestCase {
 		$this->navigationManager = new NavigationManager();
 	}
 
-	public function addArrayData() {
+	public function addArrayData(): array {
 		return [
 			[
 				[
@@ -77,7 +78,7 @@ class NavigationManagerTest extends TestCase {
 	 * @param array $entry
 	 * @param array $expectedEntry
 	 */
-	public function testAddArray(array $entry, array $expectedEntry) {
+	public function testAddArray(array $entry, array $expectedEntry): void {
 		$this->assertEmpty($this->navigationManager->getAll(), 'Expected no navigation entry exists');
 		$this->navigationManager->add($entry);
 
@@ -95,11 +96,11 @@ class NavigationManagerTest extends TestCase {
 	 * @param array $entry
 	 * @param array $expectedEntry
 	 */
-	public function testAddClosure(array $entry, array $expectedEntry) {
+	public function testAddClosure(array $entry, array $expectedEntry): void {
 		global $testAddClosureNumberOfCalls;
 		$testAddClosureNumberOfCalls = 0;
 
-		$this->navigationManager->add(function () use ($entry) {
+		$this->navigationManager->add(static function () use ($entry) {
 			global $testAddClosureNumberOfCalls;
 			$testAddClosureNumberOfCalls++;
 
@@ -122,7 +123,7 @@ class NavigationManagerTest extends TestCase {
 		$this->assertEmpty($this->navigationManager->getAll(), 'Expected no navigation entry exists after clear()');
 	}
 
-	public function testAddArrayClearGetAll() {
+	public function testAddArrayClearGetAll(): void {
 		$entry = [
 			'id'	=> 'entry id',
 			'name'	=> 'link text',
@@ -137,7 +138,7 @@ class NavigationManagerTest extends TestCase {
 		$this->assertEmpty($this->navigationManager->getAll(), 'Expected no navigation entry exists after clear()');
 	}
 
-	public function testAddClosureClearGetAll() {
+	public function testAddClosureClearGetAll(): void {
 		$this->assertEmpty($this->navigationManager->getAll(), 'Expected no navigation entry exists');
 
 		$entry = [
@@ -151,7 +152,7 @@ class NavigationManagerTest extends TestCase {
 		global $testAddClosureNumberOfCalls;
 		$testAddClosureNumberOfCalls = 0;
 
-		$this->navigationManager->add(function () use ($entry) {
+		$this->navigationManager->add(static function () use ($entry) {
 			global $testAddClosureNumberOfCalls;
 			$testAddClosureNumberOfCalls++;
 
@@ -168,21 +169,22 @@ class NavigationManagerTest extends TestCase {
 	/**
 	 * @dataProvider providesNavigationConfig
 	 */
-	public function testWithAppManager($expected, $config, $isAdmin = false) {
+	public function testWithAppManager($expected, $config, $isAdmin = false): void {
 		$appManager = $this->createMock(IAppManager::class);
 		$urlGenerator = $this->createMock(IURLGenerator::class);
 		$l10nFac = $this->createMock(IFactory::class);
 		$userSession = $this->createMock(IUserSession::class);
 		$groupManager = $this->createMock(IGroupManager::class);
+		$systemConfig = $this->createMock(IConfig::class);
 		$l = $this->createMock(IL10N::class);
-		$l->expects($this->any())->method('t')->willReturnCallback(function ($text, $parameters = []) {
+		$l->method('t')->willReturnCallback(static function ($text, $parameters = []) {
 			return \vsprintf($text, $parameters);
 		});
 
 		$appManager->expects($this->once())->method('getInstalledApps')->willReturn(['test']);
 		$appManager->expects($this->once())->method('getAppInfo')->with('test')->willReturn($config);
 		$l10nFac->expects($this->exactly(\count($expected)))->method('get')->with('test')->willReturn($l);
-		$urlGenerator->expects($this->any())->method('imagePath')->willReturnCallback(function ($appName, $file) {
+		$urlGenerator->method('imagePath')->willReturnCallback(static function ($appName, $file) {
 			return "/apps/$appName/img/$file";
 		});
 		if (isset($config['navigation']['static'])) {
@@ -194,17 +196,17 @@ class NavigationManagerTest extends TestCase {
 		}
 
 		$user = $this->createMock(IUser::class);
-		$user->expects($this->any())->method('getUID')->willReturn('user001');
-		$userSession->expects($this->any())->method('getUser')->willReturn($user);
-		$groupManager->expects($this->any())->method('isAdmin')->willReturn($isAdmin);
+		$user->method('getUID')->willReturn('user001');
+		$userSession->method('getUser')->willReturn($user);
+		$groupManager->method('isAdmin')->willReturn($isAdmin);
 
-		$navigationManager = new NavigationManager($appManager, $urlGenerator, $l10nFac, $userSession, $groupManager);
+		$navigationManager = new NavigationManager($appManager, $urlGenerator, $l10nFac, $userSession, $groupManager, $systemConfig);
 
 		$entries = $navigationManager->getAll();
 		$this->assertEquals($expected, $entries);
 	}
 
-	public function providesNavigationConfig() {
+	public function providesNavigationConfig(): array {
 		return [
 			'minimalistic' => [[[
 				'id' => 'test',
