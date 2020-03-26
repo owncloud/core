@@ -36,6 +36,7 @@ Summary
 * Change - Update Symfony components to 4.4.5: [#37052](https://github.com/owncloud/core/pull/37052)
 * Change - Return correct custom dav properties for folder contents: [#37058](https://github.com/owncloud/core/pull/37058)
 * Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
+* Change - Add menu entry to phoenix if phoenix is configured: [#37083](https://github.com/owncloud/core/pull/37083)
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
 * Change - Include reshares in the webdav response when asking for share types: [#37107](https://github.com/owncloud/core/pull/37107)
 * Change - Fix UX in files app: [#37116](https://github.com/owncloud/core/pull/37116)
@@ -239,6 +240,10 @@ Details
 * Change - Hardening Cache-Control headers for some responses: [#37082](https://github.com/owncloud/core/pull/37082)
 
    https://github.com/owncloud/core/pull/37082
+
+* Change - Add menu entry to phoenix if phoenix is configured: [#37083](https://github.com/owncloud/core/pull/37083)
+
+   https://github.com/owncloud/core/pull/37083
 
 * Change - Update league/flysystem (1.0.64 => 1.0.65): [#37096](https://github.com/owncloud/core/pull/37096)
 
