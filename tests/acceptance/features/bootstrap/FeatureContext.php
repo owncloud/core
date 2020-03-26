@@ -2146,11 +2146,10 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @param string $path
 	 * @param string $content
-	 * @param bool $trash
 	 *
-	 * @return string
+	 * @return void
 	 */
-	public function theFileWithContentShouldExistInTheServerRoot($path, $content, $trash = false) {
+	public function theFileWithContentShouldExistInTheServerRoot($path, $content) {
 		$this->readFileInServerRoot($path);
 		Assert::assertSame(
 			200,
@@ -2160,10 +2159,6 @@ class FeatureContext extends BehatVariablesContext {
 		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
 		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($fileContent);
-
-		if ($trash) {
-			return $fileContent;
-		}
 
 		Assert::assertSame(
 			$content,
