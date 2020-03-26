@@ -2217,6 +2217,7 @@ trait WebDav {
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
+		var_dump($this->getResponseXml());
 	}
 
 	/**
