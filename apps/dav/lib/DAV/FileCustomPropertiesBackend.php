@@ -40,13 +40,13 @@ use Sabre\DAV\INode;
  * @package OCA\DAV\DAV
  */
 class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
-	const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
-	const INSERT_BY_ID_STMT = 'INSERT INTO `*PREFIX*properties`'
+	public const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
+	public const INSERT_BY_ID_STMT = 'INSERT INTO `*PREFIX*properties`'
 	. ' (`fileid`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
-	const UPDATE_BY_ID_AND_NAME_STMT = 'UPDATE `*PREFIX*properties`'
+	public const UPDATE_BY_ID_AND_NAME_STMT = 'UPDATE `*PREFIX*properties`'
 	. ' SET `propertyvalue` = ? WHERE `fileid` = ? AND `propertyname` = ?';
-	const DELETE_BY_ID_STMT = 'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?';
-	const DELETE_BY_ID_AND_NAME_STMT = 'DELETE FROM `*PREFIX*properties`'
+	public const DELETE_BY_ID_STMT = 'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?';
+	public const DELETE_BY_ID_AND_NAME_STMT = 'DELETE FROM `*PREFIX*properties`'
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
 
 	/**
@@ -68,7 +68,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 *
 	 * @return void
 	 */
-	public function beforeDelete($path) {
+	public function beforeDelete($path): void {
 		try {
 			$node = $this->getNodeForPath($path);
 			'@phan-var \OCA\DAV\Connector\Sabre\Node $node';
@@ -89,6 +89,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @param string $path path of node for which to delete properties
 	 *
 	 * @return void
+	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function delete($path) {
 		$moveSource = $this->moveSource;
@@ -218,6 +219,8 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @param array $requestedProperties requested properties
 	 *
 	 * @return void
+	 * @throws \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 * @throws \Sabre\DAV\Exception\Locked
 	 */
 	protected function loadChildrenProperties(INode $node, $requestedProperties) {
 		// note: pre-fetching only supported for depth <= 1
@@ -285,14 +288,8 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @param int $otherPlaceholdersCount
 	 * @return array
 	 */
-	private function getChunks($toSlice, $otherPlaceholdersCount = 0) {
-		$databasePlatform = $this->connection->getDatabasePlatform();
-		if ($databasePlatform instanceof OraclePlatform || $databasePlatform instanceof SqlitePlatform) {
-			$slicer = 999 - $otherPlaceholdersCount;
-			$slices = \array_chunk($toSlice, $slicer);
-		} else {
-			$slices = \count($toSlice) ? [ 0 => $toSlice] : [];
-		}
-		return $slices;
+	private function getChunks($toSlice, $otherPlaceholdersCount = 0): array {
+		$slicer = 999 - $otherPlaceholdersCount;
+		return \array_chunk($toSlice, $slicer);
 	}
 }

@@ -1,0 +1,3 @@
+Change: Query on oc_properties is now always chunked
+
+https://github.com/owncloud/core/pull/37172

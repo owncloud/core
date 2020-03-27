@@ -101,7 +101,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			$this->rootFolder
 		);
 		$this->plugin = new FileCustomPropertiesPlugin($this->backend);
-		
+
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
 		$maxFunction = $qb->createFunction(
@@ -174,7 +174,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$node->expects($this->any())
 			->method('getName')
 			->will($this->returnValue('dummypath'));
-			
+
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/dummypath')
@@ -471,27 +471,15 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			$thousandFileIds[] = $i;
 		}
 
-		$sqlitePlatform = new SqlitePlatform();
-		$mysqlPlatform = new MySqlPlatform();
-
 		return [
-			[$emptyFileIds, 0, $sqlitePlatform, []],
-			[$emptyFileIds, 5, $sqlitePlatform, []],
-			[$fiveFileIds, 0, $sqlitePlatform, [ 0 => $fiveFileIds]],
-			[$fiveFileIds, 5, $sqlitePlatform, [ 0 => $fiveFileIds]],
-			[$fiveFileIds, 994, $sqlitePlatform, [ 0 => $fiveFileIds]],
-			[$fiveFileIds, 995, $sqlitePlatform, [ 0 => [1,2,3,4] , 1 => [5]]],
-			[$thousandFileIds, 0, $sqlitePlatform, \array_chunk($thousandFileIds, 999)],
-			[$thousandFileIds, 5, $sqlitePlatform, \array_chunk($thousandFileIds, 994)],
-
-			[$emptyFileIds, 0, $mysqlPlatform, []],
-			[$emptyFileIds, 5, $mysqlPlatform, []],
-			[$fiveFileIds, 0, $mysqlPlatform, [ 0 => $fiveFileIds]],
-			[$fiveFileIds, 5, $mysqlPlatform, [ 0 => $fiveFileIds]],
-			[$fiveFileIds, 994, $mysqlPlatform, [ 0 => $fiveFileIds]],
-			[$fiveFileIds, 995, $mysqlPlatform, [0 => $fiveFileIds]],
-			[$thousandFileIds, 0, $mysqlPlatform, [0 => $thousandFileIds]],
-			[$thousandFileIds, 5, $mysqlPlatform, [0 => $thousandFileIds]],
+			[$emptyFileIds, 0, []],
+			[$emptyFileIds, 5, []],
+			[$fiveFileIds, 0, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 5, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 994, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 995, [ 0 => [1,2,3,4] , 1 => [5]]],
+			[$thousandFileIds, 0, \array_chunk($thousandFileIds, 999)],
+			[$thousandFileIds, 5, \array_chunk($thousandFileIds, 994)],
 		];
 	}
 
@@ -499,17 +487,12 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	 * @dataProvider slicesProvider
 	 * @param $toSlice
 	 * @param $otherPlaceholdersCount
-	 * @param AbstractPlatform $platform
 	 * @param $expected
 	 */
-	public function testGetChunks($toSlice, $otherPlaceholdersCount, AbstractPlatform $platform, $expected) {
+	public function testGetChunks($toSlice, $otherPlaceholdersCount, $expected) {
 		$dbConnectionMock = $this->getMockBuilder(\OCP\IDBConnection::class)
 			->disableOriginalConstructor()
 			->getMock();
-
-		$dbConnectionMock->expects($this->any())
-			->method('getDatabasePlatform')
-			->will($this->returnValue($platform));
 
 		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
@@ -518,7 +501,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			\OC::$server->getRootFolder()
 		);
 
-		$actual = $this->invokePrivate(
+		$actual = self::invokePrivate(
 			$this->backend,
 			'getChunks',
 			[$toSlice, $otherPlaceholdersCount]
