@@ -2655,16 +2655,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "4fa15ae7be74e53f6ec8c83ed403b97e23b665e9"
+                "reference": "20bc0c1068565103075359f5ce9e0639b36f92d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/4fa15ae7be74e53f6ec8c83ed403b97e23b665e9",
-                "reference": "4fa15ae7be74e53f6ec8c83ed403b97e23b665e9",
+                "url": "https://api.github.com/repos/symfony/console/zipball/20bc0c1068565103075359f5ce9e0639b36f92d1",
+                "reference": "20bc0c1068565103075359f5ce9e0639b36f92d1",
                 "shasum": ""
             },
             "require": {
@@ -2727,20 +2727,34 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2020-02-24T13:10:00+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-16T08:56:54+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "4ad8e149799d3128621a3a1f70e92b9897a8930d"
+                "reference": "cf57788d1ca64ee7e689698dc0295d25c9fe3780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/4ad8e149799d3128621a3a1f70e92b9897a8930d",
-                "reference": "4ad8e149799d3128621a3a1f70e92b9897a8930d",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/cf57788d1ca64ee7e689698dc0295d25c9fe3780",
+                "reference": "cf57788d1ca64ee7e689698dc0295d25c9fe3780",
                 "shasum": ""
             },
             "require": {
@@ -2797,7 +2811,21 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2020-02-04T09:32:40+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-16T11:24:17+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -3358,16 +3386,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "bf9166bac906c9e69fb7a11d94875e7ced97bcd7"
+                "reference": "b9863d0f7b684d7c4c13e665325b5ff047de0aee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/bf9166bac906c9e69fb7a11d94875e7ced97bcd7",
-                "reference": "bf9166bac906c9e69fb7a11d94875e7ced97bcd7",
+                "url": "https://api.github.com/repos/symfony/process/zipball/b9863d0f7b684d7c4c13e665325b5ff047de0aee",
+                "reference": "b9863d0f7b684d7c4c13e665325b5ff047de0aee",
                 "shasum": ""
             },
             "require": {
@@ -3403,20 +3431,34 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2020-02-07T20:06:44+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-23T12:37:11+00:00"
         },
         {
             "name": "symfony/routing",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "4124d621d0e445732520037f888a0456951bde8c"
+                "reference": "bd92312650007d29bbabf00795c591b975a0b9a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/4124d621d0e445732520037f888a0456951bde8c",
-                "reference": "4124d621d0e445732520037f888a0456951bde8c",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/bd92312650007d29bbabf00795c591b975a0b9a6",
+                "reference": "bd92312650007d29bbabf00795c591b975a0b9a6",
                 "shasum": ""
             },
             "require": {
@@ -3479,7 +3521,21 @@
                 "uri",
                 "url"
             ],
-            "time": "2020-02-25T12:41:09+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-16T11:24:17+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -3541,16 +3597,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "0a19a77fba20818a969ef03fdaf1602de0546353"
+                "reference": "6617bb1548cec764770b719e317299a0270f4c5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/0a19a77fba20818a969ef03fdaf1602de0546353",
-                "reference": "0a19a77fba20818a969ef03fdaf1602de0546353",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/6617bb1548cec764770b719e317299a0270f4c5f",
+                "reference": "6617bb1548cec764770b719e317299a0270f4c5f",
                 "shasum": ""
             },
             "require": {
@@ -3613,7 +3669,21 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2020-02-04T09:32:40+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-17T19:51:46+00:00"
         },
         {
             "name": "symfony/translation-contracts",
