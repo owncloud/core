@@ -29,6 +29,8 @@ use OCP\Files\IPreviewNode;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IPreview;
 use OCP\Lock\LockedException;
+use Sabre\DAV\Exception;
+use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\ServiceUnavailable;
@@ -92,11 +94,11 @@ class PreviewPlugin extends ServerPlugin {
 		$node = $this->server->tree->getNodeForPath($path);
 
 		if (!$node instanceof IFileNode) {
-			return false;
+			throw new BadRequest('Unsupported file type');
 		}
 		$fileNode = $node->getNode();
 		if (!$fileNode instanceof IPreviewNode) {
-			return false;
+			throw new BadRequest('Unsupported file type');
 		}
 
 		// Checking ACL, if available.
@@ -132,7 +134,7 @@ class PreviewPlugin extends ServerPlugin {
 				$response->setHeader('Content-Disposition', 'attachment');
 				// cache 24h
 				$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
-				$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", $this->timeFactory->getTime() + 86400) . " GMT");
+				$response->setHeader('Expires', \gmdate('D, d M Y H:i:s', $this->timeFactory->getTime() + 86400) . ' GMT');
 
 				$response->setStatus(200);
 				$response->setBody($imageData);
@@ -140,16 +142,21 @@ class PreviewPlugin extends ServerPlugin {
 				// Returning false to break the event chain
 				return false;
 			}
-		} catch (GenericEncryptionException $e) {
+		} catch (GenericEncryptionException $ex) {
 			// returning 403 because some apps stops syncing if 503 is returned.
-			throw new Forbidden('Encryption not ready: ' . $e->getMessage());
-		} catch (StorageNotAvailableException $e) {
-			throw new ServiceUnavailable('Failed to open file: ' . $e->getMessage());
+			throw new Forbidden('Encryption not ready: ' . $ex->getMessage());
+		} catch (StorageNotAvailableException $ex) {
+			throw new ServiceUnavailable('Failed to open file: ' . $ex->getMessage());
 		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
-		} catch (LockedException $e) {
-			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		} catch (LockedException $ex) {
+			throw new FileLocked($ex->getMessage(), $ex->getCode(), $ex);
+		} catch (Exception $ex) {
+			throw $ex;
+		} catch (\Exception $ex) {
+			throw new BadRequest($ex->getMessage(), $ex->getCode(), $ex);
 		}
+
 		// TODO: add forceIcon handling .... if still needed
 		throw new NotFound();
 	}
