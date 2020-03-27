@@ -46,6 +46,8 @@ Summary
 * Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
+* Change - Update symfony/polyfill (1.14.1 => 1.15.0): [#37174](https://github.com/owncloud/core/pull/37174)
+* Change - Update laminas/laminas-zendframework-bridge (1.0.1 => 1.0.2): [#37174](https://github.com/owncloud/core/pull/37174)
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
 Details
@@ -288,6 +290,20 @@ Details
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
 
    https://github.com/owncloud/core/pull/37161
+
+* Change - Update symfony/polyfill (1.14.1 => 1.15.0): [#37174](https://github.com/owncloud/core/pull/37174)
+
+   The following symfony/polyfill components have been updated to version 1.15.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-mbstring symfony/polyfill-php56 symfony/polyfill-php72
+   symfony/polyfill-php73 symfony/polyfill-util
+
+   https://github.com/owncloud/core/pull/37174
+
+* Change - Update laminas/laminas-zendframework-bridge (1.0.1 => 1.0.2): [#37174](https://github.com/owncloud/core/pull/37174)
+
+   https://github.com/owncloud/core/pull/37174
 
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
