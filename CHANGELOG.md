@@ -44,6 +44,7 @@ Summary
 * Change - Update league/flysystem (1.0.65 => 1.0.66): [#37136](https://github.com/owncloud/core/pull/37136)
 * Change - Update minimist (1.2.2 => 1.2.3): [#37138](https://github.com/owncloud/core/pull/37138)
 * Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
+* Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
 * Change - Query on oc_properties is now always chunked: [#37172](https://github.com/owncloud/core/pull/37172)
@@ -285,6 +286,14 @@ Details
 
    https://github.com/owncloud/core/pull/37151
    https://github.com/sabre-io/dav/releases/tag/4.1.0
+
+* Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
+
+   Added index for addressbookid_name_value that allows to improve scan performance of search
+   addressbook query when medial search is off
+
+   https://github.com/owncloud/enterprise/issues/3625
+   https://github.com/owncloud/core/pull/37152
 
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 
