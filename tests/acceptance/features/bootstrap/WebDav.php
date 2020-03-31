@@ -27,7 +27,6 @@ use Guzzle\Http\Exception\BadResponseException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
