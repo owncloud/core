@@ -26,6 +26,7 @@ Feature: previews of files downloaded thought the webdav API
     Examples:
       | width |
       | 0     |
+      | 0.5   |
       | -1    |
       | false |
       | true  |
@@ -43,7 +44,6 @@ Feature: previews of files downloaded thought the webdav API
       | 0      |
       | 0.5    |
       | -1     |
-      | 1.5    |
       | false  |
       | true   |
       | A      |
@@ -68,14 +68,14 @@ Feature: previews of files downloaded thought the webdav API
       | new-data.zip | test.zip    |
 
   Scenario Outline: download previews of different image file types
-    Given user "user0" has uploaded file "filesForUpload/<imageName>" to "/testimage.jpg"
-    When user "user0" downloads the preview of "/testimage.jpg" with width "32" and height "32" using the WebDAV API
+    Given user "user0" has uploaded file "filesForUpload/<imageName>" to "/<newImageName>"
+    When user "user0" downloads the preview of "/<newImageName>" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixel wide and "32" pixel high
     Examples:
-      |imageName|
-      |testavatar.jpg|
-      |testavatar.png|
+      | imageName      | newImageName  |
+      | testavatar.jpg | testimage.jpg |
+      | testavatar.png | testimage.png |
 
   Scenario: download previews of image after renaming it
     Given user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
@@ -103,8 +103,9 @@ Feature: previews of files downloaded thought the webdav API
   Scenario: download previews of folders
     Given user "user0" has created folder "subfolder"
     When user "user0" downloads the preview of "/subfolder/" with width "32" and height "32" using the WebDAV API
-    Then the HTTP status code should be "500"
-    And the body of the response should be empty
+    Then the HTTP status code should be "400"
+    And the value of the item "/d:error/s:message" in the response should be "Unsupported file type"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
 
   Scenario: download previews of not-existing files
     When user "user0" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
@@ -113,5 +114,15 @@ Feature: previews of files downloaded thought the webdav API
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
   Scenario: disable previews
+    Given the administrator has updated system config key "enable_previews" with value "false" and type "boolean"
+    And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    When user "user0" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
+    Then the HTTP status code should be "404"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
   Scenario: set maximum size of previews
+    Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    When user "user0" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
+    Then the HTTP status code should be "400"
+    And the value of the item "/d:error/s:message" in the response should be "Cannot set width of 0 or smaller!"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
