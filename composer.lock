@@ -2655,16 +2655,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.6",
+            "version": "v4.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "20bc0c1068565103075359f5ce9e0639b36f92d1"
+                "reference": "10bb3ee3c97308869d53b3e3d03f6ac23ff985f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/20bc0c1068565103075359f5ce9e0639b36f92d1",
-                "reference": "20bc0c1068565103075359f5ce9e0639b36f92d1",
+                "url": "https://api.github.com/repos/symfony/console/zipball/10bb3ee3c97308869d53b3e3d03f6ac23ff985f7",
+                "reference": "10bb3ee3c97308869d53b3e3d03f6ac23ff985f7",
                 "shasum": ""
             },
             "require": {
@@ -2741,20 +2741,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-16T08:56:54+00:00"
+            "time": "2020-03-30T11:41:10+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.4.6",
+            "version": "v4.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "cf57788d1ca64ee7e689698dc0295d25c9fe3780"
+                "reference": "abc8e3618bfdb55e44c8c6a00abd333f831bbfed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/cf57788d1ca64ee7e689698dc0295d25c9fe3780",
-                "reference": "cf57788d1ca64ee7e689698dc0295d25c9fe3780",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/abc8e3618bfdb55e44c8c6a00abd333f831bbfed",
+                "reference": "abc8e3618bfdb55e44c8c6a00abd333f831bbfed",
                 "shasum": ""
             },
             "require": {
@@ -2825,7 +2825,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-16T11:24:17+00:00"
+            "time": "2020-03-27T16:54:36+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -3386,16 +3386,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.6",
+            "version": "v4.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b9863d0f7b684d7c4c13e665325b5ff047de0aee"
+                "reference": "3e40e87a20eaf83a1db825e1fa5097ae89042db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b9863d0f7b684d7c4c13e665325b5ff047de0aee",
-                "reference": "b9863d0f7b684d7c4c13e665325b5ff047de0aee",
+                "url": "https://api.github.com/repos/symfony/process/zipball/3e40e87a20eaf83a1db825e1fa5097ae89042db3",
+                "reference": "3e40e87a20eaf83a1db825e1fa5097ae89042db3",
                 "shasum": ""
             },
             "require": {
@@ -3445,20 +3445,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-23T12:37:11+00:00"
+            "time": "2020-03-27T16:54:36+00:00"
         },
         {
             "name": "symfony/routing",
-            "version": "v4.4.6",
+            "version": "v4.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "bd92312650007d29bbabf00795c591b975a0b9a6"
+                "reference": "0f562fa613e288d7dbae6c63abbc9b33ed75a8f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/bd92312650007d29bbabf00795c591b975a0b9a6",
-                "reference": "bd92312650007d29bbabf00795c591b975a0b9a6",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/0f562fa613e288d7dbae6c63abbc9b33ed75a8f8",
+                "reference": "0f562fa613e288d7dbae6c63abbc9b33ed75a8f8",
                 "shasum": ""
             },
             "require": {
@@ -3535,7 +3535,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-16T11:24:17+00:00"
+            "time": "2020-03-30T11:41:10+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -3597,16 +3597,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.4.6",
+            "version": "v4.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "6617bb1548cec764770b719e317299a0270f4c5f"
+                "reference": "4e54d336f2eca5facad449d0b0118bb449375b76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/6617bb1548cec764770b719e317299a0270f4c5f",
-                "reference": "6617bb1548cec764770b719e317299a0270f4c5f",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/4e54d336f2eca5facad449d0b0118bb449375b76",
+                "reference": "4e54d336f2eca5facad449d0b0118bb449375b76",
                 "shasum": ""
             },
             "require": {
@@ -3683,7 +3683,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-17T19:51:46+00:00"
+            "time": "2020-03-27T16:54:36+00:00"
         },
         {
             "name": "symfony/translation-contracts",
