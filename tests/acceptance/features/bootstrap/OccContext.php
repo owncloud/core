@@ -1476,7 +1476,7 @@ class OccContext implements Context {
 			);
 		}
 	}
-	
+
 	/**
 	 * @Then the following backend types should be listed:
 	 *
@@ -2137,7 +2137,7 @@ class OccContext implements Context {
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param boolean $type
+	 * @param string $type
 	 *
 	 * @return void
 	 * @throws Exception
@@ -2158,7 +2158,7 @@ class OccContext implements Context {
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param boolean $type
+	 * @param string $type
 	 *
 	 * @return void
 	 * @throws Exception
