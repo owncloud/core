@@ -33,6 +33,7 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
+use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -61,6 +62,9 @@ class PollIncomingSharesTest extends TestCase {
 	/** @var IStorageFactory | MockObject */
 	private $loader;
 
+	/** @var IStorageFactory | MockObject */
+	private $logger;
+
 	/**
 	 * @var Manager | MockObject
 	 */
@@ -71,9 +75,10 @@ class PollIncomingSharesTest extends TestCase {
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->loader = $this->createMock(IStorageFactory::class);
+		$this->logger = $this->createMock(ILogger::class);
 		$this->externalManager = $this->createMock(Manager::class);
 		$this->externalMountProvider = $this->createMock(MountProvider::class);
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalManager, $this->externalMountProvider);
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->logger, $this->externalManager, $this->externalMountProvider);
 		$this->commandTester = new CommandTester($command);
 	}
 
@@ -103,7 +108,7 @@ class PollIncomingSharesTest extends TestCase {
 	}
 
 	public function testWithFilesSharingDisabled() {
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalManager, null);
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->logger, $this->externalManager, null);
 		$this->commandTester = new CommandTester($command);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
@@ -148,7 +153,47 @@ class PollIncomingSharesTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString(
-			'Skipping external share with id "50" from remote "example.org". Reason: "Ooops"',
+			'Skipping external share with id "50" from remote "example.org" as share is unreachable. Reason: "Ooops"',
+			$output
+		);
+	}
+
+	public function testInternalServerError() {
+		$uid = 'foo';
+		$exprBuilder = $this->createMock(IExpressionBuilder::class);
+		$statementMock = $this->createMock(Statement::class);
+		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(
+			['user' => $uid],
+			['id' => 50, 'remote' => 'example.org'],
+			false
+		);
+		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('select')->willReturnSelf();
+		$qbMock->method('selectDistinct')->willReturnSelf();
+		$qbMock->method('from')->willReturnSelf();
+		$qbMock->method('where')->willReturnSelf();
+		$qbMock->method('expr')->willReturn($exprBuilder);
+		$qbMock->method('execute')->willReturn($statementMock);
+
+		$userMock = $this->createMock(IUser::class);
+		$this->userManager->expects($this->once())->method('get')
+			->with($uid)->willReturn($userMock);
+
+		$storage = $this->createMock(Storage::class);
+		$storage->method('hasUpdated')->willThrowException(new \Exception(''));
+		$storage->method('getRemote')->willReturn('example.org');
+
+		$mount = $this->createMock(\OCA\Files_Sharing\External\Mount::class);
+		$mount->method('getStorage')->willReturn($storage);
+		$mount->method('getMountPoint')->willReturn("/$uid/files/point");
+		$this->externalMountProvider->expects($this->once())->method('getMountsForUser')
+			->willReturn([$mount]);
+
+		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString(
+			'Skipping external share with id "50" from remote "example.org" due to internal server error',
 			$output
 		);
 	}

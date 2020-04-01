@@ -32,6 +32,7 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
+use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use Symfony\Component\Console\Command\Command;
@@ -48,6 +49,9 @@ class PollIncomingShares extends Command {
 	/** @var IStorageFactory */
 	private $loader;
 
+	/** @var ILogger */
+	private $logger;
+
 	/** @var Manager */
 	private $externalManager;
 
@@ -60,14 +64,17 @@ class PollIncomingShares extends Command {
 	 *
 	 * @param IDBConnection $dbConnection
 	 * @param IUserManager $userManager
-	 * @param MountProvider $externalMountProvider
 	 * @param IStorageFactory $loader
+	 * @param ILogger $logger
+	 * @param Manager|null $externalManager
+	 * @param MountProvider|null $externalMountProvider
 	 */
-	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, Manager $externalManager = null, MountProvider $externalMountProvider = null) {
+	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, ILogger $logger, Manager $externalManager = null, MountProvider $externalMountProvider = null) {
 		parent::__construct();
 		$this->dbConnection = $dbConnection;
 		$this->userManager = $userManager;
 		$this->loader = $loader;
+		$this->logger = $logger;
 		$this->externalManager = $externalManager;
 		$this->externalMountProvider = $externalMountProvider;
 	}
@@ -124,13 +131,20 @@ class PollIncomingShares extends Command {
 					$output->writeln(
 						"Remote \"$remote\" reports that external share with id \"$entryId\" no longer exists. Removing it.."
 					);
-				} catch (\Exception $e) {
+				} catch (StorageNotAvailableException $e) {
 					$entryId = $shareData['id'];
 					$remote = $shareData['remote'];
 					$reason = $e->getMessage();
 					$output->writeln(
-						"Skipping external share with id \"$entryId\" from remote \"$remote\". Reason: \"$reason\""
+						"Skipping external share with id \"$entryId\" from remote \"$remote\" as share is unreachable. Reason: \"$reason\""
 					);
+				} catch (\Exception $e) {
+					$entryId = $shareData['id'];
+					$remote = $shareData['remote'];
+					$output->writeln(
+						"Skipping external share with id \"$entryId\" from remote \"$remote\" due to internal server error"
+					);
+					$this->logger->logException($e, ['app' => 'federatedfilesharing']);
 				}
 			}
 		}

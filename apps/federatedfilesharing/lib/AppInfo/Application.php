@@ -177,6 +177,7 @@ class Application extends App {
 					$server->getDatabaseConnection(),
 					$server->getUserManager(),
 					\OC\Files\Filesystem::getLoader(),
+					$server->getLogger(),
 					$externalManager,
 					$externalMountProvider
 				);
