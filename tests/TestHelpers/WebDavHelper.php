@@ -343,6 +343,8 @@ class WebDavHelper {
 	 *                     than download it all up-front.
 	 * @param int $timeout
 	 * @param Client|null $client
+	 * @param array $urlParameter to concatenate with path
+	 * @param string $user2
 	 *
 	 * @return ResponseInterface
 	 */
@@ -360,13 +362,24 @@ class WebDavHelper {
 		$authType = "basic",
 		$stream = false,
 		$timeout = 0,
-		$client = null
+		$client = null,
+		$urlParameter = [],
+		$user2 = null
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
-		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
+		if ($user2 === null) {
+			$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
+		} else {
+			$davPath = self::getDavPath($user2, $davPathVersionToUse, $type);
+		}
 		//replace %, # and ? and in the path, Guzzle will not encode them
-		//		$urlSpecialChar = [['%', '#', '?'],['%25', '%23', '%3F']];
-		//      $path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
+		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+
+		if (!empty($urlParameter)) {
+			$urlParameter = \http_build_query($urlParameter, '', '&');
+			$path .= '?' . $urlParameter;
+		}
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 
 		if ($authType === 'bearer') {
@@ -403,7 +416,6 @@ class WebDavHelper {
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string
 	 */
 	public static function getDavPath(

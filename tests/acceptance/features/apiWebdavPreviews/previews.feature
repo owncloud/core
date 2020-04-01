@@ -1,5 +1,5 @@
 @api @TestAlsoOnExternalUserBackend
-Feature: previews of files downloaded thought the webdav API
+Feature: previews of files downloaded through the webdav API
 
   Background:
     Given user "user0" has been created with default attributes and without skeleton files
@@ -95,9 +95,9 @@ Feature: previews of files downloaded thought the webdav API
   Scenario: download previews of other users files
     Given user "user1" has been created with default attributes and without skeleton files
     And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
-    When user "user1" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
+    When user "user1" downloads the preview of "/parent.txt" of "user0" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the value of the item "/d:error/s:message" in the response should be "File with name parent.txt could not be located"
+    And the value of the item "/d:error/s:message" in the response should be "File not found: parent.txt in 'user0'"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
   Scenario: download previews of folders
@@ -122,7 +122,8 @@ Feature: previews of files downloaded thought the webdav API
 
   Scenario: set maximum size of previews
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
-    When user "user0" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
-    Then the HTTP status code should be "400"
-    And the value of the item "/d:error/s:message" in the response should be "Cannot set width of 0 or smaller!"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
+    And the administrator has updated system config key "preview_max_x" with value "null"
+    And the administrator has updated system config key "preview_max_y" with value "null"
+    When user "user0" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
+    Then the HTTP status code should be "404"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
