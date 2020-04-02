@@ -1,9 +1,13 @@
 @api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: auth
 
+  Background:
+    Given user "newadmin" has been created with default attributes and without skeleton files
+    And user "newadmin" has been added to group "admin"
+
   @smokeTest @issue-32068 @skipOnOcis @issue-ocis-reva-30 @issue-ocis-reva-65
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
-    When the administrator requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed
+    When user "newadmin" requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed
       | endpoint                                                        | ocs-code | http-code |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
@@ -26,7 +30,7 @@ Feature: auth
   @smokeTest @skipOnOcV10 @issue-ocis-reva-30 @issue-ocis-reva-65
    #after fixing all issues delete this Scenario and use the one above
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
-    When the administrator requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed
+    When user "newadmin" requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed
       | endpoint                                                        | http-code |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 401       |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 401       |
