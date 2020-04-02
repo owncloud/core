@@ -54,6 +54,7 @@ Summary
 * Change - Update Symfony components to 4.4.6: [#37176](https://github.com/owncloud/core/pull/37176)
 * Change - Update Laminas dependecies: [#37188](https://github.com/owncloud/core/pull/37188)
 * Change - Update Symfony components to 4.4.7: [#37193](https://github.com/owncloud/core/pull/37193)
+* Change - Update laminas/laminas-validator from 2.13.3 to 2.13.4: [#37199](https://github.com/owncloud/core/pull/37199)
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
 Details
@@ -354,6 +355,10 @@ Details
 
    https://github.com/owncloud/core/pull/37193
    https://symfony.com/blog/symfony-4-4-7-released
+
+* Change - Update laminas/laminas-validator from 2.13.3 to 2.13.4: [#37199](https://github.com/owncloud/core/pull/37199)
+
+   https://github.com/owncloud/core/pull/37199
 
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
