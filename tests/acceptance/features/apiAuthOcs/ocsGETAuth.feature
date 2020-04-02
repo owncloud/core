@@ -185,6 +185,7 @@ Feature: auth
 
   @skipOnOcis
   @issue-ocis-reva-65
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as admin user with wrong password
     Given user "newadmin" has been created with default attributes and without skeleton files
     And user "newadmin" has been added to group "admin"
