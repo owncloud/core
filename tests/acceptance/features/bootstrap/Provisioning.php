@@ -377,7 +377,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasSetTheSystemLanguagaeTo($defaultLanguage) {
+	public function theAdministratorHasSetTheSystemLanguageTo($defaultLanguage) {
 		$this->runOcc(
 			["config:system:set default_language --value $defaultLanguage"]
 		);

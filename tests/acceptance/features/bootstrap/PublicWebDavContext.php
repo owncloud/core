@@ -317,7 +317,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * This only works with the old API, autorename is not supported in the new API
+	 * This only works with the old API, auto-rename is not supported in the new API
 	 * auto renaming is handled on files drop folders implicitly
 	 *
 	 * @param string $filename target file name
@@ -330,7 +330,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with content :body with autorename mode using the old public WebDAV API
+	 * @When the public uploads file :filename with content :body with auto-rename mode using the old public WebDAV API
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -342,7 +342,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Given the public has uploaded file :filename with content :body with autorename mode
+	 * @Given the public has uploaded file :filename with content :body with auto-rename mode
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -886,7 +886,7 @@ class PublicWebDavContext implements Context {
 	 * @param string $filename
 	 * @param string $password
 	 * @param string $body
-	 * @param bool $autorename
+	 * @param bool $autoRename
 	 * @param array $additionalHeaders
 	 * @param string $publicWebDAVAPIVersion
 	 *
@@ -896,7 +896,7 @@ class PublicWebDavContext implements Context {
 		$filename,
 		$password = '',
 		$body = 'test',
-		$autorename = false,
+		$autoRename = false,
 		$additionalHeaders = [],
 		$publicWebDAVAPIVersion = "old"
 	) {
@@ -916,7 +916,7 @@ class PublicWebDavContext implements Context {
 		$url .= \ltrim($filename, '/');
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 
-		if ($autorename) {
+		if ($autoRename) {
 			$headers['OC-Autorename'] = 1;
 		}
 		$headers = \array_merge($headers, $additionalHeaders);
