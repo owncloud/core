@@ -6,6 +6,7 @@ Feature: auth
     And user "newadmin" has been added to group "admin"
 
   @smokeTest @issue-32068 @skipOnOcis @issue-ocis-reva-30 @issue-ocis-reva-65
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
     When user "newadmin" requests these endpoints with "DELETE" using password "invalid" then the status codes should be as listed
       | endpoint                                                        | ocs-code | http-code |
