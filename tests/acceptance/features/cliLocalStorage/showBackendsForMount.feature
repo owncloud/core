@@ -43,7 +43,7 @@ Feature: show available backends using occ command
       | local                      |
 
   Scenario Outline: list specific backend of type storage for created local storage
-    When the adminstrator lists the "<backend>" backend of type "storage" using the occ command
+    When the administrator lists the "<backend>" backend of type "storage" using the occ command
     Then the following storage backend keys should be listed:
       | backend-keys                      |
       | name                              |
@@ -64,7 +64,7 @@ Feature: show available backends using occ command
       | local                      |
 
   Scenario Outline: list specific backend of type authentication for created local storage
-    When the adminstrator lists the "<backend>" backend of type "authentication" using the occ command
+    When the administrator lists the "<backend>" backend of type "authentication" using the occ command
     Then the following authentication backend keys should be listed:
       | backend-keys  |
       | name          |

@@ -12,7 +12,7 @@ Feature: upload to a public link share
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the old public WebDAV API
-    And the public uploads file "test.txt" with content "test2" with autorename mode using the old public WebDAV API
+    And the public uploads file "test.txt" with content "test2" with auto-rename mode using the old public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
