@@ -520,7 +520,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorShouldNotbeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+	public function theAdministratorShouldNotBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);

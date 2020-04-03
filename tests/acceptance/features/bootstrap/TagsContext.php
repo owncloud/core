@@ -1339,7 +1339,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theHttpStatusWhenuserRequestsTagsForEntryOwnedByShouldBe(
+	public function theHttpStatusWhenUserRequestsTagsForEntryOwnedByShouldBe(
 		$user, $fileName, $sharingUser, $status
 	) {
 		$this->requestTagsForFile($user, $fileName, $sharingUser);
@@ -1378,7 +1378,7 @@ class TagsContext implements Context {
 	 *
 	 * @param string $fileName
 	 * @param string $sharingUser
-	 * @param TableNode $table  - Table containg tags. Should have two columns ('name' and 'type')
+	 * @param TableNode $table  - Table containing tags. Should have two columns ('name' and 'type')
 	 *                          e.g.
 	 *                          | name | type   |
 	 *                          | tag1 | normal |
