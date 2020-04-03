@@ -81,6 +81,18 @@ trait Provisioning {
 	];
 
 	/**
+	 * Check if this is the admin group. That group is always a local group in
+	 * ownCloud10, even if other groups come from LDAP.
+	 *
+	 * @param string $groupname
+	 *
+	 * @return boolean
+	 */
+	public function isLocalAdminGroup($groupname) {
+		return ($groupname === "admin");
+	}
+
+	/**
 	 * Usernames are not case-sensitive, and can generally be specified with any
 	 * mix of upper and lower case. For remembering usernames use the normalized
 	 * form so that "User0" and "user0" are remembered as the same user.
@@ -2429,7 +2441,10 @@ trait Provisioning {
 	 */
 	public function addUserToGroup($user, $group, $method = null, $checkResult = false) {
 		$user = $this->getActualUsername($user);
-		if ($method === null && $this->isTestingWithLdap()) {
+		if ($method === null
+			&& $this->isTestingWithLdap()
+			&& !$this->isLocalAdminGroup($group)
+		) {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
@@ -3077,7 +3092,10 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminHasRemovedUserFromGroup($user, $group) {
-		if ($this->isTestingWithLdap() && \in_array($group, $this->ldapCreatedGroups)) {
+		if ($this->isTestingWithLdap()
+			&& !$this->isLocalAdminGroup($group)
+			&& \in_array($group, $this->ldapCreatedGroups)
+		) {
 			$this->removeUserFromLdapGroup($user, $group);
 		} else {
 			$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
