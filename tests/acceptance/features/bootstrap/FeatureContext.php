@@ -1941,7 +1941,7 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @Given the administrator has created file :path with content :content in local storage :mountPount
+	 * @Given the administrator has created file :path with content :content in local storage :mountPoint
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -2035,7 +2035,7 @@ class FeatureContext extends BehatVariablesContext {
 		$jsonRespondedEncoded = \json_encode((string) $this->response->getBody());
 		Assert::assertEquals(
 			$jsonExpectedEncoded, $jsonRespondedEncoded,
-			"The json responded: {$jsonRespondedEncoded} doesnot match with json expected: {$jsonExpectedEncoded}"
+			"The json responded: {$jsonRespondedEncoded} does not match with json expected: {$jsonExpectedEncoded}"
 		);
 	}
 

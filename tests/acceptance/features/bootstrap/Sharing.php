@@ -2147,7 +2147,7 @@ trait Sharing {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userRemovesAllSharesFromTheFileNamedzz($user, $fileName) {
+	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$this->removeAllSharesFromResource($user, $fileName);
 	}
 

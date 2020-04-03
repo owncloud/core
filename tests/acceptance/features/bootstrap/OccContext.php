@@ -1331,7 +1331,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the adminstrator lists the :backend backend of type :backendType using the occ command
+	 * @When the administrator lists the :backend backend of type :backendType using the occ command
 	 *
 	 * @param String $backend
 	 * @param String $backendType
