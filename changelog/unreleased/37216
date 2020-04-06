@@ -1,0 +1,6 @@
+Bugfix: List data for pending federated share via OCS API correctly
+
+Share info requested by id via OCS was empty for pending federated shares.
+
+https://github.com/owncloud/core/issues/34636
+https://github.com/owncloud/core/pull/37216
