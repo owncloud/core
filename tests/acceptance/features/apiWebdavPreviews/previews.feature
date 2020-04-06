@@ -56,7 +56,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixel wide and "32" pixel high
 
-  Scenario Outline: download previews of different file types
+  Scenario Outline: download previews of file types that doesn't support preview
     Given user "user0" has uploaded file "filesForUpload/<filename>" to "/<newfilename>"
     When user "user0" downloads the preview of "/<newfilename>" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
@@ -113,7 +113,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:message" in the response should be "File with name parent.txt could not be located"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
-  Scenario: disable previews
+  Scenario: Download file previews when it disabled by the administrator
     Given the administrator has updated system config key "enable_previews" with value "false" and type "boolean"
     And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "user0" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API

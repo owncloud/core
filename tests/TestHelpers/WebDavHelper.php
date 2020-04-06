@@ -344,7 +344,7 @@ class WebDavHelper {
 	 * @param int $timeout
 	 * @param Client|null $client
 	 * @param array $urlParameter to concatenate with path
-	 * @param string $user2
+	 * @param string $doDavRequestAsUser run the DAV as this user, if null its same as $user
 	 *
 	 * @return ResponseInterface
 	 */
@@ -364,13 +364,13 @@ class WebDavHelper {
 		$timeout = 0,
 		$client = null,
 		$urlParameter = [],
-		$user2 = null
+		$doDavRequestAsUser = null
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
-		if ($user2 === null) {
+		if ($doDavRequestAsUser === null) {
 			$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
 		} else {
-			$davPath = self::getDavPath($user2, $davPathVersionToUse, $type);
+			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type);
 		}
 		//replace %, # and ? and in the path, Guzzle will not encode them
 		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
