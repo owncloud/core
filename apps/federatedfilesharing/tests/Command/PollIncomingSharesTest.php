@@ -30,6 +30,9 @@ use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\External\Storage;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Files\Cache\ICache;
+use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
@@ -46,6 +49,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @package OCA\FederatedFileSharing\Tests\Command
  */
 class PollIncomingSharesTest extends TestCase {
+	/** @var PollIncomingShares */
+	private $command;
+
 	/** @var CommandTester */
 	private $commandTester;
 
@@ -73,8 +79,8 @@ class PollIncomingSharesTest extends TestCase {
 		$this->loader = $this->createMock(IStorageFactory::class);
 		$this->externalManager = $this->createMock(Manager::class);
 		$this->externalMountProvider = $this->createMock(MountProvider::class);
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalManager, $this->externalMountProvider);
-		$this->commandTester = new CommandTester($command);
+		$this->command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalManager, $this->externalMountProvider);
+		$this->commandTester = new CommandTester($this->command);
 	}
 
 	public function testNoSharesPoll() {
@@ -134,7 +140,11 @@ class PollIncomingSharesTest extends TestCase {
 		$this->userManager->expects($this->once())->method('get')
 			->with($uid)->willReturn($userMock);
 
+		$fileCache = $this->createMock(ICacheEntry::class);
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn($fileCache);
 		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
 		$storage->method('hasUpdated')->willThrowException(new StorageNotAvailableException('Ooops'));
 		$storage->method('getRemote')->willReturn('example.org');
 
@@ -199,7 +209,11 @@ class PollIncomingSharesTest extends TestCase {
 
 		$this->externalManager->expects($this->once())->method('removeShare');
 
+		$fileCache = $this->createMock(ICacheEntry::class);
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn($fileCache);
 		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
 		$storage->method('hasUpdated')->willThrowException(new NoUserException('Ooops'));
 
 		$mount = $this->createMock(\OCA\Files_Sharing\External\Mount::class);
@@ -219,5 +233,75 @@ class PollIncomingSharesTest extends TestCase {
 			'Remote "example.org" reports that external share with id "50" no longer exists. Removing it..',
 			$output
 		);
+	}
+
+	public function testInvalidateStorageRootCacheNotFound() {
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn(false);
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
+
+		$this->expectException(NotFoundException::class);
+		$this->invokePrivate($this->command, 'invalidateStorageRoot', [$storage, false]);
+	}
+
+	public function providesInvalidateStorageRootCache() {
+		// cache should be not be invalidated when storage has not updated
+		$fileCache = $this->createMock(ICacheEntry::class);
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn($fileCache);
+		$cache->method('get')->willReturn(false);
+		$cache->expects($this->never())->method('update');
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
+		$storage->method('hasUpdated')->willReturn(false);
+		$data[] = [$storage, false, false];
+
+		// cache should be invalidated when storage etag and its mtime has updated
+		$fileCache = $this->createMock(ICacheEntry::class);
+		$fileCache->method('getStorageMTime')->willReturn(2);
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn($fileCache);
+		$cache->method('get')->willReturn(false);
+		$cache->expects($this->exactly(1))->method('update');
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
+		$storage->method('hasUpdated')->willReturn(true);
+		$storage->method('stat')->willReturn(['mtime' => 4]);
+		$data[] = [$storage, false, true];
+
+		// cache should not be invalidated when storage etag changes but
+		// its mtime not
+		$fileCache = $this->createMock(ICacheEntry::class);
+		$fileCache->method('getStorageMTime')->willReturn(2);
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn($fileCache);
+		$cache->method('get')->willReturn(false);
+		$cache->expects($this->never())->method('update');
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
+		$storage->method('hasUpdated')->willReturn(true);
+		$storage->method('stat')->willReturn(['mtime' => 2]);
+		$data[] = [$storage, false, false];
+
+		// when forced, cache should be invalidated
+		$fileCache = $this->createMock(ICacheEntry::class);
+		$cache = $this->createMock(ICache::class);
+		$cache->method('get')->willReturn($fileCache);
+		$cache->expects($this->exactly(1))->method('update');
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getCache')->willReturn($cache);
+		$data[] = [$storage, true, true];
+
+		return $data;
+	}
+
+	/**
+	 * @dataProvider  providesInvalidateStorageRootCache
+	 */
+	public function testInvalidateStorageRootCache($storage, $forceInvalidation, $expected) {
+
+		$result = $this->invokePrivate($this->command, 'invalidateStorageRoot', [$storage, $forceInvalidation]);
+		$this->assertEquals($result, $expected);
 	}
 }

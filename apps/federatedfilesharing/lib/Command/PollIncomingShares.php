@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Viktar Dubiniuk <dubiniuk@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
- * @copyright Copyright (c) 2019, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,11 +32,13 @@ use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
+use OCP\Files\NotFoundException;
 use OCP\IDBConnection;
 use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PollIncomingShares extends Command {
@@ -74,7 +77,13 @@ class PollIncomingShares extends Command {
 
 	protected function configure() {
 		$this->setName('incoming-shares:poll')
-			->setDescription('Poll incoming federated shares manually to detect updates');
+			->setDescription('Poll incoming federated shares manually to detect updates')
+			->addOption(
+				'force',
+				'f',
+				InputOption::VALUE_NONE,
+				'Force.'
+			);
 	}
 
 	/**
@@ -88,6 +97,8 @@ class PollIncomingShares extends Command {
 			$output->writeln("Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'");
 			return 1;
 		}
+		$force = $input->getOption('force') ? true : false;
+
 		$cursor = $this->getCursor();
 		while ($data = $cursor->fetch()) {
 			$user = $this->userManager->get($data['user']);
@@ -110,9 +121,17 @@ class PollIncomingShares extends Command {
 						);
 					}
 
-					/** @var Storage $storage */
+					/** @var IStorage $storage */
 					$storage = $mount->getStorage();
-					$this->refreshStorageRoot($storage);
+					$invalidated = $this->invalidateStorageRoot($storage, $force);
+
+					if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+						$entryId = $shareData['id'];
+						$invalidated = $invalidated ? 'true' : 'false';
+						$output->writeln(
+							"External share with id \"$entryId\" scanned, invalidated: $invalidated"
+						);
+					}
 				} catch (NoUserException $e) {
 					$entryId = $shareData['id'];
 					$remote = $shareData['remote'];
@@ -138,19 +157,45 @@ class PollIncomingShares extends Command {
 	}
 
 	/**
-	 * @param IStorage $storage
+	 * If federated share storage of the external instance has updated
+	 * (there were changes in the federated share), invalidate this storage
+	 * filecache tree. This will force clients to repopulate the filecache of
+	 * this storage for outdated entries, and allow to discover nested changes.
 	 *
-	 * @throws LockedException
-	 * @throws ServerNotAvailableException
-	 * @throws StorageInvalidException
+	 * @param IStorage $storage
+	 * @param boolean $force whether it should force the invalidation
+	 *
+	 * @return boolean true if storage root has been invalidated
+	 *
 	 * @throws StorageNotAvailableException
+	 * @throws NotFoundException
 	 */
-	protected function refreshStorageRoot(IStorage $storage) {
-		$localMtime = $storage->filemtime('');
-		/** @var \OCA\Files_Sharing\External\Storage $storage */
-		if ($storage->hasUpdated('', $localMtime)) {
-			$storage->getScanner('')->scan('', false, 0);
+	protected function invalidateStorageRoot(IStorage $storage, $force) {
+		$cache = $storage->getCache();
+		$file = $cache->get('');
+		if (!$file) {
+			throw new NotFoundException('Cannot find cache entry');
 		}
+
+		if (!$force) {
+			// Invalidate storage root etag when storage updates (e.g. by changed etag).
+			// However, do not invalidate etag when share mtime did not change
+			// as we would not be able to sync that change anyways (this could
+			// be storage_mtime, not file mtime update that changed the etag)
+			if (!$storage->hasUpdated('', $file->getStorageMTime())) {
+				return false;
+			}
+			$stat = $storage->stat('');
+			if ($stat['mtime'] === $file->getStorageMTime()) {
+				return false;
+			}
+		}
+
+		// invalidate this storage root by generating new root etag.
+		$invalidationEtag = \uniqid();
+		$cache->update($file->getId(), ['etag' => $invalidationEtag]);
+
+		return true;
 	}
 
 	/**
