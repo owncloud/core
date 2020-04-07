@@ -304,7 +304,7 @@ trait WebDav {
 	 *                     than download it all up-front.
 	 * @param string|null $password
 	 * @param array $urlParameter
-	 * @param string $user2
+	 * @param string $doDavRequestAsUser
 	 *
 	 * @return ResponseInterface
 	 */
@@ -319,7 +319,7 @@ trait WebDav {
 		$stream = false,
 		$password = null,
 		$urlParameter = [],
-		$user2 = null
+		$doDavRequestAsUser = null
 	) {
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
@@ -336,7 +336,7 @@ trait WebDav {
 			$this->getBaseUrl(),
 			$user, $password, $method,
 			$path, $headers, $body, $davPathVersion,
-			$type, null, "basic", $stream, $this->httpRequestTimeout, null, $urlParameter, $user2
+			$type, null, "basic", $stream, $this->httpRequestTimeout, null, $urlParameter, $doDavRequestAsUser
 		);
 	}
 
@@ -2956,13 +2956,13 @@ trait WebDav {
 	 *
 	 * @param $user1
 	 * @param $path
-	 * @param $user2
+	 * @param $doDavRequestAsUser
 	 * @param $width
 	 * @param $height
 	 *
 	 * @return ResponseInterface
 	 */
-	public function downloadPreviewOfOtherUser($user1, $path, $user2, $width, $height) {
+	public function downloadPreviewOfOtherUser($user1, $path, $doDavRequestAsUser, $width, $height) {
 		$urlParameter = [
 			'x' => $width,
 			'y' => $height,
@@ -2970,7 +2970,7 @@ trait WebDav {
 			'preview' => '1'
 		];
 		$this->response = $this->makeDavRequest(
-			$user1, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $user2
+			$user1, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $doDavRequestAsUser
 		);
 	}
 

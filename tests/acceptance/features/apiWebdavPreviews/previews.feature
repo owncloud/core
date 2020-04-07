@@ -1,4 +1,5 @@
 @api @TestAlsoOnExternalUserBackend
+@skipOnOcis
 Feature: previews of files downloaded through the webdav API
 
   Background:
@@ -67,6 +68,7 @@ Feature: previews of files downloaded through the webdav API
       | simple.odt   | test.odt    |
       | new-data.zip | test.zip    |
 
+  @issue-ocis-webdav-187
   Scenario Outline: download previews of different image file types
     Given user "user0" has uploaded file "filesForUpload/<imageName>" to "/<newImageName>"
     When user "user0" downloads the preview of "/<newImageName>" with width "32" and height "32" using the WebDAV API
@@ -77,6 +79,7 @@ Feature: previews of files downloaded through the webdav API
       | testavatar.jpg | testimage.jpg |
       | testavatar.png | testimage.png |
 
+  @issue-ocis-webdav-187
   Scenario: download previews of image after renaming it
     Given user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     When user "user0" moves file "/testimage.jpg" to "/testimage.txt" using the WebDAV API
@@ -113,7 +116,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:message" in the response should be "File with name parent.txt could not be located"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
-  Scenario: Download file previews when it disabled by the administrator
+  Scenario: Download file previews when it is disabled by the administrator
     Given the administrator has updated system config key "enable_previews" with value "false" and type "boolean"
     And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "user0" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
