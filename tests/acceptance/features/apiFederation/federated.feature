@@ -106,25 +106,22 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-34636
   Scenario Outline: Remote sharee requests information of only one share before accepting it
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "user1" retrieves the information of the last pending federated cloud share using the sharing API
-    Then the HTTP status code should be "200" or "500"
-    And the body of the response should be empty
-    #Then the HTTP status code should be "200"
-    #And the OCS status code should be "100"
-    #And the fields of the last response should include
-    #  | id          | A_NUMBER                                   |
-    #  | remote      | REMOTE                                     |
-    #  | remote_id   | A_NUMBER                                   |
-    #  | share_token | A_TOKEN                                    |
-    #  | name        | /textfile0.txt                             |
-    #  | owner       | user0                                      |
-    #  | user        | user1                                      |
-    #  | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
-    #  | accepted    | 0                                          |
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs-status>"
+    And the fields of the last response should include
+      | id          | A_NUMBER                                   |
+      | remote      | REMOTE                                     |
+      | remote_id   | A_NUMBER                                   |
+      | share_token | A_TOKEN                                    |
+      | name        | /textfile0.txt                             |
+      | owner       | user0                                      |
+      | user        | user1                                      |
+      | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
+      | accepted    | 0                                          |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |

@@ -210,11 +210,13 @@ class RemoteOcsController extends OCSController {
 	 */
 	private function extendShareInfo($share) {
 		$info = $this->getFileInfo($share['mountpoint']);
-		$share['mimetype'] = $info->getMimetype();
-		$share['mtime'] = $info->getMtime();
-		$share['permissions'] = $info->getPermissions();
-		$share['type'] = $info->getType();
-		$share['file_id'] = $info->getId();
+		if ($info !== false) {
+			$share['mimetype'] = $info->getMimetype();
+			$share['mtime'] = $info->getMtime();
+			$share['permissions'] = $info->getPermissions();
+			$share['type'] = $info->getType();
+			$share['file_id'] = $info->getId();
+		}
 		return $share;
 	}
 
