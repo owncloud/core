@@ -55,7 +55,7 @@ class Streamer {
 	}
 	
 	/**
-	 * Stream directory recursively
+	 * Stream directory recursively. The mtime of the files and folder will be kept.
 	 * @param string $dir
 	 * @param string $internalDir
 	 */
@@ -63,7 +63,10 @@ class Streamer {
 		$dirname = \basename($dir);
 		$rootDir = $internalDir . $dirname;
 		if (!empty($rootDir)) {
-			$this->streamerInstance->addEmptyDir($rootDir);
+			$dirOpts = [
+				'timestamp' => \OC\Files\Filesystem::filemtime($dir),
+			];
+			$this->streamerInstance->addEmptyDir($rootDir, $dirOpts);
 		}
 		$internalDir .= $dirname . '/';
 		// prevent absolute dirs
@@ -75,8 +78,11 @@ class Streamer {
 			$file = $dir . '/' . $filename;
 			if (\OC\Files\Filesystem::is_file($file)) {
 				$filesize = \OC\Files\Filesystem::filesize($file);
+				$fileOpts = [
+					'timestamp' => \OC\Files\Filesystem::filemtime($file),
+				];
 				$fh = \OC\Files\Filesystem::fopen($file, 'r');
-				$this->addFileFromStream($fh, $internalDir . $filename, $filesize);
+				$this->addFileFromStream($fh, $internalDir . $filename, $filesize, $fileOpts);
 				\fclose($fh);
 			} elseif (\OC\Files\Filesystem::is_dir($file)) {
 				$this->addDirRecursive($file, $internalDir);
@@ -90,13 +96,16 @@ class Streamer {
 	 * @param string $stream Stream to read data from
 	 * @param string $internalName Filepath and name to be used in the archive.
 	 * @param int $size Filesize
+	 * @param array $opts the options to be used while adding the file. Options might
+	 *   depend on the specific implementation used. Common options are:
+	 *    - "timestamp" => (int) the timestamp used as mtime. Use null to set the current time
 	 * @return bool $success
 	 */
-	public function addFileFromStream($stream, $internalName, $size) {
+	public function addFileFromStream($stream, $internalName, $size, $opts = []) {
 		if ($this->streamerInstance instanceof ZipStreamer) {
-			return $this->streamerInstance->addFileFromStream($stream, $internalName);
+			return $this->streamerInstance->addFileFromStream($stream, $internalName, $opts);
 		} else {
-			return $this->streamerInstance->addFileFromStream($stream, $internalName, $size);
+			return $this->streamerInstance->addFileFromStream($stream, $internalName, $size, $opts);
 		}
 	}
 
@@ -104,10 +113,13 @@ class Streamer {
 	 * Add an empty directory entry to the archive.
 	 *
 	 * @param string $dirName Directory Path and name to be added to the archive.
+	 * @param array $opts the options to be used while adding the empty folder. Options might
+	 *   depend on the specific implementation used. Common options are:
+	 *    - "timestamp" => (int) the timestamp used as mtime. Use null to set the current time
 	 * @return bool $success
 	 */
-	public function addEmptyDir($dirName) {
-		return $this->streamerInstance->addEmptyDir($dirName);
+	public function addEmptyDir($dirName, $opts = []) {
+		return $this->streamerInstance->addEmptyDir($dirName, $opts);
 	}
 
 	/**
