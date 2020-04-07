@@ -2167,6 +2167,9 @@ def installExtraApps(phpVersion, extraApps):
 	commandArray = []
 	for app, command in extraApps.items():
 		commandArray.append('git clone https://github.com/owncloud/%s.git /drone/src/apps/%s' % (app, app))
+		if (app == 'files_primary_s3'):
+		    commandArray.append('cd /drone/src/apps/%s' % app)
+		    commandArray.append('git checkout update-guzzle-6')
 		if (command != ''):
 			commandArray.append('cd /drone/src/apps/%s' % app)
 			commandArray.append(command)
