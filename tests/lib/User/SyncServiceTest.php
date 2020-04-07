@@ -38,6 +38,9 @@ use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use Test\TestCase;
 
+// ToDo: phpunit9 createMock will no longer allow an array of interface names.
+//       Dummy interfaces have been created here for the tests.
+//       Find a better solution.
 interface IUserInterfaceWithQuotaBackendTest extends UserInterface, IProvidesQuotaBackend {
 }
 interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvidesUserNameBackend {

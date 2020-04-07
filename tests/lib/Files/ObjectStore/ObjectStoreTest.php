@@ -34,6 +34,9 @@ use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
 use Test\TestCase;
 
+// ToDo: phpunit9 createMock will no longer allow an array of interface names.
+//       A dummy interface has been created here for the tests.
+//       Find a better solution.
 interface IObjectStoreTest extends IObjectStore, IVersionedObjectStorage {
 }
 
