@@ -475,6 +475,7 @@ class View {
 			$size = $this->filesize($path);
 			while (!\feof($handle)) {
 				echo \fread($handle, $chunkSize);
+				$this->checkConnectionStatus();
 				\flush();
 			}
 			return $size;
@@ -504,10 +505,10 @@ class View {
 						$len = $chunkSize;
 					}
 					echo \fread($handle, $len);
+					$this->checkConnectionStatus();
 					\flush();
 				}
-				$size = \ftell($handle) - $from;
-				return $size;
+				return \ftell($handle) - $from;
 			}
 
 			throw new \OCP\Files\UnseekableException('fseek error');
@@ -2267,5 +2268,12 @@ class View {
 	 */
 	public static function setIgnorePartFile($isIgnored) {
 		self::$ignorePartFile = $isIgnored;
+	}
+
+	private function checkConnectionStatus(): void {
+		$connectionStatus = \connection_status();
+		if ($connectionStatus !== 0) {
+			throw new \RuntimeException("Connection lost. Status: $connectionStatus");
+		}
 	}
 }

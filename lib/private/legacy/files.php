@@ -192,9 +192,6 @@ class OC_Files {
 			$l = \OC::$server->getL10N('lib');
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
-			if ($event->hasArgument('message')) {
-				$hint .= ' ' . $event->getArgument('message');
-			}
 			\OC_Template::printErrorPage($l->t('File cannot be downloaded'), $hint);
 		}
 	}
