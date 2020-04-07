@@ -8,6 +8,7 @@
 
 namespace Test\Files\Storage\Wrapper;
 
+use OC\Files\Storage\Common;
 use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IVersionedStorage;
 
@@ -66,7 +67,7 @@ class JailTest extends \Test\Files\Storage\Storage {
 	 * @dataProvider providesVersionMethods
 	 */
 	public function testCallsSourceVersionMethods($method, $extraArg = null) {
-		$sourceStorage = $this->createMock([IStorage::class, IVersionedStorage::class]);
+		$sourceStorage = $this->createMock(Common::class);
 		$instance = new \OC\Files\Storage\Wrapper\Jail([
 			'storage' => $sourceStorage,
 			'root' => 'foo'

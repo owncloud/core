@@ -19,6 +19,7 @@
 
 namespace OCA\DAV\Tests\Unit\Files;
 
+use OC\Files\Node\File;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Files\IFileNode;
 use OCA\DAV\Files\PreviewPlugin;
@@ -62,7 +63,7 @@ class PreviewPluginTest extends TestCase {
 		$this->previewManager = $this->createMock(IPreview::class);
 		$this->previewManager->method('isAvailable')->willReturn(true);
 
-		$this->previewNode = $this->createMock([IPreviewNode::class, FileInfo::class]);
+		$this->previewNode = $this->createMock(File::class);
 
 		$this->request = $this->createMock(RequestInterface::class);
 		/** @var ResponseInterface | MockObject $response */
