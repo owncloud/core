@@ -30,6 +30,12 @@ class CacheJailTest extends CacheTest {
 		$this->cache = new \OC\Files\Cache\Wrapper\CacheJail($this->sourceCache, 'foo');
 	}
 
+	protected function tearDown(): void {
+		if ($this->sourceCache) {
+			$this->sourceCache->clear();
+		}
+	}
+
 	public function testSearchOutsideJail() {
 		$file1 = 'foo/foobar';
 		$file2 = 'folder/foobar';

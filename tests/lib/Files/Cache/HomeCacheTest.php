@@ -102,9 +102,15 @@ class HomeCacheTest extends \Test\TestCase {
 
 		// clean up
 		$this->cache->remove('');
-		$this->cache->remove('files');
-		$this->cache->remove($dir1);
-		$this->cache->remove($dir2);
+		if ($this->cache->get('files')) {
+			$this->cache->remove('files');
+		}
+		if ($this->cache->get($dir1)) {
+			$this->cache->remove($dir1);
+		}
+		if ($this->cache->get($dir2)) {
+			$this->cache->remove($dir2);
+		}
 
 		$this->assertFalse($this->cache->inCache('files'));
 		$this->assertFalse($this->cache->inCache($dir1));
@@ -132,7 +138,9 @@ class HomeCacheTest extends \Test\TestCase {
 
 		// clean up
 		$this->cache->remove('');
-		$this->cache->remove($dir1);
+		if ($this->cache->get($dir1)) {
+			$this->cache->remove($dir1);
+		}
 
 		$this->assertFalse($this->cache->inCache($dir1));
 	}
