@@ -22,6 +22,7 @@ Summary
 * Bugfix - Fix CLI zero exit code on startup errors: [#37098](https://github.com/owncloud/core/issues/37098)
 * Bugfix - Respect sharing.federation.allowHttpFallback config option: [#37153](https://github.com/owncloud/core/pull/37153)
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
+* Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -180,6 +181,16 @@ Details
 
    https://github.com/owncloud/core/issues/34636
    https://github.com/owncloud/core/pull/37216
+
+* Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
+
+   Publicly shared video playback is sending a range http request to get the video content. In
+   cases where the user is seeking to different positions of the video will result in a pretty high
+   server load because all the video content is sent to the browser. Without detecting the
+   connection state on server side all data is put to the output buffer. With this change the server
+   processes will stop sending data as soon as the connection is detected as non-active.
+
+   https://github.com/owncloud/core/pull/37219
 
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 
