@@ -23,6 +23,7 @@ Summary
 * Bugfix - Respect sharing.federation.allowHttpFallback config option: [#37153](https://github.com/owncloud/core/pull/37153)
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
 * Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
+* Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -191,6 +192,13 @@ Details
    processes will stop sending data as soon as the connection is detected as non-active.
 
    https://github.com/owncloud/core/pull/37219
+
+* Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
+
+   Removed files and config options for the settings help section that are not used since 10.2.0
+
+   https://github.com/owncloud/core/issues/36381
+   https://github.com/owncloud/core/pull/37225
 
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 
