@@ -106,6 +106,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
   Scenario Outline: Remote sharee requests information of only one share before accepting it
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And using OCS API version "<ocs-api-version>"
