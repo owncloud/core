@@ -664,19 +664,6 @@ doesnotexist:-o-prefocus {
 
 /* HELP */
 
-.help-includes {
-	overflow: hidden !important;
-}
-
-.help-iframe {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	overflow: auto;
-}
-
 #postsetupchecks .loading {
 	height: 50px;
 	background-position: left center;
