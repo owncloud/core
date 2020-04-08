@@ -1,0 +1,6 @@
+Bugfix: Remove unused files and config opt for settings help
+
+Removed files and config options for the settings help section that are not used since 10.2.0
+
+https://github.com/owncloud/core/pull/37225
+https://github.com/owncloud/core/issues/36381

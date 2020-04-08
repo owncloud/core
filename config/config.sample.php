@@ -195,13 +195,6 @@ $CONFIG = [
 'defaultapp' => 'files',
 
 /**
- * Enable or remove the Help menu item in the user menu
- * The Help menu can be found in top right of the ownCloud Web interface.
- * `true` enables the Help menu item, `false` removes the help item.
- */
-'knowledgebaseenabled' => true,
-
-/**
  * Enable or disable avatars or user profile photos
  * `true` enables avatars, or user profile photos, `false` disables them.
  * These appear on the User page, on user's Personal pages and are used by some apps
