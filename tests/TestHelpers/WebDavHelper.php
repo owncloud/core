@@ -416,6 +416,7 @@ class WebDavHelper {
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type
 	 *
+	 * @throws InvalidArgumentException
 	 * @return string
 	 */
 	public static function getDavPath(

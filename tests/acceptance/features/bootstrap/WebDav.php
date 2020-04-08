@@ -341,6 +341,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @param $user
+	 * @param $path
+	 * @param $doDavRequestAsUser
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return ResponseInterface
+	 */
+	public function downloadPreviews($user, $path, $doDavRequestAsUser, $width, $height) {
+		$urlParameter = [
+			'x' => $width,
+			'y' => $height,
+			'forceIcon' => '0',
+			'preview' => '1'
+		];
+		$this->response = $this->makeDavRequest(
+			$user, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $doDavRequestAsUser
+		);
+	}
+
+	/**
 	 * @When user :user tries to get versions of file :file from :fileOwner
 	 *
 	 * @param string $user
@@ -2939,15 +2960,9 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function downloadPreview($user, $path, $width, $height) {
-		$urlParameter = [
-			'x' => $width,
-			'y' => $height,
-			'forceIcon' => '0',
-			'preview' => '1'
-		];
-		$this->response = $this->makeDavRequest(
-			$user, "GET", $path, [], null, "files", 2, false, null, $urlParameter
+	public function downloadPreviewOfFiles($user, $path, $width, $height) {
+		$this->downloadPreviews(
+			$user, $path, null, $width, $height
 		);
 	}
 
@@ -2960,22 +2975,16 @@ trait WebDav {
 	 * @param $width
 	 * @param $height
 	 *
-	 * @return ResponseInterface
+	 * @return void
 	 */
 	public function downloadPreviewOfOtherUser($user1, $path, $doDavRequestAsUser, $width, $height) {
-		$urlParameter = [
-			'x' => $width,
-			'y' => $height,
-			'forceIcon' => '0',
-			'preview' => '1'
-		];
-		$this->response = $this->makeDavRequest(
-			$user1, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $doDavRequestAsUser
+		$this->downloadPreviews(
+			$user1, $path, $doDavRequestAsUser, $width, $height
 		);
 	}
 
 	/**
-	 * @Then the downloaded image should be :width pixel wide and :height pixel high
+	 * @Then the downloaded image should be :width pixels wide and :height pixels high
 	 *
 	 * @param $width
 	 * @param $height

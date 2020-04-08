@@ -9,7 +9,7 @@ Feature: previews of files downloaded through the webdav API
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "user0" downloads the preview of "/parent.txt" with width <width> and height <height> using the WebDAV API
     Then the HTTP status code should be "200"
-    And the downloaded image should be <width> pixel wide and <height> pixel high
+    And the downloaded image should be <width> pixels wide and <height> pixels high
     Examples:
       | width | height |
       | 1     | 1      |
@@ -55,9 +55,9 @@ Feature: previews of files downloaded through the webdav API
     And user "user0" has uploaded file "filesForUpload/lorem.txt" to "/subfolder/parent.txt"
     When user "user0" downloads the preview of "/subfolder/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
-    And the downloaded image should be "32" pixel wide and "32" pixel high
+    And the downloaded image should be "32" pixels wide and "32" pixels high
 
-  Scenario Outline: download previews of file types that doesn't support preview
+  Scenario Outline: download previews of file types that don't support preview
     Given user "user0" has uploaded file "filesForUpload/<filename>" to "/<newfilename>"
     When user "user0" downloads the preview of "/<newfilename>" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
@@ -73,7 +73,7 @@ Feature: previews of files downloaded through the webdav API
     Given user "user0" has uploaded file "filesForUpload/<imageName>" to "/<newImageName>"
     When user "user0" downloads the preview of "/<newImageName>" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
-    And the downloaded image should be "32" pixel wide and "32" pixel high
+    And the downloaded image should be "32" pixels wide and "32" pixels high
     Examples:
       | imageName      | newImageName  |
       | testavatar.jpg | testimage.jpg |
@@ -85,7 +85,7 @@ Feature: previews of files downloaded through the webdav API
     When user "user0" moves file "/testimage.jpg" to "/testimage.txt" using the WebDAV API
     And user "user0" downloads the preview of "/testimage.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
-    And the downloaded image should be "32" pixel wide and "32" pixel high
+    And the downloaded image should be "32" pixels wide and "32" pixels high
 
   Scenario: download previews of shared files
     Given user "user1" has been created with default attributes and without skeleton files
@@ -93,7 +93,7 @@ Feature: previews of files downloaded through the webdav API
     And user "user0" has shared file "/parent.txt" with user "user1"
     When user "user1" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
-    And the downloaded image should be "32" pixel wide and "32" pixel high
+    And the downloaded image should be "32" pixels wide and "32" pixels high
 
   Scenario: download previews of other users files
     Given user "user1" has been created with default attributes and without skeleton files
@@ -123,10 +123,19 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
-  Scenario: set maximum size of previews
+  Scenario: unset maximum size of previews
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And the administrator has updated system config key "preview_max_x" with value "null"
     And the administrator has updated system config key "preview_max_y" with value "null"
     When user "user0" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+
+  Scenario: set maximum size of previews
+    Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    When the administrator updates system config key "preview_max_x" with value "null" using the occ command
+    And the administrator updates system config key "preview_max_y" with value "null" using the occ command
+    Then the HTTP status code should be "201"
+    When user "user0" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
+    Then the HTTP status code should be "400"
+    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
