@@ -52,7 +52,7 @@ class OcisHelper {
 	 */
 	public static function getLdapPort() {
 		$port = \getenv("REVA_LDAP_PORT");
-		return $port ? $port : 636;
+		return $port ? (int)$port : 636;
 	}
 
 	/**
