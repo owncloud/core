@@ -585,11 +585,15 @@ trait Provisioning {
 	 */
 	public function createLdapUser($setting) {
 		$ou = "TestUsers";
-		$newDN = 'uid=' . $setting["userid"] . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		// Some special characters need to be escaped in LDAP DN and attributes
+		// The special characters allowed in a username (UID) are +_.@-
+		// Of these, only + has to be escaped.
+		$userId = \str_replace('+', '\+', $setting["userid"]);
+		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
 		$uidNumber = \count($this->ldapCreatedUsers) + 1;
 		$entry = [];
-		$entry['cn'] = $setting["userid"];
-		$entry['sn'] = $setting["userid"];
+		$entry['cn'] = $userId;
+		$entry['sn'] = $userId;
 		$entry['homeDirectory'] = '/home/openldap/' . $setting["userid"];
 		$entry['objectclass'][] = 'posixAccount';
 		$entry['objectclass'][] = 'inetOrgPerson';
