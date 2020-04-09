@@ -38,9 +38,4 @@ $manager->registerNotifier(function () {
 	];
 });
 
-// add 'Add to your ownCloud' button to public pages
-// FIXME the OCA\Files::loadAdditionalScripts event is only fired by the ViewController of the files app ... but we are nowadays using webdav.
-// FIXME versions, comments, tags and sharing ui still uses it https://github.com/owncloud/core/search?utf8=%E2%9C%93&q=loadAdditionalScripts&type=
-OCP\Util::connectHook('OCP\Share', 'share_link_access', 'OCA\FederatedFileSharing\HookHandler', 'loadPublicJS');
-
 $app->registerListeners();

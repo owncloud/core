@@ -38,6 +38,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Http;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
+use OCP\Util;
 
 class Application extends App {
 
@@ -276,5 +277,15 @@ class Application extends App {
 				}
 			}
 		);
+
+		if ($this->getFederatedShareProvider()->isOutgoingServer2serverShareEnabled()) {
+			// add 'Add to your ownCloud' button to public pages
+			$eventDispatcher->addListener(
+				'OCA\Files_Sharing::loadAdditionalScripts',
+				static function () {
+					Util::addScript('federatedfilesharing', 'public');
+				}
+			);
+		}
 	}
 }
