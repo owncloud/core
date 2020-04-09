@@ -67,7 +67,6 @@ OC.L10N.register(
     "A valid username must be provided" : "Se debe proporcionar un nombre de usuario válido",
     "A valid password must be provided" : "Se debe proporcionar una contraseña válida",
     "Cheers!" : "¡Saludos!",
-    "Forum" : "Foro",
     "Language" : "Idioma",
     "Cron" : "Cron",
     "Open documentation" : "Abrir documentación",

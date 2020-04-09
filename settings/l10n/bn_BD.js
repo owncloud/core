@@ -32,7 +32,6 @@ OC.L10N.register(
     "enabled" : "সক্রিয় করা",
     "disabled" : "নিষ্ক্রিয় করা",
     "Cheers!" : "শুভেচ্ছা!",
-    "Forum" : "ফোরাম",
     "Language" : "ভাষা",
     "Sharing" : "ভাগাভাগিরত",
     "Expire after " : "এরপর মেয়াদোত্তীর্ণ হও",
