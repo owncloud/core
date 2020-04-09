@@ -122,6 +122,7 @@ Feature: auth
   @issue-ocis-reva-29
   @issue-ocis-reva-30
   @smokeTest
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
     When user "user0" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
