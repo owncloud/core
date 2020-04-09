@@ -303,6 +303,8 @@ trait WebDav {
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
 	 * @param string|null $password
+	 * @param array $urlParameter
+	 * @param string $doDavRequestAsUser
 	 *
 	 * @return ResponseInterface
 	 */
@@ -315,7 +317,9 @@ trait WebDav {
 		$type = "files",
 		$davPathVersion = null,
 		$stream = false,
-		$password = null
+		$password = null,
+		$urlParameter = [],
+		$doDavRequestAsUser = null
 	) {
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
@@ -332,7 +336,28 @@ trait WebDav {
 			$this->getBaseUrl(),
 			$user, $password, $method,
 			$path, $headers, $body, $davPathVersion,
-			$type, null, "basic", $stream, $this->httpRequestTimeout
+			$type, null, "basic", $stream, $this->httpRequestTimeout, null, $urlParameter, $doDavRequestAsUser
+		);
+	}
+
+	/**
+	 * @param $user
+	 * @param $path
+	 * @param $doDavRequestAsUser
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return ResponseInterface
+	 */
+	public function downloadPreviews($user, $path, $doDavRequestAsUser, $width, $height) {
+		$urlParameter = [
+			'x' => $width,
+			'y' => $height,
+			'forceIcon' => '0',
+			'preview' => '1'
+		];
+		$this->response = $this->makeDavRequest(
+			$user, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $doDavRequestAsUser
 		);
 	}
 
@@ -2925,6 +2950,53 @@ trait WebDav {
 		$this->userDeletesEverythingInFolder($user, $folder, true);
 	}
 
+	/**
+	 * @When user :user downloads the preview of :path with width :width and height :height using the WebDAV API
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function downloadPreviewOfFiles($user, $path, $width, $height) {
+		$this->downloadPreviews(
+			$user, $path, null, $width, $height
+		);
+	}
+
+	/**
+	 * @When user :user1 downloads the preview of :path of :user2 with width :width and height :height using the WebDAV API
+	 *
+	 * @param $user1
+	 * @param $path
+	 * @param $doDavRequestAsUser
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function downloadPreviewOfOtherUser($user1, $path, $doDavRequestAsUser, $width, $height) {
+		$this->downloadPreviews(
+			$user1, $path, $doDavRequestAsUser, $width, $height
+		);
+	}
+
+	/**
+	 * @Then the downloaded image should be :width pixels wide and :height pixels high
+	 *
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function imageDimensionsShouldBe($width, $height) {
+		$size = \getimagesizefromstring($this->response->getBody()->getContents());
+		Assert::assertNotFalse($size, "could not get size of image");
+		Assert::assertEquals($width, $size[0], "width not as expected");
+		Assert::assertEquals($height, $size[1], "height not as expected");
+	}
 	/**
 	 * @param string $user
 	 * @param string $path
