@@ -64,6 +64,23 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" with depth (\d+) using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param int $depth
+	 *
+	 * @return void
+	 */
+	public function userGetsThePropertiesOfFolderWithDepth(
+		$user, $path, $depth
+	) {
+		$this->featureContext->setResponseXmlObject(
+			$this->featureContext->listFolder($user, $path, $depth)
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
