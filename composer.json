@@ -33,7 +33,7 @@
         "php": ">=7.1",
         "doctrine/dbal": "^2.8",
         "phpseclib/phpseclib": "^2.0",
-        "jeremeamia/superclosure": "^2.4",
+        "opis/closure": "^3.5",
         "bantu/ini-get-wrapper": "v1.0.1",
         "punic/punic": "^3.1",
         "pear/archive_tar": "1.4.9",
