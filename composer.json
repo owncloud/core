@@ -43,7 +43,6 @@
         "symfony/routing": "^4.4",
         "symfony/process": "^4.4",
         "pimple/pimple": "3.2.3",
-        "nikic/php-parser": "^4.0",
         "icewind/streams": "0.7.1",
         "swiftmailer/swiftmailer": "^6.0",
         "guzzlehttp/guzzle": "^5.3",
