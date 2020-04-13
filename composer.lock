@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abdbc1bba21813fbb74c0414126d18ef",
+    "content-hash": "b246977ec142d80508b06e4312580e08",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -834,29 +834,28 @@
         },
         {
             "name": "icewind/streams",
-            "version": "v0.7.1",
+            "version": "v0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "4db3ed6c366e90b958d00e1d4c6360a9b39b2121"
+                "reference": "77d750ccc654c0eda4a41fedb2dbd71053755790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/4db3ed6c366e90b958d00e1d4c6360a9b39b2121",
-                "reference": "4db3ed6c366e90b958d00e1d4c6360a9b39b2121",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/77d750ccc654c0eda4a41fedb2dbd71053755790",
+                "reference": "77d750ccc654c0eda4a41fedb2dbd71053755790",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3"
+                "php": ">=5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "satooshi/php-coveralls": "v1.0.0"
+                "php-coveralls/php-coveralls": "v2.1.0",
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Icewind\\Streams\\Tests\\": "tests/",
                     "Icewind\\Streams\\": "src/"
                 }
             },
@@ -871,7 +870,7 @@
                 }
             ],
             "description": "A set of generic stream wrappers",
-            "time": "2019-02-15T12:57:29+00:00"
+            "time": "2020-04-08T14:59:33+00:00"
         },
         {
             "name": "interfasys/lognormalizer",
