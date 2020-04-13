@@ -23,7 +23,7 @@ namespace OC\Command;
 
 use OCP\Command\IBus;
 use OCP\Command\ICommand;
-use SuperClosure\Serializer;
+use Opis\Closure\SerializableClosure;
 
 /**
  * Asynchronous command bus that uses the background job system as backend
@@ -103,8 +103,7 @@ class AsyncBus implements IBus {
 	 */
 	private function serializeCommand($command) {
 		if ($command instanceof \Closure) {
-			$serializer = new Serializer();
-			return $serializer->serialize($command);
+			return \serialize(new SerializableClosure($command));
 		} elseif (\is_callable($command) or $command instanceof ICommand) {
 			return \serialize($command);
 		} else {
