@@ -18,6 +18,7 @@ Feature: previews of files downloaded through the webdav API
       | 1     | 1024   |
       | 1024  | 1      |
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario Outline: download previews with invalid width
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "user0" downloads the preview of "/parent.txt" with width "<width>" and height "32" using the WebDAV API
@@ -34,6 +35,7 @@ Feature: previews of files downloaded through the webdav API
       | A     |
       | %2F   |
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario Outline: download previews with invalid height
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "user0" downloads the preview of "/parent.txt" with width "32" and height "<height>" using the WebDAV API
@@ -103,6 +105,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:message" in the response should be "File not found: parent.txt in 'user0'"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario: download previews of folders
     Given user "user0" has created folder "subfolder"
     When user "user0" downloads the preview of "/subfolder/" with width "32" and height "32" using the WebDAV API
@@ -131,6 +134,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario: set maximum size of previews
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When the administrator updates system config key "preview_max_x" with value "null" using the occ command
