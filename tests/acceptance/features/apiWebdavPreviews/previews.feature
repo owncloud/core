@@ -143,3 +143,29 @@ Feature: previews of files downloaded through the webdav API
     When user "user0" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
     Then the HTTP status code should be "400"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
+
+  Scenario Outline: download previews of different size smaller than the maximum size set
+    Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    And the administrator has updated system config key "preview_max_x" with value "32"
+    And the administrator has updated system config key "preview_max_y" with value "32"
+    When user "user0" downloads the preview of "/parent.txt" with width "<width>" and height "<height>" using the WebDAV API
+    Then the HTTP status code should be "<http-code>"
+    And the downloaded image should be "<width>" pixels wide and "<height>" pixels high
+    Examples:
+      | width | height | http-code |
+      | 32    | 32     | 200       |
+      | 12    | 12     | 200       |
+      | 32    | 12     | 200       |
+      | 12    | 32     | 200       |
+
+  Scenario Outline: download previews of different size larger than the maximum size set
+    Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    And the administrator has updated system config key "preview_max_x" with value "32"
+    And the administrator has updated system config key "preview_max_y" with value "32"
+    When user "user0" downloads the preview of "/parent.txt" with width "<width>" and height "<height>" using the WebDAV API
+    Then the HTTP status code should be "<http-code>"
+    And the downloaded image should be "32" pixels wide and "32" pixels high
+    Examples:
+      | width | height | http-code |
+      | 64    | 64     | 200       |
+      | 2048  | 2048   | 200       |
