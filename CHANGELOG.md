@@ -63,6 +63,7 @@ Summary
 * Change - Update phpseclib/phpseclib (2.0.26 => 2.0.27): [#37214](https://github.com/owncloud/core/pull/37214)
 * Change - Update nikic/php-parser (4.3.0 => 4.4.0): [#37237](https://github.com/owncloud/core/pull/37237)
 * Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
+* Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
 Details
@@ -418,6 +419,10 @@ Details
    opis/closure library.
 
    https://github.com/owncloud/core/pull/37238
+
+* Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
+
+   https://github.com/owncloud/core/pull/37253
 
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
