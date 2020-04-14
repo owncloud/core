@@ -1,5 +1,11 @@
-Change: Update icewind/smb from 3.1.2 to 3.2.1 in /apps/files_external/3rdparty
+Change: Update icewind/smb and icewind/streams
+
+Update icewind/smb from 3.1.2 to 3.2.3 in /apps/files_external/3rdparty
+Update icewind/streams from 0.7.1 to 0.7.2 in /apps/files_external/3rdparty
 
 https://github.com/owncloud/core/pull/37186
+https://github.com/icewind1991/SMB/releases/tag/v3.2.3
+https://github.com/icewind1991/SMB/releases/tag/v3.2.2
 https://github.com/icewind1991/SMB/releases/tag/v3.2.1
 https://github.com/icewind1991/SMB/releases/tag/v3.2.0
+https://github.com/icewind1991/Streams/releases/tag/v0.7.2
