@@ -28,7 +28,6 @@ use OCP\Files\Config\ICachedMountInfo;
 use OCP\Files\Config\IUserMountCache;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\NotFoundException;
-use OCP\ICache;
 use OCP\IDBConnection;
 use OCP\ILogger;
 use OCP\IUser;
@@ -53,7 +52,7 @@ class UserMountCache implements IUserMountCache {
 	 * Cached mount info.
 	 * Map of $userId to ICachedMountInfo.
 	 *
-	 * @var ICache
+	 * @var CappedMemoryCache
 	 **/
 	private $mountsForUsers;
 
@@ -63,7 +62,7 @@ class UserMountCache implements IUserMountCache {
 	private $logger;
 
 	/**
-	 * @var ICache
+	 * @var CappedMemoryCache
 	 */
 	private $cacheInfoCache;
 

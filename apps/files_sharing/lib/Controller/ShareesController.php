@@ -358,6 +358,9 @@ class ShareesController extends OCSController {
 	protected function getRemote($search) {
 		$this->result['remotes'] = [];
 		// Fetch remote search properties from app config
+		/**
+		 * @var array $searchProperties
+		 */
 		$searchProperties = \explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
 		// Search in contacts
 		$matchMode = $this->config->getSystemValue('accounts.enable_medial_search', true) === true
