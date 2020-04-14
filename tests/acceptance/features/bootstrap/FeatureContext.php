@@ -1711,9 +1711,6 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getDisplayNameForUser($userName) {
 		$userName = $this->getActualUsername($userName);
-		// The hard-coded user names and display names are also in ldap-users.ldif
-		// for testing in an LDAP environment. The mapping must be kept the
-		// same in both places.
 		$userName = $this->normalizeUsername($userName);
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['displayname'];
@@ -1754,9 +1751,6 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getEmailAddressForUser($userName) {
 		$userName = $this->getActualUsername($userName);
-		// The hard-coded user names and email addresses are also in ldap-users.ldif
-		// for testing in an LDAP environment. The mapping must be kept the
-		// same in both places.
 		$userName = $this->normalizeUsername($userName);
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['email'];
