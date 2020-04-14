@@ -170,7 +170,16 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 					} else {
 						$mode = IFileInfo::MODE_DIRECTORY;
 					}
-					$this->statCache[$path] = new FileInfo($path, '', 0, $this->statCache[$path]->getMTime(), $mode);
+					$this->statCache[$path] = new FileInfo(
+						$path,
+						'',
+						0,
+						$this->statCache[$path]->getMTime(),
+						$mode,
+						function () {
+							return [];
+						}
+					);
 				}
 			} catch (ConnectException $e) {
 				$ex = new StorageNotAvailableException(
@@ -180,7 +189,16 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			} catch (ForbiddenException $e) {
 				if ($this->remoteIsShare() && $this->isRootDir($path)) { //mtime may not work for share root
 					$this->log("faking stat for forbidden '$path'");
-					$this->statCache[$path] = new FileInfo($path, '', 0, $this->shareMTime(), IFileInfo::MODE_DIRECTORY);
+					$this->statCache[$path] = new FileInfo(
+						$path,
+						'',
+						0,
+						$this->shareMTime(),
+						IFileInfo::MODE_DIRECTORY,
+						function () {
+							return [];
+						}
+					);
 				} else {
 					$this->leave(__FUNCTION__, $e);
 					throw $e;
