@@ -24,6 +24,7 @@ Summary
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
 * Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
 * Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
+* Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -201,6 +202,14 @@ Details
 
    https://github.com/owncloud/core/issues/36381
    https://github.com/owncloud/core/pull/37225
+
+* Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
+
+   RepairUnmergedShares repair step dispatched an array as a number of steps. It is fixed to be
+   integer.
+
+   https://github.com/owncloud/core/issues/37241
+   https://github.com/owncloud/core/pull/37246
 
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 
