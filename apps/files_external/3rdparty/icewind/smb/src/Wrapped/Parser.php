@@ -19,17 +19,20 @@ use Icewind\SMB\Exception\InvalidTypeException;
 use Icewind\SMB\Exception\NoLoginServerException;
 use Icewind\SMB\Exception\NotEmptyException;
 use Icewind\SMB\Exception\NotFoundException;
-use Icewind\SMB\TimeZoneProvider;
 
 class Parser {
 	const MSG_NOT_FOUND = 'Error opening local file ';
 
 	/**
-	 * @var \Icewind\SMB\TimeZoneProvider
+	 * @var string
 	 */
-	protected $timeZoneProvider;
+	protected $timeZone;
 
-	// todo replace with static once <5.6 support is dropped
+	/**
+	 * @var string
+	 */
+	private $host;
+
 	// see error.h
 	const EXCEPTION_MAP = [
 		ErrorCodes::LogonFailure      => AuthenticationException::class,
@@ -55,10 +58,10 @@ class Parser {
 	];
 
 	/**
-	 * @param TimeZoneProvider $timeZoneProvider
+	 * @param string $timeZone
 	 */
-	public function __construct(TimeZoneProvider $timeZoneProvider) {
-		$this->timeZoneProvider = $timeZoneProvider;
+	public function __construct($timeZone) {
+		$this->timeZone = $timeZone;
 	}
 
 	private function getErrorCode($line) {
@@ -135,28 +138,34 @@ class Parser {
 			$name = isset($words[0]) ? $words[0] : '';
 			$value = isset($words[1]) ? $words[1] : '';
 			$value = trim($value);
-			$data[$name] = $value;
+
+			if (!isset($data[$name])) {
+				$data[$name] = $value;
+			}
 		}
 		return [
 			'mtime' => strtotime($data['write_time']),
-			'mode'  => hexdec(substr($data['attributes'], strpos($data['attributes'], '('), -1)),
+			'mode'  => hexdec(substr($data['attributes'], strpos($data['attributes'], '(') + 1, -1)),
 			'size'  => isset($data['stream']) ? (int)(explode(' ', $data['stream'])[1]) : 0
 		];
 	}
 
-	public function parseDir($output, $basePath) {
+	public function parseDir($output, $basePath, callable $aclCallback) {
 		//last line is used space
 		array_pop($output);
 		$regex = '/^\s*(.*?)\s\s\s\s+(?:([NDHARS]*)\s+)?([0-9]+)\s+(.*)$/';
 		//2 spaces, filename, optional type, size, date
-		$content = array();
+		$content = [];
 		foreach ($output as $line) {
 			if (preg_match($regex, $line, $matches)) {
 				list(, $name, $mode, $size, $time) = $matches;
 				if ($name !== '.' and $name !== '..') {
 					$mode = $this->parseMode($mode);
-					$time = strtotime($time . ' ' . $this->timeZoneProvider->get());
-					$content[] = new FileInfo($basePath . '/' . $name, $name, $size, $time, $mode);
+					$time = strtotime($time . ' ' . $this->timeZone);
+					$path = $basePath . '/' . $name;
+					$content[] = new FileInfo($path, $name, $size, $time, $mode, function () use ($aclCallback, $path) {
+						return $aclCallback($path);
+					});
 				}
 			}
 		}
@@ -164,14 +173,14 @@ class Parser {
 	}
 
 	public function parseListShares($output) {
-		$shareNames = array();
+		$shareNames = [];
 		foreach ($output as $line) {
 			if (strpos($line, '|')) {
 				list($type, $name, $description) = explode('|', $line);
 				if (strtolower($type) === 'disk') {
 					$shareNames[$name] = $description;
 				}
-			} else if (strpos($line, 'Disk')) {
+			} elseif (strpos($line, 'Disk')) {
 				// new output format
 				list($name, $description) = explode('Disk', $line);
 				$shareNames[trim($name)] = trim($description);

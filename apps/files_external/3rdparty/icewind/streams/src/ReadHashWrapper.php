@@ -1,6 +1,8 @@
 <?php
 /**
- * @copyright Copyright (c) 2018 Robin Appelman <robin@icewind.nl>
+ * @copyright Copyright (c) 2019, Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -19,30 +21,20 @@
  *
  */
 
-namespace Icewind\SMB;
+namespace Icewind\Streams;
 
 /**
- * Use existing kerberos ticket to authenticate
+ * Wrapper that calculates the hash on the stream on read
+ *
+ * The stream and hash should be passed in when wrapping the stream.
+ * On close the callback will be called with the calculated checksum.
+ *
+ * For supported hashes see: http://php.net/manual/en/function.hash-algos.php
  */
-class KerberosAuth implements IAuth {
-	public function getUsername() {
-		return 'dummy';
-	}
-
-	public function getWorkgroup() {
-		return 'dummy';
-	}
-
-	public function getPassword() {
-		return null;
-	}
-
-	public function getExtraCommandLineArguments() {
-		return '-k';
-	}
-
-	public function setExtraSmbClientOptions($smbClientState) {
-		smbclient_option_set($smbClientState, SMBCLIENT_OPT_USE_KERBEROS, true);
-		smbclient_option_set($smbClientState, SMBCLIENT_OPT_FALLBACK_AFTER_KERBEROS, false);
+class ReadHashWrapper extends HashWrapper {
+	public function stream_read($count) {
+		$data = parent::stream_read($count);
+		$this->updateHash($data);
+		return $data;
 	}
 }

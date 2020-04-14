@@ -12,7 +12,7 @@ namespace Icewind\Streams;
  *
  * This wrapper itself doesn't implement any functionality but is just a base class for other wrappers to extend
  */
-abstract class Wrapper implements File, Directory {
+abstract class Wrapper extends WrapperHandler implements File, Directory {
 	/**
 	 * @var resource
 	 */
@@ -25,49 +25,21 @@ abstract class Wrapper implements File, Directory {
 	 */
 	protected $source;
 
-	protected static function wrapSource($source, $context, $protocol, $class) {
-		try {
-			stream_wrapper_register($protocol, $class);
-			if (@rewinddir($source) === false) {
-				$wrapped = fopen($protocol . '://', 'r+', false, $context);
-			} else {
-				$wrapped = opendir($protocol . '://', $context);
-			}
-		} catch (\BadMethodCallException $e) {
-			stream_wrapper_unregister($protocol);
-			throw $e;
-		}
-		stream_wrapper_unregister($protocol);
-		return $wrapped;
+	/**
+	 * @param resource $source
+	 */
+	protected function setSourceStream($source) {
+		$this->source = $source;
 	}
 
-	/**
-	 * Load the source from the stream context and return the context options
-	 *
-	 * @param string $name
-	 * @return array
-	 * @throws \Exception
-	 */
-	protected function loadContext($name) {
-		$context = stream_context_get_options($this->context);
-		if (isset($context[$name])) {
-			$context = $context[$name];
-		} else {
-			throw new \BadMethodCallException('Invalid context, "' . $name . '" options not set');
-		}
+	protected function loadContext($name = null) {
+		$context = parent::loadContext($name);
 		if (isset($context['source']) and is_resource($context['source'])) {
 			$this->setSourceStream($context['source']);
 		} else {
 			throw new \BadMethodCallException('Invalid context, source not set');
 		}
 		return $context;
-	}
-
-	/**
-	 * @param resource $source
-	 */
-	protected function setSourceStream($source) {
-		$this->source = $source;
 	}
 
 	public function stream_seek($offset, $whence = SEEK_SET) {

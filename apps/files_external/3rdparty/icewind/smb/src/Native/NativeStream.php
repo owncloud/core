@@ -48,20 +48,24 @@ class NativeStream implements File {
 	 */
 	public static function wrap($state, $smbStream, $mode, $url) {
 		stream_wrapper_register('nativesmb', NativeStream::class);
-		$context = stream_context_create(array(
-			'nativesmb' => array(
+		$context = stream_context_create([
+			'nativesmb' => [
 				'state'  => $state,
 				'handle' => $smbStream,
 				'url'    => $url
-			)
-		));
+			]
+		]);
 		$fh = fopen('nativesmb://', $mode, false, $context);
 		stream_wrapper_unregister('nativesmb');
 		return $fh;
 	}
 
 	public function stream_close() {
-		return $this->state->close($this->handle);
+		try {
+			return $this->state->close($this->handle, $this->url);
+		} catch (\Exception $e) {
+			return false;
+		}
 	}
 
 	public function stream_eof() {
@@ -110,7 +114,7 @@ class NativeStream implements File {
 	}
 
 	public function stream_write($data) {
-		return $this->state->write($this->handle, $data);
+		return $this->state->write($this->handle, $data, $this->url);
 	}
 
 	public function stream_truncate($size) {
