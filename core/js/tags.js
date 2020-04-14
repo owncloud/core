@@ -330,7 +330,7 @@ OC.Tags= {
 			self._update(tags, type);
 		})
 		.fail(function(response) {
-			console.warn(response);
+			// noop
 		});
 	},
 	_selectedIds: function() {
@@ -354,7 +354,7 @@ OC.Tags= {
 			self.$dialog.ocdialog('option', 'buttons', []);
 		})
 		.fail(function(response) {
-			console.warn(response);
+			// noop
 		});
 	},
 	_addTag: function(self, type, tag) {
@@ -364,7 +364,7 @@ OC.Tags= {
 			self.$taginput.val('').trigger('input');
 		})
 		.fail(function(response) {
-			console.warn(response);
+			// noop
 		});
 	}
 };
