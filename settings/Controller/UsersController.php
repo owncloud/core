@@ -432,6 +432,7 @@ class UsersController extends Controller {
 			}
 		}
 
+		'@phan-var \OC\User\Manager $this->userManager';
 		if ($this->userManager->userExists($username)) {
 			return new DataResponse(
 				[
@@ -483,6 +484,7 @@ class UsersController extends Controller {
 				$user->setEMailAddress($email);
 
 				try {
+					'@phan-var \OC\Settings\Controller\UsersController $this';
 					$this->generateTokenAndSendMail($username, $email);
 				} catch (\Exception $e) {
 					$this->log->error("Can't send new user mail to $email: " . $e->getMessage(), ['app' => 'settings']);
