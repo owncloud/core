@@ -13,11 +13,14 @@ use Icewind\SMB\Exception\DependencyException;
 use Icewind\SMB\Exception\FileInUseException;
 use Icewind\SMB\Exception\InvalidTypeException;
 use Icewind\SMB\Exception\NotFoundException;
+use Icewind\SMB\Exception\InvalidRequestException;
+use Icewind\SMB\IFileInfo;
 use Icewind\SMB\INotifyHandler;
 use Icewind\SMB\IServer;
-use Icewind\SMB\System;
-use Icewind\SMB\TimeZoneProvider;
+use Icewind\SMB\ISystem;
 use Icewind\Streams\CallbackWrapper;
+use Icewind\SMB\Native\NativeShare;
+use Icewind\SMB\Native\NativeServer;
 
 class Share extends AbstractShare {
 	/**
@@ -41,7 +44,7 @@ class Share extends AbstractShare {
 	protected $parser;
 
 	/**
-	 * @var System
+	 * @var ISystem
 	 */
 	private $system;
 
@@ -52,31 +55,36 @@ class Share extends AbstractShare {
 		FileInfo::MODE_SYSTEM   => 's'
 	];
 
+	const EXEC_CMD = 'exec';
+
 	/**
 	 * @param IServer $server
 	 * @param string $name
-	 * @param System $system
+	 * @param ISystem $system
 	 */
-	public function __construct(IServer $server, $name, System $system = null) {
+	public function __construct(IServer $server, $name, ISystem $system) {
 		parent::__construct();
 		$this->server = $server;
 		$this->name = $name;
-		$this->system = (!is_null($system)) ? $system : new System();
-		$this->parser = new Parser(new TimeZoneProvider($this->server->getHost(), $this->system));
+		$this->system = $system;
+		$this->parser = new Parser($server->getTimeZone());
 	}
 
 	private function getAuthFileArgument() {
 		if ($this->server->getAuth()->getUsername()) {
-			return '--authentication-file=' . System::getFD(3);
+			return '--authentication-file=' . $this->system->getFD(3);
 		} else {
 			return '';
 		}
 	}
 
 	protected function getConnection() {
-		$command = sprintf('%s%s %s %s %s',
-			$this->system->hasStdBuf() ? 'stdbuf -o0 ' : '',
+		$command = sprintf(
+			'%s %s%s -t %s %s %s %s',
+			self::EXEC_CMD,
+			$this->system->getStdBufPath() ? $this->system->getStdBufPath() . ' -o0 ' : '',
 			$this->system->getSmbclientPath(),
+			$this->server->getOptions()->getTimeout(),
 			$this->getAuthFileArgument(),
 			$this->server->getAuth()->getExtraCommandLineArguments(),
 			escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
@@ -153,6 +161,19 @@ class Share extends AbstractShare {
 	 * @return \Icewind\SMB\IFileInfo
 	 */
 	public function stat($path) {
+		// some windows server setups don't seem to like the allinfo command
+		// use the dir command instead to get the file info where possible
+		if ($path !== "" && $path !== "/") {
+			$parent = dirname($path);
+			$dir = $this->dir($parent);
+			$file = array_values(array_filter($dir, function (IFileInfo $info) use ($path) {
+				return $info->getPath() === $path;
+			}));
+			if ($file) {
+				return $file[0];
+			}
+		}
+
 		$escapedPath = $this->escapePath($path);
 		$output = $this->execute('allinfo ' . $escapedPath);
 		// Windows and non Windows Fileserver may respond different
@@ -294,7 +315,7 @@ class Share extends AbstractShare {
 		// since we can't re-use the same file descriptor over multiple calls
 		$connection = $this->getConnection();
 
-		$connection->write('get ' . $source . ' ' . System::getFD(5));
+		$connection->write('get ' . $source . ' ' . $this->system->getFD(5));
 		$connection->write('exit');
 		$fh = $connection->getFileOutputStream();
 		stream_context_set_option($fh, 'file', 'connection', $connection);
@@ -317,7 +338,7 @@ class Share extends AbstractShare {
 		$connection = $this->getConnection();
 
 		$fh = $connection->getFileInputStream();
-		$connection->write('put ' . System::getFD(4) . ' ' . $target);
+		$connection->write('put ' . $this->system->getFD(4) . ' ' . $target);
 		$connection->write('exit');
 
 		// use a close callback to ensure the upload is finished before continuing
@@ -325,6 +346,18 @@ class Share extends AbstractShare {
 		return CallbackWrapper::wrap($fh, null, null, function () use ($connection, $target) {
 			$connection->close(false); // dont terminate, give the upload some time
 		});
+	}
+
+	/**
+	 * Append to stream
+	 * Note: smbclient does not support this (Use php-libsmbclient)
+	 *
+	 * @param string $target
+	 *
+	 * @throws \Icewind\SMB\Exception\DependencyException
+	 */
+	public function append($target) {
+		throw new DependencyException('php-libsmbclient is required for append');
 	}
 
 	/**
@@ -363,7 +396,7 @@ class Share extends AbstractShare {
 	 * @throws DependencyException
 	 */
 	public function notify($path) {
-		if (!$this->system->hasStdBuf()) { //stdbuf is required to disable smbclient's output buffering
+		if (!$this->system->getStdBufPath()) { //stdbuf is required to disable smbclient's output buffering
 			throw new DependencyException('stdbuf is required for usage of the notify command');
 		}
 		$connection = $this->getConnection(); // use a fresh connection since the notify command blocks the process

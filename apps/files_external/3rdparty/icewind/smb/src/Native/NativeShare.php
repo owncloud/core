@@ -53,7 +53,7 @@ class NativeShare extends AbstractShare {
 		}
 
 		$this->state = new NativeState();
-		$this->state->init($this->server->getAuth());
+		$this->state->init($this->server->getAuth(), $this->server->getOptions());
 		return $this->state;
 	}
 
@@ -87,13 +87,16 @@ class NativeShare extends AbstractShare {
 	 * @throws \Icewind\SMB\Exception\InvalidTypeException
 	 */
 	public function dir($path) {
-		$files = array();
+		$files = [];
 
 		$dh = $this->getState()->opendir($this->buildUrl($path));
 		while ($file = $this->getState()->readdir($dh)) {
 			$name = $file['name'];
 			if ($name !== '.' and $name !== '..') {
-				$files [] = new NativeFileInfo($this, $path . '/' . $name, $name);
+				$fullPath = $path . '/' . $name;
+				$files [] = new NativeFileInfo($this, $fullPath, $name, function () use ($fullPath) {
+					return $this->getStat($fullPath);
+				});
 			}
 		}
 
@@ -106,10 +109,27 @@ class NativeShare extends AbstractShare {
 	 * @return \Icewind\SMB\IFileInfo
 	 */
 	public function stat($path) {
-		return new NativeFileInfo($this, $path, basename($path), $this->getStat($path));
+		return new NativeFileInfo($this, $path, self::mb_basename($path), $this->getStat($path));
 	}
 
-	public function getStat($path) {
+	/**
+	 * Multibyte unicode safe version of basename()
+	 *
+	 * @param string $path
+	 * @link http://php.net/manual/en/function.basename.php#121405
+	 * @return string
+	 */
+	protected static function mb_basename($path) {
+		if (preg_match('@^.*[\\\\/]([^\\\\/]+)$@s', $path, $matches)) {
+			return $matches[1];
+		} elseif (preg_match('@^([^\\\\/]+)$@s', $path, $matches)) {
+			return $matches[1];
+		}
+
+		return '';
+	}
+
+	private function getStat($path) {
 		return $this->getState()->stat($this->buildUrl($path));
 	}
 
@@ -203,6 +223,12 @@ class NativeShare extends AbstractShare {
 		if (!$target) {
 			throw new InvalidPathException('Invalid target path: Filename cannot be empty');
 		}
+
+		$sourceHandle = $this->getState()->open($this->buildUrl($source), 'r');
+		if (!$sourceHandle) {
+			throw new InvalidResourceException('Failed opening remote file "' . $source . '" for reading');
+		}
+
 		$targetHandle = @fopen($target, 'wb');
 		if (!$targetHandle) {
 			$error = error_get_last();
@@ -211,13 +237,8 @@ class NativeShare extends AbstractShare {
 			} else {
 				$reason = 'Unknown error';
 			}
+			$this->getState()->close($sourceHandle);
 			throw new InvalidResourceException('Failed opening local file "' . $target . '" for writing: ' . $reason);
-		}
-
-		$sourceHandle = $this->getState()->open($this->buildUrl($source), 'r');
-		if (!$sourceHandle) {
-			fclose($targetHandle);
-			throw new InvalidResourceException('Failed opening remote file "' . $source . '" for reading');
 		}
 
 		while ($data = $this->getState()->read($sourceHandle, NativeReadStream::CHUNK_SIZE)) {
@@ -228,7 +249,7 @@ class NativeShare extends AbstractShare {
 	}
 
 	/**
-	 * Open a readable stream top a remote file
+	 * Open a readable stream to a remote file
 	 *
 	 * @param string $source
 	 * @return resource a read only stream with the contents of the remote file
@@ -243,10 +264,11 @@ class NativeShare extends AbstractShare {
 	}
 
 	/**
-	 * Open a readable stream top a remote file
+	 * Open a writeable stream to a remote file
+	 * Note: This method will truncate the file to 0bytes first
 	 *
 	 * @param string $source
-	 * @return resource a read only stream with the contents of the remote file
+	 * @return resource a writeable stream
 	 *
 	 * @throws \Icewind\SMB\Exception\NotFoundException
 	 * @throws \Icewind\SMB\Exception\InvalidTypeException
@@ -255,6 +277,21 @@ class NativeShare extends AbstractShare {
 		$url = $this->buildUrl($source);
 		$handle = $this->getState()->create($url);
 		return NativeWriteStream::wrap($this->getState(), $handle, 'w', $url);
+	}
+
+	/**
+	 * Open a writeable stream and set the cursor to the end of the stream
+	 *
+	 * @param string $source
+	 * @return resource a writeable stream
+	 *
+	 * @throws \Icewind\SMB\Exception\NotFoundException
+	 * @throws \Icewind\SMB\Exception\InvalidTypeException
+	 */
+	public function append($source) {
+		$url = $this->buildUrl($source);
+		$handle = $this->getState()->open($url, "a+");
+		return NativeWriteStream::wrap($this->getState(), $handle, "a", $url);
 	}
 
 	/**
@@ -269,15 +306,14 @@ class NativeShare extends AbstractShare {
 	}
 
 	/**
-	 * Get extended attributes for the path
+	 * Set extended attributes for the given path
 	 *
 	 * @param string $path
 	 * @param string $attribute attribute to get the info
-	 * @param mixed $value
-	 * @return string the attribute value
+	 * @param string|int $value
+	 * @return mixed the attribute value
 	 */
 	public function setAttribute($path, $attribute, $value) {
-
 		if ($attribute === 'system.dos_attr.mode' and is_int($value)) {
 			$value = '0x' . dechex($value);
 		}
@@ -286,6 +322,8 @@ class NativeShare extends AbstractShare {
 	}
 
 	/**
+	 * Set DOS comaptible node mode
+	 *
 	 * @param string $path
 	 * @param int $mode a combination of FileInfo::MODE_READONLY, FileInfo::MODE_ARCHIVE, FileInfo::MODE_SYSTEM and FileInfo::MODE_HIDDEN, FileInfo::NORMAL
 	 * @return mixed
@@ -295,16 +333,19 @@ class NativeShare extends AbstractShare {
 	}
 
 	/**
+	 * Start smb notify listener
+	 * Note: This is a blocking call
+	 *
 	 * @param string $path
 	 * @return INotifyHandler
 	 */
 	public function notify($path) {
-		// php-smbclient does support notify (https://github.com/eduardok/libsmbclient-php/issues/29)
+		// php-smbclient does not support notify (https://github.com/eduardok/libsmbclient-php/issues/29)
 		// so we use the smbclient based backend for this
 		if (!Server::available($this->server->getSystem())) {
 			throw new DependencyException('smbclient not found in path for notify command');
 		}
-		$share = new Share($this->server, $this->getName());
+		$share = new Share($this->server, $this->getName(), $this->server->getSystem());
 		return $share->notify($path);
 	}
 
