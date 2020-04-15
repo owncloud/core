@@ -31,6 +31,17 @@ return [
 		'settings'
 	],
 
+	'exclude_file_list' => [
+		'apps/federation/appinfo/routes.php',
+		'apps/files/appinfo/routes.php',
+		'apps/files_external/appinfo/routes.php',
+		'apps/files_sharing/appinfo/routes.php',
+		'apps/files_trashbin/appinfo/routes.php',
+		'apps/updatenotification/appinfo/routes.php',
+		'core/routes.php',
+		'settings/routes.php'
+	],
+
 	// A directory list that defines files that will be excluded
 	// from static analysis, but whose class and method
 	// information should be included.
