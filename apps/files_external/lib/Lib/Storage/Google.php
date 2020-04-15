@@ -84,11 +84,33 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	private function getDefaultFieldsForFile() {
-		return 'id,name,mimeType,parents,capabilities/canEdit,size,viewedByMeTime,createdTime,modifiedTime';
+		static $fileFields = null;  // keep static variable to avoid recreating the string
+		if ($fileFields === null) {
+			$fileFields = \implode(',', [
+				'id',
+				'name',
+				'mimeType',
+				'parents',
+				'capabilities/canEdit',
+				'size',
+				'viewedByMeTime',
+				'createdTime',
+				'modifiedTime',
+			]);
+		}
+		return $fileFields;
 	}
 
 	private function getDefaultFieldsForFolderScan() {
-		return 'incompleteSearch,nextPageToken,files(id,name,mimeType,parents,capabilities/canEdit,size,viewedByMeTime,createdTime,modifiedTime)';
+		static $folderFields = null;  // keep static variable to avoid recreating the string
+		if ($folderFields === null) {
+			$folderFields = \implode(',', [
+				'incompleteSearch',
+				'nextPageToken',
+				"files({$this->getDefaultFieldsForFile()})",  // ask for the same fields to cache info
+			]);
+		}
+		return $folderFields;
 	}
 
 	/**
@@ -530,7 +552,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				if ($this->file_exists($path)) {
 					$file = $this->getDriveFile($path);
 					$this->client->setDefer($useChunking);
-					$request = $this->service->files->update($file->getId(), new \Google_Service_Drive_DriveFile(), $params);
+					$request = $this->service->files->update(
+						$file->getId(),
+						new \Google_Service_Drive_DriveFile(),
+						$params
+					);
 				} else {
 					$file = new \Google_Service_Drive_DriveFile();
 					$file->setName(\basename($path));
@@ -630,13 +656,20 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			} else {
 				$toUpdate->setModifiedTime(\date('Y-m-d\TH:i:s.uP'));
 			}
-			$result = $this->service->files->update($file->getId(), $toUpdate, ['fields' => $this->getDefaultFieldsForFile()]);
+			$result = $this->service->files->update(
+				$file->getId(),
+				$toUpdate,
+				['fields' => $this->getDefaultFieldsForFile()]
+			);
 		} else {
 			$parentFolder = $this->getDriveFile(\dirname($path));
 			if ($parentFolder) {
 				$toUpdate->setName(\basename($path));
 				$toUpdate->setParents([$parentFolder->getId()]);
-				$result = $this->service->files->insert($toUpdate, ['fields' => $this->getDefaultFieldsForFile()]);
+				$result = $this->service->files->insert(
+					$toUpdate,
+					['fields' => $this->getDefaultFieldsForFile()]
+				);
 			}
 		}
 		if ($result) {
@@ -669,7 +702,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 						$params['pageToken'] = $pageToken;
 					}
 					$params['q'] = "'" . \str_replace("'", "\\'", $folder->getId()) . "' in parents and trashed = false";
-					$params['fields'] = 'incompleteSearch,nextPageToken,files(modifiedTime)';
+					$params['fields'] = 'incompleteSearch,nextPageToken,files(modifiedTime)';  // just need the mtime
 					$children = $this->service->files->listFiles($params);
 					if ($children->getIncompleteSearch()) {
 						// if the search is incomplete, assume there is a change
