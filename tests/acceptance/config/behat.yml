@@ -481,6 +481,7 @@ default:
         - WebUIHelpAndTipsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
         - OccContext:
 
     webUIComments:

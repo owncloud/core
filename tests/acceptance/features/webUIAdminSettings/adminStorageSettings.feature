@@ -163,3 +163,22 @@ Feature: admin storage settings
     Then the last created local storage mount should be listed on the webUI
     And the user re-logs in as "user1" using the webUI
     And folder "local_storage1" should be listed on the webUI
+
+  @issue-36803
+  Scenario: applicable user is not able to share top-level of read-only storage
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    And the administrator has enabled the external storage
+    And the administrator has browsed to the admin storage settings page
+    And the administrator has created the local storage mount "local_storage1" from the admin storage settings page
+    And the administrator has added user "user0" as the applicable user for the last local storage mount from the admin storage settings page
+    And the administrator has enabled read-only for the last created local storage mount using the webUI
+    And the administrator has enabled sharing for the last created local storage mount using the webUI
+    And the user has re-logged in as "user0" using the webUI
+    When the user shares folder "local_storage1" with user "User One" using the webUI
+    Then notifications should be displayed on the webUI with the text
+      | Cannot set the requested share permissions for local_storage1 |
+   # And as "user1" folder "local_storage1" should exist
+    And as "user1" folder "local_storage1" should not exist

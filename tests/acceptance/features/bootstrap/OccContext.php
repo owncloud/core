@@ -191,6 +191,31 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $mountPoint
+	 * @param boolean $setting
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function setExtStorageSharingUsingTheOccCommand($mountPoint, $setting = true) {
+		$command = "files_external:option";
+
+		$mountId = $this->featureContext->getStorageId($mountPoint);
+
+		$key = "enable_sharing";
+
+		if ($setting) {
+			$value = "true";
+		} else {
+			$value = "false";
+		}
+
+		$this->invokingTheCommand(
+			"$command $mountId $key $value"
+		);
+	}
+
+	/**
+	 * @param string $mountPoint
 	 * @param string $setting "never" (switch it off) otherwise "Once every direct access"
 	 *
 	 * @return void
@@ -932,6 +957,19 @@ class OccContext implements Context {
 	 */
 	public function theAdminHasSetTheExtStorageToReadOnly($mountPoint) {
 		$this->setExtStorageReadOnlyUsingTheOccCommand($mountPoint);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @Given the administrator has set the external storage :mountPoint to sharing
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminHasSetTheExtStorageToSharing($mountPoint) {
+		$this->setExtStorageSharingUsingTheOccCommand($mountPoint);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
