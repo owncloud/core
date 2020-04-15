@@ -66,24 +66,24 @@ class OcisHelper {
 	 * @return string
 	 */
 	public static function getBaseDN() {
-		$port = \getenv("REVA_LDAP_BASE_DN");
-		return $port ? $port : "dc=owncloud,dc=com";
+		$dn = \getenv("REVA_LDAP_BASE_DN");
+		return $dn ? $dn : "dc=owncloud,dc=com";
 	}
 
 	/**
 	 * @return string
 	 */
 	public static function getHostname() {
-		$port = \getenv("REVA_LDAP_HOSTNAME");
-		return $port ? $port : "localhost";
+		$hostname = \getenv("REVA_LDAP_HOSTNAME");
+		return $hostname ? $hostname : "localhost";
 	}
 
 	/**
 	 * @return string
 	 */
 	public static function getBindDN() {
-		$port = \getenv("REVA_LDAP_BIND_DN");
-		return $port ? $port : "cn=admin,dc=owncloud,dc=com";
+		$dn = \getenv("REVA_LDAP_BIND_DN");
+		return $dn ? $dn : "cn=admin,dc=owncloud,dc=com";
 	}
 
 	/**
