@@ -48,7 +48,7 @@ class OcisHelper {
 	}
 
 	/**
-	 * @return int|string
+	 * @return int
 	 */
 	public static function getLdapPort() {
 		$port = \getenv("REVA_LDAP_PORT");
