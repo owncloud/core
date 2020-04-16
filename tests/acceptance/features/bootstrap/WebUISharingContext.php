@@ -925,6 +925,36 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then add to your owncloud button should be displayed on the webUI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAddToYourOwncloudButtonShouldBeVisible() {
+		$isPresent=$this->publicLinkFilesPage->isAddtoServerButtonPresent();
+		Assert::assertTrue(
+			$isPresent,
+			__METHOD__
+			. " The add to your owncloud button is not present unexpectedly."
+		);
+	}
+
+	/**
+	 * @Then add to your owncloud button should not be displayed on the webUI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAddToYourOwncloudButtonShouldNotBeVisible() {
+		$isPresent=$this->publicLinkFilesPage->isAddtoServerButtonPresent();
+		Assert::assertFalse(
+			$isPresent,
+			 __METHOD__
+			. " The add to your owncloud button is present unexpectedly."
+		);
+	}
+
+	/**
 	 * @When the public adds the public link to :server as user :username with password :password using the webUI
 	 * @Given the public has added the public link to :server as user :username with password :password using the webUI
 	 *
