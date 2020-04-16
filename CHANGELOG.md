@@ -16,6 +16,7 @@ Summary
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 * Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
 * Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
+* Change - Update league/flysystem (1.0.66 => 1.0.67): [#37271](https://github.com/owncloud/core/pull/37271)
 
 Details
 -------
@@ -74,6 +75,10 @@ Details
 * Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
 
    https://github.com/owncloud/core/pull/37253
+
+* Change - Update league/flysystem (1.0.66 => 1.0.67): [#37271](https://github.com/owncloud/core/pull/37271)
+
+   https://github.com/owncloud/core/pull/37271
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
