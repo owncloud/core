@@ -1,0 +1,7 @@
+Change: Use OcsController and routes instead of API::register
+
+Implemented OcsController and removed a separate file to register ocs routes.
+Also some deprecated and legacy OC_OCS classes removed.
+
+https://github.com/owncloud/core/pull/37272
+https://github.com/owncloud/core/issues/12454

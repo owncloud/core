@@ -22,11 +22,15 @@
 namespace OC\Core\Controller;
 
 use OC\OCS\Result;
+use OCP\IDBConnection;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
 
 class OcsController extends \OCP\AppFramework\OCSController {
+	/** @var IDBConnection */
+	private $dbConnection;
+
 	/** @var IUserSession */
 	private $userSession;
 
@@ -41,9 +45,11 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * @param IUserSession $userSession
 	 */
 	public function __construct($appName, IRequest $request,
+								IDBConnection $dbConnection,
 								IUserSession $userSession,
 								IUserManager $userManager) {
 		parent::__construct($appName, $request);
+		$this->dbConnection = $dbConnection;
 		$this->userSession = $userSession;
 		$this->userManager = $userManager;
 	}
@@ -56,12 +62,13 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * @return Result
 	 */
 	public function getConfig() {
-		$xml['version'] = '1.7';
-		$xml['website'] = 'ownCloud';
-		$xml['host'] = $this->request->getServerHost();
-		$xml['contact'] = '';
-		$xml['ssl'] = 'false';
-		return new Result($xml);
+		return new Result([
+			'version' => '1.7',
+			'website' => 'ownCloud',
+			'host' => $this->request->getServerHost(),
+			'contact' => '',
+			'ssl' => 'false',
+		]);
 	}
 
 	/**
@@ -133,21 +140,27 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		$user = $this->userSession->getUser()->getUID();
 
 		if ($key === null) {
-			$query = \OCP\DB::prepare('SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? ');
-			$result = $query->execute([$user, $app]);
+			$q = $this->dbConnection->prepare(
+				'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? '
+			);
+			$result = $q->execute([$user, $app]);
 		} else {
-			$query = \OCP\DB::prepare('SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? ');
 			$key = $this->escape($key);
-			$result = $query->execute([$user, $app, $key]);
+			$q = $this->dbConnection->prepare(
+				'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? '
+			);
+			$result = $q->execute([$user, $app, $key]);
 		}
 
 		$xml = [];
-		while ($row = $result->fetchRow()) {
-			$data= [];
-			$data['key']=$row['key'];
-			$data['app']=$row['app'];
-			$data['value']=$row['value'];
-			$xml[] = $data;
+		if ($result === true) {
+			while ($row = $q->fetch()) {
+				$data= [];
+				$data['key']=$row['key'];
+				$data['app']=$row['app'];
+				$data['value']=$row['value'];
+				$xml[] = $data;
+			}
 		}
 
 		return new Result($xml);
@@ -171,19 +184,24 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		$user = $this->userSession->getUser()->getUID();
 		$value = $this->request->getParam('value');
 
-		// update in DB
-		$query = \OCP\DB::prepare('UPDATE `*PREFIX*privatedata` SET `value` = ?  WHERE `user` = ? AND `app` = ? AND `key` = ?');
-		$numRows = $query->execute([$value, $user, $app, $key]);
-
-		if ($numRows === false || $numRows === 0) {
-			// store in DB
-			$query = \OCP\DB::prepare('INSERT INTO `*PREFIX*privatedata` (`user`, `app`, `key`, `value`)' . ' VALUES(?, ?, ?, ?)');
-			$query->execute([$user, $app, $key, $value]);
-		}
+		$this->dbConnection->upsert(
+			'*PREFIX*privatedata',
+			[
+				'value' => $value,
+				'user' => $user,
+				'app' => $app,
+				'key' => $key
+			],
+			[
+				'user',
+				'app',
+				'key'
+			]
+		);
 
 		return new Result(null, 100);
 	}
-	
+
 	/**
 	 * delete a key
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/deleteattribute/testy/123 --data "post=1"
@@ -202,8 +220,10 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		$user = $this->userSession->getUser()->getUID();
 
 		// delete in DB
-		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? ');
-		$query->execute([$user, $app, $key]);
+		$q = $this->dbConnection->prepare(
+			'DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? '
+		);
+		$q->execute([$user, $app, $key]);
 
 		return new Result(null, 100);
 	}
