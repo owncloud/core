@@ -931,7 +931,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAddToYourOwncloudButtonShouldBeVisible() {
-		$isPresent=$this->publicLinkFilesPage->isAddtoServerButtonPresent();
+		$isPresent = $this->publicLinkFilesPage->isAddtoServerButtonPresent();
 		Assert::assertTrue(
 			$isPresent,
 			__METHOD__
@@ -946,10 +946,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAddToYourOwncloudButtonShouldNotBeVisible() {
-		$isPresent=$this->publicLinkFilesPage->isAddtoServerButtonPresent();
+		$isPresent = $this->publicLinkFilesPage->isAddtoServerButtonPresent();
 		Assert::assertFalse(
 			$isPresent,
-			 __METHOD__
+			__METHOD__
 			. " The add to your owncloud button is present unexpectedly."
 		);
 	}
