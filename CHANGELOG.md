@@ -3,7 +3,84 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.4.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.4.1...master
+
+Summary
+-------
+
+* Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
+* Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
+* Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
+* Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
+* Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
+* Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
+* Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
+* Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
+
+Details
+-------
+
+* Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
+
+   Share info requested by id via OCS was empty for pending federated shares.
+
+   https://github.com/owncloud/core/issues/34636
+   https://github.com/owncloud/core/pull/37216
+
+* Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
+
+   Publicly shared video playback is sending a range http request to get the video content. In
+   cases where the user is seeking to different positions of the video will result in a pretty high
+   server load because all the video content is sent to the browser. Without detecting the
+   connection state on server side all data is put to the output buffer. With this change the server
+   processes will stop sending data as soon as the connection is detected as non-active.
+
+   https://github.com/owncloud/core/pull/37219
+
+* Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
+
+   Removed files and config options for the settings help section that are not used since 10.2.0
+
+   https://github.com/owncloud/core/issues/36381
+   https://github.com/owncloud/core/pull/37225
+
+* Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
+
+   RepairUnmergedShares repair step dispatched an array as a number of steps. It is fixed to be
+   integer.
+
+   https://github.com/owncloud/core/issues/37241
+   https://github.com/owncloud/core/pull/37246
+
+* Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
+
+   https://github.com/owncloud/core/pull/37256
+
+* Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
+
+   Added index for addressbookid_name_value that allows to improve scan performance of search
+   addressbook query when medial search is off
+
+   https://github.com/owncloud/enterprise/issues/3625
+   https://github.com/owncloud/core/pull/37152
+
+* Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
+
+   Jeremeamia/superclosure library is no longer maintained. Replace it with the recommended
+   opis/closure library.
+
+   https://github.com/owncloud/core/pull/37238
+
+* Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
+
+   https://github.com/owncloud/core/pull/37253
+
+Changelog for ownCloud Core [10.4.1] (2020-03-30)
+=======================================
+The following sections list the changes in ownCloud core 10.4.1 relevant to
+ownCloud admins and users.
+
+[10.4.1]: https://github.com/owncloud/core/compare/v10.4.0...v10.4.1
 
 Summary
 -------
@@ -18,14 +95,9 @@ Summary
 * Bugfix - Google drive files without extension 404: [#37044](https://github.com/owncloud/core/issues/37044)
 * Bugfix - Fix public link upload remaining time estimation: [#37053](https://github.com/owncloud/core/pull/37053)
 * Bugfix - Fix OCS Share API response for requests contain "include_tags" parameter: [#37084](https://github.com/owncloud/core/issues/37084)
-* Bugfix - Add share type to the verifyExpirationDate hook: [#287](https://github.com/owncloud/password_policy/issues/287)
+* Bugfix - Add share type to the verifyExpirationDate hook: [#37135](https://github.com/owncloud/core/pull/37135)
 * Bugfix - Fix CLI zero exit code on startup errors: [#37098](https://github.com/owncloud/core/issues/37098)
 * Bugfix - Respect sharing.federation.allowHttpFallback config option: [#37153](https://github.com/owncloud/core/pull/37153)
-* Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
-* Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
-* Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
-* Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
-* Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 * Change - Fix ini_set error spamming the log: [#36749](https://github.com/owncloud/core/pull/36749)
 * Change - Update egulias/email-validator (2.1.15 => 2.1.17): [#36955](https://github.com/owncloud/core/pull/36955)
@@ -49,7 +121,6 @@ Summary
 * Change - Update league/flysystem (1.0.65 => 1.0.66): [#37136](https://github.com/owncloud/core/pull/37136)
 * Change - Update minimist (1.2.2 => 1.2.3): [#37138](https://github.com/owncloud/core/pull/37138)
 * Change - Update sabre/dav from version 4.0.3 to 4.1.0: [#37151](https://github.com/owncloud/core/pull/37151)
-* Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
 * Change - Query on oc_properties is now always chunked: [#37172](https://github.com/owncloud/core/pull/37172)
@@ -63,8 +134,6 @@ Summary
 * Change - Update laminas/laminas-zendframework-bridge (1.0.2 => 1.0.3): [#37214](https://github.com/owncloud/core/pull/37214)
 * Change - Update phpseclib/phpseclib (2.0.26 => 2.0.27): [#37214](https://github.com/owncloud/core/pull/37214)
 * Change - Update nikic/php-parser (4.3.0 => 4.4.0): [#37237](https://github.com/owncloud/core/pull/37237)
-* Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
-* Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
 Details
@@ -156,7 +225,7 @@ Details
    https://github.com/owncloud/core/issues/37084
    https://github.com/owncloud/core/pull/37088
 
-* Bugfix - Add share type to the verifyExpirationDate hook: [#287](https://github.com/owncloud/password_policy/issues/287)
+* Bugfix - Add share type to the verifyExpirationDate hook: [#37135](https://github.com/owncloud/core/pull/37135)
 
    The verifyExpirationDate hook notifies the password_policy app about proposed expiration
    dates of shares. The share type was not being passed in the hook. This meant that the
@@ -180,42 +249,6 @@ Details
    sharing.federation.allowHttpFallback=true.
 
    https://github.com/owncloud/core/pull/37153
-
-* Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
-
-   Share info requested by id via OCS was empty for pending federated shares.
-
-   https://github.com/owncloud/core/issues/34636
-   https://github.com/owncloud/core/pull/37216
-
-* Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
-
-   Publicly shared video playback is sending a range http request to get the video content. In
-   cases where the user is seeking to different positions of the video will result in a pretty high
-   server load because all the video content is sent to the browser. Without detecting the
-   connection state on server side all data is put to the output buffer. With this change the server
-   processes will stop sending data as soon as the connection is detected as non-active.
-
-   https://github.com/owncloud/core/pull/37219
-
-* Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
-
-   Removed files and config options for the settings help section that are not used since 10.2.0
-
-   https://github.com/owncloud/core/issues/36381
-   https://github.com/owncloud/core/pull/37225
-
-* Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
-
-   RepairUnmergedShares repair step dispatched an array as a number of steps. It is fixed to be
-   integer.
-
-   https://github.com/owncloud/core/issues/37241
-   https://github.com/owncloud/core/pull/37246
-
-* Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
-
-   https://github.com/owncloud/core/pull/37256
 
 * Change - Write crash log in case of parse error in config.php: [#36570](https://github.com/owncloud/core/issues/36570)
 
@@ -336,14 +369,6 @@ Details
    https://github.com/owncloud/core/pull/37151
    https://github.com/sabre-io/dav/releases/tag/4.1.0
 
-* Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
-
-   Added index for addressbookid_name_value that allows to improve scan performance of search
-   addressbook query when medial search is off
-
-   https://github.com/owncloud/enterprise/issues/3625
-   https://github.com/owncloud/core/pull/37152
-
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 
    https://github.com/owncloud/core/pull/37155
@@ -417,17 +442,6 @@ Details
 * Change - Update nikic/php-parser (4.3.0 => 4.4.0): [#37237](https://github.com/owncloud/core/pull/37237)
 
    https://github.com/owncloud/core/pull/37237
-
-* Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
-
-   Jeremeamia/superclosure library is no longer maintained. Replace it with the recommended
-   opis/closure library.
-
-   https://github.com/owncloud/core/pull/37238
-
-* Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
-
-   https://github.com/owncloud/core/pull/37253
 
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
