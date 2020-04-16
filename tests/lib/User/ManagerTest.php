@@ -381,6 +381,26 @@ class ManagerTest extends TestCase {
 		$this->manager->createUser($uid, 'testuser');
 	}
 
+	public function usernameIsSpecialInvalidValueDataProvider() {
+		return [
+			['avatars'],
+			['meta'],
+			['files_external'],
+			['files_encryption'],
+		];
+	}
+
+	/**
+	 * @dataProvider usernameIsSpecialInvalidValueDataProvider
+	 * @param $uid string
+	 */
+	public function testUsernameIsSpecialInvalidValue($uid) {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage("The special username $uid is not allowed");
+		$this->manager = \OC::$server->getUserManager();
+		$this->manager->createUser($uid, 'testuser');
+	}
+
 	public function testPasswordIsNotJustWhiteSpace() {
 		$this->expectException(\Exception::class);
 		$this->expectExceptionMessage('A valid password must be provided');
