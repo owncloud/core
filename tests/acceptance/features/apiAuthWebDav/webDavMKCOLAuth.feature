@@ -10,6 +10,7 @@ Feature: get file info using MKCOL
     And user "user1" has been created with default attributes and without skeleton files
 
   @smokeTest
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MKCOL requests to webDav endpoints as normal user with wrong password
     When user "user0" requests these endpoints with "MKCOL" including body using password "invalid" then the status codes should be as listed
       | endpoint                                      | http-code | body          |
@@ -20,6 +21,7 @@ Feature: get file info using MKCOL
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
   @smokeTest
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MKCOL requests to webDav endpoints as normal user with no password
     When user "user0" requests these endpoints with "MKCOL" including body using password "" then the status codes should be as listed
       | endpoint                                      | http-code | body          |
@@ -65,6 +67,7 @@ Feature: get file info using MKCOL
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
   @smokeTest
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MKCOL requests to webDav endpoints without any authentication
     When a user requests these endpoints with "MKCOL" and no authentication then the status codes should be as listed
       | endpoint                                      | http-code | body          |

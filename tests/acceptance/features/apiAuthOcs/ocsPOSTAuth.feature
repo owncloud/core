@@ -7,6 +7,7 @@ Feature: auth
   @skipOnOcis
   @issue-ocis-reva-30
   @smokeTest
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send POST requests to OCS endpoints as normal user with wrong password
     When user "user0" requests these endpoints with "POST" including body using password "invalid" then the status codes should be as listed
       | endpoint                                                        | ocs-code | http-code | body          |
