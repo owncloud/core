@@ -96,7 +96,7 @@ class Watcher implements IWatcher {
 	 * Update the cache for changes to $path
 	 *
 	 * @param string $path
-	 * @param ICacheEntry $cachedData
+	 * @param ICacheEntry|bool $cachedData false if there is currently no cached data
 	 */
 	public function update($path, $cachedData) {
 		if ($this->storage->is_dir($path)) {
@@ -104,7 +104,7 @@ class Watcher implements IWatcher {
 		} else {
 			$this->scanner->scanFile($path);
 		}
-		if ($cachedData['mimetype'] === 'httpd/unix-directory') {
+		if ((isset($cachedData['mimetype'])) && ($cachedData['mimetype'] === 'httpd/unix-directory')) {
 			$this->cleanFolder($path);
 		}
 		if ($this->cache instanceof Cache) {
@@ -116,13 +116,18 @@ class Watcher implements IWatcher {
 	 * Check if the cache for $path needs to be updated
 	 *
 	 * @param string $path
-	 * @param ICacheEntry $cachedData
+	 * @param ICacheEntry|bool $cachedData false if there is currently no cached data
 	 * @return bool
 	 */
 	public function needsUpdate($path, $cachedData) {
 		if ($this->watchPolicy === self::CHECK_ALWAYS or ($this->watchPolicy === self::CHECK_ONCE and \array_search($path, $this->checkedPaths) === false)) {
 			$this->checkedPaths[] = $path;
-			return $this->storage->hasUpdated($path, $cachedData['storage_mtime']);
+			if (isset($cachedData['storage_mtime'])) {
+				$storageMtime = $cachedData['storage_mtime'];
+			} else {
+				$storageMtime = 0;
+			}
+			return $this->storage->hasUpdated($path, $storageMtime);
 		}
 		return false;
 	}
