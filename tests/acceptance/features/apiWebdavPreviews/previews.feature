@@ -35,7 +35,7 @@ Feature: previews of files downloaded through the webdav API
       | A     |
       | %2F   |
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-188
+  @skipOnOcV10 @issue-ocis-188
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: download previews with invalid width
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -68,7 +68,7 @@ Feature: previews of files downloaded through the webdav API
       | A      |
       | %2F    |
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-188
+  @skipOnOcV10 @issue-ocis-188
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: download previews with invalid height
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -248,7 +248,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "400"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-193
+  @skipOnOcV10 @issue-ocis-193
   #after fixing all issues delete this Scenario and use the one above
   Scenario: set maximum size of previews
     Given user "user0" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
