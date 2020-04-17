@@ -13,6 +13,7 @@ Summary
 * Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
 * Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
+* Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 * Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
 * Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
@@ -56,6 +57,15 @@ Details
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 
    https://github.com/owncloud/core/pull/37256
+
+* Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
+
+   Support for security fixes for PHP 7.1 ended in Dec 2019 ownCloud core no longer supports PHP
+   7.1. Ensure that you are using PHP 7.2 or later.
+
+   https://github.com/owncloud/core/issues/36510
+   https://github.com/owncloud/core/pull/37100
+   https://www.php.net/supported-versions.php
 
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 
