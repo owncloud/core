@@ -489,7 +489,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 						} else {
 							$content = $this->service->files->export($file->getId(), $this->getMimeType($path));
 						}
-						return RetryWrapper::wrap($content->getBody()->detach());
+						$contentBody = $content->getBody();
+						$contentBody->seek(0);
+						return RetryWrapper::wrap($contentBody->detach());
 					} catch (RequestException $e) {
 						if ($e->getResponse() !== null) {
 							if ($e->getResponse()->getStatusCode() === 404) {

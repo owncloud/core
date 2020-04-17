@@ -222,7 +222,12 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @return integer
 	 */
 	public function getSize() {
-		return $this->info->getSize();
+		$size = $this->info->getSize();
+		if ($size < 0) {
+			return null;
+		} else {
+			return $size;
+		}
 	}
 
 	/**
