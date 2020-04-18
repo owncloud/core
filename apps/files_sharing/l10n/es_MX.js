@@ -36,6 +36,7 @@ OC.L10N.register(
     "Please specify a valid user" : "Por favor especifique un usuario válido",
     "Group sharing is disabled by the administrator" : "La función para Compartir en Grupo ha sido deshabilitada por el administrador",
     "Please specify a valid group" : "Por favor especifique un grupo válido",
+    "Accept" : "Aceptar",
     "This share is password-protected" : "Este elemento compartido esta protegido por contraseña",
     "The password is wrong. Try again." : "La contraseña introducida es errónea. Inténtelo de nuevo.",
     "Password" : "Contraseña",
