@@ -139,7 +139,7 @@ Summary
 * Change - Update phpseclib/phpseclib (2.0.25 => 2.0.26): [#37155](https://github.com/owncloud/core/pull/37155)
 * Change - Update psr/log (1.1.2 => 1.1.3): [#37161](https://github.com/owncloud/core/pull/37161)
 * Change - Query on oc_properties is now always chunked: [#37172](https://github.com/owncloud/core/pull/37172)
-* Change - Proper error handling on preview endpoint: [#37172](https://github.com/owncloud/core/pull/37172)
+* Change - Proper error handling on preview endpoint: [#37173](https://github.com/owncloud/core/pull/37173)
 * Change - Update symfony/polyfill (1.14.1 => 1.15.0): [#37174](https://github.com/owncloud/core/pull/37174)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.1 => 1.0.2): [#37174](https://github.com/owncloud/core/pull/37174)
 * Change - Update Symfony components to 4.4.6: [#37176](https://github.com/owncloud/core/pull/37176)
@@ -396,14 +396,14 @@ Details
 
    https://github.com/owncloud/core/pull/37172
 
-* Change - Proper error handling on preview endpoint: [#37172](https://github.com/owncloud/core/pull/37172)
+* Change - Proper error handling on preview endpoint: [#37173](https://github.com/owncloud/core/pull/37173)
 
    Preview requests for folders now return 400/Bad Request and any false parameters of the
    preview generation now return 400/Bad Request as well.
 
    https://github.com/owncloud/core/issues/37164
    https://github.com/owncloud/core/issues/37165
-   https://github.com/owncloud/core/pull/37172
+   https://github.com/owncloud/core/pull/37173
 
 * Change - Update symfony/polyfill (1.14.1 => 1.15.0): [#37174](https://github.com/owncloud/core/pull/37174)
 
