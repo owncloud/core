@@ -60,8 +60,8 @@ class ExpireTrash extends TimedJob {
 	public function __construct(IConfig $config = null,
 								IUserManager $userManager = null,
 								TrashExpiryManager $trashExpiryManager = null) {
-		// Run once per 30 minutes
-		$this->setInterval(60 * 30);
+		// Run once per 10 minutes
+		$this->setInterval(60 * 10);
 
 		if ($trashExpiryManager === null || $userManager === null) {
 			$this->fixDIForJobs();
