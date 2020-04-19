@@ -25,6 +25,8 @@
     "Pending" : "Pendent",
     "Unable to determine date" : "No s'ha pogut determinar la data",
     "Invalid path" : "El camí no és vàlid",
+    "This operation is forbidden" : "Operació prohibida",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Directori no disponible. Comproveu els registres o poseu-vos en contacte amb l'administrador",
     "group" : "grup",
     "Remote share" : "Compartició remota",
     "Name" : "Nom",
@@ -74,6 +76,7 @@
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Els fitxers que esteu intentant pujar excedeixen la mida màxima de pujada del servidor",
     "No favorites" : "No hi ha favorits",
     "Files and folders you mark as favorite will show up here" : "Aquí apareixeran els arxius i carpetes que vostè marqui com favorits",
-    "Text file" : "Fitxer de text"
+    "Text file" : "Fitxer de text",
+    "New text file.txt" : "Nou fitxer de text .txt"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
