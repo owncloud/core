@@ -331,3 +331,21 @@ Feature: Share by public link
     And the user opens the share dialog for file "textfile.txt"
     And the user opens the public link share tab
     Then public link with last share token should be listed as share receiver via "simple-folder" on the webUI
+
+   Scenario: add to your owncloud button is present
+     Given user "user1" has created folder "/simple-folder"
+     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+     And user "user1" has logged in using the webUI
+     When the user creates a new public link for folder "simple-folder" using the webUI with
+       | permission | read |
+     And the public accesses the last created public link using the webUI
+     Then add to your owncloud button should be displayed on the webUI
+
+  Scenario: add to your owncloud button is not present
+    Given user "user1" has created folder "/simple-folder"
+    And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
+    And user "user1" has logged in using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI with
+      | permission | read |
+    And the public accesses the last created public link using the webUI
+    Then add to your owncloud button should not be displayed on the webUI

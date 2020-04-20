@@ -118,6 +118,21 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * check whether add to server button is present
+	 *
+	 * @return bool
+	 * @throws ElementNotFoundException
+	 */
+	public function isAddtoServerButtonPresent() {
+		$addToYourOcBtn = $this->findById($this->addToYourOcBtnId);
+		if ($addToYourOcBtn) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * adding public link share to particular server
 	 *
 	 * @param string $server
