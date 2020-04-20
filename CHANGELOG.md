@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
+* Bugfix - Ensure ETag changes if a change is detected in a folder: [#37218](https://github.com/owncloud/core/pull/37218)
 * Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
 * Bugfix - Remove unused files and config opt for settings help: [#37225](https://github.com/owncloud/core/pull/37225)
 * Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
@@ -28,6 +29,22 @@ Details
 
    https://github.com/owncloud/core/issues/34636
    https://github.com/owncloud/core/pull/37216
+
+* Bugfix - Ensure ETag changes if a change is detected in a folder: [#37218](https://github.com/owncloud/core/pull/37218)
+
+   Previously, if a change was detected in a folder, the ETag of the folder only changed if the
+   folder's mtime changed. The ETag propagation to the root folder was working fine. If the
+   folder's mtime didn't change, the ETag of the folder didn't change neither. This behaviour was
+   causing problems in the desktop client because it was looking for a change, but it lost track
+   once the client reached the modified folder because the ETag was the same. This was detected in
+   the GDrive storage integration. Other storage works without problems. Basically, the
+   desktop client wasn't able to download newly-added files in GDrive because it was unable to
+   find where those files were.
+
+   The changes fix the problem mentioned above, so the GDrive storage integration keeps the same
+   behaviour as other external storages
+
+   https://github.com/owncloud/core/pull/37218
 
 * Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
 
