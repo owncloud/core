@@ -21,19 +21,14 @@
 
 namespace OCA\FederatedFileSharing\Command;
 
-use OC\ServerNotAvailableException;
 use OC\User\NoUserException;
-use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\FederatedFileSharing\Poller;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
-use OCP\Files\Mount\IMountManager;
 use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IStorageFactory;
-use OCP\Files\StorageInvalidException;
-use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
 use OCP\IUserManager;
-use OCP\Lock\LockedException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -110,9 +105,15 @@ class PollIncomingShares extends Command {
 						);
 					}
 
-					/** @var Storage $storage */
 					$storage = $mount->getStorage();
-					$this->refreshStorageRoot($storage);
+					$updated = $this->pollStorage($storage) ? 'true' : 'false';
+					if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+						$entryId = $shareData['id'];
+						$remote = $shareData['remote'];
+						$output->writeln(
+							"External share with id \"$entryId\" from remote \"$remote\" polled. Updated: \"$updated\""
+						);
+					}
 				} catch (NoUserException $e) {
 					$entryId = $shareData['id'];
 					$remote = $shareData['remote'];
@@ -139,18 +140,16 @@ class PollIncomingShares extends Command {
 
 	/**
 	 * @param IStorage $storage
-	 *
-	 * @throws LockedException
-	 * @throws ServerNotAvailableException
-	 * @throws StorageInvalidException
-	 * @throws StorageNotAvailableException
+	 * @return bool
+	 * @throws \OCP\Files\StorageInvalidException
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws \OCP\Lock\LockedException
+	 * @throws \OC\HintException
+	 * @throws \OC\ServerNotAvailableException
 	 */
-	protected function refreshStorageRoot(IStorage $storage) {
-		$localMtime = $storage->filemtime('');
-		/** @var \OCA\Files_Sharing\External\Storage $storage */
-		if ($storage->hasUpdated('', $localMtime)) {
-			$storage->getScanner('')->scan('', false, 0);
-		}
+	private function pollStorage(IStorage $storage) {
+		$poller = new Poller($storage);
+		return $poller->poll();
 	}
 
 	/**
