@@ -273,9 +273,16 @@ class EncryptionTest extends Storage {
 			->method('getCache')
 			->with($path)
 			->willReturn($fileEntry);
+
+		if (isset($metaData['fileid'])) {
+			$fileId = $metaData['fileid'];
+		} else {
+			$fileId = null;
+		}
+
 		$fileEntry->expects($this->any())
 			->method('get')
-			->with($metaData['fileid']);
+			->with($fileId);
 
 		$this->instance->expects($this->any())->method('getCache')->willReturn($cache);
 		$this->instance->expects($this->any())->method('verifyUnencryptedSize')
@@ -295,7 +302,7 @@ class EncryptionTest extends Storage {
 	public function dataTestGetMetaData() {
 		return [
 			['/test.txt', ['size' => 42, 'encrypted' => 2, 'encryptedVersion' => 2, 'fileid' => 1], true, true, 12, ['size' => 12, 'encrypted' => true, 'encryptedVersion' => 2]],
-			['/test.txt', null, true, true, 12, null],
+			['/test.txt', [], true, true, 12, ['size' => 12]],
 			['/test.txt', ['size' => 42, 'encrypted' => 0, 'fileid' => 1], false, false, 12, ['size' => 42, 'encrypted' => false]],
 			['/test.txt', ['size' => 42, 'encrypted' => false, 'fileid' => 1], true, false, 12, ['size' => 12, 'encrypted' => true]]
 		];
