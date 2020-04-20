@@ -188,13 +188,17 @@ class Scanner extends BasicEmitter implements IScanner {
 						$fileId = $cacheData['fileid'];
 						$data['fileid'] = $fileId;
 						// only reuse data if the file hasn't explicitly changed
-						if (isset($data['storage_mtime'], $cacheData['storage_mtime'])   && $data['storage_mtime'] === $cacheData['storage_mtime']) {
+						if (isset($data['storage_mtime'], $cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
 							$data['mtime'] = $cacheData['mtime'];
 							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === -1)) {
-								$data['size'] = $cacheData['size'];
+								if (($data['mimetype'] !== 'httpd/unix-directory') || !($reuseExisting & self::REUSE_ONLY_FOR_FILES)) {
+									$data['size'] = $cacheData['size'];
+								}
 							}
 							if ($reuseExisting & self::REUSE_ETAG) {
-								$data['etag'] = $etag;
+								if (($data['mimetype'] !== 'httpd/unix-directory') || !($reuseExisting & self::REUSE_ONLY_FOR_FILES)) {
+									$data['etag'] = $etag;
+								}
 							}
 						}
 						// Only update metadata that has changed
