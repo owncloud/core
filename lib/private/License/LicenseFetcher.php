@@ -43,7 +43,11 @@ class LicenseFetcher {
 	public function getOwncloudLicense() {
 		$licenseKey = $this->config->getSystemValue('license-key', null);
 		if ($licenseKey === null) {
-			return null;
+			// check in the appconfig to see if it's there (for compatibility)
+			$licenseKey = $this->config->getAppValue('enterprise_key', 'license-key', null);
+			if ($licenseKey === null) {
+				return null;
+			}
 		}
 
 		return new BasicLicense($licenseKey);  // only BasicLicense is available at the moment
@@ -54,6 +58,11 @@ class LicenseFetcher {
 	 * @param string $licenseString the license string
 	 */
 	public function setOwncloudLicense(string $licenseString) {
-		$this->config->setSystemValue('license-key', $licenseString);
+		$isReadOnlyConfig = $this->config->getSystemValue('config_is_read_only', false);
+		if ($isReadOnlyConfig) {
+			$this->config->setAppValue('enterprise_key', 'license-key', $licenseString);
+		} else {
+			$this->config->setSystemValue('license-key', $licenseString);
+		}
 	}
 }

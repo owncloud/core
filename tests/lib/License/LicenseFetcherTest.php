@@ -44,6 +44,25 @@ class LicenseFetcherTest extends TestCase {
 			->with('license-key', null)
 			->willReturn('dummy_license-20202020-abd564-ffa4352');
 
+		$this->config->expects($this->never())
+			->method('getAppValue');
+
+		// can't assert anything more for now
+		$this->assertInstanceOf(ILicense::class, $this->licenseFetcher->getOwncloudLicense());
+	}
+
+	public function testGetOwncloudLicenseFromDB() {
+		// licenseFetcher creates a BasicLicense, so we need an acceptable license
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('license-key', null)
+			->willReturn(null);
+
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->with('enterprise_key', 'license-key', null)
+			->willReturn('dummy_license-20202020-abd564-ffa4352');
+
 		// can't assert anything more for now
 		$this->assertInstanceOf(ILicense::class, $this->licenseFetcher->getOwncloudLicense());
 	}
@@ -54,14 +73,46 @@ class LicenseFetcherTest extends TestCase {
 			->with('license-key', null)
 			->willReturn(null);
 
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->with('enterprise_key', 'license-key', null)
+			->willReturn(null);
+
 		$this->assertNull($this->licenseFetcher->getOwncloudLicense());
 	}
 
 	public function testSetOwncloudLicense() {
 		$dummyLicense = 'dummy_license_string';
+
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('config_is_read_only', false)
+			->willReturn(false);
+
 		$this->config->expects($this->once())
 			->method('setSystemValue')
 			->with('license-key', $dummyLicense);
+
+		$this->config->expects($this->never())
+			->method('setAppValue');
+
+		$this->assertNull($this->licenseFetcher->setOwncloudLicense($dummyLicense));
+	}
+
+	public function testSetOwncloudLicenseReadOnlyConfig() {
+		$dummyLicense = 'dummy_license_string';
+
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('config_is_read_only', false)
+			->willReturn(true);
+
+		$this->config->expects($this->never())
+			->method('setSystemValue');
+
+		$this->config->expects($this->once())
+			->method('setAppValue')
+			->with('enterprise_key', 'license-key', $dummyLicense);
 
 		$this->assertNull($this->licenseFetcher->setOwncloudLicense($dummyLicense));
 	}
