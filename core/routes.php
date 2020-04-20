@@ -62,11 +62,11 @@ $application->registerRoutes($this, [
 		['root' => '/cloud', 'name' => 'Cloud#getSigningKey', 'url' => '/user/signing-key', 'verb' => 'GET'],
 		['root' => '/cloud', 'name' => 'Roles#getRoles', 'url' => '/roles', 'verb' => 'GET'],
 		['root' => '/cloud', 'name' => 'UserSync#syncUser', 'url' => '/user-sync/{userId}', 'verb' => 'POST'],
-		// Config
+		// OCS Config
 		['root' => '', 'name' => 'OC\Core\Controller\Ocs#getConfig', 'url' => '/config', 'verb' => 'GET'],
-		// Person
+		// OCS Person
 		['root' => '', 'name' => 'OC\Core\Controller\Ocs#checkPerson', 'url' => '/person/check', 'verb' => 'POST'],
-		// Privatedata
+		// OCS Privatedata
 		['root' => '', 'name' => 'OC\Core\Controller\Ocs#getDefaultAttributes', 'url' => '/privatedata/getattribute', 'verb' => 'GET'],
 		['root' => '', 'name' => 'OC\Core\Controller\Ocs#getAppAttributes', 'url' => '/privatedata/getattribute/{app}', 'verb' => 'GET'],
 		['root' => '', 'name' => 'OC\Core\Controller\Ocs#getAttribute', 'url' => '/privatedata/getattribute/{app}/{key}', 'verb' => 'GET'],

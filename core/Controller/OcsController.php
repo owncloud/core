@@ -27,7 +27,14 @@ use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
 
+/**
+ * This class encapsulates all legacy OCS endpoints moved from lib/private/OCS
+ */
 class OcsController extends \OCP\AppFramework\OCSController {
+	public const SELECT_MULTIPLE_STMT = 'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? ';
+	public const SELECT_SINGLE_STMT = 'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? ';
+	public const DELETE_STMT = 'DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? ';
+
 	/** @var IDBConnection */
 	private $dbConnection;
 
@@ -85,6 +92,7 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		if ($login && $password) {
 			$user = $this->userManager->checkPassword($login, $password);
 			if ($user !== false) {
+				$xml = [];
 				$xml['person']['personid'] = $user->getUID();
 				return new Result($xml);
 			} else {
@@ -140,15 +148,11 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		$user = $this->userSession->getUser()->getUID();
 
 		if ($key === null) {
-			$q = $this->dbConnection->prepare(
-				'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? '
-			);
+			$q = $this->dbConnection->prepare(self::SELECT_MULTIPLE_STMT);
 			$result = $q->execute([$user, $app]);
 		} else {
 			$key = $this->escape($key);
-			$q = $this->dbConnection->prepare(
-				'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? '
-			);
+			$q = $this->dbConnection->prepare(self::SELECT_SINGLE_STMT);
 			$result = $q->execute([$user, $app, $key]);
 		}
 
@@ -220,9 +224,7 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		$user = $this->userSession->getUser()->getUID();
 
 		// delete in DB
-		$q = $this->dbConnection->prepare(
-			'DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? '
-		);
+		$q = $this->dbConnection->prepare(self::DELETE_STMT);
 		$q->execute([$user, $app, $key]);
 
 		return new Result(null, 100);
