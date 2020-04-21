@@ -341,6 +341,7 @@ Feature: Share by public link
      And the public accesses the last created public link using the webUI
      Then add to your owncloud button should be displayed on the webUI
 
+  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
   Scenario: add to your owncloud button is not present
     Given user "user1" has created folder "/simple-folder"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
