@@ -84,7 +84,7 @@ trait FrontendDefinitionTrait {
 	}
 
 	/**
-	 * @return string[]
+	 * @return string[]|array
 	 */
 	public function getCustomJs() {
 		return $this->customJs;
@@ -100,7 +100,7 @@ trait FrontendDefinitionTrait {
 	}
 
 	/**
-	 * @param string $custom
+	 * @param string|array $custom
 	 * @return self
 	 * @deprecated 9.1.0, use addCustomJs() instead
 	 */
