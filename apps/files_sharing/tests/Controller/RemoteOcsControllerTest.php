@@ -82,6 +82,13 @@ class RemoteOcsControllerTest extends TestCase {
 			->with($shareId)
 			->willReturn($acceptShareResult);
 
+		if ($processNotificationExpected === false) {
+			$this->externalManager->expects($this->once())
+				->method('getShare')
+				->with($shareId)
+				->willReturn(['mountpoint' => '/foo']);
+		}
+
 		$this->externalManager->expects($this->exactly((int) $processNotificationExpected))
 			->method('processNotification')
 			->with($shareId);
