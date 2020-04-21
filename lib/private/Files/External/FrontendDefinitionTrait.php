@@ -91,7 +91,7 @@ trait FrontendDefinitionTrait {
 	}
 
 	/**
-	 * @param string $custom
+	 * @param string|array $custom
 	 * @return self
 	 */
 	public function addCustomJs($custom) {
