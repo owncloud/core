@@ -153,7 +153,6 @@ class FilesVersionsContext implements Context {
 			$user, $password, $path, $properties, $folderDepth, "versions"
 		);
 		$responseXml = HttpRequestHelper::getResponseXml($response);
-		$responseXml->registerXPathNamespace('d', 'DAV:');
 		return $responseXml;
 	}
 
