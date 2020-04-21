@@ -13,6 +13,7 @@
     "Error generating key pair" : "生成密钥时出错",
     "All users. Type to select user or group." : "所有用户。输入以选择用户或组。",
     "(group)" : "(组)",
+    "Compatibility with Mac NFD encoding (slow)" : "与Mac NFD编码兼容 (缓慢)",
     "Unknown auth backend \"{b}\"" : "未知代验证后端 \"{b}\"",
     "Saved" : "已保存",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "禁用外部存储设备将卸载所有用户的外部存储设备，你确定吗？",
