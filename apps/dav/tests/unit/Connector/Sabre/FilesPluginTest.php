@@ -39,6 +39,7 @@ use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Server;
 use Sabre\DAV\Tree;
+use Sabre\DAV\Xml\Service;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
@@ -92,6 +93,7 @@ class FilesPluginTest extends TestCase {
 		$this->server = $this->getMockBuilder(Server::class)
 			->disableOriginalConstructor()
 			->getMock();
+		$this->server->xml = new Service();
 		$this->tree = $this->getMockBuilder(Tree::class)
 			->disableOriginalConstructor()
 			->getMock();
