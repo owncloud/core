@@ -29,6 +29,7 @@ use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
+use Sabre\DAV\Xml\Service as XMLService;
 use Test\TestCase;
 
 class MetaPluginTest extends TestCase {
@@ -75,6 +76,9 @@ class MetaPluginTest extends TestCase {
 
 		/** @var Server | MockObject $server */
 		$this->server = $this->createMock(Server::class);
+
+		$xmlService = $this->createMock(XMLService::class);
+		$this->server->xml = $xmlService;
 	}
 
 	public function testInit() {

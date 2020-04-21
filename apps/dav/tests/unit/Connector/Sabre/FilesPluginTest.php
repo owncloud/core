@@ -39,6 +39,7 @@ use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Server;
 use Sabre\DAV\Tree;
+use Sabre\DAV\Xml\Service as XMLService;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
@@ -111,8 +112,10 @@ class FilesPluginTest extends TestCase {
 				->disableOriginalConstructor()
 				->getMock();
 		$request = $this->createMock(RequestInterface::class);
+		$xmlService = $this->createMock(XMLService::class);
 		$this->server->httpResponse = $response;
 		$this->server->httpRequest = $request;
+		$this->server->xml = $xmlService;
 
 		$this->plugin->initialize($this->server);
 	}
