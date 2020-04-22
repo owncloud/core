@@ -434,6 +434,14 @@ class ViewControllerTest extends TestCase {
 			$this->expectException('OCP\Files\NotFoundException');
 			$this->viewController->showFile(123);
 		} else {
+			$this->viewController
+				->expects($this->once())
+				->method('getStorageInfo')
+				->will($this->returnValue([
+					'relative' => 123,
+					'owner' => 'MyName',
+					'ownerDisplayName' => 'MyDisplayName',
+				]));
 			$response = $this->viewController->index('MyDir', 'MyView', '123');
 			$this->assertInstanceOf('OCP\AppFramework\Http\TemplateResponse', $response);
 			$params = $response->getParams();

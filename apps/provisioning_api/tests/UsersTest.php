@@ -43,7 +43,7 @@ use OCP\IGroup;
 use OC\Authentication\TwoFactorAuth\Manager;
 
 class UsersTest extends OriginalTest {
-	
+
 	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 	/** @var \OC\Group\Manager | PHPUnit\Framework\MockObject\MockObject */
@@ -2203,6 +2203,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testAddSubAdminWithNotExistingTargetUser() {
+		$_POST['groupid'] = 'nevermind';
 		$this->userManager
 			->expects($this->once())
 			->method('get')

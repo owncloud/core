@@ -79,27 +79,51 @@ class ExternalShareControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreate() {
+		$shareId = 4;
 		$this->externalManager
 			->expects($this->once())
 			->method('acceptShare')
-			->with(4);
+			->with($shareId);
+		$this->externalManager->expects($this->once())
+			->method('getShare')
+			->with($shareId)
+			->willReturn(
+				[
+					'owner' => 'foo',
+					'user' => 'user',
+					'name' => 'name',
+					'remote' => 'abc'
+				]
+			);
 
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('remoteshare.accepted', function ($event) use (&$called) {
 			$called[] = 'remoteshare.accepted';
 			\array_push($called, $event);
 		});
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create(4));
+		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create($shareId));
 
 		$this->assertSame('remoteshare.accepted', $called[0]);
 		$this->assertInstanceOf(GenericEvent::class, $called[1]);
 	}
 
 	public function testDestroy() {
+		$shareId = 4;
 		$this->externalManager
 			->expects($this->once())
 			->method('declineShare')
-			->with(4);
+			->with($shareId);
+		$this->externalManager->expects($this->once())
+			->method('getShare')
+			->with($shareId)
+			->willReturn(
+				[
+					'owner' => 'foo',
+					'user' => 'user',
+					'name' => 'name',
+					'remote' => 'abc'
+				]
+			);
 
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('remoteshare.declined', function ($event) use (&$called) {
@@ -107,7 +131,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			\array_push($called, $event);
 		});
 
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy(4));
+		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy($shareId));
 
 		$this->assertSame('remoteshare.declined', $called[0]);
 		$this->assertInstanceOf(GenericEvent::class, $called[1]);
