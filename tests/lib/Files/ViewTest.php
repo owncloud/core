@@ -2064,7 +2064,7 @@ class ViewTest extends TestCase {
 
 		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
-			->setMethods([$operation])
+			->setMethods([$operation, 'getEtag'])
 			->getMock();
 
 		Filesystem::mount($storage, [], $this->user . '/');
@@ -2076,6 +2076,8 @@ class ViewTest extends TestCase {
 		\file_put_contents($realPath . '/files/test.txt', 'blah');
 
 		$this->shallThrow = false;
+		$storage->method('getETag')
+			->willReturn('abcd');
 		$storage
 			->method($operation)
 			->willReturnCallback(function ($path) {
