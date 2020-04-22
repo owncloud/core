@@ -25,8 +25,7 @@
 namespace OC\Core\Command\User;
 
 use OC\User\DeletedUser;
-use OCP\IURLGenerator;
-use OCP\IConfig;
+use OC\User\Manager;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,19 +36,13 @@ use Symfony\Component\Console\Input\InputArgument;
 class Delete extends Command {
 	/** @var IUserManager */
 	private $userManager;
-	/** @var IConfig */
-	private $config;
-	/** @var IURLGenerator */
-	private $urlGenerator;
 
 	/**
 	 * @param IUserManager $userManager
 	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct(IUserManager $userManager, IConfig $config, IURLGenerator $urlGenerator) {
+	public function __construct(IUserManager $userManager) {
 		$this->userManager = $userManager;
-		$this->config = $config;
-		$this->urlGenerator = $urlGenerator;
 		parent::__construct();
 	}
 
@@ -74,7 +67,7 @@ class Delete extends Command {
 		$user = $this->userManager->get($uid);
 		if ($user === null) {
 			if ($input->getOption('force')) {
-				$deletedUser = new DeletedUser($this->userManager, $this->config, $this->urlGenerator, $uid);
+				$deletedUser = $this->userManager->get($uid, true);
 				$deletedUser->delete();
 				$output->writeln("<info>User deleted.</info>");
 				return 0;

@@ -23,9 +23,7 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Delete;
-use OCP\Files\IRootFolder;
-use OCP\IURLGenerator;
-use OCP\IConfig;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Files\Node;
 use Symfony\Component\Console\Application;
@@ -36,10 +34,6 @@ class DeleteTest extends TestCase {
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject|IUserManager */
 	private $userManager;
-	/** @var \PHPUnit\Framework\MockObject\MockObject|IConfig */
-	private $config;
-	/** @var IURLGenerator */
-	private $urlGenerator;
 
 	/** @var CommandTester */
 	private $commandTester;
@@ -49,10 +43,8 @@ class DeleteTest extends TestCase {
 		$this->userManager = $this->getMockBuilder('OCP\IUserManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->createMock(IConfig::class);
-		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 
-		$command = new Delete($this->userManager, $this->config, $this->urlGenerator);
+		$command = new Delete($this->userManager);
 		$command->setApplication(new Application());
 		$this->commandTester = new CommandTester($command);
 	}
@@ -110,10 +102,13 @@ class DeleteTest extends TestCase {
 	}
 
 	public function testForceDeleteUser() {
-		$this->userManager->expects($this->once())
+		$this->userManager->expects($this->exactly(2))
 			->method('get')
-			->with('user')
-			->willReturn(null);
+			->withConsecutive(
+				['user', false],
+				['user', true]
+			)
+			->will($this->onConsecutiveCalls(null, $this->createMock(IUser::class)));
 
 		$this->commandTester->execute(['uid' => 'user', '--force' => true]);
 		$output = $this->commandTester->getDisplay();
