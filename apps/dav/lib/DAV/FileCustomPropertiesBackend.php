@@ -30,6 +30,7 @@ use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\Node;
 use OC\Cache\CappedMemoryCache;
 use Sabre\DAV\INode;
+use Sabre\DAV\Xml\Property\Complex;
 
 /**
  * Class FileCustomPropertiesBackend
@@ -186,6 +187,12 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 					);
 				}
 			} else {
+				// FIXME: PHP 7.4 handles object serialization differently so we store 'Object' here
+				// to keep old (wrong) behavior and fix Oracle failure
+				// see https://github.com/owncloud/core/issues/32670
+				if ($propertyValue instanceof Complex) {
+					$propertyValue = 'Object';
+				}
 				if (!$propertyExists) {
 					$this->connection->executeUpdate($insertStatement,
 						[
