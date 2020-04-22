@@ -24,6 +24,8 @@ namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Delete;
 use OCP\Files\IRootFolder;
+use OCP\IURLGenerator;
+use OCP\IConfig;
 use OCP\IUserManager;
 use OCP\Files\Node;
 use Symfony\Component\Console\Application;
@@ -33,9 +35,11 @@ use Test\TestCase;
 class DeleteTest extends TestCase {
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject|IUserManager */
-	protected $userManager;
-	/** @var \PHPUnit\Framework\MockObject\MockObject|IRootFolder */
-	protected $rootFolder;
+	private $userManager;
+	/** @var \PHPUnit\Framework\MockObject\MockObject|IConfig */
+	private $config;
+	/** @var IURLGenerator */
+	private $urlGenerator;
 
 	/** @var CommandTester */
 	private $commandTester;
@@ -45,9 +49,10 @@ class DeleteTest extends TestCase {
 		$this->userManager = $this->getMockBuilder('OCP\IUserManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->rootFolder = $this->createMock(IRootFolder::class);
+		$this->config = $this->createMock(IConfig::class);
+		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 
-		$command = new Delete($this->userManager, $this->rootFolder);
+		$command = new Delete($this->userManager, $this->config, $this->urlGenerator);
 		$command->setApplication(new Application());
 		$this->commandTester = new CommandTester($command);
 	}
@@ -110,14 +115,8 @@ class DeleteTest extends TestCase {
 			->with('user')
 			->willReturn(null);
 
-		$node = $this->createMock(Node::class);
-		$node->expects($this->once())
-			->method('delete');
-		$this->rootFolder
-			->method('get')
-			->willReturn($node);
 		$this->commandTester->execute(['uid' => 'user', '--force' => true]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertStringContainsString('User folder is deleted.', $output);
+		$this->assertStringContainsString('User deleted.', $output);
 	}
 }

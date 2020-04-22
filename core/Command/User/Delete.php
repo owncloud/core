@@ -24,8 +24,9 @@
 
 namespace OC\Core\Command\User;
 
-use OCP\Files\IRootFolder;
-use OCP\Files\NotFoundException;
+use OC\User\DeletedUser;
+use OCP\IURLGenerator;
+use OCP\IConfig;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,18 +36,20 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class Delete extends Command {
 	/** @var IUserManager */
-	protected $userManager;
-
-	/** @var IRootFolder */
-	protected $rootFolder;
+	private $userManager;
+	/** @var IConfig */
+	private $config;
+	/** @var IURLGenerator */
+	private $urlGenerator;
 
 	/**
 	 * @param IUserManager $userManager
 	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct(IUserManager $userManager, IRootFolder $rootFolder) {
+	public function __construct(IUserManager $userManager, IConfig $config, IURLGenerator $urlGenerator) {
 		$this->userManager = $userManager;
-		$this->rootFolder = $rootFolder;
+		$this->config = $config;
+		$this->urlGenerator = $urlGenerator;
 		parent::__construct();
 	}
 
@@ -63,22 +66,18 @@ class Delete extends Command {
 				'force',
 				'f',
 				InputOption::VALUE_NONE,
-				'Delete the home folder of the user if available.');
+				'Try to force the deletion of the user data even if the user is missing.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
 		$user = $this->userManager->get($uid);
 		if ($user === null) {
-			try {
-				if ($input->getOption('force')) {
-					$userFolderNode = $this->rootFolder->get("/{$uid}");
-					$userFolderNode->delete();
-					$output->writeln("<info>User folder is deleted.</info>");
-					return 0;
-				}
-			} catch (\Exception $e) {
-				// The folder does not exist and lets return
+			if ($input->getOption('force')) {
+				$deletedUser = new DeletedUser($this->userManager, $this->config, $this->urlGenerator, $uid);
+				$deletedUser->delete();
+				$output->writeln("<info>User deleted.</info>");
+				return 0;
 			}
 			$output->writeln("<error>User with uid '$uid' does not exist</error>");
 			return 1;
