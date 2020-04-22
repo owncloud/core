@@ -17,6 +17,7 @@ Summary
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
+* Change - Keep the mtime of files and folders inside the tarball: [#37222](https://github.com/owncloud/core/pull/37222)
 * Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
 * Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
 * Change - Update league/flysystem (1.0.66 => 1.0.67): [#37271](https://github.com/owncloud/core/pull/37271)
@@ -100,6 +101,17 @@ Details
 
    https://github.com/owncloud/enterprise/issues/3625
    https://github.com/owncloud/core/pull/37152
+
+* Change - Keep the mtime of files and folders inside the tarball: [#37222](https://github.com/owncloud/core/pull/37222)
+
+   Previously, when a folder or several files were downloaded, a tarball (.tar for mac, .zip for
+   windows and linux) was created. Such tarball had the mtime of the files and folders inside with
+   the time they were added into the tarball, not the one shown in ownCloud.
+
+   This change makes the mtime of the files and folders inside the tarball to be maintained as
+   they're shown in the ownCloud's FS.
+
+   https://github.com/owncloud/core/pull/37222
 
 * Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
 
