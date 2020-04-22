@@ -155,8 +155,11 @@ class OC_Files {
 					$file = $dir . '/' . $file;
 					if (\OC\Files\Filesystem::is_file($file)) {
 						$fileSize = \OC\Files\Filesystem::filesize($file);
+						$fileOpts = [
+							'timestamp' => \OC\Files\Filesystem::filemtime($file),
+						];
 						$fh = \OC\Files\Filesystem::fopen($file, 'r');
-						$streamer->addFileFromStream($fh, \basename($file), $fileSize);
+						$streamer->addFileFromStream($fh, \basename($file), $fileSize, $fileOpts);
 						\fclose($fh);
 					} elseif (\OC\Files\Filesystem::is_dir($file)) {
 						$streamer->addDirRecursive($file);
