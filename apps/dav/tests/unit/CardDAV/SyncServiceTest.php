@@ -118,6 +118,87 @@ class SyncServiceTest extends TestCase {
 		$ss->deleteUser($user);
 	}
 
+	public function testDeleteUserByUidIfUnique() {
+		$logger = $this->createMock('OCP\ILogger');
+		$userManager = $this->createMock('OCP\IUserManager');
+
+		$backend = $this->createMock(CardDavBackend::class);
+		$backend->method('getAddressBooksByUri')->willReturn([
+			'id'  => 40,
+			'uri' => 'contacts',
+			'principaluri' => 'principals/users/admin',
+			'{DAV:}displayname' => 'Contacts',
+			'{urn:ietf:params:xml:ns:carddav}addressbook-description' => null,
+			'{http://calendarserver.org/ns/}getctag' => 1,
+			'{http://sabredav.org/ns}sync-token' => 1,
+		]);
+		$backend->method('searchEx')->willReturn([
+			[
+				'uri' => 'backend:userId.vcf',
+				'carddata' => "BEGIN:VCARD\r\nVERSION:3.0\r\nPRODID:-//Sabre//Sabre VObject 3.4.8//EN\r\nUID:userId\r\nFN:userId\r\nN:userId;;;;\r\nEND:VCARD\r\n\r\n"
+			]
+		]);
+		$backend->expects($this->once())
+			->method('deleteCard')
+			->with(40, 'backend:userId.vcf');
+
+		$ss = new SyncService($backend, $userManager, $logger);
+		$this->assertTrue($ss->deleteUserByUidIfUnique('userId'));
+	}
+
+	public function testDeleteUserByUidIfUniqueNoData() {
+		$logger = $this->createMock('OCP\ILogger');
+		$userManager = $this->createMock('OCP\IUserManager');
+
+		$backend = $this->createMock(CardDavBackend::class);
+		$backend->method('getAddressBooksByUri')->willReturn([
+			'id'  => 40,
+			'uri' => 'contacts',
+			'principaluri' => 'principals/users/admin',
+			'{DAV:}displayname' => 'Contacts',
+			'{urn:ietf:params:xml:ns:carddav}addressbook-description' => null,
+			'{http://calendarserver.org/ns/}getctag' => 1,
+			'{http://sabredav.org/ns}sync-token' => 1,
+		]);
+		$backend->method('searchEx')->willReturn([]);
+		$backend->expects($this->never())
+			->method('deleteCard');
+
+		$ss = new SyncService($backend, $userManager, $logger);
+		$this->assertNull($ss->deleteUserByUidIfUnique('userId'));
+	}
+
+	public function testDeleteUserByUidIfUniqueMultiple() {
+		$logger = $this->createMock('OCP\ILogger');
+		$userManager = $this->createMock('OCP\IUserManager');
+
+		$backend = $this->createMock(CardDavBackend::class);
+		$backend->method('getAddressBooksByUri')->willReturn([
+			'id'  => 40,
+			'uri' => 'contacts',
+			'principaluri' => 'principals/users/admin',
+			'{DAV:}displayname' => 'Contacts',
+			'{urn:ietf:params:xml:ns:carddav}addressbook-description' => null,
+			'{http://calendarserver.org/ns/}getctag' => 1,
+			'{http://sabredav.org/ns}sync-token' => 1,
+		]);
+		$backend->method('searchEx')->willReturn([
+			[
+				'uri' => 'backend:userId.vcf',
+				'carddata' => "BEGIN:VCARD\r\nVERSION:3.0\r\nPRODID:-//Sabre//Sabre VObject 3.4.8//EN\r\nUID:userId\r\nFN:userId\r\nN:userId;;;;\r\nEND:VCARD\r\n\r\n"
+			],
+			[
+				'uri' => 'backend2:userId.vcf',
+				'carddata' => "BEGIN:VCARD\r\nVERSION:3.0\r\nPRODID:-//Sabre//Sabre VObject 3.4.8//EN\r\nUID:userId\r\nFN:userId\r\nN:userId;;;;\r\nEND:VCARD\r\n\r\n"
+			]
+		]);
+		$backend->expects($this->never())
+			->method('deleteCard');
+
+		$ss = new SyncService($backend, $userManager, $logger);
+		$this->assertFalse($ss->deleteUserByUidIfUnique('userId'));
+	}
+
 	/**
 	 * @param int $createCount
 	 * @param int $updateCount
