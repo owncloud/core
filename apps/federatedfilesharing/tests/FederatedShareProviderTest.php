@@ -52,6 +52,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class FederatedShareProviderTest extends \Test\TestCase {
+	protected const OCS_GENERIC_SUCCESS = ['ocs' => ['meta' => [ 'status' => 'success']]];
 
 	/** @var IDBConnection */
 	protected $connection;
@@ -160,7 +161,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$this->equalTo('token'),
 				$this->equalTo('myFile'),
 				$this->anything()
-			)->willReturn(true);
+			)->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -235,7 +236,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$this->equalTo('token'),
 				$this->equalTo('myFile'),
 				$this->anything()
-			)->willReturn(true);
+			)->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$folderOwner = $this->createMock(IUser::class);
 		$folderOwner->method('getUID')->willReturn('folderOwner');
@@ -462,7 +463,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$this->equalTo('token'),
 				$this->equalTo('myFile'),
 				$this->anything()
-			)->willReturn(true);
+			)->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -528,7 +529,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$this->equalTo('token'),
 				$this->equalTo('myFile'),
 				$this->anything()
-			)->willReturn(true);
+			)->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		if ($owner === $sharedBy) {
 			$this->provider->expects($this->never())->method('sendPermissionUpdate');
@@ -568,7 +569,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')
-			->willReturn(true);
+			->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -608,7 +609,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')
-			->willReturn(true);
+			->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -660,7 +661,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')
-			->willReturn(true);
+			->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -697,7 +698,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')
-			->willReturn(true);
+			->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -737,7 +738,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')
-			->willReturn(true);
+			->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
@@ -780,7 +781,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')
-			->willReturn(true);
+			->willReturn(self::OCS_GENERIC_SUCCESS);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 

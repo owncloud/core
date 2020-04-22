@@ -146,7 +146,7 @@ class FederatedShareProvider implements IShareProvider {
 		$itemType = $share->getNodeType();
 		$permissions = $share->getPermissions();
 		$sharedBy = $share->getSharedBy();
-		
+
 		/*
 		 * Check if file is not already shared with the remote user
 		 */
@@ -253,7 +253,7 @@ class FederatedShareProvider implements IShareProvider {
 			 * if there is one coming from the remote server, otherwise use a generic one.
 			 */
 			if (!$status || $status['ocs']['meta']['status'] === 'failure') {
-				$msg = $status['ocs']['meta']['message'];
+				$msg = $status['ocs']['meta']['message'] ?? false;
 				if (!$msg) {
 					$message_t = $this->l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
 						[$share->getNode()->getName(), $share->getSharedWith()]);
@@ -631,10 +631,10 @@ class FederatedShareProvider implements IShareProvider {
 			}
 			$cursor->closeCursor();
 		}
-		
+
 		return $shares;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */
@@ -701,7 +701,7 @@ class FederatedShareProvider implements IShareProvider {
 			->from($this->shareTable)
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
-		
+
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
 		$cursor->closeCursor();
