@@ -2658,10 +2658,10 @@ class Share extends Constants {
 			$protocol . $remoteDomain . $endpoint . $urlSuffix . '?format=' . self::RESPONSE_FORMAT,
 			$fields);
 
-		if ($result['success'] === true) {
+		if (isset($result['success']) && $result['success'] === true) {
 			// Return if https worked
 			return $result;
-		} elseif ($result['success'] === false && $allowHttpFallback) {
+		} elseif (isset($result['success']) && $result['success'] === false && $allowHttpFallback) {
 			// If https failed and we can try http - try that
 			$protocol = 'http://';
 			$result = \OC::$server->getHTTPHelper()->post(
@@ -2727,6 +2727,9 @@ class Share extends Constants {
 		$fields = ['token' => $token, 'format' => 'json'];
 		$url = self::removeProtocolFromUrl($url);
 		$result = self::tryHttpPostToShareEndpoint($url, '/'.$id.'/unshare', $fields);
+		if (!isset($result['result'])) {
+			return false;
+		}
 		$status = \json_decode($result['result'], true);
 
 		return ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200));
