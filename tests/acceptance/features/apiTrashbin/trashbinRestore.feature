@@ -324,3 +324,19 @@ Feature: Restore deleted files/folders
       | new      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
       | old      | strängé नेपाली file     |
       | new      | strängé नेपाली file     |
+
+  Scenario Outline: A file deleted from a multi level sub-folder can be restored to the original folder
+    Given using <dav-path> DAV path
+    And user "user0" has created folder "/new-folder"
+    And user "user0" has created folder "/new-folder/folder1/"
+    And user "user0" has created folder "/new-folder/folder1/folder2/"
+    And user "user0" has moved file "/textfile0.txt" to "/new-folder/folder1/folder2/new-file.txt"
+    And user "user0" has deleted file "/new-folder/folder1/folder2/new-file.txt"
+    When user "user0" restores the file with original path "/new-folder/folder1/folder2/new-file.txt" using the trashbin API
+    Then the HTTP status code should be "201"
+    And as "user0" the file with original path "/new-folder/folder1/folder2/new-file.txt" should not exist in the trashbin
+    And as "user0" file "/new-folder/folder1/folder2/new-file.txt" should exist
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |

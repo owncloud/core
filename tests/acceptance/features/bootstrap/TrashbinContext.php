@@ -352,7 +352,7 @@ class TrashbinContext implements Context {
 	 */
 	private function convertTrashbinHref($href) {
 		$trashItemHRef = \trim($href, '/');
-		$trashItemHRef = strstr($trashItemHRef, '/trash-bin');
+		$trashItemHRef = \strstr($trashItemHRef, '/trash-bin');
 		$parts = \explode('/', $trashItemHRef);
 		return '/' . \join('/', $parts);
 	}
