@@ -150,7 +150,7 @@ class TrashbinContext implements Context {
 			$asUser,
 			$password,
 			"/trash-bin/$user/$path",
-			1,
+			"infinity",
 			[
 				'oc:trashbin-original-filename',
 				'oc:trashbin-original-location',
@@ -352,8 +352,9 @@ class TrashbinContext implements Context {
 	 */
 	private function convertTrashbinHref($href) {
 		$trashItemHRef = \trim($href, '/');
+		$trashItemHRef = strstr($trashItemHRef, '/trash-bin');
 		$parts = \explode('/', $trashItemHRef);
-		return '/' . \join('/', \array_slice($parts, -3));
+		return '/' . \join('/', $parts);
 	}
 
 	/**
