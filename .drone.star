@@ -78,8 +78,16 @@ config = {
 			'suites': [
 			    'apiVersions',
 			],
+			'filterTags': '~@skipOnOracle',
 		},
+		'apiOnOracle': {
+		    'suites': [
+            	 'apiVersions',
+            ],
+            'filterTags': '@skip&&@issue-37026',
+            'databases': ['oracle'],
 	}
+}
 }
 
 def main(ctx):
@@ -1126,7 +1134,7 @@ def acceptance():
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.2'],
-		'databases': ['oracle'],
+		'databases': ['mariadb:10.2'],
 		'federatedServerNeeded': False,
 		'filterTags': '',
 		'logLevel': '2',
