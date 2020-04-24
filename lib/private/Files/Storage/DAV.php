@@ -807,16 +807,18 @@ class DAV extends Common {
 				return false;
 			}
 			if (isset($response['{DAV:}getetag'])) {
-				$cachedData = $this->getCache()->get($path);
 				$etag = \trim($response['{DAV:}getetag'], '"');
-				if (!empty($etag) && $cachedData['etag'] !== $etag) {
+				$cachedData = $this->getCache()->get($path);
+				$cachedEtag = $cachedData['etag'] ?? null;
+				if (!empty($etag) && $cachedEtag !== $etag) {
 					return true;
 				} elseif (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
 					$sharePermissions = (int)$response['{http://open-collaboration-services.org/ns}share-permissions'];
 					return $sharePermissions !== $cachedData['permissions'];
 				} elseif (isset($response['{http://owncloud.org/ns}permissions'])) {
 					$permissions = $this->parsePermissions($response['{http://owncloud.org/ns}permissions']);
-					return $permissions !== $cachedData['permissions'];
+					$cachedPermissions = $cachedData['permissions'] ?? null;
+					return $permissions !== $cachedPermissions;
 				} else {
 					return false;
 				}
