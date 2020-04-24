@@ -16,3 +16,20 @@ Feature: Hide file/folders
     Then folder ".xyz" should not be listed on the webUI
     When the user enables the setting to view hidden folders on the webUI
     Then folder ".xyz" should be listed on the webUI
+
+  Scenario: create a hidden file
+    Given user "user1" has uploaded file with content "some content" to "/.lorem.txt"
+    When the user browses to the files page
+    Then file ".lorem.txt" should not be listed on the webUI
+    When the user enables the setting to view hidden files on the webUI
+    Then folder ".lorem.txt" should be listed on the webUI
+
+  Scenario: Delete and restore a hidden file from trashbin
+    Given user "user1" has uploaded file with content "some content" to "/.lorem.txt"
+    When the user browses to the files page
+    And the user enables the setting to view hidden files on the webUI
+    And the user deletes file ".lorem.txt" using the webUI
+    Then file ".lorem.txt" should be listed in the trashbin on the webUI
+    When the user restores file ".lorem.txt" from the trashbin using the webUI
+    And the user browses to the files page
+    Then file ".lorem.txt" should be listed on the webUI
