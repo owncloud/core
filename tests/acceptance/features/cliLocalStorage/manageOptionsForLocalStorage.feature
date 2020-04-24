@@ -12,17 +12,17 @@ Feature: manage options for a mount using occ command
 
   Scenario: add options for a local storage mount
     When the administrator adds an option with key "enable_sharing" and value "true" for the local storage mount "local_storage2"
-    And the administrator adds an option with key "read-only" and value "1" for the local storage mount "local_storage2"
+    And the administrator adds an option with key "read_only" and value "1" for the local storage mount "local_storage2"
     And the administrator adds an option with key "enable_sharing" and value "false" for the local storage mount "local_storage3"
-    And the administrator adds an option with key "read-only" and value "1" for the local storage mount "local_storage3"
+    And the administrator adds an option with key "read_only" and value "1" for the local storage mount "local_storage3"
     And the administrator lists the local storage using the occ command
     Then the following should be included in the options of local storage "/local_storage2":
        | options              |
        | enable_sharing: true |
-       | read-only: 1         |
+       | read_only: 1         |
     And the following should be included in the options of local storage "/local_storage3":
        | options               |
-       | read-only: 1          |
+       | read_only: 1          |
     But the following should not be included in the options of local storage "/local_storage3":
       | options               |
       | enable_sharing: false |
