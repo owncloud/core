@@ -588,9 +588,9 @@ class Share20OcsControllerTest extends TestCase {
 		$group->method('getGID')->willReturn('groupId');
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['userId', $user],
-			['initiatorId', $initiator],
-			['ownerId', $owner],
+			['userId', false, $user],
+			['initiatorId', false, $initiator],
+			['ownerId', false, $owner],
 		]));
 		$this->groupManager->method('get')->will($this->returnValueMap([
 			['group', $group],
@@ -2345,9 +2345,9 @@ class Share20OcsControllerTest extends TestCase {
 				'mail_send' => 0,
 				'mimetype' => 'myMimeType',
 			], $share, [
-				['owner', $owner],
-				['initiator', $initiator],
-				['recipient', $recipient],
+				['owner', false, $owner],
+				['initiator', false, $initiator],
+				['recipient', false, $recipient],
 			], false
 		];
 
@@ -2726,9 +2726,9 @@ class Share20OcsControllerTest extends TestCase {
 		$recipient->method('getEMailAddress')->willReturn('email@example.com');
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['initiator', $initiator],
-			['recipient', $recipient],
-			['owner', $owner],
+			['initiator', false, $initiator],
+			['recipient', false, $recipient],
+			['owner', false, $owner],
 		]));
 
 		$ocs = new Share20OcsController(

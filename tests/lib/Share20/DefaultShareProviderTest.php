@@ -1027,9 +1027,9 @@ class DefaultShareProviderTest extends TestCase {
 		$initiator->method('getUID')->willReturn('sharedBy');
 
 		$this->userManager->method('get')->willReturnMap([
-			['sharedWith', $user],
-			['shareOwner', $owner],
-			['sharedBy', $initiator],
+			['sharedWith', false, $user],
+			['shareOwner', false, $owner],
+			['sharedBy', false, $initiator],
 		]);
 		$this->groupManager->method('getUserGroups')->with($user)->willReturn($groups);
 		$this->groupManager->method('get')->with('sharedWith')->willReturn($group);
@@ -1121,9 +1121,9 @@ class DefaultShareProviderTest extends TestCase {
 		$initiator->method('getUID')->willReturn('sharedBy');
 
 		$this->userManager->method('get')->willReturnMap([
-			['user', $user],
-			['shareOwner', $owner],
-			['sharedBy', $initiator],
+			['user', false, $user],
+			['shareOwner', false, $owner],
+			['sharedBy', false, $initiator],
 		]);
 		$this->groupManager->method('getUserGroups')->with($user)->willReturn($groups);
 		$this->groupManager->method('get')->with('sharedWith')->willReturn($group);
@@ -1203,8 +1203,8 @@ class DefaultShareProviderTest extends TestCase {
 		$user1->method('getUID')->willReturn('user1');
 
 		$this->userManager->method('get')->willReturnMap([
-			['user0', $user0],
-			['user1', $user1],
+			['user0', false, $user0],
+			['user1', false, $user1],
 		]);
 
 		$group0 = $this->createMock(IGroup::class);
@@ -1243,8 +1243,8 @@ class DefaultShareProviderTest extends TestCase {
 		$user1->method('getUID')->willReturn('user1');
 
 		$this->userManager->method('get')->willReturnMap([
-			['user0', $user0],
-			['user1', $user1],
+			['user0', false, $user0],
+			['user1', false, $user1],
 		]);
 
 		for ($i = 0; $i < 105; $i++) {
@@ -1295,8 +1295,8 @@ class DefaultShareProviderTest extends TestCase {
 		$user1->method('getUID')->willReturn('user1');
 
 		$this->userManager->method('get')->willReturnMap([
-			['user0', $user0],
-			['user1', $user1],
+			['user0', false, $user0],
+			['user1', false, $user1],
 		]);
 
 		$group0 = $this->createMock(IGroup::class);
@@ -1408,9 +1408,9 @@ class DefaultShareProviderTest extends TestCase {
 
 		// Setup mocking
 		$this->userManager->method('get')->willReturnMap([
-			['user1', $user1],
-			['user2', $user2],
-			['meow', $userMeow],
+			['user1', false, $user1],
+			['user2', false, $user2],
+			['meow', false, $userMeow],
 		]);
 
 		$this->rootFolder->method('getUserFolder')->with('user2')->will($this->returnSelf());
@@ -1491,8 +1491,8 @@ class DefaultShareProviderTest extends TestCase {
 
 		// Setup mocking
 		$this->userManager->method('get')->willReturnMap([
-			['user1', $user1],
-			['user2', $user2],
+			['user1', false, $user1],
+			['user2', false, $user2],
 		]);
 
 		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());
@@ -1589,9 +1589,9 @@ class DefaultShareProviderTest extends TestCase {
 		$initiator->method('getUID')->willReturn('sharedBy');
 
 		$this->userManager->method('get')->willReturnMap([
-			['sharedWith', $user],
-			['shareOwner', $owner],
-			['sharedBy', $initiator],
+			['sharedWith', false, $user],
+			['shareOwner', false, $owner],
+			['sharedBy', false, $initiator],
 		]);
 		$this->groupManager->method('getUserGroups')->with($user)->willReturn($groups);
 		$this->groupManager->method('get')->with('sharedWith')->willReturn($group);
@@ -1905,8 +1905,8 @@ class DefaultShareProviderTest extends TestCase {
 		$user2 = $this->createMock(IUser::class);
 		$user2->method('getUID')->willReturn('user2');
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['user1', $user1],
-			['user2', $user2],
+			['user1', false, $user1],
+			['user2', false, $user2],
 		]));
 
 		$group = $this->createMock(IGroup::class);
@@ -1979,8 +1979,8 @@ class DefaultShareProviderTest extends TestCase {
 		$user2 = $this->createMock(IUser::class);
 		$user2->method('getUID')->willReturn('user2');
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['user1', $user1],
-			['user2', $user2],
+			['user1', false, $user1],
+			['user2', false, $user2],
 		]));
 
 		$group = $this->createMock(IGroup::class);
@@ -2041,8 +2041,8 @@ class DefaultShareProviderTest extends TestCase {
 		$user2 = $this->createMock(IUser::class);
 		$user2->method('getUID')->willReturn('user2');
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['user1', $user1],
-			['user2', $user2],
+			['user1', false, $user1],
+			['user2', false, $user2],
 		]));
 
 		$group = $this->createMock(IGroup::class);
@@ -2619,8 +2619,8 @@ class DefaultShareProviderTest extends TestCase {
 		$this->groupManager->method('get')->with('group0')->willReturn($group0);
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['user0', $user0],
-			['user1', $user1],
+			['user0', false, $user0],
+			['user1', false, $user1],
 		]));
 
 		$folder = $this->createMock(Folder::class);
@@ -2678,8 +2678,8 @@ class DefaultShareProviderTest extends TestCase {
 		$this->groupManager->method('get')->with('group0')->willReturn($group0);
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['user0', $user0],
-			['user1', $user1],
+			['user0', false, $user0],
+			['user1', false, $user1],
 		]));
 
 		$folder = $this->createMock(Folder::class);
