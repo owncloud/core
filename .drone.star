@@ -133,7 +133,7 @@ config = {
 				'apiFederation',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.2.1']
+			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
 		},
 		'cli': {
 			'suites': [
@@ -156,7 +156,7 @@ config = {
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.2.1']
+			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
 		},
 		'webUI': {
 			'suites': {
@@ -209,7 +209,7 @@ config = {
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.2.1']
+			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
 		},
 		'webUIFirefox': {
 			'suites': {
