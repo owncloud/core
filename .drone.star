@@ -31,6 +31,7 @@ config = {
 		'reducedDatabases' : {
 			'phpVersions': [
 				'7.3',
+				'7.4',
 			],
 			'databases': [
 				'sqlite',
@@ -41,6 +42,7 @@ config = {
 		'external-samba-windows' : {
 			'phpVersions': [
 				'7.2',
+				'7.4',
 			],
 			'databases': [
 				'sqlite',
@@ -60,6 +62,7 @@ config = {
 		'external-other' : {
 			'phpVersions': [
 				'7.2',
+				'7.4',
 			],
 			'databases': [
 				'sqlite',
@@ -422,7 +425,7 @@ def codestyle():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.3'],
+		'phpVersions': ['7.4'],
 	}
 
 	if 'defaults' in config:
@@ -597,7 +600,7 @@ def phpstan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2'],
+		'phpVersions': ['7.4'],
 		'logLevel': '2',
 	}
 
@@ -674,7 +677,7 @@ def phan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3'],
+		'phpVersions': ['7.2', '7.3', '7.4'],
 		'logLevel': '2',
 	}
 
@@ -751,7 +754,7 @@ def litmus():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2'],
+		'phpVersions': ['7.2', '7.3', '7.4'],
 		'logLevel': '2'
 	}
 
@@ -916,7 +919,7 @@ def dav():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2'],
+		'phpVersions': ['7.2', '7.3', '7.4'],
 		'logLevel': '2'
 	}
 
@@ -1110,7 +1113,7 @@ def phptests(testType):
 	errorFound = False
 
 	default = {
-		'phpVersions': ['7.2', '7.3'],
+		'phpVersions': ['7.2', '7.3', '7.4'],
 		'databases': [
 			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mariadb:10.4', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
 		],
@@ -1294,8 +1297,9 @@ def acceptance():
 	default = {
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
-		'phpVersions': ['7.2'],
+		'phpVersions': ['7.4'],
 		'databases': ['mariadb:10.2'],
+		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'filterTags': '',
 		'logLevel': '2',
@@ -1454,7 +1458,7 @@ def acceptance():
 										yarnInstall(phpVersion) +
 										installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
-											installFederated(federatedServerVersion, phpVersion, params['logLevel'], protocol, db, federationDbSuffix) +
+											installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
 										) +
 										installExtraApps(phpVersion, extraAppsDict) +
@@ -1488,7 +1492,7 @@ def acceptance():
 										params['extraServices'] +
 										owncloudService(phpVersion, 'server', '/drone/src', params['useHttps']) +
 										((
-											owncloudService(phpVersion, 'federated', '/drone/federated', params['useHttps']) +
+											owncloudService(params['federatedPhpVersion'], 'federated', '/drone/federated', params['useHttps']) +
 											databaseServiceForFederation(db, federationDbSuffix)
 										) if params['federatedServerNeeded'] else []),
 									'depends_on': [],
