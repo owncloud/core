@@ -91,7 +91,12 @@ class WebDavClientServiceTest extends \Test\TestCase {
 
 		$this->assertInstanceOf(Client::class, $client);
 
-		$curlSettings = $this->readAttribute($client, 'curlSettings');
+		$clientInternals = (array) $client;
+		// protected object properties like curlSettings have "\0*\0" prepended
+		$expectedKey = "\0*\0curlSettings";
+		$this->assertArrayHasKey($expectedKey, $clientInternals);
+		$curlSettings = $clientInternals[$expectedKey];
+		$this->assertArrayHasKey(CURLOPT_PROXY, $curlSettings);
 		$this->assertEquals('proxyhost', $curlSettings[CURLOPT_PROXY]);
 	}
 
@@ -124,7 +129,12 @@ class WebDavClientServiceTest extends \Test\TestCase {
 
 		$this->assertInstanceOf(Client::class, $client);
 
-		$curlSettings = $this->readAttribute($client, 'curlSettings');
+		$clientInternals = (array) $client;
+		// protected object properties like curlSettings have "\0*\0" prepended
+		$expectedKey = "\0*\0curlSettings";
+		$this->assertArrayHasKey($expectedKey, $clientInternals);
+		$curlSettings = $clientInternals[$expectedKey];
+		$this->assertArrayHasKey(CURLOPT_PROXY, $curlSettings);
 		$this->assertEquals('user:password@proxyhost', $curlSettings[CURLOPT_PROXY]);
 	}
 
