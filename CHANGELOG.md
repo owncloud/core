@@ -15,6 +15,7 @@ Summary
 * Bugfix - Hide add to your OC at the public page when it's not allowed: [#37232](https://github.com/owncloud/core/pull/37232)
 * Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
+* Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 * Change - Keep the mtime of files and folders inside the tarball: [#37222](https://github.com/owncloud/core/pull/37222)
@@ -84,6 +85,14 @@ Details
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 
    https://github.com/owncloud/core/pull/37256
+
+* Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
+
+   PHP 7.4 was released in Dec 2019. ownCloud server now supports PHP 7.4.
+
+   https://github.com/owncloud/core/issues/36509
+   https://github.com/owncloud/core/pull/37302
+   https://www.php.net/supported-versions.php
 
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
 
