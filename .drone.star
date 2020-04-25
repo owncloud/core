@@ -26,22 +26,14 @@ config = {
 		'allDatabases' : {
 			'phpVersions': [
 				'7.2',
-			]
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
 				'7.3',
 				'7.4',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			],
-			'coverage': False
+			]
 		},
 		'external-samba-windows' : {
 			'phpVersions': [
 				'7.2',
+				'7.3',
 				'7.4',
 			],
 			'databases': [
@@ -62,6 +54,7 @@ config = {
 		'external-other' : {
 			'phpVersions': [
 				'7.2',
+				'7.3',
 				'7.4',
 			],
 			'databases': [
