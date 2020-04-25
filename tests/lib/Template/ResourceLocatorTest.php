@@ -57,11 +57,22 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 	public function testConstructor() {
 		$locator = $this->getResourceLocator('theme', ['core'=>'map'], ['foo'=>'bar']);
-		$this->assertAttributeInstanceOf('OC\Theme\Theme', 'theme', $locator);
-		$this->assertAttributeEquals('core', 'serverroot', $locator);
-		$this->assertAttributeEquals(['core'=>'map'], 'mapping', $locator);
-		$this->assertAttributeEquals('map', 'webroot', $locator);
-		$this->assertAttributeEquals([], 'resources', $locator);
+		$locatorInternals = (array) $locator;
+		$expectedKey = "\0*\0theme";
+		$this->assertArrayHasKey($expectedKey, $locatorInternals);
+		$this->assertInstanceOf('OC\Theme\Theme', $locatorInternals[$expectedKey]);
+		$expectedKey = "\0*\0serverroot";
+		$this->assertArrayHasKey($expectedKey, $locatorInternals);
+		$this->assertEquals('core', $locatorInternals[$expectedKey]);
+		$expectedKey = "\0*\0mapping";
+		$this->assertArrayHasKey($expectedKey, $locatorInternals);
+		$this->assertEquals(['core'=>'map'], $locatorInternals[$expectedKey]);
+		$expectedKey = "\0*\0webroot";
+		$this->assertArrayHasKey($expectedKey, $locatorInternals);
+		$this->assertEquals('map', $locatorInternals[$expectedKey]);
+		$expectedKey = "\0*\0resources";
+		$this->assertArrayHasKey($expectedKey, $locatorInternals);
+		$this->assertEquals([], $locatorInternals[$expectedKey]);
 	}
 
 	public function testFind() {

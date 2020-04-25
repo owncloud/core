@@ -134,7 +134,11 @@ class SystemConfigTest extends TestCase {
 		$systemConfig->setValue('dbtype', 'otherDb');
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['dbtype'] = 'otherDb';
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$configInternals = (array) $this->config;
+		$expectedKey = "\0*\0cache";
+		$this->assertArrayHasKey($expectedKey, $configInternals);
+		$cache = $configInternals[$expectedKey];
+		$this->assertEquals($expectedConfig, $cache);
 	}
 
 	public function testSetValues() {
@@ -148,7 +152,11 @@ class SystemConfigTest extends TestCase {
 			'not_exists'	=> null,
 		]);
 
-		$this->assertAttributeEquals($this->initialConfig, 'cache', $this->config);
+		$configInternals = (array) $this->config;
+		$expectedKey = "\0*\0cache";
+		$this->assertArrayHasKey($expectedKey, $configInternals);
+		$cache = $configInternals[$expectedKey];
+		$this->assertEquals($this->initialConfig, $cache);
 		$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
 
 		$systemConfig->setValues([
@@ -158,7 +166,11 @@ class SystemConfigTest extends TestCase {
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['dbtype'] = 'otherDb';
 		unset($expectedConfig['license-key']);
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$configInternals = (array) $this->config;
+		$expectedKey = "\0*\0cache";
+		$this->assertArrayHasKey($expectedKey, $configInternals);
+		$cache = $configInternals[$expectedKey];
+		$this->assertEquals($expectedConfig, $cache);
 	}
 
 	public function dataGetValue() {
@@ -294,7 +306,11 @@ class SystemConfigTest extends TestCase {
 		$systemConfig->deleteValue('dbtype');
 		$expectedConfig = $this->initialConfig;
 		unset($expectedConfig['dbtype']);
-		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$configInternals = (array) $this->config;
+		$expectedKey = "\0*\0cache";
+		$this->assertArrayHasKey($expectedKey, $configInternals);
+		$cache = $configInternals[$expectedKey];
+		$this->assertEquals($expectedConfig, $cache);
 	}
 
 	public function testIsReadOnly() {

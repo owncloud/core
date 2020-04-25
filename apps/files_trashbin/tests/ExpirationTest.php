@@ -138,9 +138,16 @@ class ExpirationTest extends \Test\TestCase {
 		);
 
 		$expiration = new Expiration($mockedConfig, $mockedTimeFactory);
-		$this->assertAttributeEquals($expectedMinAge, 'minAge', $expiration);
-		$this->assertAttributeEquals($expectedMaxAge, 'maxAge', $expiration);
-		$this->assertAttributeEquals($expectedCanPurgeToSaveSpace, 'canPurgeToSaveSpace', $expiration);
+		$expirationInternals = (array) $expiration;
+		$expectedKey = "\0OCA\\Files_Trashbin\\Expiration\0minAge";
+		$this->assertArrayHasKey($expectedKey, $expirationInternals);
+		$this->assertEquals($expectedMinAge, $expirationInternals[$expectedKey]);
+		$expectedKey = "\0OCA\\Files_Trashbin\\Expiration\0maxAge";
+		$this->assertArrayHasKey($expectedKey, $expirationInternals);
+		$this->assertEquals($expectedMaxAge, $expirationInternals[$expectedKey]);
+		$expectedKey = "\0OCA\\Files_Trashbin\\Expiration\0canPurgeToSaveSpace";
+		$this->assertArrayHasKey($expectedKey, $expirationInternals);
+		$this->assertEquals($expectedCanPurgeToSaveSpace, $expirationInternals[$expectedKey]);
 	}
 
 	public function timestampTestData() {
