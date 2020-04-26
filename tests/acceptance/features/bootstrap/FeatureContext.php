@@ -1221,7 +1221,7 @@ class FeatureContext extends BehatVariablesContext {
 				$message = "HTTP status code $actualStatusCode is not one of the expected values";
 			}
 
-			Assert::assertContains(
+			Assert::assertContainsEquals(
 				$actualStatusCode, $expectedStatusCode,
 				$message
 			);
