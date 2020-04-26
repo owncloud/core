@@ -108,7 +108,7 @@ class LoggingContext implements Context {
 							$message
 						);
 					} elseif ($comparingMode === 'containing') {
-						Assert::assertContains(
+						Assert::assertStringContainsString(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);

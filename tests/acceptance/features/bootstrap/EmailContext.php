@@ -62,7 +62,7 @@ class EmailContext implements Context {
 			$expectedContent
 		);
 		$emailBody = EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address);
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$expectedContent,
 			$emailBody,
 			"The email address {$address} should have received an email with the body containing {$expectedContent}
@@ -80,7 +80,7 @@ class EmailContext implements Context {
 	 */
 	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
 		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$senderAddress,
 			$actualSenderAddress,
 			"The sender address is expected to be {$senderAddress} but the actual sender is {$actualSenderAddress}"

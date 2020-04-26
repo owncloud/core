@@ -2387,7 +2387,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasClearedTheVersionsForAllUsers() {
 		$this->deleteAllVersionsForAllUsersUsingTheOccCommand();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			"Delete all versions",
 			\trim($this->featureContext->getStdOutOfOccCommand()),
 			"Expected 'Delete all versions' to be contained in the output of occ command: "
