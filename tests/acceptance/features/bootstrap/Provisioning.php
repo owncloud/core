@@ -3309,8 +3309,8 @@ trait Provisioning {
 		$users = $usersList->getRows();
 		$usersSimplified = $this->simplifyArray($users);
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
-		Assert::assertEquals(
-			$usersSimplified, $respondedArray, "", 0.0, 10, true
+		Assert::assertEqualsCanonicalizing(
+			$usersSimplified, $respondedArray
 		);
 	}
 
@@ -3326,8 +3326,8 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		Assert::assertEquals(
-			$groupsSimplified, $respondedArray, "", 0.0, 10, true
+		Assert::assertEqualsCanonicalizing(
+			$groupsSimplified, $respondedArray
 		);
 	}
 
@@ -3377,8 +3377,8 @@ trait Provisioning {
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		Assert::assertEquals(
-			$simplifiedTableRows, $respondedArray, "", 0.0, 10, true
+		Assert::assertEqualsCanonicalizing(
+			$simplifiedTableRows, $respondedArray
 		);
 	}
 
