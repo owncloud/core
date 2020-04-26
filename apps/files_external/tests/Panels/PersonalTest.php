@@ -72,6 +72,6 @@ class PersonalTest extends \Test\TestCase {
 		$this->backendService->expects($this->once())->method('getBackends')->willReturn([]);
 		$this->backendService->expects($this->once())->method('getAvailableBackends')->willReturn([]);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<h2 class="app-name">External Storage</h2>', $templateHtml);
+		$this->assertStringContainsString('<h2 class="app-name">External Storage</h2>', $templateHtml);
 	}
 }

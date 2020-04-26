@@ -548,7 +548,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'storage location']);
 		foreach ($table as $row) {
 			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($row['username']);
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				$row['storage location'],
 				$userStorageLocation,
 				__METHOD__
@@ -575,7 +575,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
 
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				$row['last login'],
 				$userLastLogin,
 				__METHOD__

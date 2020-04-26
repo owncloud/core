@@ -56,7 +56,7 @@ class EmailHelper {
 	 *
 	 * @throws \Exception
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public static function getBodyOfLastEmail(
 		$localMailhogUrl, $emailAddress, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
@@ -75,7 +75,7 @@ class EmailHelper {
 	 *
 	 * @throws \Exception
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public static function getBodyOfEmail(
 		$localMailhogUrl,

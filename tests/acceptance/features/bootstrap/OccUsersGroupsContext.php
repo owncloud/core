@@ -683,7 +683,7 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function theCommandOutputOfUserLastSeenShouldBeNever() {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			"has never logged in.",
 			$lastOutput,
 			__METHOD__

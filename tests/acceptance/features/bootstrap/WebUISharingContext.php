@@ -741,7 +741,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		try {
 			$this->publicShareTab->getLinkUrl($this->linkName);
 		} catch (Exception $e) {
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"could not find link entry with the given name",
 				$e->getMessage()
 			);
@@ -1138,7 +1138,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		} catch (Exception $e) {
 			$errorMessage = $e->getMessage();
 		}
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			"could not find notify by email button",
 			$errorMessage,
 			"User was not expected to be able to send the share notification by email but was"
@@ -1474,14 +1474,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			. "' instead."
 		);
 		if ($fileOrFolder === "folder") {
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"folder-shared.svg",
 				$row->findThumbnail()->getAttribute("style"),
 				__METHOD__
 				. " 'folder-shared.svg' is expected to be contained in the 'style' attribute of the thumbnail of particular row."
 			);
 			$detailsDialog = $this->filesPage->getDetailsDialog();
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"folder-shared.svg",
 				$detailsDialog->findThumbnail()->getAttribute("style"),
 				__METHOD__
@@ -1668,7 +1668,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->generalErrorPage->setPagePath($path);
 		$this->generalErrorPage->open();
 		$actualErrorMsg = $this->generalErrorPage->getErrorMessage();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$errorMsg,
 			$actualErrorMsg,
 			__METHOD__
@@ -1765,7 +1765,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theTextPreviewOfThePublicLinkShouldContain($content) {
 		$previewText = $this->publicLinkFilesPage->getPreviewText();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$content, $previewText,
 			__METHOD__ . " file preview does not contain expected content"
 		);
@@ -1840,7 +1840,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$lastCreatedPublicLink = \end($createdPublicLinks);
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$lastCreatedPublicLink["url"],
 			$content,
 			__METHOD__

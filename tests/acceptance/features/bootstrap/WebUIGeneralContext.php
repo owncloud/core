@@ -547,7 +547,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function anErrorShouldBeDisplayedOnTheGeneralErrorPageContaining($message) {
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$message,
 			$this->generalExceptionPage->getExceptionMessage(),
 			__METHOD__

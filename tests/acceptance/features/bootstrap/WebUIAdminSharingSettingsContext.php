@@ -496,7 +496,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function aErrorMessageForTrustedServerShouldContain($text) {
 		$msg = $this->adminSharingSettingsPage->getTrustedServerErrorMsg();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$text,
 			$msg,
 			__METHOD__
