@@ -116,13 +116,6 @@ config = {
 				'apiWebdavUpload2',
 			],
 		},
-		'apiOnOracle': {
-		    'suites': [
-		        'apiVersions',
-		    ],
-		    'filterTags': '@skip&&@issue-37026',
-		    'databases': ['oracle'],
-		},
 		'apiNotifications': {
 			'suites': [
 				'apiSharingNotifications',
