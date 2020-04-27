@@ -684,7 +684,7 @@ class DAV extends Common {
 			// client request is in \OC\HTTP\Client
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$response = $this->client->request($method, $this->encodePath($path), $body);
-			return $response['statusCode'] == $expected;
+			return isset($response['statusCode']) && $response['statusCode'] == $expected;
 		} catch (ClientHttpException $e) {
 			if ($e->getHttpStatus() === Http::STATUS_NOT_FOUND && $method === 'DELETE') {
 				$this->statCache->clear($path . '/');
