@@ -640,6 +640,7 @@ class File extends Node implements IFile, IFileNode {
 		// and/or add method on Storage called "needsPartFile()"
 		return !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage') &&
 			!$storage->instanceOfStorage('OCA\Files_external\Lib\Storage\OwnCloud') &&
+			!$storage->instanceOfStorage('OCA\Files_external\Lib\Storage\Google') &&
 			!$storage->instanceOfStorage('OC\Files\ObjectStore\ObjectStoreStorage');
 	}
 
