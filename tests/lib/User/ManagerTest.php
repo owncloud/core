@@ -14,6 +14,7 @@ use OC\User\Backend;
 use OC\User\Database;
 use OC\User\Manager;
 use OC\User\SyncService;
+use OC\User\DeletedUser;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
@@ -149,6 +150,29 @@ class ManagerTest extends TestCase {
 	public function testGetAccountNotExists() {
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
 		$this->assertNull($this->manager->get('foo'));
+	}
+
+	public function testGetAccountNotExistsButForceReturn() {
+		$this->accountMapper->expects($this->once())
+			->method('getByUid')
+			->with('foo')
+			->willThrowException(new DoesNotExistException(''));
+
+		$user = $this->manager->get('foo', true);
+		$this->assertInstanceOf(DeletedUser::class, $user);
+		$this->assertEquals('foo', $user->getUID());
+	}
+
+	public function testGetAccountNotExistsButForceReturnAfterCache() {
+		$this->accountMapper->expects($this->exactly(2))  // FIXME: second call shouldn't hit the mapper
+			->method('getByUid')
+			->with('foo')
+			->willThrowException(new DoesNotExistException(''));
+		$this->assertNull($this->manager->get('foo'));
+
+		$user = $this->manager->get('foo', true);
+		$this->assertInstanceOf(DeletedUser::class, $user);
+		$this->assertEquals('foo', $user->getUID());
 	}
 
 	public function testGetDuplicateAccountNotExists() {
