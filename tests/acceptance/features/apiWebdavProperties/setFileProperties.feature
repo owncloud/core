@@ -20,14 +20,12 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @issue-32670
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
     And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt" to "<foo xmlns='http://bar'/>"
     When user "user0" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt"
-    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "Object"
-    #Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "<foo xmlns='http://bar'/>"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "<foo xmlns='http://bar'/>"
     Examples:
       | dav_version |
       | old         |
