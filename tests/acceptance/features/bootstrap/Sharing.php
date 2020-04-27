@@ -2033,12 +2033,19 @@ trait Sharing {
 			);
 		}
 
-		// check if attributes received from table is subset of actualAttributes
-		Assert::assertArraySubset(
-			$attributes,
-			$actualAttributesArray,
-			"The additional sharing attributes did not include the expected attributes. See the differences below."
-		);
+		// check if the expected attributes received from table match actualAttributes
+		foreach (['scope', 'key', 'enabled'] as $key) {
+			Assert::assertArrayHasKey(
+				$key,
+				$actualAttributesArray,
+				"the additional sharing attributes in the last response did not have key '$key'"
+			);
+			Assert::assertEquals(
+				$attributes[$key],
+				$actualAttributesArray[$key],
+				"the additional sharing attribute '$key' had value " . $actualAttributesArray[$key] . " but was expected to have value " . $actualAttributesArray[$key]
+			);
+		}
 	}
 
 	/**
@@ -2418,13 +2425,8 @@ trait Sharing {
 			$row['path'] = "/" . \trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
-					Assert::assertArraySubset(
-						$row,
-						$share,
-						"Expected '"
-						. \ implode(', ', $row)
-						. "' was not included in the share of the user. See the difference below"
-					);
+					Assert::assertArrayHasKey('path', $share);
+					Assert::assertEquals($row['path'], $share['path']);
 					$found = true;
 					break;
 				} catch (PHPUnit\Framework\ExpectationFailedException $e) {

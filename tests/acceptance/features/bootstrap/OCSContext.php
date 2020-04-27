@@ -571,7 +571,7 @@ class OCSContext implements Context {
 			$this->featureContext->getResponse()
 		);
 		if (\is_array($statusCode)) {
-			Assert::assertContains(
+			Assert::assertContainsEquals(
 				$responseStatusCode, $statusCode,
 				$message
 			);
