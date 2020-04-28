@@ -92,8 +92,8 @@ class TempManagerTest extends \Test\TestCase {
 
 		$manager->clean();
 
-		$this->assertFileNotExists($file1);
-		$this->assertFileNotExists($file2);
+		$this->assertFileDoesNotExist($file1);
+		$this->assertFileDoesNotExist($file2);
 	}
 
 	public function testCleanFolder() {
@@ -109,10 +109,10 @@ class TempManagerTest extends \Test\TestCase {
 
 		$manager->clean();
 
-		$this->assertFileNotExists($folder1);
-		$this->assertFileNotExists($folder2);
-		$this->assertFileNotExists($folder1 . 'foo.txt');
-		$this->assertFileNotExists($folder1 . 'bar.txt');
+		$this->assertFileDoesNotExist($folder1);
+		$this->assertFileDoesNotExist($folder2);
+		$this->assertFileDoesNotExist($folder1 . 'foo.txt');
+		$this->assertFileDoesNotExist($folder1 . 'bar.txt');
 	}
 
 	public function testCleanOld() {
@@ -130,8 +130,8 @@ class TempManagerTest extends \Test\TestCase {
 
 		$manager2 = $this->getManager();
 		$manager2->cleanOld();
-		$this->assertFileNotExists($oldFile);
-		$this->assertFileNotExists($folder);
+		$this->assertFileDoesNotExist($oldFile);
+		$this->assertFileDoesNotExist($folder);
 		$this->assertFileExists($nonOcFile);
 		$this->assertFileExists($newFile);
 	}

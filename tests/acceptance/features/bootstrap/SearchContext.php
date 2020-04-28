@@ -109,7 +109,7 @@ class SearchContext implements Context {
 			$foundProperty = false;
 			foreach ($fileProperties as $fileProperty) {
 				if ($fileProperty['name'] === $property['name']) {
-					Assert::assertRegExp(
+					Assert::assertMatchesRegularExpression(
 						"/" . $property['value'] . "/", $fileProperty['value']
 					);
 					$foundProperty = true;

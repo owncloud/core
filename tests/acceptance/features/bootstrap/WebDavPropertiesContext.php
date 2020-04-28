@@ -511,7 +511,7 @@ class WebDavPropertiesContext implements Context {
 		$pattern = $this->featureContext->substituteInLineCodes(
 			$pattern, ['preg_quote' => ['/']]
 		);
-		Assert::assertRegExp(
+		Assert::assertMatchesRegularExpression(
 			$pattern, $value,
 			"item \"$xpath\" found with value \"$value\", " .
 			"expected to match regex pattern: \"$pattern\""
@@ -593,7 +593,7 @@ class WebDavPropertiesContext implements Context {
 			isset($xmlPart[0]), "Cannot find property \"$key\""
 		);
 		$value = $xmlPart[0]->__toString();
-		Assert::assertRegExp(
+		Assert::assertMatchesRegularExpression(
 			$regex, $value,
 			"Property \"$key\" found with value \"$value\", expected \"$regex\""
 		);
