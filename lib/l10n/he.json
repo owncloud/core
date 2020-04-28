@@ -84,6 +84,7 @@
     "Set an admin password." : "קביעת סיסמת מנהל",
     "Can't create or write into the data directory %s" : "לא ניתן ליצור או לכתוב לתוך תיקיית הנתונים %s",
     "Can't create or write into the apps-external directory %s" : "לא ניתן ליצור או לכתוב לתיקייה החיצונית של היישום %s",
+    "Can't update %s - it is a directory" : "לא ניתן לעדכן את %s - מדובר בתיקייה",
     "Can't update %s" : "לא ניתן לעדכן %s",
     "Invalid Federated Cloud ID" : "זיהוי ענן מאוגד לא חוקי",
     "Internal mail notification for shared files is not allowed" : "שליחת התראות דוא״ל פנימיות לקבצים משותפים אסורה",
