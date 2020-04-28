@@ -1,12 +1,15 @@
-Bugfix: Add force option to delete user home folder
+Bugfix: Add force option to delete user even if the user doesn't exist
 
 When the command:
 ./occ user:delete -f foo
 
-If the user foo is not available then the command would
-check if the home folder exists for the user foo, when 
--f or force option is provided. If so then it would
-delete the home folder of foo.
+If the user foo doesn't exist, the "force" option will try to delete
+any remnant that such user could have in the system. This includes data,
+shares, preferences, etc.
+This situation has been detected with some setups after the upgrade of
+ownCloud 9 to 10 with user_ldap active.
+Note that normal user deletion behaviour will still be used if the user
+exists even if the "force" option is used.
 
 https://github.com/owncloud/core/pull/37103
 
