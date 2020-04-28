@@ -2034,16 +2034,19 @@ trait Sharing {
 		}
 
 		// check if the expected attributes received from table match actualAttributes
-		foreach (['scope', 'key', 'enabled'] as $key) {
-			Assert::assertArrayHasKey(
-				$key,
-				$actualAttributesArray,
-				"the additional sharing attributes in the last response did not have key '$key'"
-			);
-			Assert::assertEquals(
-				$attributes[$key],
-				$actualAttributesArray[$key],
-				"the additional sharing attribute '$key' had value " . $actualAttributesArray[$key] . " but was expected to have value " . $actualAttributesArray[$key]
+		foreach ($attributes as $row) {
+			$foundRow = false;
+			foreach ($actualAttributesArray as $item) {
+				if (($item['scope'] === $row['scope'])
+					&& ($item['key'] === $row['key'])
+					&& ($item['enabled'] === $row['enabled'])
+				) {
+					$foundRow = true;
+				}
+			}
+			Assert::assertTrue(
+				$foundRow,
+				"Could not find expected attribute with scope '" . $row['scope'] . "' and key '" . $row['key'] . "'"
 			);
 		}
 	}
