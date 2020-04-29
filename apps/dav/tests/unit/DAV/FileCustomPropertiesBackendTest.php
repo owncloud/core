@@ -36,6 +36,7 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\SimpleCollection;
+use Sabre\DAV\Xml\Property\Complex;
 
 /**
  * Class FileCustomPropertiesBackendTest
@@ -146,6 +147,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$propPatch = new \Sabre\DAV\PropPatch([
 			'customprop' => 'value1',
 			'customprop2' => 'value2',
+			'customprop3' => new Complex('<foo xmlns="http://bar"/>')
 		]);
 
 		$this->backend->propPatch(
@@ -253,6 +255,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			[
 				'customprop',
 				'customprop2',
+				'customprop3',
 				'unsetprop',
 			],
 			0
@@ -265,6 +268,10 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 
 		$this->assertEquals('value1', $propFind->get('customprop'));
 		$this->assertEquals('value2', $propFind->get('customprop2'));
+		/** @var Complex $complexProp */
+		$complexProp = $propFind->get('customprop3');
+		$this->assertInstanceOf(Complex::class, $complexProp);
+		$this->assertEquals('<foo xmlns="http://bar"/>', $complexProp->getXml());
 		$this->assertEquals(['unsetprop'], $propFind->get404Properties());
 	}
 

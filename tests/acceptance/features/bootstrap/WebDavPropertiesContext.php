@@ -348,6 +348,46 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then /^the response should contain a custom "([^"]*)" property with namespace "([^"]*)" and complex value "(([^"\\]|\\.)*)"$/
+	 *
+	 * @param string $propertyName
+	 * @param string $namespaceString
+	 * @param string $propertyValue
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theResponseShouldContainACustomPropertyWithComplexValue(
+		$propertyName, $namespaceString, $propertyValue
+	) {
+		// let's unescape quotes first
+		$propertyValue = \str_replace('\"', '"', $propertyValue);
+		$this->featureContext->setResponseXmlObject(
+			HttpRequestHelper::getResponseXml($this->featureContext->getResponse())
+		);
+		$responseXmlObject = $this->featureContext->getResponseXmlObject();
+		//calculate the namespace prefix and namespace
+		$matches = [];
+		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+		$nameSpace = $matches[2];
+		$nameSpacePrefix = $matches[1];
+		$responseXmlObject->registerXPathNamespace(
+			$nameSpacePrefix, $nameSpace
+		);
+		$xmlPart = $responseXmlObject->xpath(
+			"//d:prop/" . "$nameSpacePrefix:$propertyName" . "/*"
+		);
+		Assert::assertArrayHasKey(
+			0, $xmlPart, "Cannot find property \"$propertyName\""
+		);
+		Assert::assertEquals(
+			$propertyValue, $xmlPart[0]->asXML(),
+			"\"$propertyName\" has a value \"" .
+			$xmlPart[0]->asXML() . "\" but \"$propertyValue\" expected"
+		);
+	}
+
+	/**
 	 * @Then the single response should contain a property :property with a child property :childProperty
 	 *
 	 * @param string $property
