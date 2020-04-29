@@ -24,6 +24,7 @@ Summary
 * Change - Update icewind/streams from 0.7.1 to 0.7.2: [#37253](https://github.com/owncloud/core/pull/37253)
 * Change - Update league/flysystem (1.0.66 => 1.0.67): [#37271](https://github.com/owncloud/core/pull/37271)
 * Change - Update doctrine/dbal (2.10.1 => 2.10.2): [#37283](https://github.com/owncloud/core/pull/37283)
+* Change - Update Symfony components to 4.4.8: [#37319](https://github.com/owncloud/core/pull/37319)
 
 Details
 -------
@@ -149,6 +150,14 @@ Details
 * Change - Update doctrine/dbal (2.10.1 => 2.10.2): [#37283](https://github.com/owncloud/core/pull/37283)
 
    https://github.com/owncloud/core/pull/37283
+
+* Change - Update Symfony components to 4.4.8: [#37319](https://github.com/owncloud/core/pull/37319)
+
+   The following Symfony components have been updated to version 4.4.8: - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/37319
+   https://symfony.com/blog/symfony-4-4-8-released
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
