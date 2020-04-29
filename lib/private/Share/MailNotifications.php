@@ -244,11 +244,7 @@ class MailNotifications {
 		} catch (ShareNotFound $e) {
 			return $recipients;
 		}
-		if ($notificationLang !== null) {
-			$l10n = \OC::$server->getL10N('lib', $notificationLang);
-		} else {
-			$l10n = $this->l;
-		}
+		$l10n = \OC::$server->getL10N('lib', $notificationLang);
 		$expirationDate = null;
 		if ($share->getExpirationDate()) {
 			$expirationDate = $share->getExpirationDate()->getTimestamp();
