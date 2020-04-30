@@ -87,6 +87,7 @@
     "Set an admin password." : "ตั้งค่ารหัสผ่านผู้ดูแลระบบ",
     "Can't create or write into the data directory %s" : "ไม่สามารถสร้างหรือเขียนลงในข้อมูลไดเรกทอรี %s",
     "Can't create or write into the apps-external directory %s" : "ไม่สามารถสร้างหรือเขียนลงในไดเรกทอรีภายนอกแอป %s",
+    "Can't update %s - it is a directory" : "ไม่สามารถอัปเดต %s เพราะว่ามันเป็นไดเร็กทอรี่",
     "Can't update %s" : "ไม่สามารถอัปเดต %s",
     "Invalid Federated Cloud ID" : "ไอดีคลาวด์สหพันธ์ไม่ถูกต้อง",
     "Internal mail notification for shared files is not allowed" : "ไม่อนุญาตการแจ้งเตือนไฟล์ที่แชร์สำหรับเมลภายใน",
