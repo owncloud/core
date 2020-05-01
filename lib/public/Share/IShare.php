@@ -151,7 +151,7 @@ interface IShare {
 	/**
 	 * Set the receiver of this share.
 	 *
-	 * @param string $sharedWith
+	 * @param string|int $sharedWith
 	 * @return \OCP\Share\IShare The modified object
 	 * @since 9.0.0
 	 */

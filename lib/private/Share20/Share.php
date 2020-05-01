@@ -242,6 +242,9 @@ class Share implements IShare {
 	 * @inheritdoc
 	 */
 	public function setSharedWith($sharedWith) {
+		if (\is_int($sharedWith)) {
+			$sharedWith = (string) $sharedWith;
+		}
 		if (!\is_string($sharedWith)) {
 			throw new \InvalidArgumentException();
 		}

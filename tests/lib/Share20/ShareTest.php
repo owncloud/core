@@ -40,6 +40,39 @@ class ShareTest extends \Test\TestCase {
 		$this->share = new \OC\Share20\Share($this->rootFolder, $this->userManager);
 	}
 
+	public function setSharedWithInvalidProvider() {
+		return [
+			[1.2],
+			[true],
+			[[]],
+		];
+	}
+
+	/**
+	 * @dataProvider setSharedWithInvalidProvider
+	 */
+	public function testSetSharedWithInvalid($sharedWith) {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->share->setSharedWith($sharedWith);
+	}
+
+	public function setSharedWithProvider() {
+		return [
+			[123, '123'],
+			[-12, '-12'],
+			['+12', '+12'],
+			['user.name@example.com', 'user.name@example.com'],
+		];
+	}
+
+	/**
+	 * @dataProvider setSharedWithProvider
+	 */
+	public function testSetSharedWith($sharedWith, $expectedValue) {
+		$this->share->setSharedWith($sharedWith);
+		$this->assertSame($expectedValue, $this->share->getSharedWith());
+	}
+
 	/**
 	 */
 	public function testSetIdInvalid() {
