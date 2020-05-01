@@ -9,7 +9,7 @@ Feature: auth
     When a user requests "/remote.php/webdav" with "PROPFIND" and no authentication
     Then the HTTP status code should be "401"
 
-  @smokeTest @issue-ocis-reva-62
+  @smokeTest
   Scenario: using WebDAV with basic auth
     When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic auth
     Then the HTTP status code should be "207"
