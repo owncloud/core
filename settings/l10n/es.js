@@ -193,7 +193,7 @@ OC.L10N.register(
     "Enforce password protection for read-only links" : "Refuerza la protección de enlaces de solo-lectura con contraseña.",
     "Enforce password protection for read + write links" : "Forzar la protección por contraseña para enlaces de lectura y escritura",
     "Enforce password protection for read + write + delete links" : "Forzar la protección con contraseña para enlaces de lectura, escritura y eliminación",
-    "Enforce password protection for upload-only (File Drop) links" : "Refuerza la protección de enlaces de solo subida (File Drop) con contraseña.",
+    "Enforce password protection for upload-only (File Drop) links" : "Forzar la protección de enlaces de solo subida (sin mostrar archivos) con contraseña.",
     "Set default expiration date" : "Establecer fecha de caducidad predeterminada",
     "Expire after " : "Caduca luego de",
     "days" : "días",

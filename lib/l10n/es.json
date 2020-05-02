@@ -87,6 +87,7 @@
     "Set an admin password." : "Configurar la contraseña del administrador.",
     "Can't create or write into the data directory %s" : "No es posible crear o escribir en el directorio de datos %s",
     "Can't create or write into the apps-external directory %s" : "No puedo crear o escribir en la carpeta externa %s",
+    "Can't update %s - it is a directory" : "No es posible actualizar %s -  es una carpeta",
     "Can't update %s" : "No se puede actualizar %s",
     "Invalid Federated Cloud ID" : "ID Nube federada inválida",
     "Internal mail notification for shared files is not allowed" : "No se permite la notificación por correo interno para archivos compartidos",
@@ -182,6 +183,7 @@
     "Storage incomplete configuration. %s" : "Configuración de almacenamiento incompleta. %s",
     "Storage connection error. %s" : "Error de conexión de almacenamiento. %s",
     "Storage is temporarily not available" : "El almacenamiento no se encuentra disponible temporalmente",
-    "Storage connection timeout. %s" : "Tiempo de conexión de almacenamiento agotado. %s"
+    "Storage connection timeout. %s" : "Tiempo de conexión de almacenamiento agotado. %s",
+    "\"%s\" is locked" : "\"%s\" está bloqueado"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
