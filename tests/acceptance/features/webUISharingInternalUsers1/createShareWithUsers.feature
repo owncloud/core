@@ -56,16 +56,25 @@ Feature: Sharing files and folders with internal users
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
     And as "user2" file "lorem (2).txt" should not exist
 
-  Scenario: user shares a file with another user with uppercase username
+  Scenario Outline: user shares a file with another user with unusual usernames
     Given user "user1" has been created with default attributes and skeleton files
     And these users have been created without skeleton files:
-      | username |
-      | SomeUser |
+      | username   |
+      | <username> |
     And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "SomeUser" using the webUI
-    And the user re-logs in as "SomeUser" using the webUI
+    When the user shares file "lorem.txt" with user "<username>" using the webUI
+    And the user re-logs in as "<username>" using the webUI
     And the user browses to the shared-with-you page
     Then file "lorem.txt" should be listed on the webUI
+    Examples:
+      | username  |
+      | 123456    |
+      | -12       |
+      | +12       |
+      | 1.2       |
+      | 1.2E3     |
+      | 0x10      |
+      | Some-User |
 
   Scenario: multiple users share a file with the same name to a user
     Given these users have been created with default attributes and without skeleton files:
