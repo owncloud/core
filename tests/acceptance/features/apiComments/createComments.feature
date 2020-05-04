@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @comments-app-required @files_sharing-app-required @skipOnOcis @issue-ocis-reva-13
+@api @TestAlsoOnExternalUserBackend @comments-app-required @files_sharing-app-required @skipOnOcis @issue-ocis-reva-38
 Feature: Comments
 
   Background:
