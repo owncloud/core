@@ -195,7 +195,7 @@ class ShareesController extends OCSController {
 				'label' => $user->getDisplayName(),
 				'value' => [
 					'shareType' => Share::SHARE_TYPE_USER,
-					'shareWith' => $uid,
+					'shareWith' => $user->getUID(),
 				],
 			];
 			$additionalInfo = $this->getAdditionalUserInfo($user);
