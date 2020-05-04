@@ -78,6 +78,7 @@ class ChecksumContext implements Context {
 	public function userHasUploadedFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileToWithChecksumUsingTheAPI(
 			$user,
 			$source,
@@ -124,6 +125,7 @@ class ChecksumContext implements Context {
 	public function userHasUploadedFileWithContentAndChecksumToUsingTheAPI(
 		$user, $content, $checksum, $destination
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileWithContentAndChecksumToUsingTheAPI(
 			$user,
 			$content,
@@ -200,6 +202,7 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function theWebdavChecksumOfViaPropfindShouldMatch($user, $path, $checksum) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userRequestsTheChecksumOfViaPropfind($user, $path);
 		$this->theWebdavChecksumShouldMatch($checksum);
 	}

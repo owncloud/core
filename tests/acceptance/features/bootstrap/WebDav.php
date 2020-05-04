@@ -372,6 +372,8 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function userTriesToGetFileVersions($user, $file, $fileOwner) {
+		$user = $this->getActualUsername($user);
+		$fileOwner = $this->getActualUsername($fileOwner);
 		$fileId = $this->getFileIdForPath($fileOwner, $file);
 		$path = "/meta/" . $fileId . "/v";
 		$response = $this->makeDavRequest(
@@ -502,6 +504,7 @@ trait WebDav {
 	public function userHasMovedFile(
 		$user, $fileSource, $fileDestination
 	) {
+		$user = $this->getActualUsername($user);
 		$headers['Destination'] = $this->destinationHeaderValue(
 			$user, $fileDestination
 		);
@@ -591,6 +594,7 @@ trait WebDav {
 	public function userMovesFileUsingTheAPI(
 		$user, $fileSource, $type, $fileDestination
 	) {
+		$user = $this->getActualUsername($user);
 		$headers['Destination'] = $this->destinationHeaderValue(
 			$user, $fileDestination
 		);
@@ -913,6 +917,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserShouldBe($fileName, $user, $content) {
+		$user = $this->getActualUsername($user);
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
 		$this->downloadedContentShouldBe($content);
 	}
@@ -1292,6 +1297,7 @@ trait WebDav {
 	public function asFileOrFolderShouldNotExist(
 		$user, $entry, $path, $type = "files"
 	) {
+		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
 		$response = WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(), $this->getActualUsername($user),
@@ -1397,6 +1403,7 @@ trait WebDav {
 	 *
 	 */
 	public function userShouldSeeTheElements($user, $shouldOrNot, $elements) {
+		$user = $this->getActualUsername($user);
 		$should = ($shouldOrNot !== "not");
 		$this->checkElementList($user, $elements, $should);
 	}
@@ -1453,6 +1460,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
+		$user = $this->getActualUsername($user);
 		$file = \fopen($this->acceptanceTestsDirLocation() . $source, 'r');
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
@@ -1594,6 +1602,7 @@ trait WebDav {
 	public function userUploadsAFileToWithChunks(
 		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null, $async = false, $headers = []
 	) {
+		$user = $this->getActualUsername($user);
 		Assert::assertGreaterThan(
 			0, $noOfChunks, "What does it mean to have $noOfChunks chunks?"
 		);
@@ -1640,6 +1649,7 @@ trait WebDav {
 	public function userUploadsAFileAsyncToWithChunks(
 		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null
 	) {
+		$user = $this->getActualUsername($user);
 		$this->userUploadsAFileToWithChunks(
 			$user, $source, $destination, $noOfChunks, $chunkingVersion, true
 		);
@@ -1680,6 +1690,7 @@ trait WebDav {
 	public function userUploadsAFileToWithAllMechanisms(
 		$user, $source, $destination
 	) {
+		$user = $this->getActualUsername($user);
 		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
 			$this->getBaseUrl(), $this->getActualUsername($user),
 			$this->getUserPassword($user),
@@ -2021,6 +2032,7 @@ trait WebDav {
 	public function userHasUploadedAFileWithContentTo(
 		$user, $content, $destination
 	) {
+		$user = $this->getActualUsername($user);
 		$fileId = $this->uploadFileWithContent($user, $content, $destination);
 		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 		return $fileId;
@@ -2135,6 +2147,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasDeletedFile($user, $file) {
+		$user = $this->getActualUsername($user);
 		$this->userDeletesFile($user, $file);
 		// If the file was there and got deleted then we get a 204
 		// If the file was already not there then then get a 404
@@ -2251,6 +2264,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasCreatedFolder($user, $destination) {
+		$user = $this->getActualUsername($user);
 		$this->userCreatesFolder($user, $destination);
 		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 	}

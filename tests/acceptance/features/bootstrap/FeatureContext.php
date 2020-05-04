@@ -384,6 +384,16 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @return array|null
+	 */
+	public function usersToBeReplaced() {
+		if (\getenv('REPLACE_USERNAMES') !== false) {
+			return \json_decode(\file_get_contents("./tests/acceptance/usernames.json"), true);
+		}
+		return null;
+	}
+
+	/**
 	 * BasicStructure constructor.
 	 *
 	 * @param string $baseUrl
@@ -1113,6 +1123,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function userSendsHTTPMethodToUrl($user, $verb, $url) {
+		$user = $this->getActualUsername($user);
 		$this->sendingToWithDirectUrl($user, $verb, $url, null);
 	}
 
@@ -1834,6 +1845,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getActualUsername($functionalUsername) {
+		$usernames = $this->usersToBeReplaced();
+		if (isset($usernames) && isset($usernames[$functionalUsername])) {
+			return $usernames[$functionalUsername];
+		}
 		if ($functionalUsername === "%admin%") {
 			return (string) $this->getAdminUsername();
 		} else {

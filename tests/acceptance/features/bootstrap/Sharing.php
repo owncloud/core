@@ -225,6 +225,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function createShareWithSettings($user, $body) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows(
 			$body,
 			['path'],
@@ -233,6 +234,7 @@ trait Sharing {
 		$bodyRows = $body->getRowsHash();
 		$bodyRows['name'] = \array_key_exists('name', $bodyRows) ? $bodyRows['name'] : null;
 		$bodyRows['shareWith'] = \array_key_exists('shareWith', $bodyRows) ? $bodyRows['shareWith'] : null;
+		$bodyRows['shareWith'] = $this->getActualUsername($bodyRows['shareWith']);
 		$bodyRows['publicUpload'] = \array_key_exists('publicUpload', $bodyRows) ? $bodyRows['publicUpload'] === 'true' : null;
 		$bodyRows['password'] = \array_key_exists('password', $bodyRows) ? $this->getActualPassword($bodyRows['password']) : null;
 
@@ -282,6 +284,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
+		$user = $this->getActualUsername($user);
 		$this->createShareWithSettings(
 			$user,
 			$body
@@ -1203,6 +1206,8 @@ trait Sharing {
 	public function userHasSharedFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
+		$user1 = $this->getActualUsername($user1);
+		$user2 = $this->getActualUsername($user2);
 		$this->shareFileWithUserUsingTheSharingApi(
 			$user1, $filepath, $user2, $permissions, true
 		);
@@ -1384,6 +1389,7 @@ trait Sharing {
 	public function userHasSharedFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
+		$user = $this->getActualUsername($user);
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user, $filepath, $group, $permissions, true
 		);
@@ -1538,6 +1544,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
+		$user = $this->getActualUsername($user);
 		$share_id = $this->getLastShareIdOf($user);
 		$this->getShareData($user, $share_id, $language);
 	}
