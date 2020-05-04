@@ -56,6 +56,8 @@
     "Settings" : "Configuración",
     "Saving..." : "Guardando...",
     "seconds ago" : "segundos atrás",
+    "The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator." : "El enlace para restablecer la contraseña fue enviada a tu e-mail. <br> Si no lo recibís en un plazo de tiempo razonable,  revisá tu carpeta de spam / correo no deseado. <br> Si no está ahí, preguntale a tu administrador.",
+    "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Tus archivos están encriptados. Si no habilitaste la clave de recuperación, no vas a tener manera de obtener nuevamente tus datos después que se restablezca tu contraseña. Si no estás seguro sobre qué hacer, ponete en contacto con el administrador antes de seguir. ¿Estás seguro/a que querés continuar?",
     "I know what I'm doing" : "Sé lo que estoy haciendo",
     "Password can not be changed. Please contact your administrator." : "La contraseña no puede ser cambiada. Por favor contacte al administrador.",
     "No" : "No",

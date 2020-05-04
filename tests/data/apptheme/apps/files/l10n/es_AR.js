@@ -29,6 +29,7 @@ OC.L10N.register(
     "This operation is forbidden" : "Esta operación está prohibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "El directorio no está disponible, por favor revisa los registros o contacta al administrador",
     "group" : "grupo",
+    "Remote share" : "Recurso compartido remoto",
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",
