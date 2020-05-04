@@ -15,7 +15,7 @@ Feature: disable users
     And the administrator has browsed to the users page
     When the administrator disables user "Alice" using the webUI
     Then user "Alice" should be disabled
-    When the disabled user "Alice" tries to login using the password "%regular%" from the webUI
+    When the disabled user "Alice" tries to login using the password "%password%" from the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
     And user "Brian" logs in using the webUI
@@ -31,7 +31,7 @@ Feature: disable users
     And the user has browsed to the users page
     When the user disables user "Alice" using the webUI
     Then user "Alice" should be disabled
-    When the disabled user "Alice" tries to login using the password "%regular%" from the webUI
+    When the disabled user "Alice" tries to login using the password "%password%" from the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
     And user "Brian" logs in using the webUI

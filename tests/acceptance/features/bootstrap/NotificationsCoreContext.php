@@ -123,6 +123,8 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function userNumNotifications($user, $numNotifications, $missingLast) {
+		$user = $this->featureContext->getActualUsername($user);
+
 		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
 		);
@@ -174,37 +176,39 @@ class NotificationsCoreContext implements Context {
 		$notification, $user, $formData
 	) {
 		$this->matchNotification(
-			$notification, $user, false, $formData
+			$notification, $user, $aboutUser = null, false, $formData
 		);
 	}
 
 	/**
-	 * @Then /^the (first|last) notification of user "([^"]*)" should match these regular expressions$/
+	 * @Then /^the (first|last) notification of user "([^"]*)" should match these regular expressions about user "([^"]*)"$/
 	 *
 	 * @param string $notification first|last
 	 * @param string $user
+	 * @param string $aboutUser
 	 * @param \Behat\Gherkin\Node\TableNode $formData
 	 *
 	 * @return void
 	 */
 	public function matchNotificationRegularExpression(
-		$notification, $user, $formData
+		$notification, $user, $aboutUser, $formData
 	) {
 		$this->matchNotification(
-			$notification, $user, true, $formData
+			$notification, $user, $aboutUser, true, $formData
 		);
 	}
 
 	/**
 	 * @param string $notification first|last
 	 * @param string $user
+	 * @param string $aboutUser
 	 * @param bool $regex
 	 * @param \Behat\Gherkin\Node\TableNode $formData
 	 *
 	 * @return void
 	 */
 	public function matchNotification(
-		$notification, $user, $regex, $formData
+		$notification, $user, $aboutUser, $regex, $formData
 	) {
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
@@ -218,6 +222,7 @@ class NotificationsCoreContext implements Context {
 			'GET',
 			"/apps/notifications/api/v1/notifications/$notificationId?format=json"
 		);
+
 		Assert::assertEquals(
 			200,
 			$this->featureContext->getResponse()->getStatusCode(),
@@ -238,7 +243,7 @@ class NotificationsCoreContext implements Context {
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(
-					$notification['regex'], ['preg_quote' => ['/']]
+					$notification['regex'], $aboutUser, ['preg_quote' => ['/']]
 				);
 				Assert::assertNotFalse(
 					(bool) \preg_match($value, $response['ocs']['data'][$notification['key']]),

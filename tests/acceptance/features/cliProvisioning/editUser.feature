@@ -8,7 +8,7 @@ Feature: edit users
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator changes the email of user "brand-new-user" to "brand-new-user@example.com" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'The email address of brand-new-user updated to brand-new-user@example.com'
+    And the command output should contain the text 'The email address of %username% updated to brand-new-user@example.com' about user "brand-new-user"
     And user "brand-new-user" should exist
     And the user attributes returned by the API should include
       | email | brand-new-user@example.com |
@@ -28,7 +28,7 @@ Feature: edit users
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator changes the display name of user "brand-new-user" to "A New User" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'The displayname of brand-new-user updated to A New User'
+    And the command output should contain the text 'The displayname of %username% updated to A New User' about user "brand-new-user"
     And user "brand-new-user" should exist
     And the user attributes returned by the API should include
       | displayname | A New User |
@@ -63,7 +63,7 @@ Feature: edit users
     When the administrator creates user "brand-new-user" password "%alt1%" group "brand-new-group" using the occ command
     And the administrator resets the password of user "brand-new-user" to "<password>" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'Successfully reset password for brand-new-user'
+    And the command output should contain the text 'Successfully reset password for %username%' about user "brand-new-user"
     And user "brand-new-user" should exist
     And the content of file "textfile0.txt" for user "brand-new-user" using password "<password>" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"

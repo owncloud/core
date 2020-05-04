@@ -69,6 +69,7 @@ class ShareesContext implements Context {
 	 * @return void
 	 */
 	public function userGetsTheShareesWithParameters($user, $body) {
+		$user = $this->featureContext->getActualUsername($user);
 		$url = '/apps/files_sharing/api/v1/sharees';
 		$this->featureContext->verifyTableNodeColumnsCount($body, 2);
 		if ($body instanceof TableNode) {

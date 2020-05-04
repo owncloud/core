@@ -100,12 +100,12 @@ Feature: sharing
     When user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
       | share_type             | user               |
-      | share_with             | Brian              |
+      | share_with             | %username%         |
       | file_source            | A_NUMBER           |
       | file_target            | /file_to_share.txt |
       | path                   | /file_to_share.txt |
@@ -113,10 +113,10 @@ Feature: sharing
       | stime                  | A_NUMBER           |
       | storage                | A_NUMBER           |
       | mail_send              | 0                  |
-      | uid_owner              | Alice              |
+      | uid_owner              | %username%         |
       | file_parent            | A_NUMBER           |
-      | share_with_displayname | Brian Murphy       |
-      | displayname_owner      | Alice Hansen       |
+      | share_with_displayname | %displayname%      |
+      | displayname_owner      | %displayname%      |
       | mimetype               | text/plain         |
     Examples:
       | ocs_api_version | ocs_status_code |

@@ -59,6 +59,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function userCommentsWithContentOnEntry($user, $content, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = "/comments/files/$fileId/";
@@ -133,6 +134,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function checkComments($user, $path, $expectedElements) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		// limiting number of results and start from first (offset)
@@ -144,6 +146,7 @@ class CommentsContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($expectedElements, ['user', 'comment']);
 		$elementRows = $expectedElements->getColumnsHash();
 		foreach ($elementRows as $expectedElement) {
+			$expectedElement['user'] = $this->featureContext->getActualUsername($expectedElement['user']);
 			$commentFound = false;
 			$properties = $elementList->xpath(
 				"//d:prop"
@@ -189,6 +192,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function checkNumberOfComments($user, $numberOfComments, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
@@ -251,6 +255,7 @@ class CommentsContext implements Context {
 		if ($user === null) {
 			$user = $this->featureContext->getCurrentUser();
 		}
+		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
 	}
 
@@ -321,6 +326,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
+		$user = $this->featureContext->getActualUsername($user);
 		$commentsPath = "/comments/files/$fileId/$commentId";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
@@ -468,19 +474,21 @@ class CommentsContext implements Context {
 	}
 
 	/**
-	 * @Then the following comment properties should be listed
+	 * @Then the following comment properties should be listed about user :user
 	 *
+	 * @param string $user
 	 * @param TableNode $expectedProperties
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
 	 */
-	public function followingPropertiesShouldBeListed($expectedProperties) {
+	public function followingPropertiesShouldBeListed($user, $expectedProperties) {
 		$this->featureContext->verifyTableNodeColumns(
 			$expectedProperties,
 			["propertyName", "propertyValue"]
 		);
+		$user = $this->featureContext->getActualUsername($user);
 		$expectedProperties = $expectedProperties->getColumnsHash();
 		Assert::assertGreaterThanOrEqual(1, \count($expectedProperties));
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
@@ -488,6 +496,9 @@ class CommentsContext implements Context {
 		$found = false;
 		foreach ($responses as $response) {
 			foreach ($expectedProperties as $expectedProperty) {
+				$expectedProperty['propertyValue'] = $this->featureContext->substituteInLineCodes(
+					$expectedProperty['propertyValue'], $user
+				);
 				$xmlPart = $response->xpath(
 					"//d:prop/oc:" . $expectedProperty["propertyName"]
 				);

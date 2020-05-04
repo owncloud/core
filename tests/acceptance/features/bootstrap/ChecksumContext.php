@@ -78,6 +78,7 @@ class ChecksumContext implements Context {
 	public function userHasUploadedFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileToWithChecksumUsingTheAPI(
 			$user,
 			$source,
@@ -124,6 +125,7 @@ class ChecksumContext implements Context {
 	public function userHasUploadedFileWithContentAndChecksumToUsingTheAPI(
 		$user, $content, $checksum, $destination
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileWithContentAndChecksumToUsingTheAPI(
 			$user,
 			$content,
@@ -142,6 +144,7 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsTheChecksumOfViaPropfind($user, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$body = '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
@@ -200,6 +203,7 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function theWebdavChecksumOfViaPropfindShouldMatch($user, $path, $checksum) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userRequestsTheChecksumOfViaPropfind($user, $path);
 		$this->theWebdavChecksumShouldMatch($checksum);
 	}
@@ -277,6 +281,7 @@ class ChecksumContext implements Context {
 	public function userUploadsChunkFileOfWithToWithChecksum(
 		$user, $num, $total, $data, $destination, $checksum
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$num -= 1;
 		$file = "$destination-chunking-42-$total-$num";
 		$response = $this->featureContext->makeDavRequest(

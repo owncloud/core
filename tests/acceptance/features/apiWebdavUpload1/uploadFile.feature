@@ -12,7 +12,7 @@ Feature: upload file
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
-    Then the following headers should match these regular expressions
+    Then the following headers should match these regular expressions for user "Alice"
       | ETag | /^"[a-f0-9]{1,32}"$/ |
     And the content of file "<file_name>" for user "Alice" should be "uploaded content"
     Examples:

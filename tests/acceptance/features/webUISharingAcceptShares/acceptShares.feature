@@ -35,10 +35,10 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has created folder "/simple-folder/from_alice"
     And user "Alice" has shared folder "/simple-folder" with user "Carol"
     And user "Carol" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Alice Hansen" using the webUI
-    And the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
-    Then folder "simple-folder" shared by "Alice Hansen" should be in state "" in the shared-with-you page on the webUI
-    And folder "simple-folder (2)" shared by "Brian Murphy" should be in state "" in the shared-with-you page on the webUI
+    When the user accepts share "simple-folder" offered by user "Alice" using the webUI
+    And the user accepts share "simple-folder" offered by user "Brian" using the webUI
+    Then folder "simple-folder" shared by "Alice" should be in state "" in the shared-with-you page on the webUI
+    And folder "simple-folder (2)" shared by "Brian" should be in state "" in the shared-with-you page on the webUI
     And user "Carol" should see the following elements
       | /simple-folder/from_alice/       |
       | /simple-folder%20(2)/from_brian/ |
@@ -49,8 +49,8 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Carol" has shared folder "/simple-folder" with user "Alice"
     When user "Alice" logs in using the webUI
-    Then folder "simple-folder" shared by "Carol King" should be in state "Pending" in the shared-with-you page on the webUI
-    And folder "simple-folder" shared by "Brian Murphy" should be in state "Pending" in the shared-with-you page on the webUI
+    Then folder "simple-folder" shared by "Carol" should be in state "Pending" in the shared-with-you page on the webUI
+    And folder "simple-folder" shared by "Brian" should be in state "Pending" in the shared-with-you page on the webUI
 
   @smokeTest
   Scenario: accept an offered share
@@ -58,7 +58,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared file "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
     Then folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
     And folder "simple-folder" should be in state "" in the shared-with-you page on the webUI after a page reload
@@ -72,8 +72,8 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared file "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
-    And the user accepts share "testimage.jpg" offered by user "Brian Murphy" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
+    And the user accepts share "testimage.jpg" offered by user "Brian" using the webUI
     Then folder "simple-folder" should be listed in the files page folder "<share_folder>" on the webUI
     And file "testimage.jpg" should be listed in the files page folder "<share_folder>" on the webUI
     Examples:
@@ -87,7 +87,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared file "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user declines share "simple-folder" offered by user "Brian" using the webUI
     Then folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
@@ -99,9 +99,9 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared file "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
     And the user reloads the current page of the webUI
-    And the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
+    And the user declines share "simple-folder" offered by user "Brian" using the webUI
     Then folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
@@ -112,8 +112,8 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared file "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
-    And the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
+    And the user declines share "simple-folder" offered by user "Brian" using the webUI
     Then folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
@@ -124,8 +124,8 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared file "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    And the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
+    And the user declines share "simple-folder" offered by user "Brian" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
     Then folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
     And folder "simple-folder" should be listed in the files page on the webUI
@@ -136,7 +136,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared folder "/simple-folder" with group "grp1"
     And user "Alice" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
     And the user reloads the current page of the webUI
     Then folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And folder "simple-folder" should be listed in the files page on the webUI
@@ -146,7 +146,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared folder "/simple-folder" with group "grp1"
     And user "Alice" has logged in using the webUI
-    When the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user declines share "simple-folder" offered by user "Brian" using the webUI
     And the user reloads the current page of the webUI
     Then folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
@@ -155,10 +155,10 @@ Feature: accept/decline shares coming from internal users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user accepts share "simple-folder" offered by user "Brian Murphy" using the webUI
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
     And the user has browsed to the files page
     And the user shares folder "simple-folder" with group "grp1" using the webUI
-    And the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
+    And the user declines share "simple-folder" offered by user "Brian" using the webUI
     And the user reloads the current page of the webUI
     Then folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
@@ -209,8 +209,8 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has shared folder "/simple-folder" with group "grp1"
     And user "Brian" has shared folder "/testimage.jpg" with user "Alice"
     And user "Alice" has logged in using the webUI
-    When the user declines share "simple-folder" offered by user "Brian Murphy" using the webUI
-    And the user declines share "testimage.jpg" offered by user "Brian Murphy" using the webUI
+    When the user declines share "simple-folder" offered by user "Brian" using the webUI
+    And the user declines share "testimage.jpg" offered by user "Brian" using the webUI
     And the user has browsed to the files page
     Then folder "simple-folder" should not be listed on the webUI
     And file "testimage.jpg" should not be listed on the webUI
@@ -255,7 +255,7 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has moved folder "/simple-folder" to "/simple-folder-renamed"
     And user "Alice" has logged in using the webUI
     When the user unshares folder "simple-folder-renamed" using the webUI
-    And the user accepts share "simple-folder-renamed" offered by user "Brian Murphy" using the webUI
+    And the user accepts share "simple-folder-renamed" offered by user "Brian" using the webUI
     Then folder "simple-folder-renamed" should be in state "" in the shared-with-you page on the webUI
     And folder "simple-folder-renamed" should be listed in the files page on the webUI
 

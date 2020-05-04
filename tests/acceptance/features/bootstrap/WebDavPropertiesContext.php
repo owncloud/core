@@ -93,6 +93,7 @@ class WebDavPropertiesContext implements Context {
 	public function userGetsPropertiesOfFolder(
 		$user, $path, $propertiesTable
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$properties = null;
 		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["propertyName"]);
 		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);
@@ -129,6 +130,8 @@ class WebDavPropertiesContext implements Context {
 			}
 		}
 		$depth = 0;
+
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		if (\count($properties) > 1) {
@@ -208,6 +211,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasSetFollowingPropertiesUsingProppatch($username, $path, $propertiesTable) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->featureContext->verifyTableNodeColumns($propertiesTable, ['propertyName', 'propertyValue']);
 		$properties = $propertiesTable->getColumnsHash();
 		$this->featureContext->setResponse(
@@ -236,6 +240,7 @@ class WebDavPropertiesContext implements Context {
 	public function userGetsPropertiesOfFile(
 		$user, $propertyName, $namespace, $path
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$properties = [
 			$namespace => $propertyName
 		];
@@ -283,6 +288,7 @@ class WebDavPropertiesContext implements Context {
 	public function setPropertyWithNamespaceOfResource(
 		$user, $propertyName, $namespace, $path, $propertyValue
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$response =  WebDavHelper::proppatch(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
@@ -503,6 +509,24 @@ class WebDavPropertiesContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertValueOfItemInResponseIs($xpath, $expectedValue) {
+		$this->assertValueOfItemInResponseAboutUserIs(
+			$xpath,
+			null,
+			$expectedValue
+		);
+	}
+
+	/**
+	 * @Then the value of the item :xpath in the response about user :user should be :value
+	 *
+	 * @param string $xpath
+	 * @param string|null $user
+	 * @param string $expectedValue
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertValueOfItemInResponseAboutUserIs($xpath, $user, $expectedValue) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
@@ -512,8 +536,9 @@ class WebDavPropertiesContext implements Context {
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
 		$value = $xmlPart[0]->__toString();
+		$user = $this->featureContext->getActualUsername($user);
 		$expectedValue = $this->featureContext->substituteInLineCodes(
-			$expectedValue
+			$expectedValue, $user
 		);
 		Assert::assertEquals(
 			$expectedValue, $value,
@@ -532,6 +557,24 @@ class WebDavPropertiesContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertValueOfItemInResponseRegExp($xpath, $pattern) {
+		$this->assertValueOfItemInResponseToUserRegExp(
+			$xpath,
+			null,
+			$pattern
+		);
+	}
+
+	/**
+	 * @Then the value of the item :xpath in the response to user :user should match :value
+	 *
+	 * @param string $xpath
+	 * @param string $user
+	 * @param string $pattern
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertValueOfItemInResponseToUserRegExp($xpath, $user, $pattern) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
@@ -540,9 +583,10 @@ class WebDavPropertiesContext implements Context {
 		Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
+		$user = $this->featureContext->getActualUsername($user);
 		$value = $xmlPart[0]->__toString();
 		$pattern = $this->featureContext->substituteInLineCodes(
-			$pattern, ['preg_quote' => ['/']]
+			$pattern, $user, ['preg_quote' => ['/']]
 		);
 		Assert::assertRegExp(
 			$pattern, $value,
@@ -675,6 +719,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function storeEtagOfElement($user, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
@@ -709,6 +754,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasStoredEtagOfElement($user, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->storeEtagOfElement(
 			$user,
 			$path
@@ -747,6 +793,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function theResponseShouldHavePropertyWithValue($username, $expectedPropTable) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->featureContext->verifyTableNodeColumns($expectedPropTable, ['resource', 'propertyName', 'propertyValue']);
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 
@@ -790,6 +837,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
@@ -815,6 +863,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable

@@ -188,8 +188,8 @@ Feature: checksums
     And user "Alice" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
@@ -204,8 +204,8 @@ Feature: checksums
     And user "Alice" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:f005ba11" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status       | /^error$/                                                                  |
       | errorCode    | /^400$/                                                                    |
@@ -223,8 +223,8 @@ Feature: checksums
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:f005ba11" using the WebDAV API
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |

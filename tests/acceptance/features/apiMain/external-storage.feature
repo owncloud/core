@@ -18,7 +18,7 @@ Feature: external-storage
       | path | foo |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" should include
       | id       | A_NUMBER             |
       | url      | AN_URL               |
       | token    | A_TOKEN              |
@@ -68,7 +68,7 @@ Feature: external-storage
     When user "Alice" sends HTTP method "GET" to OCS API endpoint "<endpoint>"
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id          | A_NUMBER      |
       | name        | local_storage |
       | type        | dir           |

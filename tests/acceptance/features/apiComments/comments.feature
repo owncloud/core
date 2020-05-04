@@ -25,14 +25,14 @@ Feature: Comments
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "myFileToComment.txt"
     When user "Alice" gets all information about the comments on file "myFileToComment.txt" using the WebDAV REPORT API
-    Then the following comment properties should be listed
+    Then the following comment properties should be listed about user "Alice"
       | propertyName     | propertyValue    |
       | verb             | comment          |
       | actorType        | users            |
-      | actorId          | Alice            |
+      | actorId          | %username%       |
       | objectType       | files            |
       | isUnread         | false            |
-      | actorDisplayName | Alice Hansen     |
+      | actorDisplayName | %displayname%    |
       | message          | My first comment |
 
   Scenario: Getting more info about comments using PROPFIND method
@@ -48,12 +48,12 @@ Feature: Comments
       | oc:actorDisplayName |
       | oc:message          |
     Then the HTTP status code should be success
-    And the following comment properties should be listed
+    And the following comment properties should be listed about user "Alice"
       | propertyName     | propertyValue    |
       | verb             | comment          |
       | actorType        | users            |
-      | actorId          | Alice            |
+      | actorId          | %username%       |
       | objectType       | files            |
       | isUnread         | false            |
-      | actorDisplayName | Alice Hansen     |
+      | actorDisplayName | %displayname%    |
       | message          | My first comment |
