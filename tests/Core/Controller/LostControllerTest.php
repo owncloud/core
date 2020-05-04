@@ -364,8 +364,8 @@ class LostControllerTest extends TestCase {
 			->method('get')
 			->willReturnMap(
 				[
-					['test@example.com', null],
-					['ExistingUser', $this->existingUser]
+					['test@example.com', false, null],
+					['ExistingUser', false, $this->existingUser]
 				]
 			);
 		$this->userManager

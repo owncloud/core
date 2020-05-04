@@ -76,7 +76,7 @@ class TokenAuthModuleTest extends TestCase {
 
 		$this->manager->expects($this->any())->method('get')
 			->willReturnMap([
-				['user1', $this->user],
+				['user1', false, $this->user],
 			]);
 	}
 

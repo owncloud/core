@@ -356,7 +356,7 @@ class SyncBackendTest extends TestCase {
 		//$reappearedUser = $this->createMock(IUser::class);
 
 		$this->userManager->method('get')->willReturnMap([
-			['removed-uid', $removedUser],
+			['removed-uid', false, $removedUser],
 			//['reappeared-uid', $reappearedUser]
 		]);
 
@@ -448,7 +448,7 @@ class SyncBackendTest extends TestCase {
 		$removedUser->method('delete')->willReturn(true);
 
 		$this->userManager->method('get')->willReturnMap([
-			['removed-uid', $removedUser],
+			['removed-uid', false, $removedUser],
 		]);
 		$removedUser->expects($this->once())->method($method)->willReturn($isEnabled);
 		if ($setEnabled !== null) {

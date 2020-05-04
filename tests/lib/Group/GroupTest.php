@@ -29,9 +29,9 @@ class GroupTest extends \Test\TestCase {
 		$userManager->expects($this->any())
 			->method('get')
 			->will($this->returnValueMap([
-				['user1', $user1],
-				['user2', $user2],
-				['user3', $user3]
+				['user1', false, $user1],
+				['user2', false, $user2],
+				['user3', false, $user3]
 			]));
 		return $userManager;
 	}

@@ -23,7 +23,9 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Delete;
+use OCP\IUser;
 use OCP\IUserManager;
+use OCP\Files\Node;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
@@ -31,7 +33,7 @@ use Test\TestCase;
 class DeleteTest extends TestCase {
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject|IUserManager */
-	protected $userManager;
+	private $userManager;
 
 	/** @var CommandTester */
 	private $commandTester;
@@ -97,5 +99,19 @@ class DeleteTest extends TestCase {
 			"User with uid 'user' does not exist",
 			$output
 		);
+	}
+
+	public function testForceDeleteUser() {
+		$this->userManager->expects($this->exactly(2))
+			->method('get')
+			->withConsecutive(
+				['user', false],
+				['user', true]
+			)
+			->will($this->onConsecutiveCalls(null, $this->createMock(IUser::class)));
+
+		$this->commandTester->execute(['uid' => 'user', '--force' => true]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString('User deleted.', $output);
 	}
 }

@@ -172,9 +172,10 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * get a user by user id
 	 *
 	 * @param string $uid
+	 * @param bool $evenMissing get an DeletedUser instance if the user is missing
 	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
 	 */
-	public function get($uid) {
+	public function get($uid, $evenMissing = false) {
 		// fix numeric uid that was cast by storing it in an array key
 		if (\is_numeric($uid)) {
 			$uid = (string)$uid;
@@ -184,14 +185,23 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		//check the cache first to prevent having to loop over the backends
 		if ($this->cachedUsers->hasKey($uid)) {
-			return $this->cachedUsers->get($uid);
+			$cachedUser = $this->cachedUsers->get($uid);
+			if ($cachedUser === null && $evenMissing) {
+				return new DeletedUser($this, $this->config, \OC::$server->getURLGenerator(), $uid);
+			} else {
+				return $cachedUser;
+			}
 		}
 		try {
 			$account = $this->accountMapper->getByUid($uid);
 			return $this->getUserObject($account);
 		} catch (DoesNotExistException $ex) {
 			$this->cachedUsers->set($uid, null);
-			return null;
+			if ($evenMissing) {
+				return new DeletedUser($this, $this->config, \OC::$server->getURLGenerator(), $uid);
+			} else {
+				return null;
+			}
 		} catch (MultipleObjectsReturnedException $ex) {
 			$this->logger->error(
 				"More than one user found for $uid, treating as not existing.",

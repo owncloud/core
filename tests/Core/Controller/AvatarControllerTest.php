@@ -116,7 +116,7 @@ class AvatarControllerTest extends TestCase {
 		$this->userMock->expects($this->any())->method('getDisplayName')->willReturn('displayName');
 		$this->userMock->expects($this->any())->method('getUID')->willReturn('userId');
 		$this->userManager->expects($this->any())->method('get')
-			->willReturnMap([['userId', $this->userMock]]);
+			->willReturnMap([['userId', false, $this->userMock]]);
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($this->userMock);
 
 		$this->avatarFile = $this->createMock('OCP\Files\File');
