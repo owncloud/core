@@ -58,9 +58,9 @@ class AppsListTest extends TestCase {
 	public function providesAppIds() {
 		return [
 			[[], '- files: 1.5'],
-			[['--shipped' => 'true'], '- dav: 0.5.0'],
+			[['--shipped' => 'true'], '- dav: 0.6.0'],
 			[['--shipped' => 'false'], '- comments:'],
-			[['search-pattern' => 'dav'], '- dav: 0.5.0']
+			[['search-pattern' => 'dav'], '- dav: 0.6.0']
 		];
 	}
 }
