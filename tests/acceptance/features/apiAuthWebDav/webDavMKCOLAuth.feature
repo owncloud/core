@@ -31,7 +31,7 @@ Feature: get file info using MKCOL
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
-  @skipOnOcis @issue-ocis-reva-9 @issue-ocis-reva-165
+  @skipOnOcis @issue-ocis-reva-9
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
     When user "user1" requests these endpoints with "MKCOL" including body then the status codes should be as listed
       | endpoint                                      | http-code | body |
@@ -40,7 +40,7 @@ Feature: get file info using MKCOL
       | /remote.php/dav/files/user0/PARENT/parent.txt | 409       |      |
       | /remote.php/dav/files/user0/does-not-exist    | 403       |      |
 
-  @skipOnOcV10 @issue-ocis-reva-9 @issue-ocis-reva-165
+  @skipOnOcV10 @issue-ocis-reva-9
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
     When user "user1" requests these endpoints with "MKCOL" including body then the status codes should be as listed
