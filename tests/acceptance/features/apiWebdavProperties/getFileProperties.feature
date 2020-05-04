@@ -240,7 +240,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-36
+  @skipOnOcis
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
