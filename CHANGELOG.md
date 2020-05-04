@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Add force option to delete user even if the user doesn't exist: [#37103](https://github.com/owncloud/core/pull/37103)
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
 * Bugfix - Ensure ETag changes if a change is detected in a folder: [#37218](https://github.com/owncloud/core/pull/37218)
 * Bugfix - Stop writing data to the output buffer when the connection is not alive: [#37219](https://github.com/owncloud/core/pull/37219)
@@ -28,6 +29,18 @@ Summary
 
 Details
 -------
+
+* Bugfix - Add force option to delete user even if the user doesn't exist: [#37103](https://github.com/owncloud/core/pull/37103)
+
+   When the command: ./occ user:delete -f foo
+
+   If the user foo doesn't exist, the "force" option will try to delete any remnant that such user
+   could have in the system. This includes data, shares, preferences, etc. This situation has
+   been detected with some setups after the upgrade of ownCloud 9 to 10 with user_ldap active. Note
+   that normal user deletion behaviour will still be used if the user exists even if the "force"
+   option is used.
+
+   https://github.com/owncloud/core/pull/37103
 
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
 
