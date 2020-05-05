@@ -408,7 +408,12 @@ class Share20OcsController extends OCSController {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 404, $this->l->t('Please specify a valid user'));
 			}
-			$share->setSharedWith($shareWith);
+			try {
+				$share->setSharedWith($shareWith);
+			} catch (\InvalidArgumentException $e) {
+				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+				return new Result(null, 403, $e->getMessage());
+			}
 			$share->setPermissions($permissions);
 			if ($userAutoAccept) {
 				$share->setState(Share::STATE_ACCEPTED);
@@ -429,7 +434,12 @@ class Share20OcsController extends OCSController {
 			if ($this->sharingBlacklist->isGroupBlacklisted($this->groupManager->get($shareWith))) {
 				return new Result(null, 403, $this->l->t('The group is blacklisted for sharing'));
 			}
-			$share->setSharedWith($shareWith);
+			try {
+				$share->setSharedWith($shareWith);
+			} catch (\InvalidArgumentException $e) {
+				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+				return new Result(null, 403, $e->getMessage());
+			}
 			$share->setPermissions($permissions);
 			if ($globalAutoAccept) {
 				$share->setState(Share::STATE_ACCEPTED);
@@ -495,7 +505,12 @@ class Share20OcsController extends OCSController {
 				return new Result(null, 403, $this->l->t('Sharing %s failed because the back end does not allow shares from type %s', [$path->getPath(), $shareType]));
 			}
 
-			$share->setSharedWith($shareWith);
+			try {
+				$share->setSharedWith($shareWith);
+			} catch (\InvalidArgumentException $e) {
+				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+				return new Result(null, 403, $e->getMessage());
+			}
 			$share->setPermissions($permissions);
 		} else {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);

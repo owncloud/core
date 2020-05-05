@@ -243,7 +243,9 @@ class Share implements IShare {
 	 */
 	public function setSharedWith($sharedWith) {
 		if (!\is_string($sharedWith)) {
-			throw new \InvalidArgumentException();
+			throw new \InvalidArgumentException(
+				"sharedWith is " . \gettype($sharedWith) . " but must be a string"
+			);
 		}
 		$this->sharedWith = $sharedWith;
 		return $this;
