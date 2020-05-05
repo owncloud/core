@@ -1676,6 +1676,16 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
 		} elseif ($userName === 'regularuser') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'alice') {
+			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'ben') {
+			return (string) $this->alt1UserPassword;
+		} elseif ($userName === 'carol') {
+			return (string) $this->alt2UserPassword;
+		} elseif ($userName === 'david') {
+			return (string) $this->alt3UserPassword;
+		} elseif ($userName === 'emily') {
+			return (string) $this->alt4UserPassword;
 		} elseif ($userName === 'user0') {
 			return (string) $this->regularUserPassword;
 		} elseif ($userName === 'user1') {
@@ -1718,6 +1728,16 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['displayname'];
 		} elseif ($userName === 'regularuser') {
 			return 'Regular User';
+		} elseif ($userName === 'alice') {
+			return 'Alice Acharya';
+		} elseif ($userName === 'ben') {
+			return 'Benjamin Bunny';
+		} elseif ($userName === 'carol') {
+			return 'Carol Candlelight';
+		} elseif ($userName === 'david') {
+			return 'David Dixon';
+		} elseif ($userName === 'emily') {
+			return 'Emily Eagle';
 		} elseif ($userName === 'user0') {
 			return 'User Zero';
 		} elseif ($userName === 'user1') {
@@ -1758,6 +1778,16 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['email'];
 		} elseif ($userName === 'regularuser') {
 			return 'regularuser@example.org';
+		} elseif ($userName === 'alice') {
+			return 'a.acharya@example.org';
+		} elseif ($userName === 'ben') {
+			return 'b.bunny@example.org';
+		} elseif ($userName === 'carol') {
+			return 'c.candlelight@example.org';
+		} elseif ($userName === 'david') {
+			return 'd.dixon@example.org';
+		} elseif ($userName === 'emily') {
+			return 'e.eagle@example.org';
 		} elseif ($userName === 'user0') {
 			return 'user0@example.org';
 		} elseif ($userName === 'user1') {
