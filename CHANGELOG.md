@@ -17,6 +17,8 @@ Summary
 * Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 * Bugfix - Rewrite code to fix some notices under PHP 7.4: [#37311](https://github.com/owncloud/core/pull/37311)
+* Bugfix - Properly store complex Webdav properties: [#37314](https://github.com/owncloud/core/pull/37314)
+* Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
@@ -108,6 +110,24 @@ Details
 
    https://github.com/owncloud/core/issues/37303
    https://github.com/owncloud/core/pull/37311
+
+* Bugfix - Properly store complex Webdav properties: [#37314](https://github.com/owncloud/core/pull/37314)
+
+   Fixed: setting custom complex DAV property and reading it returned just an 'Object' string
+   instead of the original property value.
+
+   https://github.com/owncloud/core/issues/32670
+   https://github.com/owncloud/core/issues/37027
+   https://github.com/owncloud/core/pull/37314
+
+* Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
+
+   Special names "avatars", "files_encryption", "files_external" and "meta" are used for
+   other purposes in ownCloud and are not valid usernames (UIDs). Creating a user with any of these
+   names is now disallowed.
+
+   https://github.com/owncloud/core/issues/32547
+   https://github.com/owncloud/core/pull/37268
 
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 
