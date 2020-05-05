@@ -20,6 +20,7 @@ Feature: set file properties
       | old         |
       | new         |
 
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
