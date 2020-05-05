@@ -32,8 +32,23 @@ use Sabre\DAV\PropertyStorage\Backend\BackendInterface;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Tree;
+use Sabre\DAV\Xml\Property\Complex;
 
 abstract class AbstractCustomPropertiesBackend implements BackendInterface {
+	/**
+	 * Value is stored as string.
+	 */
+	const VT_STRING = 1;
+
+	/**
+	 * Value is stored as XML fragment.
+	 */
+	const VT_XML = 2;
+
+	/**
+	 * Value is stored as a property object.
+	 */
+	const VT_OBJECT = 3;
 
 	/**
 	 * Ignored properties
@@ -230,7 +245,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 
 		$props = [];
 		while ($row = $result->fetch()) {
-			$props[$row['propertyname']] = $row['propertyvalue'];
+			$props[$row['propertyname']] = $this->decodeValue($row['propertyvalue'], (int) $row['propertytype']);
 		}
 
 		$result->closeCursor();
@@ -263,5 +278,40 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 			);
 		}
 		return null;
+	}
+
+	/**
+	 * @param mixed|Complex $value
+	 * @return array
+	 */
+	protected function encodeValue($value) {
+		if (\is_scalar($value)) {
+			$valueType = self::VT_STRING;
+		} elseif ($value instanceof Complex) {
+			$valueType = self::VT_XML;
+			$value = $value->getXml();
+		} else {
+			$valueType = self::VT_OBJECT;
+			$value = \serialize($value);
+		}
+		return [
+			'value' => $value,
+			'type' => $valueType
+		];
+	}
+
+	/**
+	 * @param string $value
+	 * @param int $valueType
+	 * @return mixed|Complex
+	 */
+	protected function decodeValue($value, $valueType) {
+		if ($valueType === self::VT_STRING) {
+			return $value;
+		} elseif ($valueType === self::VT_XML) {
+			return new Complex($value);
+		} elseif ($valueType === self::VT_OBJECT) {
+			return \unserialize($value);
+		}
 	}
 }

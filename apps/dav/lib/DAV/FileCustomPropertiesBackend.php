@@ -43,9 +43,9 @@ use Sabre\DAV\Xml\Property\Complex;
 class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	public const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
 	public const INSERT_BY_ID_STMT = 'INSERT INTO `*PREFIX*properties`'
-	. ' (`fileid`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
+	. ' (`fileid`,`propertyname`,`propertyvalue`, `propertytype`) VALUES(?,?,?,?)';
 	public const UPDATE_BY_ID_AND_NAME_STMT = 'UPDATE `*PREFIX*properties`'
-	. ' SET `propertyvalue` = ? WHERE `fileid` = ? AND `propertyname` = ?';
+	. ' SET `propertyvalue` = ?, `propertytype` = ? WHERE `fileid` = ? AND `propertyname` = ?';
 	public const DELETE_BY_ID_STMT = 'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?';
 	public const DELETE_BY_ID_AND_NAME_STMT = 'DELETE FROM `*PREFIX*properties`'
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
@@ -168,9 +168,6 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		$existingProperties = $this->getProperties($path, $node, []);
 		'@phan-var \OCA\DAV\Connector\Sabre\Node $node';
 		$fileId = $node->getId();
-		$deleteStatement = self::DELETE_BY_ID_AND_NAME_STMT;
-		$insertStatement = self::INSERT_BY_ID_STMT;
-		$updateStatement = self::UPDATE_BY_ID_AND_NAME_STMT;
 
 		// TODO: use "insert or update" strategy ?
 		$this->connection->beginTransaction();
@@ -179,7 +176,8 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			// If it was null, we need to delete the property
 			if ($propertyValue === null) {
 				if ($propertyExists) {
-					$this->connection->executeUpdate($deleteStatement,
+					$this->connection->executeUpdate(
+						self::DELETE_BY_ID_AND_NAME_STMT,
 						[
 							$fileId,
 							$propertyName
@@ -187,24 +185,23 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 					);
 				}
 			} else {
-				// FIXME: PHP 7.4 handles object serialization differently so we store 'Object' here
-				// to keep old (wrong) behavior and fix Oracle failure
-				// see https://github.com/owncloud/core/issues/32670
-				if ($propertyValue instanceof Complex) {
-					$propertyValue = 'Object';
-				}
+				$propertyData = $this->encodeValue($propertyValue);
 				if (!$propertyExists) {
-					$this->connection->executeUpdate($insertStatement,
+					$this->connection->executeUpdate(
+						self::INSERT_BY_ID_STMT,
 						[
 							$fileId,
 							$propertyName,
-							$propertyValue
+							$propertyData['value'],
+							$propertyData['type']
 						]
 					);
 				} else {
-					$this->connection->executeUpdate($updateStatement,
+					$this->connection->executeUpdate(
+						self::UPDATE_BY_ID_AND_NAME_STMT,
 						[
-							$propertyValue,
+							$propertyData['value'],
+							$propertyData['type'],
 							$fileId,
 							$propertyName
 						]
@@ -266,7 +263,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			);
 			while ($row = $result->fetch()) {
 				$props = $this->offsetGet($row['fileid']) ?? [];
-				$props[$row['propertyname']] = $row['propertyvalue'];
+				$props[$row['propertyname']] = $this->decodeValue($row['propertyvalue'], (int) $row['propertytype']);
 				$this->offsetSet($row['fileid'], $props);
 			}
 			$result->closeCursor();
