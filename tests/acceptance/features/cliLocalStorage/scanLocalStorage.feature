@@ -45,7 +45,7 @@ Feature: Scanning files on local storage
       | /local_storage/folder1/hello1.txt |
     When user "user0" requests "/remote.php/dav/files/user0/local_storage/folder2" with "PROPFIND" using basic auth
     Then the propfind result of user "user0" should not contain these entries:
-      | /local_storage/folder1/hello2.txt |
+      | /local_storage/folder2/hello2.txt |
 
   @files_sharing-app-required @skipOnLDAP
   Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
