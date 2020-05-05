@@ -1,0 +1,8 @@
+Change: Disallow various special usernames
+
+Special names "avatars", "files_encryption", "files_external" and "meta" are
+used for other purposes in ownCloud and are not valid usernames (UIDs).
+Creating a user with any of these names is now disallowed.
+
+https://github.com/owncloud/core/issues/32547
+https://github.com/owncloud/core/pull/37268

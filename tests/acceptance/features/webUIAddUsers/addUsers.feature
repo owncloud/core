@@ -39,6 +39,7 @@ Feature: add users
       | a)~  | "%alt2%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
       | a(=  | "%alt3%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
       | a`*^ | "%alt4%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
+      | meta | "%alt4%"    | Error creating user: The special username meta is not allowed                                                   |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
