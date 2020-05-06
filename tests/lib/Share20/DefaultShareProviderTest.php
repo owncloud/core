@@ -1521,7 +1521,7 @@ class DefaultShareProviderTest extends TestCase {
 				$shareNode = $share->getNode();
 				$this->assertSame($node1, $shareNode);
 			} else {
-				$this->assertContains($share->getId(), $idGroups);
+				$this->assertContains((int) $share->getId(), $idGroups);
 				$this->assertStringStartsWith('group', $share->getSharedWith());
 				$this->assertSame('user1', $share->getShareOwner());
 				$this->assertSame('user1', $share->getSharedBy());

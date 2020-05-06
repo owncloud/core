@@ -104,7 +104,7 @@ class EntityTest extends \Test\TestCase {
 	public function testSetterMarksFieldUpdated() {
 		$this->entity->setId(3);
 
-		$this->assertContains('id', $this->entity->getUpdatedFields());
+		$this->assertArrayHasKey('id', $this->entity->getUpdatedFields());
 	}
 
 	public function testCallShouldOnlyWorkForGetterSetter() {
