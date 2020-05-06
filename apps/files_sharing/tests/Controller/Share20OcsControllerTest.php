@@ -888,8 +888,8 @@ class Share20OcsControllerTest extends TestCase {
 				->will($this->returnValueMap([
 						['path', null, 'valid-path'],
 						['permissions', null, \OCP\Constants::PERMISSION_ALL],
-						['shareType', $this->any(), Share::SHARE_TYPE_GROUP],
-						['shareWith', $this->any(), $shareWith],
+						['shareType', '-1', Share::SHARE_TYPE_GROUP],
+						['shareWith', null, $shareWith],
 				]));
 
 		$userFolder = $this->createMock('\OCP\Files\Folder');
@@ -909,7 +909,11 @@ class Share20OcsControllerTest extends TestCase {
 				->with('valid-path')
 				->willReturn($path);
 
-		$expected = new Result(null, 404, 'Please specify a valid user');
+		$this->shareManager->expects($this->once())
+			->method('allowGroupSharing')
+			->willReturn(true);
+
+		$expected = new Result(null, 404, 'Please specify a valid group');
 
 		$path->expects($this->once())
 			->method('lock')
