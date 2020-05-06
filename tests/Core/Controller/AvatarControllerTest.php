@@ -293,7 +293,7 @@ class AvatarControllerTest extends TestCase {
 		$this->assertEquals('notsquare', $response->getData()['data']);
 
 		//File should be deleted
-		$this->assertFileNotExists($fileName);
+		$this->assertFileDoesNotExist($fileName);
 	}
 
 	/**
@@ -330,7 +330,7 @@ class AvatarControllerTest extends TestCase {
 		$this->assertEquals('Unknown filetype', $response->getData()['data']['message']);
 
 		//File should be deleted
-		$this->assertFileNotExists($fileName);
+		$this->assertFileDoesNotExist($fileName);
 	}
 
 	/**
