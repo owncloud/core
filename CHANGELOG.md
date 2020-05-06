@@ -18,6 +18,7 @@ Summary
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 * Bugfix - Rewrite code to fix some notices under PHP 7.4: [#37311](https://github.com/owncloud/core/pull/37311)
 * Bugfix - Properly store complex Webdav properties: [#37314](https://github.com/owncloud/core/pull/37314)
+* Bugfix - Cannot share with user name that has only numbers in the UI: [#37324](https://github.com/owncloud/core/issues/37324)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -119,6 +120,14 @@ Details
    https://github.com/owncloud/core/issues/32670
    https://github.com/owncloud/core/issues/37027
    https://github.com/owncloud/core/pull/37314
+
+* Bugfix - Cannot share with user name that has only numbers in the UI: [#37324](https://github.com/owncloud/core/issues/37324)
+
+   A regression in 10.4.0 meant that new shares with user names that were numbers could not be
+   created in the UI. This regression has been fixed.
+
+   https://github.com/owncloud/core/issues/37324
+   https://github.com/owncloud/core/pull/37336
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
