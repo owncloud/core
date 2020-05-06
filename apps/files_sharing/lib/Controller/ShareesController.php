@@ -189,7 +189,12 @@ class ShareesController extends OCSController {
 
 		$foundUserById = false;
 		$lowerSearch = \strtolower($search);
-		foreach ($users as $uid => $user) {
+		foreach ($users as $user) {
+			/**
+			 * Php parses numeric UID strings as integer in array key,
+			 * because of that, we need to learn uid from User object
+			 */
+			$uid = $user->getUID();
 			/* @var $user IUser */
 			$entry = [
 				'label' => $user->getDisplayName(),

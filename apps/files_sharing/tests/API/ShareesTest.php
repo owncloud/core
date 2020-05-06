@@ -424,7 +424,7 @@ class ShareesTest extends TestCase {
 				['abc', 'xyz'],
 				[
 					['abc', 'test', 2, 0, [
-						'test' => $this->getUserMock('test1', 'Test One'),
+						'test' => $this->getUserMock('test', 'Test One'),
 					]],
 					['xyz', 'test', 2, 0, [
 						'test2' => $this->getUserMock('test2', 'Test Two'),
@@ -446,7 +446,7 @@ class ShareesTest extends TestCase {
 				['abc', 'xyz'],
 				[
 					['abc', 'test', 2, 0, [
-						'test' => $this->getUserMock('test1', 'Test One'),
+						'test' => $this->getUserMock('test', 'Test One'),
 					]],
 					['xyz', 'test', 2, 0, [
 						'test2' => $this->getUserMock('test2', 'Test Two'),
