@@ -100,9 +100,6 @@ Feature: sharing
       | 1               | 2                     | 2                   | 100             |
       | 2               | 2                     | 2                   | 100             |
 
-  @skipOnOcis
-  @issue-ocis-reva-45
-  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a file with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -115,24 +112,6 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 400              |
-
-  @skipOnOcV10
-  @issue-ocis-reva-45
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: Creating a share of a file with no permissions should fail
-    Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
-    And user "user0" has uploaded file with content "user0 file" to "randomfile.txt"
-    When user "user0" shares file "randomfile.txt" with user "user1" with permissions "0" using the sharing API
-    Then the OCS status code should be "400"
-    And the OCS status message should be "permissions 0 out of range 1 - 31"
-    And the HTTP status code should be "<http_status_code>"
-    And as "user1" file "randomfile.txt" should not exist
-    Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 200              |
 
   @skipOnOcV10
   @issue-ocis-reva-64
@@ -163,7 +142,7 @@ Feature: sharing
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
-      | 2               | 200              |
+      | 2               | 404              |
 
   @skipOnOcV10
   @issue-ocis-reva-64
@@ -177,7 +156,7 @@ Feature: sharing
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
-      | 2               | 200              |
+      | 2               | 404              |
 
   @skipOnOcis
   @issue-ocis-reva-64
@@ -197,9 +176,6 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 200              |
 
-  @skipOnOcis
-  @issue-ocis-reva-45
-  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a folder with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -212,24 +188,6 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 400              |
-
-  @skipOnOcV10
-  @issue-ocis-reva-45
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: Creating a share of a folder with no permissions should fail
-    Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "/afolder"
-    When user "user0" shares folder "afolder" with user "user1" with permissions "0" using the sharing API
-    Then the OCS status code should be "400"
-    And the OCS status message should be "permissions 0 out of range 1 - 31"
-    And the HTTP status code should be "<http_status_code>"
-    And as "user1" folder "afolder" should not exist
-    Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 200              |
 
   @skipOnOcis
   @issue-ocis-reva-20

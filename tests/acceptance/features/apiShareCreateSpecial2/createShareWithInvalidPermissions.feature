@@ -6,7 +6,6 @@ Feature: cannot share resources with invalid permissions
     And user "user0" has uploaded file with content "some data" to "/textfile0.txt"
     And user "user0" has created folder "/PARENT"
 
-  @skipOnOcis @issue-ocis-reva-45 @issue-ocis-reva-64
   Scenario Outline: Cannot create a share of a file or folder with invalid permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -28,30 +27,6 @@ Feature: cannot share resources with invalid permissions
       | 2               | 404             | 404              | textfile0.txt | 32          |
       | 1               | 404             | 200              | PARENT        | 32          |
       | 2               | 404             | 404              | PARENT        | 32          |
-
-  @skipOnOcV10 @issue-ocis-reva-45 @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: Cannot create a share of a file or folder with invalid permissions
-    Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
-      | path        | <item>        |
-      | shareWith   | user1         |
-      | shareType   | user          |
-      | permissions | <permissions> |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    And as "user1" entry "<item>" should not exist
-    Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | item          | permissions |
-      | 1               | 400             | 200              | textfile0.txt | 0           |
-      | 2               | 400             | 200              | textfile0.txt | 0           |
-      | 1               | 400             | 200              | PARENT        | 0           |
-      | 2               | 400             | 200              | PARENT        | 0           |
-      | 1               | 400             | 200              | textfile0.txt | 32          |
-      | 2               | 400             | 200              | textfile0.txt | 32          |
-      | 1               | 400             | 200              | PARENT        | 32          |
-      | 2               | 400             | 200              | PARENT        | 32          |
 
   @skipOnOcis @issue-ocis-reva-45 @issue-ocis-reva-64
   Scenario Outline: Cannot create a share of a file with a user with only create permission

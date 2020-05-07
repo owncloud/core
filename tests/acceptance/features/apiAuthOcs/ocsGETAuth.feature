@@ -100,23 +100,23 @@ Feature: auth
     When the user "user0" requests these endpoints with "GET" with basic auth then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 998      | 200       |
-      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 998      | 200       |
+      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 998      | 404       |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 998      | 200       |
-      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 998      | 200       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 998      | 404       |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 998      | 200       |
-      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 998      | 200       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 998      | 404       |
      # | /ocs/v1.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
      # | /ocs/v2.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
       | /ocs/v1.php/cloud/apps                                      | 998      | 200       |
-      | /ocs/v2.php/cloud/apps                                      | 998      | 200       |
+      | /ocs/v2.php/cloud/apps                                      | 998      | 404       |
       | /ocs/v1.php/cloud/groups                                    | 998      | 200       |
-      | /ocs/v2.php/cloud/groups                                    | 998      | 200       |
+      | /ocs/v2.php/cloud/groups                                    | 998      | 404       |
       | /ocs/v1.php/cloud/users                                     | 403      | 200       |
-      | /ocs/v2.php/cloud/users                                     | 403      | 200       |
+      | /ocs/v2.php/cloud/users                                     | 403      | 403       |
       | /ocs/v1.php/config                                          | 100      | 200       |
       | /ocs/v2.php/config                                          | 100      | 200       |
       | /ocs/v1.php/privatedata/getattribute                        | 998      | 200       |
-      | /ocs/v2.php/privatedata/getattribute                        | 998      | 200       |
+      | /ocs/v2.php/privatedata/getattribute                        | 998      | 404       |
 
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-29
