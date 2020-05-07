@@ -494,6 +494,7 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
+		$user = $this->featureContext->getActualUsername($user);
 		if ($password === null) {
 			$authString = "$user:" . $this->featureContext->getPasswordForUser($user);
 		} else {
@@ -549,6 +550,7 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsURLWithUsingBasicTokenAuth($user, $url, $method) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->sendRequest(
 			$url,
 			$method,
@@ -666,6 +668,7 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function aNewBrowserSessionForHasBeenStarted($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$loginUrl = $this->featureContext->getBaseUrl() . '/index.php/login';
 		// Request a new session and extract CSRF token
 		$this->featureContext->setResponse(

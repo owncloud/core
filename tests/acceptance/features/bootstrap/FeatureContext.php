@@ -1846,7 +1846,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getActualUsername($functionalUsername) {
 		$usernames = $this->usersToBeReplaced();
-		if (isset($usernames) && isset($usernames[$functionalUsername])) {
+		if (isset($usernames, $usernames[$functionalUsername])) {
 			return $usernames[$functionalUsername];
 		}
 		if ($functionalUsername === "%admin%") {
