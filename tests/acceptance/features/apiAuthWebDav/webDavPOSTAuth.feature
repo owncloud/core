@@ -32,6 +32,7 @@ Feature: get file info using POST
       | /remote.php/dav/files/user0/PARENT            | 401       | doesnotmatter |
       | /remote.php/dav/files/user0/PARENT/parent.txt | 401       | doesnotmatter |
 
+  @skipOnOcis @issue-ocis-reva-179
   Scenario: send POST requests to another user's webDav endpoints as normal user
     When user "user1" requests these endpoints with "POST" including body then the status codes should be as listed
       | endpoint                                       | http-code | body          |
