@@ -86,7 +86,6 @@ Feature: download file
       | old         |
       | new         |
 
-  @skipOnOcis
   @issue-ocis-reva-67
   Scenario: Get the size of a file
     Given user "user0" has uploaded file with content "This is a test file" to "test-file.txt"
