@@ -483,6 +483,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(

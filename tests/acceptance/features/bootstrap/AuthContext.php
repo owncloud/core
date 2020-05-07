@@ -199,6 +199,7 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuth($user, $method, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userRequestsEndpointsWithPassword($user, $method, null, $table);
 	}
 
@@ -234,6 +235,7 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
 		foreach ($table->getHash() as $row) {
 			$body = $row['body'] ?? null;
@@ -294,6 +296,7 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$ocsCode = $row['ocs-code'] ?? null;
