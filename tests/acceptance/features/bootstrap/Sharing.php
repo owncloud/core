@@ -1268,6 +1268,7 @@ trait Sharing {
 	public function theUserHasSharedFileWithUserUsingTheSharingApi(
 		$filepath, $user2, $permissions = null
 	) {
+		$user2 = $this->getActualUsername($user2);
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
 			$this->getCurrentUser(), $filepath, $user2, $permissions
 		);

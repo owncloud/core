@@ -59,6 +59,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function userCommentsWithContentOnEntry($user, $content, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = "/comments/files/$fileId/";
@@ -144,6 +145,7 @@ class CommentsContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($expectedElements, ['user', 'comment']);
 		$elementRows = $expectedElements->getColumnsHash();
 		foreach ($elementRows as $expectedElement) {
+			$expectedElement['user'] = $this->featureContext->getActualUsername($user);
 			$commentFound = false;
 			$properties = $elementList->xpath(
 				"//d:prop"
@@ -189,6 +191,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function checkNumberOfComments($user, $numberOfComments, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
@@ -251,6 +254,7 @@ class CommentsContext implements Context {
 		if ($user === null) {
 			$user = $this->featureContext->getCurrentUser();
 		}
+		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
 	}
 
@@ -321,6 +325,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
+		$user = $this->featureContext->getActualUsername($user);
 		$commentsPath = "/comments/files/$fileId/$commentId";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
