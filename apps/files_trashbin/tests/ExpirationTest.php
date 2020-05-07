@@ -50,6 +50,16 @@ class ExpirationTest extends \Test\TestCase {
 			[ 'auto', $today, $back35Days, true, true],
 			[ 'auto', $today, $ahead100Days, true, true],
 
+			// this should behave the same as "15, 25" but max is the default of 30
+			[ '15', $today, $back10Days, false, false],
+			[ '15', $today, $back20Days, false, false],
+			[ '15', $today, $back30Days, false, false],
+			[ '15', $today, $back35Days, false, true],
+			[ '15', $today, $back10Days, false, false],
+			[ '15', $today, $back20Days, true, true],
+			[ '15', $today, $back30Days, true, true],
+			[ '15', $today, $ahead100Days, true, false],
+
 			// The same with 'auto'
 			[ 'auto, auto', $today, $back10Days, false, false],
 			[ 'auto, auto', $today, $back35Days, false, false],
@@ -108,46 +118,6 @@ class ExpirationTest extends \Test\TestCase {
 		$actualResult = $expiration->isExpired($timestamp, $quotaExceeded);
 		
 		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	public function configData() {
-		return [
-			[ 'disabled', null, null, null],
-			[ 'auto', Expiration::DEFAULT_RETENTION_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ 'auto,auto', Expiration::DEFAULT_RETENTION_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ 'auto, auto', Expiration::DEFAULT_RETENTION_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ 'auto, 3', Expiration::NO_OBLIGATION, 3, true ],
-			[ '5, auto', 5, Expiration::NO_OBLIGATION, true ],
-			[ '3, 5', 3, 5, false ],
-			[ '10, 3', 10, 10, false ],
-		];
-	}
-
-	/**
-	 * @dataProvider configData
-	 *
-	 * @param string $configValue
-	 * @param int $expectedMinAge
-	 * @param int $expectedMaxAge
-	 * @param bool $expectedCanPurgeToSaveSpace
-	 */
-	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace) {
-		$mockedConfig = $this->getMockedConfig($configValue);
-		$mockedTimeFactory = $this->getMockedTimeFactory(
-				\time()
-		);
-
-		$expiration = new Expiration($mockedConfig, $mockedTimeFactory);
-		$expirationInternals = (array) $expiration;
-		$expectedKey = "\0OCA\\Files_Trashbin\\Expiration\0minAge";
-		$this->assertArrayHasKey($expectedKey, $expirationInternals);
-		$this->assertEquals($expectedMinAge, $expirationInternals[$expectedKey]);
-		$expectedKey = "\0OCA\\Files_Trashbin\\Expiration\0maxAge";
-		$this->assertArrayHasKey($expectedKey, $expirationInternals);
-		$this->assertEquals($expectedMaxAge, $expirationInternals[$expectedKey]);
-		$expectedKey = "\0OCA\\Files_Trashbin\\Expiration\0canPurgeToSaveSpace";
-		$this->assertArrayHasKey($expectedKey, $expirationInternals);
-		$this->assertEquals($expectedCanPurgeToSaveSpace, $expirationInternals[$expectedKey]);
 	}
 
 	public function timestampTestData() {
