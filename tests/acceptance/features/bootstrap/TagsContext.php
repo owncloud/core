@@ -1514,8 +1514,6 @@ class TagsContext implements Context {
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
 		$untaggingUser = $this->featureContext->getActualUsername($untaggingUser);
 		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
-		$untaggingUser = $this->featureContext->getActualUsername($untaggingUser);
-		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$fileID = $this->featureContext->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
 		$path = "/systemtags-relations/files/$fileID/$tagID";
