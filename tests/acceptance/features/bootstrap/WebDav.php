@@ -1378,6 +1378,7 @@ trait WebDav {
 	public function listFolder(
 		$user, $path, $folderDepth, $properties = null, $type = "files"
 	) {
+		$user = $this->getActualUsername($user);
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
 		}
