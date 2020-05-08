@@ -185,6 +185,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Given the administrator has enabled read-only for the last created local storage mount using the webUI
 	 * @When the administrator enables read-only for the last created local storage mount using the webUI
 	 *
 	 * @return void
@@ -192,6 +193,18 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	public function theAdministratorEnablesReadonlyForTheLastCreatedLocalStorageMountUsingTheWebui() {
 		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
 		$this->adminStorageSettingsPage->enableReadonlyMountOption($this->getSession());
+		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
+	}
+
+	/**
+	 * @Given the administrator has enabled sharing for the last created local storage mount using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasEnabledSharingForTheLastCreatedLocalStorageMountUsingTheWebui() {
+		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
+		$this->adminStorageSettingsPage->enableSharingMountOption($this->getSession());
+		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
 	}
 
 	/**

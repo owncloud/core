@@ -58,6 +58,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	protected $lastCreatedMountDeleteButtonXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]/td[@class='remove']";
 	protected $lastCreatedMountOptionsButtonXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]/td[@class='mountOptionsToggle']";
 	protected $setReadonlyId = "mountOptionsReadonly";
+	protected $setSharingId = "mountOptionsSharing";
 	protected $mountPointNameXpath = "//tr[@class='local'][%s]//input[@placeholder='Folder name']";
 
 	/**
@@ -318,6 +319,26 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			__METHOD__ .
 			" id " . $this->setReadonlyId .
 			" could not find checkbox for read-only mount option"
+		);
+		if ((!($checkCheckbox->isChecked()))) {
+			$checkCheckbox->click();
+		}
+	}
+
+	/**
+	 * enable sharing mount option
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enableSharingMountOption(Session $session) {
+		$checkCheckbox = $this->findById($this->setSharingId);
+		$this->assertElementNotNull(
+			$checkCheckbox,
+			__METHOD__ .
+			" id " . $this->setSharingId .
+			" could not find checkbox for sharing mount option"
 		);
 		if ((!($checkCheckbox->isChecked()))) {
 			$checkCheckbox->click();
