@@ -55,26 +55,6 @@ class ResourceLocatorTest extends \Test\TestCase {
 			'', true, true, true, []);
 	}
 
-	public function testConstructor() {
-		$locator = $this->getResourceLocator('theme', ['core'=>'map'], ['foo'=>'bar']);
-		$locatorInternals = (array) $locator;
-		$expectedKey = "\0*\0theme";
-		$this->assertArrayHasKey($expectedKey, $locatorInternals);
-		$this->assertInstanceOf('OC\Theme\Theme', $locatorInternals[$expectedKey]);
-		$expectedKey = "\0*\0serverroot";
-		$this->assertArrayHasKey($expectedKey, $locatorInternals);
-		$this->assertEquals('core', $locatorInternals[$expectedKey]);
-		$expectedKey = "\0*\0mapping";
-		$this->assertArrayHasKey($expectedKey, $locatorInternals);
-		$this->assertEquals(['core'=>'map'], $locatorInternals[$expectedKey]);
-		$expectedKey = "\0*\0webroot";
-		$this->assertArrayHasKey($expectedKey, $locatorInternals);
-		$this->assertEquals('map', $locatorInternals[$expectedKey]);
-		$expectedKey = "\0*\0resources";
-		$this->assertArrayHasKey($expectedKey, $locatorInternals);
-		$this->assertEquals([], $locatorInternals[$expectedKey]);
-	}
-
 	public function testFind() {
 		$locator = $this->getResourceLocator('theme',
 			['core' => 'map'], ['foo' => 'bar']);
