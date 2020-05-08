@@ -1329,6 +1329,7 @@ trait WebDav {
 	public function asFileOrFolderShouldExist(
 		$user, $entry, $path, $type = "files"
 	) {
+		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
 		$this->responseXmlObject = $this->listFolder(
 			$user, $path, 0, null, $type
@@ -1968,6 +1969,7 @@ trait WebDav {
 	public function uploadFileWithContent(
 		$user, $content, $destination
 	) {
+		$this->getActualUsername($user);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $content
@@ -2134,6 +2136,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDeletesFile($user, $file) {
+		$user = $this->getActualUsername($user);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		$this->lastUploadDeleteTime = \time();
@@ -2415,6 +2418,7 @@ trait WebDav {
 	public function userUploadsChunkedFile(
 		$user, $num, $total, $data, $destination
 	) {
+		$user = $this->getActualUsername($user);
 		$num -= 1;
 		$file = "$destination-chunking-42-$total-$num";
 		$this->pauseUploadDelete();

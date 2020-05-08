@@ -80,6 +80,8 @@ class FederationContext implements Context {
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
 		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer, $permissions = null
 	) {
+		$sharerUser = $this->featureContext->getActualUsername($sharerUser);
+		$shareeUser = $this->featureContext->getActualUsername($shareeUser);
 		if ($shareeServer == "REMOTE") {
 			$shareWith
 				= "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
@@ -192,6 +194,7 @@ class FederationContext implements Context {
 	 * @return void
 	 */
 	public function userRetrievesInformationOfLastFederatedShare($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->userGetsTheListOfFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
@@ -250,6 +253,7 @@ class FederationContext implements Context {
 	 * @return void
 	 */
 	public function userGetsTheListOfPendingFederatedCloudShares($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
 		$this->featureContext->asUser($user);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
