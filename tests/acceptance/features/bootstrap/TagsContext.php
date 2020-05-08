@@ -1160,6 +1160,7 @@ class TagsContext implements Context {
 	public function addTagToFileFolderAsAdminOrUser(
 		$adminOrUser, $tagName, $fileName
 	) {
+		$adminOrUser = $this->featureContext->getActualUsername($adminOrUser);
 		if ($adminOrUser === 'administrator') {
 			$taggingUser = $this->featureContext->getAdminUsername();
 		} else {
@@ -1219,6 +1220,7 @@ class TagsContext implements Context {
 	public function addTagToFileFolder(
 		$taggingUser, $tagName, $fileName
 	) {
+		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
 		$this->tag($taggingUser, $tagName, $fileName);
 	}
 
@@ -1275,6 +1277,8 @@ class TagsContext implements Context {
 	public function addTagToResourceSharedByUser(
 		$taggingUser, $tagName, $fileName, $sharingUser
 	) {
+		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
+		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 		$this->tag(
 			$taggingUser,
 			$tagName,
@@ -1508,6 +1512,8 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
+		$untaggingUser = $this->featureContext->getActualUsername($untaggingUser);
+		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$untaggingUser = $this->featureContext->getActualUsername($untaggingUser);
 		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$fileID = $this->featureContext->getFileIdForPath($fileOwner, $fileName);

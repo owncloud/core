@@ -2179,6 +2179,7 @@ trait Sharing {
 	 * @throws \Exception
 	 */
 	public function userHasRemovedAllSharesFromTheFileNamed($user, $fileName) {
+		$user = $this->getActualUsername($user);
 		$this->removeAllSharesFromResource($user, $fileName);
 		$dataResponded = $this->getShares($user, $fileName);
 		Assert::assertEquals(
