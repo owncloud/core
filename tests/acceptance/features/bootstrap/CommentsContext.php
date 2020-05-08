@@ -134,6 +134,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function checkComments($user, $path, $expectedElements) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		// limiting number of results and start from first (offset)
@@ -145,7 +146,7 @@ class CommentsContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($expectedElements, ['user', 'comment']);
 		$elementRows = $expectedElements->getColumnsHash();
 		foreach ($elementRows as $expectedElement) {
-			$expectedElement['user'] = $this->featureContext->getActualUsername($user);
+			$expectedElement['user'] = $this->featureContext->getActualUsername($expectedElement['user']);
 			$commentFound = false;
 			$properties = $elementList->xpath(
 				"//d:prop"
