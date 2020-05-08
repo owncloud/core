@@ -66,6 +66,7 @@ class WebDavLockingContext implements Context {
 		$user, $file, TableNode $properties, $public = false,
 		$expectToSucceed = true
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		if ($public === true) {
 			$type = "public-files";
@@ -260,6 +261,8 @@ class WebDavLockingContext implements Context {
 	public function unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 		$user, $itemToUnlock, $lockOwner, $itemToUseLockOf, $public = false
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$lockOwner = $this->featureContext->getActualUsername($lockOwner);
 		if ($public === true) {
 			$type = "public-files";
 			$password = null;
@@ -434,6 +437,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function numberOfLockShouldBeReported($count, $file, $user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
 		$body

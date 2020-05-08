@@ -93,6 +93,7 @@ class WebDavPropertiesContext implements Context {
 	public function userGetsPropertiesOfFolder(
 		$user, $path, $propertiesTable
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$properties = null;
 		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["propertyName"]);
 		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);

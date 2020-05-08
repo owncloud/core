@@ -409,6 +409,7 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
+		$user = $this->getActualUsername($user);
 		$this->createShare(
 			$user,
 			$path,
