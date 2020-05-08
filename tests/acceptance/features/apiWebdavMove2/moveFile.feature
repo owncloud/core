@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-14
+@api @TestAlsoOnExternalUserBackend @issue-ocis-reva-14
 Feature: move (rename) file
   As a user
   I want to be able to move and rename files
@@ -11,17 +11,17 @@ Feature: move (rename) file
   @smokeTest
   Scenario Outline: Moving a file
     Given using <dav_version> DAV path
-    When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
+    When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/FOLDER/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
       | old         |
       | new         |
 
-  @smokeTest
+  @smokeTest @skipOnOcis
   Scenario Outline: Moving and overwriting a file
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the WebDAV API
@@ -34,6 +34,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Moving (renaming) a file to be only different case
     Given using <dav_version> DAV path
     When user "user0" moves file "/textfile0.txt" to "/TextFile0.txt" using the WebDAV API
@@ -45,7 +46,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @smokeTest
+  @smokeTest @skipOnOcis
   Scenario Outline: Moving (renaming) a file to a file with only different case to an existing file
     Given using <dav_version> DAV path
     When user "user0" moves file "/textfile1.txt" to "/TextFile0.txt" using the WebDAV API
@@ -57,6 +58,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Moving (renaming) a file to a file in a folder with only different case to an existing file
     Given using <dav_version> DAV path
     When user "user0" moves file "/textfile1.txt" to "/PARENT/Parent.txt" using the WebDAV API
@@ -68,7 +70,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a file into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -91,7 +93,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a file out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -114,7 +116,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -138,7 +140,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and without skeleton files
@@ -162,7 +164,7 @@ Feature: move (rename) file
       | old         | user1 |
       | new         | user1 |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a file to a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -181,7 +183,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -200,6 +202,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: move file into a not-existing folder
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the WebDAV API
@@ -209,6 +212,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: rename a file into an invalid filename
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
@@ -218,6 +222,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Checking file id after a move
     Given using <dav_version> DAV path
     And user "user0" has stored id of file "/textfile0.txt"
@@ -230,7 +235,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
@@ -254,6 +259,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Renaming a file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
@@ -270,6 +276,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: renaming to a file with special characters
     When user "user0" moves file "/welcome.txt" to "/<renamed_file>" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -280,6 +287,7 @@ Feature: move (rename) file
       | *a@b#c$e%f&g* |
       | 1 2 3##.##    |
 
+  @skipOnOcis
   Scenario Outline: renaming file with dots in the path
     Given using <dav_version> DAV path
     And user "user0" has created folder "<folder_name>"
