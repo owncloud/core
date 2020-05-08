@@ -100,6 +100,7 @@ OC.L10N.register(
     "Public upload disabled by the administrator" : "Ngarkimi publik është çaktivizuar nga përgjegjësi",
     "Public upload is only possible for publicly shared folders" : "Ngarkimi publik është i mundshëm vetëm për dosje të ndara publikisht",
     "Sharing %s failed because the back end does not allow shares from type %s" : "Ndarja e %s dështoi, ngaqë pjesa përgjegjëse e shërbyesit nuk lejon ndarje prej llojit %s",
+    "shareWith parameter must be a string" : "Parametri shareWith duhet të jetë një varg",
     "Unknown share type" : "Lloj i panjohur ndarjesh",
     "Not a directory" : "S’është drejtori",
     "Could not lock path" : "S’u kyç dot shtegu",
