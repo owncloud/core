@@ -547,6 +547,7 @@ trait WebDav {
 		$type,
 		TableNode $table
 	) {
+		$user = $this->getActualUsername($user);
 		foreach ($table->getHash() as $row) {
 			// Allow the "filename" column to be optionally be called "foldername"
 			// to help readability of scenarios that test moving folders
@@ -685,6 +686,7 @@ trait WebDav {
 	public function userCopiesFileUsingTheAPI(
 		$user, $fileSource, $fileDestination
 	) {
+		$user = $this->getActualUsername($user);
 		$headers['Destination'] = $this->destinationHeaderValue(
 			$user, $fileDestination
 		);
@@ -761,6 +763,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDownloadsFileWithRange($user, $fileSource, $range) {
+		$user = $this->getActualUsername($user);
 		$headers['Range'] = $range;
 		$this->response = $this->makeDavRequest(
 			$user, "GET", $fileSource, $headers
@@ -1127,6 +1130,7 @@ trait WebDav {
 	public function downloadFileAsUserUsingPassword(
 		$user, $fileName, $password = null, $headers = []
 	) {
+		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		$this->response = $this->makeDavRequest(
 			$user,
@@ -1969,7 +1973,7 @@ trait WebDav {
 	public function uploadFileWithContent(
 		$user, $content, $destination
 	) {
-		$this->getActualUsername($user);
+		$user = $this->getActualUsername($user);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $content
