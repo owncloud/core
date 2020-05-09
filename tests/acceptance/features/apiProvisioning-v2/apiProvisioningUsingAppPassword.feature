@@ -10,7 +10,7 @@ Feature: access user provisioning API using app password
   @smokeTest
   Scenario: admin deletes the user
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "new-group" has been created
+    And group "brand-new-group" has been created
     And a new client token for the administrator has been generated
     And a new browser session for the administrator has been started
     And the user has generated a new app password named "my-client"
@@ -23,9 +23,9 @@ Feature: access user provisioning API using app password
       | username         |
       | brand-new-user   |
       | another-new-user |
-    And group "new-group" has been created
-    And user "another-new-user" has been added to group "new-group"
-    And user "brand-new-user" has been made a subadmin of group "new-group"
+    And group "brand-new-group" has been created
+    And user "another-new-user" has been added to group "brand-new-group"
+    And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     And a new client token for "brand-new-user" has been generated
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
@@ -37,12 +37,12 @@ Feature: access user provisioning API using app password
   @smokeTest
   Scenario: normal user gets their own information using the app password
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | newuser  | New User    |
-    And a new client token for "newuser" has been generated
-    And a new browser session for "newuser" has been started
+      | username       | displayname |
+      | brand-new-user | New User    |
+    And a new client token for "brand-new-user" has been generated
+    And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users/newuser" with "GET" using the generated app password
+    When the user requests "/ocs/v2.php/cloud/users/brand-new-user" with "GET" using the generated app password
     Then the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
 
@@ -51,10 +51,10 @@ Feature: access user provisioning API using app password
       | username         |
       | brand-new-user   |
       | another-new-user |
-    And group "new-group" has been created
+    And group "brand-new-group" has been created
     And group "another-new-group" has been created
     And user "another-new-user" has been added to group "another-new-group"
-    And user "brand-new-user" has been made a subadmin of group "new-group"
+    And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     And a new client token for "brand-new-user" has been generated
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
@@ -64,12 +64,12 @@ Feature: access user provisioning API using app password
 
   Scenario: normal user tries to get other user information using the app password
     Given these users have been created with default attributes and skeleton files:
-      | username    |
-      | newuser     |
-      | anotheruser |
-    And a new client token for "newuser" has been generated
-    And a new browser session for "newuser" has been started
+      | username         |
+      | brand-new-user   |
+      | another-new-user |
+    And a new client token for "brand-new-user" has been generated
+    And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users/anotheruser" with "GET" using the generated app password
+    When the user requests "/ocs/v2.php/cloud/users/another-new-user" with "GET" using the generated app password
     Then the HTTP status code should be "401"
     And the API should not return any data

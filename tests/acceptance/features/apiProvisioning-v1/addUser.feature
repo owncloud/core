@@ -45,12 +45,12 @@ Feature: add user
     And the API should not return any data
 
   Scenario: Admin creates a new user and adds him directly to a group
-    Given group "newgroup" has been created
-    When the administrator sends a user creation request for user "newuser" password "%alt1%" group "newgroup" using the provisioning API
+    Given group "brand-new-group" has been created
+    When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" group "brand-new-group" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And user "newuser" should belong to group "newgroup"
-    And user "newuser" should be able to access a skeleton file
+    And user "brand-new-user" should belong to group "brand-new-group"
+    And user "brand-new-user" should be able to access a skeleton file
 
   Scenario Outline: admin creates a user and specifies a password with special characters
     Given user "brand-new-user" has been deleted
@@ -113,10 +113,10 @@ Feature: add user
     And user "<username>" should exist
     And user "<username>" should be able to access a skeleton file
     Examples:
-      | username      |
-      | user-1        |
-      | null          |
-      | nil           |
-      | 123           |
-      | -123          |
-      | 0.0           |
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |

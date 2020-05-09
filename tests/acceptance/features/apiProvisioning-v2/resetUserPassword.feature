@@ -19,7 +19,7 @@ Feature: reset user password
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
   Scenario: admin tries to reset the password of a user that does not exist
-    When the administrator resets the password of user "not-a-user" to "%alt1%" using the provisioning API
+    When the administrator resets the password of user "nonexistentuser" to "%alt1%" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
 
@@ -53,10 +53,10 @@ Feature: reset user password
 
   Scenario: a user should not be able to reset the password of another user
     Given these users have been created with skeleton files:
-      | username       | password   | displayname    | email                    |
-      | brand-new-user | %regular%  | New user       | brand.new.user@oc.com.np |
-      | wannabeadmin   | %altadmin% | Wanna Be Admin | wanna.be.admin@oc.com.np |
-    When user "wannabeadmin" tries to reset the password of user "brand-new-user" to "%alt1%" using the provisioning API
+      | username         | password   | displayname    | email                    |
+      | brand-new-user   | %regular%  | New user       | brand.new.user@oc.com.np |
+      | another-new-user | %altadmin% | Wanna Be Admin | wanna.be.admin@oc.com.np |
+    When user "another-new-user" tries to reset the password of user "brand-new-user" to "%alt1%" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%regular%" should be "ownCloud test text file 0" plus end-of-line

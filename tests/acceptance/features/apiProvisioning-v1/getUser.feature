@@ -53,13 +53,13 @@ Feature: get user
   @smokeTest
   Scenario: a subadmin gets information of a user in their group
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | subadmin | Sub Admin   |
-      | newuser  | New User    |
-    And group "newgroup" has been created
-    And user "newuser" has been added to group "newgroup"
-    And user "subadmin" has been made a subadmin of group "newgroup"
-    When user "subadmin" retrieves the information of user "newuser" using the provisioning API
+      | username       | displayname |
+      | subadmin       | Sub Admin   |
+      | brand-new-user | New User    |
+    And group "brand-new-group" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -67,22 +67,22 @@ Feature: get user
 
   Scenario: a subadmin tries to get information of a user not in their group
     Given these users have been created with default attributes and skeleton files:
-      | username |
-      | subadmin |
-      | newuser  |
-    And group "newgroup" has been created
-    And user "subadmin" has been made a subadmin of group "newgroup"
-    When user "subadmin" retrieves the information of user "newuser" using the provisioning API
+      | username       |
+      | subadmin       |
+      | brand-new-user |
+    And group "brand-new-group" has been created
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data
 
   Scenario: a normal user tries to get information of another user
     Given these users have been created with default attributes and skeleton files:
-      | username    |
-      | newuser     |
-      | anotheruser |
-    When user "anotheruser" retrieves the information of user "newuser" using the provisioning API
+      | username         |
+      | brand-new-user   |
+      | another-new-user |
+    When user "another-new-user" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data
@@ -90,9 +90,9 @@ Feature: get user
   @smokeTest
   Scenario: a normal user gets their own information
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | newuser  | New User    |
-    When user "newuser" retrieves the information of user "newuser" using the provisioning API
+      | username       | displayname |
+      | brand-new-user | New User    |
+    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -100,9 +100,9 @@ Feature: get user
 
   Scenario: a normal user gets their own information, providing uppercase username as authentication
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | newuser  | New User    |
-    When user "NEWUSER" retrieves the information of user "newuser" using the provisioning API
+      | username       | displayname |
+      | brand-new-user | New User    |
+    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -111,9 +111,9 @@ Feature: get user
   @skipOnOcV10.3
   Scenario: a normal user gets their own information, providing uppercase username in the URL
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | newuser  | New User    |
-    When user "newuser" retrieves the information of user "NEWUSER" using the provisioning API
+      | username       | displayname |
+      | brand-new-user | New User    |
+    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -122,9 +122,9 @@ Feature: get user
   @skipOnOcV10.3
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | NewUser  | New User    |
-    When user "NewUser" retrieves the information of user "newuser" using the provisioning API
+      | username       | displayname |
+      | brand-new-user | New User    |
+    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -132,9 +132,9 @@ Feature: get user
 
   Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
     Given these users have been created with default attributes and skeleton files:
-      | username | displayname |
-      | NewUser  | New User    |
-    When user "newuser" retrieves the information of user "NewUser" using the provisioning API
+      | username       | displayname |
+      | brand-new-user | New User    |
+    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"

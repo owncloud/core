@@ -108,4 +108,3 @@ Feature: LOCKDISCOVERY for public links
       | lock-scope |
       | shared     |
       | exclusive  |
-

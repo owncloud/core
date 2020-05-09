@@ -28,7 +28,7 @@ Feature: delete groups
     And group "<group_id>" should not exist
     Examples:
       | group_id            | comment                                 |
-      | new-group           | dash                                    |
+      | brand-new-group     | dash                                    |
       | the.group           | dot                                     |
       | left,right          | comma                                   |
       | 0                   | The "false" group                       |
@@ -86,21 +86,21 @@ Feature: delete groups
   @issue-31276
   Scenario: normal user tries to delete the group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "new-group" has been created
-    And user "brand-new-user" has been added to group "new-group"
-    When user "brand-new-user" tries to delete group "new-group" using the provisioning API
+    And group "brand-new-group" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    When user "brand-new-user" tries to delete group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And group "new-group" should exist
+    And group "brand-new-group" should exist
 
   @issue-31276
   Scenario: subadmin of the group tries to delete the group
     Given user "subadmin" has been created with default attributes and skeleton files
-    And group "new-group" has been created
-    And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" tries to delete group "new-group" using the provisioning API
+    And group "brand-new-group" has been created
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" tries to delete group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And group "new-group" should exist
+    And group "brand-new-group" should exist

@@ -126,4 +126,3 @@ Feature: Assign tags to file/folder
       | name        | type                |
       | MyFirstTag  | normal              |
       | MySecondTag | not user-assignable |
-

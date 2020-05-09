@@ -43,11 +43,11 @@ Feature: quota
       | username |
       | user0    |
       | user1    |
-    And user "user1" has created folder "/testquota"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
-    And the quota of user "user0" has been set to "20 B"
-    And the quota of user "user1" has been set to "10 MB"
-    When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    And user "user0" has created folder "/testquota"
+    And user "user0" has shared folder "/testquota" with user "user1" with permissions "all"
+    And the quota of user "user1" has been set to "20 B"
+    And the quota of user "user0" has been set to "10 MB"
+    When user "user1" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
   @files_sharing-app-required
@@ -56,13 +56,13 @@ Feature: quota
       | username |
       | user0    |
       | user1    |
-    And user "user1" has created folder "/testquota"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
-    And the quota of user "user0" has been set to "10 MB"
-    And the quota of user "user1" has been set to "20 B"
-    When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    And user "user0" has created folder "/testquota"
+    And user "user0" has shared folder "/testquota" with user "user1" with permissions "all"
+    And the quota of user "user1" has been set to "10 MB"
+    And the quota of user "user0" has been set to "20 B"
+    When user "user1" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    Then as "user0" the files uploaded to "/testquota.txt" with all mechanisms should not exist
+    Then as "user1" the files uploaded to "/testquota.txt" with all mechanisms should not exist
 
   @files_sharing-app-required
   Scenario: Overwriting a file in received folder having enough quota
@@ -70,12 +70,12 @@ Feature: quota
       | username |
       | user0    |
       | user1    |
-    And user "user1" has created folder "/testquota"
-    And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
-    And the quota of user "user0" has been set to "20 B"
-    And the quota of user "user1" has been set to "10 MB"
-    When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    And user "user0" has created folder "/testquota"
+    And user "user0" has uploaded file with content "test" to "/testquota/testquota.txt"
+    And user "user0" has shared folder "/testquota" with user "user1" with permissions "all"
+    And the quota of user "user1" has been set to "20 B"
+    And the quota of user "user0" has been set to "10 MB"
+    When user "user1" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
   @files_sharing-app-required
@@ -84,12 +84,12 @@ Feature: quota
       | username |
       | user0    |
       | user1    |
-    And user "user1" has created folder "/testquota"
-    And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
-    And the quota of user "user0" has been set to "10 MB"
-    And the quota of user "user1" has been set to "20 B"
-    When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    And user "user0" has created folder "/testquota"
+    And user "user0" has uploaded file with content "test" to "/testquota/testquota.txt"
+    And user "user0" has shared folder "/testquota" with user "user1" with permissions "all"
+    And the quota of user "user1" has been set to "10 MB"
+    And the quota of user "user0" has been set to "20 B"
+    When user "user1" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota/testquota.txt" for user "user0" should be "test"
 
@@ -101,11 +101,11 @@ Feature: quota
       | username |
       | user0    |
       | user1    |
-    And user "user1" has uploaded file with content "test" to "/testquota.txt"
-    And user "user1" has shared file "/testquota.txt" with user "user0" with permissions "share,update,read"
-    And the quota of user "user0" has been set to "20 B"
-    And the quota of user "user1" has been set to "10 MB"
-    When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
+    And user "user0" has uploaded file with content "test" to "/testquota.txt"
+    And user "user0" has shared file "/testquota.txt" with user "user1" with permissions "share,update,read"
+    And the quota of user "user1" has been set to "20 B"
+    And the quota of user "user0" has been set to "10 MB"
+    When user "user1" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
   @files_sharing-app-required
@@ -114,10 +114,10 @@ Feature: quota
       | username |
       | user0    |
       | user1    |
-    And user "user1" has uploaded file with content "test" to "/testquota.txt"
-    And user "user1" has shared file "/testquota.txt" with user "user0" with permissions "share,update,read"
-    And the quota of user "user0" has been set to "10 MB"
-    And the quota of user "user1" has been set to "20 B"
-    When user "user0" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
+    And user "user0" has uploaded file with content "test" to "/testquota.txt"
+    And user "user0" has shared file "/testquota.txt" with user "user1" with permissions "share,update,read"
+    And the quota of user "user1" has been set to "10 MB"
+    And the quota of user "user0" has been set to "20 B"
+    When user "user1" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota.txt" for user "user0" should be "test"
