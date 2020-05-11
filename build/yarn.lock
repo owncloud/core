@@ -17,9 +17,10 @@
   version "1.0.2"
   resolved "https://codeload.github.com/davidchambers/Base64.js/tar.gz/10f0e9990dab0a73009fc106ff2b88102a0a13cf"
 
-"@bower_components/blueimp-md5@blueimp/JavaScript-MD5#1.0.1":
-  version "1.0.1"
-  resolved "https://codeload.github.com/blueimp/JavaScript-MD5/tar.gz/b84e37f2574f57be6b06d9690da865b6546b4d76"
+"@bower_components/blueimp-md5@blueimp/JavaScript-MD5#v2.15.0":
+  version "2.15.0"
+  uid da0ec9d7d27cc0a252d00f76d5005f9b61d21672
+  resolved "https://codeload.github.com/blueimp/JavaScript-MD5/tar.gz/da0ec9d7d27cc0a252d00f76d5005f9b61d21672"
 
 "@bower_components/bootstrap@twbs/bootstrap#3.4.1":
   version "3.4.1"
