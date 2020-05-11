@@ -389,7 +389,7 @@ interface IShare {
 
 	/**
 	 * @param $status
-	 * @return null
+	 * @return void
 	 * @since 10.0.10
 	 */
 	public function setShouldHashPassword($status);
