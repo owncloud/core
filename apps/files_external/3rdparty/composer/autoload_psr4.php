@@ -12,7 +12,6 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
-    'Icewind\\Streams\\Tests\\' => array($vendorDir . '/icewind/streams/tests'),
     'Icewind\\Streams\\' => array($vendorDir . '/icewind/streams/src'),
     'Icewind\\SMB\\Test\\' => array($vendorDir . '/icewind/smb/tests'),
     'Icewind\\SMB\\' => array($vendorDir . '/icewind/smb/src'),

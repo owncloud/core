@@ -14,7 +14,7 @@ it wraps an existing stream and can thus be used for any stream in php
 The callbacks are passed in the stream context along with the source stream
 and can be any valid [php callable](http://php.net/manual/en/language.types.callable.php)
 
-###Example###
+### Example ###
 ```php
 <?php
 
