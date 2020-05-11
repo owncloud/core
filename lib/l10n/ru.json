@@ -87,6 +87,7 @@
     "Set an admin password." : "Задать пароль для admin.",
     "Can't create or write into the data directory %s" : "Невозможно создать или записать в каталог данных %s",
     "Can't create or write into the apps-external directory %s" : "Не удалось создать или записать в каталоге внешних приложений %s",
+    "Can't update %s - it is a directory" : "Невозможно обновить %s - это каталог",
     "Can't update %s" : "Не получается обновить %s",
     "Invalid Federated Cloud ID" : "Неверный ID в объединении облачных хранилищ.",
     "Internal mail notification for shared files is not allowed" : "Внутреннее уведомление почтой для совместного доступа к файлам не разрешено",
