@@ -2547,16 +2547,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "705f5cbf7f4fb1e3dd47173e3f026892818c8d46"
+                "reference": "41c6ba148966b10cafd31d1a4e5feb1e2138d95c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/705f5cbf7f4fb1e3dd47173e3f026892818c8d46",
-                "reference": "705f5cbf7f4fb1e3dd47173e3f026892818c8d46",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/41c6ba148966b10cafd31d1a4e5feb1e2138d95c",
+                "reference": "41c6ba148966b10cafd31d1a4e5feb1e2138d95c",
                 "shasum": ""
             },
             "require": {
@@ -2569,7 +2569,8 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "~2.16.1",
-                "phpunit/phpunit": "^7 || ^8"
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
             },
             "type": "library",
             "autoload": {
@@ -2606,7 +2607,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2020-01-31T18:52:58+00:00"
+            "time": "2020-05-11T09:44:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
