@@ -3462,7 +3462,11 @@ trait Provisioning {
 	public function theUsersShouldBe($usersList) {
 		$this->verifyTableNodeColumnsCount($usersList, 1);
 		$users = $usersList->getRows();
-		$usersSimplified = $this->simplifyArray($users);
+		$usersSimplified = \array_map(
+			function ($user) {
+				return $this->getActualUsername($user);
+			}, $this->simplifyArray($users)
+		);
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
 		Assert::assertEqualsCanonicalizing(
 			$usersSimplified, $respondedArray
