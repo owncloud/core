@@ -100,11 +100,11 @@ Feature: lock folders
     When user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "<lock-root>"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:[a-z0-9-]+$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "<lock-root>"
+    And the value of the item "//d:locktoken/d:href" in the response to user "user0" should match "/^opaquelocktoken:[a-z0-9-]+$/"
     Examples:
-      | dav-path | lock-scope | lock-root                                             |
-      | old      | shared     | /%base_path%\/remote.php\/webdav\/PARENT$/            |
-      | old      | exclusive  | /%base_path%\/remote.php\/webdav\/PARENT$/            |
-      | new      | shared     | /%base_path%\/remote.php\/dav\/files\/Alice\/PARENT$/ |
-      | new      | exclusive  | /%base_path%\/remote.php\/dav\/files\/Alice\/PARENT$/ |
+      | dav-path | lock-scope | lock-root                                                  |
+      | old      | shared     | /%base_path%\/remote.php\/webdav\/PARENT$/                 |
+      | old      | exclusive  | /%base_path%\/remote.php\/webdav\/PARENT$/                 |
+      | new      | shared     | /%base_path%\/remote.php\/dav\/files\/%username%\/PARENT$/ |
+      | new      | exclusive  | /%base_path%\/remote.php\/dav\/files\/%username%\/PARENT$/ |

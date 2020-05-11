@@ -346,6 +346,8 @@ class WebDavLockingContext implements Context {
 	public function moveItemSendingLockTokenOfUser(
 		$user, $fileSource, $fileDestination, $itemToUseLockOf, $lockOwner
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$lockOwner = $this->featureContext->getActualUsername($lockOwner);
 		$destination = $this->featureContext->destinationHeaderValue(
 			$user, $fileDestination
 		);
@@ -376,6 +378,7 @@ class WebDavLockingContext implements Context {
 	public function userUploadsAFileWithContentTo(
 		$user, $content, $destination, $itemToUseLockOf
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$token = $this->tokenOfLastLock[$user][$itemToUseLockOf];
 		$this->featureContext->pauseUploadDelete();
 		$response = $this->featureContext->makeDavRequest(
@@ -400,6 +403,7 @@ class WebDavLockingContext implements Context {
 	public function publicUploadFileSendingLockTokenOfUser(
 		$filename, $content, $itemToUseLockOf, $lockOwner, $publicWebDAVAPIVersion
 	) {
+		$lockOwner = $this->featureContext->getActualUsername($lockOwner);
 		$headers = [
 			"If" => "(<" . $this->tokenOfLastLock[$lockOwner][$itemToUseLockOf] . ">)"
 		];

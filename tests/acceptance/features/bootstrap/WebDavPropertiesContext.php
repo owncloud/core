@@ -524,15 +524,16 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
-	 * @Then the value of the item :xpath in the response should match :value
+	 * @Then the value of the item :xpath in the response to user :user should match :value
 	 *
 	 * @param string $xpath
+	 * @param string $user
 	 * @param string $pattern
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function assertValueOfItemInResponseRegExp($xpath, $pattern) {
+	public function assertValueOfItemInResponseRegExp($xpath, $user, $pattern) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
@@ -541,9 +542,10 @@ class WebDavPropertiesContext implements Context {
 		Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
+		$user = \strtolower($this->featureContext->getActualUsername($user));
 		$value = $xmlPart[0]->__toString();
 		$pattern = $this->featureContext->substituteInLineCodes(
-			$pattern, ['preg_quote' => ['/']]
+			$pattern, $user, ['preg_quote' => ['/']]
 		);
 		Assert::assertRegExp(
 			$pattern, $value,

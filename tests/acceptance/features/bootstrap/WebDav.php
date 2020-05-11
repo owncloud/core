@@ -321,6 +321,7 @@ trait WebDav {
 		$urlParameter = [],
 		$doDavRequestAsUser = null
 	) {
+		$user = $this->getActualUsername($user);
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
 		}
@@ -1303,7 +1304,7 @@ trait WebDav {
 		$user, $entry, $path, $type = "files"
 	) {
 		$user = $this->getActualUsername($user);
-		$path = $this->substituteInLineCodes($path);
+		$path = $this->substituteInLineCodes($path, $user);
 		$response = WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(), $this->getActualUsername($user),
 			$this->getPasswordForUser($user), 'GET', $path,
@@ -2255,6 +2256,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCreatesFolder($user, $destination) {
+		$user = $this->getActualUsername($user);
 		$destination = '/' . \ltrim($destination, '/');
 		$this->response = $this->makeDavRequest(
 			$user, "MKCOL", $destination, []
