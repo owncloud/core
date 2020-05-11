@@ -46,6 +46,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 
 	private static $tempFiles = [];
 
+	private $defaultFieldsForFile;
+	private $defaultFieldsForFolderScan;
+
 	// Google Doc mimetypes
 	const FOLDER = 'application/vnd.google-apps.folder';
 	const DOCUMENT = 'application/vnd.google-apps.document';
@@ -84,9 +87,8 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	private function getDefaultFieldsForFile() {
-		static $fileFields = null;  // keep static variable to avoid recreating the string
-		if ($fileFields === null) {
-			$fileFields = \implode(',', [
+		if ($this->defaultFieldsForFile === null) {
+			$this->defaultFieldsForFile = \implode(',', [
 				'id',
 				'name',
 				'mimeType',
@@ -98,19 +100,18 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				'modifiedTime',
 			]);
 		}
-		return $fileFields;
+		return $this->defaultFieldsForFile;
 	}
 
 	private function getDefaultFieldsForFolderScan() {
-		static $folderFields = null;  // keep static variable to avoid recreating the string
-		if ($folderFields === null) {
-			$folderFields = \implode(',', [
+		if ($this->defaultFieldsForFolderScan === null) {
+			$this->defaultFieldsForFolderScan = \implode(',', [
 				'incompleteSearch',
 				'nextPageToken',
 				"files({$this->getDefaultFieldsForFile()})",  // ask for the same fields to cache info
 			]);
 		}
-		return $folderFields;
+		return $this->defaultFieldsForFolderScan;
 	}
 
 	/**
@@ -688,43 +689,41 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	public function hasUpdated($path, $time) {
-		$appConfig = \OC::$server->getAppConfig();
 		if ($this->is_file($path)) {
 			return parent::hasUpdated($path, $time);
-		} else {
-			// follow similar approach than opendir
-			// assume there won't be changes (common case), so optimize the request
-			// although data won't be cached.
-			$folder = $this->getDriveFile($path);
-			if ($folder) {
-				$pageToken = true;
-				while ($pageToken) {
-					$params = [];
-					if ($pageToken !== true) {
-						$params['pageToken'] = $pageToken;
-					}
-					$params['q'] = "'" . \str_replace("'", "\\'", $folder->getId()) . "' in parents and trashed = false";
-					$params['fields'] = 'incompleteSearch,nextPageToken,files(modifiedTime)';  // just need the mtime
-					$children = $this->service->files->listFiles($params);
-					if ($children->getIncompleteSearch()) {
-						// if the search is incomplete, assume there is a change
-						return true;
-					}
+		}
 
-					foreach ($children->getFiles() as $child) {
-						$childMTime = \strtotime($child->getModifiedTime());
-						if ($childMTime > $time) {
-							// a child has changed since that time, no need to keep on going
-							return true;
-						}
-					}
-					$pageToken = $children->getNextPageToken();
-				}
-				return false;
-			} else {
-				// missing folder implies it changed
+		// follow similar approach than opendir
+		// assume there won't be changes (common case), so optimize the request
+		// although data won't be cached.
+		$folder = $this->getDriveFile($path);
+		if (!$folder) {
+			// missing folder implies it changed
+			return true;
+		}
+
+		$pageToken = true;
+		while ($pageToken) {
+			$params = [];
+			if ($pageToken !== true) {
+				$params['pageToken'] = $pageToken;
+			}
+			$params['q'] = "'" . \str_replace("'", "\\'", $folder->getId()) . "' in parents and trashed = false";
+			$params['fields'] = 'incompleteSearch,nextPageToken,files(modifiedTime)';  // just need the mtime
+			$children = $this->service->files->listFiles($params);
+			if ($children->getIncompleteSearch()) {
+				// if the search is incomplete, assume there is a change
 				return true;
 			}
+
+			foreach ($children->getFiles() as $child) {
+				$childMTime = \strtotime($child->getModifiedTime());
+				if ($childMTime > $time) {
+					// a child has changed since that time, no need to keep on going
+					return true;
+				}
+			}
+			$pageToken = $children->getNextPageToken();
 		}
 		return false;
 	}
