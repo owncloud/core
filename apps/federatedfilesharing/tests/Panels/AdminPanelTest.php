@@ -55,6 +55,7 @@ class AdminPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
+		$this->shareProvider->expects($this->once())->method('isCronjobScanExternalEnabled')->willReturn(false);
 		$this->shareProvider->expects($this->once())->method('isOutgoingServer2serverShareEnabled')->willReturn(true);
 		$this->shareProvider->expects($this->once())->method('isIncomingServer2serverShareEnabled')->willReturn(true);
 		$templateHtml = $this->panel->getPanel()->fetchPage();

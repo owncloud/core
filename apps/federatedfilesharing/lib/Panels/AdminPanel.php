@@ -53,6 +53,7 @@ class AdminPanel implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('federatedfilesharing', 'settings-admin');
+		$tmpl->assign('cronjobScanExternalEnabled', $this->shareProvider->isCronjobScanExternalEnabled());
 		$tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('incomingServer2serverShareEnabled', $this->shareProvider->isIncomingServer2serverShareEnabled());
 		$tmpl->assign(

@@ -863,6 +863,22 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	 * @param string $isEnabled
 	 * @param bool $expected
 	 */
+	public function testIsCronjobScanExternalEnabled($isEnabled, $expected) {
+		$this->config->expects($this->once())->method('getAppValue')
+			->with('files_sharing', 'cronjob_scan_external_enabled', 'no')
+			->willReturn($isEnabled);
+
+		$this->assertSame($expected,
+			$this->provider->isCronjobScanExternalEnabled()
+		);
+	}
+
+	/**
+	 * @dataProvider dataTestFederatedSharingSettings
+	 *
+	 * @param string $isEnabled
+	 * @param bool $expected
+	 */
 	public function testIsOutgoingServer2serverShareEnabled($isEnabled, $expected) {
 		$this->config->expects($this->once())->method('getAppValue')
 			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')

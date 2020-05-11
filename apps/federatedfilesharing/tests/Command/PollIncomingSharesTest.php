@@ -99,7 +99,7 @@ class PollIncomingSharesTest extends TestCase {
 		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
-		$this->assertEmpty($output);
+		$this->assertEquals($output, "WARNING: incoming-shares:poll has been deprecated and replaced by periodic external shares cronjob. Please check Federated Cloud Sharing settings and documentation.\n");
 	}
 
 	public function testWithFilesSharingDisabled() {

@@ -960,6 +960,16 @@ class FederatedShareProvider implements IShareProvider {
 	}
 
 	/**
+	 * check if scan of federated shares from other ownCloud instances should be performed
+	 *
+	 * @return bool
+	 */
+	public function isCronjobScanExternalEnabled() {
+		$result = $this->config->getAppValue('files_sharing', 'cronjob_scan_external_enabled', 'no');
+		return ($result === 'yes') ? true : false;
+	}
+
+	/**
 	 * check if users from other ownCloud instances are allowed to mount public links share by this instance
 	 *
 	 * @return bool
