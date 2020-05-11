@@ -30,6 +30,7 @@ Summary
 * Change - Update league/flysystem (1.0.66 => 1.0.67): [#37271](https://github.com/owncloud/core/pull/37271)
 * Change - Update doctrine/dbal (2.10.1 => 2.10.2): [#37283](https://github.com/owncloud/core/pull/37283)
 * Change - Update Symfony components to 4.4.8: [#37319](https://github.com/owncloud/core/pull/37319)
+* Change - Update symfony/polyfill (1.15.0 => 1.16.0): [#37367](https://github.com/owncloud/core/pull/37367)
 
 Details
 -------
@@ -207,6 +208,15 @@ Details
 
    https://github.com/owncloud/core/pull/37319
    https://symfony.com/blog/symfony-4-4-8-released
+
+* Change - Update symfony/polyfill (1.15.0 => 1.16.0): [#37367](https://github.com/owncloud/core/pull/37367)
+
+   The following symfony/polyfill components have been updated to version 1.16.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-mbstring symfony/polyfill-php72 symfony/polyfill-php73
+
+   https://github.com/owncloud/core/pull/37367
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
