@@ -1496,7 +1496,7 @@ class Share extends Constants {
 	 * Unshares a share given a share data array
 	 * @param array $item Share data (usually database row)
 	 * @param int $newParent parent ID
-	 * @return null
+	 * @return void
 	 */
 	protected static function unshareItem(array $item, $newParent = null) {
 		$shareType = (int)$item['share_type'];

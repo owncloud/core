@@ -551,7 +551,7 @@ class UsersController extends Controller {
 	/**
 	 * @param string $token
 	 * @param string $userId
-	 * @return null
+	 * @return void
 	 * @throws InvalidUserTokenException
 	 * @throws UserTokenExpiredException
 	 * @throws UserTokenMismatchException
