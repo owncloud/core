@@ -31,6 +31,7 @@ Summary
 * Change - Update doctrine/dbal (2.10.1 => 2.10.2): [#37283](https://github.com/owncloud/core/pull/37283)
 * Change - Update Symfony components to 4.4.8: [#37319](https://github.com/owncloud/core/pull/37319)
 * Change - Update symfony/polyfill (1.15.0 => 1.16.0): [#37367](https://github.com/owncloud/core/pull/37367)
+* Change - Update sabre/xml (2.2.0 => 2.2.1): [#37369](https://github.com/owncloud/core/pull/37369)
 
 Details
 -------
@@ -217,6 +218,10 @@ Details
    symfony/polyfill-mbstring symfony/polyfill-php72 symfony/polyfill-php73
 
    https://github.com/owncloud/core/pull/37367
+
+* Change - Update sabre/xml (2.2.0 => 2.2.1): [#37369](https://github.com/owncloud/core/pull/37369)
+
+   https://github.com/owncloud/core/pull/37369
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
