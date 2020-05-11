@@ -23,7 +23,12 @@ OC.License = {
 		'<div id="license_notification" title="{{title}}">' +
 		'  <div>' +
 		'    {{#each msgs}}' +
-		'    <p>{{this}}</p>' + 
+		'    <p>' +
+		'      {{this}}' +
+		'      {{#if @last}}' +
+		'        <a href="{{../clickable_link}}">{{../clickable_link}}</a>' +
+		'      {{/if}}' +
+		'    </p>' +
 		'    {{/each}}' +
 		'    </br>' +
 		'    <p>{{time_remaining_msg}}</p>' +
@@ -61,7 +66,7 @@ OC.License = {
 				var paragraphs = [
 					t('core', 'You have enabled one or more ownCloud Enterprise apps but your installation does not have a valid license yet.'),
 					t('core', 'A grace period of 24 hours has started to allow you to get going right away. Once the grace period ends, all Enterprise apps will become disabled unless you supply a valid license key.'),
-					t('core', 'To try ownCloud Enterprise, just start a 30-day trial on the ownCloud Marketplace and enter the provided license key below.')
+					t('core', 'To try ownCloud Enterprise, just start a 30-day demo and enter the provided license key below. Use the following link to get started:')
 				];
 
 				var dialog = $(tmpl({
@@ -70,6 +75,7 @@ OC.License = {
 					time_remaining_msg: t('core', 'Remaining time: {rtime}', {
 						rtime: relativeTime
 					}),
+					clickable_link: 'https://marketplace.owncloud.com/demo-key',
 					placeholder: t('core', 'Enter license key'),
 					license_button_text: t('core', 'Set new key')
 				}))
