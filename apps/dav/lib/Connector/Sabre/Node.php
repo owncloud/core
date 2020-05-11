@@ -217,12 +217,20 @@ abstract class Node implements \Sabre\DAV\INode {
 	}
 
 	/**
-	 * Returns the size of the node, in bytes
+	 * Returns the size of the node, in bytes, or null if the size is unknown
+	 * (GoogleDrive documents returns \OCP\Files\FileInfo::SPACE_UNKNOWN for their
+	 * size because the actual size value isn't returned by google. This function
+	 * will return null in this case)
 	 *
-	 * @return integer
+	 * @return integer|null
 	 */
 	public function getSize() {
-		return $this->info->getSize();
+		$size = $this->info->getSize();
+		if ($size < 0) {
+			return null;
+		} else {
+			return $size;
+		}
 	}
 
 	/**
