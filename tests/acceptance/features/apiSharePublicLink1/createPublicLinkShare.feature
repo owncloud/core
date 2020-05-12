@@ -62,11 +62,11 @@ Feature: create a public link share
     And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Random data"
     And the HTTP status code should be "200"
     And the public download of the last publicly shared file using the old public WebDAV API with password "%regular%" should fail with HTTP status code "401"
-    And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
+    And the value of the item "//s:message" in the response about user "user0" should be "Cannot authenticate over ajax calls"
     And the public download of the last publicly shared file using the new public WebDAV API with password "%regular%" should fail with HTTP status code "401"
     And the value of the item "//s:message" in the response to user "user0" should match "/Username or password was incorrect/"
     And the public download of the last publicly shared file using the old public WebDAV API without a password should fail with HTTP status code "401"
-    And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
+    And the value of the item "//s:message" in the response about user "user0" should be "Cannot authenticate over ajax calls"
     And the public download of the last publicly shared file using the new public WebDAV API without a password should fail with HTTP status code "401"
     And the value of the item "//s:message" in the response to user "user0" should match "/No 'Authorization: Basic' header found/"
     Examples:
@@ -501,10 +501,10 @@ Feature: create a public link share
       | path        | PARENT          |
       | permissions | uploadwriteonly |
     When the public downloads file "parent.txt" from inside the last public shared folder using the new public WebDAV API
-    Then the value of the item "//s:message" in the response should be "File not found: parent.txt"
+    Then the value of the item "//s:message" in the response about user "user0" should be "File not found: parent.txt"
     And the HTTP status code should be "404"
     When the public downloads file "parent.txt" from inside the last public shared folder using the old public WebDAV API
-    Then the value of the item "//s:message" in the response should be ""
+    Then the value of the item "//s:message" in the response about user "user0" should be ""
     And the HTTP status code should be "404"
 
   @skipOnOcV10.3

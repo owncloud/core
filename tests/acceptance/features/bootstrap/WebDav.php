@@ -352,6 +352,7 @@ trait WebDav {
 	 */
 	public function downloadPreviews($user, $path, $doDavRequestAsUser, $width, $height) {
 		$user = $this->getActualUsername($user);
+		$doDavRequestAsUser = $this->getActualUsername($doDavRequestAsUser);
 		$urlParameter = [
 			'x' => $width,
 			'y' => $height,

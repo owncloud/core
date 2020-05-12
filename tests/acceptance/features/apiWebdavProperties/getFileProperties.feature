@@ -268,8 +268,8 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-163
   Scenario Outline: Do a PROPFIND to a non-existing URL
     And user "Alice" requests "<url>" with "PROPFIND" using basic auth
-    Then the value of the item "/d:error/s:message" in the response should be "<message>"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message>"
+    And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
     Examples:
       | url                                  | message                                      |
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |

@@ -23,8 +23,8 @@ Feature: previews of files downloaded through the webdav API
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Alice" downloads the preview of "/parent.txt" with width "<width>" and height "32" using the WebDAV API
     Then the HTTP status code should be "400"
-    And the value of the item "/d:error/s:message" in the response should be "Cannot set width of 0 or smaller!"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
+    And the value of the item "/d:error/s:message" in the response about user "user0" should be "Cannot set width of 0 or smaller!"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\BadRequest"
     Examples:
       | width |
       | 0     |
@@ -56,8 +56,8 @@ Feature: previews of files downloaded through the webdav API
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "<height>" using the WebDAV API
     Then the HTTP status code should be "400"
-    And the value of the item "/d:error/s:message" in the response should be "Cannot set height of 0 or smaller!"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
+    And the value of the item "/d:error/s:message" in the response about user "user0" should be "Cannot set height of 0 or smaller!"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\BadRequest"
     Examples:
       | height |
       | 0      |
@@ -97,7 +97,7 @@ Feature: previews of files downloaded through the webdav API
     Given user "Alice" has uploaded file "filesForUpload/<filename>" to "/<newfilename>"
     When user "Alice" downloads the preview of "/<newfilename>" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\NotFound"
     Examples:
       | filename     | newfilename |
       | simple.pdf   | test.pdf    |
@@ -171,8 +171,8 @@ Feature: previews of files downloaded through the webdav API
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Brian" downloads the preview of "/parent.txt" of "Alice" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the value of the item "/d:error/s:message" in the response should be "File not found: parent.txt in 'Alice'"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "/d:error/s:message" in the response about user "Alice" should be "File not found: parent.txt in '%username%'"
+    And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnOcV10 @issue-ocis-thumbnails-191
   #after fixing all issues delete this Scenario and use the one above
@@ -187,8 +187,8 @@ Feature: previews of files downloaded through the webdav API
     Given user "Alice" has created folder "subfolder"
     When user "Alice" downloads the preview of "/subfolder/" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "400"
-    And the value of the item "/d:error/s:message" in the response should be "Unsupported file type"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
+    And the value of the item "/d:error/s:message" in the response about user "user0" should be "Unsupported file type"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\BadRequest"
 
   @skipOnOcV10 @issue-ocis-190
   #after fixing all issues delete this Scenario and use the one above
@@ -201,8 +201,8 @@ Feature: previews of files downloaded through the webdav API
   Scenario: download previews of not-existing files
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the value of the item "/d:error/s:message" in the response should be "File with name parent.txt could not be located"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "/d:error/s:message" in the response about user "user0" should be "File with name parent.txt could not be located"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnOcis @issue-ocis-192
   Scenario: Download file previews when it is disabled by the administrator
@@ -210,7 +210,7 @@ Feature: previews of files downloaded through the webdav API
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnOcV10 @issue-ocis-192
   #after fixing all issues delete this Scenario and use the one above
@@ -227,7 +227,7 @@ Feature: previews of files downloaded through the webdav API
     And the administrator has updated system config key "preview_max_y" with value "null"
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnOcV10 @issue-ocis-193
   #after fixing all issues delete this Scenario and use the one above
@@ -246,7 +246,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "201"
     When user "Alice" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
     Then the HTTP status code should be "400"
-    And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\BadRequest"
+    And the value of the item "/d:error/s:exception" in the response about user "user0" should be "Sabre\DAV\Exception\BadRequest"
 
   @skipOnOcV10 @issue-ocis-193
   #after fixing all issues delete this Scenario and use the one above

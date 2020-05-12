@@ -124,7 +124,7 @@ Feature: persistent-locking in case of a public link
     When the public locks "/CHILD" in the last public shared folder using the <public-webdav-api-version> public WebDAV API setting following properties
       | lockscope | <lock-scope> |
     Then the HTTP status code should be "405"
-    And the value of the item "//s:message" in the response should be "Locking not allowed from public endpoint"
+    And the value of the item "//s:message" in the response about user "user0" should be "Locking not allowed from public endpoint"
     Examples:
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |
