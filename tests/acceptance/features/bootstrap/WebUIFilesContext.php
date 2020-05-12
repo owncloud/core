@@ -1326,7 +1326,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 		if (\is_array($relativePath)) {
 			// Store the single full concatenated file or folder name.
-			$breadCrumbs[] = \implode($relativePath);
+			$breadCrumbs[] = \implode('', $relativePath);
 			// The passed-in path is itself an array of pieces of a single file
 			// or folder name. That is done when the file or folder name contains
 			// both single and double quotes. The pieces of the file or folder
@@ -1522,7 +1522,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		if (\is_array($name)) {
-			$nameText = \implode($name);
+			$nameText = \implode('', $name);
 		} else {
 			$nameText = $name;
 		}
@@ -1554,7 +1554,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			);
 		} else {
 			if (\is_array($name)) {
-				$name = \implode($name);
+				$name = \implode('', $name);
 			}
 			if ($fileRow === null) {
 				Assert::assertStringContainsString(

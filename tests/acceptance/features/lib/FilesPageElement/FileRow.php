@@ -103,7 +103,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function getNameAsString() {
 		if (\is_array($this->name)) {
-			return \implode($this->name);
+			return \implode('', $this->name);
 		}
 		return $this->name;
 	}
