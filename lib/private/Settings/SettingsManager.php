@@ -22,6 +22,8 @@
 namespace OC\Settings;
 
 use OC\Security\CertificateManager;
+use OC\License\LicenseFetcher;
+use OC\License\MessageService;
 use OC\Settings\Panels\Admin\Apps;
 use OC\Settings\Panels\Helper;
 use OCP\App\IAppManager;
@@ -35,6 +37,7 @@ use OCP\ILogger;
 use OCP\IL10N;
 use OCP\IUserSession;
 use OCP\AppFramework\QueryException;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\Defaults;
@@ -53,6 +56,7 @@ use OC\Settings\Panels\Admin\Certificates;
 use OC\Settings\Panels\Admin\Encryption;
 use OC\Settings\Panels\Admin\FileSharing;
 use OC\Settings\Panels\Admin\Legal;
+use OC\Settings\Panels\Admin\License;
 use OC\Settings\Panels\Admin\Mail;
 use OC\Settings\Panels\Admin\Logging;
 use OC\Settings\Panels\Admin\SecurityWarning;
@@ -92,6 +96,8 @@ class SettingsManager implements ISettingsManager {
 	protected $lockingProvider;
 	/** @var CertificateManager  */
 	protected $certificateManager;
+	/** @var ITimeFactory */
+	protected $timeFactory;
 
 	/**
 	 * Holds a cache of ISettings with keys for type
@@ -129,6 +135,7 @@ class SettingsManager implements ISettingsManager {
 								Helper $helper,
 								ILockingProvider $lockingProvider,
 								IDBConnection $dbconnection,
+								ITimeFactory $timeFactory,
 								$certificateManager,
 								IFactory $lfactory) {
 		$this->l = $l;
@@ -142,6 +149,7 @@ class SettingsManager implements ISettingsManager {
 		$this->helper = $helper;
 		$this->lockingProvider = $lockingProvider;
 		$this->dbconnection = $dbconnection;
+		$this->timeFactory = $timeFactory;
 		$this->certificateManager = $certificateManager;
 		$this->lfactory = $lfactory;
 	}
@@ -238,6 +246,7 @@ class SettingsManager implements ISettingsManager {
 				Certificates::class,
 				Apps::class,
 				Legal::class,
+				License::class,
 				Status::class
 			];
 		} elseif ($type === 'personal') {
@@ -296,6 +305,10 @@ class SettingsManager implements ISettingsManager {
 			Tips::class => new Tips(),
 			LegacyAdmin::class => new LegacyAdmin($this->helper),
 			Apps::class => new Apps($this->config),
+			License::class => new License(
+				new LicenseFetcher($this->config),
+				new MessageService($this->lfactory, $this->timeFactory)
+			),
 			Legal::class => new Legal($this->config)
 		];
 		if (isset($panels[$className])) {

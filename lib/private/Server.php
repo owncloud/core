@@ -157,6 +157,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				new Helper(),
 				$c->getLockingProvider(),
 				$c->getDatabaseConnection(),
+				$c->getTimeFactory(),
 				$c->getCertificateManager(),
 				$c->getL10NFactory()
 

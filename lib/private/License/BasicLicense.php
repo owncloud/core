@@ -32,11 +32,15 @@ class BasicLicense implements ILicense {
 
 		$parts = \explode('-', $licenseKey);
 
-		$this->org = $parts[0];
-		$this->date = \strtotime(\substr($parts[1], 0, 4) . '-' . \substr($parts[1], 4, 2) . '-' . \substr($parts[1], 6));
-		$this->rawCodes = $parts[2];
-		$this->codes = \str_split(\strtoupper($this->rawCodes), 8);
-		$this->checksum = $parts[3];
+		if (\count($parts) === 4) {
+			// require 4 parts to initialize the object properly
+			// otherwise the "isValid" will return false, and the "expirationTime" will be 0
+			$this->org = $parts[0];
+			$this->date = \strtotime(\substr($parts[1], 0, 4) . '-' . \substr($parts[1], 4, 2) . '-' . \substr($parts[1], 6));
+			$this->rawCodes = $parts[2];
+			$this->codes = \str_split(\strtoupper($this->rawCodes), 8);
+			$this->checksum = $parts[3];
+		}
 	}
 
 	/**

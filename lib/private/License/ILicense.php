@@ -30,7 +30,7 @@ interface ILicense {
 	public function getLicenseString();
 
 	/**
-	 * Check if this license is valid
+	 * Check if this license is valid. The license might be expired but valid
 	 * @return bool
 	 */
 	public function isValid();
