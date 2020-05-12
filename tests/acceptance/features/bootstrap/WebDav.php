@@ -2958,6 +2958,7 @@ trait WebDav {
 	public function userDeletesEverythingInFolder(
 		$user, $folder, $checkEachDelete = false
 	) {
+		$user = $this->getActualUsername($user);
 		$responseXmlObject = $this->listFolder($user, $folder, 1);
 		$elementList = $responseXmlObject->xpath("//d:response/d:href");
 		if (\is_array($elementList) && \count($elementList)) {
@@ -3144,6 +3145,7 @@ trait WebDav {
 	public function thePropfindResultShouldContainEntries(
 		$user, $shouldOrNot, TableNode $expectedFiles
 	) {
+		$user = $this->getActualUsername($user);
 		$this->propfindResultShouldContainEntries(
 			$shouldOrNot, $expectedFiles, $user
 		);
@@ -3210,6 +3212,7 @@ trait WebDav {
 	public function theSearchResultOfUserShouldContainAnyOfTheseEntries(
 		$user, $expectedNumber, TableNode $expectedFiles
 	) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$this->propfindResultShouldContainNumEntries($expectedNumber);
 		$elementRows = $expectedFiles->getColumn(0);

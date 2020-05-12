@@ -1640,6 +1640,7 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function searchForTagsOfFileWithReportUsingWebDAVApi($user, $tagNames) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumnsCount($tagNames, 1);
 		$tagNames = $tagNames->getRows();
 		$baseUrl = $this->featureContext->getBaseUrl();
@@ -1720,6 +1721,7 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function asUserFileShouldBeTaggedWithTagName($user, $shouldOrNot, $fileOrFolder, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$expected = ($shouldOrNot === "");
 		$responseResourcesArray = $this->featureContext->findEntryFromReportResponse($user);
 		if ($expected) {

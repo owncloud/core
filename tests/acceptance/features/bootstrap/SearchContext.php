@@ -55,6 +55,7 @@ class SearchContext implements Context {
 	public function userSearchesUsingWebDavAPI(
 		$user, $pattern, $limit = null, TableNode $properties = null
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
 		$body
@@ -96,6 +97,8 @@ class SearchContext implements Context {
 	public function fileOrFolderInTheSearchResultShouldContainProperties(
 		$path, $user, TableNode $properties
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$normalizedUser = $this->featureContext->normalizeUsername($user);
 		$this->featureContext->verifyTableNodeColumns($properties, ['name', 'value']);
 		$properties = $properties->getHash();
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
@@ -107,6 +110,9 @@ class SearchContext implements Context {
 		$fileProperties = $fileResult['value'][1]['value'][0]['value'];
 		foreach ($properties as $property) {
 			$foundProperty = false;
+			$property['value'] = $this->featureContext->substituteInLineCodes(
+				$property['value'], $normalizedUser
+			);
 			foreach ($fileProperties as $fileProperty) {
 				if ($fileProperty['name'] === $property['name']) {
 					Assert::assertRegExp(
@@ -151,6 +157,7 @@ class SearchContext implements Context {
 	public function theSearchResultByTagsForUserShouldContainTheseEntries(
 		$user, TableNode $expectedEntries
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumnsCount($expectedEntries, 1);
 		$expectedEntries = $expectedEntries->getRows();
 		$expectedEntriesArray = [];

@@ -1524,14 +1524,15 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @When the client sends a :method to :url without requesttoken
+	 * @When the client sends a :method to :url of user :user without requesttoken
 	 *
 	 * @param string $method
 	 * @param string $url
+	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function sendingAToWithoutRequesttoken($method, $url) {
+	public function sendingAToWithoutRequesttoken($method, $url, $user) {
 		$config = null;
 		if ($this->sourceIpAddress !== null) {
 			$config = [
@@ -1541,7 +1542,9 @@ class FeatureContext extends BehatVariablesContext {
 			];
 		}
 
+		$user = \strtolower($this->getActualUsername($user));
 		$url = $this->getBaseUrl() . $url;
+		$url = $this->substituteInLineCodes($url, $user);
 		$this->response = HttpRequestHelper::sendRequest(
 			$url, $method, null, null, $this->guzzleClientHeaders,
 			null, $config, $this->cookieJar
@@ -1754,8 +1757,13 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string|null
 	 */
 	public function getDisplayNameForUser($userName) {
-		$userName = $this->getActualUsername($userName);
 		$userName = $this->normalizeUsername($userName);
+		if (isset($usernames)) {
+			if (isset($usernames[$userName])) {
+				return $usernames[$userName]['displayname'];
+			}
+		}
+		$userName = $this->getActualUsername($userName);
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['displayname'];
 		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
@@ -1852,11 +1860,11 @@ class FeatureContext extends BehatVariablesContext {
 		$usernames = $this->usersToBeReplaced();
 		if (isset($usernames)) {
 			if (isset($usernames[$functionalUsername])) {
-				return $usernames[$functionalUsername];
+				return $usernames[$functionalUsername]['username'];
 			}
 			$normalizedUsername = $this->normalizeUsername($functionalUsername);
 			if (isset($usernames[$normalizedUsername])) {
-				return $usernames[$normalizedUsername];
+				return $usernames[$normalizedUsername]['username'];
 			}
 		}
 		if ($functionalUsername === "%admin%") {
@@ -2513,6 +2521,14 @@ class FeatureContext extends BehatVariablesContext {
 				"function" => [
 					$this,
 					"getActualUsername"
+				],
+				"parameter" => [$user]
+			],
+			[
+				"code" => "%displayname%",
+				"function" => [
+					$this,
+					"getDisplayNameForUser"
 				],
 				"parameter" => [$user]
 			]

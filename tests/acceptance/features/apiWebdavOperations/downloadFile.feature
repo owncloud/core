@@ -66,7 +66,7 @@ Feature: download file
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
-    When the client sends a "GET" to "/remote.php/dav/files/Alice/welcome.txt" of user "Alice" without requesttoken
+    When the client sends a "GET" to "/remote.php/dav/files/%username%/welcome.txt" of user "Alice" without requesttoken
     Then the downloaded content should start with "Welcome"
     And the HTTP status code should be "200"
     Examples:
@@ -78,7 +78,7 @@ Feature: download file
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
-    When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" of user "Alice" with requesttoken
+    When the client sends a "GET" to "/remote.php/dav/files/%username%/welcome.txt" of user "Alice" with requesttoken
     Then the downloaded content should start with "Welcome"
     And the HTTP status code should be "200"
     Examples:

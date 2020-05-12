@@ -1,7 +1,22 @@
 {
-  "user0": "abc",
-  "user1": "Jasmine",
-  "USER1": "Jasmine",
-  "user3": "123@jim",
-  "user4": "123.Me.test_user@test-organization.org"
+  "user0": {
+    "username" : "abc",
+    "displayname" : "ABC User"
+  },
+  "user1": {
+    "username" : "Jasmine",
+    "displayname" : "Jasmine Baral"
+  },
+  "user2": {
+    "username" : "jas@123",
+    "displayname" : "helloUser"
+  },
+  "user3": {
+    "username" : "123@jim",
+    "displayname": "jim123"
+  },
+  "user4": {
+    "username" : "123.Me.test_user@test-organization.org",
+    "displayname" : "RegularUser"
+  }
 }
