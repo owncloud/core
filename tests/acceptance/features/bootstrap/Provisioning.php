@@ -2096,7 +2096,8 @@ trait Provisioning {
 			$email = $this->getEmailAddressForUser($user);
 
 			if ($email === null) {
-				$email = $user . '@owncloud.org';
+				// escape @ & space if present in userId
+				$email = \str_replace(["@", " "], "", $user) . '@owncloud.org';
 			}
 		}
 
