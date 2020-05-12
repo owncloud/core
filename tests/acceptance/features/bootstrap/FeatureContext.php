@@ -1446,6 +1446,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
+		$user = $this->getActualUsername($user);
 		$loginUrl = $this->getBaseUrl() . '/login';
 		// Request a new session and extract CSRF token
 
@@ -1479,14 +1480,15 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @When the client sends a :method to :url with requesttoken
+	 * @When the client sends a :method to :url of user :user with requesttoken
 	 *
 	 * @param string $method
 	 * @param string $url
+	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function sendingAToWithRequesttoken($method, $url) {
+	public function sendingAToWithRequesttoken($method, $url, $user) {
 		$headers = $this->guzzleClientHeaders;
 
 		$config = null;
@@ -1500,7 +1502,9 @@ class FeatureContext extends BehatVariablesContext {
 
 		$headers['requesttoken'] = $this->requestToken;
 
+		$user = \strtolower($this->getActualUsername($user));
 		$url = $this->getBaseUrl() . $url;
+		$url = $this->substituteInLineCodes($url, $user);
 		$this->response = HttpRequestHelper::sendRequest(
 			$url, $method, null, null, $headers, null, $config, $this->cookieJar
 		);

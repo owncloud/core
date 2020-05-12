@@ -1880,6 +1880,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasUploadedFileToOfSizeBytes($user, $destination, $bytes) {
+		$user = $this->getActualUsername($user);
 		$this->userUploadsAFileToOfSizeBytes($user, $destination, $bytes);
 		$expectedElements = new TableNode([["$destination"]]);
 		$this->checkElementList($user, $expectedElements);

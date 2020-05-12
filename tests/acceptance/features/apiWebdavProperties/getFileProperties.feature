@@ -71,15 +71,15 @@ Feature: get file properties
     And the value of the item "//d:response[2]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file1.txt/"
     And the value of the item "//d:response[3]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file2.txt/"
     Examples:
-      | dav_version | folder_name     | expected_href                                                             |
-      | old         | /upload         | webdav\/upload                                                            |
-      | old         | /strängé folder | webdav\/str%c3%a4ng%c3%a9%20folder                                        |
-      | old         | /C++ folder     | webdav\/C%2b%2b%20folder                                                  |
-      | old         | /नेपाली         | webdav\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80            |
-      | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                |
-      | old         | /folder ?2.txt  | webdav\/folder%20%3f2\.txt                                                |
-      | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                |
-      | new         | /upload         | dav\/files\/%username%\/upload                                                 |
+      | dav_version | folder_name     | expected_href                                                                  |
+      | old         | /upload         | webdav\/upload                                                                 |
+      | old         | /strängé folder | webdav\/str%c3%a4ng%c3%a9%20folder                                             |
+      | old         | /C++ folder     | webdav\/C%2b%2b%20folder                                                       |
+      | old         | /नेपाली         | webdav\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80                 |
+      | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                     |
+      | old         | /folder ?2.txt  | webdav\/folder%20%3f2\.txt                                                     |
+      | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                     |
+      | new         | /upload         | dav\/files\/%username%\/upload                                                           |
       | new         | /strängé folder | dav\/files\/%username%\/str%c3%a4ng%c3%a9%20folder                             |
       | new         | /C++ folder     | dav\/files\/%username%\/C%2b%2b%20folder                                       |
       | new         | /नेपाली         | dav\/files\/%username%\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
@@ -244,7 +244,7 @@ Feature: get file properties
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
-    When the client sends a "PROPFIND" to "/remote.php/dav/files/Alice/welcome.txt" with requesttoken
+    When the client sends a "PROPFIND" to "/remote.php/dav/files/%username%/welcome.txt" of user "Alice" with requesttoken
     Then the HTTP status code should be "207"
     Examples:
       | dav_version |

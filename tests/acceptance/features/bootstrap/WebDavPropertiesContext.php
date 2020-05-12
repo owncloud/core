@@ -209,6 +209,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasSetFollowingPropertiesUsingProppatch($username, $path, $propertiesTable) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->featureContext->verifyTableNodeColumns($propertiesTable, ['propertyName', 'propertyValue']);
 		$properties = $propertiesTable->getColumnsHash();
 		$this->featureContext->setResponse(
@@ -237,6 +238,7 @@ class WebDavPropertiesContext implements Context {
 	public function userGetsPropertiesOfFile(
 		$user, $propertyName, $namespace, $path
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$properties = [
 			$namespace => $propertyName
 		];
@@ -284,6 +286,7 @@ class WebDavPropertiesContext implements Context {
 	public function setPropertyWithNamespaceOfResource(
 		$user, $propertyName, $namespace, $path, $propertyValue
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$response =  WebDavHelper::proppatch(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
@@ -753,6 +756,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function theResponseShouldHavePropertyWithValue($username, $expectedPropTable) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->featureContext->verifyTableNodeColumns($expectedPropTable, ['resource', 'propertyName', 'propertyValue']);
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 
