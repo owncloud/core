@@ -127,7 +127,7 @@ class SharedWithYouPage extends FilesPageBasic {
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {
 			if (\is_array($name)) {
-				$name = \implode($name);
+				$name = \implode('', $name);
 			}
 			$message = "INFORMATION: retried to decline file '$name' $counter times";
 			echo $message;

@@ -110,7 +110,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 				$xpathString .= ")";
 			}
 
-			$name = \implode($name);
+			$name = \implode('', $name);
 		} else {
 			$xpathString = $this->quotedText($name);
 		}
