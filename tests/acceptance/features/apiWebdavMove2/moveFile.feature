@@ -13,7 +13,7 @@ Feature: move (rename) file
     Given using <dav_version> DAV path
     When user "Alice" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the following headers should match these regular expressions
+    And the following headers should match these regular expressions for user "user0"
       | ETag | /^"[a-f0-9]{1,32}"$/ |
     And the content of file "/FOLDER/textfile0.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
     Examples:
@@ -26,7 +26,7 @@ Feature: move (rename) file
     Given using <dav_version> DAV path
     When user "Alice" moves file "/textfile0.txt" to "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the following headers should match these regular expressions
+    And the following headers should match these regular expressions for user "user0"
       | ETag | /^"[a-f0-9]{1,32}"$/ |
     And the content of file "/textfile1.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
     Examples:

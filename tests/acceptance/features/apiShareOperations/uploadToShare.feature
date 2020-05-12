@@ -41,7 +41,7 @@ Feature: sharing
       | shareWith   | Brian  |
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the following headers should match these regular expressions
+    And the following headers should match these regular expressions for user "user1"
       | ETag | /^"[a-f0-9]{1,32}"$/ |
     Examples:
       | dav-path |
@@ -60,7 +60,7 @@ Feature: sharing
       | shareWith   | grp1   |
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the following headers should match these regular expressions
+    And the following headers should match these regular expressions for user "user1"
       | ETag | /^"[a-f0-9]{1,32}"$/ |
     Examples:
       | dav-path |
@@ -109,7 +109,7 @@ Feature: sharing
     And user "Alice" has shared file "myfile.txt" with user "Brian"
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the following headers should match these regular expressions
+    And the following headers should match these regular expressions for user "user1"
       | ETag | /^"[a-f0-9]{1,32}"$/ |
     Examples:
       | dav-path |
