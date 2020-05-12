@@ -11,9 +11,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |
@@ -26,9 +26,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |
@@ -41,9 +41,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/CHILD$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |
@@ -56,9 +56,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/CHILD$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |
@@ -71,9 +71,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |
@@ -86,9 +86,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD\/child.txt$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/CHILD\/child.txt$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |
@@ -101,9 +101,9 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the value of the item "//d:lockroot/d:href" in the response to user "user0" should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
-    And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
+    And the value of the item "//d:timeout" in the response to user "user0" should match "/Second-\d+/"
     Examples:
       | lock-scope |
       | shared     |

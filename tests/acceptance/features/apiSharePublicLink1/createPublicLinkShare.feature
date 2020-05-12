@@ -64,11 +64,11 @@ Feature: create a public link share
     And the public download of the last publicly shared file using the old public WebDAV API with password "%regular%" should fail with HTTP status code "401"
     And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
     And the public download of the last publicly shared file using the new public WebDAV API with password "%regular%" should fail with HTTP status code "401"
-    And the value of the item "//s:message" in the response should match "/Username or password was incorrect/"
+    And the value of the item "//s:message" in the response to user "user0" should match "/Username or password was incorrect/"
     And the public download of the last publicly shared file using the old public WebDAV API without a password should fail with HTTP status code "401"
     And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
     And the public download of the last publicly shared file using the new public WebDAV API without a password should fail with HTTP status code "401"
-    And the value of the item "//s:message" in the response should match "/No 'Authorization: Basic' header found/"
+    And the value of the item "//s:message" in the response to user "user0" should match "/No 'Authorization: Basic' header found/"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

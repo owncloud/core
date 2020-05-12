@@ -29,17 +29,17 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
-    And the value of the item "//d:response/d:href" in the response should match "/remote\.php\/<expected_href>/"
+    And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>/"
     Examples:
       | dav_version | file_name     | expected_href                          |
       | old         | /C++ file.cpp | webdav\/C%2b%2b%20file\.cpp            |
       | old         | /file #2.txt  | webdav\/file%20%232\.txt               |
       | old         | /file ?2.txt  | webdav\/file%20%3f2\.txt               |
       | old         | /file &2.txt  | webdav\/file%20%262\.txt               |
-      | new         | /C++ file.cpp | dav\/files\/Alice\/C%2b%2b%20file\.cpp |
-      | new         | /file #2.txt  | dav\/files\/Alice\/file%20%232\.txt    |
-      | new         | /file ?2.txt  | dav\/files\/Alice\/file%20%3f2\.txt    |
-      | new         | /file &2.txt  | dav\/files\/Alice\/file%20%262\.txt    |
+      | new         | /C++ file.cpp | dav\/files\/%username%\/C%2b%2b%20file\.cpp |
+      | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt    |
+      | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3f2\.txt    |
+      | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt    |
 
   @skipOnOcV10 @issue-ocis-reva-214
   #after fixing all issues delete this Scenario and use the one above
@@ -48,17 +48,17 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
-    And the value of the item "//d:response/d:href" in the response should match "/remote\.php\/<expected_href>/"
+    And the value of the item "//d:response/d:href" in the response to user "user0" should match "/remote\.php\/<expected_href>/"
     Examples:
       | dav_version | file_name     | expected_href                        |
       | old         | /C++ file.cpp | webdav\/C\+\+%20file\.cpp            |
       | old         | /file #2.txt  | webdav\/file%20%232\.txt             |
       | old         | /file ?2.txt  | webdav\/file%20%3F2\.txt             |
       | old         | /file &2.txt  | webdav\/file%20&2\.txt               |
-      | new         | /C++ file.cpp | dav\/files\/Alice\/C\+\+%20file\.cpp |
-      | new         | /file #2.txt  | dav\/files\/Alice\/file%20%232\.txt  |
-      | new         | /file ?2.txt  | dav\/files\/Alice\/file%20%3F2\.txt  |
-      | new         | /file &2.txt  | dav\/files\/Alice\/file%20&2\.txt    |
+      | new         | /C++ file.cpp | dav\/files\/%username%\/C\+\+%20file\.cpp |
+      | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt  |
+      | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3F2\.txt  |
+      | new         | /file &2.txt  | dav\/files\/%username%\/file%20&2\.txt    |
 
   @skipOnOcis @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
@@ -67,9 +67,9 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
     When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
-    Then the value of the item "//d:response[1]/d:href" in the response should match "/remote\.php\/<expected_href>\//"
-    And the value of the item "//d:response[2]/d:href" in the response should match "/remote\.php\/<expected_href>\/file1.txt/"
-    And the value of the item "//d:response[3]/d:href" in the response should match "/remote\.php\/<expected_href>\/file2.txt/"
+    Then the value of the item "//d:response[1]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\//"
+    And the value of the item "//d:response[2]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file1.txt/"
+    And the value of the item "//d:response[3]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file2.txt/"
     Examples:
       | dav_version | folder_name     | expected_href                                                             |
       | old         | /upload         | webdav\/upload                                                            |
@@ -79,13 +79,13 @@ Feature: get file properties
       | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                |
       | old         | /folder ?2.txt  | webdav\/folder%20%3f2\.txt                                                |
       | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                |
-      | new         | /upload         | dav\/files\/Alice\/upload                                                 |
-      | new         | /strängé folder | dav\/files\/Alice\/str%c3%a4ng%c3%a9%20folder                             |
-      | new         | /C++ folder     | dav\/files\/Alice\/C%2b%2b%20folder                                       |
-      | new         | /नेपाली         | dav\/files\/Alice\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
-      | new         | /folder #2.txt  | dav\/files\/Alice\/folder%20%232\.txt                                     |
-      | new         | /folder ?2.txt  | dav\/files\/Alice\/folder%20%3f2\.txt                                     |
-      | new         | /folder &2.txt  | dav\/files\/Alice\/folder%20%262\.txt                                     |
+      | new         | /upload         | dav\/files\/%username%\/upload                                                 |
+      | new         | /strängé folder | dav\/files\/%username%\/str%c3%a4ng%c3%a9%20folder                             |
+      | new         | /C++ folder     | dav\/files\/%username%\/C%2b%2b%20folder                                       |
+      | new         | /नेपाली         | dav\/files\/%username%\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
+      | new         | /folder #2.txt  | dav\/files\/%username%\/folder%20%232\.txt                                     |
+      | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3f2\.txt                                     |
+      | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20%262\.txt                                     |
 
   @skipOnOcV10 @issue-ocis-reva-214
   #after fixing all issues delete this Scenario and use the one above
@@ -95,9 +95,9 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
     When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
-    Then the value of the item "//d:response[1]/d:href" in the response should match "/remote\.php\/<expected_href>\//"
-    And the value of the item "//d:response[2]/d:href" in the response should match "/remote\.php\/<expected_href>\/file1.txt/"
-    And the value of the item "//d:response[3]/d:href" in the response should match "/remote\.php\/<expected_href>\/file2.txt/"
+    Then the value of the item "//d:response[1]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\//"
+    And the value of the item "//d:response[2]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file1.txt/"
+    And the value of the item "//d:response[3]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file2.txt/"
     Examples:
       | dav_version | folder_name     | expected_href                                                             |
       | old         | /upload         | webdav\/upload                                                            |
@@ -107,13 +107,13 @@ Feature: get file properties
       | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                |
       | old         | /folder ?2.txt  | webdav\/folder%20%3F2\.txt                                                |
       | old         | /folder &2.txt  | webdav\/folder%20&2\.txt                                                  |
-      | new         | /upload         | dav\/files\/Alice\/upload                                                 |
-      | new         | /strängé folder | dav\/files\/Alice\/str%C3%A4ng%C3%A9%20folder                             |
-      | new         | /C++ folder     | dav\/files\/Alice\/C\+\+%20folder                                           |
-      | new         | /नेपाली         | dav\/files\/Alice\/%E0%A4%A8%E0%A5%87%E0%A4%AA%E0%A4%BE%E0%A4%B2%E0%A5%80 |
-      | new         | /folder #2.txt  | dav\/files\/Alice\/folder%20%232\.txt                                     |
-      | new         | /folder ?2.txt  | dav\/files\/Alice\/folder%20%3F2\.txt                                     |
-      | new         | /folder &2.txt  | dav\/files\/Alice\/folder%20&2\.txt                                       |
+      | new         | /upload         | dav\/files\/%username%\/upload                                                 |
+      | new         | /strängé folder | dav\/files\/%username%\/str%C3%A4ng%C3%A9%20folder                             |
+      | new         | /C++ folder     | dav\/files\/%username%\/C\+\+%20folder                                           |
+      | new         | /नेपाली         | dav\/files\/%username%\/%E0%A4%A8%E0%A5%87%E0%A4%AA%E0%A4%BE%E0%A4%B2%E0%A5%80 |
+      | new         | /folder #2.txt  | dav\/files\/%username%\/folder%20%232\.txt                                     |
+      | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3F2\.txt                                     |
+      | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20&2\.txt                                       |
 
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
