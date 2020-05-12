@@ -18,8 +18,8 @@ Feature: upload file using new chunking
       | 2      | BBBBB   |
       | 3      | CCCCC   |
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
@@ -35,8 +35,8 @@ Feature: upload file using new chunking
       | 2      | BBBBB   |
       | 1      | AAAAA   |
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
@@ -52,8 +52,8 @@ Feature: upload file using new chunking
       | 3      | CCCCC   |
       | 1      | AAAAA   |
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
@@ -70,8 +70,8 @@ Feature: upload file using new chunking
       | 2      | BBBBB   |
       | 3      | CCCCC   |
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
@@ -96,8 +96,8 @@ Feature: upload file using new chunking
     And user "Alice" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
     When user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with size 5 using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status       | /^error$/                                         |
       | errorCode    | /^400$/                                           |
@@ -110,8 +110,8 @@ Feature: upload file using new chunking
     And user "Alice" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
     When user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with size 15 using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
@@ -128,8 +128,8 @@ Feature: upload file using new chunking
     And user "Alice" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/<file-name>" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |

@@ -1266,6 +1266,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function jobStatusValuesShouldMatchRegEx($user, $table) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($table, 2);
 		$headerArray = $this->response->getHeader("OC-JobStatus-Location");
 		$url = $headerArray[0];
@@ -1280,7 +1281,7 @@ trait WebDav {
 				$expectedKey, $result, "response does not have expected key '$expectedKey'"
 			);
 			$expectedValue = $this->substituteInLineCodes(
-				$row[1], ['preg_quote' => ['/']]
+				$row[1], $user, ['preg_quote' => ['/']]
 			);
 			Assert::assertNotFalse(
 				(bool) \preg_match($expectedValue, $result[$expectedKey]),
@@ -1430,6 +1431,7 @@ trait WebDav {
 	public function checkElementList(
 		$user, $elements, $expectedToBeListed = true
 	) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($elements, 1);
 		$responseXmlObject = $this->listFolder($user, "/", "infinity");
 		$elementRows = $elements->getRows();
@@ -1947,6 +1949,7 @@ trait WebDav {
 		$content,
 		TableNode $table
 	) {
+		$user = $this->getActualUsername($user);
 		foreach ($table->getHash() as $row) {
 			$this->userUploadsAFileWithContentTo(
 				$user,
@@ -2524,6 +2527,7 @@ trait WebDav {
 	public function uploadTheFollowingChunksUsingNewChunking(
 		$user, $type, $file, TableNode $chunkDetails, $checkActions = false
 	) {
+		$user = $this->getActualUsername($user);
 		$async = false;
 		if ($type === "asynchronously") {
 			$async = true;
@@ -2588,6 +2592,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCreatesANewChunkingUploadWithId($user, $id) {
+		$user = $this->getActualUsername($user);
 		$destination = "/uploads/$user/$id";
 		$this->response = $this->makeDavRequest(
 			$user, 'MKCOL', $destination, [], null, "uploads"
@@ -2618,6 +2623,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id) {
+		$user = $this->getActualUsername($user);
 		$destination = "/uploads/$user/$id/$num";
 		$this->response = $this->makeDavRequest(
 			$user, 'PUT', $destination, [], $data, "uploads"
@@ -2802,6 +2808,7 @@ trait WebDav {
 	 * @return void
 	 */
 	private function moveNewDavChunkToFinalFile($user, $id, $destination, $headers) {
+		$user = $this->getActualUsername($user);
 		$source = "/uploads/$user/$id/.file";
 		$headers['Destination'] = $this->destinationHeaderValue(
 			$user, $destination
@@ -2910,20 +2917,22 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the following headers should match these regular expressions
+	 * @Then the following headers should match these regular expressions for user :user
 	 *
+	 * @param string $user
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function headersShouldMatchRegularExpressions(TableNode $table) {
+	public function headersShouldMatchRegularExpressions($user, TableNode $table) {
 		$this->verifyTableNodeColumnsCount($table, 2);
+		$user = \strtolower($this->getActualUsername($user));
 		foreach ($table->getTable() as $header) {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$expectedHeaderValue = $this->substituteInLineCodes(
-				$expectedHeaderValue, ['preg_quote' => ['/']]
+				$expectedHeaderValue, $user, ['preg_quote' => ['/']]
 			);
 
 			$returnedHeaders = $this->response->getHeader($headerName);
@@ -3029,6 +3038,7 @@ trait WebDav {
 	 * @return int
 	 */
 	public function getFileIdForPath($user, $path) {
+		$user = $this->getActualUsername($user);
 		try {
 			return WebDavHelper::getFileIdForPath(
 				$this->getBaseUrl(),
@@ -3062,6 +3072,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userFileShouldHaveStoredId($user, $path) {
+		$user = $this->getActualUsername($user);
 		$currentFileID = $this->getFileIdForPath($user, $path);
 		Assert::assertEquals(
 			$currentFileID,

@@ -17,7 +17,7 @@ Feature: upload file using old chunking
       | 2      | BBBBB   |
       | 3      | CCCCC   |
     Then the HTTP status code should be "201"
-    And the following headers should match these regular expressions
+    And the following headers should match these regular expressions for user "user0"
       #| ETag | /^"[a-f0-9]{1,32}"$/ |
       | ETag | /^[a-f0-9]{1,32}$/ |
     Then as "Alice" file "/myChunkedFile.txt" should exist
