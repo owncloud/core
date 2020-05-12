@@ -24,25 +24,27 @@
  *
  */
 
-namespace OCA\Provisioning_API\Tests;
+namespace OCA\Provisioning_API\Tests\Controller;
 
-use OCA\Provisioning_API\Groups;
+use OCA\Provisioning_API\Controller\GroupsController;
 use OCP\API;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserSession;
+use PHPUnit\Framework\MockObject\MockObject;
+use Test\TestCase;
 
-class GroupsTest extends \Test\TestCase {
-	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject */
+class GroupsControllerTest extends TestCase {
+	/** @var IGroupManager|MockObject */
 	protected $groupManager;
-	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserSession|MockObject */
 	protected $userSession;
-	/** @var IRequest|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var IRequest|MockObject */
 	protected $request;
-	/** @var \OC\SubAdmin|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var \OC\SubAdmin|MockObject */
 	protected $subAdminManager;
-	/** @var Groups */
+	/** @var GroupsController */
 	protected $api;
 
 	protected function setUp(): void {
@@ -61,16 +63,17 @@ class GroupsTest extends \Test\TestCase {
 
 		$this->userSession = $this->createMock('OCP\IUserSession');
 		$this->request = $this->createMock('OCP\IRequest');
-		$this->api = new Groups(
+		$this->api = new GroupsController(
+			'provisioning_api',
+			$this->request,
 			$this->groupManager,
-			$this->userSession,
-			$this->request
+			$this->userSession
 		);
 	}
 
 	/**
 	 * @param string $gid
-	 * @return \OCP\IGroup|\PHPUnit\Framework\MockObject\MockObject
+	 * @return \OCP\IGroup|MockObject
 	 */
 	private function createGroup($gid) {
 		$group = $this->createMock('OCP\IGroup');
@@ -82,7 +85,7 @@ class GroupsTest extends \Test\TestCase {
 
 	/**
 	 * @param string $uid
-	 * @return \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject
+	 * @return \OCP\IUser|MockObject
 	 */
 	private function createUser($uid) {
 		$user = $this->createMock('OCP\IUser');

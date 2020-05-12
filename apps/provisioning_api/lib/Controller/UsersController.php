@@ -10,7 +10,7 @@
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,22 +27,23 @@
  *
  */
 
-namespace OCA\Provisioning_API;
+namespace OCA\Provisioning_API\Controller;
 
 use OC\OCS\Result;
 use OC_Helper;
 use OCP\API;
-use OCP\Files\FileInfo;
+use OCP\AppFramework\OCSController;
 use OCP\Files\NotFoundException;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\ILogger;
+use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Util;
 
-class Users {
+class UsersController extends OCSController {
 
 	/** @var IUserManager */
 	private $userManager;
@@ -56,16 +57,22 @@ class Users {
 	private $twoFactorAuthManager;
 
 	/**
+	 * @param string $appName
+	 * @param IRequest $request
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
+	 * @param \OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager
 	 */
-	public function __construct(IUserManager $userManager,
+	public function __construct($appName,
+								IRequest $request,
+								IUserManager $userManager,
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								ILogger $logger,
 								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
+		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -74,14 +81,17 @@ class Users {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * returns a list of users
 	 *
 	 * @return Result
 	 */
 	public function getUsers() {
-		$search = !empty($_GET['search']) ? $_GET['search'] : '';
-		$limit = !empty($_GET['limit']) ? $_GET['limit'] : null;
-		$offset = !empty($_GET['offset']) ? $_GET['offset'] : null;
+		$search = $this->request->getParam('search', '');
+		$limit = $this->request->getParam('limit');
+		$offset = $this->request->getParam('offset');
 
 		// Check if user is logged in
 		$user = $this->userSession->getUser();
@@ -121,16 +131,19 @@ class Users {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * @return Result
 	 */
 	public function addUser() {
-		$userId = isset($_POST['userid']) ? $_POST['userid'] : null;
-		$password = isset($_POST['password']) ? $_POST['password'] : null;
-		$groups = isset($_POST['groups']) ? $_POST['groups'] : null;
+		$userId = $this->request->getParam('userid');
+		$password = $this->request->getParam('password');
+		$groups = $this->request->getParam('groups');
 		$user = $this->userSession->getUser();
+
 		$isAdmin = $this->groupManager->isAdmin($user->getUID());
 		$subAdminManager = $this->groupManager->getSubAdmin();
-
 		if (!$isAdmin && !$subAdminManager->isSubAdmin($user)) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
@@ -177,17 +190,18 @@ class Users {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * gets user info
 	 *
-	 * @param array $parameters
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function getUser($parameters) {
-		$userId = $parameters['userid'];
-
+	public function getUser($userId) {
 		// Check if user is logged in
-		$currentLoggedInUser = $this->userSession->getUser();
-		if ($currentLoggedInUser === null) {
+		$loggedInUser = $this->userSession->getUser();
+		if ($loggedInUser === null) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
@@ -200,12 +214,12 @@ class Users {
 		}
 
 		// Admin? Or SubAdmin?
-		if ($this->groupManager->isAdmin($currentLoggedInUser->getUID())
-			|| $this->groupManager->getSubAdmin()->isUserAccessible($currentLoggedInUser, $targetUserObject)) {
+		if ($this->groupManager->isAdmin($loggedInUser->getUID())
+			|| $this->groupManager->getSubAdmin()->isUserAccessible($loggedInUser, $targetUserObject)) {
 			$data['enabled'] = $targetUserObject->isEnabled() ? 'true' : 'false';
 		} else {
 			// Check they are looking up themselves
-			if (\strcasecmp($currentLoggedInUser->getUID(), $userId) !== 0) {
+			if (\strcasecmp($loggedInUser->getUID(), $userId) !== 0) {
 				return new Result(null, API::RESPOND_UNAUTHORISED);
 			}
 		}
@@ -222,27 +236,27 @@ class Users {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * edit users
 	 *
-	 * @param array $parameters
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function editUser($parameters) {
-		/** @var string $targetUserId */
-		$targetUserId = $parameters['userid'];
-
+	public function editUser($userId) {
 		// Check if user is logged in
 		$currentLoggedInUser = $this->userSession->getUser();
 		if ($currentLoggedInUser === null) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$targetUser = $this->userManager->get($targetUserId);
+		$targetUser = $this->userManager->get($userId);
 		if ($targetUser === null) {
 			return new Result(null, 997);
 		}
 
-		if ($targetUserId === $currentLoggedInUser->getUID()) {
+		if ($userId === $currentLoggedInUser->getUID()) {
 			// Editing self (display, email)
 			$permittedFields[] = 'display';
 			$permittedFields[] = 'displayname';
@@ -271,17 +285,19 @@ class Users {
 			}
 		}
 		// Check if permitted to edit this field
-		if (!\in_array($parameters['_put']['key'], $permittedFields)) {
+		$key = $this->request->getParam('key');
+		$value = $this->request->getParam('value');
+		if (!\in_array($key, $permittedFields)) {
 			return new Result(null, 997);
 		}
 		// Process the edit
-		switch ($parameters['_put']['key']) {
+		switch ($key) {
 			case 'display':
 			case 'displayname':
-				$targetUser->setDisplayName($parameters['_put']['value']);
+				$targetUser->setDisplayName($value);
 				break;
 			case 'quota':
-				$quota = $parameters['_put']['value'];
+				$quota = $value;
 				if ($quota !== 'none' && $quota !== 'default') {
 					if (\is_numeric($quota)) {
 						$quota = \floatval($quota);
@@ -289,7 +305,7 @@ class Users {
 						$quota = Util::computerFileSize($quota);
 					}
 					if ($quota === false) {
-						return new Result(null, 103, "Invalid quota value {$parameters['_put']['value']}");
+						return new Result(null, 103, "Invalid quota value $value");
 					}
 					$quota = Util::humanFileSize($quota);
 				}
@@ -297,22 +313,21 @@ class Users {
 				break;
 			case 'password':
 				try {
-					$targetUser->setPassword($parameters['_put']['value']);
+					$targetUser->setPassword($value);
 				} catch (\Exception $e) {
 					return new Result(null, 403, $e->getMessage());
 				}
 				break;
 			case 'two_factor_auth_enabled':
-				if ($parameters['_put']['value'] === true) {
+				if ($value === true) {
 					$this->twoFactorAuthManager->enableTwoFactorAuthentication($targetUser);
 				} else {
 					$this->twoFactorAuthManager->disableTwoFactorAuthentication($targetUser);
 				}
 				break;
 			case 'email':
-				$emailAddress = $parameters['_put']['value'];
-				if (($emailAddress === '') || \filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
-					$targetUser->setEMailAddress($emailAddress);
+				if (($value === '') || \filter_var($value, FILTER_VALIDATE_EMAIL)) {
+					$targetUser->setEMailAddress($value);
 				} else {
 					return new Result(null, 102);
 				}
@@ -325,25 +340,28 @@ class Users {
 	}
 
 	/**
-	 * @param array $parameters
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function deleteUser($parameters) {
+	public function deleteUser($userId) {
 		// Check if user is logged in
-		$currentLoggedInUser = $this->userSession->getUser();
-		if ($currentLoggedInUser === null) {
+		$loggedInUser = $this->userSession->getUser();
+		if ($this->isSubAdmin($loggedInUser) === false) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$targetUser = $this->userManager->get($parameters['userid']);
+		$targetUser = $this->userManager->get($userId);
 
-		if ($targetUser === null || $targetUser->getUID() === $currentLoggedInUser->getUID()) {
+		if ($targetUser === null || $targetUser->getUID() === $loggedInUser->getUID()) {
 			return new Result(null, 101);
 		}
 
 		// If not permitted
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if (!$this->groupManager->isAdmin($currentLoggedInUser->getUID()) && !$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)) {
+		if (!$this->groupManager->isAdmin($loggedInUser->getUID()) && !$subAdminManager->isUserAccessible($loggedInUser, $targetUser)) {
 			return new Result(null, 997);
 		}
 
@@ -356,41 +374,47 @@ class Users {
 	}
 
 	/**
-	 * @param array $parameters
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function disableUser($parameters) {
-		return $this->setEnabled($parameters, false);
+	public function disableUser($userId) {
+		return $this->setEnabled($userId, false);
 	}
 
 	/**
-	 * @param array $parameters
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function enableUser($parameters) {
-		return $this->setEnabled($parameters, true);
+	public function enableUser($userId) {
+		return $this->setEnabled($userId, true);
 	}
 
 	/**
-	 * @param array $parameters
+	 * @param string $userId
 	 * @param bool $value
 	 * @return Result
 	 */
-	private function setEnabled($parameters, $value) {
+	private function setEnabled($userId, $value) {
 		// Check if user is logged in
-		$currentLoggedInUser = $this->userSession->getUser();
-		if ($currentLoggedInUser === null) {
+		$loggedInUser = $this->userSession->getUser();
+		if ($this->isSubAdmin($loggedInUser) === false) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$targetUser = $this->userManager->get($parameters['userid']);
-		if ($targetUser === null || $targetUser->getUID() === $currentLoggedInUser->getUID()) {
+		$targetUser = $this->userManager->get($userId);
+		if ($targetUser === null || $targetUser->getUID() === $loggedInUser->getUID()) {
 			return new Result(null, 101);
 		}
 
 		// If not permitted
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if (!$this->groupManager->isAdmin($currentLoggedInUser->getUID()) && !$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)) {
+		if (!$this->groupManager->isAdmin($loggedInUser->getUID()) && !$subAdminManager->isUserAccessible($loggedInUser, $targetUser)) {
 			return new Result(null, 997);
 		}
 
@@ -400,17 +424,20 @@ class Users {
 	}
 
 	/**
-	 * @param array $parameters
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function getUsersGroups($parameters) {
+	public function getUsersGroups($userId) {
 		// Check if user is logged in
 		$loggedInUser = $this->userSession->getUser();
 		if ($loggedInUser === null) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$targetUser = $this->userManager->get($parameters['userid']);
+		$targetUser = $this->userManager->get($userId);
 		if ($targetUser === null) {
 			return new Result(null, API::RESPOND_NOT_FOUND);
 		}
@@ -464,17 +491,39 @@ class Users {
 	}
 
 	/**
-	 * @param array $parameters
+	 * @param IUser $user
+	 * @return bool
+	 */
+	private function isSubAdmin(IUser $user) {
+		if ($user === null) {
+			return false;
+		}
+		$uid = $user->getUID();
+		if (
+			$this->groupManager->isAdmin($uid)
+			|| $this->groupManager->getSubAdmin()->isSubAdmin($user)
+		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function addToGroup($parameters) {
+	public function addToGroup($userId) {
 		// Check if user is logged in
 		$user = $this->userSession->getUser();
-		if ($user === null) {
+		if ($this->isSubAdmin($user) === false) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$groupId = isset($_POST['groupid']) ? $_POST['groupid'] : null;
+		$groupId = $this->request->getParam('groupid', null);
 		if (($groupId === '') || ($groupId === null) || ($groupId === false)) {
 			return new Result(null, 101);
 		}
@@ -488,7 +537,7 @@ class Users {
 			return new Result(null, 104);
 		}
 
-		$targetUser = $this->userManager->get($parameters['userid']);
+		$targetUser = $this->userManager->get($userId);
 		if ($targetUser === null) {
 			return new Result(null, 103);
 		}
@@ -499,22 +548,25 @@ class Users {
 	}
 
 	/**
-	 * @param array $parameters
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function removeFromGroup($parameters) {
+	public function removeFromGroup($userId) {
 		// Check if user is logged in
 		$loggedInUser = $this->userSession->getUser();
-		if ($loggedInUser === null) {
+		if ($this->isSubAdmin($loggedInUser) === false) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$group = isset($parameters['_delete']['groupid']) ? $parameters['_delete']['groupid'] : null;
-		if (($group === '') || ($group === null) || ($group === false)) {
+		$groupId = $this->request->getParam('groupid', null);
+		if (($groupId === '') || ($groupId === null) || ($groupId === false)) {
 			return new Result(null, 101);
 		}
 
-		$group = $this->groupManager->get($group);
+		$group = $this->groupManager->get($groupId);
 		if ($group === null) {
 			return new Result(null, 102);
 		}
@@ -523,12 +575,12 @@ class Users {
 			return new Result(null, 104);
 		}
 
-		$targetUser = $this->userManager->get($parameters['userid']);
+		$targetUser = $this->userManager->get($userId);
 		if ($targetUser === null) {
 			return new Result(null, 103);
 		}
 		// Check they aren't removing themselves from 'admin' or their 'subadmin; group
-		if ($parameters['userid'] === $loggedInUser->getUID()) {
+		if ($userId === $loggedInUser->getUID()) {
 			if ($this->groupManager->isAdmin($loggedInUser->getUID())) {
 				if ($group->getGID() === 'admin') {
 					return new Result(null, 105, 'Cannot remove yourself from the admin group');
@@ -553,14 +605,17 @@ class Users {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 *
 	 * Creates a subadmin
 	 *
-	 * @param array $parameters
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function addSubAdmin($parameters) {
-		$group = $this->groupManager->get($_POST['groupid']);
-		$user = $this->userManager->get($parameters['userid']);
+	public function addSubAdmin($userId) {
+		$groupId = $this->request->getParam('groupid');
+		$group = $this->groupManager->get($groupId);
+		$user = $this->userManager->get($userId);
 
 		// Check if the user exists
 		if ($user === null) {
@@ -568,10 +623,10 @@ class Users {
 		}
 		// Check if group exists
 		if ($group === null) {
-			return new Result(null, 102, 'Group:'.$_POST['groupid'].' does not exist');
+			return new Result(null, 102, "Group:$groupId does not exist");
 		}
 		// Check if trying to make subadmin of admin group
-		if (\strtolower($_POST['groupid']) === 'admin') {
+		if (\strtolower($groupId) === 'admin') {
 			return new Result(null, 103, 'Cannot create subadmins for admin group');
 		}
 
@@ -590,14 +645,17 @@ class Users {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 *
 	 * Removes a subadmin from a group
 	 *
-	 * @param array $parameters
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function removeSubAdmin($parameters) {
-		$group = $this->groupManager->get($parameters['_delete']['groupid']);
-		$user = $this->userManager->get($parameters['userid']);
+	public function removeSubAdmin($userId) {
+		$groupId = $this->request->getParam('groupid', null);
+		$group = $this->groupManager->get($groupId);
+		$user = $this->userManager->get($userId);
 		$subAdminManager = $this->groupManager->getSubAdmin();
 
 		// Check if the user exists
@@ -622,13 +680,15 @@ class Users {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 *
 	 * Get the groups a user is a subadmin of
 	 *
-	 * @param array $parameters
+	 * @param string $userId
 	 * @return Result
 	 */
-	public function getUserSubAdminGroups($parameters) {
-		$user = $this->userManager->get($parameters['userid']);
+	public function getUserSubAdminGroups($userId) {
+		$user = $this->userManager->get($userId);
 		// Check if the user exists
 		if ($user === null) {
 			return new Result(null, 101, 'User does not exist');

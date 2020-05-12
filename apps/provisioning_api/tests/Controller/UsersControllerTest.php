@@ -10,7 +10,7 @@
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,45 +27,46 @@
  *
  */
 
-namespace OCA\Provisioning_API\Tests;
+namespace OCA\Provisioning_API\Tests\Controller;
 
 use OC\OCS\Result;
-use OCA\Provisioning_API\Users;
+use OCA\Provisioning_API\Controller\UsersController;
 use OCP\API;
 use OCP\ILogger;
+use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
-use Test\TestCase as OriginalTest;
+use Test\TestCase;
 use OCP\IUser;
 use OC\SubAdmin;
 use OCP\IGroup;
 use OC\Authentication\TwoFactorAuth\Manager;
 
-class UsersTest extends OriginalTest {
-
-	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
+class UsersControllerTest extends TestCase {
+	/** @var IRequest | MockObject */
+	protected $request;
+	/** @var IUserManager | MockObject */
 	protected $userManager;
-	/** @var \OC\Group\Manager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var \OC\Group\Manager | MockObject */
 	protected $groupManager;
-	/** @var IUserSession | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserSession | MockObject */
 	protected $userSession;
-	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject */
+	/** @var ILogger | MockObject */
 	protected $logger;
-	/** @var Users | PHPUnit\Framework\MockObject\MockObject */
+	/** @var UsersController | MockObject */
 	protected $api;
-	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var \OC\Authentication\TwoFactorAuth\Manager | MockObject */
 	private $twoFactorAuthManager;
 
 	protected function tearDown(): void {
-		$_GET = null;
-		$_POST = null;
 		parent::tearDown();
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
 
+		$this->request = $this->createMock(IRequest::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->groupManager = $this->getMockBuilder(\OC\Group\Manager::class)
 			->disableOriginalConstructor()
@@ -79,8 +80,10 @@ class UsersTest extends OriginalTest {
 		$this->twoFactorAuthManager->expects($this->any())
 			->method('isTwoFactorAuthenticated')
 			->willReturn(false);
-		$this->api = $this->getMockBuilder(Users::class)
+		$this->api = $this->getMockBuilder(UsersController::class)
 			->setConstructorArgs([
+				'provisioning_api',
+				$this->request,
 				$this->userManager,
 				$this->groupManager,
 				$this->userSession,

@@ -23,11 +23,13 @@
  *
  */
 
-namespace OCA\Provisioning_API\Tests;
+namespace OCA\Provisioning_API\Tests\Controller;
 
-use OCA\Provisioning_API\Apps;
+use OCA\Provisioning_API\Controller\AppsController;
+use OCA\Provisioning_API\Tests\TestCase;
 use OCP\API;
 use OCP\App\IAppManager;
+use OCP\IRequest;
 use OCP\IUserSession;
 
 /**
@@ -35,12 +37,15 @@ use OCP\IUserSession;
  *
  * @group DB
  *
- * @package OCA\Provisioning_API\Tests
+ * @package OCA\Provisioning_API\Tests\Controller
  */
-class AppsTest extends TestCase {
+class AppsControllerTest extends TestCase {
+	/** @var IRequest */
+	private $request;
+
 	/** @var IAppManager */
 	private $appManager;
-	/** @var Apps */
+	/** @var AppsController */
 	private $api;
 	/** @var IUserSession */
 	private $userSession;
@@ -51,17 +56,22 @@ class AppsTest extends TestCase {
 		$this->appManager = \OC::$server->getAppManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userSession = \OC::$server->getUserSession();
-		$this->api = new Apps($this->appManager);
+		$this->request = $this->createMock(IRequest::class);
+		$this->api = new AppsController(
+			'provisioning_api',
+			$this->request,
+			$this->appManager
+		);
 	}
 
 	public function testGetAppInfo() {
-		$result = $this->api->getAppInfo(['appid' => 'provisioning_api']);
+		$result = $this->api->getAppInfo('provisioning_api');
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertTrue($result->succeeded());
 	}
 
 	public function testGetAppInfoOnBadAppID() {
-		$result = $this->api->getAppInfo(['appid' => 'not_provisioning_api']);
+		$result = $this->api->getAppInfo('not_provisioning_api');
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_NOT_FOUND, $result->getStatusCode());
@@ -72,7 +82,7 @@ class AppsTest extends TestCase {
 		$this->groupManager->get('admin')->addUser($user);
 		$this->userSession->setUser($user);
 
-		$result = $this->api->getApps([]);
+		$result = $this->api->getApps();
 
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
@@ -80,16 +90,14 @@ class AppsTest extends TestCase {
 	}
 
 	public function testGetAppsEnabled() {
-		$_GET['filter'] = 'enabled';
-		$result = $this->api->getApps(['filter' => 'enabled']);
+		$result = $this->api->getApps('enabled');
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
 		$this->assertCount(\count(\OC_App::getEnabledApps()), $data['apps']);
 	}
 
 	public function testGetAppsDisabled() {
-		$_GET['filter'] = 'disabled';
-		$result = $this->api->getApps(['filter' => 'disabled']);
+		$result = $this->api->getApps('disabled');
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
 		$apps = \OC_App::listAllApps(false, true);
@@ -102,8 +110,7 @@ class AppsTest extends TestCase {
 	}
 
 	public function testGetAppsInvalidFilter() {
-		$_GET['filter'] = 'foo';
-		$result = $this->api->getApps([]);
+		$result = $this->api->getApps('foo');
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(101, $result->getStatusCode());
 	}
