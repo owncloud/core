@@ -1328,7 +1328,6 @@ trait Sharing {
 	public function shareFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null, $getShareData = false
 	) {
-		$user = $this->getActualUsername($user);
 		$path = $this->getSharesEndpointPath("?path=$filepath");
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -1373,6 +1372,7 @@ trait Sharing {
 	public function userSharesFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
+		$user = $this->getActualUsername($user);
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user, $filepath, $group, $permissions
 		);
@@ -1961,6 +1961,9 @@ trait Sharing {
 		foreach ($bodyRows as $field => $value) {
 			if (\in_array($field, ["share_with", "uid_owner"])) {
 				$value = $this->getActualUsername($value);
+			}
+			if (\getenv('REPLACE_USERNAMES' && \in_array($field, ["share_with_displayname", "displayname_owner"]))) {
+				$value = "Regular User";
 			}
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
