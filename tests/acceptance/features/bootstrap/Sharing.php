@@ -877,6 +877,8 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
+		$user = $this->getActualUsername($user);
+		$shareWith = $this->getActualUsername($shareWith);
 		if (\is_string($permissions) && !\is_numeric($permissions)) {
 			$permissions = $this->splitPermissionsString($permissions);
 		}
@@ -1143,6 +1145,7 @@ trait Sharing {
 	) {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
+
 		$path = $this->getSharesEndpointPath("?path=$filepath");
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -1488,6 +1491,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function deleteLastShareUsingSharingApi($user) {
+		$user = $this->getActualUsername($user);
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -2376,6 +2380,9 @@ trait Sharing {
 	 * @throws \Exception
 	 */
 	public function userReactsToShareOfferedBy($user, $action, $share, $offeredBy) {
+		$user = $this->getActualUsername($user);
+		$offeredBy = $this->getActualUsername($offeredBy);
+
 		$dataResponded = $this->getAllSharesSharedWithUser($user);
 		$shareId = null;
 		foreach ($dataResponded as $shareElement) {

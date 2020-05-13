@@ -1871,6 +1871,12 @@ class FeatureContext extends BehatVariablesContext {
 			}
 			$normalizedUsername = $this->normalizeUsername($functionalUsername);
 			if (isset($usernames[$normalizedUsername])) {
+				// if uppercased username is required
+				if ($normalizedUsername !== $functionalUsername
+					&& $functionalUsername === \strtoupper($functionalUsername)
+				) {
+					return \strtoupper($usernames[$normalizedUsername]['username']);
+				}
 				return $usernames[$normalizedUsername]['username'];
 			}
 		}

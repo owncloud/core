@@ -1413,7 +1413,6 @@ trait WebDav {
 	 *
 	 */
 	public function userShouldSeeTheElements($user, $shouldOrNot, $elements) {
-		$user = $this->getActualUsername($user);
 		$should = ($shouldOrNot !== "not");
 		$this->checkElementList($user, $elements, $should);
 	}
