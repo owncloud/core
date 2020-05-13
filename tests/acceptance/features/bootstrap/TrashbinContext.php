@@ -54,6 +54,7 @@ class TrashbinContext implements Context {
 	 * @return ResponseInterface
 	 */
 	public function emptyTrashbin($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$response = WebDavHelper::makeDavRequest(
 			$this->featureContext->getBaseUrl(),
 			$user,
@@ -216,6 +217,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function userTriesToListTheTrashbinContentForUser($asUser, $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$asUser = $this->featureContext->getActualUsername($asUser);
 		$this->sendTrashbinListRequest($user, $asUser);
 	}
 
@@ -313,6 +316,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function userTriesToDeleteFromTrashbinOfUserUsingPassword($asUser, $path, $user, $password) {
+		$user = $this->featureContext->getActualUsername($user);
+		$asUser = $this->featureContext->getActualUsername($asUser);
 		$numItemsDeleted = $this->tryToDeleteFileFromTrashbin($user, $path, $asUser, $password);
 	}
 
@@ -326,6 +331,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function userTriesToRestoreFromTrashbinOfUser($asUser, $path, $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$asUser = $this->featureContext->getActualUsername($asUser);
 		$this->restoreElement($user, $path, null, true, $asUser);
 	}
 
@@ -340,6 +347,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function userTriesToRestoreFromTrashbinOfUserUsingPassword($asUser, $path, $user, $password) {
+		$asUser = $this->featureContext->getActualUsername($asUser);
+		$user = $this->featureContext->getActualUsername($user);
 		$this->restoreElement($user, $path, null, true, $asUser, $password);
 	}
 
@@ -368,6 +377,7 @@ class TrashbinContext implements Context {
 	 * @return int the number of items that were matched and requested for delete
 	 */
 	public function tryToDeleteFileFromTrashbin($user, $originalPath, $asUser = null, $password = null) {
+		$user = $this->featureContext->getActualUsername($user);
 		$asUser = $asUser ?? $user;
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
@@ -414,6 +424,7 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function asFileOrFolderExistsInTrash($user, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$path = \trim($path, '/');
 		$sections = \explode('/', $path, 2);
 
@@ -592,6 +603,7 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	public function elementInTrashIsRestored($user, $originalPath) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->restoreElement($user, $originalPath);
 	}
 
@@ -623,6 +635,7 @@ class TrashbinContext implements Context {
 	public function userRestoresTheFileWithOriginalPathToUsingTheTrashbinApi(
 		$user, $originalPath, $destinationPath
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->restoreElement($user, $originalPath, $destinationPath);
 	}
 
@@ -637,6 +650,7 @@ class TrashbinContext implements Context {
 	public function elementIsInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath wasn't found in the trashbin"
@@ -654,6 +668,7 @@ class TrashbinContext implements Context {
 	public function elementIsNotInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
