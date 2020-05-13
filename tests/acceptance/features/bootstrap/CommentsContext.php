@@ -474,19 +474,21 @@ class CommentsContext implements Context {
 	}
 
 	/**
-	 * @Then the following comment properties should be listed
+	 * @Then the following comment properties should be listed about user :user
 	 *
+	 * @param string $user
 	 * @param TableNode $expectedProperties
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
 	 */
-	public function followingPropertiesShouldBeListed($expectedProperties) {
+	public function followingPropertiesShouldBeListed($user, $expectedProperties) {
 		$this->featureContext->verifyTableNodeColumns(
 			$expectedProperties,
 			["propertyName", "propertyValue"]
 		);
+		$user = \strtolower($this->featureContext->getActualUsername($user));
 		$expectedProperties = $expectedProperties->getColumnsHash();
 		Assert::assertGreaterThanOrEqual(1, \count($expectedProperties));
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
@@ -494,6 +496,9 @@ class CommentsContext implements Context {
 		$found = false;
 		foreach ($responses as $response) {
 			foreach ($expectedProperties as $expectedProperty) {
+				$expectedProperty['propertyValue'] = $this->featureContext->substituteInLineCodes(
+					$expectedProperty['propertyValue'], $user
+				);
 				$xmlPart = $response->xpath(
 					"//d:prop/oc:" . $expectedProperty["propertyName"]
 				);
