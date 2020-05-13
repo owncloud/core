@@ -54,8 +54,8 @@ $application->registerRoutes($this, [
 		['root' => '/cloud', 'name' => 'Groups#getSubAdminsOfGroup', 'url' => '/groups/{groupId}/subadmins', 'verb' => 'GET'],
 		// Apps
 		['root' => '/cloud', 'name' => 'Apps#getApps', 'url' => '/apps', 'verb' => 'GET'],
-		['root' => '/cloud', 'name' => 'Apps#getAppInfo', 'url' => '/apps/{appid}', 'verb' => 'GET'],
-		['root' => '/cloud', 'name' => 'Apps#enable', 'url' => '/apps/{appid}', 'verb' => 'POST'],
-		['root' => '/cloud', 'name' => 'Apps#disable', 'url' => '/apps/{appid}', 'verb' => 'DELETE'],
+		['root' => '/cloud', 'name' => 'Apps#getAppInfo', 'url' => '/apps/{appId}', 'verb' => 'GET'],
+		['root' => '/cloud', 'name' => 'Apps#enable', 'url' => '/apps/{appId}', 'verb' => 'POST'],
+		['root' => '/cloud', 'name' => 'Apps#disable', 'url' => '/apps/{appId}', 'verb' => 'DELETE'],
 	]
 ]);

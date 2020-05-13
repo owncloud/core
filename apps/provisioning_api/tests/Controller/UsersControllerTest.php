@@ -59,9 +59,8 @@ class UsersControllerTest extends TestCase {
 	/** @var \OC\Authentication\TwoFactorAuth\Manager | MockObject */
 	private $twoFactorAuthManager;
 
-	protected function tearDown(): void {
-		parent::tearDown();
-	}
+	/** @var IUser | MockObject */
+	private $loggedInUser;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -77,7 +76,7 @@ class UsersControllerTest extends TestCase {
 			->disableOriginalConstructor()
 			->setMethods(['isTwoFactorAuthenticated', 'enableTwoFactorAuthentication'])
 			->getMock();
-		$this->twoFactorAuthManager->expects($this->any())
+		$this->twoFactorAuthManager
 			->method('isTwoFactorAuthenticated')
 			->willReturn(false);
 		$this->api = $this->getMockBuilder(UsersController::class)
@@ -92,6 +91,7 @@ class UsersControllerTest extends TestCase {
 			])
 			->setMethods(['fillStorageInfo'])
 			->getMock();
+		$this->loggedInUser = $this->createMock(IUser::class);
 	}
 
 	public function testGetUsersNotLoggedIn() {
@@ -105,17 +105,19 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testGetUsersAsAdmin() {
-		$_GET['search'] = 'MyCustomSearch';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['search'], ['limit'], ['offset'])
+			->willReturnOnConsecutiveCalls('MyCustomSearch', null, null);
 
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -137,21 +139,19 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testGetUsersAsSubAdmin() {
-		$_GET['search'] = 'MyCustomSearch';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['search'], ['limit'], ['offset'])
+			->willReturnOnConsecutiveCalls('MyCustomSearch', null, null);
 
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->groupManager
-			->expects($this->once())
-			->method('isAdmin')
-			->will($this->returnValue(false));
+			->will($this->returnValue($this->loggedInUser));
 		$firstGroup = $this->createMock(IGroup::class);
 		$firstGroup
 			->expects($this->once())
@@ -162,24 +162,13 @@ class UsersControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getGID')
 			->will($this->returnValue('SecondGroup'));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
-			->method('isSubAdmin')
-			->with($loggedInUser)
-			->will($this->returnValue(true));
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
-			->with($loggedInUser)
+			->with($this->loggedInUser)
 			->will($this->returnValue([$firstGroup, $secondGroup]));
 		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
-		$this->groupManager
-			->expects($this->any())
 			->method('displayNamesInGroup')
 			->will($this->onConsecutiveCalls(['AnotherUserInTheFirstGroup' => []], ['UserInTheSecondGroup' => []]));
 
@@ -193,28 +182,24 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testGetUsersAsRegularUser() {
-		$_GET['search'] = 'MyCustomSearch';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['search'], ['limit'], ['offset'])
+			->willReturnOnConsecutiveCalls('MyCustomSearch', null, null);
 
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('regularUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->will($this->returnValue(false));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
-			->method('isSubAdmin')
-			->with($loggedInUser)
-			->will($this->returnValue(false));
+		$subAdminManager = $this->asSubAdmin(false);
 		$this->groupManager
 			->expects($this->once())
 			->method('getSubAdmin')
@@ -225,7 +210,11 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserAlreadyExisting() {
-		$_POST['userid'] = 'AlreadyExistingUser';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('AlreadyExistingUser', null, null);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
@@ -235,15 +224,15 @@ class UsersControllerTest extends TestCase {
 			->expects($this->once())
 			->method('error')
 			->with('Failed addUser attempt: User already exists.', ['app' => 'ocs_api']);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('adminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -255,22 +244,25 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserNonExistingGroup() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['groups'] = ['NonExistingGroup'];
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', null, ['NonExistingGroup']);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('adminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -287,22 +279,25 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserExistingGroupNonExistingGroup() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['groups'] = ['ExistingGroup', 'NonExistingGroup'];
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', null, ['ExistingGroup', 'NonExistingGroup']);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('adminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -325,8 +320,11 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserSuccessful() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', null);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
@@ -340,15 +338,15 @@ class UsersControllerTest extends TestCase {
 			->expects($this->once())
 			->method('info')
 			->with('Successful addUser call with userid: NewUser', ['app' => 'ocs_api']);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('adminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -360,23 +358,25 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserExistingGroup() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
-		$_POST['groups'] = ['ExistingGroup'];
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', ['ExistingGroup']);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('adminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -416,8 +416,11 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserUnsuccessful() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', null);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
@@ -432,15 +435,15 @@ class UsersControllerTest extends TestCase {
 			->expects($this->once())
 			->method('error')
 			->with('Failed addUser attempt with exception: User backend not found.', ['app' => 'ocs_api']);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('adminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -452,86 +455,69 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserAsRegularUser() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->asSubAdmin(false);
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', null);
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('regularUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('regularUser')
 			->willReturn(false);
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
-			->method('isSubAdmin')
-			->with($loggedInUser)
-			->willReturn(false);
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->with()
-			->willReturn($subAdminManager);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminNoGroup() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->asSubAdmin();
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', null);
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('regularUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('regularUser')
 			->willReturn(false);
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
-			->method('isSubAdmin')
-			->with($loggedInUser)
-			->willReturn(true);
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->with()
-			->willReturn($subAdminManager);
 
 		$expected = new Result(null, 106, 'no group specified (required for subadmins)');
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminValidGroupNotSubAdmin() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
-		$_POST['groups'] = ['ExistingGroup'];
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', ['ExistingGroup']);
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('regularUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -548,12 +534,12 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdmin')
-			->with($loggedInUser)
+			->with($this->loggedInUser)
 			->willReturn(true);
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
-			->with($loggedInUser, $existingGroup)
+			->with($this->loggedInUser, $existingGroup)
 			->willReturn(false);
 		$this->groupManager
 			->expects($this->once())
@@ -571,23 +557,25 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddUserAsSubAdminExistingGroups() {
-		$_POST['userid'] = 'NewUser';
-		$_POST['password'] = 'PasswordOfTheNewUser';
-		$_POST['groups'] = ['ExistingGroup1', 'ExistingGroup2'];
+		$this->request
+			->method('getParam')
+			->withConsecutive(['userid'], ['password'], ['groups'])
+			->willReturnOnConsecutiveCalls('NewUser', 'PasswordOfTheNewUser', ['ExistingGroup1', 'ExistingGroup2']);
+
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('subAdminUser'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -647,14 +635,14 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdmin')
-			->with($loggedInUser)
+			->with($this->loggedInUser)
 			->willReturn(true);
 		$subAdminManager
 			->expects($this->exactly(2))
 			->method('isSubAdminOfGroup')
 			->withConsecutive(
-				[$loggedInUser, $existingGroup1],
-				[$loggedInUser, $existingGroup2]
+				[$this->loggedInUser, $existingGroup1],
+				[$this->loggedInUser, $existingGroup2]
 			)
 			->willReturn(true);
 
@@ -669,15 +657,14 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
-		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
+		$this->assertEquals($expected, $this->api->getUser('UserToGet'));
 	}
 
 	public function testGetUserTargetDoesNotExist() {
-		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -685,12 +672,11 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, API::RESPOND_NOT_FOUND, 'The requested user could not be found');
-		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
+		$this->assertEquals($expected, $this->api->getUser('UserToGet'));
 	}
 
 	public function testGetUserAsAdmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('admin'));
@@ -704,7 +690,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -739,12 +725,11 @@ class UsersControllerTest extends TestCase {
 				'two_factor_auth_enabled' => 'false',
 			]
 		);
-		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
+		$this->assertEquals($expected, $this->api->getUser('UserToGet'));
 	}
 
 	public function testGetUserAsSubAdminAndUserIsAccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
@@ -759,7 +744,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -776,7 +761,7 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(true));
 		$this->groupManager
 			->expects($this->once())
@@ -806,12 +791,11 @@ class UsersControllerTest extends TestCase {
 				'two_factor_auth_enabled' => 'false'
 			]
 		);
-		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
+		$this->assertEquals($expected, $this->api->getUser('UserToGet'));
 	}
 
 	public function testGetUserAsSubAdminAndUserIsNotAccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
@@ -819,7 +803,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -836,7 +820,7 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(false));
 		$this->groupManager
 			->expects($this->once())
@@ -844,12 +828,11 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
-		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
+		$this->assertEquals($expected, $this->api->getUser('UserToGet'));
 	}
 
 	public function testGetUserAsSubAdminSelfLookup() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
@@ -860,7 +843,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -877,7 +860,7 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(false));
 		$this->groupManager
 			->expects($this->once())
@@ -904,7 +887,7 @@ class UsersControllerTest extends TestCase {
 			'home' => '/var/ocdata/UserToGet',
 			'two_factor_auth_enabled' => 'false',
 		]);
-		$this->assertEquals($expected, $this->api->getUser(['userid' => 'subadmin']));
+		$this->assertEquals($expected, $this->api->getUser('subadmin'));
 	}
 
 	public function testEditUserNotLoggedIn() {
@@ -914,214 +897,103 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit']));
+		$this->assertEquals($expected, $this->api->editUser('UserToEdit'));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplay() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+	public function editUserRegularUserSelfEditProvider() {
+		return [
+			// Changing own display name is allowed
+			['display', 'NewDisplayName', 'setDisplayName', 100],
+			['displayname', 'NewDisplayName', 'setDisplayName', 100],
+			// Changing email is allowed
+			['email', 'demo@owncloud.org', 'setEMailAddress', 100],
+			// Clearing own email is allowed
+			['email', '', 'setEMailAddress', 100],
+			// Changing email is blocked when email is invalid
+			['email', 'demo.org', '', 102],
+			// Changing password is allowed
+			['password', 'NewPassword', 'setPassword', 100],
+			// Changing quota is NOT allowed
+			['quota', 'NewQuota', '', 997],
+			// Enabling twofactor is allowed
+			['two_factor_auth_enabled', true, 'enableTwoFactorAuthentication', 100],
+		];
+	}
+
+	/**
+	 * @dataProvider editUserRegularUserSelfEditProvider
+	 * @param string $attribute
+	 * @param string $value
+	 * @param string $method
+	 * @param int $status
+	 */
+	public function testEditUserRegularUserSelfEdit($attribute, $value, $method, $status) {
+		$uid = 'UserToEdit';
+		$this->request
+			->method('getParam')
+			->withConsecutive(['key'], ['value'])
+			->willReturnOnConsecutiveCalls($attribute, $value);
+
+		$this->loggedInUser
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->will($this->returnValue($uid));
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
-			->with('UserToEdit')
+			->with($uid)
 			->will($this->returnValue($targetUser));
-		$targetUser
-			->expects($this->once())
-			->method('setDisplayName')
-			->with('NewDisplayName');
+		if ($method == 'enableTwoFactorAuthentication') {
+			$this->twoFactorAuthManager
+				->expects($this->once())
+				->method($method);
+		} elseif ($status === 100) {
+			$targetUser
+				->expects($this->once())
+				->method($method)
+				->with($value);
+		}
 
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'display', 'value' => 'NewDisplayName']]));
+		$expected = new Result(null, $status);
+		$this->assertEquals($expected, $this->api->editUser($uid));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplayName() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+	public function editUserAdminUserSelfEditChangeQuotaProvider() {
+		return [
+			['3042824', 100],
+			['ABC', 103, 'Invalid quota value ABC'],
+		];
+	}
+
+	/**
+	 * @dataProvider editUserAdminUserSelfEditChangeQuotaProvider
+	 * @param string $quotaValue
+	 * @param int $status
+	 * @param string|null $message
+	 */
+	public function testEditUserAdminUserSelfEditChangeValidQuota($quotaValue, $status, $message = null) {
+		$this->request
+			->method('getParam')
+			->withConsecutive(['key'], ['value'])
+			->willReturnOnConsecutiveCalls('quota', $quotaValue);
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
 		$targetUser = $this->createMock(IUser::class);
+		if ($status === 100) {
+			$targetUser->expects($this->once())
+				->method('setQuota')
+				->with('2.9 MB');
+		}
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-		$targetUser
-			->expects($this->once())
-			->method('setDisplayName')
-			->with('NewDisplayName');
-
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
-	}
-
-	public function testEditUserRegularUserSelfEditChangeEmailValid() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-		$targetUser
-			->expects($this->once())
-			->method('setEMailAddress')
-			->with('demo@owncloud.org');
-
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.org']]));
-	}
-
-	public function testEditUserRegularUserSelfEditClearEmail() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-		$targetUser
-			->expects($this->once())
-			->method('setEMailAddress')
-			->with('');
-
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => '']]));
-	}
-
-	public function testEditUserRegularUserSelfEditChangeEmailInvalid() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-
-		$expected = new Result(null, 102);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo.org']]));
-	}
-
-	public function testEditUserRegularUserSelfEditChangePassword() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-		$targetUser
-			->expects($this->once())
-			->method('setPassword')
-			->with('NewPassword');
-
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'password', 'value' => 'NewPassword']]));
-	}
-
-	public function testEditUserRegularUserSelfEditChangeQuota() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-
-		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => 'NewQuota']]));
-	}
-
-	public function testEditTwoFactor() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-		$this->twoFactorAuthManager
-			->expects($this->once())
-			->method('enableTwoFactorAuthentication');
-
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'two_factor_auth_enabled', 'value' => true]]));
-	}
-
-	public function testEditUserAdminUserSelfEditChangeValidQuota() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$targetUser->expects($this->once())
-			->method('setQuota')
-			->with('2.9 MB');
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1133,34 +1005,8 @@ class UsersControllerTest extends TestCase {
 			->with('UserToEdit')
 			->will($this->returnValue(true));
 
-		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
-	}
-
-	public function testEditUserAdminUserSelfEditChangeInvalidQuota() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
-			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->createMock(IUser::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($loggedInUser));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
-		$this->groupManager
-			->expects($this->once())
-			->method('isAdmin')
-			->with('UserToEdit')
-			->will($this->returnValue(true));
-
-		$expected = new Result(null, 103, 'Invalid quota value ABC');
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => 'ABC']]));
+		$expected = new Result(null, $status, $message);
+		$this->assertEquals($expected, $this->api->editUser('UserToEdit'));
 	}
 
 	public function providesQuota() {
@@ -1178,9 +1024,12 @@ class UsersControllerTest extends TestCase {
 	 * @param $valueInRequest
 	 */
 	public function testEditUserAdminUserEditChangeValidQuota($expectedQuotaValueOnSetQuota, $valueInRequest) {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request
+			->method('getParam')
+			->withConsecutive(['key'], ['value'])
+			->willReturnOnConsecutiveCalls('quota', $valueInRequest);
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1190,7 +1039,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1210,15 +1059,16 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(
-			['userid' => 'UserToEdit', '_put' =>
-				['key' => 'quota', 'value' => $valueInRequest]]));
+		$this->assertEquals($expected, $this->api->editUser('UserToEdit'));
 	}
 
 	public function testEditUserSubadminUserAccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request
+			->method('getParam')
+			->withConsecutive(['key'], ['value'])
+			->willReturnOnConsecutiveCalls('quota', '3042824');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1228,7 +1078,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1240,7 +1090,7 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(true));
 		$this->groupManager
 			->expects($this->once())
@@ -1248,20 +1098,23 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
+		$this->assertEquals($expected, $this->api->editUser('UserToEdit'));
 	}
 
 	public function testEditUserSubadminUserInaccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request
+			->method('getParam')
+			->withConsecutive(['key'], ['value'])
+			->willReturnOnConsecutiveCalls('quota', '3042824');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1273,7 +1126,7 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(false));
 		$this->groupManager
 			->expects($this->once())
@@ -1281,7 +1134,7 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
+		$this->assertEquals($expected, $this->api->editUser('UserToEdit'));
 	}
 
 	public function testDeleteUserNotLoggedIn() {
@@ -1291,19 +1144,18 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteUserNotExistingUser() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->asSubAdmin();
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1311,13 +1163,12 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 101);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteUserSelf() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->asSubAdmin();
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('UserToDelete'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1328,7 +1179,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1336,13 +1187,11 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($targetUser));
 
 		$expected = new Result(null, 101);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteSuccessfulUserAsAdmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1353,14 +1202,13 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
@@ -1370,13 +1218,11 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(true));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteUnsuccessfulUserAsAdmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1387,14 +1233,13 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
@@ -1404,13 +1249,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(false));
 
 		$expected = new Result(null, 101);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteSuccessfulUserAsSubadmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$subAdminManager = $this->asSubAdmin();
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1421,41 +1266,32 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
-			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
-			->will($this->returnValue(true));
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
+
 		$targetUser
 			->expects($this->once())
 			->method('delete')
 			->will($this->returnValue(true));
+		$subAdminManager->method('isUserAccessible')
+			->with($this->loggedInUser, $targetUser)
+			->will($this->returnValue(true));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteUnsuccessfulUserAsSubadmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$subAdminManager = $this->asSubAdmin();
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1466,41 +1302,31 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
+		$subAdminManager->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(true));
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
 		$targetUser
 			->expects($this->once())
 			->method('delete')
 			->will($this->returnValue(false));
 
 		$expected = new Result(null, 101);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testDeleteUserAsSubAdminAndUserIsNotAccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1511,31 +1337,21 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
 			->will($this->returnValue($targetUser));
-		$this->groupManager
-			->expects($this->once())
-			->method('isAdmin')
-			->with('subadmin')
-			->will($this->returnValue(false));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(false));
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
+		$this->assertEquals($expected, $this->api->deleteUser('UserToDelete'));
 	}
 
 	public function testGetUsersGroupsNotLoggedIn() {
@@ -1545,23 +1361,21 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
+		$this->assertEquals($expected, $this->api->getUsersGroups('UserToLookup'));
 	}
 
 	public function testGetUsersGroupsTargetUserNotExisting() {
-		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 
 		$expected = new Result(null, 998);
-		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
+		$this->assertEquals($expected, $this->api->getUsersGroups('UserToLookup'));
 	}
 
 	public function testGetUsersGroupsSelfTargetted() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('UserToLookup'));
@@ -1573,7 +1387,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1586,12 +1400,11 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(['DummyValue']));
 
 		$expected = new Result(['groups' => ['DummyValue']]);
-		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
+		$this->assertEquals($expected, $this->api->getUsersGroups('UserToLookup'));
 	}
 
 	public function testGetUsersGroupsForAdminUser() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
@@ -1603,7 +1416,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1621,12 +1434,11 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(true));
 
 		$expected = new Result(['groups' => ['DummyValue']]);
-		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
+		$this->assertEquals($expected, $this->api->getUsersGroups('UserToLookup'));
 	}
 
 	public function testGetUsersGroupsForSubAdminUserAndUserIsAccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
@@ -1638,7 +1450,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1654,7 +1466,7 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(true));
 		$this->groupManager
 			->expects($this->once())
@@ -1662,32 +1474,28 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 		$group1 = $this->createMock(IGroup::class);
 		$group1
-			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('Group1'));
 		$group2 = $this->createMock(IGroup::class);
 		$group2
-			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('Group2'));
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
-			->with($loggedInUser)
+			->with($this->loggedInUser)
 			->will($this->returnValue([$group1, $group2]));
 		$this->groupManager
-			->expects($this->any())
 			->method('getUserGroupIds')
 			->with($targetUser)
 			->will($this->returnValue(['Group1']));
 
 		$expected = new Result(['groups' => ['Group1']]);
-		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
+		$this->assertEquals($expected, $this->api->getUsersGroups('UserToLookup'));
 	}
 
 	public function testGetUsersGroupsForSubAdminUserAndUserIsInaccessible() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
@@ -1699,7 +1507,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -1715,20 +1523,19 @@ class UsersControllerTest extends TestCase {
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
-			->with($loggedInUser, $targetUser)
+			->with($this->loggedInUser, $targetUser)
 			->will($this->returnValue(false));
 		$this->groupManager
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
 		$this->groupManager
-			->expects($this->any())
 			->method('getUserGroupIds')
 			->with($targetUser)
 			->will($this->returnValue(['Group1']));
 
 		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
+		$this->assertEquals($expected, $this->api->getUsersGroups('UserToLookup'));
 	}
 
 	public function testAddToGroupNotLoggedIn() {
@@ -1742,13 +1549,15 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testAddToGroupWithTargetGroupNotExisting() {
-		$_POST['groupid'] = 'GroupToAddTo';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToAddTo');
 
-		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
+		$subAdminManager = $this->asSubAdmin();
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -1756,128 +1565,126 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 102);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
+		$this->assertEquals($expected, $this->api->addToGroup('TargetUser'));
 	}
 
 	public function testAddToGroupWithNoGroupSpecified() {
-		$loggedInUser = $this->createMock(IUser::class);
+		$this->asSubAdmin();
+		$this->loggedInUser
+			->method('getUID')
+			->will($this->returnValue('admin'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 
 		$expected = new Result(null, 101);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
+		$this->assertEquals($expected, $this->api->addToGroup('TargetUser'));
 	}
 
 	public function testAddToGroupWithTargetUserNotExisting() {
-		$_POST['groupid'] = 'GroupToAddTo';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToAddTo');
 
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToAddTo')
 			->will($this->returnValue($targetGroup));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
 
 		$expected = new Result(null, 103);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
+		$this->assertEquals($expected, $this->api->addToGroup('TargetUser'));
 	}
 
 	public function testAddToGroupWithoutPermission() {
-		$_POST['groupid'] = 'GroupToAddTo';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToAddTo');
 
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('unauthorizedUser'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->method('get')
 			->with('GroupToAddTo')
 			->will($this->returnValue($targetGroup));
-		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
-			->disableOriginalConstructor()->getMock();
 		$this->groupManager
 			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
+			->will($this->returnValue($this->asSubAdmin()));
 		$this->groupManager
 			->method('isAdmin')
 			->with('unauthorizedUser')
 			->will($this->returnValue(false));
 
 		$expected = new Result(null, 104);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
+		$this->assertEquals($expected, $this->api->addToGroup('TargetUser'));
 	}
 
 	public function testAddToOutsideGroupAsSubAdminFromSubAdmin() {
-		$_POST['groupid'] = 'outsidegroup';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('outsidegroup');
 
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$subadminGroup = $this->createMock(IGroup::class);
 		$subadminGroup
-			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('subadmin'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$targetGroup
-			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('outsidegroup'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
-			->expects($this->any())
 			->method('get')
 			->will($this->returnValueMap([
 				['subadmin', $subadminGroup],
 				['outsidegroup', $targetGroup]
 			]));
-		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->method('isSubAdminofGroup')
-			->with($loggedInUser, $targetGroup)
+			->with($this->loggedInUser, $targetGroup)
 			->will($this->returnValue(false));
 		$this->groupManager
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
 
 		$expected = new Result(null, 104);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'subadmin']));
+		$this->assertEquals($expected, $this->api->addToGroup('subadmin'));
 	}
 
 	public function testAddToGroupSuccessful() {
-		$_POST['groupid'] = 'admin';
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('admin');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -1885,7 +1692,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -1897,7 +1704,6 @@ class UsersControllerTest extends TestCase {
 			->with('AnotherUser')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
@@ -1907,21 +1713,22 @@ class UsersControllerTest extends TestCase {
 			->with($targetUser);
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'AnotherUser']));
+		$this->assertEquals($expected, $this->api->addToGroup('AnotherUser'));
 	}
 
 	public function testAddToGroupSuccessfulAsSubadmin() {
-		$_POST['groupid'] = 'group1';
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('group1');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->method('get')
 			->with('group1')
@@ -1931,71 +1738,80 @@ class UsersControllerTest extends TestCase {
 			->with('AnotherUser')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
 		$targetGroup
 			->method('addUser')
 			->with($targetUser);
-		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->method('isSubAdminOfGroup')
-			->with($loggedInUser, $targetGroup)
+			->with($this->loggedInUser, $targetGroup)
 			->will($this->returnValue(true));
 		$this->groupManager
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 104);
-		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'AnotherUser']));
+		$this->assertEquals($expected, $this->api->addToGroup('AnotherUser'));
 	}
+
 	public function testRemoveFromGroupWithoutLogIn() {
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 997);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('TargetUser'));
 	}
 
 	public function testRemoveFromGroupWithNoTargetGroup() {
-		$loggedInUser = $this->createMock(IUser::class);
+		$this->asSubAdmin();
+
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$expected = new Result(null, 101);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => []]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('TargetUser'));
 	}
 
 	public function testRemoveFromGroupWithNotExistingTargetGroup() {
-		$loggedInUser = $this->createMock(IUser::class);
+		$this->asSubAdmin();
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
+
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->method('get')
 			->with('TargetGroup')
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 102);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('TargetUser'));
 	}
 
 	public function testRemoveFromGroupWithNotExistingTargetUser() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->once())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -2007,62 +1823,54 @@ class UsersControllerTest extends TestCase {
 			->with('TargetUser')
 			->will($this->returnValue(null));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
-		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminofGroup')
-			->with($loggedInUser, $targetGroup)
+			->with($this->loggedInUser, $targetGroup)
 			->will($this->returnValue(true));
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 103);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('TargetUser'));
 	}
 
 	public function testRemoveFromGroupWithoutPermission() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->once())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('unauthorizedUser'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
 			->will($this->returnValue($targetGroup));
-		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
-		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('unauthorizedUser')
 			->will($this->returnValue(false));
 
 		$expected = new Result(null, 104);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('TargetUser'));
 	}
 
 	public function testRemoveFromGroupAsAdminFromAdmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('admin');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -2074,7 +1882,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -2086,31 +1894,31 @@ class UsersControllerTest extends TestCase {
 			->with('admin')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
 
 		$expected = new Result(null, 105, 'Cannot remove yourself from the admin group');
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'admin', '_delete' => ['groupid' => 'admin']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('admin'));
 	}
 
 	public function testRemoveFromGroupAsSubAdminFromSubAdmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('subadmin');
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$targetGroup
-			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('subadmin'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -2121,36 +1929,31 @@ class UsersControllerTest extends TestCase {
 			->method('get')
 			->with('subadmin')
 			->will($this->returnValue($targetUser));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminofGroup')
-			->with($loggedInUser, $targetGroup)
+			->with($this->loggedInUser, $targetGroup)
 			->will($this->returnValue(true));
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
-			->with($loggedInUser)
+			->with($this->loggedInUser)
 			->will($this->returnValue([$targetGroup]));
 		$this->groupManager
-			->expects($this->any())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
-		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
 
 		$expected = new Result(null, 105, 'Cannot remove yourself from this group as you are a SubAdmin');
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'subadmin', '_delete' => ['groupid' => 'subadmin']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('subadmin'));
 	}
 
 	public function testRemoveFromGroupSuccessful() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('admin');
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -2158,7 +1961,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -2170,7 +1973,6 @@ class UsersControllerTest extends TestCase {
 			->with('AnotherUser')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
@@ -2180,13 +1982,14 @@ class UsersControllerTest extends TestCase {
 			->with($targetUser);
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'AnotherUser', '_delete' => ['groupid' => 'admin']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('AnotherUser'));
 	}
 
 	public function testRemoveFromGroupSuccessfulAsSubadmin() {
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->any())
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('group1');
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock(IUser::class);
@@ -2194,7 +1997,7 @@ class UsersControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -2206,7 +2009,6 @@ class UsersControllerTest extends TestCase {
 			->with('AnotherUser')
 			->will($this->returnValue($targetUser));
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
 			->will($this->returnValue(false));
@@ -2214,24 +2016,21 @@ class UsersControllerTest extends TestCase {
 			->expects($this->once())
 			->method('removeUser')
 			->with($targetUser);
-		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->asSubAdmin();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
-			->with($loggedInUser, $targetGroup)
+			->with($this->loggedInUser, $targetGroup)
 			->will($this->returnValue(true));
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'AnotherUser', '_delete' => ['groupid' => 'group1']]));
+		$this->assertEquals($expected, $this->api->removeFromGroup('AnotherUser'));
 	}
 
 	public function testAddSubAdminWithNotExistingTargetUser() {
-		$_POST['groupid'] = 'nevermind';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('nevermind');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2239,12 +2038,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 101, 'User does not exist');
-		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'NotExistingUser']));
+		$this->assertEquals($expected, $this->api->addSubAdmin('NotExistingUser'));
 	}
 
 	public function testAddSubAdminWithNotExistingTargetGroup() {
-		$_POST['groupid'] = 'NotExistingGroup';
-
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('NotExistingGroup');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userManager
 			->expects($this->once())
@@ -2258,11 +2058,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 102, 'Group:NotExistingGroup does not exist');
-		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
+		$this->assertEquals($expected, $this->api->addSubAdmin('ExistingUser'));
 	}
 
 	public function testAddSubAdminToAdminGroup() {
-		$_POST['groupid'] = 'ADmiN';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('ADmiN');
 
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
@@ -2278,11 +2080,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($targetGroup));
 
 		$expected = new Result(null, 103, 'Cannot create subadmins for admin group');
-		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
+		$this->assertEquals($expected, $this->api->addSubAdmin('ExistingUser'));
 	}
 
 	public function testAddSubAdminTwice() {
-		$_POST['groupid'] = 'TargetGroup';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
 
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
@@ -2309,11 +2113,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
+		$this->assertEquals($expected, $this->api->addSubAdmin('ExistingUser'));
 	}
 
 	public function testAddSubAdminSuccessful() {
-		$_POST['groupid'] = 'TargetGroup';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
 
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
@@ -2345,11 +2151,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
+		$this->assertEquals($expected, $this->api->addSubAdmin('ExistingUser'));
 	}
 
 	public function testAddSubAdminUnsuccessful() {
-		$_POST['groupid'] = 'TargetGroup';
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('TargetGroup');
 
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
@@ -2381,10 +2189,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 103, 'Unknown error occurred');
-		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
+		$this->assertEquals($expected, $this->api->addSubAdmin('ExistingUser'));
 	}
 
 	public function testRemoveSubAdminNotExistingTargetUser() {
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToDeleteFrom');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2392,10 +2203,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 101, 'User does not exist');
-		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'NotExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
+		$this->assertEquals($expected, $this->api->removeSubAdmin('NotExistingUser'));
 	}
 
 	public function testRemoveSubAdminNotExistingTargetGroup() {
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToDeleteFrom');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userManager
 			->expects($this->once())
@@ -2409,10 +2223,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 101, 'Group does not exist');
-		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
+		$this->assertEquals($expected, $this->api->removeSubAdmin('ExistingUser'));
 	}
 
 	public function testRemoveSubAdminFromNotASubadmin() {
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToDeleteFrom');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userManager
@@ -2438,10 +2255,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 102, 'User is not a subadmin of this group');
-		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
+		$this->assertEquals($expected, $this->api->removeSubAdmin('ExistingUser'));
 	}
 
 	public function testRemoveSubAdminSuccessful() {
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToDeleteFrom');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userManager
@@ -2472,10 +2292,13 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
+		$this->assertEquals($expected, $this->api->removeSubAdmin('ExistingUser'));
 	}
 
 	public function testRemoveSubAdminUnsuccessful() {
+		$this->request->method('getParam')
+			->with('groupid')
+			->willReturn('GroupToDeleteFrom');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userManager
@@ -2506,7 +2329,7 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 103, 'Unknown error occurred');
-		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
+		$this->assertEquals($expected, $this->api->removeSubAdmin('ExistingUser'));
 	}
 
 	public function testGetUserSubAdminGroupsNotExistingTargetUser() {
@@ -2517,7 +2340,7 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$expected = new Result(null, 101, 'User does not exist');
-		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups('RequestedUser'));
 	}
 
 	public function testGetUserSubAdminGroupsWithGroups() {
@@ -2545,7 +2368,7 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(['TargetGroup'], 100);
-		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups('RequestedUser'));
 	}
 
 	public function testGetUserSubAdminGroupsWithoutGroups() {
@@ -2568,7 +2391,7 @@ class UsersControllerTest extends TestCase {
 			->will($this->returnValue($subAdminManager));
 
 		$expected = new Result(null, 102, 'Unknown error occurred');
-		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups('RequestedUser'));
 	}
 
 	public function testEnableUser() {
@@ -2581,22 +2404,20 @@ class UsersControllerTest extends TestCase {
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue($targetUser));
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->exactly(2))
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->will($this->returnValue(true));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->enableUser(['userid' => 'RequestedUser']));
+		$this->assertEquals($expected, $this->api->enableUser('RequestedUser'));
 	}
 
 	public function testDisableUser() {
@@ -2609,21 +2430,38 @@ class UsersControllerTest extends TestCase {
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue($targetUser));
-		$loggedInUser = $this->createMock(IUser::class);
-		$loggedInUser
-			->expects($this->exactly(2))
+
+		$this->loggedInUser
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->will($this->returnValue($this->loggedInUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->will($this->returnValue(true));
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->disableUser(['userid' => 'RequestedUser']));
+		$this->assertEquals($expected, $this->api->disableUser('RequestedUser'));
+	}
+
+	private function asSubAdmin($isSubAdmin = true) {
+		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$subAdminManager
+			->method('isSubAdmin')
+			->will($this->returnValue($isSubAdmin));
+		$this->groupManager
+			->method('getSubAdmin')
+			->will($this->returnValue($subAdminManager));
+
+		if ($isSubAdmin === true) {
+			$this->groupManager
+				->method('isAdmin')
+				->will($this->returnValue(false));
+		}
+		return $subAdminManager;
 	}
 }

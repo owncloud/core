@@ -6,7 +6,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@
 
 namespace OCA\Provisioning_API\Tests\Controller;
 
+use OC\OCS\Result;
 use OCA\Provisioning_API\Controller\AppsController;
 use OCA\Provisioning_API\Tests\TestCase;
 use OCP\API;
@@ -66,13 +67,13 @@ class AppsControllerTest extends TestCase {
 
 	public function testGetAppInfo() {
 		$result = $this->api->getAppInfo('provisioning_api');
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf(Result::class, $result);
 		$this->assertTrue($result->succeeded());
 	}
 
 	public function testGetAppInfoOnBadAppID() {
 		$result = $this->api->getAppInfo('not_provisioning_api');
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf(Result::class, $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_NOT_FOUND, $result->getStatusCode());
 	}

@@ -491,10 +491,10 @@ class UsersController extends OCSController {
 	}
 
 	/**
-	 * @param IUser $user
+	 * @param IUser|null $user
 	 * @return bool
 	 */
-	private function isSubAdmin(IUser $user) {
+	private function isSubAdmin($user) {
 		if ($user === null) {
 			return false;
 		}

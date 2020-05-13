@@ -100,6 +100,9 @@ class GroupsController extends OCSController {
 	 */
 	public function getGroup($groupId = '') {
 		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return new Result(null, 102);
+		}
 		if ($this->isSubAdmin($user) === false) {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
@@ -150,8 +153,11 @@ class GroupsController extends OCSController {
 			return new Result(null, 102);
 		}
 		$user = $this->userSession->getUser();
-		if ($this->isSubAdmin($user) === false) {
+		if ($user === null) {
 			return new Result(null, 102);
+		}
+		if ($this->isSubAdmin($user) === false) {
+			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 		// Only admin has got privilege to create group
 		if ($this->groupManager->isAdmin($user->getUID())) {
@@ -205,10 +211,10 @@ class GroupsController extends OCSController {
 	}
 
 	/**
-	 * @param IUser $user
+	 * @param IUser|null $user
 	 * @return bool
 	 */
-	private function isSubAdmin(IUser $user) {
+	private function isSubAdmin($user) {
 		if ($user === null) {
 			return false;
 		}
