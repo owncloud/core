@@ -67,7 +67,7 @@ Feature: dav-versions
     And user "user0" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
 
-  @smokeTest @skipOnOcis @issue-ocis-reva-94
+  @smokeTest @issue-ocis-reva-94
   Scenario: Remove a file
     Given user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
     And user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
@@ -75,16 +75,6 @@ Feature: dav-versions
     And user "user0" has deleted file "/davtest.txt"
     When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
-
-  @skipOnOcV10 @issue-ocis-reva-94
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario: Remove a file
-    Given user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
-    And user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
-    And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
-    And user "user0" has deleted file "/davtest.txt"
-    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
 
   @smokeTest
   Scenario: Restore a file and check, if the content is now in the current file
