@@ -1143,7 +1143,6 @@ trait Sharing {
 	) {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
-
 		$path = $this->getSharesEndpointPath("?path=$filepath");
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -1962,10 +1961,12 @@ trait Sharing {
 			if (\in_array($field, ["share_with", "uid_owner"])) {
 				$value = $this->getActualUsername($value);
 			}
-			if (\getenv('REPLACE_USERNAMES' && \in_array($field, ["share_with_displayname", "displayname_owner"]))) {
+			$value = $this->replaceValuesFromTable($field, $value);
+			if (\getenv('REPLACE_USERNAMES')
+				&& \in_array($field, ["share_with_displayname", "displayname_owner"])
+			) {
 				$value = "Regular User";
 			}
-			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
 				$this->isFieldInResponse($field, $value),
 				"$field doesn't have value '$value'"
