@@ -573,6 +573,7 @@ class TrashbinContext implements Context {
 	public function contentOfFileForUserIfAlsoInTrashShouldBeOtherwise(
 		$fileName, $user, $content, $alternativeContent
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->downloadFileAsUserUsingPassword($user, $fileName);
 		if ($this->isInTrash($user, $fileName)) {
 			$this->featureContext->downloadedContentShouldBe($content);
