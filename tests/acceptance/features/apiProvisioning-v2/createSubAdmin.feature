@@ -44,5 +44,4 @@ Feature: create a subadmin
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And user "not-user" should not be a subadmin of group "new-group"
-	
+    And user "brand-new-user" should not be a subadmin of group "new-group"
