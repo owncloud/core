@@ -10,7 +10,6 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user3" has been created with default attributes and skeleton files
     And group "grp2" has been created
-    # Note: in the user_ldap test environment user3 is in grp2
     And user "user3" has been added to group "grp2"
     And user "user0" has shared folder "/PARENT" with user "user1"
     When user "user1" shares folder "/PARENT" with group "grp2" using the sharing API
@@ -27,7 +26,6 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user3" has been created with default attributes and skeleton files
     And group "grp2" has been created
-    # Note: in the user_ldap test environment user3 is in grp2
     And user "user3" has been added to group "grp2"
     And user "user0" has shared file "/textfile0.txt" with user "user1"
     When user "user1" shares folder "/textfile0.txt" with group "grp2" using the sharing API

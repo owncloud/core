@@ -8,7 +8,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "welcome.txt" with group "grp1"
     When user "user0" shares file "/welcome.txt" with user "user1" using the sharing API
@@ -35,7 +34,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and skeleton files
     And group "grp4" has been created
-    # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
     And user "user0" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
@@ -75,7 +73,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "user1" has been created with default attributes and without skeleton files
     And user "user3" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user1" has created folder "/test"
     And user "user1" has created folder "/test/sub"
@@ -165,7 +162,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And these groups have been created:
       | groupname |
       | grp1      |
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user0" has uploaded file with content "user0 content" to "lorem.txt"
     And user "user2" has uploaded file with content "user2 content" to "lorem.txt"

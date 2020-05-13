@@ -11,9 +11,7 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "user3" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
-    # Note: in the user_ldap test environment user3 is in grp2
     And user "user3" has been added to group "grp2"
     When user "user1" shares folder "/PARENT" with group "grp2" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -30,7 +28,6 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "user1" has been created with default attributes and skeleton files
     And user "user3" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1, and user3 is not in grp1
     And user "user1" has been added to group "grp1"
     When user "user1" shares folder "/PARENT" with user "user3" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -47,7 +44,6 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     When user "user1" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -66,9 +62,7 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "user3" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
-    # Note: in the user_ldap test environment user3 is in grp2
     And user "user3" has been added to group "grp2"
     When user "user1" shares file "/textfile0.txt" with group "grp2" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -85,7 +79,6 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     When user "user1" shares folder "/textfile0.txt" with group "grp1" using the sharing API
@@ -103,7 +96,6 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "user1" has been created with default attributes and skeleton files
     And user "user3" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1, and user3 is not in grp1
     And user "user1" has been added to group "grp1"
     When user "user1" shares folder "/textfile0.txt" with user "user3" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
