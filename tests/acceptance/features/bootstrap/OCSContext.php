@@ -473,19 +473,24 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method including body using password :password then the status codes should be as listed
+	 * @When user :user requests these endpoints with :method including body using password :password then the status codes about user :ofUser should be as listed
 	 *
 	 * @param string $user
 	 * @param string $method
 	 * @param string $password
+	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, $ofUser, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
@@ -502,17 +507,24 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method including body then the status codes should be as listed
+	 * @When user :user requests these endpoints with :method including body then the status codes about user :ofUser should be as listed
 	 *
 	 * @param string $user
 	 * @param string $method
+	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithBody($user, $method, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $ofUser, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
@@ -539,8 +551,13 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
+		$asUser = $this->featureContext->getActualUsername($asUser);
+		$userRenamed = \strtolower($this->featureContext->getActualUsername($user));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $userRenamed
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$asUser,
 				$row['endpoint'],

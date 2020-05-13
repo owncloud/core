@@ -1,22 +1,27 @@
 {
   "user0": {
     "username" : "abc",
-    "displayname" : "ABC User"
+    "displayname" : "ABC User",
+    "password" : "1234"
   },
   "user1": {
     "username" : "Jasmine",
-    "displayname" : "Jasmine Baral"
+    "displayname" : "Jasmine Baral",
+    "password" : "12345"
   },
   "user2": {
     "username" : "jas@123",
-    "displayname" : "helloUser"
+    "displayname" : "helloUser",
+    "password" : "123456"
   },
   "user3": {
     "username" : "123@jim",
-    "displayname": "jim123"
+    "displayname": "jim123",
+    "password" : "1234567"
   },
   "user4": {
     "username" : "123.Me.test_user@test-organization.org",
-    "displayname" : "RegularUser"
+    "displayname" : "RegularUser",
+    "password" : "12345678"
   }
 }
