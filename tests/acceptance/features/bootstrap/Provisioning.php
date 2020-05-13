@@ -28,6 +28,7 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
+use TestHelpers\FileHandlingHelper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
@@ -301,12 +302,13 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" has been created with default attributes and skeleton files$/
 	 *
 	 * @param string $user
+	 * @param boolean $skeleton
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasBeenCreatedWithDefaultAttributes($user) {
-		$this->createUser($user);
+	public function userHasBeenCreatedWithDefaultAttributes($user, $skeleton = true) {
+		$this->createUser($user, null, null, null, true, null, true, $skeleton);
 		$this->userShouldExist($user);
 	}
 
@@ -322,7 +324,7 @@ trait Provisioning {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			$this->userHasBeenCreatedWithDefaultAttributes($user);
+			$this->userHasBeenCreatedWithDefaultAttributes($user, false);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->runOcc(
@@ -492,7 +494,6 @@ trait Provisioning {
 		];
 		$this->ldap = new Ldap($options);
 		$this->ldap->bind();
-
 		$this->importLdifFile(
 			__DIR__ . (string)$suiteParameters['ldapInitialUserFilePath']
 		);
@@ -2066,6 +2067,7 @@ trait Provisioning {
 	 * @param bool $initialize initialize the user skeleton files etc
 	 * @param string|null $method how to create the user api|occ, default api
 	 * @param bool $setDefault sets the missing values to some default
+	 * @param bool $skeleton
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -2077,7 +2079,8 @@ trait Provisioning {
 		$email = null,
 		$initialize = true,
 		$method = null,
-		$setDefault = true
+		$setDefault = true,
+		$skeleton = null
 	) {
 		$user = $this->getActualUsername($user);
 
@@ -2157,6 +2160,16 @@ trait Provisioning {
 						$initialize,
 						$settings
 					);
+					if ($skeleton) {
+						$skeletonDir = \getenv("SKELETON_DIR");
+						if ($skeletonDir) {
+							$dataDir = \getenv("OCIS_REVA_DATA_ROOT") . "data/$user/files";
+							if (!\file_exists($dataDir)) {
+								\mkdir($dataDir, 0777, true);
+							}
+							OcisHelper::recurseCopy($skeletonDir, $dataDir);
+						}
+					}
 				} catch (LdapException $exception) {
 					throw new Exception(
 						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"

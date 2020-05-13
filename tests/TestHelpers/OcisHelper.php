@@ -48,6 +48,31 @@ class OcisHelper {
 	}
 
 	/**
+	 * Helper for Recursive Copy of file/folder
+	 * For more info check this out https://gist.github.com/gserrano/4c9648ec9eb293b9377b
+	 *
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 *
+	 */
+	public static function recurseCopy($source, $destination) {
+		$dir = \opendir($source);
+		@\mkdir($destination);
+		while (($file = \readdir($dir)) !== false) {
+			if (($file != '.') && ($file != '..')) {
+				if (\is_dir($source . '/' . $file)) {
+					self::recurseCopy($source . '/' . $file, $destination . '/' . $file);
+				} else {
+					\copy($source . '/' . $file, $destination . '/' . $file);
+				}
+			}
+		}
+		\closedir($dir);
+	}
+
+	/**
 	 * @return int
 	 */
 	public static function getLdapPort() {
