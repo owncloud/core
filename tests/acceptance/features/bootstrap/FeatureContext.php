@@ -2747,6 +2747,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function sendUserSyncRequest($user, $asUser = null, $password = null) {
+		$user = $this->getActualUsername($user);
 		$asUser = $asUser ?? $this->getAdminUsername();
 		$password = $password ?? $this->getPasswordForUser($asUser);
 		$response = OcsApiHelper::sendRequest(
@@ -2781,6 +2782,8 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function userTriesToSyncUserUsingTheOcsApi($asUser, $user) {
+		$asUser = $this->getActualUsername($asUser);
+		$user = $this->getActualUsername($user);
 		$this->sendUserSyncRequest($user, $asUser);
 	}
 

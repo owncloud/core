@@ -144,6 +144,7 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsTheChecksumOfViaPropfind($user, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$body = '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
@@ -280,6 +281,7 @@ class ChecksumContext implements Context {
 	public function userUploadsChunkFileOfWithToWithChecksum(
 		$user, $num, $total, $data, $destination, $checksum
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$num -= 1;
 		$file = "$destination-chunking-42-$total-$num";
 		$response = $this->featureContext->makeDavRequest(

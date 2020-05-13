@@ -608,6 +608,32 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * Check the text in an OCS status message
+	 *
+	 * @Then /^the OCS status message about user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $statusMessage
+	 *
+	 * @return void
+	 */
+	public function theOCSStatusMessageAboutUserShouldBe($user, $statusMessage) {
+		$user = \strtolower($this->featureContext->getActualUsername($user));
+		$statusMessage = $this->featureContext->substituteInLineCodes(
+			$statusMessage, $user
+		);
+		Assert::assertEquals(
+			$statusMessage,
+			$this->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			),
+			'Unexpected OCS status message :"' . $this->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '" in response'
+		);
+	}
+
+	/**
 	 * Check the text in an OCS status message.
 	 * Use this step form if the expected text contains double quotes,
 	 * single quotes and other content that theOCSStatusMessageShouldBe()

@@ -1723,6 +1723,7 @@ trait WebDav {
 	public function userOverwritesAFileToWithAllMechanisms(
 		$user, $source, $destination
 	) {
+		$user = $this->getActualUsername($user);
 		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
 			$this->getBaseUrl(), $this->getActualUsername($user),
 			$this->getUserPassword($user),
