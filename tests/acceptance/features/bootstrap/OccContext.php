@@ -256,6 +256,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function scanFileSystemForAUserUsingTheOccCommand($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->invokingTheCommand(
 			"files:scan $user"
 		);
@@ -263,11 +264,15 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $path
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemPathUsingTheOccCommand($path) {
+	public function scanFileSystemPathUsingTheOccCommand($path, $user = null) {
+		$path = $this->featureContext->substituteInLineCodes(
+			$path, $user
+		);
 		$this->invokingTheCommand(
 			"files:scan --path='$path'"
 		);
@@ -1045,15 +1050,17 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator scans the filesystem in path :path using the occ command
+	 * @When the administrator scans the filesystem in path :path of user :user using the occ command
 	 *
 	 * @param string $path
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path) {
-		$this->scanFileSystemPathUsingTheOccCommand($path);
+	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path, $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->scanFileSystemPathUsingTheOccCommand($path, $user);
 	}
 
 	/**
@@ -1175,6 +1182,7 @@ class OccContext implements Context {
 	public function addRemoveUserOrGroupToOrFromMount(
 		$action, $userOrGroup, $userOrGroupName, $mountName
 	) {
+		$userOrGroupName = $this->featureContext->getActualUsername($userOrGroupName);
 		if ($action === "adds" || $action === "added") {
 			$action = "--add";
 		} else {
@@ -1274,6 +1282,7 @@ class OccContext implements Context {
 	public function theAdminAddsRemovesAsTheApplicableUserForMountUsingTheOccCommand(
 		$action, $userOrGroup, $user, $mount
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
 			$action,
 			$userOrGroup,
@@ -1315,6 +1324,7 @@ class OccContext implements Context {
 	public function theAdminHasAddedRemovedTheApplicableUserForMountUsingTheOccCommand(
 		$action, $userOrGroup, $user, $mount
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
 			$action,
 			$userOrGroup,
@@ -1681,6 +1691,7 @@ class OccContext implements Context {
 						$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
 						$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
 						foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
+							$expectedApplicableUserEntry = $this->featureContext->getActualUsername($expectedApplicableUserEntry);
 							Assert::assertContains(
 								$expectedApplicableUserEntry,
 								$listedApplicableUsers,

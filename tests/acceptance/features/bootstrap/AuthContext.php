@@ -577,11 +577,14 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
-		$user = $this->featureContext->getActualUsername($user);
+		$userRenamed = $this->featureContext->getActualUsername($user);
+		$url = $this->featureContext->substituteInLineCodes(
+			$url, $userRenamed
+		);
 		if ($password === null) {
-			$authString = "$user:" . $this->featureContext->getPasswordForUser($user);
+			$authString = "$userRenamed:" . $this->featureContext->getPasswordForUser($user);
 		} else {
-			$authString = $user . ":" . $password;
+			$authString = $userRenamed . ":" . $password;
 		}
 		$this->sendRequest(
 			$url, $method, 'basic ' . \base64_encode($authString), false, $body

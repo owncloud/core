@@ -637,6 +637,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theUserShouldBeAbleToRenameEntryTo($user, $entry, $source, $destination) {
+		$user = $this->getActualUsername($user);
 		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userMovesFileUsingTheAPI($user, $source, "", $destination);
 		$this->asFileOrFolderShouldNotExist($user, $entry, $source);
@@ -1774,6 +1775,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userShouldBeAbleToUploadFileTo($user, $source, $destination) {
+		$user = $this->getActualUsername($user);
 		$this->userUploadsAFileTo($user, $source, $destination);
 		$this->asFileOrFolderShouldExist($user, null, $destination);
 	}
@@ -2106,6 +2108,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function userShouldBeAbleToDeleteEntry($user, $entry, $source) {
+		$user = $this->getActualUsername($user);
 		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userDeletesFile($user, $source);
 		$this->asFileOrFolderShouldNotExist($user, $entry, $source);
