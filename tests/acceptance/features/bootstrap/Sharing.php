@@ -2461,14 +2461,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the administrator adds group :group to the exclude group from sharing list using the occ command
+	 * @When the administrator adds group :group to the exclude groups from receiving shares list using the occ command
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function administratorAddsGroupToExcludeFromSharingList($group) {
+	public function administratorAddsGroupToExcludeFromReceivingSharesList($group) {
 		//get current groups
 		$occExitCode = $this->runOcc(
 			['config:app:get files_sharing blacklisted_receiver_groups']
