@@ -8,7 +8,6 @@ Feature: cannot share resources when in a group that is excluded from sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in user_ldap, user1 is already in grp1
     And user "user1" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
@@ -28,7 +27,6 @@ Feature: cannot share resources when in a group that is excluded from sharing
     And user "user3" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
-    # Note: in user_ldap, user1 is already in grp1, user3 is already in grp2
     And user "user1" has been added to group "grp1"
     And user "user3" has been added to group "grp2"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -47,7 +45,6 @@ Feature: cannot share resources when in a group that is excluded from sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    # Note: in user_ldap, user1 is already in grp1
     And user "user1" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
@@ -67,7 +64,6 @@ Feature: cannot share resources when in a group that is excluded from sharing
     And user "user3" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
-    # Note: in user_ldap, user1 is already in grp1, user3 is already in grp2
     And user "user1" has been added to group "grp1"
     And user "user3" has been added to group "grp2"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
