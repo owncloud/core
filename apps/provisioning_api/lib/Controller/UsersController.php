@@ -606,6 +606,7 @@ class UsersController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * Creates a subadmin
 	 *
@@ -646,6 +647,7 @@ class UsersController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * Removes a subadmin from a group
 	 *
@@ -681,6 +683,7 @@ class UsersController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * Get the groups a user is a subadmin of
 	 *

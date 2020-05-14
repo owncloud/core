@@ -188,6 +188,7 @@ class GroupsController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * @param string $groupId
 	 * @return Result

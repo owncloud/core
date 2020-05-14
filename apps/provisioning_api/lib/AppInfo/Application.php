@@ -21,10 +21,31 @@
 
 namespace OCA\Provisioning_API\AppInfo;
 
+use OC\AppFramework\Utility\SimpleContainer;
+use OCA\Provisioning_API\Middleware\ProvisioningMiddleware;
 use OCP\AppFramework\App;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
 		parent::__construct('provisioning_api', $urlParams);
+
+		$container = $this->getContainer();
+		$server = $container->getServer();
+
+		$container->registerService(
+			ProvisioningMiddleware::class,
+			function (SimpleContainer $c) use ($server) {
+				return new ProvisioningMiddleware(
+					$c->query('AppName'),
+					$server->getRequest(),
+					$server->getUserSession(),
+					$server->getGroupManager(),
+					$c['ControllerMethodReflector']
+				);
+			}
+		);
+
+		// Execute middlewares
+		$container->registerMiddleware(ProvisioningMiddleware::class);
 	}
 }

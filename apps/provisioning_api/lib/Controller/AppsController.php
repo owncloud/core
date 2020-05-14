@@ -48,6 +48,7 @@ class AppsController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * @param string $filter
 	 * @return Result
@@ -95,6 +96,7 @@ class AppsController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * @param string $appId
 	 * @return Result
@@ -106,6 +108,7 @@ class AppsController extends OCSController {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * @param string $appId
 	 * @return Result
