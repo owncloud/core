@@ -783,6 +783,8 @@ trait Sharing {
 	 * @return void
 	 */
 	public function updateLastShareWithSettings($user, $body) {
+		$user = $this->getActualUsername($user);
+
 		$share_id = (string) $this->lastShareData->data[0]->id;
 
 		$this->verifyTableNodeRows(
