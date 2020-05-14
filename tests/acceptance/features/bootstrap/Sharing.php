@@ -1395,6 +1395,7 @@ trait Sharing {
 		$user, $filepath, $group, $permissions = null
 	) {
 		$user = $this->getActualUsername($user);
+		$group = $this->getActualUsername($group);
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user, $filepath, $group, $permissions, true
 		);
@@ -1962,15 +1963,14 @@ trait Sharing {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {
-			if (\in_array($field, ["share_with", "uid_owner"])) {
+			if (\in_array($field, ["share_with", "uid_owner", "uid_file_owner"])) {
 				$value = $this->getActualUsername($value);
+			} elseif (\in_array($field, ["displayname_file_owner", "displayname_owner"])) {
+				$value = $this->getDisplayNameForUser($bodyRows["uid_owner"]);
+			} elseif ($field === "share_with_displayname") {
+				$value = $this->getDisplayNameForUser($bodyRows["share_with"]);
 			}
 			$value = $this->replaceValuesFromTable($field, $value);
-			if (\getenv('REPLACE_USERNAMES')
-				&& \in_array($field, ["share_with_displayname", "displayname_owner"])
-			) {
-				$value = "Regular User";
-			}
 			Assert::assertTrue(
 				$this->isFieldInResponse($field, $value),
 				"$field doesn't have value '$value'"

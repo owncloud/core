@@ -384,10 +384,17 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isTestingReplacingUsernames() {
+		return (\getenv('REPLACE_USERNAMES') === "true");
+	}
+
+	/**
 	 * @return array|null
 	 */
 	public function usersToBeReplaced() {
-		if (\getenv('REPLACE_USERNAMES') !== false) {
+		if ($this->isTestingReplacingUsernames()) {
 			return \json_decode(\file_get_contents("./tests/acceptance/usernames.json"), true);
 		}
 		return null;

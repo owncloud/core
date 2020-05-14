@@ -605,7 +605,9 @@ trait Provisioning {
 		$usersAttributes = [];
 		foreach ($table as $row) {
 			$userAttribute['userid'] = $this->getActualUsername($row['username']);
-			if (isset($row['displayname'])) {
+			if ($this->isTestingReplacingUsernames()) {
+				$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
+			} elseif (isset($row['displayname'])) {
 				$userAttribute['displayName'] = $row['displayname'];
 			} elseif ($setDefaultAttributes) {
 				$userAttribute['displayName'] = $this->getDisplayNameForUser($userAttribute['userid']);
@@ -2570,6 +2572,7 @@ trait Provisioning {
 	 */
 	public function userHasBeenAddedToGroup($user, $group) {
 		$user = $this->getActualUsername($user);
+		$group = $this->getActualUsername($group);
 		$this->addUserToGroup($user, $group, null, true);
 	}
 
@@ -2726,6 +2729,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function groupHasBeenCreated($group) {
+		$group = $this->getActualUsername($group);
 		$this->createTheGroup($group);
 		$this->groupShouldExist($group);
 	}
