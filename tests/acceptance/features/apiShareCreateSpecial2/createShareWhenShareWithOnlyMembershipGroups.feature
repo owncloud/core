@@ -8,15 +8,14 @@ Feature: cannot share resources outside the group when share with membership gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
-    And user "user3" has been created with default attributes and skeleton files
+    And group "grp0" has been created
     And group "grp1" has been created
-    And group "grp2" has been created
+    And user "user0" has been added to group "grp0"
     And user "user1" has been added to group "grp1"
-    And user "user3" has been added to group "grp2"
-    When user "user1" shares folder "/PARENT" with group "grp2" using the sharing API
+    When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user3" folder "/PARENT (2)" should not exist
+    And as "user1" folder "/PARENT (2)" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
@@ -26,13 +25,12 @@ Feature: cannot share resources outside the group when share with membership gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
-    And user "user3" has been created with default attributes and skeleton files
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user1" shares folder "/PARENT" with user "user3" using the sharing API
+    And group "grp0" has been created
+    And user "user0" has been added to group "grp0"
+    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user3" folder "/PARENT (2)" should exist
+    And as "user1" folder "/PARENT (2)" should exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -42,14 +40,13 @@ Feature: cannot share resources outside the group when share with membership gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp1"
-    When user "user1" shares folder "/PARENT" with group "grp1" using the sharing API
+    And group "grp0" has been created
+    And user "user0" has been added to group "grp0"
+    And user "user1" has been added to group "grp0"
+    When user "user0" shares folder "/PARENT" with group "grp0" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/PARENT (2)" should exist
+    And as "user1" folder "/PARENT (2)" should exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -59,15 +56,14 @@ Feature: cannot share resources outside the group when share with membership gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
-    And user "user3" has been created with default attributes and skeleton files
+    And group "grp0" has been created
     And group "grp1" has been created
-    And group "grp2" has been created
+    And user "user0" has been added to group "grp0"
     And user "user1" has been added to group "grp1"
-    And user "user3" has been added to group "grp2"
-    When user "user1" shares file "/textfile0.txt" with group "grp2" using the sharing API
+    When user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user3" file "/textfile0 (2).txt" should not exist
+    And as "user1" file "/textfile0 (2).txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
@@ -77,14 +73,13 @@ Feature: cannot share resources outside the group when share with membership gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp1"
-    When user "user1" shares folder "/textfile0.txt" with group "grp1" using the sharing API
+    And group "grp0" has been created
+    And user "user0" has been added to group "grp0"
+    And user "user1" has been added to group "grp0"
+    When user "user0" shares folder "/textfile0.txt" with group "grp0" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" file "/textfile0 (2).txt" should exist
+    And as "user1" file "/textfile0 (2).txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -94,13 +89,12 @@ Feature: cannot share resources outside the group when share with membership gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     And user "user1" has been created with default attributes and skeleton files
-    And user "user3" has been created with default attributes and skeleton files
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user1" shares folder "/textfile0.txt" with user "user3" using the sharing API
+    And group "grp0" has been created
+    And user "user0" has been added to group "grp0"
+    When user "user0" shares folder "/textfile0.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "user3" file "/textfile0 (2).txt" should exist
+    And as "user1" file "/textfile0 (2).txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
