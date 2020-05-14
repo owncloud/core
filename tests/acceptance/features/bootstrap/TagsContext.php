@@ -244,6 +244,7 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function createTagWithName($user, $type, $name) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->createTag(
 			$user,
 			TagsHelper::validateTypeOfTag($type)[0],
