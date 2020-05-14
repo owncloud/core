@@ -9,7 +9,11 @@ Feature: auth
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send POST requests to OCS endpoints as normal user with wrong password
+<<<<<<< HEAD
     When user "Alice" requests these endpoints with "POST" including body using password "invalid" then the status codes should be as listed
+=======
+    When user "user0" requests these endpoints with "POST" including body using password "invalid" then the status codes about user "user0" should be as listed
+>>>>>>> apiAuthOcs Remaining
       | endpoint                                                        | ocs-code | http-code | body          |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       | doesnotmatter |
@@ -23,10 +27,17 @@ Feature: auth
       | /ocs/v2.php/cloud/groups                                        | 997      | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users                                         | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users                                         | 997      | 401       | doesnotmatter |
+<<<<<<< HEAD
       | /ocs/v1.php/cloud/users/Alice/groups                            | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/Alice/groups                            | 997      | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users/Alice/subadmins                         | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/Alice/subadmins                         | 997      | 401       | doesnotmatter |
+=======
+      | /ocs/v1.php/cloud/users/%username%/groups                       | 997      | 401       | doesnotmatter |
+      | /ocs/v2.php/cloud/users/%username%/groups                       | 997      | 401       | doesnotmatter |
+      | /ocs/v1.php/cloud/users/%username%/subadmins                    | 997      | 401       | doesnotmatter |
+      | /ocs/v2.php/cloud/users/%username%/subadmins                    | 997      | 401       | doesnotmatter |
+>>>>>>> apiAuthOcs Remaining
       | /ocs/v1.php/person/check                                        | 101      | 200       | doesnotmatter |
       | /ocs/v2.php/person/check                                        | 400      | 400       | doesnotmatter |
       | /ocs/v1.php/privatedata/deleteattribute/testing/test            | 997      | 401       | doesnotmatter |
@@ -39,7 +50,11 @@ Feature: auth
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send POST requests to OCS endpoints as normal user with wrong password
+<<<<<<< HEAD
     When user "Alice" requests these endpoints with "POST" including body using password "invalid" then the status codes should be as listed
+=======
+    When user "user0" requests these endpoints with "POST" including body using password "invalid" then the status codes about user "user0" should be as listed
+>>>>>>> apiAuthOcs Remaining
       | endpoint                                                        | http-code | body          |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 401       | doesnotmatter |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 401       | doesnotmatter |
@@ -53,10 +68,17 @@ Feature: auth
       | /ocs/v2.php/cloud/groups                                        | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users                                         | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users                                         | 401       | doesnotmatter |
+<<<<<<< HEAD
       | /ocs/v1.php/cloud/users/Alice/groups                            | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/Alice/groups                            | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users/Alice/subadmins                         | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/Alice/subadmins                         | 401       | doesnotmatter |
+=======
+      | /ocs/v1.php/cloud/users/%username%/groups                       | 401       | doesnotmatter |
+      | /ocs/v2.php/cloud/users/%username%/groups                       | 401       | doesnotmatter |
+      | /ocs/v1.php/cloud/users/%username%/subadmins                    | 401       | doesnotmatter |
+      | /ocs/v2.php/cloud/users/%username%/subadmins                    | 401       | doesnotmatter |
+>>>>>>> apiAuthOcs Remaining
       | /ocs/v1.php/person/check                                        | 401       | doesnotmatter |
       | /ocs/v2.php/person/check                                        | 401       | doesnotmatter |
       | /ocs/v1.php/privatedata/deleteattribute/testing/test            | 401       | doesnotmatter |
