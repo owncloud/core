@@ -188,9 +188,9 @@ Feature: auth
   @issue-ocis-reva-65
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as admin user with wrong password
-    Given user "newadmin" has been created with default attributes and without skeleton files
-    And user "newadmin" has been added to group "admin"
-    When user "newadmin" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
+    Given user "another-admin" has been created with default attributes and without skeleton files
+    And user "another-admin" has been added to group "admin"
+    When user "another-admin" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |

@@ -348,14 +348,13 @@ Feature: sharing
     And user "user0" has created folder "/folder1/folder2"
     And user "user0" has shared folder "/folder1/folder2" with user "user3"
     And user "user0" has shared folder "/folder1/folder2" with user "user4"
-    And as user "user0"
-    When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 4 entries
     And folder "/folder1" should be included as path in the response
     And folder "/folder1/folder2" should be included as path in the response
-    And the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
+    And user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
     And the response should contain 2 entries
     And folder "/folder1" should not be included as path in the response
     And folder "/folder1/folder2" should be included as path in the response
@@ -524,8 +523,7 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     And user "user0" has shared file "/textfile0.txt" with group "grp1"
-    And as user "user0"
-    When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -536,8 +534,7 @@ Feature: sharing
     And as "user1" file "/textfile0.txt" should exist
     And as "user2" file "/textfile0.txt" should exist
     When the administrator deletes group "grp1" using the provisioning API
-    And as user "user0"
-    When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And file "/textfile0.txt" should not be included as path in the response

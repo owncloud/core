@@ -5,7 +5,6 @@ Feature: changing a public link share
     Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
-      | user1    |
 
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions
     Given the administrator has enabled DAV tech_preview

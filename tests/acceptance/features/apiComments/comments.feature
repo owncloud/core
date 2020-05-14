@@ -7,13 +7,12 @@ Feature: Comments
 
   @smokeTest
   Scenario: Getting info of comments using files endpoint
-    Given as user "user0"
-    And the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
-    And the user has commented with content "My first comment" on file "/myFileToComment.txt"
-    And the user should have the following comments on file "/myFileToComment.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has commented with content "My first comment" on file "/myFileToComment.txt"
+    And user "user0" should have the following comments on file "/myFileToComment.txt"
       | user  | comment          |
       | user0 | My first comment |
-    When the user gets the following properties of folder "/myFileToComment.txt" using the WebDAV API
+    When user "user0" gets the following properties of folder "/myFileToComment.txt" using the WebDAV API
       | propertyName       |
       | oc:comments-href   |
       | oc:comments-count  |
@@ -23,10 +22,9 @@ Feature: Comments
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
   Scenario: Getting more info about comments using REPORT method
-    Given as user "user0"
-    And the user has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
-    And the user has commented with content "My first comment" on file "myFileToComment.txt"
-    When the user gets all information about the comments on file "myFileToComment.txt" using the WebDAV REPORT API
+    Given user "user0" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
+    And user "user0" has commented with content "My first comment" on file "myFileToComment.txt"
+    When user "user0" gets all information about the comments on file "myFileToComment.txt" using the WebDAV REPORT API
     Then the following comment properties should be listed
       | propertyName     | propertyValue    |
       | verb             | comment          |
@@ -38,10 +36,9 @@ Feature: Comments
       | message          | My first comment |
 
   Scenario: Getting more info about comments using PROPFIND method
-    Given as user "user0"
-    And the user has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
-    And the user has commented with content "My first comment" on file "myFileToComment.txt"
-    When the user gets the following comment properties of file "myFileToComment.txt" using the WebDAV PROPFIND API
+    Given user "user0" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
+    And user "user0" has commented with content "My first comment" on file "myFileToComment.txt"
+    When user "user0" gets the following comment properties of file "myFileToComment.txt" using the WebDAV PROPFIND API
       | propertyName        |
       | oc:verb             |
       | oc:actorType        |

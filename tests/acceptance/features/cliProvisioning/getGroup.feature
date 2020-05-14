@@ -11,10 +11,10 @@ Feature: get group
       | brand-new-user |
       | 123            |
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
-    And group "new-group" has been created
-    And user "brand-new-user" has been added to group "new-group"
-    And user "123" has been added to group "new-group"
-    When the administrator gets the users in group "new-group" in JSON format using the occ command
+    And group "brand-new-group" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    And user "123" has been added to group "brand-new-group"
+    When the administrator gets the users in group "brand-new-group" in JSON format using the occ command
     Then the command should have been successful
     And the users returned by the occ command should be
       | uid            | display name |
@@ -25,19 +25,19 @@ Feature: get group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
     And user "brand-new-user" has been disabled
-    And group "new-group" has been created
-    And user "brand-new-user" has been added to group "new-group"
-    When the administrator gets the users in group "new-group" in JSON format using the occ command
+    And group "brand-new-group" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    When the administrator gets the users in group "brand-new-group" in JSON format using the occ command
     Then the command should have been successful
     And the users returned by the occ command should be
       | uid            | display name |
       | brand-new-user | Anne Brown   |
 
   Scenario: admin tries to get users in a non-existent group
-    Given group "new-group" has been created
-    When the administrator gets the users in group "not-a-group" in JSON format using the occ command
+    Given group "brand-new-group" has been created
+    When the administrator gets the users in group "nonexistentgroup" in JSON format using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'Group not-a-group does not exist'
+    And the command output should contain the text 'Group nonexistentgroup does not exist'
 
   @skipOnLDAP @issue-499
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name

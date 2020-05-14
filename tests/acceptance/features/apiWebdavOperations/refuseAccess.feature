@@ -38,9 +38,9 @@ Feature: refuse access
   @skipOnOcis
   Scenario Outline: A disabled user cannot use webdav
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes and skeleton files
-    And user "user1" has been disabled
-    When user "user1" downloads file "/welcome.txt" using the WebDAV API
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has been disabled
+    When user "user0" downloads file "/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "401"
     Examples:
       | dav_version |

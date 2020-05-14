@@ -7,8 +7,8 @@ So that I can extend my storage service
 
   Background:
     Given using server "REMOTE"
-    And user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has created folder "TestMnt"
+    And user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "TestMnt"
     And using server "LOCAL"
 
   Scenario: creating a webdav_owncloud external storage
@@ -16,8 +16,8 @@ So that I can extend my storage service
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
-      | user                   | user1              |
-      | password               | %alt1%             |
+      | user                   | user0              |
+      | password               | %regular%          |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
@@ -33,26 +33,26 @@ So that I can extend my storage service
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
-      | user                   | user1              |
-      | password               | %alt1%             |
+      | user                   | user0              |
+      | password               | %regular%          |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
     When user "admin" has uploaded file with content "Hello from Local!" to "TestMountPoint/test.txt"
     And using server "REMOTE"
-    Then as "user1" file "/TestMnt/test.txt" should exist
-    And the content of file "/TestMnt/test.txt" for user "user1" should be "Hello from Local!"
+    Then as "user0" file "/TestMnt/test.txt" should exist
+    And the content of file "/TestMnt/test.txt" for user "user0" should be "Hello from Local!"
 
   Scenario: deleting a webdav_owncloud external storage
     Given using server "REMOTE"
-    And user "user1" has created folder "TestMnt1"
+    And user "user0" has created folder "TestMnt1"
     And using server "LOCAL"
     And the administrator creates an external mount point with the following configuration using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt1           |
       | secure                 | false              |
-      | user                   | user1              |
-      | password               | %alt1%             |
+      | user                   | user0              |
+      | password               | %regular%          |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint1    |
       | authentication_backend | password::password |

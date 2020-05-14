@@ -5,7 +5,6 @@ Feature: accessing a public link share
     Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
-      | user1    |
 
   @skipOnOcV10.3
   Scenario: Access to the preview of password protected public link without providing the password is not allowed

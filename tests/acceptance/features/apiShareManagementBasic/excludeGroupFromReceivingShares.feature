@@ -40,11 +40,11 @@ Feature: Exclude groups from receiving shares
 
   Scenario Outline: exclude multiple groups from receiving shares stops the user to share with any of them
     Given using OCS API version "<ocs_api_version>"
-    And group "grp4" has been created
-    And user "user1" has been added to group "grp4"
+    And group "grp3" has been created
+    And user "user1" has been added to group "grp3"
     When the administrator adds group "grp1" to the exclude groups from receiving shares list using the occ command
     And the administrator adds group "grp2" to the exclude groups from receiving shares list using the occ command
-    And the administrator adds group "grp4" to the exclude groups from receiving shares list using the occ command
+    And the administrator adds group "grp3" to the exclude groups from receiving shares list using the occ command
     And user "user0" shares file "welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
@@ -55,7 +55,7 @@ Feature: Exclude groups from receiving shares
     And the HTTP status code should be "<http_status_code>"
     And the OCS status message should be "The group is blacklisted for sharing"
     And as "user1" folder "/PARENT (2)" should not exist
-    When user "user0" shares folder "PARENT/CHILD" with group "grp4" using the sharing API
+    When user "user0" shares folder "PARENT/CHILD" with group "grp3" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
     And the OCS status message should be "The group is blacklisted for sharing"
@@ -107,13 +107,13 @@ Feature: Exclude groups from receiving shares
 
   Scenario Outline: sharing with a user that is part of a group that is excluded from receiving shares using an other group works
     Given using OCS API version "<ocs_api_version>"
-    And group "grp4" has been created
-    And user "user1" has been added to group "grp4"
+    And group "grp3" has been created
+    And user "user1" has been added to group "grp3"
     When the administrator adds group "grp1" to the exclude groups from receiving shares list using the occ command
-    And user "user0" shares file "welcome.txt" with group "grp4" using the sharing API
+    And user "user0" shares file "welcome.txt" with group "grp3" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "user0" shares folder "PARENT" with group "grp4" using the sharing API
+    When user "user0" shares folder "PARENT" with group "grp3" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Then as "user1" file "/welcome (2).txt" should exist

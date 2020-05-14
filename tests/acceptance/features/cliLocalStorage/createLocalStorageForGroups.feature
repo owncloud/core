@@ -26,12 +26,12 @@ Feature: create local storage from the command line
     But as "user0" folder "/local_storage2" should not exist
 
   Scenario: removing the only group from applicable group of local storage leaves the storage available to everyone
-    Given group "newgroup" has been created
-    And user "user1" has been added to group "newgroup"
+    Given group "brand-new-group" has been created
+    And user "user1" has been added to group "brand-new-group"
     And the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage2.txt"
-    And the administrator has added group "newgroup" as the applicable group for local storage mount "local_storage2"
-    When the administrator removes group "newgroup" from the applicable group for local storage mount "local_storage2" using the occ command
+    And the administrator has added group "brand-new-group" as the applicable group for local storage mount "local_storage2"
+    When the administrator removes group "brand-new-group" from the applicable group for local storage mount "local_storage2" using the occ command
     Then as "user0" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "user0" should be "this is a file in local storage2"
     Then as "user1" folder "/local_storage2" should exist

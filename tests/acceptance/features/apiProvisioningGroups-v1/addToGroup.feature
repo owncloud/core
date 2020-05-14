@@ -79,10 +79,10 @@ Feature: add users to group
     But user "mixed-case-user" should not belong to group "<group_id2>"
     And user "mixed-case-user" should not belong to group "<group_id3>"
     Examples:
-      | user_id         | group_id1        | group_id2        | group_id3        |
-      | Mixed-Case-USER | Mixed-Case-Group | mixed-case-group | MIXED-CASE-GROUP |
-      | Mixed-Case-User | mixed-case-group | MIXED-CASE-GROUP | Mixed-Case-Group |
-      | mixed-case-user | MIXED-CASE-GROUP | Mixed-Case-Group | mixed-case-group |
+      | user_id         | group_id1            | group_id2            | group_id3            |
+      | Mixed-Case-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
+      | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
+      | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
   @skipOnLDAP
   Scenario: normal user tries to add himself to a group

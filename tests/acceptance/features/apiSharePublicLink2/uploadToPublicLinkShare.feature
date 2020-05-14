@@ -7,8 +7,7 @@ Feature: upload to a public link share
   @smokeTest
   Scenario: Uploading same file to a public upload-only share multiple times via old API
     # The old API needs to have the header OC-Autorename: 1 set to do the autorename
-    Given as user "user0"
-    And the user has created a public link share with settings
+    Given user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the old public WebDAV API
@@ -23,8 +22,7 @@ Feature: upload to a public link share
   Scenario: Uploading same file to a public upload-only share multiple times via new API
     # The new API does the autorename automatically in upload-only folders
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API
@@ -78,8 +76,7 @@ Feature: upload to a public link share
     And the HTTP status code should be "403"
 
   Scenario: Uploading to a public upload-only share
-    Given as user "user0"
-    And the user has created a public link share with settings
+    Given user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
@@ -89,8 +86,7 @@ Feature: upload to a public link share
 
   Scenario: Uploading to a public upload-only share
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
@@ -99,8 +95,7 @@ Feature: upload to a public link share
       | ETag | /^"[a-f0-9]{1,32}"$/ |
 
   Scenario: Uploading to a public upload-only share with password
-    Given as user "user0"
-    And the user has created a public link share with settings
+    Given user "user0" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | create   |
@@ -109,8 +104,7 @@ Feature: upload to a public link share
 
   Scenario: Uploading to a public upload-only share with password
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | create   |
@@ -118,8 +112,7 @@ Feature: upload to a public link share
     Then the content of file "/FOLDER/test-new.txt" for user "user0" should be "test-new"
 
   Scenario: Uploading to a public read/write share with password
-    Given as user "user0"
-    And the user has created a public link share with settings
+    Given user "user0" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | change   |
@@ -128,8 +121,7 @@ Feature: upload to a public link share
 
   Scenario: Uploading to a public read/write share with password
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | change   |
@@ -227,8 +219,7 @@ Feature: upload to a public link share
 
   @smokeTest
   Scenario: Uploading to a public upload-write and no edit and no overwrite share
-    Given as user "user0"
-    And the user has created a public link share with settings
+    Given user "user0" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
@@ -237,8 +228,7 @@ Feature: upload to a public link share
   @smokeTest
   Scenario: Uploading to a public upload-write and no edit and no overwrite share
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
@@ -247,8 +237,7 @@ Feature: upload to a public link share
   @smokeTest
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test.txt" with content "test" using the old public WebDAV API
@@ -266,8 +255,7 @@ Feature: upload to a public link share
   @smokeTest
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times
     Given the administrator has enabled DAV tech_preview
-    And as user "user0"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API

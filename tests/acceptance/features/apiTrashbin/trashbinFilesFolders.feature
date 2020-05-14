@@ -172,14 +172,14 @@ Feature: files and folders exist in the trashbin after being deleted
   @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "user40" has been created with default attributes and skeleton files
+    And user "testtrashbin100" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
-    And user "user40" has deleted file "/textfile1.txt"
-    When user "user1" tries to list the trashbin content for user "user40"
+    And user "testtrashbin100" has deleted file "/textfile1.txt"
+    When user "user1" tries to list the trashbin content for user "testtrashbin100"
     Then the HTTP status code should be "401"
     And the last webdav response should not contain the following elements
-      | path          | user   |
-      | textfile1.txt | user40 |
+      | path          | user            |
+      | textfile1.txt | testtrashbin100 |
     Examples:
       | dav-path |
       | old      |
@@ -188,16 +188,16 @@ Feature: files and folders exist in the trashbin after being deleted
   @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "user60" has been created with default attributes and skeleton files
+    And user "testtrashbin101" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
-    And user "user60" has deleted file "/textfile0.txt"
-    And user "user60" has deleted file "/textfile2.txt"
-    When user "user1" tries to list the trashbin content for user "user60"
+    And user "testtrashbin101" has deleted file "/textfile0.txt"
+    And user "testtrashbin101" has deleted file "/textfile2.txt"
+    When user "user1" tries to list the trashbin content for user "testtrashbin101"
     Then the HTTP status code should be "401"
     And the last webdav response should not contain the following elements
-      | path          | user   |
-      | textfile0.txt | user60 |
-      | textfile2.txt | user60 |
+      | path          | user            |
+      | textfile0.txt | testtrashbin101 |
+      | textfile2.txt | testtrashbin101 |
     Examples:
       | dav-path |
       | old      |
@@ -206,22 +206,22 @@ Feature: files and folders exist in the trashbin after being deleted
   @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "user504" has been created with default attributes and skeleton files
+    And user "testtrashbin102" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
-    And user "user504" has deleted file "/textfile0.txt"
-    And user "user504" has deleted file "/textfile2.txt"
-    And the administrator deletes user "user504" using the provisioning API
+    And user "testtrashbin102" has deleted file "/textfile0.txt"
+    And user "testtrashbin102" has deleted file "/textfile2.txt"
+    And the administrator deletes user "testtrashbin102" using the provisioning API
     And these users have been created with default attributes and skeleton files but not initialized:
-      | username |
-      | user504  |
-    And user "user504" has deleted file "/textfile3.txt"
-    When user "user1" tries to list the trashbin content for user "user504"
+      | username         |
+      | testtrashbin102  |
+    And user "testtrashbin102" has deleted file "/textfile3.txt"
+    When user "user1" tries to list the trashbin content for user "testtrashbin102"
     Then the HTTP status code should be "401"
     And the last webdav response should not contain the following elements
-      | path          | user    |
-      | textfile0.txt | user504 |
-      | textfile2.txt | user504 |
-      | textfile3.txt | user504 |
+      | path          | user            |
+      | textfile0.txt | testtrashbin102 |
+      | textfile2.txt | testtrashbin102 |
+      | textfile3.txt | testtrashbin102 |
     Examples:
       | dav-path |
       | old      |
@@ -264,13 +264,13 @@ Feature: files and folders exist in the trashbin after being deleted
     But as "<username>" file "/textfile0.txt" should not exist
     Examples:
       | dav-path | username |
-      | old      | user-1   |
+      | old      | dash-123 |
       | old      | null     |
       | old      | nil      |
       | old      | 123      |
       | old      | -123     |
       | old      | 0.0      |
-      | new      | user-1   |
+      | new      | dash-123 |
       | new      | null     |
       | new      | nil      |
       | new      | 123      |

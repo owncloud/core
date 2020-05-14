@@ -17,14 +17,14 @@ Feature: get users
   Scenario: admin gets the list of all inactive users
     Given these users have been created with default attributes and without skeleton files:
       | username |
+      | user0    |
       | user1    |
       | user2    |
-      | user3    |
-    And the administrator has set the last login date for user "user1" to "7" days ago
-    And the administrator has set the last login date for user "user2" to "400" days ago
+    And the administrator has set the last login date for user "user0" to "7" days ago
+    And the administrator has set the last login date for user "user1" to "400" days ago
     When the administrator gets the list of all users inactive for the last "2" days using the occ command
     Then the command should have been successful
     And the inactive users returned by the occ command should be
       | uid   | display name | inactive days |
-      | user1 | User One     | 7             |
-      | user2 | User Two     | 400           |
+      | user0 | User Zero    | 7             |
+      | user1 | User One     | 400           |

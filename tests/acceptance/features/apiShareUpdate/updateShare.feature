@@ -32,8 +32,7 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
-    And as user "user0"
-    When the user updates the last share using the sharing API with
+    When user "user0" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -178,11 +177,10 @@ Feature: sharing
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And as user "user2"
-    And the user has shared folder "/FOLDER" with group "grp1"
-    And the user has updated the last share with
+    And user "user2" has shared folder "/FOLDER" with group "grp1"
+    And user "user2" has updated the last share with
       | permissions | read |
-    When the user updates the last share using the sharing API with
+    When user "user2" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"

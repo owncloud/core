@@ -21,12 +21,12 @@ Feature: get groups
 
   @skipOnLdap @issue-ldap-499
   Scenario: admin gets all the groups, including groups with mixed case
-    Given group "mixed-case-group" has been created
-    And group "Mixed-Case-Group" has been created
-    And group "MIXED-CASE-GROUP" has been created
+    Given group "case-sensitive-group" has been created
+    And group "Case-Sensitive-Group" has been created
+    And group "CASE-SENSITIVE-GROUP" has been created
     When the administrator gets all the groups using the provisioning API
     Then the groups returned by the API should be
-      | admin            |
-      | mixed-case-group |
-      | Mixed-Case-Group |
-      | MIXED-CASE-GROUP |
+      | admin                |
+      | case-sensitive-group |
+      | Case-Sensitive-Group |
+      | CASE-SENSITIVE-GROUP |

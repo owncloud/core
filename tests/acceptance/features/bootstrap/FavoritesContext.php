@@ -274,7 +274,7 @@ class FavoritesContext implements Context {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should be favorited$/
+	 * @Then /^as user "([^"]*)" (?:file|folder|entry) "([^"]*)" should be favorited$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -282,7 +282,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asUserTheFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
+	public function asUserFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
 		$property = "oc:favorite";
 		$this->webDavPropertiesContext->asUserFolderShouldContainAPropertyWithValue(
 			$user, $path, $property, $expectedValue
@@ -298,7 +298,7 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function asUserFileShouldNotBeFavorited($user, $path) {
-		$this->asUserTheFileOrFolderShouldBeFavorited($user, $path, 0);
+		$this->asUserFileOrFolderShouldBeFavorited($user, $path, 0);
 	}
 
 	/**
@@ -310,7 +310,7 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function asTheUserFileOrFolderShouldBeFavorited($path, $expectedValue = 1) {
-		$this->asUserTheFileOrFolderShouldBeFavorited(
+		$this->asUserFileOrFolderShouldBeFavorited(
 			$this->featureContext->getCurrentUser(), $path, $expectedValue
 		);
 	}

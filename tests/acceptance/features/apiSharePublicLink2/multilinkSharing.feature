@@ -3,33 +3,32 @@ Feature: multilinksharing
 
   Background:
     Given user "user0" has been created with default attributes and skeleton files
-    And as user "user0"
 
   @smokeTest
   Scenario Outline: Creating three public shares of a folder
     Given using OCS API version "<ocs_api_version>"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink1 |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink2 |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink3 |
-    When the user updates the last share using the sharing API with
+    When user "user0" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -45,25 +44,25 @@ Feature: multilinksharing
 
   Scenario Outline: Creating three public shares of a file
     Given using OCS API version "<ocs_api_version>"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink2   |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink3   |
-    When the user updates the last share using the sharing API with
+    When user "user0" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -79,21 +78,21 @@ Feature: multilinksharing
 
   Scenario Outline: Check that updating password doesn't remove name of links
     Given using OCS API version "<ocs_api_version>"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink1 |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink2 |
-    When the user updates the last share using the sharing API with
+    When user "user0" updates the last share using the sharing API with
       | password | %alt1% |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -108,13 +107,13 @@ Feature: multilinksharing
 
   Scenario: Deleting a file deletes also its public links
     Given using OCS API version "1"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
@@ -128,19 +127,19 @@ Feature: multilinksharing
 
   Scenario Outline: Deleting one public link share of a file doesn't affect the rest
     Given using OCS API version "<ocs_api_version>"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink2   |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
@@ -160,13 +159,13 @@ Feature: multilinksharing
 
   Scenario: Overwriting a file doesn't remove its public shares
     Given using OCS API version "1"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
@@ -180,14 +179,14 @@ Feature: multilinksharing
 
   Scenario: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink1 |
-    And the user has created a public link share with settings
+    And user "user0" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |

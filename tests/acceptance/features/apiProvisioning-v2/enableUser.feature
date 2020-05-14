@@ -32,13 +32,13 @@ Feature: enable user
       | a space  | a.space@example.com |
 
   Scenario: admin enables another admin user
-    Given user "newadmin" has been created with default attributes and skeleton files
-    And user "newadmin" has been added to group "admin"
-    And user "newadmin" has been disabled
-    When the administrator enables user "newadmin" using the provisioning API
+    Given user "another-admin" has been created with default attributes and skeleton files
+    And user "another-admin" has been added to group "admin"
+    And user "another-admin" has been disabled
+    When the administrator enables user "another-admin" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And user "newadmin" should be enabled
+    And user "another-admin" should be enabled
 
   Scenario: admin enables subadmins in the same group
     Given user "subadmin" has been created with default attributes and skeleton files
@@ -53,11 +53,11 @@ Feature: enable user
     And user "subadmin" should be enabled
 
   Scenario: admin tries to enable himself
-    Given user "newadmin" has been created with default attributes and skeleton files
-    And user "newadmin" has been added to group "admin"
-    And user "newadmin" has been disabled
-    When user "newadmin" tries to enable user "newadmin" using the provisioning API
-    Then user "newadmin" should be disabled
+    Given user "another-admin" has been created with default attributes and skeleton files
+    And user "another-admin" has been added to group "admin"
+    And user "another-admin" has been disabled
+    When user "another-admin" tries to enable user "another-admin" using the provisioning API
+    Then user "another-admin" should be disabled
 
   @issue-31276
   Scenario: normal user tries to enable other user

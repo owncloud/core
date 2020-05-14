@@ -428,14 +428,12 @@ class CommentsContext implements Context {
 	}
 
 	/**
-	 * @When the user gets all information about the comments on file :arg1 using the WebDAV REPORT API
-	 *
+	 * @param string $user
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theUserGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($path) {
-		$user = $this->featureContext->getCurrentUser();
+	public function getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$this->featureContext->setResponseXmlObject(
@@ -444,6 +442,32 @@ class CommentsContext implements Context {
 				$commentsPath,
 				'<oc:limit>200</oc:limit><oc:offset>0</oc:offset>'
 			)
+		);
+	}
+
+	/**
+	 * @When user :user gets all information about the comments on file :path using the WebDAV REPORT API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path) {
+		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path);
+	}
+
+	/**
+	 * @When the user gets all information about the comments on file :path using the WebDAV REPORT API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($path) {
+		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(
+			$this->featureContext->getCurrentUser(),
+			$path
 		);
 	}
 

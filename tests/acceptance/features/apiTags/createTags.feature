@@ -9,16 +9,15 @@ Feature: Creation of tags
       | username |
       | user0    |
       | user1    |
-    And as user "user0"
 
   @smokeTest
   Scenario Outline: Creating a normal tag as regular user should work
-    When the user creates a "normal" tag with name "<tag_name>" using the WebDAV API
+    When user "user0" creates a "normal" tag with name "<tag_name>" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
       | name       | type   |
       | <tag_name> | normal |
-    And the following tags should exist for the user
+    And the following tags should exist for user "user0"
       | name       | type   |
       | <tag_name> | normal |
     Examples:
@@ -28,17 +27,17 @@ Feature: Creation of tags
       | सिमप्ले             |
 
   Scenario: Creating a not user-assignable tag as regular user should fail
-    When the user creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
+    When user "user0" creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the administrator
 
   Scenario: Creating a static tag as regular user should fail
-    When the user creates a "static" tag with name "StaticTagName" using the WebDAV API
+    When user "user0" creates a "static" tag with name "StaticTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "StaticTagName" should not exist for the administrator
 
   Scenario: Creating a not user-visible tag as regular user should fail
-    When the user creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
+    When user "user0" creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the administrator
 
@@ -77,18 +76,18 @@ Feature: Creation of tags
     And the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group2"
 
   Scenario: Creating a normal tag with groups as regular user should fail
-    When the user creates a "normal" tag with name "JustARegularTagName" and groups "group1|group2" using the WebDAV API
+    When user "user0" creates a "normal" tag with name "JustARegularTagName" and groups "group1|group2" using the WebDAV API
     Then the HTTP status code should be "400"
-    And tag "JustARegularTagName" should not exist for the user
+    And tag "JustARegularTagName" should not exist for user "user0"
 
   Scenario: Creating a normal tag that is already created by other user should fail
     Given user "user1" has created a "normal" tag with name "JustARegularTagName"
-    When the user creates a "normal" tag with name "JustARegularTagName" using the WebDAV API
+    When user "user0" creates a "normal" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "409"
 
   Scenario: Overwriting existing normal tags should fail
-    And the user has created a "normal" tag with name "MyFirstTag"
-    When the user creates a "normal" tag with name "MyFirstTag" using the WebDAV API
+    And user "user0" has created a "normal" tag with name "MyFirstTag"
+    When user "user0" creates a "normal" tag with name "MyFirstTag" using the WebDAV API
     Then the HTTP status code should be "409"
 
   Scenario: Overwriting existing not user-assignable tags should fail

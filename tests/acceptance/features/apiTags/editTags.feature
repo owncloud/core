@@ -5,12 +5,11 @@ Feature: Editing the tags
 
   Background:
     Given user "user0" has been created with default attributes and skeleton files
-    And as user "user0"
 
   @smokeTest
   Scenario Outline: Renaming a normal tag as regular user should work
     Given the administrator has created a "normal" tag with name "<tag_name>"
-    When the user edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the WebDAV API
+    When user "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
       | name           | type   |
       | AnotherTagName | normal |
@@ -22,21 +21,21 @@ Feature: Editing the tags
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
-    When the user edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
+    When user "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
       | name                | type                |
       | JustARegularTagName | not user-assignable |
 
   Scenario: Renaming a static tag as regular user should fail
     Given the administrator has created a "static" tag with name "StaticTagName"
-    When the user edits the tag with name "StaticTagName" and sets its name to "AnotherTagName" using the WebDAV API
+    When user "user0" edits the tag with name "StaticTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
       | name          | type   |
       | StaticTagName | static |
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given the administrator has created a "not user-visible" tag with name "JustARegularTagName"
-    When the user edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
+    When user "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
     Then the following tags should exist for the administrator
       | name                | type             |
       | JustARegularTagName | not user-visible |
@@ -77,5 +76,5 @@ Feature: Editing the tags
 
   Scenario: Editing tag groups as regular user should fail
     Given the administrator has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
-    When the user edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
+    When user "user0" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
     Then the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group2"
