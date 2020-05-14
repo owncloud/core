@@ -8,7 +8,6 @@ Feature: sharing
       | user0    |
       | user1    |
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
 
   @smokeTest
@@ -28,7 +27,6 @@ Feature: sharing
 
   Scenario: Merging shares for recipient when shared from outside with two groups
     Given group "grp4" has been created
-    # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user0" has created folder "/merge-test-outside-twogroups"
     When user "user0" shares folder "/merge-test-outside-twogroups" with group "grp1" using the sharing API
@@ -38,7 +36,6 @@ Feature: sharing
 
   Scenario: Merging shares for recipient when shared from outside with two groups with different permissions
     Given group "grp4" has been created
-    # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user0" has created folder "/merge-test-outside-twogroups-perms"
     When user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp1" with permissions "read" using the sharing API
@@ -48,7 +45,6 @@ Feature: sharing
 
   Scenario: Merging shares for recipient when shared from outside with two groups and member
     Given group "grp4" has been created
-    # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user0" has created folder "/merge-test-outside-twogroups-member-perms"
     When user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp1" with permissions "read" using the sharing API
@@ -65,7 +61,6 @@ Feature: sharing
 
   Scenario: Merging shares for recipient when shared from inside with two groups
     Given group "grp4" has been created
-    # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user1" has created folder "/merge-test-inside-twogroups"
     When user "user1" shares folder "/merge-test-inside-twogroups" with group "grp1" using the sharing API
@@ -76,7 +71,6 @@ Feature: sharing
 
   Scenario: Merging shares for recipient when shared from inside with group with less permissions
     Given group "grp4" has been created
-    # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user1" has created folder "/merge-test-inside-twogroups-perms"
     When user "user1" shares folder "/merge-test-inside-twogroups-perms" with group "grp1" using the sharing API

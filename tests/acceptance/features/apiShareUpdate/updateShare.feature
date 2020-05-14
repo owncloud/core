@@ -29,7 +29,6 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
@@ -177,7 +176,6 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     And as user "user2"
@@ -209,7 +207,6 @@ Feature: sharing
   Scenario Outline: Editing share permission of existing share is forbidden when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When user "user0" updates the last share using the sharing API with
@@ -235,7 +232,6 @@ Feature: sharing
   Scenario Outline: Deleting group share is allowed when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    # Note: in the user_ldap test environment user1 is in grp1
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When user "user0" deletes the last share using the sharing API
