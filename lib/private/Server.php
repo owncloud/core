@@ -65,6 +65,7 @@ use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\License\LicenseManager;
 use OC\License\LicenseFetcher;
+use OC\License\MessageService;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -157,7 +158,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				new Helper(),
 				$c->getLockingProvider(),
 				$c->getDatabaseConnection(),
-				$c->getTimeFactory(),
+				$c->getLicenseManager(),
 				$c->getCertificateManager(),
 				$c->getL10NFactory()
 
@@ -916,6 +917,11 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService(ILicenseManager::class, function ($c) {
 			return new LicenseManager(
 				$c->query(LicenseFetcher::class),
+				// can't query for MessageService because there is no implementation
+				// registered for the \OCP\L10N\IFactory interface in the server.
+				new MessageService(
+					$c->getL10NFactory()
+				),
 				$c->getAppManager(),
 				$c->getConfig(),
 				$c->getTimeFactory(),

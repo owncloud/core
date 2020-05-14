@@ -27,12 +27,15 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OC\License\ILicense;
 use OC\License\LicenseFetcher;
 use OC\License\LicenseManager;
+use OC\License\MessageService;
 use OCP\License\ILicenseManager;
 use Test\TestCase;
 
 class LicenseManagerTest extends TestCase {
 	/** @var LicenseFetcher */
 	private $licenseFetcher;
+	/**@var MessageService */
+	private $messageService;
 	/** @var IConfig */
 	private $config;
 	/** @var IAppManager */
@@ -46,6 +49,7 @@ class LicenseManagerTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->licenseFetcher = $this->createMock(LicenseFetcher::class);
+		$this->messageService = $this->createMock(MessageService::class);
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
@@ -53,6 +57,7 @@ class LicenseManagerTest extends TestCase {
 
 		$this->licenseManager = new LicenseManager(
 			$this->licenseFetcher,
+			$this->messageService,
 			$this->appManager,
 			$this->config,
 			$this->timeFactory,
@@ -227,6 +232,11 @@ class LicenseManagerTest extends TestCase {
 		$ocLicenseValid->method('getExpirationTime')->willReturn(PHP_INT_MAX);
 		$ocLicenseValid->method('getLicenseString')->willReturn('dummy-license-string');
 
+		$ocLicenseAboutExpire = $this->createMock(ILicense::class);
+		$ocLicenseAboutExpire->method('isValid')->willReturn(true);
+		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(100300500 + 3600);
+		$ocLicenseAboutExpire->method('getLicenseString')->willReturn('dummy-license-string');
+
 		$ocLicenseInvalid = $this->createMock(ILicense::class);
 		$ocLicenseInvalid->method('isValid')->willReturn(false);
 		$ocLicenseInvalid->method('getExpirationTime')->willReturn(PHP_INT_MAX);
@@ -244,6 +254,7 @@ class LicenseManagerTest extends TestCase {
 		return [
 			[null, ILicenseManager::LICENSE_STATE_MISSING],  // no license set
 			[$ocLicenseValid, ILicenseManager::LICENSE_STATE_VALID],
+			[$ocLicenseAboutExpire, ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE],
 			[$ocLicenseInvalid, ILicenseManager::LICENSE_STATE_INVALID],
 			[$ocLicenseExpired, ILicenseManager::LICENSE_STATE_EXPIRED],
 			[$ocLicenseInvalidExpired, ILicenseManager::LICENSE_STATE_INVALID],

@@ -22,8 +22,6 @@
 namespace OC\Settings;
 
 use OC\Security\CertificateManager;
-use OC\License\LicenseFetcher;
-use OC\License\MessageService;
 use OC\Settings\Panels\Admin\Apps;
 use OC\Settings\Panels\Helper;
 use OCP\App\IAppManager;
@@ -37,7 +35,7 @@ use OCP\ILogger;
 use OCP\IL10N;
 use OCP\IUserSession;
 use OCP\AppFramework\QueryException;
-use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\Defaults;
@@ -96,8 +94,8 @@ class SettingsManager implements ISettingsManager {
 	protected $lockingProvider;
 	/** @var CertificateManager  */
 	protected $certificateManager;
-	/** @var ITimeFactory */
-	protected $timeFactory;
+	/** @var ILicenseManager */
+	protected $licenseManager;
 
 	/**
 	 * Holds a cache of ISettings with keys for type
@@ -135,7 +133,7 @@ class SettingsManager implements ISettingsManager {
 								Helper $helper,
 								ILockingProvider $lockingProvider,
 								IDBConnection $dbconnection,
-								ITimeFactory $timeFactory,
+								ILicenseManager $licenseManager,
 								$certificateManager,
 								IFactory $lfactory) {
 		$this->l = $l;
@@ -149,7 +147,7 @@ class SettingsManager implements ISettingsManager {
 		$this->helper = $helper;
 		$this->lockingProvider = $lockingProvider;
 		$this->dbconnection = $dbconnection;
-		$this->timeFactory = $timeFactory;
+		$this->licenseManager = $licenseManager;
 		$this->certificateManager = $certificateManager;
 		$this->lfactory = $lfactory;
 	}
@@ -305,10 +303,7 @@ class SettingsManager implements ISettingsManager {
 			Tips::class => new Tips(),
 			LegacyAdmin::class => new LegacyAdmin($this->helper),
 			Apps::class => new Apps($this->config),
-			License::class => new License(
-				new LicenseFetcher($this->config),
-				new MessageService($this->lfactory, $this->timeFactory)
-			),
+			License::class => new License($this->licenseManager),
 			Legal::class => new Legal($this->config)
 		];
 		if (isset($panels[$className])) {

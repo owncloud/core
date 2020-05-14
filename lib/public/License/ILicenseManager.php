@@ -28,6 +28,9 @@ interface ILicenseManager {
 	const LICENSE_STATE_MISSING = 1;
 	const LICENSE_STATE_INVALID = 2;
 	const LICENSE_STATE_EXPIRED = 3;
+	const LICENSE_STATE_ABOUT_TO_EXPIRE = 4;
+
+	const THRESHOLD_ABOUT_TO_EXPIRE = 60;  // 60 days
 
 	/**
 	 * @since 10.5.0
@@ -70,6 +73,28 @@ interface ILicenseManager {
 	 * @return int one of the LICENSE_STATE_* constants
 	 */
 	public function getLicenseStateFor(string $appid);
+
+	/**
+	 * @since 10.5.0
+	 * Get a message suitable to be displayed with the state of the license for the app
+	 * The message will be translated to the requested language if there is translation
+	 * available. If language is null, use the default language.
+	 *
+	 * This function will return an array with the following information:
+	 * "license_state" -> one of the LICENSE_STATE_* constants representing the state of the license
+	 * "type" -> a code representing the license type: -1 unknown, 0 normal, 1 demo (more could be added)
+	 * "raw_message" -> the English message to be displayed. This will be an array
+	 *   containing the lines of the message
+	 * "translated_message" -> the translated message in the requested language. This will be an array
+	 *   containing the lines of the message.
+	 * "contains_html" -> an array containing which lines of the translated message contains html code
+	 *   The lines start counting at 0
+	 *
+	 * @param string $appid the aplication to be checked
+	 * @param string $language the language to translate the messages to.
+	 * @return array containing the information as described above
+	 */
+	public function getLicenseMessageFor(string $appid, string $language = null);
 
 	/**
 	 * @since 10.5.0

@@ -24,54 +24,69 @@ use OCP\L10N\IFactory;
 use OCP\IL10n;
 use OC\License\ILicense;
 use OC\License\MessageService;
-use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\License\ILicenseManager;
 use Test\TestCase;
 
 class MessageServiceTest extends TestCase {
 	/** @var IFactory */
 	private $l10Factory;
-	/** @var ITimeFactory */
-	private $timeFactory;
 	/** @var MessageService */
 	private $messageService;
 
 	protected function setUp(): void {
 		parent::setUp();
 		$this->l10Factory = $this->createMock(IFactory::class);
-		$this->timeFactory = $this->createMock(ITimeFactory::class);
 
-		$this->messageService = new MessageService($this->l10Factory, $this->timeFactory);
+		$this->messageService = new MessageService($this->l10Factory);
 	}
 
 	public function getMessageForLicenseProvider() {
-		$invalidLicense = $this->createMock(ILicense::class);
-		$invalidLicense->method('isValid')->willReturn(false);
+		$missingLicenseInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_MISSING,
+		];
 
-		$expiredDemoLicense = $this->createMock(ILicense::class);
-		$expiredDemoLicense->method('isValid')->willReturn(true);
-		$expiredDemoLicense->method('getExpirationTime')->willReturn(100);
-		$expiredDemoLicense->method('getType')->willReturn(ILicense::LICENSE_TYPE_DEMO);
+		$invalidLicenseInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_INVALID,
+		];
 
-		$expiredLicense = $this->createMock(ILicense::class);
-		$expiredLicense->method('isValid')->willReturn(true);
-		$expiredLicense->method('getExpirationTime')->willReturn(100);
-		$expiredLicense->method('getType')->willReturn(ILicense::LICENSE_TYPE_NORMAL);
+		$expiredDemoLicenseInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_EXPIRED,
+			'licenseType' => ILicense::LICENSE_TYPE_DEMO,
+		];
 
-		$demoLicense = $this->createMock(ILicense::class);
-		$demoLicense->method('isValid')->willReturn(true);
-		$demoLicense->method('getExpirationTime')->willReturn(1000000 + (86400 * 15));
-		$demoLicense->method('getType')->willReturn(ILicense::LICENSE_TYPE_DEMO);
+		$expiredLicenseInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_EXPIRED,
+			'licenseType' => ILicense::LICENSE_TYPE_NORMAL,
+		];
 
-		$license = $this->createMock(ILicense::class);
-		$license->method('isValid')->willReturn(true);
-		$license->method('getExpirationTime')->willReturn(1000000 + (86400 * 15));
-		$license->method('getType')->willReturn(ILicense::LICENSE_TYPE_NORMAL);
+		$demoLicenseInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_VALID,
+			'licenseType' => ILicense::LICENSE_TYPE_DEMO,
+			'daysLeft' => 30,
+		];
+
+		$licenseInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_VALID,
+			'licenseType' => ILicense::LICENSE_TYPE_NORMAL,
+			'daysLeft' => 30,
+		];
+
+		$demoLicenseAboutToExpireInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
+			'licenseType' => ILicense::LICENSE_TYPE_DEMO,
+			'daysLeft' => 15,
+		];
+
+		$licenseAboutToExpireInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
+			'licenseType' => ILicense::LICENSE_TYPE_NORMAL,
+			'daysLeft' => 15,
+		];
 
 		return [
 			[
-				null,
+				$missingLicenseInfo,
 				[
-					'code' => MessageService::MESSAGE_LICENSE_MISSING,
 					'raw_message' => [
 						'No license key available.',
 					],
@@ -82,9 +97,8 @@ class MessageServiceTest extends TestCase {
 				],
 			],
 			[
-				$invalidLicense,
+				$invalidLicenseInfo,
 				[
-					'code' => MessageService::MESSAGE_LICENSE_INVALID,
 					'raw_message' => [
 						'Invalid license key!',
 						'Please contact your administrator or sales@owncloud.com for a new license key.',
@@ -97,9 +111,8 @@ class MessageServiceTest extends TestCase {
 				],
 			],
 			[
-				$expiredDemoLicense,
+				$expiredDemoLicenseInfo,
 				[
-					'code' => MessageService::MESSAGE_LICENSE_EXPIRED_DEMO,
 					'raw_message' => [
 						'Your Enterprise license key has expired.',
 						'Enterprise features have been disabled.',
@@ -114,9 +127,8 @@ class MessageServiceTest extends TestCase {
 				],
 			],
 			[
-				$expiredLicense,
+				$expiredLicenseInfo,
 				[
-					'code' => MessageService::MESSAGE_LICENSE_EXPIRED_NORMAL,
 					'raw_message' => [
 						'Your Enterprise license key has expired.',
 						'Please contact your administrator or sales@owncloud.com for a new license key.',
@@ -129,9 +141,32 @@ class MessageServiceTest extends TestCase {
 				],
 			],
 			[
-				$demoLicense,
+				$demoLicenseInfo,
 				[
-					'code' => MessageService::MESSAGE_LICENSE_OK_DEMO,
+					'raw_message' => [
+						'Evaluation - expires in 30 days.',
+					],
+					'translated_message' => [
+						'Evaluation - Expires In 30 Days.',
+					],
+					'contains_html' => [],
+				],
+			],
+			[
+				$licenseInfo,
+				[
+					'raw_message' => [
+						"The registered enterprise license key expires in 30 days",
+					],
+					'translated_message' => [
+						'The Registered Enterprise License Key Expires In 30 Days',
+					],
+					'contains_html' => [],
+				],
+			],
+			[
+				$demoLicenseAboutToExpireInfo,  // no difference with the "normal" demo license message
+				[
 					'raw_message' => [
 						'Evaluation - expires in 15 days.',
 					],
@@ -139,19 +174,20 @@ class MessageServiceTest extends TestCase {
 						'Evaluation - Expires In 15 Days.',
 					],
 					'contains_html' => [],
-				],
+				]
 			],
 			[
-				$license,
+				$licenseAboutToExpireInfo,
 				[
-					'code' => MessageService::MESSAGE_LICENSE_OK_NORMAL,
 					'raw_message' => [
-						"The registered enterprise license key expires in 15 days",
+						"Your Enterprise license key is about to expire (days remaining: 15).",
+						'Please contact your administrator or sales@owncloud.com for a new license key.',
 					],
 					'translated_message' => [
-						'The Registered Enterprise License Key Expires In 15 Days',
+						'Your Enterprise License Key Is About To Expire (days Remaining: 15).',  // ucwords('(dd') doesn't change the string
+						'Please Contact Your Administrator Or <a href="mailto:sales@owncloud.com?subject=Renew+ownCloud+License">sales@owncloud.com</a> For A New License Key.',
 					],
-					'contains_html' => [],
+					'contains_html' => [1],
 				],
 			],
 		];
@@ -160,7 +196,7 @@ class MessageServiceTest extends TestCase {
 	/**
 	 * @dataProvider getMessageForLicenseProvider
 	 */
-	public function testGetMessageForLicense($license, $expectedResult) {
+	public function testGetMessageForLicense($licenseInfo, $expectedResult) {
 		$l10n = $this->createMock(IL10n::class);
 		$l10n->method('t')
 			->will($this->returnCallback(function ($text, $params) {
@@ -171,8 +207,6 @@ class MessageServiceTest extends TestCase {
 		$this->l10Factory->method('get')
 			->willReturn($l10n);
 
-		$this->timeFactory->method('getTime')->willReturn(1000000);
-
-		$this->assertEquals($expectedResult, $this->messageService->getMessageForLicense($license));
+		$this->assertEquals($expectedResult, $this->messageService->getMessageForLicense($licenseInfo));
 	}
 }

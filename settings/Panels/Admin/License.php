@@ -21,20 +21,16 @@
 
 namespace OC\Settings\Panels\Admin;
 
-use OC\License\LicenseFetcher;
-use OC\License\MessageService;
+use OCP\License\ILicenseManager;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
 class License implements ISettings {
-	/** @var LicenseFetcher */
-	private $licenseFetcher;
-	/** @var MessageService */
-	private $messageService;
+	/** @var ILicenseManager */
+	private $licenseManager;
 
-	public function __construct(LicenseFetcher $licenseFetcher, MessageService $messageService) {
-		$this->licenseFetcher = $licenseFetcher;
-		$this->messageService = $messageService;
+	public function __construct(ILicenseManager $licenseManager) {
+		$this->licenseManager = $licenseManager;
 	}
 
 	public function getPriority() {
@@ -46,17 +42,15 @@ class License implements ISettings {
 	}
 
 	public function getPanel() {
-		$daysLeft = 0;
 		$template = new Template('settings', 'panels/admin/license');
 
-		$ocLicense = $this->licenseFetcher->getOwncloudLicense();
-		$messageInfo = $this->messageService->getMessageForLicense($ocLicense);  // null license is considered
+		$messageInfo = $this->licenseManager->getLicenseMessageFor('core');  // use "core" as appid
 
 		$divMessageClass = 'class="warning"';
-		$messageCode = $messageInfo['code'];
-		if ($messageCode === MessageService::MESSAGE_LICENSE_MISSING ||
-			$messageCode === MessageService::MESSAGE_LICENSE_OK_NORMAL ||
-			$messageCode === MessageService::MESSAGE_LICENSE_OK_DEMO
+		$messageCode = $messageInfo['license_state'];
+		if ($messageCode === ILicenseManager::LICENSE_STATE_MISSING ||
+			$messageCode === ILicenseManager::LICENSE_STATE_VALID ||
+			$messageCode === ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE
 		) {
 			$divMessageClass = '';
 		}

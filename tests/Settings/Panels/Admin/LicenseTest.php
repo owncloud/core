@@ -24,6 +24,7 @@ use OC\Settings\Panels\Admin\License;
 use OC\License\ILicense;
 use OC\License\LicenseFetcher;
 use OC\License\MessageService;
+use OCP\License\ILicenseManager;
 
 /**
  * @package Tests\Settings\Panels\Admin
@@ -31,17 +32,14 @@ use OC\License\MessageService;
 class LicenseTest extends \Test\TestCase {
 	/** @var License */
 	private $panel;
-	/** @var LicenseFetcher */
-	private $licenseFetcher;
-	/** @var MessageService */
-	private $messageService;
+	/** @var ILicenseManager */
+	private $licenseManager;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->licenseFetcher = $this->createMock(LicenseFetcher::class);
-		$this->messageService = $this->createMock(MessageService::class);
+		$this->licenseManager = $this->createMock(ILicenseManager::class);
 
-		$this->panel = new License($this->licenseFetcher, $this->messageService);
+		$this->panel = new License($this->licenseManager);
 	}
 
 	public function testGetSection() {
@@ -56,7 +54,8 @@ class LicenseTest extends \Test\TestCase {
 		return [
 			[
 				[
-					'code' => MessageService::MESSAGE_LICENSE_MISSING,
+					'license_state' => ILicenseManager::LICENSE_STATE_MISSING,
+					'type' => -1,
 					'raw_message' => [
 						'No license key available.',
 					],
@@ -70,7 +69,8 @@ class LicenseTest extends \Test\TestCase {
 			],
 			[
 				[
-					'code' => MessageService::MESSAGE_LICENSE_INVALID,
+					'license_state' => ILicenseManager::LICENSE_STATE_INVALID,
+					'type' => 0,
 					'raw_message' => [
 						'Invalid license key!',
 						'Please contact your administrator or sales@owncloud.com for a new license key.',
@@ -86,7 +86,8 @@ class LicenseTest extends \Test\TestCase {
 			],
 			[
 				[
-					'code' => MessageService::MESSAGE_LICENSE_EXPIRED_DEMO,
+					'license_state' => ILicenseManager::LICENSE_STATE_EXPIRED,
+					'type' => 1,
 					'raw_message' => [
 						'Your Enterprise license key has expired.',
 						'Enterprise features have been disabled.',
@@ -104,7 +105,8 @@ class LicenseTest extends \Test\TestCase {
 			],
 			[
 				[
-					'code' => MessageService::MESSAGE_LICENSE_EXPIRED_NORMAL,
+					'license_state' => ILicenseManager::LICENSE_STATE_EXPIRED,
+					'type' => 0,
 					'raw_message' => [
 						'Your Enterprise license key has expired.',
 						'Please contact your administrator or sales@owncloud.com for a new license key.',
@@ -120,7 +122,8 @@ class LicenseTest extends \Test\TestCase {
 			],
 			[
 				[
-					'code' => MessageService::MESSAGE_LICENSE_OK_DEMO,
+					'license_state' => ILicenseManager::LICENSE_STATE_VALID,
+					'type' => 1,
 					'raw_message' => [
 						'Evaluation - expires in 15 days.',
 					],
@@ -134,17 +137,35 @@ class LicenseTest extends \Test\TestCase {
 			],
 			[
 				[
-					'code' => MessageService::MESSAGE_LICENSE_OK_NORMAL,
+					'license_state' => ILicenseManager::LICENSE_STATE_VALID,
+					'type' => 0,
 					'raw_message' => [
-						"The registered enterprise license key expires in 15 days",
+						"The registered enterprise license key expires in 15 days.",
 					],
 					'translated_message' => [
-						'The Registered Enterprise License Key Expires In 15 Days',
+						'The Registered Enterprise License Key Expires In 15 Days.',
 					],
 					'contains_html' => [],
 				],
 				'',
-				'The Registered Enterprise License Key Expires In 15 Days',
+				'The Registered Enterprise License Key Expires In 15 Days.',
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
+					'type' => 0,
+					'raw_message' => [
+						"Your Enterprise license key is about to expire (days remaining: 15).",
+						'Please contact your administrator or sales@owncloud.com for a new license key.',
+					],
+					'translated_message' => [
+						'Your Enterprise License Key Is About To Expire (Days Remaining: 15).',
+						'Please Contact Your Administrator Or <a href="mailto:sales@owncloud.com?subject=Renew+ownCloud+License">sales@owncloud.com</a> For A New License Key.',
+					],
+					'contains_html' => [1],
+				],
+				'',
+				'Your Enterprise License Key Is About To Expire (Days Remaining: 15).',
 			],
 		];
 	}
@@ -154,9 +175,7 @@ class LicenseTest extends \Test\TestCase {
 	 */
 	public function testGetPanel($messageOutput, $expectedDivClass, $expectedMessage) {
 		$license = $this->createMock(ILicense::class);
-		$this->licenseFetcher->method('getOwncloudLicense')->willReturn($license);
-
-		$this->messageService->method('getMessageForLicense')->willReturn($messageOutput);
+		$this->licenseManager->method('getLicenseMessageFor')->willReturn($messageOutput);
 
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertStringContainsString('<input id="license_input_button" type="button"', $templateHtml);

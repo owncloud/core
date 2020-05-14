@@ -25,12 +25,15 @@ use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\ILogger;
 use OC\License\LicenseFetcher;
+use OC\License\MessageService;
 
 class LicenseManager implements ILicenseManager {
 	const GRACE_PERIOD = 60 * 60 * 24;  // 24h
 
 	/** @var LicenseFetcher */
 	private $licenseFetcher;
+	/** @var MessageService */
+	private $messageService;
 	/** @var IConfig */
 	private $config;
 	/** @var IAppManager */
@@ -42,12 +45,14 @@ class LicenseManager implements ILicenseManager {
 
 	public function __construct(
 		LicenseFetcher $licenseFetcher,
+		MessageService $messageService,
 		IAppManager $appManager,
 		IConfig $config,
 		ITimeFactory $timeFactory,
 		ILogger $logger
 	) {
 		$this->licenseFetcher = $licenseFetcher;
+		$this->messageService = $messageService;
 		$this->appManager = $appManager;
 		$this->config = $config;
 		$this->timeFactory = $timeFactory;
@@ -158,10 +163,16 @@ class LicenseManager implements ILicenseManager {
 			// check if the license is valid
 			if ($licenseObj->isValid()) {
 				// check if the license has expired
-				if ($licenseObj->getExpirationTime() < $this->timeFactory->getTime()) {
+				$currentTime = $this->timeFactory->getTime();
+				if ($licenseObj->getExpirationTime() < $currentTime) {
 					$licenseState = ILicenseManager::LICENSE_STATE_EXPIRED;
 				} else {
-					$licenseState = ILicenseManager::LICENSE_STATE_VALID;
+					$daysLeft = ($licenseObj->getExpirationTime() - $currentTime) / 86400;
+					if ($daysLeft <= ILicenseManager::THRESHOLD_ABOUT_TO_EXPIRE) {
+						$licenseState = ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE;
+					} else {
+						$licenseState = ILicenseManager::LICENSE_STATE_VALID;
+					}
 				}
 			} else {
 				$licenseState = ILicenseManager::LICENSE_STATE_INVALID;
@@ -180,6 +191,33 @@ class LicenseManager implements ILicenseManager {
 	public function getLicenseStateFor(string $appid) {
 		$info = $this->getLicenseWithState($appid);
 		return $info[1];  // license state is the second item.
+	}
+
+	public function getLicenseMessageFor(string $appid, string $language = null) {
+		$info = $this->getLicenseWithState($appid);
+		if ($info[0] === null) {
+			// no license
+			$infoForMessage = [
+				'licenseState' => $info[1],
+			];
+		} else {
+			$infoForMessage = [
+				'licenseState' => $info[1],
+				'licenseType' => $info[0]->getType(),
+				// daysLeft won't be accurate if the license isn't valid, but it's ok.
+				'daysLeft' => ($info[0]->getExpirationTime() - $this->timeFactory->getTime()) / 86400,
+			];
+		}
+
+		$messageData = $this->messageService->getMessageForLicense($infoForMessage, $language);
+		// need to include license_state and type fields
+		$messageData['license_state'] = $info[1];
+		if ($info[0] === null) {
+			$messageData['type'] = -1;
+		} else {
+			$messageData['type'] = $info[0]->getType();
+		}
+		return $messageData;
 	}
 
 	/**
