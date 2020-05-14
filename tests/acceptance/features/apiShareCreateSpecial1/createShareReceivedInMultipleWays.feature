@@ -71,16 +71,15 @@ Feature: share resources where the sharee receives the share in multiple ways
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
-    And user "user3" has been created with default attributes and without skeleton files
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    And user "user1" has created folder "/test"
-    And user "user1" has created folder "/test/sub"
-    And user "user1" has shared folder "/test" with group "grp1"
-    When user "user1" shares folder "/test/sub" with user "user3" using the sharing API
+    And group "grp0" has been created
+    And user "user0" has been added to group "grp0"
+    And user "user0" has created folder "/test"
+    And user "user0" has created folder "/test/sub"
+    And user "user0" has shared folder "/test" with group "grp0"
+    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user3" folder "/sub" should exist
+    And as "user1" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -92,27 +91,26 @@ Feature: share resources where the sharee receives the share in multiple ways
       | username |
       | user1    |
       | user2    |
-      | user3    |
+    And user "user1" has uploaded file with content "user1 file" to "/randomfile.txt"
     And user "user2" has uploaded file with content "user2 file" to "/randomfile.txt"
-    And user "user3" has uploaded file with content "user3 file" to "/randomfile.txt"
-    When user "user2" shares file "randomfile.txt" with user "user1" with permissions "read" using the sharing API
-    And user "user1" gets the info of the last share using the sharing API
+    When user "user1" shares file "randomfile.txt" with user "user0" with permissions "read" using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user2           |
-      | share_with  | user1           |
+      | uid_owner   | user1           |
+      | share_with  | user0           |
       | file_target | /randomfile.txt |
       | item_type   | file            |
       | permissions | read            |
-    When user "user3" shares file "randomfile.txt" with user "user1" with permissions "read,update" using the sharing API
-    And user "user1" gets the info of the last share using the sharing API
+    When user "user2" shares file "randomfile.txt" with user "user0" with permissions "read,update" using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user3               |
-      | share_with  | user1               |
+      | uid_owner   | user2               |
+      | share_with  | user0               |
       | file_target | /randomfile (2).txt |
       | item_type   | file                |
       | permissions | read,update         |
-    And the content of file "randomfile.txt" for user "user1" should be "user2 file"
-    And the content of file "randomfile (2).txt" for user "user1" should be "user3 file"
+    And the content of file "randomfile.txt" for user "user0" should be "user1 file"
+    And the content of file "randomfile (2).txt" for user "user0" should be "user2 file"
     Examples:
       | ocs_api_version |
       | 1               |
@@ -124,29 +122,28 @@ Feature: share resources where the sharee receives the share in multiple ways
       | username |
       | user1    |
       | user2    |
-      | user3    |
+    And user "user1" has created folder "/zzzfolder"
+    And user "user1" has created folder "zzzfolder/user1"
     And user "user2" has created folder "/zzzfolder"
     And user "user2" has created folder "zzzfolder/user2"
-    And user "user3" has created folder "/zzzfolder"
-    And user "user3" has created folder "zzzfolder/user3"
-    When user "user2" shares folder "zzzfolder" with user "user1" with permissions "read,delete" using the sharing API
-    And user "user1" gets the info of the last share using the sharing API
+    When user "user1" shares folder "zzzfolder" with user "user0" with permissions "read,delete" using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user2       |
-      | share_with  | user1       |
+      | uid_owner   | user1       |
+      | share_with  | user0       |
       | file_target | /zzzfolder  |
       | item_type   | folder      |
       | permissions | read,delete |
-    When user "user3" shares folder "zzzfolder" with user "user1" with permissions "read,share" using the sharing API
-    And user "user1" gets the info of the last share using the sharing API
+    When user "user2" shares folder "zzzfolder" with user "user0" with permissions "read,share" using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user3          |
-      | share_with  | user1          |
+      | uid_owner   | user2          |
+      | share_with  | user0          |
       | file_target | /zzzfolder (2) |
       | item_type   | folder         |
       | permissions | read,share     |
-    And as "user1" folder "zzzfolder/user2" should exist
-    And as "user1" folder "zzzfolder (2)/user3" should exist
+    And as "user0" folder "zzzfolder/user1" should exist
+    And as "user0" folder "zzzfolder (2)/user2" should exist
     Examples:
       | ocs_api_version |
       | 1               |

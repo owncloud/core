@@ -54,10 +54,10 @@ Feature: delete users
   Scenario: normal user tries to delete a user
     Given these users have been created with default attributes and skeleton files:
       | username |
+      | user0    |
       | user1    |
-      | user2    |
-    When user "user1" deletes user "user2" using the provisioning API
+    When user "user0" deletes user "user1" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And user "user2" should exist
+    And user "user1" should exist

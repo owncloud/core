@@ -10,9 +10,9 @@ Feature: get subadmins
   @smokeTest
   Scenario: admin gets subadmin users of a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "new-group" has been created
-    And user "brand-new-user" has been made a subadmin of group "new-group"
-    When the administrator gets all the subadmins of group "new-group" using the provisioning API
+    And group "brand-new-group" has been created
+    And user "brand-new-user" has been made a subadmin of group "brand-new-group"
+    When the administrator gets all the subadmins of group "brand-new-group" using the provisioning API
     Then the subadmin users returned by the API should be
       | brand-new-user |
     And the OCS status code should be "100"
@@ -20,33 +20,33 @@ Feature: get subadmins
 
   Scenario: admin tries to get subadmin users of a group which does not exist
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "not-group" has been deleted
-    When the administrator gets all the subadmins of group "not-group" using the provisioning API
+    And group "nonexistentgroup" has been deleted
+    When the administrator gets all the subadmins of group "nonexistentgroup" using the provisioning API
     Then the OCS status code should be "101"
     And the HTTP status code should be "200"
     And the API should not return any data
 
   Scenario: subadmin tries to get other subadmins of the same group
     Given these users have been created with default attributes and skeleton files:
-      | username    |
-      | subadmin    |
-      | newsubadmin |
-    And group "new-group" has been created
-    And user "subadmin" has been made a subadmin of group "new-group"
-    And user "newsubadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" gets all the subadmins of group "new-group" using the provisioning API
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    And user "another-subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" gets all the subadmins of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data
 
   Scenario: normal user tries to get the subadmins of the group
     Given these users have been created with default attributes and skeleton files:
-      | username |
-      | subadmin |
-      | newuser  |
-    And group "new-group" has been created
-    And user "subadmin" has been made a subadmin of group "new-group"
-    When user "newuser" gets all the subadmins of group "new-group" using the provisioning API
+      | username       |
+      | subadmin       |
+      | brand-new-user |
+    And group "brand-new-group" has been created
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "brand-new-user" gets all the subadmins of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data

@@ -26,7 +26,7 @@ Feature: add groups
     And group "<group_id>" should exist
     Examples:
       | group_id            | comment                                 |
-      | new-group           | dash                                    |
+      | brand-new-group     | dash                                    |
       | the.group           | dot                                     |
       | left,right          | comma                                   |
       | 0                   | The "false" group                       |
@@ -85,7 +85,7 @@ Feature: add groups
 	# with the endpoint for getting the subadmins of a group
   @issue-31015
   Scenario: admin tries to create a group with name ending in "/subadmins"
-    Given group "new-group" has been created
+    Given group "brand-new-group" has been created
     When the administrator tries to send a group creation request for group "priv/subadmins" using the provisioning API
     # After fixing issue-31015, change the expected status to "101"
     Then the OCS status code should be "100"
@@ -97,24 +97,24 @@ Feature: add groups
     And the administrator deletes group "priv/subadmins" using the occ command
 
   Scenario: admin tries to create a group that already exists
-    Given group "new-group" has been created
-    When the administrator sends a group creation request for group "new-group" using the provisioning API
+    Given group "brand-new-group" has been created
+    When the administrator sends a group creation request for group "brand-new-group" using the provisioning API
     Then the OCS status code should be "102"
     And the HTTP status code should be "200"
-    And group "new-group" should exist
+    And group "brand-new-group" should exist
 
   Scenario: normal user tries to create a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    When user "brand-new-user" tries to send a group creation request for group "new-group" using the provisioning API
+    When user "brand-new-user" tries to send a group creation request for group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And group "new-group" should not exist
+    And group "brand-new-group" should not exist
 
   Scenario: subadmin tries to create a group
     Given user "subadmin" has been created with default attributes and skeleton files
-    And group "new-group" has been created
-    And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" tries to send a group creation request for group "another-group" using the provisioning API
+    And group "brand-new-group" has been created
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" tries to send a group creation request for group "another-new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And group "another-group" should not exist
+    And group "another-new-group" should not exist

@@ -115,11 +115,11 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp2" has been created
     And group "grp1" has been created
-    And user "user3" has been created with default attributes and skeleton files
+    And user "user2" has been created with default attributes and skeleton files
     And user "user1" has been added to group "grp1"
-    And user "user3" has been added to group "grp2"
+    And user "user2" has been added to group "grp2"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-    Then user "user3" should be able to share file "welcome.txt" with group "grp1" using the sharing API
+    Then user "user2" should be able to share file "welcome.txt" with group "grp1" using the sharing API
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:

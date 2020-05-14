@@ -131,4 +131,3 @@ Feature: set timeouts of LOCKS
       | new      | infinite        | /Second-\d{5}$/ |
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
-

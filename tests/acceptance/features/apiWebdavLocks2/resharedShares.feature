@@ -110,4 +110,3 @@ Feature: lock should propagate correctly if a share is reshared
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
