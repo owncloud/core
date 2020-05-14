@@ -49,39 +49,6 @@ Feature: sharing
     Then the HTTP status code should be "204"
     And as "user1" folder "/sub" should not exist
 
-  Scenario Outline: sharing subfolder of already shared folder, GET result is correct
-    Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | user0    |
-      | user1    |
-      | user2    |
-      | user3    |
-      | user4    |
-    And user "user0" has created folder "/folder1"
-    And user "user0" has shared folder "/folder1" with user "user1"
-    And user "user0" has shared folder "/folder1" with user "user2"
-    And user "user0" has created folder "/folder1/folder2"
-    And user "user0" has shared folder "/folder1/folder2" with user "user3"
-    And user "user0" has shared folder "/folder1/folder2" with user "user4"
-    And as user "user0"
-    When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the response should contain 4 entries
-    And folder "/folder1" should be included as path in the response
-    And folder "/folder1/folder2" should be included as path in the response
-    When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the response should contain 2 entries
-    And folder "/folder1" should not be included as path in the response
-    And folder "/folder1/folder2" should be included as path in the response
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
-
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
