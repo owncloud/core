@@ -12,12 +12,12 @@ So that I can extend my storage service
     And using server "LOCAL"
 
   Scenario: creating a webdav_owncloud external storage
-    When the administrator creates an external mount point with the following configuration using the occ command
+    When the administrator creates an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
-      | user                   | Alice              |
-      | password               | %regular%          |
+      | user                   | %username%         |
+      | password               | %alt1%             |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
@@ -29,12 +29,12 @@ So that I can extend my storage service
 
   @skipOnEncryption @issue-encryption-181
   Scenario: using webdav_owncloud as external storage
-    Given the administrator has created an external mount point with the following configuration using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
-      | user                   | Alice              |
-      | password               | %regular%          |
+      | user                   | %username%         |
+      | password               | %alt1%             |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
@@ -47,12 +47,12 @@ So that I can extend my storage service
     Given using server "REMOTE"
     And user "Alice" has created folder "TestMnt1"
     And using server "LOCAL"
-    And the administrator creates an external mount point with the following configuration using the occ command
+    And the administrator creates an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt1           |
       | secure                 | false              |
-      | user                   | Alice              |
-      | password               | %regular%          |
+      | user                   | %username%         |
+      | password               | %alt1%             |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint1    |
       | authentication_backend | password::password |

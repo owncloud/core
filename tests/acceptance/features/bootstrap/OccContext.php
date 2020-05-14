@@ -2629,8 +2629,9 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator creates an external mount point with the following configuration using the occ command
+	 * @When the administrator creates an external mount point with the following configuration about user :user using the occ command
 	 *
+	 * @param string $user
 	 * @param TableNode $settings
 	 *
 	 * necessary attributes inside $settings table:
@@ -2649,7 +2650,8 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createExternalMountPointUsingTheOccCommand($settings) {
+	public function createExternalMountPointUsingTheOccCommand($user, $settings) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeRows(
 			$settings,
 			["host", "root", "storage_backend",
@@ -2657,6 +2659,9 @@ class OccContext implements Context {
 			"user", "password", "secure"]
 		);
 		$extMntSettings = $settings->getRowsHash();
+		$extMntSettings['user'] = $this->featureContext->substituteInLineCodes(
+			$extMntSettings['user'], $user
+		);
 		$password = $this->featureContext->getActualPassword($extMntSettings['password']);
 		$args = [
 			"files_external:create",
@@ -2678,14 +2683,15 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has created an external mount point with the following configuration using the occ command
+	 * @Given the administrator has created an external mount point with the following configuration about user :user using the occ command
 	 *
+	 * @param string $user
 	 * @param TableNode $settings
 	 *
 	 * @return void
 	 */
-	public function adminHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
-		$this->createExternalMountPointUsingTheOccCommand($settings);
+	public function adminHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand($user, TableNode $settings) {
+		$this->createExternalMountPointUsingTheOccCommand($user, $settings);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 

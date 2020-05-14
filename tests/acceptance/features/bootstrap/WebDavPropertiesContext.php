@@ -685,6 +685,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function storeEtagOfElement($user, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
