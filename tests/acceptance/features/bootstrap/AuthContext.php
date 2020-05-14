@@ -540,6 +540,7 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function aNewClientTokenHasBeenGenerated($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$body = \json_encode(
 			[
 				'user' => $this->featureContext->getActualUsername($user),

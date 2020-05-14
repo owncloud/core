@@ -605,10 +605,10 @@ trait Provisioning {
 		$usersAttributes = [];
 		foreach ($table as $row) {
 			$userAttribute['userid'] = $this->getActualUsername($row['username']);
-			if ($this->isTestingReplacingUsernames()) {
-				$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
-			} elseif (isset($row['displayname'])) {
+			if (isset($row['displayname'])) {
 				$userAttribute['displayName'] = $row['displayname'];
+			} elseif ($this->isTestingReplacingUsernames()) {
+				$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
 			} elseif ($setDefaultAttributes) {
 				$userAttribute['displayName'] = $this->getDisplayNameForUser($userAttribute['userid']);
 				if ($userAttribute['displayName'] === null) {
