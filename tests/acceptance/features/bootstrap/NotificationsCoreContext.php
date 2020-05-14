@@ -123,6 +123,8 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function userNumNotifications($user, $numNotifications, $missingLast) {
+		$user = $this->featureContext->getActualUsername($user);
+
 		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
 		);
@@ -206,6 +208,8 @@ class NotificationsCoreContext implements Context {
 	public function matchNotification(
 		$notification, $user, $regex, $formData
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
 			$notificationId = \reset($lastNotifications);

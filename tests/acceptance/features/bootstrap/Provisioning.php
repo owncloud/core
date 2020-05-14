@@ -3241,6 +3241,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminRemovesUserFromGroupUsingTheProvisioningApi($user, $group) {
+		$user = $this->getActualUsername($user);
 		$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
 			$user, $group
 		);
