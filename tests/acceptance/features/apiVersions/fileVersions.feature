@@ -67,7 +67,7 @@ Feature: dav-versions
     And user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
 
-  @smokeTest @issue-ocis-reva-94
+  @smokeTest
   Scenario: Remove a file
     Given user "Alice" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
     And user "Alice" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
