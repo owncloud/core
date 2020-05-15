@@ -8,12 +8,11 @@ Feature: update a public link share
   @smokeTest
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
-    And as user "user0"
-    When the user creates a public link share using the sharing API with settings
+    When user "user0" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And the user updates the last share using the sharing API with
+    And user "user0" updates the last share using the sharing API with
       | expireDate | +3 days |
-    And the user gets the info of the last share using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -58,12 +57,11 @@ Feature: update a public link share
 
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
-    And as user "user0"
-    When the user creates a public link share using the sharing API with settings
+    When user "user0" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And the user updates the last share using the sharing API with
+    And user "user0" updates the last share using the sharing API with
       | expireDate | +3 days |
-    And the user gets the info of the last share using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -91,12 +89,11 @@ Feature: update a public link share
 
   Scenario Outline: Creating a new public link share, updating its password and getting its info
     Given using OCS API version "<ocs_api_version>"
-    And as user "user0"
-    When the user creates a public link share using the sharing API with settings
+    When user "user0" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And the user updates the last share using the sharing API with
+    And user "user0" updates the last share using the sharing API with
       | password | %public% |
-    And the user gets the info of the last share using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -123,12 +120,11 @@ Feature: update a public link share
 
   Scenario Outline: Creating a new public link share, updating its permissions and getting its info
     Given using OCS API version "<ocs_api_version>"
-    And as user "user0"
-    When the user creates a public link share using the sharing API with settings
+    When user "user0" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And the user updates the last share using the sharing API with
+    And user "user0" updates the last share using the sharing API with
       | permissions | read,update,create,delete |
-    And the user gets the info of the last share using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -155,12 +151,11 @@ Feature: update a public link share
 
   Scenario Outline: Creating a new public link share, updating its permissions to view download and upload and getting its info
     Given using OCS API version "<ocs_api_version>"
-    And as user "user0"
-    When the user creates a public link share using the sharing API with settings
+    When user "user0" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And the user updates the last share using the sharing API with
+    And user "user0" updates the last share using the sharing API with
       | permissions | read,update,create |
-    And the user gets the info of the last share using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -187,12 +182,11 @@ Feature: update a public link share
 
   Scenario Outline: Creating a new public link share, updating publicUpload option and getting its info
     Given using OCS API version "<ocs_api_version>"
-    And as user "user0"
-    When the user creates a public link share using the sharing API with settings
+    When user "user0" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And the user updates the last share using the sharing API with
+    And user "user0" updates the last share using the sharing API with
       | publicUpload | true |
-    And the user gets the info of the last share using the sharing API
+    And user "user0" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -222,11 +216,10 @@ Feature: update a public link share
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
-    And as user "user1"
-    And the user has created a public link share with settings
+    And user "user1" has created a public link share with settings
       | path         | /test |
       | publicUpload | false |
-    When the user updates the last share using the sharing API with
+    When user "user1" updates the last share using the sharing API with
       | publicUpload | true |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
@@ -242,11 +235,10 @@ Feature: update a public link share
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions "all"
-    And as user "user1"
-    And the user has created a public link share with settings
+    And user "user1" has created a public link share with settings
       | path         | /test |
       | publicUpload | false |
-    When the user updates the last share using the sharing API with
+    When user "user1" updates the last share using the sharing API with
       | publicUpload | true |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -262,11 +254,10 @@ Feature: update a public link share
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
-    And as user "user1"
-    And the user has created a public link share with settings
+    And user "user1" has created a public link share with settings
       | path        | /test |
       | permissions | read  |
-    When the user updates the last share using the sharing API with
+    When user "user1" updates the last share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
@@ -282,11 +273,10 @@ Feature: update a public link share
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions "all"
-    And as user "user1"
-    And the user has created a public link share with settings
+    And user "user1" has created a public link share with settings
       | path        | /test |
       | permissions | read  |
-    When the user updates the last share using the sharing API with
+    When user "user1" updates the last share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"

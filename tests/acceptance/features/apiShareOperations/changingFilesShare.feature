@@ -82,11 +82,11 @@ Feature: sharing
 
   Scenario: Move files between shares by different users
     Given the administrator has enabled DAV tech_preview
-    And user "user3" has been created with default attributes and skeleton files
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has moved file "welcome.txt" to "PARENT/welcome.txt"
-    And user "user0" has shared folder "/PARENT" with user "user3"
-    And user "user1" has shared folder "/PARENT" with user "user3"
-    When user "user3" moves file "PARENT (2)/welcome.txt" to "PARENT (3)/welcome.txt" using the WebDAV API
-    Then as "user3" file "PARENT (3)/welcome.txt" should exist
+    And user "user0" has shared folder "/PARENT" with user "user2"
+    And user "user1" has shared folder "/PARENT" with user "user2"
+    When user "user2" moves file "PARENT (2)/welcome.txt" to "PARENT (3)/welcome.txt" using the WebDAV API
+    Then as "user2" file "PARENT (3)/welcome.txt" should exist
     And as "user1" file "PARENT/welcome.txt" should exist
     But as "user0" file "PARENT/welcome.txt" should not exist

@@ -14,4 +14,4 @@ Feature: resharing can be done on a reshared resource
     And user "user2" has shared file "textfile0_shared.txt" with user "user3"
     When user "user1" deletes file "/textfile0_shared.txt" using the WebDAV API
     Then the content of file "/textfile0_shared.txt" for user "user2" should be "ownCloud test text file 0" plus end-of-line
-    Then the content of file "/textfile0_shared.txt" for user "user3" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/textfile0_shared.txt" for user "user3" should be "ownCloud test text file 0" plus end-of-line

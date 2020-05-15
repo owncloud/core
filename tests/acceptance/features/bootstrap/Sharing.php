@@ -2302,8 +2302,8 @@ trait Sharing {
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = $this->getSharesEndpointPath("/$share_id");
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
-			"DELETE", $url, null
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user, "DELETE", $url, null
 		);
 	}
 

@@ -185,9 +185,9 @@ Feature: CORS headers
   Scenario Outline: CORS headers should be returned when invalid password is used (admin only endpoints)
     Given using OCS API version "<ocs_api_version>"
     And the administrator has added "https://aphno.badal" to the list of personal CORS domains
-    And user "newadmin" has been created with default attributes and without skeleton files
-    And user "newadmin" has been added to group "admin"
-    When user "newadmin" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers using password "invalid"
+    And user "another-admin" has been created with default attributes and without skeleton files
+    And user "another-admin" has been added to group "admin"
+    When user "another-admin" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers using password "invalid"
       | header | value               |
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"

@@ -1284,7 +1284,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" adds tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by "([^"]*)" using the WebDAV API$/
+	 * @When /^user "([^"]*)" adds tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by user "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -1306,7 +1306,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has added tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has added tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by user "([^"]*)"$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -1329,7 +1329,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Then /^the HTTP status when user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should be "([^"]*)"$/
+	 * @Then /^the HTTP status when user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by user "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $fileName
@@ -1374,7 +1374,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have the following tags$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by user "([^"]*)" should have the following tags$/
 	 *
 	 * @param string $fileName
 	 * @param string $sharingUser

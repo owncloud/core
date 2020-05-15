@@ -12,7 +12,7 @@ Feature: get user
     And the display name returned by the occ command should be "Anne Brown"
 
   Scenario: admin tries to get a not existing user
-    Given user "not-a-user" has been deleted
-    When the administrator retrieves the information of user "not-a-user" in JSON format using the occ command
+    Given user "nonexistentuser" has been deleted
+    When the administrator retrieves the information of user "nonexistentuser" in JSON format using the occ command
     Then the command should have been successful
     And the occ command JSON output should be empty

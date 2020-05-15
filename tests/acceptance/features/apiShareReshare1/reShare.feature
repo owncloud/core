@@ -4,11 +4,11 @@ Feature: sharing
   Background:
     Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
+    And user "user2" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: User is not allowed to reshare file when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update"
     When user "user1" shares file "/textfile0.txt" with user "user2" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
@@ -22,7 +22,6 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/FOLDER" with user "user1" with permissions "read,update"
     When user "user1" shares folder "/FOLDER" with user "user2" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
@@ -37,7 +36,6 @@ Feature: sharing
   @smokeTest
   Scenario Outline: User is allowed to reshare file with the same permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "share,read"
     When user "user1" shares file "/textfile0.txt" with user "user2" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -50,7 +48,6 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/FOLDER" with user "user1" with permissions "share,read"
     When user "user1" shares folder "/FOLDER" with user "user2" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -63,7 +60,6 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file with less permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "share,update,read"
     When user "user1" shares file "/textfile0.txt" with user "user2" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -76,7 +72,6 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with less permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/FOLDER" with user "user1" with permissions "share,update,read"
     When user "user1" shares folder "/FOLDER" with user "user2" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -89,7 +84,6 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare file and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions <received_permissions>
     When user "user1" shares file "/textfile0.txt" with user "user2" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
@@ -115,7 +109,6 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions <received_permissions>
     When user "user1" shares file "/textfile0.txt" with user "user2" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -153,7 +146,6 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/PARENT" with user "user1" with permissions <received_permissions>
     When user "user1" shares folder "/PARENT" with user "user2" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
@@ -191,7 +183,6 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and add delete permission bit (8)
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/PARENT" with user "user1" with permissions <received_permissions>
     When user "user1" shares folder "/PARENT" with user "user2" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
@@ -217,7 +208,6 @@ Feature: sharing
 
   Scenario Outline: Update of reshare can reduce permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
     And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,create,update,read"
@@ -233,7 +223,6 @@ Feature: sharing
 
   Scenario Outline: Update of reshare can increase permissions to the maximum allowed
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
     And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
@@ -249,7 +238,6 @@ Feature: sharing
 
   Scenario Outline: Do not allow update of reshare to exceed permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,read"
     And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
@@ -265,7 +253,6 @@ Feature: sharing
 
   Scenario Outline: Update of user reshare by the original share owner can increase permissions up to the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
     And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
@@ -281,7 +268,6 @@ Feature: sharing
 
   Scenario Outline: Update of user reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,update,read"
     And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
@@ -297,7 +283,6 @@ Feature: sharing
 
   Scenario Outline: Update of group reshare by the original share owner can increase permissions up to permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "user2" has been added to group "grp1"
     And user "user0" has created folder "/TMP"
@@ -315,7 +300,6 @@ Feature: sharing
 
   Scenario Outline: Update of group reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "user2" has been added to group "grp1"
     And user "user0" has created folder "/TMP"

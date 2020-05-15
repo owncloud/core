@@ -61,26 +61,26 @@ Feature: disable user
 
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
     Given these users have been created with default attributes and skeleton files:
-      | username |
-      | subadmin |
-      | newadmin |
+      | username      |
+      | subadmin      |
+      | another-admin |
     And group "brand-new-group" has been created
-    And user "newadmin" has been added to group "admin"
+    And user "another-admin" has been added to group "admin"
     And user "subadmin" has been added to group "brand-new-group"
-    And user "newadmin" has been added to group "brand-new-group"
+    And user "another-admin" has been added to group "brand-new-group"
     And user "subadmin" has been made a subadmin of group "brand-new-group"
-    When user "subadmin" disables user "newadmin" using the provisioning API
+    When user "subadmin" disables user "another-admin" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And user "newadmin" should be enabled
+    And user "another-admin" should be enabled
 
   Scenario: Admin can disable another admin user
-    Given user "newadmin" has been created with default attributes and skeleton files
-    And user "newadmin" has been added to group "admin"
-    When the administrator disables user "newadmin" using the provisioning API
+    Given user "another-admin" has been created with default attributes and skeleton files
+    And user "another-admin" has been added to group "admin"
+    When the administrator disables user "another-admin" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And user "newadmin" should be disabled
+    And user "another-admin" should be disabled
 
   Scenario: Admin can disable subadmins in the same group
     Given user "subadmin" has been created with default attributes and skeleton files
@@ -94,12 +94,12 @@ Feature: disable user
     And user "subadmin" should be disabled
 
   Scenario: Admin user cannot disable himself
-    Given user "newadmin" has been created with default attributes and skeleton files
-    And user "newadmin" has been added to group "admin"
-    When user "newadmin" disables user "newadmin" using the provisioning API
+    Given user "another-admin" has been created with default attributes and skeleton files
+    And user "another-admin" has been added to group "admin"
+    When user "another-admin" disables user "another-admin" using the provisioning API
     Then the OCS status code should be "101"
     And the HTTP status code should be "200"
-    And user "newadmin" should be enabled
+    And user "another-admin" should be enabled
 
   Scenario: disable an user with a regular user
     Given these users have been created with default attributes and skeleton files:

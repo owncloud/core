@@ -213,7 +213,7 @@ Feature: get file properties
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
-    And group "grp2" has been created
+    And group "grp1" has been created
     And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test  |
@@ -224,7 +224,7 @@ Feature: get file properties
       | path        | test  |
       | shareType   | group |
       | permissions | all   |
-      | shareWith   | grp2  |
+      | shareWith   | grp1  |
     And user "user0" has created a public link share with settings
       | path        | test |
       | permissions | all  |

@@ -112,15 +112,14 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
-	 * @When the user gets the following comment properties of file :arg1 using the WebDAV PROPFIND API
-	 *
+	 * @param string $user
 	 * @param string $path
 	 * @param TableNode $propertiesTable
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi($path, $propertiesTable) {
+	public function getFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi($user, $path, $propertiesTable) {
 		$properties = null;
 		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["propertyName"]);
 		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);
@@ -130,7 +129,6 @@ class WebDavPropertiesContext implements Context {
 			}
 		}
 		$depth = 0;
-		$user = $this->featureContext->getCurrentUser();
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		if (\count($properties) > 1) {
@@ -141,6 +139,41 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->listFolder(
 				$user, $commentsPath, $depth, $properties, "comments"
 			)
+		);
+	}
+
+	/**
+	 * @When user :user gets the following comment properties of file :path using the WebDAV PROPFIND API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param TableNode $propertiesTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi($user, $path, $propertiesTable) {
+		$this->getFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi(
+			$user,
+			$path,
+			$propertiesTable
+		);
+	}
+
+	/**
+	 * @When the user gets the following comment properties of file :arg1 using the WebDAV PROPFIND API
+	 *
+	 * @param string $path
+	 * @param TableNode $propertiesTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserGetsFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi($path, $propertiesTable) {
+		$this->getFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi(
+			$this->featureContext->getCurrentUser(),
+			$path,
+			$propertiesTable
 		);
 	}
 

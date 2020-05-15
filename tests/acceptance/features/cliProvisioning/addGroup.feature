@@ -29,7 +29,7 @@ Feature: add group
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
   Scenario: admin tries to create a group that already exists
-    Given group "new-group" has been created
-    When the administrator creates group "new-group" using the occ command
+    Given group "brand-new-group" has been created
+    When the administrator creates group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'The group "new-group" already exists'
+    And the command output should contain the text 'The group "brand-new-group" already exists'

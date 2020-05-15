@@ -7,27 +7,27 @@ Feature: get groups
   @issue-user_ldap-500
   Scenario: admin gets all the groups
     Given group "0" has been created
-    And group "new-group" has been created
+    And group "brand-new-group" has been created
     And group "España" has been created
     When the administrator gets the groups in JSON format using the occ command
     Then the command should have been successful
     And the groups returned by the occ command should be
-      | group     |
-      | España    |
-      | admin     |
-      | new-group |
-      | 0         |
+      | group           |
+      | España          |
+      | admin           |
+      | brand-new-group |
+      | 0               |
 
   @issue-user_ldap-499
   Scenario: admin gets all the groups, including groups with mixed case
-    Given group "new-group" has been created
-    And group "New-Group" has been created
-    And group "NEW-GROUP" has been created
+    Given group "case-sensitive-group" has been created
+    And group "Case-Sensitive-Group" has been created
+    And group "CASE-SENSITIVE-GROUP" has been created
     When the administrator gets the groups in JSON format using the occ command
     Then the command should have been successful
     And the groups returned by the occ command should be
-      | group     |
-      | admin     |
-      | new-group |
-      | New-Group |
-      | NEW-GROUP |
+      | group                |
+      | admin                |
+      | case-sensitive-group |
+      | Case-Sensitive-Group |
+      | CASE-SENSITIVE-GROUP |
