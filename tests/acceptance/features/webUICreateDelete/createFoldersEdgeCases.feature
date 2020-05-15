@@ -5,8 +5,8 @@ Feature: create folder
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has logged in using the webUI
     And the user has browsed to the files page
 
   Scenario Outline: Create a folder using special characters
@@ -39,7 +39,7 @@ Feature: create folder
 
   @smokeTest
   Scenario Outline: Create a sub-folder inside an existing folder with problematic name
-    Given user "user1" has created folder <folder>
+    Given user "user0" has created folder <folder>
     And the user has reloaded the current page of the webUI
     When the user opens folder <folder> using the webUI
     And the user creates a folder with the name "sub-folder" using the webUI

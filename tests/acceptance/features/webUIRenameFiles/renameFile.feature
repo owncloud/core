@@ -5,12 +5,12 @@ Feature: rename files
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Rename a file using special characters
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to <to_file_name> using the webUI
     Then file <to_file_name> should be listed on the webUI
     When the user reloads the current page of the webUI
@@ -40,13 +40,13 @@ Feature: rename files
       | 0.0      |
 
   Scenario Outline: Rename a file that has special characters in its name
-    Given user "user1" has uploaded file with content "some content" to <from_name>
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to <from_name>
+    And user "user0" has logged in using the webUI
     When the user renames file <from_name> to <to_name> using the webUI
     Then file <to_name> should be listed on the webUI
     When the user reloads the current page of the webUI
     Then file <to_name> should be listed on the webUI
-    And the content of file <to_name> for user "user1" should be "some content"
+    And the content of file <to_name> for user "user0" should be "some content"
     Examples:
       | from_name                               | to_name                               |
       | "strängé filename (duplicate #2 &).txt" | "strängé filename (duplicate #3).txt" |
@@ -55,9 +55,9 @@ Feature: rename files
 
   @smokeTest
   Scenario: Rename a file using special characters and check its existence after page reload
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to "लोरेम।तयक्स्त $%&" using the webUI
     And the user reloads the current page of the webUI
     Then file "लोरेम।तयक्स्त $%&" should be listed on the webUI
@@ -75,8 +75,8 @@ Feature: rename files
     Then file "aaaaaa.txt" should be listed on the webUI
 
   Scenario: Rename a file using spaces at front and/or back of file name and type
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to " space at start" using the webUI
     And the user reloads the current page of the webUI
     Then file " space at start" should be listed on the webUI
@@ -97,8 +97,8 @@ Feature: rename files
     Then file "  multiple   space    all     over   .  dat  " should be listed on the webUI
 
   Scenario: Rename a file using both double and single quotes
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts         |
       | randomfile.txt  | First 'single' quotes |
@@ -116,9 +116,9 @@ Feature: rename files
     Then file "loremz.dat" should be listed on the webUI
 
   Scenario: Rename a file using forbidden characters
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
     And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
-    And user "user1" has logged in using the webUI
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
       | lorem\txt            |
       | \\.txt               |
@@ -133,11 +133,11 @@ Feature: rename files
 
   @skipOnOcV10.3
   Scenario: Rename a file to a filename that matches (or not) blacklisted_files_regex
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
     And the administrator has updated system config key "blacklisted_files_regex" with value '[".*\\.ext$","^bannedfilename\\..+","containsbannedstring"]' and type "json"
-    And user "user1" has logged in using the webUI
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
       | filename.ext                  |
       | bannedfilename.txt            |
@@ -149,9 +149,9 @@ Feature: rename files
     And file "randomfile.txt" should be listed on the webUI
 
   Scenario: Rename a file to an excluded folder name
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
     And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
-    And user "user1" has logged in using the webUI
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
       | .github |
     Then notifications should be displayed on the webUI with the text
@@ -159,10 +159,10 @@ Feature: rename files
     And file "randomfile.txt" should be listed on the webUI
 
   Scenario: Rename a file to an excluded folder name inside a parent folder
-    Given user "user1" has created folder "top-folder"
-    And user "user1" has uploaded file with content "some content" to "/top-folder/randomfile.txt"
+    Given user "user0" has created folder "top-folder"
+    And user "user0" has uploaded file with content "some content" to "/top-folder/randomfile.txt"
     And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
-    And user "user1" has logged in using the webUI
+    And user "user0" has logged in using the webUI
     And the user has opened folder "top-folder" using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
       | .github |
@@ -172,11 +172,11 @@ Feature: rename files
 
   @skipOnOcV10.3
   Scenario: Rename a file to a filename that matches (or not) excluded_directories_regex
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     And the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
-    And user "user1" has logged in using the webUI
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to one of these names using the webUI
       | thisendswith.bad                |
       | .github                         |
@@ -188,51 +188,51 @@ Feature: rename files
     And file "randomfile.txt" should be listed on the webUI
 
   Scenario: Rename the last file in a folder
-    Given user "user1" has uploaded file with content "some content" to "/firstfile.txt"
-    And user "user1" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/firstfile.txt"
+    And user "user0" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "zzzz-must-be-last-file-in-folder.txt" to "a-file.txt" using the webUI
     And the user reloads the current page of the webUI
     Then file "a-file.txt" should be listed on the webUI
 
   Scenario: Rename a file to become the last file in a folder
-    Given user "user1" has uploaded file with content "some content" to "/firstfile.txt"
-    And user "user1" has uploaded file with content "more content" to "/lastfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/firstfile.txt"
+    And user "user0" has uploaded file with content "more content" to "/lastfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "firstfile.txt" to "zzzz-z-this-is-now-the-last-file.txt" using the webUI
     And the user reloads the current page of the webUI
     Then file "zzzz-z-this-is-now-the-last-file.txt" should be listed on the webUI
 
   Scenario: Rename a file putting a name of a file which already exists
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has uploaded file with content "another content" to "/anotherfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has uploaded file with content "another content" to "/anotherfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "anotherfile.txt" to "randomfile.txt" using the webUI
     Then near file "anotherfile.txt" a tooltip with the text 'randomfile.txt already exists' should be displayed on the webUI
 
   Scenario: Rename a file to ..
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to ".." using the webUI
     Then near file "randomfile.txt" a tooltip with the text '".." is an invalid file name.' should be displayed on the webUI
 
   Scenario: Rename a file to .
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to "." using the webUI
     Then near file "randomfile.txt" a tooltip with the text '"." is an invalid file name.' should be displayed on the webUI
 
   Scenario: Rename a file to .part
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames file "randomfile.txt" to "randomfile.part" using the webUI
     Then near file "randomfile.txt" a tooltip with the text '"randomfile.part" has a forbidden file type/extension.' should be displayed on the webUI
 
   @files_sharing-app-required
   Scenario: rename a file on a public share
-    Given user "user1" has created folder "/FOLDER_TO_SHARE"
-    And user "user1" has uploaded file with content "some content" to "/FOLDER_TO_SHARE/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "/FOLDER_TO_SHARE"
+    And user "user0" has uploaded file with content "some content" to "/FOLDER_TO_SHARE/randomfile.txt"
+    And user "user0" has logged in using the webUI
     And the user has created a new public link for folder "FOLDER_TO_SHARE" using the webUI with
       | permission | read-write |
     When the public accesses the last created public link using the webUI
@@ -242,5 +242,5 @@ Feature: rename files
     When the user reloads the current page of the webUI
     Then file "a-renamed-file.txt" should be listed on the webUI
     But file "randomfile.txt" should not be listed on the webUI
-    And as "user1" file "FOLDER_TO_SHARE/a-renamed-file.txt" should exist
-    And as "user1" file "FOLDER_TO_SHARE/randomfile.txt" should not exist
+    And as "user0" file "FOLDER_TO_SHARE/a-renamed-file.txt" should exist
+    And as "user0" file "FOLDER_TO_SHARE/randomfile.txt" should not exist

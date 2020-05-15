@@ -5,8 +5,8 @@ Feature: files and folders exist in the trashbin after being deleted
   So that I can recover data easily
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "user0" has been created with default attributes and skeleton files
+    And user "user0" has logged in using the webUI
     And the user has browsed to the files page
 
   @smokeTest
@@ -17,10 +17,10 @@ Feature: files and folders exist in the trashbin after being deleted
       | lorem.txt                             |
       | strängé नेपाली folder                 |
       | strängé filename (duplicate #2 &).txt |
-    Then as "user1" folder "simple-folder" should exist in the trashbin
-    And as "user1" file "lorem.txt" should exist in the trashbin
-    And as "user1" folder "strängé नेपाली folder" should exist in the trashbin
-    And as "user1" file "strängé filename (duplicate #2 &).txt" should exist in the trashbin
+    Then as "user0" folder "simple-folder" should exist in the trashbin
+    And as "user0" file "lorem.txt" should exist in the trashbin
+    And as "user0" folder "strängé नेपाली folder" should exist in the trashbin
+    And as "user0" file "strängé filename (duplicate #2 &).txt" should exist in the trashbin
     And the deleted elements should be listed in the trashbin on the webUI
     And file "lorem.txt" should be listed in the trashbin folder "simple-folder" on the webUI
 
@@ -52,10 +52,10 @@ Feature: files and folders exist in the trashbin after being deleted
       | data.zip      |
       | lorem.txt     |
       | simple-folder |
-    Then as "user1" file "data.zip" should exist in the trashbin
-    And as "user1" file "lorem.txt" should exist in the trashbin
-    And as "user1" folder "simple-folder" should exist in the trashbin
-    And as "user1" file "simple-folder/lorem.txt" should exist in the trashbin
+    Then as "user0" file "data.zip" should exist in the trashbin
+    And as "user0" file "lorem.txt" should exist in the trashbin
+    And as "user0" folder "simple-folder" should exist in the trashbin
+    And as "user0" file "simple-folder/lorem.txt" should exist in the trashbin
     And the deleted elements should be listed in the trashbin on the webUI
     And file "lorem.txt" should be listed in the trashbin folder "simple-folder" on the webUI
 
@@ -63,8 +63,8 @@ Feature: files and folders exist in the trashbin after being deleted
     When the user creates a folder with the name "my-empty-folder" using the webUI
     And the user creates a folder with the name "my-other-empty-folder" using the webUI
     And the user deletes folder "my-empty-folder" using the webUI
-    Then as "user1" folder "my-empty-folder" should exist in the trashbin
-    But as "user1" the folder with original path "my-other-empty-folder" should not exist in the trashbin
+    Then as "user0" folder "my-empty-folder" should exist in the trashbin
+    But as "user0" the folder with original path "my-other-empty-folder" should not exist in the trashbin
     And folder "my-empty-folder" should be listed in the trashbin on the webUI
     But folder "my-other-empty-folder" should not be listed in the trashbin on the webUI
     When the user opens trashbin folder "my-empty-folder" using the webUI
@@ -83,9 +83,9 @@ Feature: files and folders exist in the trashbin after being deleted
     And the user deletes the following elements using the webUI
       | name      |
       | lorem.txt |
-    Then as "user1" the file with original path "lorem.txt" should exist in the trashbin
-    And as "user1" the file with original path "simple-folder/lorem.txt" should exist in the trashbin
-    And as "user1" the file with original path "strängé नेपाली folder/lorem.txt" should exist in the trashbin
+    Then as "user0" the file with original path "lorem.txt" should exist in the trashbin
+    And as "user0" the file with original path "simple-folder/lorem.txt" should exist in the trashbin
+    And as "user0" the file with original path "strängé नेपाली folder/lorem.txt" should exist in the trashbin
     Then the deleted elements should be listed in the trashbin on the webUI
     And file "lorem.txt" with path "./lorem.txt" should be listed in the trashbin on the webUI
     And file "lorem.txt" with path "simple-folder/lorem.txt" should be listed in the trashbin on the webUI

@@ -227,11 +227,11 @@ Feature: add users
     Then user "<username>" should exist
     And the user should be redirected to a webUI page with the title "Files - %productname%"
     Examples:
-      | creation-username | login-username | username       |
-      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
-      | brand-new-user    | Brand-New-User | Brand-New-User |
-      | Brand-New-User    | BRAND-NEW-USER | brand-new-user |
-      | brand-new-user    | Brand-New-User | BRAND-NEW-USER |
+      | creation-username  | login-username  | username        |
+      | Mixed-Case-user    | mixed-case-user | MIXED-CASE-USER |
+      | mixed-case-user    | Mixed-Case-user | Mixed-Case-user |
+      | Mixed-Case-user    | MIXED-CASE-USER | mixed-case-user |
+      | mixed-case-user    | Mixed-Case-user | MIXED-CASE-USER |
 
   Scenario Outline: user names are not case-sensitive, multiple users can't exist with different upper and lower case names
     When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI
@@ -242,7 +242,7 @@ Feature: add users
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A user with that name already exists. |
     Examples:
-      | user_id1       | user_id2       | user_id3       |
-      | Brand-New-User | brand-new-user | BRAND-NEW-USER |
-      | brand-new-user | BRAND-NEW-USER | Brand-New-User |
-      | BRAND-NEW-USER | Brand-New-User | brand-new-user |
+      | user_id1        | user_id2        | user_id3        |
+      | Mixed-Case-user | mixed-case-user | MIXED-CASE-USER |
+      | mixed-case-user | MIXED-CASE-USER | Mixed-Case-user |
+      | MIXED-CASE-USER | Mixed-Case-user | mixed-case-user |

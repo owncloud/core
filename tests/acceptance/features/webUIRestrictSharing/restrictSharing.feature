@@ -7,26 +7,28 @@ Feature: restrict Sharing
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
+      | user0    |
       | user1    |
       | user2    |
     And these groups have been created:
       | groupname |
       | grp1      |
       | grp2      |
+    And user "user0" has been added to group "grp1"
     And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp1"
+    And user "user2" has been added to group "grp2"
+    And user "user0" has created folder "simple-folder"
     And user "user1" has created folder "simple-folder"
-    And user "user2" has created folder "simple-folder"
-    And user "user2" has logged in using the webUI
+    And user "user1" has logged in using the webUI
 
   @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: Restrict users to only share with users in their groups
     Given the setting "Restrict users to only share with users in their groups" in the section "Sharing" has been enabled
     When the user browses to the files page
-    Then it should not be possible to share folder "simple-folder" with user "User Three" using the webUI
-    When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user re-logs in as "user1" using the webUI
+    Then it should not be possible to share folder "simple-folder" with user "User Two" using the webUI
+    When the user shares folder "simple-folder" with user "User Zero" using the webUI
+    And the user re-logs in as "user0" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @TestAlsoOnExternalUserBackend
@@ -36,7 +38,7 @@ Feature: restrict Sharing
     When the user browses to the files page
     Then it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
     When the user shares folder "simple-folder" with group "grp1" using the webUI
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "user0" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @TestAlsoOnExternalUserBackend
@@ -57,8 +59,8 @@ Feature: restrict Sharing
     When the user browses to the files page
     Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
     And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
-    When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user re-logs in as "user1" using the webUI
+    When the user shares folder "simple-folder" with user "User Zero" using the webUI
+    And the user re-logs in as "user0" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @skipOnOcV10.3
