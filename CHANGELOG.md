@@ -20,6 +20,7 @@ Summary
 * Bugfix - Properly store complex Webdav properties: [#37314](https://github.com/owncloud/core/pull/37314)
 * Bugfix - Cannot share with user name that has only numbers in the UI: [#37324](https://github.com/owncloud/core/issues/37324)
 * Bugfix - Fix error messages: [#37338](https://github.com/owncloud/core/issues/37338)
+* Bugfix - Allow unlimited access to PUT body if content length is 0: [#37394](https://github.com/owncloud/core/pull/37394)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -141,6 +142,14 @@ Details
    Fixed printing of unescaped messages.
 
    https://github.com/owncloud/core/issues/37338
+
+* Bugfix - Allow unlimited access to PUT body if content length is 0: [#37394](https://github.com/owncloud/core/pull/37394)
+
+   It was not possible to read more than one URL param of the PUT request with the empty body. This
+   change checks Content-Length and do not throw the exception on empty request body if
+   Content-Length states that the empty body had been sent.
+
+   https://github.com/owncloud/core/pull/37394
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
