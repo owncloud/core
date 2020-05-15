@@ -543,6 +543,23 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When /^the administrator invokes occ command "([^"]*)" for user "([^"]*)"$/
+	 *
+	 * @param string $cmd
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorInvokesOccCommandForUser($cmd, $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$cmd = $this->featureContext->substituteInLineCodes(
+			$cmd, $user
+		);
+		$this->invokingTheCommand($cmd);
+	}
+
+	/**
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 *
 	 * @param string $cmd
@@ -2288,6 +2305,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDeletesAllTheVersionsForUser($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteAllVersionsForUserUsingOccCommand($user);
 	}
 

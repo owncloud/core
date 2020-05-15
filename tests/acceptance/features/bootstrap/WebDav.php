@@ -1079,6 +1079,7 @@ trait WebDav {
 	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
 		$fileSource, $user, $range, $content
 	) {
+		$user = $this->getActualUsername($user);
 		$this->userDownloadsFileWithRange($user, $fileSource, $range);
 		$this->downloadedContentShouldBe($content);
 	}
@@ -2460,6 +2461,7 @@ trait WebDav {
 	public function userHasUploadedChunkedFile(
 		$user, $num, $total, $data, $destination
 	) {
+		$user = $this->getActualUsername($user);
 		$this->userUploadsChunkedFile($user, $num, $total, $data, $destination);
 		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 	}

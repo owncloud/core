@@ -87,6 +87,8 @@ class TransferOwnershipContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorTransfersOwnershipFromToUsingTheOccCommand($user1, $user2) {
+		$user1 = $this->featureContext->getActualUsername($user1);
+		$user2 = $this->featureContext->getActualUsername($user2);
 		$this->transferringOwnership($user1, $user2);
 	}
 
@@ -113,6 +115,8 @@ class TransferOwnershipContext implements Context {
 	 * @throws Exception
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
+		$user1 = $this->featureContext->getActualUsername($user1);
+		$user2 = $this->featureContext->getActualUsername($user2);
 		$path = "--path=$path";
 		if ($this->featureContext->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
 			$this->lastTransferPath
@@ -190,6 +194,7 @@ class TransferOwnershipContext implements Context {
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		//the entry in the folder should not exist
 		//but the last received transfer folder itself should exist
 		//that would help against snakeoil tests if testing a non-existing folder
