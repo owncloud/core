@@ -376,6 +376,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function emptyTrashBinOfUserUsingOccCommand($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->invokingTheCommand(
 			"trashbin:cleanup $user"
 		);
@@ -724,6 +725,37 @@ class OccContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lines = SetupHelper::findLines(
+			$commandOutput,
+			$text
+		);
+		Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
+	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*")) about user "([^"]*)"$/
+	 *
+	 * @param string $text
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandOutputContainsTheTextAboutUser($text, $user) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
+		$user = $this->featureContext->getActualUsername($user);
+		$text = $this->featureContext->substituteInLineCodes(
+			$text, $user
+		);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
 			$commandOutput,
