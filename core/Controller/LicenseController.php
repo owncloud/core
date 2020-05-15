@@ -60,4 +60,13 @@ class LicenseController extends Controller {
 		$this->licenseManager->setLicenseString($licenseString);
 		return new JSONResponse();
 	}
+
+	/**
+	 * Get the information about the state of the license for the target app.
+	 * @param string $app
+	 * @return JSONResponse
+	 */
+	public function getLicenseMessage(string $app) {
+		return new JSONResponse($this->licenseManager->getLicenseMessageFor($app));
+	}
 }

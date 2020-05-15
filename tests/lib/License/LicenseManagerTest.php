@@ -271,6 +271,65 @@ class LicenseManagerTest extends TestCase {
 		$this->assertSame($expectedState, $this->licenseManager->getLicenseStateFor('dummyApp'));
 	}
 
+	public function getLicenseMessageForProvider() {
+		$ocLicenseValid = $this->createMock(ILicense::class);
+		$ocLicenseValid->method('isValid')->willReturn(true);
+		$ocLicenseValid->method('getExpirationTime')->willReturn(PHP_INT_MAX);
+		$ocLicenseValid->method('getLicenseString')->willReturn('dummy-license-string');
+
+		$ocLicenseAboutExpire = $this->createMock(ILicense::class);
+		$ocLicenseAboutExpire->method('isValid')->willReturn(true);
+		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(100300500 + 3600);
+		$ocLicenseAboutExpire->method('getLicenseString')->willReturn('dummy-license-string');
+
+		$ocLicenseInvalid = $this->createMock(ILicense::class);
+		$ocLicenseInvalid->method('isValid')->willReturn(false);
+		$ocLicenseInvalid->method('getExpirationTime')->willReturn(PHP_INT_MAX);
+		$ocLicenseInvalid->method('getLicenseString')->willReturn('dummy-license-string');
+
+		$ocLicenseExpired = $this->createMock(ILicense::class);
+		$ocLicenseExpired->method('isValid')->willReturn(true);
+		$ocLicenseExpired->method('getExpirationTime')->willReturn(PHP_INT_MIN);
+		$ocLicenseExpired->method('getLicenseString')->willReturn('dummy-license-string');
+
+		$ocLicenseInvalidExpired = $this->createMock(ILicense::class);
+		$ocLicenseInvalidExpired->method('isValid')->willReturn(false);
+		$ocLicenseInvalidExpired->method('getExpirationTime')->willReturn(PHP_INT_MIN);
+		$ocLicenseInvalidExpired->method('getLicenseString')->willReturn('dummy-license-string');
+
+		$expectedMessageInfo = [
+			'raw_message' => ['raw message'],
+			'translated_message' => ['translated message'],
+			'contains_html' => [],
+		];
+		return [
+			[null, ILicenseManager::LICENSE_STATE_MISSING, $expectedMessageInfo],  // no license set
+			[$ocLicenseValid, ILicenseManager::LICENSE_STATE_VALID, $expectedMessageInfo],
+			[$ocLicenseAboutExpire, ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE, $expectedMessageInfo],
+			[$ocLicenseInvalid, ILicenseManager::LICENSE_STATE_INVALID, $expectedMessageInfo],
+			[$ocLicenseExpired, ILicenseManager::LICENSE_STATE_EXPIRED, $expectedMessageInfo],
+			[$ocLicenseInvalidExpired, ILicenseManager::LICENSE_STATE_INVALID, $expectedMessageInfo],
+		];
+	}
+
+	/**
+	 * @dataProvider getLicenseMessageForProvider
+	 */
+	public function testGetLicenseMessageFor($license, $expectedLicenseState, $expectedMessageInfo) {
+		$this->timeFactory->method('getTime')->willReturn(100300500);
+		$this->licenseFetcher->method('getOwncloudLicense')->willReturn($license);
+		$this->messageService->method('getMessageForLicense')->willReturn($expectedMessageInfo);
+
+		$type = (isset($license)) ? $license->getType() : -1;
+		$expectedData = [
+			'license_state' => $expectedLicenseState,
+			'type' => $type,
+		];
+		$expectedData = \array_merge($expectedData, $expectedMessageInfo);
+
+		$this->assertEquals($expectedData, $this->licenseManager->getLicenseMessageFor('dummyApp'));
+	}
+
 	public function checkLicenseForProvider() {
 		$ocLicenseValid = $this->createMock(ILicense::class);
 		$ocLicenseValid->method('isValid')->willReturn(true);
@@ -291,6 +350,11 @@ class LicenseManagerTest extends TestCase {
 		$ocLicenseInvalidExpired->method('isValid')->willReturn(false);
 		$ocLicenseInvalidExpired->method('getExpirationTime')->willReturn(PHP_INT_MIN);
 		$ocLicenseInvalidExpired->method('getLicenseString')->willReturn('dummy-license-string');
+
+		$ocLicenseAboutExpire = $this->createMock(ILicense::class);
+		$ocLicenseAboutExpire->method('isValid')->willReturn(true);
+		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(1581945782 + 60);
+		$ocLicenseAboutExpire->method('getLicenseString')->willReturn('dummy-license-string');
 		return [
 			[null, 1581945782, null, true],
 			[1581945782, 1581945782, null, true],  // no license set
@@ -307,6 +371,9 @@ class LicenseManagerTest extends TestCase {
 			[null, 1581945782, $ocLicenseInvalidExpired, true],
 			[1581945782, 1581945782, $ocLicenseInvalidExpired, true],
 			[1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, false],
+			[null, 1581945782, $ocLicenseAboutExpire, true],
+			[1581945782, 1581945782, $ocLicenseAboutExpire, true],
+			[1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, false],
 		];
 	}
 
@@ -326,6 +393,10 @@ class LicenseManagerTest extends TestCase {
 		if ($expectedResult === false) {
 			// ensure the app will be disabled
 			$this->appManager->expects($this->once())
+				->method('disableApp')
+				->with('dummyApp');
+		} else {
+			$this->appManager->expects($this->never())
 				->method('disableApp')
 				->with('dummyApp');
 		}

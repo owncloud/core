@@ -132,10 +132,10 @@ class MessageService {
 		if ($info['licenseType'] === ILicense::LICENSE_TYPE_DEMO) {
 			return [
 				'raw_message' => [
-					"Evaluation - expires in {$info['daysLeft']} days.",
+					"Your demo license key expires in {$info['daysLeft']} days.",
 				],
 				'translated_message' => [
-					$l->t('Evaluation - expires in %d days.', [$info['daysLeft']]),
+					$l->t('Your demo license key expires in %d days.', [$info['daysLeft']]),
 				],
 				'contains_html' => [],
 			];

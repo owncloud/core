@@ -205,7 +205,7 @@ class LicenseManager implements ILicenseManager {
 				'licenseState' => $info[1],
 				'licenseType' => $info[0]->getType(),
 				// daysLeft won't be accurate if the license isn't valid, but it's ok.
-				'daysLeft' => ($info[0]->getExpirationTime() - $this->timeFactory->getTime()) / 86400,
+				'daysLeft' => \ceil(($info[0]->getExpirationTime() - $this->timeFactory->getTime()) / 86400),
 			];
 		}
 
@@ -241,7 +241,9 @@ class LicenseManager implements ILicenseManager {
 		$licenseState = $licenseWithState[1];
 		if (!$this->isNowUnderGracePeriod($gracePeriod)) {
 			// we aren't under a grace period, so the app must be disabled if the license isn't valid
-			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID) {
+			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
+				$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE
+			) {
 				$this->appManager->disableApp($appid);
 				$this->logger->warning("$appid has been disabled because the license is not valid", ['app' => 'core']);
 				return false;
@@ -249,7 +251,9 @@ class LicenseManager implements ILicenseManager {
 				return true;
 			}
 		} else {
-			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID) {
+			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
+				$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE
+			) {
 				// we're under a grace period but the license for the app isn't valid
 				// mark the app to know there is at least one app using the grace period.
 				// we'll still return true in this case.

@@ -144,10 +144,10 @@ class MessageServiceTest extends TestCase {
 				$demoLicenseInfo,
 				[
 					'raw_message' => [
-						'Evaluation - expires in 30 days.',
+						'Your demo license key expires in 30 days.',
 					],
 					'translated_message' => [
-						'Evaluation - Expires In 30 Days.',
+						'Your Demo License Key Expires In 30 Days.',
 					],
 					'contains_html' => [],
 				],
@@ -168,10 +168,10 @@ class MessageServiceTest extends TestCase {
 				$demoLicenseAboutToExpireInfo,  // no difference with the "normal" demo license message
 				[
 					'raw_message' => [
-						'Evaluation - expires in 15 days.',
+						'Your demo license key expires in 15 days.',
 					],
 					'translated_message' => [
-						'Evaluation - Expires In 15 Days.',
+						'Your Demo License Key Expires In 15 Days.',
 					],
 					'contains_html' => [],
 				]
