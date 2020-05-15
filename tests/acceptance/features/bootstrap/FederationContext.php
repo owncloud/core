@@ -160,7 +160,8 @@ class FederationContext implements Context {
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
 			'POST',
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
 			null
@@ -251,7 +252,8 @@ class FederationContext implements Context {
 	public function userGetsTheListOfPendingFederatedCloudShares($user) {
 		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
 		$this->featureContext->asUser($user);
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
 			'GET',
 			$url,
 			null
@@ -313,8 +315,8 @@ class FederationContext implements Context {
 	 */
 	public function userRequestsSharedSecretUsingTheFederationApi($user) {
 		$url = '/apps/federation/api/v1/request-shared-secret';
-		$this->featureContext->asUser($user);
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
 			'POST',
 			$url,
 			null
