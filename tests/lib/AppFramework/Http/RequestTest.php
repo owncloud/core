@@ -308,7 +308,10 @@ class RequestTest extends TestCase {
 		$vars = [
 			'put' => $data,
 			'method' => 'PUT',
-			'server' => ['CONTENT_TYPE' => 'image/png'],
+			'server' => [
+				'CONTENT_TYPE' => 'image/png',
+				'CONTENT_LENGTH' => \strlen($data),
+			],
 		];
 
 		$request = new Request(
@@ -330,6 +333,37 @@ class RequestTest extends TestCase {
 			return;
 		}
 		$this->fail('Expected LogicException.');
+	}
+
+	public function testDoubleGetParamOnPut() {
+		$vars = [
+			'method' => 'PUT',
+			'server' => [],
+		];
+
+		$request = new Request(
+			$vars,
+			$this->secureRandom,
+			$this->config,
+			$this->csrfTokenManager,
+			$this->stream
+		);
+
+		// trigger decoding of the request
+		$request->getParam('foo');
+
+		$request->setUrlParameters([
+			'var1' => 'value1',
+			'var2' => 'value2'
+		]);
+
+		// it should be possible to get unlimited number of URL parameters
+		// without reading the request body
+		$var1 = $request->getParam('var1');
+		$var2 = $request->getParam('var2');
+
+		$this->assertEquals('value1', $var1);
+		$this->assertEquals('value2', $var2);
 	}
 
 	public function testSetUrlParameters() {
