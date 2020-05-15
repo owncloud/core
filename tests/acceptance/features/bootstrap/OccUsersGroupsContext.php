@@ -56,8 +56,8 @@ class OccUsersGroupsContext implements Context {
 	public function createUsersUsingOccCommand(TableNode $table) {
 		foreach ($table as $row) {
 			$username = $row['username'];
-			$cmd = "user:add $username  --password-from-env";
-
+			$user = $this->featureContext->getActualUsername($username);
+			$cmd = "user:add $user  --password-from-env";
 			if (isset($row['displayname'])) {
 				$displayName = $row['displayname'];
 			} else {
@@ -90,6 +90,7 @@ class OccUsersGroupsContext implements Context {
 				$password
 			);
 
+			$username = $this->featureContext->getActualUsername($username);
 			$this->featureContext->addUserToCreatedUsersList(
 				$username,
 				$password,
@@ -147,8 +148,9 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorTriesToCreateAUserUsingTheOccCommand($username) {
+		$user = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommandWithEnvVariable(
-			"user:add $username  --password-from-env",
+			"user:add $user  --password-from-env",
 			'OC_PASS',
 			$this->featureContext->getPasswordForUser($username)
 		);
@@ -165,13 +167,14 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
-		$cmd = "user:add $username  --password-from-env --group=$group";
+		$user = $this->featureContext->getActualUsername($username);
+		$cmd = "user:add $user  --password-from-env --group=$group";
 		$this->occContext->invokingTheCommandWithEnvVariable(
 			$cmd,
 			'OC_PASS',
 			$this->featureContext->getActualPassword($password)
 		);
-		$this->featureContext->addUserToCreatedUsersList($username, $password);
+		$this->featureContext->addUserToCreatedUsersList($user, $password);
 		$this->featureContext->addGroupToCreatedGroupsList($group);
 	}
 
@@ -185,6 +188,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetUserPasswordUsingTheOccCommand($username, $password) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->resetUserPassword($username, $password);
 	}
 
@@ -276,6 +280,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheQuotaOfUserToUsingTheOccCommand($username, $newQuota) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:modify $username quota $newQuota"
 		);
@@ -332,6 +337,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorRetrievesTheInformationOfUserInJsonUsingTheOccCommand($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:list $username --output=json"
 		);
@@ -346,6 +352,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorGetsTheGroupsOfUserInJsonUsingTheOccCommand($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:list-group $username --output=json"
 		);
@@ -360,6 +367,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorRetrievesTheTimeWhenUserWasLastSeenUsingTheOccCommand($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:lastseen $username"
 		);
@@ -377,6 +385,7 @@ class OccUsersGroupsContext implements Context {
 	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
 		$username, $language
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:setting $username core lang --value='$language'"
 		);
@@ -417,6 +426,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorAddsUserToGroupUsingTheOccCommand($username, $group) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"group:add-member -m $username $group"
 		);
@@ -473,6 +483,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorRemovesUserFromGroupUsingTheOccCommand($username, $group) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"group:remove-member -m $username $group"
 		);
@@ -487,6 +498,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDisablesUserUsingTheOccCommand($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:disable $username"
 		);
@@ -501,6 +513,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function administratorEnablesUserUsingTheOccCommand($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:enable $username"
 		);
@@ -516,6 +529,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theLanguageOfUserReturnedByTheOccCommandShouldBe($username, $language) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:setting $username core lang"
 		);
@@ -550,6 +564,8 @@ class OccUsersGroupsContext implements Context {
 			$result = $lastOutputUsers;
 		}
 		foreach ($useridTable as $row) {
+			$row['display name'] = $this->featureContext->getDisplayNameForUser($row['uid']);
+			$row['uid'] = $this->featureContext->getActualUsername($row['uid']);
 			Assert::assertArrayHasKey(
 				$row['uid'],
 				$result,
@@ -590,6 +606,8 @@ class OccUsersGroupsContext implements Context {
 
 		$found = false;
 		foreach ($userTable as $row) {
+			$row['display name'] = $this->featureContext->getDisplayNameForUser($row['uid']);
+			$row['uid'] = $this->featureContext->getActualUsername($row['uid']);
 			foreach ($lastOutputUsers as $user) {
 				if ($user['uid'] === $row['uid']) {
 					$found = true;

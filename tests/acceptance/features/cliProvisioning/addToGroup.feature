@@ -10,7 +10,7 @@ Feature: add users to group
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'User "brand-new-user" added to group "<group_id>"'
+    And the command output should contain the text 'User "%username%" added to group "<group_id>"' about user "brand-new-user"
     And user "brand-new-user" should belong to group "<group_id>"
     Examples:
       | group_id    | comment                               |
@@ -25,7 +25,7 @@ Feature: add users to group
     And group "<group_id3>" has been created
     When the administrator adds user "<user_id>" to group "<group_id1>" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'User "mixed-case-user" added to group "<group_id1>"'
+    And the command output should contain the text 'User "%username%" added to group "<group_id1>"' about user "mixed-case-user"
     And user "mixed-case-user" should belong to group "<group_id1>"
     But user "mixed-case-user" should not belong to group "<group_id2>"
     And user "mixed-case-user" should not belong to group "<group_id3>"
@@ -48,5 +48,5 @@ Feature: add users to group
     And group "brand-new-group" has been created
     When the administrator adds user "nonexistentuser" to group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'User "nonexistentuser" could not be found - not added to group "brand-new-group"'
+    And the command output should contain the text 'User "%username%" could not be found - not added to group "new-group"' about user "nonexistentuser"
     And group "brand-new-group" should not contain user "nonexistentuser"

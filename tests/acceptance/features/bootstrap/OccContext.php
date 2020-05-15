@@ -2712,7 +2712,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function createExternalMountPointUsingTheOccCommand($user, $settings) {
-		$user = $this->featureContext->getActualUsername($user);
+		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeRows(
 			$settings,
 			["host", "root", "storage_backend",
@@ -2721,9 +2721,11 @@ class OccContext implements Context {
 		);
 		$extMntSettings = $settings->getRowsHash();
 		$extMntSettings['user'] = $this->featureContext->substituteInLineCodes(
-			$extMntSettings['user'], $user
+			$extMntSettings['user'], $userRenamed
 		);
-		$password = $this->featureContext->getActualPassword($extMntSettings['password']);
+		$password = $this->featureContext->substituteInLineCodes(
+			$extMntSettings['password'], $user
+		);
 		$args = [
 			"files_external:create",
 			"-c host=" .

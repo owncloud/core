@@ -2553,6 +2553,14 @@ class FeatureContext extends BehatVariablesContext {
 					"getDisplayNameForUser"
 				],
 				"parameter" => [$user]
+			],
+			[
+				"code" => "%password%",
+				"function" => [
+					$this,
+					"getPasswordForUser"
+				],
+				"parameter" => [$user]
 			]
 		];
 
@@ -3172,6 +3180,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function theAdministratorSetsTheLastLoginDateForUserToDaysAgoUsingTheTestingApi($user, $days) {
+		$user = $this->getActualUsername($user);
 		$adminUser = $this->getAdminUsername();
 		$baseUrl = "/apps/testing/api/v1/lastlogindate/{$user}";
 		$response = OcsApiHelper::sendRequest(

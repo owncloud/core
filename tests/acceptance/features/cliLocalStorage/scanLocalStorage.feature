@@ -224,4 +224,3 @@ Feature: Scanning files on local storage
     When user "Carol" requests "/remote.php/dav/files/%username%/local_storage2" with "PROPFIND" using basic auth
     Then the propfind result of user "Carol" should not contain these entries:
       | /local_storage2/hello1.txt |
-    
