@@ -1553,7 +1553,6 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
-		$user = $this->getActualUsername($user);
 		$share_id = $this->getLastShareIdOf($user);
 		$this->getShareData($user, $share_id, $language);
 	}
@@ -1570,6 +1569,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function getLastShareIdOf($user) {
+		$user = $this->getActualUsername($user);
 		if (isset($this->lastShareData->data[0]->id)) {
 			return (int) $this->lastShareData->data[0]->id;
 		}
@@ -1590,6 +1590,7 @@ trait Sharing {
 	 * @return ResponseInterface
 	 */
 	public function getListOfShares($user) {
+		$user = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user,
@@ -1627,6 +1628,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function getShareData($user, $share_id, $language=null) {
+		$user = $this->getActualUsername($user);
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$headers = [];
 		if ($language !== null) {
@@ -1645,6 +1647,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user) {
+		$user = $this->getActualUsername($user);
 		$url = "/apps/files_sharing/api/v1/shares?shared_with_me=true";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -1663,6 +1666,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllSharesSharedWithHimFromFileOrFolderUsingTheProvisioningApi($user, $path) {
+		$user = $this->getActualUsername($user);
 		$url = "/apps/files_sharing/api/"
 			. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1681,6 +1685,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllSharesSharedByHimUsingTheSharingApi($user) {
+		$user = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user,
@@ -1710,6 +1715,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllTheSharesFromTheFileUsingTheSharingApi($user, $path) {
+		$user = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user,
@@ -1732,6 +1738,7 @@ trait Sharing {
 	public function userGetsAllTheSharesWithResharesFromTheFileUsingTheSharingApi(
 		$user, $path
 	) {
+		$user = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user,
@@ -1752,6 +1759,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllTheSharesInsideTheFolderUsingTheSharingApi($user, $path) {
+		$user = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user,
@@ -1775,6 +1783,7 @@ trait Sharing {
 	public function theResponseWhenUserGetsInfoOfLastShareShouldInclude(
 		$user, $body
 	) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
 		$this->userGetsInfoOfLastShareUsingTheSharingApi($user);
 		$this->theHTTPStatusCodeShouldBe(
@@ -1797,6 +1806,7 @@ trait Sharing {
 	public function informationOfLastShareShouldInclude(
 		$user, $body
 	) {
+		$user = $this->getActualUsername($user);
 		$this->getListOfShares($user);
 		$share_id = $this->extractLastSharedIdFromLastResponse();
 		if ($share_id === null) {
@@ -1825,6 +1835,7 @@ trait Sharing {
 	public function theFieldsOfTheResponseForUserForResourceShouldInclude(
 		$user, $fileOrFolder, $fileName, TableNode $body
 	) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$fileName = $fileName[0] === "/" ? $fileName : '/' . $fileName;
 		$data = $this->getAllSharesSharedWithUser($user);
@@ -2084,6 +2095,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userDownloadsFailWithMessage($fileName, $user, $errorMessage) {
+		$user = $this->getActualUsername($user);
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
 		$receivedErrorMessage = $this->getResponseXml()->xpath('//s:message');
 		if ((bool) $errorMessage) {
@@ -2181,6 +2193,7 @@ trait Sharing {
 	 * @throws \Exception
 	 */
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
+		$user = $this->getActualUsername($user);
 		$this->removeAllSharesFromResource($user, $fileName);
 	}
 
@@ -2238,6 +2251,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkPublicShares($user, $path, $TableNode) {
+		$user = $this->getActualUsername($user);
 		$dataResponded = $this->getShares($user, $path);
 
 		$this->verifyTableNodeColumns($TableNode, ['path', 'permissions', 'name']);
@@ -2285,6 +2299,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkPublicSharesAreEmpty($user, $path) {
+		$user = $this->getActualUsername($user);
 		$dataResponded = $this->getShares($user, $path);
 		//It shouldn't have public shares
 		Assert::assertEquals(

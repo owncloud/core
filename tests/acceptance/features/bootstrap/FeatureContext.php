@@ -1808,6 +1808,8 @@ class FeatureContext extends BehatVariablesContext {
 			return 'User Grp';
 		} elseif ($userName === 'sharee1') {
 			return 'Sharee One';
+		} elseif (\in_array($userName, ["grp1", "***redacted***"])) {
+			return $userName;
 		} else {
 			return null;
 		}
