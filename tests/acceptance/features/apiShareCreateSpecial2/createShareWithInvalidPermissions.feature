@@ -61,7 +61,7 @@ Feature: cannot share resources with invalid permissions
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
-      | 2               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @skipOnOcis @issue-ocis-reva-45 @issue-ocis-reva-64
   Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
@@ -98,9 +98,9 @@ Feature: cannot share resources with invalid permissions
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
       | 1               | 100             | 200              | delete        |
-      | 2               | 100             | 200              | delete        |
+      | 2               | 200             | 200              | delete        |
       | 1               | 100             | 200              | create,delete |
-      | 2               | 100             | 200              | create,delete |
+      | 2               | 200             | 200              | create,delete |
 
   @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Cannot create a share of a file with a group with only create permission
