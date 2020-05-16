@@ -140,11 +140,11 @@ Feature: Sharing files and folders with internal groups
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email for group "grp1" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address "Alice@example.org" should have received an email with the body containing
+    And the email address "alice@example.org" should have received an email with the body containing
       """
       just letting you know that User Two shared lorem.txt with you.
       """
-    And the email address "Brian@example.org" should have received an email with the body containing
+    And the email address "brian@example.org" should have received an email with the body containing
       """
       just letting you know that User Two shared lorem.txt with you.
       """
@@ -179,7 +179,7 @@ Feature: Sharing files and folders with internal groups
     When the user sends the share notification by email for group "grp1" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     When the administrator adds user "David" to group "grp1" using the provisioning API
-    Then the email address "David@example.org" should not have received an email
+    Then the email address "david@example.org" should not have received an email
 
   @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
@@ -198,11 +198,11 @@ Feature: Sharing files and folders with internal groups
     Then dialog should be displayed on the webUI
       | title                       | content                                                                          |
       | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |
-    And the email address "Alice@example.org" should have received an email with the body containing
+    And the email address "alice@example.org" should have received an email with the body containing
       """
       just letting you know that User Two shared lorem.txt with you.
       """
-    And the email address "Brian@example.org" should have received an email with the body containing
+    And the email address "brian@example.org" should have received an email with the body containing
       """
       just letting you know that User Two shared lorem.txt with you.
       """

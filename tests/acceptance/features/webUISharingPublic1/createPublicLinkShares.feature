@@ -74,12 +74,12 @@ Feature: Share by public link
     """
     User Zero shared simple-folder with you
     """
-    And the email address "Alice@example.org" should have received an email with the body containing
+    And the email address "alice@example.org" should have received an email with the body containing
     """
     User Zero shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
-    And the email address "Alice@example.org" should have received an email containing the last shared public link
+    And the email address "alice@example.org" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email with multiple addresses
     Given user "Alice" has created folder "/simple-folder"

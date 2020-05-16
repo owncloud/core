@@ -228,7 +228,7 @@ Feature: misc scenarios on sharing with internal users
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email for user "User One" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address "Brian@example.org" should have received an email with the body containing
+    And the email address "brian@example.org" should have received an email with the body containing
       """
       just letting you know that User Zero shared lorem.txt with you.
       """
@@ -285,7 +285,7 @@ Feature: misc scenarios on sharing with internal users
     And the user has opened the share dialog for folder "simple-folder"
     When the user sends the share notification by email for user "User One" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address "Brian@example.org" should have received an email with the body containing
+    And the email address "brian@example.org" should have received an email with the body containing
       """
       just letting you know that Alice shared simple-folder with you.
       """
