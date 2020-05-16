@@ -2966,7 +2966,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :Brian downloads the preview of :path of :Carol with width :width and height :height using the WebDAV API
+	 * @When user :user1 downloads the preview of :path of :user2 with width :width and height :height using the WebDAV API
 	 *
 	 * @param $user1
 	 * @param $path

@@ -175,13 +175,13 @@ Feature: transfer-ownership
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file with content "Alice file" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/test/somefile.txt"
     And user "Alice" has created a public link share with settings
       | path | /test/somefile.txt |
     When the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Alice file"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Alice file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder shared with third user

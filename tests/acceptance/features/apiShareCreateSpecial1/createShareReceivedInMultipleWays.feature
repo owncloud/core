@@ -91,8 +91,8 @@ Feature: share resources where the sharee receives the share in multiple ways
       | username |
       | Brian    |
       | Carol    |
-    And user "Brian" has uploaded file with content "Brian file" to "/randomfile.txt"
-    And user "Carol" has uploaded file with content "Carol file" to "/randomfile.txt"
+    And user "Brian" has uploaded file with content "First data" to "/randomfile.txt"
+    And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
@@ -109,8 +109,8 @@ Feature: share resources where the sharee receives the share in multiple ways
       | file_target | /randomfile (2).txt |
       | item_type   | file                |
       | permissions | read,update         |
-    And the content of file "randomfile.txt" for user "Alice" should be "Brian file"
-    And the content of file "randomfile (2).txt" for user "Alice" should be "Carol file"
+    And the content of file "randomfile.txt" for user "Alice" should be "First data"
+    And the content of file "randomfile (2).txt" for user "Alice" should be "Second data"
     Examples:
       | ocs_api_version |
       | 1               |
@@ -160,13 +160,13 @@ Feature: share resources where the sharee receives the share in multiple ways
       | groupname |
       | grp1      |
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has uploaded file with content "Alice content" to "lorem.txt"
-    And user "Carol" has uploaded file with content "Carol content" to "lorem.txt"
+    And user "Alice" has uploaded file with content "Shared content" to "lorem.txt"
+    And user "Carol" has uploaded file with content "My content" to "lorem.txt"
     When user "Alice" shares file "lorem.txt" with group "grp1" using the sharing API
     And the administrator adds user "Carol" to group "grp1" using the provisioning API
-    Then the content of file "lorem.txt" for user "Brian" should be "Alice content"
-    And the content of file "lorem.txt" for user "Carol" should be "Carol content"
-    And the content of file "lorem (2).txt" for user "Carol" should be "Alice content"
+    Then the content of file "lorem.txt" for user "Brian" should be "Shared content"
+    And the content of file "lorem.txt" for user "Carol" should be "My content"
+    And the content of file "lorem (2).txt" for user "Carol" should be "Shared content"
     Examples:
       | ocs_api_version |
       | 1               |

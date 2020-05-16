@@ -83,15 +83,15 @@ Feature: Sharing files and folders with internal users
       | Alice    |
       | Brian    |
       | Carol    |
-    And user "Brian" has uploaded file with content "Brian file" to "/randomfile.txt"
-    And user "Carol" has uploaded file with content "Carol file" to "/randomfile.txt"
+    And user "Brian" has uploaded file with content "First data" to "/randomfile.txt"
+    And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     And user "Brian" has shared file "randomfile.txt" with user "Alice"
     And user "Carol" has shared file "randomfile.txt" with user "Alice"
     When user "Alice" logs in using the webUI
     Then file "randomfile.txt" should be listed on the webUI
-    And the content of file "randomfile.txt" for user "Alice" should be "Brian file"
+    And the content of file "randomfile.txt" for user "Alice" should be "First data"
     And file "randomfile (2).txt" should be listed on the webUI
-    And the content of file "randomfile (2).txt" for user "Alice" should be "Carol file"
+    And the content of file "randomfile (2).txt" for user "Alice" should be "Second data"
 
   Scenario: multiple users share a folder with the same name to a user
     Given these users have been created with default attributes and without skeleton files:

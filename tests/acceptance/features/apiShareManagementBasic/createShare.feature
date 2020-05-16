@@ -103,7 +103,7 @@ Feature: sharing
   Scenario Outline: Creating a share of a file with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file with content "Alice file" to "randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "randomfile.txt"
     When user "Alice" shares file "randomfile.txt" with user "Brian" with permissions "0" using the sharing API
     Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
@@ -119,7 +119,7 @@ Feature: sharing
   Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file with content "Alice file" to "randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "randomfile.txt"
     When user "Alice" shares file "/randomfile.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "100"
     And the OCS status message should be "OK"
@@ -167,7 +167,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/home"
-    And user "Alice" has uploaded file with content "Alice file" to "/home/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/home/randomfile.txt"
     When user "Alice" shares file "/home/randomfile.txt" with user "Brian" using the sharing API
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" file "randomfile.txt" should exist
@@ -431,7 +431,7 @@ Feature: sharing
     Given these users have been created without skeleton files:
       | username |
       | brian    |
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" shares file "/randomfile.txt" with user "BRIAN" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -443,7 +443,7 @@ Feature: sharing
       | uid_owner   | Alice             |
     #And user "brian" should see the following elements
     #  | /randomfile.txt |
-    #And the content of file "randomfile.txt" for user "brian" should be "Alice file"
+    #And the content of file "randomfile.txt" for user "brian" should be "Random data"
     And user "brian" should not see the following elements
       | /randomfile.txt |
 
@@ -454,13 +454,13 @@ Feature: sharing
       | Brian    |
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     And user "Alice" has shared file "randomfile.txt" with group "grp1"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
       | /randomfile.txt |
-    And the content of file "randomfile.txt" for user "Brian" should be "Alice file"
+    And the content of file "randomfile.txt" for user "Brian" should be "Random data"
 
   @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Share of folder to a group with emoji in the name

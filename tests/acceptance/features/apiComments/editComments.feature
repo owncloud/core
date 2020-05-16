@@ -42,7 +42,7 @@ Feature: Comments
     And user "Alice" should have the following comments on file "/myFileToComment.txt"
       | user  | comment        |
       | Brian | Sharee comment |
-    When user "Alice" edits the last created comment with content "Brian edited comment" using the WebDAV API
+    When user "Alice" edits the last created comment with content "Edit the comment of another user" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should have the following comments on file "/myFileToComment.txt"
       | user  | comment        |

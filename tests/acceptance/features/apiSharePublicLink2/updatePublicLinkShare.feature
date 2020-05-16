@@ -40,7 +40,7 @@ Feature: update a public link share
 
   Scenario Outline: Creating a new public link share with password and adding an expiration date
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path     | randomfile.txt |
       | password | %public%       |
@@ -48,8 +48,8 @@ Feature: update a public link share
       | expireDate | +3 days |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "Alice file"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Alice file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Random data"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

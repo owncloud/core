@@ -162,9 +162,9 @@ Feature: dav-versions
   @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file
     Given user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file with content "Alice content" to "sharefile.txt"
+    And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
     And user "Alice" has shared file "sharefile.txt" with user "Brian"
-    When user "Brian" has uploaded file with content "Brian content" to "/sharefile.txt"
+    When user "Brian" has uploaded file with content "Second content" to "/sharefile.txt"
     Then the HTTP status code should be "204"
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
 
@@ -172,13 +172,13 @@ Feature: dav-versions
   @skipOnOcis @issue-ocis-reva-21
   Scenario: sharer of a file can restore the original content of a shared file after the file has been modified by the sharee
     Given user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file with content "Alice content" to "sharefile.txt"
+    And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
     And user "Alice" has shared file "sharefile.txt" with user "Brian"
-    And user "Brian" has uploaded file with content "Brian content" to "/sharefile.txt"
+    And user "Brian" has uploaded file with content "Second content" to "/sharefile.txt"
     When user "Alice" restores version index "1" of file "/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the content of file "/sharefile.txt" for user "Alice" should be "Alice content"
-    And the content of file "/sharefile.txt" for user "Brian" should be "Alice content"
+    And the content of file "/sharefile.txt" for user "Alice" should be "First content"
+    And the content of file "/sharefile.txt" for user "Brian" should be "First content"
 
   @files_sharing-app-required
   @skipOnOcis @issue-ocis-reva-21
@@ -186,12 +186,12 @@ Feature: dav-versions
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
     And user "Alice" has shared folder "/sharingfolder" with user "Brian"
-    And user "Alice" has uploaded file with content "Alice content" to "/sharingfolder/sharefile.txt"
-    And user "Brian" has uploaded file with content "Brian content" to "/sharingfolder/sharefile.txt"
+    And user "Alice" has uploaded file with content "First content" to "/sharingfolder/sharefile.txt"
+    And user "Brian" has uploaded file with content "Second content" to "/sharingfolder/sharefile.txt"
     When user "Alice" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "Alice content"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "Alice content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
   @files_sharing-app-required
   @skipOnOcis @issue-ocis-reva-21
@@ -199,12 +199,12 @@ Feature: dav-versions
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
     And user "Alice" has shared folder "/sharingfolder" with user "Brian"
-    And user "Alice" has uploaded file with content "Alice content" to "/sharingfolder/sharefile.txt"
-    And user "Brian" has uploaded file with content "Brian content" to "/sharingfolder/sharefile.txt"
+    And user "Alice" has uploaded file with content "First content" to "/sharingfolder/sharefile.txt"
+    And user "Brian" has uploaded file with content "Second content" to "/sharingfolder/sharefile.txt"
     When user "Brian" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "Alice content"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "Alice content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
   @files_sharing-app-required
   @skipOnOcis @issue-ocis-reva-21
@@ -212,12 +212,12 @@ Feature: dav-versions
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
     And user "Alice" has shared folder "/sharingfolder" with user "Brian"
-    And user "Brian" has uploaded file with content "Brian content" to "/sharingfolder/sharefile.txt"
-    And user "Alice" has uploaded file with content "Alice content" to "/sharingfolder/sharefile.txt"
+    And user "Brian" has uploaded file with content "First content" to "/sharingfolder/sharefile.txt"
+    And user "Alice" has uploaded file with content "Second content" to "/sharingfolder/sharefile.txt"
     When user "Alice" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "Brian content"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "Brian content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
   @files_sharing-app-required
   @skipOnOcis @issue-ocis-reva-21
@@ -225,12 +225,12 @@ Feature: dav-versions
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
     And user "Alice" has shared folder "/sharingfolder" with user "Brian"
-    And user "Brian" has uploaded file with content "Brian content" to "/sharingfolder/sharefile.txt"
-    And user "Alice" has uploaded file with content "Alice content" to "/sharingfolder/sharefile.txt"
+    And user "Brian" has uploaded file with content "First content" to "/sharingfolder/sharefile.txt"
+    And user "Alice" has uploaded file with content "Second content" to "/sharingfolder/sharefile.txt"
     When user "Brian" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "Brian content"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "Brian content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
   @files_sharing-app-required
   @skipOnOcis @issue-ocis-reva-21
@@ -312,14 +312,14 @@ Feature: dav-versions
     And user "Carol" has been added to group "grp1"
     And user "Alice" has created folder "/sharingfolder"
     And user "Alice" has shared folder "/sharingfolder" with group "grp1"
-    And user "Alice" has uploaded file with content "Alice content" to "/sharingfolder/sharefile.txt"
-    And user "Brian" has uploaded file with content "Brian content" to "/sharingfolder/sharefile.txt"
-    And user "Carol" has uploaded file with content "Carol content" to "/sharingfolder/sharefile.txt"
+    And user "Alice" has uploaded file with content "First content" to "/sharingfolder/sharefile.txt"
+    And user "Brian" has uploaded file with content "Second content" to "/sharingfolder/sharefile.txt"
+    And user "Carol" has uploaded file with content "Third content" to "/sharingfolder/sharefile.txt"
     When user "Alice" restores version index "2" of file "/sharingfolder/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "Alice content"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "Alice content"
-    And the content of file "/sharingfolder/sharefile.txt" for user "Carol" should be "Alice content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
+    And the content of file "/sharingfolder/sharefile.txt" for user "Carol" should be "First content"
 
   @files_sharing-app-required
   @skipOnOcis @issue-ocis-reva-21

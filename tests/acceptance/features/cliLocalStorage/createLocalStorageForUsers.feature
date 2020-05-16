@@ -83,9 +83,9 @@ Feature: create local storage from the command line
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage2.txt"
     And the administrator has added user "Brian" as the applicable user for local storage mount "local_storage2"
     When user "Alice" creates folder "local_storage2" using the WebDAV API
-    And user "Alice" uploads file with content "this is a file of Alice" to "/local_storage2/file-in-local-storage2.txt" using the WebDAV API
+    And user "Alice" uploads file with content "this is an ordinary file" to "/local_storage2/file-in-local-storage2.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" folder "/local_storage2" should exist
-    And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Alice" should be "this is a file of Alice"
+    And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Alice" should be "this is an ordinary file"
     And as "Brian" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Brian" should be "this is a file in local storage2"

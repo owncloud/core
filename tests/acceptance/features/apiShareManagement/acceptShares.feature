@@ -532,9 +532,9 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: user accepts file that was initially accepted from another user and then declined
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-    And user "Alice" has uploaded file with content "file from Alice" to "/testfile.txt"
-    And user "Brian" has uploaded file with content "file from Brian" to "/testfile.txt"
-    And user "Carol" has uploaded file with content "file from Carol" to "/testfile.txt"
+    And user "Alice" has uploaded file with content "First file" to "/testfile.txt"
+    And user "Brian" has uploaded file with content "Second file" to "/testfile.txt"
+    And user "Carol" has uploaded file with content "Third file" to "/testfile.txt"
     And user "Alice" has shared file "/testfile.txt" with user "Carol"
     And user "Carol" has accepted the share "/testfile.txt" offered by user "Alice"
     When user "Carol" declines the share "/testfile (2).txt" offered by user "Alice" using the sharing API
@@ -545,9 +545,9 @@ Feature: accept/decline shares coming from internal users
       | path                  |
       | /testfile (2).txt     |
       | /testfile (2) (2).txt |
-    And the content of file "/testfile.txt" for user "Carol" should be "file from Carol"
-    And the content of file "/testfile (2).txt" for user "Carol" should be "file from Brian"
-    And the content of file "/testfile (2) (2).txt" for user "Carol" should be "file from Alice"
+    And the content of file "/testfile.txt" for user "Carol" should be "Third file"
+    And the content of file "/testfile (2).txt" for user "Carol" should be "Second file"
+    And the content of file "/testfile (2) (2).txt" for user "Carol" should be "First file"
 
   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
