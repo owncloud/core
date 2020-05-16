@@ -8,12 +8,12 @@ Feature: Autocompletion of share-with names
     # Users that are in the special known users already
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username    |
-      | user1       |
+      | Brian       |
       | regularuser |
     # Users that are in the special known users already without skeleton files
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | user3    |
+      | David    |
       | usergrp  |
     # Some extra users without skeleton files to make the share autocompletion interesting
     And these users have been created without skeleton files:
@@ -32,7 +32,7 @@ Feature: Autocompletion of share-with names
     And the administrator has added system config key "user_ldap.enable_medial_search" with value "true" and type "boolean"
 
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
-    Given user "regularuser" has shared folder "simple-folder" with user "user1"
+    Given user "regularuser" has shared folder "simple-folder" with user "Brian"
     And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -72,7 +72,7 @@ Feature: Autocompletion of share-with names
     And user "Four" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing users contains the pattern somewhere in the middle
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "se" in the share-with-field
@@ -91,14 +91,14 @@ Feature: Autocompletion of share-with names
 
   Scenario: autocompletion of a pattern where the username of existing user contains the pattern somewhere in the middle
     Given user "ivan" has been created with default attributes and skeleton files
-    And user "user1" has logged in using the webUI
+    And user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "iv" in the share-with-field
     Then all users and groups that contain the string "iv" in their name should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "anc" in the share-with-field
@@ -109,14 +109,14 @@ Feature: Autocompletion of share-with names
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username     | displayname |
       | regularuser3 | Guest User  |
-    And user "user1" has logged in using the webUI
+    And user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
-    When the user types "user3" in the share-with-field
-    Then all users and groups that contain the string "user3" in their name should be listed in the autocomplete list on the webUI
+    When the user types "David" in the share-with-field
+    Then all users and groups that contain the string "David" in their name should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing group contains the pattern at the end
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "ce2" in the share-with-field
@@ -126,35 +126,35 @@ Feature: Autocompletion of share-with names
     And group "users-finance" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "finn" in the share-with-field
     Then only user "John Finn Smith" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere at the end
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "group" in the share-with-field
     Then only user "User Group" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the beginning
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "u2" in the share-with-field
     Then only user "User Two" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "net" in the share-with-field
     Then only user "User Group" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the end
-    Given user "user1" has logged in using the webUI
+    Given user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "de" in the share-with-field
@@ -165,7 +165,7 @@ Feature: Autocompletion of share-with names
     Given these groups have been created:
       | groupname |
       | nanumber  |
-    And user "user1" has logged in using the webUI
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "groups.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -181,7 +181,7 @@ Feature: Autocompletion of share-with names
       | groupname         |
       | ncell-customers   |
       | customers-finance |
-    And user "user1" has logged in using the webUI
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "groups.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -193,7 +193,7 @@ Feature: Autocompletion of share-with names
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname |
       | ivan     | Ivan        |
-    And user "user1" has logged in using the webUI
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -204,18 +204,18 @@ Feature: Autocompletion of share-with names
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username     | displayname |
       | regularuser3 | Guest User  |
-    And user "user1" has logged in using the webUI
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
-    When the user types "user3" in the share-with-field
+    When the user types "David" in the share-with-field
     Then only user "User Three" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname   |
-      | user2    | finnance typo |
-    And user "user1" has logged in using the webUI
+      | Carol    | finnance typo |
+    And user "Brian" has logged in using the webUI
     And the user has browsed to the files page
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has opened the share dialog for folder "simple-folder"
@@ -225,8 +225,8 @@ Feature: Autocompletion of share-with names
   Scenario: autocompletion of a pattern where the display name of existing user contains the pattern somewhere in the end but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname |
-      | user2    | Group User  |
-    And user "user1" has logged in using the webUI
+      | Carol    | Group User  |
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -236,8 +236,8 @@ Feature: Autocompletion of share-with names
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the beginning but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname | email              |
-      | user2    | User2       | hello2u2@oc.com.np |
-    And user "user1" has logged in using the webUI
+      | Carol    | Carol       | hello2u2@oc.com.np |
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -247,24 +247,24 @@ Feature: Autocompletion of share-with names
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname | email         |
-      | user2    | User2       | net@oc.com.np |
-    And user "user1" has logged in using the webUI
+      | Carol    | Carol       | net@oc.com.np |
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "net" in the share-with-field
-    Then only user "User2" should be listed in the autocomplete list on the webUI
+    Then only user "Carol" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the end but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname | email        |
-      | user2    | User2       | de@oc.com.np |
-    And user "user1" has logged in using the webUI
+      | Carol    | Carol       | de@oc.com.np |
+    And user "Brian" has logged in using the webUI
     And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "de" in the share-with-field
-    Then only user "User2" should be listed in the autocomplete list on the webUI
+    Then only user "Carol" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern when admin disables username autocompletion in share dialog
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
@@ -280,7 +280,7 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the personal sharing settings page
     When the user disables allow finding you via autocomplete in share dialog
     And the user enables allow finding you via autocomplete in share dialog
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Brian" using the webUI
     And the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user types "reg" in the share-with-field

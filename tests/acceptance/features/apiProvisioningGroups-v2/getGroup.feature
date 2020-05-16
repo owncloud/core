@@ -52,19 +52,19 @@ Feature: get group
   Scenario: subadmin gets users in a group they are responsible for
     Given these users have been created with default attributes and skeleton files:
       | username |
-      | user0    |
-      | user1    |
+      | Alice    |
+      | Brian    |
       | subadmin |
     And group "brand-new-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
-    And user "user0" has been added to group "brand-new-group"
-    And user "user1" has been added to group "brand-new-group"
+    And user "Alice" has been added to group "brand-new-group"
+    And user "Brian" has been added to group "brand-new-group"
     When user "subadmin" gets all the members of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the users returned by the API should be
-      | user0 |
-      | user1 |
+      | Alice |
+      | Brian |
 
   @issue-31276
   Scenario: subadmin tries to get users in a group they are not responsible for

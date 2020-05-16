@@ -5,19 +5,19 @@ Feature: Change Login Password
   So that I can login with my new password
 
   Background:
-    Given user "user0" has been created with default attributes and without skeleton files
-    And user "user0" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
   Scenario: Change password
     When the user changes the password to "%alt3%" using the webUI
-    And the user re-logs in with username "user0" and password "%alt3%" using the webUI
+    And the user re-logs in with username "Alice" and password "%alt3%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario Outline: Change password to some unusual values
     When the user changes the password to "<new_password>" using the webUI
-    And the user re-logs in with username "user0" and password "<new_password>" using the webUI
+    And the user re-logs in with username "Alice" and password "<new_password>" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
     Examples:
       | new_password                 | comment                               |

@@ -7,19 +7,19 @@ Feature: restrict Sharing
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-      | user2    |
+      | Alice    |
+      | Brian    |
+      | Carol    |
     And these groups have been created:
       | groupname |
       | grp1      |
       | grp2      |
-    And user "user0" has been added to group "grp1"
-    And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp2"
-    And user "user0" has created folder "simple-folder"
-    And user "user1" has created folder "simple-folder"
-    And user "user1" has logged in using the webUI
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp2"
+    And user "Alice" has created folder "simple-folder"
+    And user "Brian" has created folder "simple-folder"
+    And user "Brian" has logged in using the webUI
 
   @TestAlsoOnExternalUserBackend
   @smokeTest
@@ -28,7 +28,7 @@ Feature: restrict Sharing
     When the user browses to the files page
     Then it should not be possible to share folder "simple-folder" with user "User Two" using the webUI
     When the user shares folder "simple-folder" with user "User Zero" using the webUI
-    And the user re-logs in as "user0" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @TestAlsoOnExternalUserBackend
@@ -38,18 +38,18 @@ Feature: restrict Sharing
     When the user browses to the files page
     Then it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
     When the user shares folder "simple-folder" with group "grp1" using the webUI
-    And the user re-logs in as "user0" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @TestAlsoOnExternalUserBackend
   Scenario: Do not restrict users to only share with groups they are member of
-    Given user "user3" has been created with default attributes and without skeleton files
-    And user "user3" has been added to group "grp2"
-    And user "user3" has created folder "simple-folder"
+    Given user "David" has been created with default attributes and without skeleton files
+    And user "David" has been added to group "grp2"
+    And user "David" has created folder "simple-folder"
     And the setting "Restrict users to only share with groups they are member of" in the section "Sharing" has been disabled
     And the user browses to the files page
     When the user shares folder "simple-folder" with group "grp2" using the webUI
-    And the user re-logs in as "user3" using the webUI
+    And the user re-logs in as "David" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @TestAlsoOnExternalUserBackend
@@ -60,7 +60,7 @@ Feature: restrict Sharing
     Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
     And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
     When the user shares folder "simple-folder" with user "User Zero" using the webUI
-    And the user re-logs in as "user0" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @skipOnOcV10.3

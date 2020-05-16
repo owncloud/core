@@ -96,7 +96,7 @@ trait Provisioning {
 	/**
 	 * Usernames are not case-sensitive, and can generally be specified with any
 	 * mix of upper and lower case. For remembering usernames use the normalized
-	 * form so that "User0" and "user0" are remembered as the same user.
+	 * form so that "alice" and "Alice" are remembered as the same user.
 	 *
 	 * @param string $username
 	 *

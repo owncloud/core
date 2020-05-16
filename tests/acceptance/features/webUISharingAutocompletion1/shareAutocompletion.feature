@@ -8,12 +8,12 @@ Feature: Autocompletion of share-with names
     # Users that are in the special known users already
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username    |
-      | user1       |
+      | Brian       |
       | regularuser |
     # Users that are in the special known users already without skeleton files
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | user3    |
+      | David    |
       | usergrp  |
     # Some extra users without skeleton files to make the share autocompletion interesting
     And these users have been created without skeleton files:
@@ -114,7 +114,7 @@ Feature: Autocompletion of share-with names
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
     When the user disables allow finding you via autocomplete in share dialog
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Brian" using the webUI
     And the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user types "reg" in the share-with-field
@@ -124,7 +124,7 @@ Feature: Autocompletion of share-with names
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
     When the user disables allow finding you via autocomplete in share dialog
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Brian" using the webUI
     And the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user types "regularuser" in the share-with-field
@@ -134,7 +134,7 @@ Feature: Autocompletion of share-with names
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
     When the user disables allow finding you via autocomplete in share dialog
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Brian" using the webUI
     And the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user types "Regular User" in the share-with-field
@@ -144,7 +144,7 @@ Feature: Autocompletion of share-with names
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
     When the user enables allow finding you via autocomplete in share dialog
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Brian" using the webUI
     And the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user types "reg" in the share-with-field
@@ -162,7 +162,7 @@ Feature: Autocompletion of share-with names
     And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
-    When the user types "user1" in the share-with-field
+    When the user types "Brian" in the share-with-field
     Then user "User One" should be listed in the autocomplete list on the webUI
 
   Scenario: admin disables share dialog user enumeration and types full display name of user in sharing dialog

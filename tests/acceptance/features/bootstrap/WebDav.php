@@ -2966,7 +2966,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user1 downloads the preview of :path of :user2 with width :width and height :height using the WebDAV API
+	 * @When user :Brian downloads the preview of :path of :Carol with width :width and height :height using the WebDAV API
 	 *
 	 * @param $user1
 	 * @param $path
@@ -3239,7 +3239,7 @@ trait WebDav {
 		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 
 		// topWebDavPath should be something like /remote.php/webdav/ or
-		// /remote.php/dav/files/user0/
+		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];

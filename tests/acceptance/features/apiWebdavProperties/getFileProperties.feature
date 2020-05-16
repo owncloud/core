@@ -6,13 +6,13 @@ Feature: get file properties
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
-    And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
-    When user "user0" gets the properties of file "<file_name>" using the WebDAV API
+    And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
+    When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
     Examples:
       | dav_version | file_name         |
@@ -26,8 +26,8 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-122
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
-    And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
-    When user "user0" gets the properties of file "<file_name>" using the WebDAV API
+    And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
+    When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
     And the value of the item "//d:response/d:href" in the response should match "/remote\.php\/<expected_href>/"
     Examples:
@@ -36,17 +36,17 @@ Feature: get file properties
       | old         | /file #2.txt  | webdav\/file%20%232\.txt               |
       | old         | /file ?2.txt  | webdav\/file%20%3f2\.txt               |
       | old         | /file &2.txt  | webdav\/file%20%262\.txt               |
-      | new         | /C++ file.cpp | dav\/files\/user0\/C%2b%2b%20file\.cpp |
-      | new         | /file #2.txt  | dav\/files\/user0\/file%20%232\.txt    |
-      | new         | /file ?2.txt  | dav\/files\/user0\/file%20%3f2\.txt    |
-      | new         | /file &2.txt  | dav\/files\/user0\/file%20%262\.txt    |
+      | new         | /C++ file.cpp | dav\/files\/Alice\/C%2b%2b%20file\.cpp |
+      | new         | /file #2.txt  | dav\/files\/Alice\/file%20%232\.txt    |
+      | new         | /file ?2.txt  | dav\/files\/Alice\/file%20%3f2\.txt    |
+      | new         | /file &2.txt  | dav\/files\/Alice\/file%20%262\.txt    |
 
   @skipOnOcV10 @issue-ocis-reva-122
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
-    And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
-    When user "user0" gets the properties of file "<file_name>" using the WebDAV API
+    And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
+    When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
     And the value of the item "//d:response/d:href" in the response should match "/remote\.php\/<expected_href>/"
     Examples:
@@ -55,18 +55,18 @@ Feature: get file properties
       | old         | /file #2.txt  | webdav\/file%20%232\.txt             |
       | old         | /file ?2.txt  | webdav\/file%20%3F2\.txt             |
       | old         | /file &2.txt  | webdav\/file%20&2\.txt               |
-      | new         | /C++ file.cpp | dav\/files\/user0\/C\+\+%20file\.cpp |
-      | new         | /file #2.txt  | dav\/files\/user0\/file%20%232\.txt  |
-      | new         | /file ?2.txt  | dav\/files\/user0\/file%20%3F2\.txt  |
-      | new         | /file &2.txt  | dav\/files\/user0\/file%20&2\.txt    |
+      | new         | /C++ file.cpp | dav\/files\/Alice\/C\+\+%20file\.cpp |
+      | new         | /file #2.txt  | dav\/files\/Alice\/file%20%232\.txt  |
+      | new         | /file ?2.txt  | dav\/files\/Alice\/file%20%3F2\.txt  |
+      | new         | /file &2.txt  | dav\/files\/Alice\/file%20&2\.txt    |
 
   @skipOnOcis @issue-ocis-reva-122
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
-    And user "user0" has created folder "<folder_name>"
-    And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
-    And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
-    When user "user0" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
+    And user "Alice" has created folder "<folder_name>"
+    And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
+    And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
+    When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
     Then the value of the item "//d:response[1]/d:href" in the response should match "/remote\.php\/<expected_href>\//"
     And the value of the item "//d:response[2]/d:href" in the response should match "/remote\.php\/<expected_href>\/file1.txt/"
     And the value of the item "//d:response[3]/d:href" in the response should match "/remote\.php\/<expected_href>\/file2.txt/"
@@ -79,22 +79,22 @@ Feature: get file properties
       | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                |
       | old         | /folder ?2.txt  | webdav\/folder%20%3f2\.txt                                                |
       | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                |
-      | new         | /upload         | dav\/files\/user0\/upload                                                 |
-      | new         | /strängé folder | dav\/files\/user0\/str%c3%a4ng%c3%a9%20folder                             |
-      | new         | /C++ folder     | dav\/files\/user0\/C%2b%2b%20folder                                       |
-      | new         | /नेपाली         | dav\/files\/user0\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
-      | new         | /folder #2.txt  | dav\/files\/user0\/folder%20%232\.txt                                     |
-      | new         | /folder ?2.txt  | dav\/files\/user0\/folder%20%3f2\.txt                                     |
-      | new         | /folder &2.txt  | dav\/files\/user0\/folder%20%262\.txt                                     |
+      | new         | /upload         | dav\/files\/Alice\/upload                                                 |
+      | new         | /strängé folder | dav\/files\/Alice\/str%c3%a4ng%c3%a9%20folder                             |
+      | new         | /C++ folder     | dav\/files\/Alice\/C%2b%2b%20folder                                       |
+      | new         | /नेपाली         | dav\/files\/Alice\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
+      | new         | /folder #2.txt  | dav\/files\/Alice\/folder%20%232\.txt                                     |
+      | new         | /folder ?2.txt  | dav\/files\/Alice\/folder%20%3f2\.txt                                     |
+      | new         | /folder &2.txt  | dav\/files\/Alice\/folder%20%262\.txt                                     |
 
   @skipOnOcV10 @issue-ocis-reva-122
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
-    And user "user0" has created folder "<folder_name>"
-    And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
-    And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
-    When user "user0" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
+    And user "Alice" has created folder "<folder_name>"
+    And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
+    And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
+    When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
     Then the value of the item "//d:response[1]/d:href" in the response should match "/remote\.php\/<expected_href>\//"
     And the value of the item "//d:response[2]/d:href" in the response should match "/remote\.php\/<expected_href>\/file1.txt/"
     And the value of the item "//d:response[3]/d:href" in the response should match "/remote\.php\/<expected_href>\/file2.txt/"
@@ -107,19 +107,19 @@ Feature: get file properties
       | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                |
       | old         | /folder ?2.txt  | webdav\/folder%20%3F2\.txt                                                |
       | old         | /folder &2.txt  | webdav\/folder%20&2\.txt                                                  |
-      | new         | /upload         | dav\/files\/user0\/upload                                                 |
-      | new         | /strängé folder | dav\/files\/user0\/str%C3%A4ng%C3%A9%20folder                             |
-      | new         | /C++ folder     | dav\/files\/user0\/C\+\+%20folder                                           |
-      | new         | /नेपाली         | dav\/files\/user0\/%E0%A4%A8%E0%A5%87%E0%A4%AA%E0%A4%BE%E0%A4%B2%E0%A5%80 |
-      | new         | /folder #2.txt  | dav\/files\/user0\/folder%20%232\.txt                                     |
-      | new         | /folder ?2.txt  | dav\/files\/user0\/folder%20%3F2\.txt                                     |
-      | new         | /folder &2.txt  | dav\/files\/user0\/folder%20&2\.txt                                       |
+      | new         | /upload         | dav\/files\/Alice\/upload                                                 |
+      | new         | /strängé folder | dav\/files\/Alice\/str%C3%A4ng%C3%A9%20folder                             |
+      | new         | /C++ folder     | dav\/files\/Alice\/C\+\+%20folder                                           |
+      | new         | /नेपाली         | dav\/files\/Alice\/%E0%A4%A8%E0%A5%87%E0%A4%AA%E0%A4%BE%E0%A4%B2%E0%A5%80 |
+      | new         | /folder #2.txt  | dav\/files\/Alice\/folder%20%232\.txt                                     |
+      | new         | /folder ?2.txt  | dav\/files\/Alice\/folder%20%3F2\.txt                                     |
+      | new         | /folder &2.txt  | dav\/files\/Alice\/folder%20&2\.txt                                       |
 
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
-    And user "user0" has created folder "<folder_name>"
-    And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
-    When user "user0" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
+    And user "Alice" has created folder "<folder_name>"
+    And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
+    When user "Alice" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
     Then the properties response should contain an etag
     Examples:
       | dav_version | folder_name                      | file_name                     |
@@ -138,8 +138,8 @@ Feature: get file properties
 
   Scenario Outline: A file that is not shared does not have a share-types property
     Given using <dav_version> DAV path
-    And user "user0" has created folder "/test"
-    When user "user0" gets the following properties of folder "/test" using the WebDAV API
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
     Then the response should contain an empty property "oc:share-types"
@@ -152,14 +152,14 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes and skeleton files
-    And user "user0" has created folder "/test"
-    And user "user0" has created a share with settings
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/test"
+    And user "Alice" has created a share with settings
       | path        | test  |
       | shareType   | user  |
       | permissions | all   |
-      | shareWith   | user1 |
-    When user "user0" gets the following properties of folder "/test" using the WebDAV API
+      | shareWith   | Brian |
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
@@ -174,13 +174,13 @@ Feature: get file properties
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
-    And user "user0" has created folder "/test"
-    And user "user0" has created a share with settings
+    And user "Alice" has created folder "/test"
+    And user "Alice" has created a share with settings
       | path        | test  |
       | shareType   | group |
       | permissions | all   |
       | shareWith   | grp1  |
-    When user "user0" gets the following properties of folder "/test" using the WebDAV API
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
@@ -194,11 +194,11 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
-    And user "user0" has created folder "/test"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created folder "/test"
+    And user "Alice" has created a public link share with settings
       | path        | test |
       | permissions | all  |
-    When user "user0" gets the following properties of folder "/test" using the WebDAV API
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
@@ -212,23 +212,23 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    And user "user0" has created folder "/test"
-    And user "user0" has created a share with settings
+    And user "Alice" has created folder "/test"
+    And user "Alice" has created a share with settings
       | path        | test  |
       | shareType   | user  |
       | permissions | all   |
-      | shareWith   | user1 |
-    And user "user0" has created a share with settings
+      | shareWith   | Brian |
+    And user "Alice" has created a share with settings
       | path        | test  |
       | shareType   | group |
       | permissions | all   |
       | shareWith   | grp1  |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | test |
       | permissions | all  |
-    When user "user0" gets the following properties of folder "/test" using the WebDAV API
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
     Then the response should contain a share-types property with
@@ -243,8 +243,8 @@ Feature: get file properties
   @skipOnOcis
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
-    And user "user0" has logged in to a web-style session
-    When the client sends a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
+    And user "Alice" has logged in to a web-style session
+    When the client sends a "PROPFIND" to "/remote.php/dav/files/Alice/welcome.txt" with requesttoken
     Then the HTTP status code should be "207"
     Examples:
       | dav_version |
@@ -255,8 +255,8 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-57
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
-    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
-    When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
+    When user "Alice" gets the following properties of file "/somefile.txt" using the WebDAV API
       | propertyName   |
       | oc:privatelink |
     Then the single response should contain a property "oc:privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
@@ -267,7 +267,7 @@ Feature: get file properties
 
   @skipOnOcis @issue-ocis-reva-163
   Scenario Outline: Do a PROPFIND to a non-existing URL
-    And user "user0" requests "<url>" with "PROPFIND" using basic auth
+    And user "Alice" requests "<url>" with "PROPFIND" using basic auth
     Then the value of the item "/d:error/s:message" in the response should be "<message>"
     And the value of the item "/d:error/s:exception" in the response should be "Sabre\DAV\Exception\NotFound"
     Examples:
@@ -278,7 +278,7 @@ Feature: get file properties
   @skipOnOcV10 @issue-ocis-reva-163
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND to a non-existing URL
-    And user "user0" requests "<url>" with "PROPFIND" using basic auth
+    And user "Alice" requests "<url>" with "PROPFIND" using basic auth
     Then the body of the response should be empty
     Examples:
       | url                                  |
@@ -287,18 +287,18 @@ Feature: get file properties
 
   @skipOnOcis @issue-ocis-reva-57
   Scenario: add, receive multiple custom meta properties to a file
-    Given user "user0" has created folder "/TestFolder"
-    And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
-    And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
+    Given user "Alice" has created folder "/TestFolder"
+    And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
+    And user "Alice" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
       | propertyName | propertyValue |
       | testprop1    | AAAAA         |
       | testprop2    | BBBBB         |
-    When user "user0" gets the following properties of file "/TestFolder/test1.txt" using the WebDAV API
+    When user "Alice" gets the following properties of file "/TestFolder/test1.txt" using the WebDAV API
       | propertyName |
       | oc:testprop1 |
       | oc:testprop2 |
     Then the HTTP status code should be success
-    And as user "user0" the last response should have the following properties
+    And as user "Alice" the last response should have the following properties
       | resource              | propertyName | propertyValue   |
       | /TestFolder/test1.txt | testprop1    | AAAAA           |
       | /TestFolder/test1.txt | testprop2    | BBBBB           |
@@ -307,23 +307,23 @@ Feature: get file properties
   @issue-36920
   @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcis @issue-ocis-reva-57
   Scenario: add multiple properties to files inside a folder and do a propfind of the parent folder
-    Given user "user0" has created folder "/TestFolder"
-    And user "user0" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
-    And user "user0" has uploaded file with content "test data two" to "/TestFolder/test2.txt"
-    And user "user0" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
+    Given user "Alice" has created folder "/TestFolder"
+    And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
+    And user "Alice" has uploaded file with content "test data two" to "/TestFolder/test2.txt"
+    And user "Alice" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
       | propertyName | propertyValue |
       | testprop1    | AAAAA         |
       | testprop2    | BBBBB         |
-    And user "user0" has set the following properties of file "/TestFolder/test2.txt" using the WebDav API
+    And user "Alice" has set the following properties of file "/TestFolder/test2.txt" using the WebDav API
       | propertyName | propertyValue |
       | testprop1    | CCCCC         |
       | testprop2    | DDDDD         |
-    When user "user0" gets the following properties of folder "/TestFolder" using the WebDAV API
+    When user "Alice" gets the following properties of folder "/TestFolder" using the WebDAV API
       | propertyName |
       | oc:testprop1 |
       | oc:testprop2 |
     Then the HTTP status code should be success
-    And as user "user0" the last response should have the following properties
+    And as user "Alice" the last response should have the following properties
       | resource              | propertyName | propertyValue          |
       | /TestFolder/test1.txt | testprop1    | AAAAA                  |
       | /TestFolder/test1.txt | testprop2    | BBBBB                  |

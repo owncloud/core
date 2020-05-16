@@ -2,37 +2,37 @@
 Feature: multilinksharing
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: Creating three public shares of a folder
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink1 |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink2 |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink3 |
-    When user "user0" updates the last share using the sharing API with
+    When user "Alice" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as user "user0" the public shares of folder "/FOLDER" should be
+    And as user "Alice" the public shares of folder "/FOLDER" should be
       | path    | permissions | name        |
       | /FOLDER | 15          | sharedlink2 |
       | /FOLDER | 15          | sharedlink1 |
@@ -44,29 +44,29 @@ Feature: multilinksharing
 
   Scenario Outline: Creating three public shares of a file
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink2   |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink3   |
-    When user "user0" updates the last share using the sharing API with
+    When user "Alice" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as user "user0" the public shares of file "/textfile0.txt" should be
+    And as user "Alice" the public shares of file "/textfile0.txt" should be
       | path           | permissions | name        |
       | /textfile0.txt | 1           | sharedlink2 |
       | /textfile0.txt | 1           | sharedlink1 |
@@ -78,25 +78,25 @@ Feature: multilinksharing
 
   Scenario Outline: Check that updating password doesn't remove name of links
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink1 |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink2 |
-    When user "user0" updates the last share using the sharing API with
+    When user "Alice" updates the last share using the sharing API with
       | password | %alt1% |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as user "user0" the public shares of folder "/FOLDER" should be
+    And as user "Alice" the public shares of folder "/FOLDER" should be
       | path    | permissions | name        |
       | /FOLDER | 15          | sharedlink2 |
       | /FOLDER | 15          | sharedlink1 |
@@ -107,48 +107,48 @@ Feature: multilinksharing
 
   Scenario: Deleting a file deletes also its public links
     Given using OCS API version "1"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink2   |
-    And user "user0" has deleted file "/textfile0.txt"
+    And user "Alice" has deleted file "/textfile0.txt"
     And the HTTP status code should be "204"
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as user "user0" the file "/textfile0.txt" should not have any shares
+    And as user "Alice" the file "/textfile0.txt" should not have any shares
 
   Scenario Outline: Deleting one public link share of a file doesn't affect the rest
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink2   |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink3   |
-    When user "user0" deletes public link share named "sharedlink2" in file "/textfile0.txt" using the sharing API
+    When user "Alice" deletes public link share named "sharedlink2" in file "/textfile0.txt" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as user "user0" the public shares of file "/textfile0.txt" should be
+    And as user "Alice" the public shares of file "/textfile0.txt" should be
       | path           | permissions | name        |
       | /textfile0.txt | 1           | sharedlink1 |
       | /textfile0.txt | 1           | sharedlink3 |
@@ -159,42 +159,42 @@ Feature: multilinksharing
 
   Scenario: Overwriting a file doesn't remove its public shares
     Given using OCS API version "1"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink1   |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink2   |
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
-    Then as user "user0" the public shares of file "/textfile0.txt" should be
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
+    Then as user "Alice" the public shares of file "/textfile0.txt" should be
       | path           | permissions | name        |
       | /textfile0.txt | 1           | sharedlink1 |
       | /textfile0.txt | 1           | sharedlink2 |
 
   Scenario: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink1 |
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink2 |
-    When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the WebDAV API
-    Then as user "user0" the public shares of file "/FOLDER_RENAMED" should be
+    When user "Alice" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the WebDAV API
+    Then as user "Alice" the public shares of file "/FOLDER_RENAMED" should be
       | path            | permissions | name        |
       | /FOLDER_RENAMED | 15          | sharedlink1 |
       | /FOLDER_RENAMED | 15          | sharedlink2 |

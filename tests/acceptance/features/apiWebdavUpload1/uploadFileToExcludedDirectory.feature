@@ -6,15 +6,15 @@ Feature: users cannot upload a file to or into an excluded directory
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and skeleton files
 
   @skipOnOcis @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "user0" uploads file with content "uploaded content" to ".github" using the WebDAV API
+    And user "Alice" uploads file with content "uploaded content" to ".github" using the WebDAV API
     Then the HTTP status code should be "403"
-    And as "user0" file ".github" should not exist
+    And as "Alice" file ".github" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -24,10 +24,10 @@ Feature: users cannot upload a file to or into an excluded directory
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "user0" uploads file with content "uploaded content" to "/FOLDER/.github" using the WebDAV API
+    And user "Alice" uploads file with content "uploaded content" to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
-    And as "user0" folder "/FOLDER" should exist
-    But as "user0" file "/FOLDER/.github" should not exist
+    And as "Alice" folder "/FOLDER" should exist
+    But as "Alice" file "/FOLDER/.github" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -40,7 +40,7 @@ Feature: users cannot upload a file to or into an excluded directory
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     And the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
-    When user "user0" uploads to these filenames with content "uploaded content" using the webDAV API then the results should be as listed
+    When user "Alice" uploads to these filenames with content "uploaded content" using the webDAV API then the results should be as listed
       | filename                                   | http-code | exists |
       | endswith.bad                               | 403       | no     |
       | thisendswith.bad                           | 403       | no     |

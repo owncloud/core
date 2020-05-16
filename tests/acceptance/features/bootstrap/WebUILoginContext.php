@@ -606,7 +606,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			"Couldn't find password reset link in the email"
 		);
 		// The link has a form like:
-		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/Brian
 		// pop off the last part and replace it with the invalid username
 		$linkParts = \explode('/', $link);
 		\array_pop($linkParts);
@@ -631,7 +631,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			"Couldn't find password reset link in the email"
 		);
 		// The link has a form like:
-		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/Brian
 		$linkParts = \explode('/', $link);
 		$username = \array_pop($linkParts);
 		$goodToken = \array_pop($linkParts);

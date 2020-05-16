@@ -6,12 +6,12 @@ Feature: get quota
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and skeleton files
 
   Scenario Outline: Retrieving folder quota when no quota is set
     Given using <dav_version> DAV path
-    When the administrator gives unlimited quota to user "user0" using the provisioning API
-    Then as user "user0" folder "/" should contain a property "d:quota-available-bytes" with value "-3"
+    When the administrator gives unlimited quota to user "Alice" using the provisioning API
+    Then as user "Alice" folder "/" should contain a property "d:quota-available-bytes" with value "-3"
     Examples:
       | dav_version |
       | old         |
@@ -20,8 +20,8 @@ Feature: get quota
   @smokeTest
   Scenario Outline: Retrieving folder quota when quota is set
     Given using <dav_version> DAV path
-    When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API
-    Then as user "user0" folder "/" should contain a property "d:quota-available-bytes" with value "10485406"
+    When the administrator sets the quota of user "Alice" to "10 MB" using the provisioning API
+    Then as user "Alice" folder "/" should contain a property "d:quota-available-bytes" with value "10485406"
     Examples:
       | dav_version |
       | old         |
@@ -30,16 +30,16 @@ Feature: get quota
   @files_sharing-app-required
   Scenario Outline: Retrieving folder quota of shared folder with quota when no quota is set for recipient
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes and skeleton files
-    And user "user0" has been given unlimited quota
-    And the quota of user "user1" has been set to "10 MB"
-    And user "user1" has created folder "/testquota"
-    And user "user1" has created a share with settings
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Alice" has been given unlimited quota
+    And the quota of user "Brian" has been set to "10 MB"
+    And user "Brian" has created folder "/testquota"
+    And user "Brian" has created a share with settings
       | path        | testquota |
       | shareType   | user      |
       | permissions | all       |
-      | shareWith   | user0     |
-    When user "user0" gets the following properties of folder "/testquota" using the WebDAV API
+      | shareWith   | Alice     |
+    When user "Alice" gets the following properties of folder "/testquota" using the WebDAV API
       | propertyName            |
       | d:quota-available-bytes |
     Then the single response should contain a property "d:quota-available-bytes" with value "10485406"
@@ -50,9 +50,9 @@ Feature: get quota
 
   Scenario Outline: Retrieving folder quota when quota is set and a file was uploaded
     Given using <dav_version> DAV path
-    And the quota of user "user0" has been set to "1 KB"
-    And user "user0" has uploaded file "/prueba.txt" of size 93 bytes
-    When user "user0" gets the following properties of folder "/" using the WebDAV API
+    And the quota of user "Alice" has been set to "1 KB"
+    And user "Alice" has uploaded file "/prueba.txt" of size 93 bytes
+    When user "Alice" gets the following properties of folder "/" using the WebDAV API
       | propertyName            |
       | d:quota-available-bytes |
     Then the single response should contain a property "d:quota-available-bytes" with value "577"
@@ -64,11 +64,11 @@ Feature: get quota
   @files_sharing-app-required
   Scenario Outline: Retrieving folder quota when quota is set and a file was recieved
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes and skeleton files
-    And the quota of user "user1" has been set to "1 KB"
-    And user "user0" has uploaded file "/user0.txt" of size 93 bytes
-    And user "user0" has shared file "user0.txt" with user "user1"
-    When user "user1" gets the following properties of folder "/" using the WebDAV API
+    And user "Brian" has been created with default attributes and skeleton files
+    And the quota of user "Brian" has been set to "1 KB"
+    And user "Alice" has uploaded file "/Alice.txt" of size 93 bytes
+    And user "Alice" has shared file "Alice.txt" with user "Brian"
+    When user "Brian" gets the following properties of folder "/" using the WebDAV API
       | propertyName            |
       | d:quota-available-bytes |
     Then the single response should contain a property "d:quota-available-bytes" with value "670"

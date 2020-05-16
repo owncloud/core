@@ -8,10 +8,10 @@ Feature: Add, delete and edit comments in files and folders
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-    And user "user0" has uploaded file with content "does-not-matter" to "/lorem.txt"
-    And user "user0" has logged in using the webUI
+      | Alice    |
+      | Brian    |
+    And user "Alice" has uploaded file with content "does-not-matter" to "/lorem.txt"
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
   Scenario Outline: user adds and deletes comment for a file/folder
@@ -32,7 +32,7 @@ Feature: Add, delete and edit comments in files and folders
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"
     And the user comments with content "<comment>" using the webUI
     And the user shares file "new-lorem.txt" with user "User One" using the webUI
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Brian" using the webUI
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"
     Then the comment "<comment>" should be listed in the comments tab in details dialog
     Examples:

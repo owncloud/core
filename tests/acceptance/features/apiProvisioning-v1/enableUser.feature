@@ -9,12 +9,12 @@ Feature: enable user
 
   @smokeTest
   Scenario: admin enables an user
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user0" has been disabled
-    When the administrator enables user "user0" using the provisioning API
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When the administrator enables user "Alice" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And user "user0" should be enabled
+    And user "Alice" should be enabled
 
   @skipOnOcV10.3
   Scenario Outline: admin enables an user with special characters in the username
@@ -62,13 +62,13 @@ Feature: enable user
   Scenario: normal user tries to enable other user
     Given these users have been created with default attributes and skeleton files:
       | username |
-      | user0    |
-      | user1    |
-    And user "user1" has been disabled
-    When user "user0" tries to enable user "user1" using the provisioning API
+      | Alice    |
+      | Brian    |
+    And user "Brian" has been disabled
+    When user "Alice" tries to enable user "Brian" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And user "user1" should be disabled
+    And user "Brian" should be disabled
 
   Scenario: subadmin tries to enable himself
     Given user "subadmin" has been created with default attributes and skeleton files
@@ -82,6 +82,6 @@ Feature: enable user
     And user "subadmin" should be disabled
 
   Scenario: Making a web request with an enabled user
-    Given user "user0" has been created with default attributes and skeleton files
-    When user "user0" sends HTTP method "GET" to URL "/index.php/apps/files"
+    Given user "Alice" has been created with default attributes and skeleton files
+    When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "200"

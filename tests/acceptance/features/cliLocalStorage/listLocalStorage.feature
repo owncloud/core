@@ -21,18 +21,18 @@ Feature: list created local storage from the command line
   Scenario: List local storage with applicable users
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-      | user2    |
-    And the administrator has added user "user0" as the applicable user for local storage mount "local_storage2"
-    And the administrator has added user "user1" as the applicable user for local storage mount "local_storage3"
-    And the administrator has added user "user2" as the applicable user for local storage mount "local_storage3"
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And the administrator has added user "Alice" as the applicable user for local storage mount "local_storage2"
+    And the administrator has added user "Brian" as the applicable user for local storage mount "local_storage3"
+    And the administrator has added user "Carol" as the applicable user for local storage mount "local_storage3"
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
       | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
       | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |                      | user0           |                  |
-      | /local_storage3 | Local   | None               | datadir:      |                      | user1, user2    |                  |
+      | /local_storage2 | Local   | None               | datadir:      |                      | Alice           |                  |
+      | /local_storage3 | Local   | None               | datadir:      |                      | Brian, Carol    |                  |
 
   Scenario: List local storage with applicable groups
     Given group "grp1" has been created
@@ -51,15 +51,15 @@ Feature: list created local storage from the command line
   Scenario: List local storage with applicable users and groups
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-      | user2    |
+      | Alice    |
+      | Brian    |
+      | Carol    |
     And group "grp1" has been created
     And group "grp2" has been created
     And group "grp3" has been created
-    And the administrator has added user "user0" as the applicable user for local storage mount "local_storage2"
-    And the administrator has added user "user1" as the applicable user for local storage mount "local_storage3"
-    And the administrator has added user "user2" as the applicable user for local storage mount "local_storage3"
+    And the administrator has added user "Alice" as the applicable user for local storage mount "local_storage2"
+    And the administrator has added user "Brian" as the applicable user for local storage mount "local_storage3"
+    And the administrator has added user "Carol" as the applicable user for local storage mount "local_storage3"
     And the administrator has added group "grp1" as the applicable group for local storage mount "local_storage2"
     And the administrator has added group "grp2" as the applicable group for local storage mount "local_storage3"
     And the administrator has added group "grp3" as the applicable group for local storage mount "local_storage3"
@@ -67,21 +67,21 @@ Feature: list created local storage from the command line
     Then the following local storage should be listed:
       | MountPoint      | Storage | AuthenticationType | Configuration | Options              | ApplicableUsers | ApplicableGroups |
       | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
-      | /local_storage2 | Local   | None               | datadir:      |                      | user0           | grp1             |
-      | /local_storage3 | Local   | None               | datadir:      |                      | user1, user2    | grp2, grp3       |
+      | /local_storage2 | Local   | None               | datadir:      |                      | Alice           | grp1             |
+      | /local_storage3 | Local   | None               | datadir:      |                      | Brian, Carol    | grp2, grp3       |
 
   Scenario: Short list of local storage with applicable users and groups
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-      | user2    |
+      | Alice    |
+      | Brian    |
+      | Carol    |
     And group "grp1" has been created
     And group "grp2" has been created
     And group "grp3" has been created
-    And the administrator has added user "user0" as the applicable user for local storage mount "local_storage2"
-    And the administrator has added user "user1" as the applicable user for local storage mount "local_storage3"
-    And the administrator has added user "user2" as the applicable user for local storage mount "local_storage3"
+    And the administrator has added user "Alice" as the applicable user for local storage mount "local_storage2"
+    And the administrator has added user "Brian" as the applicable user for local storage mount "local_storage3"
+    And the administrator has added user "Carol" as the applicable user for local storage mount "local_storage3"
     And the administrator has added group "grp1" as the applicable group for local storage mount "local_storage2"
     And the administrator has added group "grp2" as the applicable group for local storage mount "local_storage3"
     And the administrator has added group "grp3" as the applicable group for local storage mount "local_storage3"
@@ -89,8 +89,8 @@ Feature: list created local storage from the command line
     Then the following local storage should be listed:
       | MountPoint      | Auth | ApplicableUsers | ApplicableGroups | Type  |
       | /local_storage  | User | All             |                  | Admin |
-      | /local_storage2 | User | user0           | grp1             | Admin |
-      | /local_storage3 | User | user1, user2    | grp2, grp3       | Admin |
+      | /local_storage2 | User | Alice           | grp1             | Admin |
+      | /local_storage3 | User | Brian, Carol    | grp2, grp3       | Admin |
 
   Scenario: List local storage with non-default options (one storage set to read-only)
     Given the administrator has set the external storage "local_storage2" to read-only

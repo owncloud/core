@@ -6,15 +6,15 @@ Feature: upload file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
-    When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
+    When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
     Then the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And the content of file "<file_name>" for user "user0" should be "uploaded content"
+    And the content of file "<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | file_name         |
       | old         | /upload.txt       |
@@ -26,8 +26,8 @@ Feature: upload file
 
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
-    When user "user0" uploads file with content "uploaded content" to <file_name> using the WebDAV API
-    Then the content of file <file_name> for user "user0" should be "uploaded content"
+    When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
+    Then the content of file <file_name> for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | file_name           |
       | old         | "C++ file.cpp"      |
@@ -43,9 +43,9 @@ Feature: upload file
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
-    And user "user0" has created folder "<folder_name>"
-    When user "user0" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
-    Then the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content"
+    And user "Alice" has created folder "<folder_name>"
+    When user "Alice" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
+    Then the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | folder_name                      | file_name                     |
       | old         | /upload                          | abc.txt                       |
@@ -66,12 +66,12 @@ Feature: upload file
   @skipOnOcis @issue-ocis-reva-18
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile.part" using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And the DAV exception should be "OCA\DAV\Connector\Sabre\Exception\InvalidPath"
     And the DAV message should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
     And the DAV reason should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
-    And user "user0" should not see the following elements
+    And user "Alice" should not see the following elements
       | /textfile.part |
     Examples:
       | dav_version |
@@ -80,10 +80,10 @@ Feature: upload file
 
   Scenario Outline: upload a file into a folder with dots in the path and check download content
     Given using <dav_version> DAV path
-    And user "user0" has created folder "<folder_name>"
-    When user "user0" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>" using the WebDAV API
-    Then as "user0" file "/<folder_name>/<file_name>" should exist
-    And the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content for file name ending with a dot"
+    And user "Alice" has created folder "<folder_name>"
+    When user "Alice" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>" using the WebDAV API
+    Then as "Alice" file "/<folder_name>/<file_name>" should exist
+    And the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content for file name ending with a dot"
     Examples:
       | dav_version | folder_name   | file_name   |
       | old         | /upload.      | abc.        |

@@ -5,8 +5,8 @@ Feature: move files
   So that I can organise my data structure
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user0" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
   Scenario: An attempt to move a file into a sub-folder using rename is not allowed
@@ -82,7 +82,7 @@ Feature: move files
 
   @files_sharing-app-required
   Scenario: move files on a public share
-    And user "user0" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | /simple-folder     |
       | permissions | read,create,change |
     And the public has accessed the last created public link using the webUI
@@ -90,5 +90,5 @@ Feature: move files
     Then file "data.zip" should not be listed on the webUI
     When the user reloads the current page of the webUI
     Then file "data.zip" should not be listed on the webUI
-    And as "user0" file "simple-folder/simple-empty-folder/data.zip" should exist
-    But as "user0" file "simple-folder/data.zip" should not exist
+    And as "Alice" file "simple-folder/simple-empty-folder/data.zip" should exist
+    But as "Alice" file "simple-folder/data.zip" should not exist
