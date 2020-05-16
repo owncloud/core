@@ -87,12 +87,12 @@ Feature: admin storage settings
       | username |
       | user0    |
       | user1    |
-    And group "newgroup" has been created
-    And user "user0" has been added to group "newgroup"
+    And group "brand-new-group" has been created
+    And user "user0" has been added to group "brand-new-group"
     And the administrator has enabled the external storage
     And the administrator has browsed to the admin storage settings page
     And the administrator has created the local storage mount "local_storage1" from the admin storage settings page
-    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the webUI
+    When the administrator adds group "brand-new-group" as the applicable group for the last local storage mount using the webUI
     And the user re-logs in as "user0" using the webUI
     Then folder "local_storage1" should be listed on the webUI
     And the user re-logs in as "user1" using the webUI
@@ -103,13 +103,13 @@ Feature: admin storage settings
       | username |
       | user0    |
       | user1    |
-    And group "newgroup" has been created
-    And user "user0" has been added to group "newgroup"
+    And group "brand-new-group" has been created
+    And user "user0" has been added to group "brand-new-group"
     And the administrator has enabled the external storage
     And the administrator has browsed to the admin storage settings page
     And the administrator has created the local storage mount "local_storage1" from the admin storage settings page
-    And the administrator has added group "newgroup" as the applicable group for the last local storage mount from the admin storage settings page
-    When the administrator removes group "newgroup" from the applicable group for the last local storage mount using the webUI
+    And the administrator has added group "brand-new-group" as the applicable group for the last local storage mount from the admin storage settings page
+    When the administrator removes group "brand-new-group" from the applicable group for the last local storage mount using the webUI
     And the user re-logs in as "user0" using the webUI
     Then folder "local_storage1" should be listed on the webUI
     And the user re-logs in as "user1" using the webUI
@@ -136,13 +136,13 @@ Feature: admin storage settings
 
   Scenario: local storage mount is not deleted when the last group applicable to it is deleted but the member of the deleted group should not have access to it
     Given user "user0" has been created with default attributes and skeleton files
-    And group "newgroup" has been created
-    And user "user0" has been added to group "newgroup"
+    And group "brand-new-group" has been created
+    And user "user0" has been added to group "brand-new-group"
     And the administrator has enabled the external storage
     And the administrator has browsed to the admin storage settings page
     And the administrator has created the local storage mount "local_storage1" from the admin storage settings page
-    And the administrator has added group "newgroup" as the applicable group for the last local storage mount from the admin storage settings page
-    And group "newgroup" has been deleted
+    And the administrator has added group "brand-new-group" as the applicable group for the last local storage mount from the admin storage settings page
+    And group "brand-new-group" has been deleted
     When the administrator reloads the current page of the webUI
     Then the last created local storage mount should be listed on the webUI
     And the user re-logs in as "user0" using the webUI

@@ -5,8 +5,8 @@ Feature: personal general settings
   So that I can personalise the User Interface
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
@@ -24,7 +24,7 @@ Feature: personal general settings
 
   Scenario: change language using the occ command and check that file actions menu have been translated
     Given the user has created folder "simple-folder"
-    When the administrator changes the language of user "user1" to "fr" using the occ command
+    When the administrator changes the language of user "user0" to "fr" using the occ command
     And the user browses to the files page
     And the user opens the file action menu of folder "simple-folder" on the webUI
     Then the user should see "Details" file action translated to "Détails" on the webUI
@@ -32,7 +32,7 @@ Feature: personal general settings
 
   Scenario: change language to invalid language using the occ command and check that the language defaults back to english
     Given the user has created folder "simple-folder"
-    When the administrator changes the language of user "user1" to "not-valid-lan" using the occ command
+    When the administrator changes the language of user "user0" to "not-valid-lan" using the occ command
     And the user browses to the files page
     And the user opens the file action menu of folder "simple-folder" on the webUI
     Then the user should see "Details" file action translated to "Details" on the webUI
@@ -41,28 +41,28 @@ Feature: personal general settings
   Scenario: user sees displayed version number, groupnames and federated cloud ID on the personal general settings page
     Given group "new-group" has been created
     And group "another-group" has been created
-    And user "user1" has been added to group "new-group"
-    And user "user1" has been added to group "another-group"
+    And user "user0" has been added to group "new-group"
+    And user "user0" has been added to group "another-group"
     And the user has reloaded the current page of the webUI
     Then the owncloud version should be displayed on the personal general settings page on the webUI
-    And the federated cloud id for user "user1" should be displayed on the personal general settings page on the webUI
+    And the federated cloud id for user "user0" should be displayed on the personal general settings page on the webUI
     And group "new-group" should be displayed on the personal general settings page on the webUI
     And group "another-group" should be displayed on the personal general settings page on the webUI
 
   Scenario: User sets profile picture from their existing cloud file
-    Given user "user1" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
+    Given user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And the user has deleted any existing profile picture
     When the user sets profile picture to "testimage.jpg" from their cloud files using the webUI
     Then the preview of the profile picture should be shown on the webUI
 
   Scenario: User deletes the existing profile picture
-    Given user "user1" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
+    Given user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And the user has set profile picture to "testimage.jpg" from their cloud files
     When the user deletes the existing profile picture
     Then the preview of the profile picture should not be shown on the webUI
 
   Scenario: User uploads new profile picture
-    Given user "user1" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
+    Given user "user0" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And the user has deleted any existing profile picture
     When the user uploads "testavatar.png" as a new profile picture using the webUI
     Then the preview of the profile picture should be shown on the webUI

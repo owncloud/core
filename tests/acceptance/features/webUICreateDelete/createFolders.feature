@@ -5,8 +5,8 @@ Feature: create folders
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has logged in using the webUI
     And the user has browsed to the files page
 
   Scenario Outline: Create a folder
@@ -30,15 +30,15 @@ Feature: create folders
     Then folder "sub-folder" should be listed on the webUI
 
   Scenario: Create a folder with existing name
-    Given user "user1" has created folder "/simple-folder"
+    Given user "user0" has created folder "/simple-folder"
     And the user has reloaded the current page of the webUI
     When the user creates a folder with the invalid name "simple-folder" using the webUI
     Then near the folder input field a tooltip with the text 'simple-folder already exists' should be displayed on the webUI
 
   @files_sharing-app-required
   Scenario: Create a folder in a public share
-    Given user "user1" has created folder "/simple-empty-folder"
-    And user "user1" has created a public link share with settings
+    Given user "user0" has created folder "/simple-empty-folder"
+    And user "user0" has created a public link share with settings
       | path        | /simple-empty-folder |
       | permissions | read,create          |
     And the public accesses the last created public link using the webUI

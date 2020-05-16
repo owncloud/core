@@ -5,11 +5,11 @@ Feature: rename folders
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
+    Given user "user0" has been created with default attributes and without skeleton files
 
   Scenario Outline: Rename a folder using special characters
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to <to_folder_name> using the webUI
     Then folder <to_folder_name> should be listed on the webUI
     When the user reloads the current page of the webUI
@@ -21,8 +21,8 @@ Feature: rename folders
       | "'quotes2'"             |
 
   Scenario Outline: Rename a folder that has special characters in its name
-    Given user "user1" has created folder <from_name>
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder <from_name>
+    And user "user0" has logged in using the webUI
     When the user renames folder <from_name> to <to_name> using the webUI
     Then folder <to_name> should be listed on the webUI
     When the user reloads the current page of the webUI
@@ -33,8 +33,8 @@ Feature: rename folders
       | "'single'quotes"        | "single-quotes"             |
 
   Scenario: Rename a folder using special characters and check its existence after page reload
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to "लोरेम।तयक्स्त $%&" using the webUI
     And the user reloads the current page of the webUI
     Then folder "लोरेम।तयक्स्त $%&" should be listed on the webUI
@@ -49,8 +49,8 @@ Feature: rename folders
     Then folder "hash#And&QuestionMark?At@FolderName" should be listed on the webUI
 
   Scenario: Rename a folder using spaces at front and/or back of the name
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to " space at start" using the webUI
     And the user reloads the current page of the webUI
     Then folder " space at start" should be listed on the webUI
@@ -62,8 +62,8 @@ Feature: rename folders
     Then folder "  multiple   spaces    all     over   " should be listed on the webUI
 
   Scenario: Rename a folder using both double and single quotes
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames the following folder using the webUI
       | from-name-parts | to-name-parts         |
       | a-folder        | First 'single' quotes |
@@ -81,9 +81,9 @@ Feature: rename folders
     Then folder "a normal folder" should be listed on the webUI
 
   Scenario: Rename a folder using forbidden characters
-    Given user "user1" has created folder "a-folder"
+    Given user "user0" has created folder "a-folder"
     And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
-    And user "user1" has logged in using the webUI
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to one of these names using the webUI
       | simple\folder        |
       | \\simple-folder      |
@@ -97,37 +97,37 @@ Feature: rename folders
     And folder "a-folder" should be listed on the webUI
 
   Scenario: Rename a folder putting a name of a file which already exists
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to "randomfile.txt" using the webUI
     Then near folder "a-folder" a tooltip with the text 'randomfile.txt already exists' should be displayed on the webUI
 
   Scenario: Rename a folder to ..
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to ".." using the webUI
     Then near folder "a-folder" a tooltip with the text '".." is an invalid file name.' should be displayed on the webUI
 
   Scenario: Rename a folder to .
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to "." using the webUI
     Then near folder "a-folder" a tooltip with the text '"." is an invalid file name.' should be displayed on the webUI
 
   Scenario: Rename a folder to .part
-    Given user "user1" has created folder "a-folder"
-    And user "user1" has logged in using the webUI
+    Given user "user0" has created folder "a-folder"
+    And user "user0" has logged in using the webUI
     When the user renames folder "a-folder" to "a.part" using the webUI
     Then near folder "a-folder" a tooltip with the text '"a.part" has a forbidden file type/extension.' should be displayed on the webUI
 
   @issue-30325
   Scenario: Rename a folder which is received as a share (without change permission)
-    Given user "user2" has been created with default attributes and without skeleton files
-    And user "user2" has created folder "RandomFolder"
-    And user "user2" has uploaded file with content "thisIsFileInsideFolder" to "/RandomFolder/newFile"
-    And user "user2" has shared folder "RandomFolder" with user "user1" with permissions "read, share"
-    And user "user1" has logged in using the webUI
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "RandomFolder"
+    And user "user1" has uploaded file with content "thisIsFileInsideFolder" to "/RandomFolder/newFile"
+    And user "user1" has shared folder "RandomFolder" with user "user0" with permissions "read, share"
+    And user "user0" has logged in using the webUI
     When the user renames folder "RandomFolder" to "renamedFolder" using the webUI
 #   Then folder "renamedFolder" should be listed on the webUI
     Then a notification should be displayed on the webUI with the text 'Could not rename "RandomFolder"'
@@ -136,11 +136,11 @@ Feature: rename folders
     Then the option to rename file "newFile" should not be available on the webUI
 
   Scenario: Rename a folder which is received as a share (with change permission)
-    Given user "user2" has been created with default attributes and without skeleton files
-    And user "user2" has created folder "RandomFolder"
-    And user "user2" has uploaded file with content "thisIsFileInsideFolder" to "/RandomFolder/newFile"
-    And user "user2" has shared folder "RandomFolder" with user "user1" with permissions "read, share, change"
-    And user "user1" has logged in using the webUI
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "RandomFolder"
+    And user "user1" has uploaded file with content "thisIsFileInsideFolder" to "/RandomFolder/newFile"
+    And user "user1" has shared folder "RandomFolder" with user "user0" with permissions "read, share, change"
+    And user "user0" has logged in using the webUI
     When the user renames folder "RandomFolder" to "renamedFolder" using the webUI
     Then folder "renamedFolder" should be listed on the webUI
     But folder "RandomFolder" should not be listed on the webUI
