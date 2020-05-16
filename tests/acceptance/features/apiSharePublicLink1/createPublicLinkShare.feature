@@ -8,7 +8,7 @@ Feature: create a public link share
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1)
     Given using OCS API version "<ocs_api_version>"
     And the administrator has enabled DAV tech_preview
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
     Then the OCS status code should be "<ocs_status_code>"
@@ -26,9 +26,9 @@ Feature: create a public link share
       | uid_owner              | Alice           |
       | name                   |                 |
     When the public downloads the last public shared file with range "bytes=0-9" using the old public WebDAV API
-    Then the downloaded content should be "Alice file"
+    Then the downloaded content should be "Random dat"
     When the public downloads the last public shared file with range "bytes=0-9" using the new public WebDAV API
-    Then the downloaded content should be "Alice file"
+    Then the downloaded content should be "Random dat"
     And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
@@ -39,7 +39,7 @@ Feature: create a public link share
   @smokeTest
   Scenario Outline: Creating a new public link share of a file with password
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path     | randomfile.txt |
       | password | %public%       |
@@ -57,9 +57,9 @@ Feature: create a public link share
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
-    And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "Alice file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "Random data"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Alice file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Random data"
     And the HTTP status code should be "200"
     And the public download of the last publicly shared file using the old public WebDAV API with password "%regular%" should fail with HTTP status code "401"
     And the value of the item "//s:message" in the response should be "Cannot authenticate over ajax calls"
@@ -76,7 +76,7 @@ Feature: create a public link share
 
   Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | randomfile.txt |
       | permissions | all            |
@@ -94,8 +94,8 @@ Feature: create a public link share
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Alice file"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Alice file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
     And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
@@ -106,7 +106,7 @@ Feature: create a public link share
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password
     Given using OCS API version "<ocs_api_version>"
     And the administrator has enabled DAV tech_preview
-    And user "Alice" has uploaded file with content "Alice file" to "/PARENT/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/PARENT/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | PARENT |
     Then the OCS status code should be "<ocs_status_code>"
@@ -124,11 +124,11 @@ Feature: create a public link share
       | uid_owner              | Alice                |
       | name                   |                      |
     When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=1-7" using the old public WebDAV API
-    Then the downloaded content should be "ser0 fi"
+    Then the downloaded content should be "andom d"
     When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=2-7" using the new public WebDAV API
-    Then the downloaded content should be "er0 fi"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "Alice file"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%" and the content should be "Alice file"
+    Then the downloaded content should be "ndom d"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%regular%" and the content should be "Random data"
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
@@ -138,7 +138,7 @@ Feature: create a public link share
 
   Scenario Outline: Creating a new public link share of a folder, with a password
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has uploaded file with content "Alice file" to "/PARENT/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/PARENT/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
@@ -157,8 +157,8 @@ Feature: create a public link share
       | uid_file_owner         | Alice                |
       | uid_owner              | Alice                |
       | name                   |                      |
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "Alice file"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "Alice file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "Random data"
     But the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API without a password
     And the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API without a password
     And the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%"
@@ -440,13 +440,13 @@ Feature: create a public link share
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
-    And user "Alice" has uploaded file with content "Alice file" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "Alice file"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "Alice file"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API and the content should be "Random data"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -456,7 +456,7 @@ Feature: create a public link share
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
-    And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
     Then the OCS status code should be "<ocs_status_code>"
@@ -480,8 +480,8 @@ Feature: create a public link share
       | permissions | read            |
       | uid_owner   | Alice           |
       | expiration  | +7 days         |
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Alice file"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Alice file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
