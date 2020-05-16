@@ -430,21 +430,21 @@ Feature: sharing
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
-      | Brian    |
+      | brian    |
     And user "Alice" has uploaded file with content "Alice file" to "/randomfile.txt"
-    When user "Alice" shares file "/randomfile.txt" with user "Brian" using the sharing API
+    When user "Alice" shares file "/randomfile.txt" with user "BRIAN" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | Brian             |
+      | share_with  | BRIAN             |
       | file_target | /randomfile.txt   |
       | path        | /randomfile.txt   |
       | permissions | share,read,update |
       | uid_owner   | Alice             |
-    #And user "Brian" should see the following elements
+    #And user "brian" should see the following elements
     #  | /randomfile.txt |
-    #And the content of file "randomfile.txt" for user "Brian" should be "Alice file"
-    And user "Brian" should not see the following elements
+    #And the content of file "randomfile.txt" for user "brian" should be "Alice file"
+    And user "brian" should not see the following elements
       | /randomfile.txt |
 
   @skipOnLDAP
