@@ -25,13 +25,13 @@ use OCP\UserInterface;
 use Test\TestCase;
 
 /**
- * Class AllUsersIteratorTest
+ * Class BackendUsersIteratorTest
  *
  * @package OC\User\Sync
  *
  * @see http://php.net/manual/en/class.iterator.php for the order of calls on an iterator
  */
-class AllUsersIteratorTest extends TestCase {
+class BackendUsersIteratorTest extends TestCase {
 
 	/**
 	 * @var UserInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -47,7 +47,7 @@ class AllUsersIteratorTest extends TestCase {
 
 		$this->backend = $this->createMock(UserInterface::class);
 
-		$this->iterator = new AllUsersIterator($this->backend);
+		$this->iterator = new BackendUsersIterator($this->backend);
 	}
 
 	/**
