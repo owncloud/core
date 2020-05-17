@@ -20,8 +20,8 @@ Feature: create a public link share
       | path                   | /randomfile.txt |
       | permissions            | read            |
       | share_type             | public_link     |
-      | displayname_file_owner | User Zero       |
-      | displayname_owner      | User Zero       |
+      | displayname_file_owner | Alice Hansen    |
+      | displayname_owner      | Alice Hansen    |
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
@@ -52,8 +52,8 @@ Feature: create a public link share
       | path                   | /randomfile.txt |
       | permissions            | read            |
       | share_type             | public_link     |
-      | displayname_file_owner | User Zero       |
-      | displayname_owner      | User Zero       |
+      | displayname_file_owner | Alice Hansen    |
+      | displayname_owner      | Alice Hansen    |
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
@@ -89,8 +89,8 @@ Feature: create a public link share
       | path                   | /randomfile.txt |
       | permissions            | read            |
       | share_type             | public_link     |
-      | displayname_file_owner | User Zero       |
-      | displayname_owner      | User Zero       |
+      | displayname_file_owner | Alice Hansen    |
+      | displayname_owner      | Alice Hansen    |
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
@@ -118,8 +118,8 @@ Feature: create a public link share
       | path                   | /PARENT              |
       | permissions            | read                 |
       | share_type             | public_link          |
-      | displayname_file_owner | User Zero            |
-      | displayname_owner      | User Zero            |
+      | displayname_file_owner | Alice Hansen         |
+      | displayname_owner      | Alice Hansen         |
       | uid_file_owner         | Alice                |
       | uid_owner              | Alice                |
       | name                   |                      |
@@ -152,8 +152,8 @@ Feature: create a public link share
       | path                   | /PARENT              |
       | permissions            | change               |
       | share_type             | public_link          |
-      | displayname_file_owner | User Zero            |
-      | displayname_owner      | User Zero            |
+      | displayname_file_owner | Alice Hansen         |
+      | displayname_owner      | Alice Hansen         |
       | uid_file_owner         | Alice                |
       | uid_owner              | Alice                |
       | name                   |                      |

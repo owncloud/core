@@ -57,7 +57,7 @@ Feature: Reshare by public link
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
       """
-      User One shared simple-folder with you
+      Brian Murphy shared simple-folder with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -73,7 +73,7 @@ Feature: Reshare by public link
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
       """
-      User One shared randomfile.txt with you
+      Brian Murphy shared randomfile.txt with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -87,7 +87,7 @@ Feature: Reshare by public link
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
       """
-      User One shared randomfile.txt with you
+      Brian Murphy shared randomfile.txt with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -101,11 +101,11 @@ Feature: Reshare by public link
       | email | foo@bar.co, foo@barr.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
       """
-      User One shared simple-folder with you
+      Brian Murphy shared simple-folder with you
       """
     And the email address "foo@barr.co" should have received an email with the body containing
       """
-      User One shared simple-folder with you
+      Brian Murphy shared simple-folder with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "foo@barr.co" should have received an email containing the last shared public link
@@ -121,7 +121,7 @@ Feature: Reshare by public link
       | personalMessage | lorem ipsum |
     Then the email address "foo@bar.co" should have received an email with the body containing
       """
-      User One shared simple-folder with you
+      Brian Murphy shared simple-folder with you
       """
     And the email address "foo@bar.co" should have received an email with the body containing
       """

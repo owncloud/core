@@ -7,7 +7,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
-    And the user shares file "new-lorem.txt" with user "User Zero" using the webUI
+    And the user shares file "new-lorem.txt" with user "Alice Hansen" using the webUI
     And the user re-logs in as "Alice" using the webUI
     Then the content of "new-lorem.txt" should not be the same as the local "new-lorem.txt"
 		# overwrite the received shared file
@@ -27,7 +27,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
-    And the user shares folder "new-simple-folder" with user "User Zero" using the webUI
+    And the user shares folder "new-simple-folder" with user "Alice Hansen" using the webUI
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "new-simple-folder" using the webUI
     Then the content of "lorem.txt" should not be the same as the local "lorem.txt"
@@ -56,7 +56,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
-    And the user shares folder "new-simple-folder" with user "User Zero" using the webUI
+    And the user shares folder "new-simple-folder" with user "Alice Hansen" using the webUI
 		# unshare the received shared folder and check it is gone
     And the user re-logs in as "Alice" using the webUI
     And the user unshares folder "new-simple-folder" using the webUI
@@ -75,8 +75,8 @@ Feature: misc scenarios on sharing with internal users
       | Alice    |
       | Brian    |
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User Zero" using the webUI
-    And the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
       | delete | no |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder (2)" using the webUI
@@ -119,7 +119,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
     And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "simple-folder" with user "User Two" using the sharing API
+    Then user "Alice" should not be able to share folder "simple-folder" with user "Carol King" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
     Given these users have been created with default attributes and skeleton files:
@@ -136,7 +136,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share file "/testimage (2).jpg" with user "User Three" using the sharing API
+    Then user "Alice" should not be able to share file "/testimage (2).jpg" with user "David Lopez" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -152,7 +152,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "/common" with user "User Three" using the sharing API
+    Then user "Alice" should not be able to share folder "/common" with user "David Lopez" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file inside a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -169,7 +169,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share file "/common/testimage.jpg" with user "User Three" using the sharing API
+    Then user "Alice" should not be able to share file "/common/testimage.jpg" with user "David Lopez" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a folder inside a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -184,7 +184,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "/common/inside-common" with user "User Three" using the sharing API
+    Then user "Alice" should not be able to share folder "/common/inside-common" with user "David Lopez" using the sharing API
 
   Scenario: user tries to share a file from a group which is blacklisted from sharing using webUI from files page
     Given group "grp1" has been created
@@ -215,7 +215,7 @@ Feature: misc scenarios on sharing with internal users
     And the user opens the sharing tab from the file action menu of file "testimage (2).jpg" using the webUI
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
     And the share-with field should not be visible in the details panel
-    And user "Alice" should not be able to share file "testimage (2).jpg" with user "User Two" using the sharing API
+    And user "Alice" should not be able to share file "testimage (2).jpg" with user "Carol King" using the sharing API
 
   @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
@@ -226,11 +226,11 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email for user "User One" using the webUI
+    When the user sends the share notification by email for user "Brian Murphy" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     And the email address "brian@example.org" should have received an email with the body containing
       """
-      just letting you know that User Zero shared lorem.txt with you.
+      just letting you know that Alice Hansen shared lorem.txt with you.
       """
 
   @mailhog @skipOnOcV10.3
@@ -256,11 +256,11 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email for user "User One" using the webUI
-    Then the user should not be able to send the share notification by email for user "User One" using the webUI
+    When the user sends the share notification by email for user "Brian Murphy" using the webUI
+    Then the user should not be able to send the share notification by email for user "Brian Murphy" using the webUI
     When the user reloads the current page of the webUI
     And the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email for user "User One" using the webUI
+    Then the user should not be able to send the share notification by email for user "Brian Murphy" using the webUI
 
   @skipOnOcV10.3
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
@@ -270,7 +270,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     When the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email for user "User One" using the webUI
+    Then the user should not be able to send the share notification by email for user "Brian Murphy" using the webUI
 
   @mailhog @skipOnOcV10.3
   Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
@@ -283,7 +283,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared folder "simple-folder" with user "Brian"
     And the user has opened the share dialog for folder "simple-folder"
-    When the user sends the share notification by email for user "User One" using the webUI
+    When the user sends the share notification by email for user "Brian Murphy" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     And the email address "brian@example.org" should have received an email with the body containing
       """
@@ -298,7 +298,7 @@ Feature: misc scenarios on sharing with internal users
       | Brian    |
     And user "Brian" has logged in using the webUI
     And user "Brian" has uploaded file with content "edited original content" to "/lorem.txt"
-    When the user shares file "lorem.txt" with user "User Zero" using the webUI
+    When the user shares file "lorem.txt" with user "Alice Hansen" using the webUI
     Then the content of file "lorem.txt" for user "Brian" should be "edited original content"
     When the user re-logs in as "Alice" using the webUI
     Then the content of "lorem.txt" should be the same as the original "lorem.txt"

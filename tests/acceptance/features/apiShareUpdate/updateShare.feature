@@ -49,7 +49,7 @@ Feature: sharing
       | mail_send         | 0              |
       | uid_owner         | Alice          |
       | file_parent       | A_NUMBER       |
-      | displayname_owner | User Zero      |
+      | displayname_owner | Alice Hansen   |
       | mimetype          | text/plain     |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -135,7 +135,7 @@ Feature: sharing
       | mail_send         | 0                    |
       | uid_owner         | Brian                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | User One             |
+      | displayname_owner | Brian Murphy         |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/folder1/folder2" should not exist
     And as "Carol" folder "/folder2" should exist
@@ -165,7 +165,7 @@ Feature: sharing
       | mail_send         | 0                    |
       | uid_owner         | Carol                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | User Two             |
+      | displayname_owner | Carol King           |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
@@ -221,7 +221,7 @@ Feature: sharing
       | mail_send         | 0                   |
       | uid_owner         | Alice               |
       | file_parent       | A_NUMBER            |
-      | displayname_owner | User Zero           |
+      | displayname_owner | Alice Hansen        |
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |

@@ -155,7 +155,7 @@ Feature: Search
       | {DAV:}getcontenttype                       | text\/plain                                                                                       |
       | {http://owncloud.org/ns}size               | 15                                                                                                |
       | {http://owncloud.org/ns}owner-id           | Alice                                                                                             |
-      | {http://owncloud.org/ns}owner-display-name | User Zero                                                                                         |
+      | {http://owncloud.org/ns}owner-display-name | Alice Hansen                                                                                      |
     Examples:
       | dav_version |
       | old         |
@@ -182,7 +182,7 @@ Feature: Search
       | {DAV:}getetag                              | ^\"[a-f0-9]{1,32}\"$                                                                              |
       | {http://owncloud.org/ns}size               | 0                                                                                                 |
       | {http://owncloud.org/ns}owner-id           | Alice                                                                                             |
-      | {http://owncloud.org/ns}owner-display-name | User Zero                                                                                         |
+      | {http://owncloud.org/ns}owner-display-name | Alice Hansen                                                                                      |
     Examples:
       | dav_version |
       | old         |

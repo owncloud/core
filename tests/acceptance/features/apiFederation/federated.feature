@@ -26,7 +26,7 @@ Feature: federated
       | mail_send              | 0                 |
       | uid_owner              | Brian             |
       | file_parent            | A_NUMBER          |
-      | displayname_owner      | User One          |
+      | displayname_owner      | Brian Murphy      |
       | share_with             | Alice@REMOTE      |
       | share_with_displayname | Alice@REMOTE      |
     Examples:
@@ -53,7 +53,7 @@ Feature: federated
       | mail_send              | 0                 |
       | uid_owner              | Alice             |
       | file_parent            | A_NUMBER          |
-      | displayname_owner      | User Zero         |
+      | displayname_owner      | Alice Hansen      |
       | share_with             | Brian@LOCAL       |
       | share_with_displayname | Brian@LOCAL       |
     Examples:
@@ -185,9 +185,9 @@ Feature: federated
       | mail_send              | 0                  |
       | uid_owner              | Brian              |
       | file_parent            | A_NUMBER           |
-      | displayname_owner      | User One           |
+      | displayname_owner      | Brian Murphy       |
       | share_with             | Carol              |
-      | share_with_displayname | User Two           |
+      | share_with_displayname | Carol King         |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |

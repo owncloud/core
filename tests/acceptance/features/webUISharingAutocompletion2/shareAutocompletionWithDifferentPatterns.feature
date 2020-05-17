@@ -18,7 +18,7 @@ Feature: Autocompletion of share-with names
     # Some extra users without skeleton files to make the share autocompletion interesting
     And these users have been created without skeleton files:
       | username  | password  | displayname     | email          |
-      | two       | %regular% | User Two        | u2@oc.com.np   |
+      | two       | %regular% | Carol King      | u2@oc.com.np   |
       | u444      | %regular% | Four            | u3@oc.com.np   |
       | five      | %regular% | User Group      | five@oc.net.np |
       | usersmith | %regular% | John Finn Smith | js@oc.com.de   |
@@ -37,7 +37,7 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "user" in the share-with-field
-    Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User One"
+    Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "Brian Murphy"
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "Four" should not be listed in the autocomplete list on the webUI
 
@@ -87,7 +87,7 @@ Feature: Autocompletion of share-with names
     When the user types "r3" in the share-with-field
     Then all users and groups that contain the string "r3" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
-    And user "User One" should not be listed in the autocomplete list on the webUI
+    And user "Brian Murphy" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the username of existing user contains the pattern somewhere in the middle
     Given user "ivan" has been created with default attributes and skeleton files
@@ -144,7 +144,7 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "u2" in the share-with-field
-    Then only user "User Two" should be listed in the autocomplete list on the webUI
+    Then only user "Carol King" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle
     Given user "Brian" has logged in using the webUI
@@ -209,7 +209,7 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "David" in the share-with-field
-    Then only user "User Three" should be listed in the autocomplete list on the webUI
+    Then only user "David Lopez" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:
@@ -242,7 +242,7 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "u2" in the share-with-field
-    Then only user "User Two" should be listed in the autocomplete list on the webUI
+    Then only user "Carol King" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle but accounts medial search is disabled
     Given these users have been created with default attributes and skeleton files but not initialized:

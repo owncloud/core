@@ -103,4 +103,4 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens folder "simple-folder/sub-folder" using the webUI
     And the user opens the share dialog for file "textfile.txt"
     Then federated user "Alice@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
-    And user "User One" should be listed as share receiver via "sub-folder" on the webUI
+    And user "Brian Murphy" should be listed as share receiver via "sub-folder" on the webUI

@@ -18,7 +18,7 @@ Feature: Autocompletion of share-with names
     # Some extra users without skeleton files to make the share autocompletion interesting
     And these users have been created without skeleton files:
       | username  | password  | displayname     | email          |
-      | two       | %regular% | User Two        | u2@oc.com.np   |
+      | two       | %regular% | Carol King      | u2@oc.com.np   |
       | u444      | %regular% | Four            | u3@oc.com.np   |
       | five      | %regular% | User Group      | five@oc.net.np |
       | usersmith | %regular% | John Finn Smith | js@oc.com.de   |
@@ -69,7 +69,7 @@ Feature: Autocompletion of share-with names
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "Use" in the share-with-field
     Then only user "Use" should be listed in the autocomplete list on the webUI
-    And user "User Two" should not be listed in the autocomplete list on the webUI
+    And user "Carol King" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocomplete short group names when completely typed
     Given the administrator has set the minimum characters for sharing autocomplete to "3"
@@ -163,12 +163,12 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "Brian" in the share-with-field
-    Then user "User One" should be listed in the autocomplete list on the webUI
+    Then user "Brian Murphy" should be listed in the autocomplete list on the webUI
 
   Scenario: admin disables share dialog user enumeration and types full display name of user in sharing dialog
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
-    When the user types "User One" in the share-with-field
-    Then user "User One" should be listed in the autocomplete list on the webUI
+    When the user types "Brian Murphy" in the share-with-field
+    Then user "Brian Murphy" should be listed in the autocomplete list on the webUI

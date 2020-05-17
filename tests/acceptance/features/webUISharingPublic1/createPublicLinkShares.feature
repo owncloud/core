@@ -59,7 +59,7 @@ Feature: Share by public link
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -72,11 +72,11 @@ Feature: Share by public link
       | emailToSelf | true       |
     Then the email address "foo@bar.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "alice@example.org" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "alice@example.org" should have received an email containing the last shared public link
@@ -89,11 +89,11 @@ Feature: Share by public link
       | email | foo@bar.co, foo@barr.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo@barr.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "foo@barr.co" should have received an email containing the last shared public link
@@ -107,7 +107,7 @@ Feature: Share by public link
       | personalMessage | lorem ipsum |
     Then the email address "foo@bar.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email with the body containing
     """
@@ -135,11 +135,11 @@ Feature: Share by public link
     And the user creates the public link using the webUI
     Then the email address "foo5678@bar.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo1234@barr.co" should have received an email with the body containing
     """
-    User Zero shared simple-folder with you
+    Alice Hansen shared simple-folder with you
     """
     And the email address "foo5678@bar.co" should have received an email containing the last shared public link
     And the email address "foo1234@barr.co" should have received an email containing the last shared public link

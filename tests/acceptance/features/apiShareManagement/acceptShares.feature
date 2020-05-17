@@ -333,10 +333,10 @@ Feature: accept/decline shares coming from internal users
       | id                     | A_NUMBER                   |
       | share_type             | user                       |
       | uid_owner              | Alice                      |
-      | displayname_owner      | User Zero                  |
+      | displayname_owner      | Alice Hansen               |
       | permissions            | share,read,update          |
       | uid_file_owner         | Alice                      |
-      | displayname_file_owner | User Zero                  |
+      | displayname_file_owner | Alice Hansen               |
       | state                  | 0                          |
       | path                   | /textfile0 (2).txt         |
       | item_type              | file                       |
@@ -348,7 +348,7 @@ Feature: accept/decline shares coming from internal users
       | file_parent            | A_NUMBER                   |
       | file_target            | /textfile0 (2).txt         |
       | share_with             | Brian                      |
-      | share_with_displayname | User One                   |
+      | share_with_displayname | Brian Murphy               |
       | mail_send              | 0                          |
     And user "Brian" should see the following elements
       | /FOLDER/                 |
@@ -375,10 +375,10 @@ Feature: accept/decline shares coming from internal users
       | id                     | A_NUMBER                                      |
       | share_type             | user                                          |
       | uid_owner              | Alice                                         |
-      | displayname_owner      | User Zero                                     |
+      | displayname_owner      | Alice Hansen                                  |
       | permissions            | share,read,update                             |
       | uid_file_owner         | Alice                                         |
-      | displayname_file_owner | User Zero                                     |
+      | displayname_file_owner | Alice Hansen                                  |
       | state                  | 0                                             |
       | path                   | <top_folder>/<received_textfile_name>         |
       | item_type              | file                                          |
@@ -390,7 +390,7 @@ Feature: accept/decline shares coming from internal users
       | file_parent            | A_NUMBER                                      |
       | file_target            | <top_folder>/<received_textfile_name>         |
       | share_with             | Brian                                         |
-      | share_with_displayname | User One                                      |
+      | share_with_displayname | Brian Murphy                                  |
       | mail_send              | 0                                             |
     And user "Brian" should see the following elements
       | /FOLDER/                               |

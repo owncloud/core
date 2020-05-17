@@ -115,8 +115,8 @@ Feature: sharing
       | mail_send              | 0                  |
       | uid_owner              | Alice              |
       | file_parent            | A_NUMBER           |
-      | share_with_displayname | User One           |
-      | displayname_owner      | User Zero          |
+      | share_with_displayname | Brian Murphy       |
+      | displayname_owner      | Alice Hansen       |
       | mimetype               | text/plain         |
     Examples:
       | ocs_api_version | ocs_status_code |

@@ -1729,23 +1729,23 @@ class FeatureContext extends BehatVariablesContext {
 		} elseif ($userName === 'regularuser') {
 			return 'Regular User';
 		} elseif ($userName === 'alice') {
-			return 'User Zero';
+			return 'Alice Hansen';
 		} elseif ($userName === 'user0') {
 			return 'User Zero';
 		} elseif ($userName === 'brian') {
-			return 'User One';
+			return 'Brian Murphy';
 		} elseif ($userName === 'user1') {
 			return 'User One';
 		} elseif ($userName === 'carol') {
-			return 'User Two';
+			return 'Carol King';
 		} elseif ($userName === 'user2') {
 			return 'User Two';
 		} elseif ($userName === 'david') {
-			return 'User Three';
+			return 'David Lopez';
 		} elseif ($userName === 'user3') {
 			return 'User Three';
 		} elseif ($userName === 'emily') {
-			return 'User Four';
+			return 'Emily Wagner';
 		} elseif ($userName === 'user4') {
 			return 'User Four';
 		} elseif ($userName === 'usergrp') {

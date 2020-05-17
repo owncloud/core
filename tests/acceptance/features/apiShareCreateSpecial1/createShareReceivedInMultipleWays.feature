@@ -15,12 +15,12 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | Brian             |
-      | share_with_displayname | User One          |
+      | share_with_displayname | Brian Murphy      |
       | file_target            | /welcome.txt      |
       | path                   | /welcome.txt      |
       | permissions            | share,read,update |
       | uid_owner              | Alice             |
-      | displayname_owner      | User Zero         |
+      | displayname_owner      | Alice Hansen      |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |

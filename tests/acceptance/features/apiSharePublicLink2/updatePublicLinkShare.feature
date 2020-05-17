@@ -30,7 +30,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | User Zero            |
+      | displayname_owner | Alice Hansen         |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -79,7 +79,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | User Zero            |
+      | displayname_owner | Alice Hansen         |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -110,7 +110,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | User Zero            |
+      | displayname_owner | Alice Hansen         |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -141,7 +141,7 @@ Feature: update a public link share
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
       | file_parent       | A_NUMBER                  |
-      | displayname_owner | User Zero                 |
+      | displayname_owner | Alice Hansen              |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |
     Examples:
@@ -172,7 +172,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | User Zero            |
+      | displayname_owner | Alice Hansen         |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -203,7 +203,7 @@ Feature: update a public link share
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
       | file_parent       | A_NUMBER                  |
-      | displayname_owner | User Zero                 |
+      | displayname_owner | Alice Hansen              |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |
     Examples:

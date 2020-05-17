@@ -32,7 +32,7 @@ Feature: Comments
       | actorId          | Alice            |
       | objectType       | files            |
       | isUnread         | false            |
-      | actorDisplayName | User Zero        |
+      | actorDisplayName | Alice Hansen     |
       | message          | My first comment |
 
   Scenario: Getting more info about comments using PROPFIND method
@@ -55,5 +55,5 @@ Feature: Comments
       | actorId          | Alice            |
       | objectType       | files            |
       | isUnread         | false            |
-      | actorDisplayName | User Zero        |
+      | actorDisplayName | Alice Hansen     |
       | message          | My first comment |

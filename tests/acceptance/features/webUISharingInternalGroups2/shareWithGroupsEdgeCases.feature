@@ -22,14 +22,14 @@ Feature: Sharing files and folders with internal groups
     And the user shares file "testimage.jpg" with group "<group>" using the webUI
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared with "<group>" by "User Two" on the webUI
+    And folder "simple-folder" should be marked as shared with "<group>" by "Carol King" on the webUI
     And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "<group>" by "User Two" on the webUI
+    And file "testimage.jpg" should be marked as shared with "<group>" by "Carol King" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared with "<group>" by "User Two" on the webUI
+    And folder "simple-folder" should be marked as shared with "<group>" by "Carol King" on the webUI
     And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "<group>" by "User Two" on the webUI
+    And file "testimage.jpg" should be marked as shared with "<group>" by "Carol King" on the webUI
     Examples:
       | group     |
       | ?\?@#%@,; |
@@ -43,12 +43,12 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has been added to group "Alice"
     And user "Brian" has been added to group "Alice"
     And user "Carol" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User Zero" using the webUI
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
     And the user shares folder "simple-folder" with group "Alice" using the webUI
     When the user re-logs in as "Alice" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
     When the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be marked as shared with "Alice" by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: Share file with a group and a user with same name
@@ -59,11 +59,11 @@ Feature: Sharing files and folders with internal groups
     And user "Brian" has been added to group "Alice"
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "Alice" using the webUI
-    And the user shares folder "simple-folder" with user "User Zero" using the webUI
+    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
     When the user re-logs in as "Alice" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
     When the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be marked as shared with "Alice" by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   Scenario: Share file with a user and again with a group with same name but different case
     Given these groups have been created:
@@ -71,12 +71,12 @@ Feature: Sharing files and folders with internal groups
       | Alice     |
     And user "Brian" has been added to group "Alice"
     And user "Carol" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User Zero" using the webUI
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
     And the user shares folder "simple-folder" with group "Alice" using the webUI
     When the user re-logs in as "Alice" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
     When the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be marked as shared with "Alice" by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   Scenario: Share file with a group and again with a user with same name but different case
     Given these groups have been created:
@@ -85,11 +85,11 @@ Feature: Sharing files and folders with internal groups
     And user "Brian" has been added to group "Alice"
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "Alice" using the webUI
-    And the user shares folder "simple-folder" with user "User Zero" using the webUI
+    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
     When the user re-logs in as "Alice" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
     When the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be marked as shared with "Alice" by "User Two" on the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   @skipOnOcV10.3
   Scenario: Share file with a user and a group with same name and change sharing permissions of the group
@@ -103,7 +103,7 @@ Feature: Sharing files and folders with internal groups
 	When the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | delete | no |
 	  | share  | no |
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | delete | yes |
 	  | share  | yes |
 	And the information for user "Alice" about the received share of folder "simple-folder" should include
@@ -131,10 +131,10 @@ Feature: Sharing files and folders with internal groups
 	And user "Carol" has shared folder "/simple-folder" with user "Alice"
 	And user "Carol" has shared folder "/simple-folder" with group "Alice"
 	And user "Carol" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | delete | no |
 	  | share  | no |
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | delete | no |
 	  | share  | no |
 	And the information for user "Alice" about the received share of folder "simple-folder" should include
@@ -162,12 +162,12 @@ Feature: Sharing files and folders with internal groups
 	And user "Carol" has shared folder "/simple-folder" with user "Alice"
 	And user "Carol" has shared folder "/simple-folder" with group "Alice"
 	And user "Carol" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | edit    | no |
 	  | create  | no |
 	And the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | delete | no |
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | edit    | no |
 	  | create  | no |
 	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
@@ -207,7 +207,7 @@ Feature: Sharing files and folders with internal groups
 	  | share_with  | Alice          |
 	  | permissions | 15             |
 	  | expiration  | +230 days      |
-	And the expiration date input field should be empty for the user "User Zero" in the share dialog
+	And the expiration date input field should be empty for the user "Alice Hansen" in the share dialog
 	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
@@ -225,10 +225,10 @@ Feature: Sharing files and folders with internal groups
 	And user "Carol" has shared folder "/simple-folder" with user "Alice"
 	And user "Carol" has shared folder "/simple-folder" with group "Alice"
 	And user "Carol" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | share | no |
-	And the user changes expiration date for share of user "User Zero" to "+5 days" in the share dialog
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	And the user changes expiration date for share of user "Alice Hansen" to "+5 days" in the share dialog
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | share | no |
 	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
@@ -237,7 +237,7 @@ Feature: Sharing files and folders with internal groups
 	  | share_with  | Alice          |
 	  | permissions | 15             |
 	  | expiration  | +5 days        |
-	And the expiration date input field should be "+5 days" for the user "User Zero" in the share dialog
+	And the expiration date input field should be "+5 days" for the user "Alice Hansen" in the share dialog
 	And the expiration date input field should be empty for the group "Alice" in the share dialog
 	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
@@ -256,17 +256,17 @@ Feature: Sharing files and folders with internal groups
 	And user "Carol" has shared folder "/simple-folder" with user "Alice"
 	And user "Carol" has shared folder "/simple-folder" with group "Alice"
 	And user "Carol" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | edit    | no |
 	  | create  | no |
-	And the user changes expiration date for share of user "User Zero" to "+5 days" in the share dialog
+	And the user changes expiration date for share of user "Alice Hansen" to "+5 days" in the share dialog
 	And the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | delete | no |
 	And the user changes expiration date for share of group "Alice" to "+7 days" in the share dialog
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | edit    | no |
 	  | create  | no |
-	And the expiration date input field should be "+5 days" for the user "User Zero" in the share dialog
+	And the expiration date input field should be "+5 days" for the user "Alice Hansen" in the share dialog
 	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |

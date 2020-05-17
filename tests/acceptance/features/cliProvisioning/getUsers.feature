@@ -26,5 +26,5 @@ Feature: get users
     Then the command should have been successful
     And the inactive users returned by the occ command should be
       | uid   | display name | inactive days |
-      | Alice | User Zero    | 7             |
-      | Brian | User One     | 400           |
+      | Alice | Alice Hansen | 7             |
+      | Brian | Brian Murphy | 400           |

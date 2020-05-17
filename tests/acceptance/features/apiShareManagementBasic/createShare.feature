@@ -16,12 +16,12 @@ Feature: sharing
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | Brian             |
-      | share_with_displayname | User One          |
+      | share_with_displayname | Brian Murphy      |
       | file_target            | /textfile0.txt    |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | uid_owner              | Alice             |
-      | displayname_owner      | User Zero         |
+      | displayname_owner      | Alice Hansen      |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
@@ -46,12 +46,12 @@ Feature: sharing
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | Brian                 |
-      | share_with_displayname | User One              |
+      | share_with_displayname | Brian Murphy          |
       | file_target            | /textfile0.txt        |
       | path                   | /textfile0.txt        |
       | permissions            | <granted_permissions> |
       | uid_owner              | Alice                 |
-      | displayname_owner      | User Zero             |
+      | displayname_owner      | Alice Hansen          |
       | item_type              | file                  |
       | mimetype               | text/plain            |
       | storage_id             | ANY_VALUE             |
@@ -204,12 +204,12 @@ Feature: sharing
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | share_with             | Brian                |
-      | share_with_displayname | User One             |
+      | share_with_displayname | Brian Murphy         |
       | file_target            | /FOLDER              |
       | path                   | /FOLDER              |
       | permissions            | all                  |
       | uid_owner              | Alice                |
-      | displayname_owner      | User Zero            |
+      | displayname_owner      | Alice Hansen         |
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
       | storage_id             | ANY_VALUE            |
@@ -253,7 +253,7 @@ Feature: sharing
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | uid_owner              | Alice             |
-      | displayname_owner      | User Zero         |
+      | displayname_owner      | Alice Hansen      |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
@@ -278,7 +278,7 @@ Feature: sharing
       | path                   | /FOLDER              |
       | permissions            | all                  |
       | uid_owner              | Alice                |
-      | displayname_owner      | User Zero            |
+      | displayname_owner      | Alice Hansen         |
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
       | storage_id             | ANY_VALUE            |
