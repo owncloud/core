@@ -48,5 +48,5 @@ Feature: add users to group
     And group "brand-new-group" has been created
     When the administrator adds user "nonexistentuser" to group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'User "%username%" could not be found - not added to group "new-group"' about user "nonexistentuser"
+    And the command output should contain the text 'User "%username%" could not be found - not added to group "brand-new-group"' about user "nonexistentuser"
     And group "brand-new-group" should not contain user "nonexistentuser"

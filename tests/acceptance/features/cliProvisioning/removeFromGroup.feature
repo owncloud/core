@@ -50,11 +50,11 @@ Feature: remove a user from a group
     And group "brand-new-group" has been created
     When the administrator removes user "brand-new-user" from group "brand-new-group" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'Member "%username%" could not be found in group "new-group"' about user "brand-new-user"
+    And the command output should contain the text 'Member "%username%" could not be found in group "brand-new-group"' about user "brand-new-user"
 
   Scenario: admin tries to remove a user who does not exist from an existing group
     Given user "nonexistentuser" has been deleted
     And group "brand-new-group" has been created
     When the administrator removes user "nonexistentuser" from group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'Member "%username%" does not exist - not removed from group "new-group"' about user "nonexistentuser"
+    And the command output should contain the text 'Member "%username%" does not exist - not removed from group "brand-new-group"' about user "nonexistentuser"
