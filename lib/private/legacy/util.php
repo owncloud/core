@@ -61,6 +61,7 @@ use OCP\Files\NoReadAccessException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
+use OCP\License\ILicenseManager;
 
 class OC_Util {
 	public static $scripts = [];
@@ -471,7 +472,8 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function getEditionString() {
-		if (OC_App::isEnabled('enterprise_key')) {
+		$licenseManager = \OC::$server->getLicenseManager();
+		if ($licenseManager->getLicenseStateFor('core') !== ILicenseManager::LICENSE_STATE_MISSING) {
 			return OC_Util::EDITION_ENTERPRISE;
 		} else {
 			return OC_Util::EDITION_COMMUNITY;
