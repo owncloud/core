@@ -2,16 +2,16 @@
 Feature: lock folders
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: upload to a locked folder
     Given using <dav-path> DAV path
-    And user "user0" has locked folder "FOLDER" setting following properties
+    And user "Alice" has locked folder "FOLDER" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/FOLDER/textfile.txt" using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "user0" file "/FOLDER/textfile.txt" should not exist
+    And as "Alice" file "/FOLDER/textfile.txt" should not exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -21,11 +21,11 @@ Feature: lock folders
 
   Scenario Outline: upload to a subfolder of a locked folder
     Given using <dav-path> DAV path
-    And user "user0" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/PARENT/CHILD/textfile.txt" using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/PARENT/CHILD/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "user0" file "/PARENT/CHILD/textfile.txt" should not exist
+    And as "Alice" file "/PARENT/CHILD/textfile.txt" should not exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -36,11 +36,11 @@ Feature: lock folders
   @smokeTest
   Scenario Outline: create folder in a locked folder
     Given using <dav-path> DAV path
-    And user "user0" has locked folder "FOLDER" setting following properties
+    And user "Alice" has locked folder "FOLDER" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" creates folder "/FOLDER/new-folder" using the WebDAV API
+    When user "Alice" creates folder "/FOLDER/new-folder" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "user0" folder "/FOLDER/new-folder" should not exist
+    And as "Alice" folder "/FOLDER/new-folder" should not exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -50,11 +50,11 @@ Feature: lock folders
 
   Scenario Outline: create folder in a subfolder of a locked folder
     Given using <dav-path> DAV path
-    And user "user0" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" creates folder "/PARENT/CHILD/new-folder" using the WebDAV API
+    When user "Alice" creates folder "/PARENT/CHILD/new-folder" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "user0" folder "/PARENT/CHILD/new-folder" should not exist
+    And as "Alice" folder "/PARENT/CHILD/new-folder" should not exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -64,12 +64,12 @@ Feature: lock folders
 
   Scenario Outline: Move file out of a locked folder
     Given using <dav-path> DAV path
-    And user "user0" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" moves file "/PARENT/parent.txt" to "/parent.txt" using the WebDAV API
+    When user "Alice" moves file "/PARENT/parent.txt" to "/parent.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "user0" folder "/parent.txt" should not exist
-    But as "user0" folder "/PARENT/parent.txt" should exist
+    And as "Alice" folder "/parent.txt" should not exist
+    But as "Alice" folder "/PARENT/parent.txt" should exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -79,12 +79,12 @@ Feature: lock folders
 
   Scenario Outline: Move file out of a locked sub folder one level higher into locked parent folder
     Given using <dav-path> DAV path
-    And user "user0" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" moves file "/PARENT/CHILD/child.txt" to "/PARENT/child.txt" using the WebDAV API
+    When user "Alice" moves file "/PARENT/CHILD/child.txt" to "/PARENT/child.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "user0" folder "/PARENT/child.txt" should not exist
-    But as "user0" folder "/PARENT/CHILD/child.txt" should exist
+    And as "Alice" folder "/PARENT/child.txt" should not exist
+    But as "Alice" folder "/PARENT/CHILD/child.txt" should exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -94,10 +94,10 @@ Feature: lock folders
 
   Scenario Outline: lockdiscovery of a locked folder
     Given using <dav-path> DAV path
-    And user "user0" has created a public link share of folder "PARENT" with change permission
-    And user "user0" has locked folder "PARENT" setting following properties
+    And user "Alice" has created a public link share of folder "PARENT" with change permission
+    And user "Alice" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When user "user0" gets the following properties of folder "PARENT" using the WebDAV API
+    When user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "<lock-root>"
@@ -106,5 +106,5 @@ Feature: lock folders
       | dav-path | lock-scope | lock-root                                             |
       | old      | shared     | /%base_path%\/remote.php\/webdav\/PARENT$/            |
       | old      | exclusive  | /%base_path%\/remote.php\/webdav\/PARENT$/            |
-      | new      | shared     | /%base_path%\/remote.php\/dav\/files\/user0\/PARENT$/ |
-      | new      | exclusive  | /%base_path%\/remote.php\/dav\/files\/user0\/PARENT$/ |
+      | new      | shared     | /%base_path%\/remote.php\/dav\/files\/Alice\/PARENT$/ |
+      | new      | exclusive  | /%base_path%\/remote.php\/dav\/files\/Alice\/PARENT$/ |

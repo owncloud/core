@@ -7,15 +7,15 @@ Feature: manage user quota
   Background:
     Given these users have been created with default attributes and skeleton files but not initialized:
       | username |
-      | user0    |
+      | Alice    |
     And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
   Scenario Outline: change quota to a valid value
-    Given the administrator has set the quota of user "user0" to "<start_quota>"
-    When the administrator changes the quota of user "user0" to "<wished_quota>" using the webUI
+    Given the administrator has set the quota of user "Alice" to "<start_quota>"
+    When the administrator changes the quota of user "Alice" to "<wished_quota>" using the webUI
     And the administrator reloads the users page
-    Then the quota of user "user0" should be set to "<expected_quota>" on the webUI
+    Then the quota of user "Alice" should be set to "<expected_quota>" on the webUI
     Examples:
       | start_quota | wished_quota | expected_quota |
       | Unlimited   | 5 GB         | 5 GB           |
@@ -29,15 +29,15 @@ Feature: manage user quota
 
   @skipOnOcV10.0.3
   Scenario: change quota to a valid value that do not work on 10.0.3
-    Given the administrator has set the quota of user "user0" to "Unlimited"
-    When the administrator changes the quota of user "user0" to "0 Kb" using the webUI
+    Given the administrator has set the quota of user "Alice" to "Unlimited"
+    When the administrator changes the quota of user "Alice" to "0 Kb" using the webUI
     And the administrator reloads the users page
-    Then the quota of user "user0" should be set to "0 B" on the webUI
+    Then the quota of user "Alice" should be set to "0 B" on the webUI
 
   Scenario Outline: change quota to an invalid value
-    When the administrator changes the quota of user "user0" to the invalid string "<wished_quota>" using the webUI
+    When the administrator changes the quota of user "Alice" to the invalid string "<wished_quota>" using the webUI
     Then a notification should be displayed on the webUI with the text 'Invalid quota value "<wished_quota>"'
-    And the quota of user "user0" should be set to "Default" on the webUI
+    And the quota of user "Alice" should be set to "Default" on the webUI
     Examples:
       | wished_quota |
       | stupidtext   |

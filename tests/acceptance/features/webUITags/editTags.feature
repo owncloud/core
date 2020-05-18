@@ -7,25 +7,25 @@ Feature: Edit tags for files and folders
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-    And user "user0" has logged in using the webUI
+      | Alice    |
+      | Brian    |
+    And user "Alice" has logged in using the webUI
 
   @files_sharing-app-required
   Scenario: Change the name of a tag that already exists for a file
-    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
     And the user edits the tag with name "random" and sets its name to "random-big" using the webUI
-    Then file "randomfile.txt" should have the following tags for user "user0"
+    Then file "randomfile.txt" should have the following tags for user "Alice"
       | name       | type   |
       | random-big | normal |
     And tag "random" should not exist for the user
 
   @files_sharing-app-required
   Scenario: Change the name of multiple tags that exist for a file
-    Given user "user0" has uploaded file with content "some content" to "/randomfile.txt"
+    Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
     And the user has created a "normal" tag with name "some-tag"
     And the user has added tag "random" to file "randomfile.txt"
@@ -33,7 +33,7 @@ Feature: Edit tags for files and folders
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
     And the user edits the tag with name "random" and sets its name to "random-big" using the webUI
     And the user edits the tag with name "some-tag" and sets its name to "another-tag" using the webUI
-    Then file "randomfile.txt" should have the following tags for user "user0"
+    Then file "randomfile.txt" should have the following tags for user "Alice"
       | name        | type   |
       | random-big  | normal |
       | another-tag | normal |

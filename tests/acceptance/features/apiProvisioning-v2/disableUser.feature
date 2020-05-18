@@ -9,11 +9,11 @@ Feature: disable user
 
   @smokeTest
   Scenario: admin disables an user
-    Given user "user0" has been created with default attributes and skeleton files
-    When the administrator disables user "user0" using the provisioning API
+    Given user "Alice" has been created with default attributes and skeleton files
+    When the administrator disables user "Alice" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And user "user0" should be disabled
+    And user "Alice" should be disabled
 
   @skipOnOcV10.3
   Scenario Outline: admin disables an user with special characters in the username
@@ -33,33 +33,33 @@ Feature: disable user
   Scenario: Subadmin should be able to disable an user in their group
     Given these users have been created with default attributes and skeleton files:
       | username |
-      | user0    |
+      | Alice    |
       | subadmin |
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
-    And user "user0" has been added to group "brand-new-group"
+    And user "Alice" has been added to group "brand-new-group"
     And user "subadmin" has been made a subadmin of group "brand-new-group"
-    When user "subadmin" disables user "user0" using the provisioning API
+    When user "subadmin" disables user "Alice" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And user "user0" should be disabled
+    And user "Alice" should be disabled
 
   @issue-31276
   Scenario: Subadmin should not be able to disable an user not in their group
     Given these users have been created with default attributes and skeleton files:
       | username |
-      | user0    |
+      | Alice    |
       | subadmin |
     And group "brand-new-group" has been created
     And group "another-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
-    And user "user0" has been added to group "another-group"
+    And user "Alice" has been added to group "another-group"
     And user "subadmin" has been made a subadmin of group "brand-new-group"
-    When user "subadmin" disables user "user0" using the provisioning API
+    When user "subadmin" disables user "Alice" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And user "user0" should be enabled
+    And user "Alice" should be enabled
 
   @issue-31276
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
@@ -109,13 +109,13 @@ Feature: disable user
   Scenario: disable an user with a regular user
     Given these users have been created with default attributes and skeleton files:
       | username |
-      | user0    |
-      | user1    |
-    When user "user0" disables user "user1" using the provisioning API
+      | Alice    |
+      | Brian    |
+    When user "Alice" disables user "Brian" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And user "user1" should be enabled
+    And user "Brian" should be enabled
 
   Scenario: Subadmin should not be able to disable himself
     Given user "subadmin" has been created with default attributes and skeleton files
@@ -129,7 +129,7 @@ Feature: disable user
 
   @smokeTest
   Scenario: Making a web request with a disabled user
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user0" has been disabled
-    When user "user0" sends HTTP method "GET" to URL "/index.php/apps/files"
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     And the HTTP status code should be "403"

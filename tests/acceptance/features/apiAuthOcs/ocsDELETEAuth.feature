@@ -21,12 +21,12 @@ Feature: auth
       | /ocs/v2.php/cloud/apps/testing                                  | 997      | 401       |
       | /ocs/v1.php/cloud/groups/group1                                 | 997      | 401       |
       | /ocs/v2.php/cloud/groups/group1                                 | 997      | 401       |
-      | /ocs/v1.php/cloud/users/user0                                   | 997      | 401       |
-      | /ocs/v2.php/cloud/users/user0                                   | 997      | 401       |
-      | /ocs/v1.php/cloud/users/user0/groups                            | 997      | 401       |
-      | /ocs/v2.php/cloud/users/user0/groups                            | 997      | 401       |
-      | /ocs/v1.php/cloud/users/user0/subadmins                         | 997      | 401       |
-      | /ocs/v2.php/cloud/users/user0/subadmins                         | 997      | 401       |
+      | /ocs/v1.php/cloud/users/Alice                                   | 997      | 401       |
+      | /ocs/v2.php/cloud/users/Alice                                   | 997      | 401       |
+      | /ocs/v1.php/cloud/users/Alice/groups                            | 997      | 401       |
+      | /ocs/v2.php/cloud/users/Alice/groups                            | 997      | 401       |
+      | /ocs/v1.php/cloud/users/Alice/subadmins                         | 997      | 401       |
+      | /ocs/v2.php/cloud/users/Alice/subadmins                         | 997      | 401       |
 
   @smokeTest @skipOnOcV10 @issue-ocis-reva-30 @issue-ocis-reva-65
    #after fixing all issues delete this Scenario and use the one above
@@ -44,9 +44,9 @@ Feature: auth
       | /ocs/v2.php/cloud/apps/testing                                  | 401       |
       | /ocs/v1.php/cloud/groups/group1                                 | 401       |
       | /ocs/v2.php/cloud/groups/group1                                 | 401       |
-      | /ocs/v1.php/cloud/users/user0                                   | 401       |
-      | /ocs/v2.php/cloud/users/user0                                   | 401       |
-      | /ocs/v1.php/cloud/users/user0/groups                            | 401       |
-      | /ocs/v2.php/cloud/users/user0/groups                            | 401       |
-      | /ocs/v1.php/cloud/users/user0/subadmins                         | 401       |
-      | /ocs/v2.php/cloud/users/user0/subadmins                         | 401       |
+      | /ocs/v1.php/cloud/users/Alice                                   | 401       |
+      | /ocs/v2.php/cloud/users/Alice                                   | 401       |
+      | /ocs/v1.php/cloud/users/Alice/groups                            | 401       |
+      | /ocs/v2.php/cloud/users/Alice/groups                            | 401       |
+      | /ocs/v1.php/cloud/users/Alice/subadmins                         | 401       |
+      | /ocs/v2.php/cloud/users/Alice/subadmins                         | 401       |

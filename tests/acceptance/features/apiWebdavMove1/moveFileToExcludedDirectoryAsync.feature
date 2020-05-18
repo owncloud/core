@@ -6,21 +6,21 @@ Feature: users cannot move (rename) a file to or into an excluded directory
 
   Background:
     Given using new DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and skeleton files
     And the administrator has enabled async operations
 
   Scenario: rename a file to an excluded directory name
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "user0" moves file "/welcome.txt" asynchronously to "/.github" using the WebDAV API
+    And user "Alice" moves file "/welcome.txt" asynchronously to "/.github" using the WebDAV API
     Then the HTTP status code should be "403"
-    And user "user0" should see the following elements
+    And user "Alice" should see the following elements
       | /welcome.txt |
 
   Scenario: rename a file to an excluded directory name inside a parent directory
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "user0" moves file "/welcome.txt" asynchronously to "/FOLDER/.github" using the WebDAV API
+    And user "Alice" moves file "/welcome.txt" asynchronously to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
-    And user "user0" should see the following elements
+    And user "Alice" should see the following elements
       | /welcome.txt |
 
   @skipOnOcV10.3
@@ -28,7 +28,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     Given the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
-    When user "user0" moves file "/welcome.txt" asynchronously to these filenames using the webDAV API then the results should be as listed
+    When user "Alice" moves file "/welcome.txt" asynchronously to these filenames using the webDAV API then the results should be as listed
       | filename                                   | http-code | exists |
       | endswith.bad                               | 403       | no     |
       | thisendswith.bad                           | 403       | no     |

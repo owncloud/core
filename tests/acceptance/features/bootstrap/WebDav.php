@@ -3239,7 +3239,7 @@ trait WebDav {
 		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 
 		// topWebDavPath should be something like /remote.php/webdav/ or
-		// /remote.php/dav/files/user0/
+		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];

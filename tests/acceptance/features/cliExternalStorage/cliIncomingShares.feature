@@ -8,62 +8,62 @@ Feature: poll incoming shares
   @files_sharing-app-required
   Scenario: poll incoming share with a federation share of deep nested folders when there is a file change in remote end
     Given using server "REMOTE"
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user0" has created folder "/really/"
-    And user "user0" has created folder "/really/very/"
-    And user "user0" has created folder "/really/very/deeply/"
-    And user "user0" has created folder "/really/very/deeply/nested/"
-    And user "user0" has created folder "/really/very/deeply/nested/folder/"
-    And user "user0" has created folder "/really/very/deeply/nested/folder/with/"
-    And user "user0" has created folder "/really/very/deeply/nested/folder/with/sub/"
-    And user "user0" has created folder "/really/very/deeply/nested/folder/with/sub/folders"
+    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/really/"
+    And user "Alice" has created folder "/really/very/"
+    And user "Alice" has created folder "/really/very/deeply/"
+    And user "Alice" has created folder "/really/very/deeply/nested/"
+    And user "Alice" has created folder "/really/very/deeply/nested/folder/"
+    And user "Alice" has created folder "/really/very/deeply/nested/folder/with/"
+    And user "Alice" has created folder "/really/very/deeply/nested/folder/with/sub/"
+    And user "Alice" has created folder "/really/very/deeply/nested/folder/with/sub/folders"
     And using server "LOCAL"
-    And user "user1" has been created with default attributes and skeleton files
-    And user "user1" has stored etag of element "/"
-    And user "user0" from server "REMOTE" has shared "/really" with user "user1" from server "LOCAL"
-    And user "user1" from server "LOCAL" has accepted the last pending share
-    When user "user0" on "REMOTE" uploads file "filesForUpload/lorem.txt" to "/really/very/deeply/nested/folder/with/sub/folders/lorem.txt" using the WebDAV API
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has stored etag of element "/"
+    And user "Alice" from server "REMOTE" has shared "/really" with user "Brian" from server "LOCAL"
+    And user "Brian" from server "LOCAL" has accepted the last pending share
+    When user "Alice" on "REMOTE" uploads file "filesForUpload/lorem.txt" to "/really/very/deeply/nested/folder/with/sub/folders/lorem.txt" using the WebDAV API
     And using server "LOCAL"
-    Then the etag of element "/" of user "user1" should not have changed
+    Then the etag of element "/" of user "Brian" should not have changed
     When the administrator invokes occ command "incoming-shares:poll"
-    Then the etag of element "/" of user "user1" should have changed
+    Then the etag of element "/" of user "Brian" should have changed
 
   @files_sharing-app-required
   Scenario: poll incoming share with a federation share and no file change
     Given using server "REMOTE"
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user0" has created folder "/shareFolder/"
+    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/shareFolder/"
     And using server "LOCAL"
-    And user "user1" has been created with default attributes and skeleton files
-    And user "user1" has stored etag of element "/"
-    And user "user0" from server "REMOTE" has shared "/shareFolder" with user "user1" from server "LOCAL"
-    And user "user1" from server "LOCAL" has accepted the last pending share
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has stored etag of element "/"
+    And user "Alice" from server "REMOTE" has shared "/shareFolder" with user "Brian" from server "LOCAL"
+    And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    Then the etag of element "/" of user "user1" should not have changed
+    Then the etag of element "/" of user "Brian" should not have changed
     When the administrator invokes occ command "incoming-shares:poll"
-    Then the etag of element "/" of user "user1" should have changed
+    Then the etag of element "/" of user "Brian" should have changed
 
   @files_sharing-app-required
   Scenario: poll incoming share multiple times
     Given using server "REMOTE"
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user0" has created folder "/shareFolder/"
+    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/shareFolder/"
     And using server "LOCAL"
-    And user "user1" has stored etag of element "/"
-    And user "user1" has been created with default attributes and skeleton files
-    And user "user0" from server "REMOTE" has shared "/shareFolder" with user "user1" from server "LOCAL"
-    And user "user1" from server "LOCAL" has accepted the last pending share
+    And user "Brian" has stored etag of element "/"
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Alice" from server "REMOTE" has shared "/shareFolder" with user "Brian" from server "LOCAL"
+    And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
     And the administrator has invoked occ command "incoming-shares:poll"
-    Then the etag of element "/" of user "user1" should have changed
-    When user "user1" stores etag of element "/" using the WebDAV API
+    Then the etag of element "/" of user "Brian" should have changed
+    When user "Brian" stores etag of element "/" using the WebDAV API
     And the administrator invokes occ command "incoming-shares:poll"
-    Then the etag of element "/" of user "user1" should not have changed
+    Then the etag of element "/" of user "Brian" should not have changed
     When the administrator invokes occ command "incoming-shares:poll"
-    Then the etag of element "/" of user "user1" should not have changed
+    Then the etag of element "/" of user "Brian" should not have changed
 
   Scenario: poll incoming share when there is no share
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user1" has stored etag of element "/"
+    Given user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has stored etag of element "/"
     When the administrator invokes occ command "incoming-shares:poll"
-    Then the etag of element "/" of user "user1" should not have changed
+    Then the etag of element "/" of user "Brian" should not have changed

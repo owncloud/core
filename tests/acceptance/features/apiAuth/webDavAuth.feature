@@ -2,7 +2,7 @@
 Feature: auth
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario: using WebDAV anonymously
@@ -11,13 +11,13 @@ Feature: auth
 
   @smokeTest
   Scenario: using WebDAV with basic auth
-    When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic auth
+    When user "Alice" requests "/remote.php/webdav" with "PROPFIND" using basic auth
     Then the HTTP status code should be "207"
 
   @smokeTest @skipOnOcis @issue-ocis-reva-28
   Scenario: using WebDAV with token auth
-    Given a new client token for "user0" has been generated
-    When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
+    Given a new client token for "Alice" has been generated
+    When user "Alice" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
     Then the HTTP status code should be "207"
 
 	# DAV token auth is not possible yet
@@ -27,6 +27,6 @@ Feature: auth
 
   @smokeTest  @skipOnOcis
   Scenario: using WebDAV with browser session
-    Given a new browser session for "user0" has been started
+    Given a new browser session for "Alice" has been started
     When the user requests "/remote.php/webdav" with "PROPFIND" using the browser session
     Then the HTTP status code should be "207"

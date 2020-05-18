@@ -32,15 +32,15 @@ Feature: Add group
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
   Scenario Outline: adding a user to a group using mixes of upper and lower case in group names
-    Given user "user0" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
     And the administrator reloads the users page
-    When the administrator adds user "user0" to group "<group_id1>" using the webUI
-    And user "user0" should belong to group "<group_id1>"
-    But user "user0" should not belong to group "<group_id2>"
-    And user "user0" should not belong to group "<group_id3>"
+    When the administrator adds user "Alice" to group "<group_id1>" using the webUI
+    And user "Alice" should belong to group "<group_id1>"
+    But user "Alice" should not belong to group "<group_id2>"
+    And user "Alice" should not belong to group "<group_id3>"
     Examples:
       | group_id1 | group_id2 | group_id3 |
       | Oc-Group  | oc-group  | OC-GROUP  |
@@ -62,15 +62,15 @@ Feature: Add group
   Scenario: adding multiple users to a group
     Given these users have been created without skeleton files:
       | username |
-      | user0    |
-      | user1    |
-      | user2    |
+      | Alice    |
+      | Brian    |
+      | Carol    |
     And group "grp1" has been created
     And the administrator has reloaded the users page
-    When the administrator adds user "user0" to group "grp1" using the webUI
-    And the administrator adds user "user1" to group "grp1" using the webUI
+    When the administrator adds user "Alice" to group "grp1" using the webUI
+    And the administrator adds user "Brian" to group "grp1" using the webUI
     Then the user count of group "grp1" should display 2 users on the webUI
-    When the administrator adds user "user2" to group "grp1" using the webUI
+    When the administrator adds user "Carol" to group "grp1" using the webUI
     Then the user count of group "grp1" should display 3 users on the webUI
     When the administrator reloads the users page
     Then the user count of group "grp1" should display 3 users on the webUI

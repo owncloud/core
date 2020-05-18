@@ -12,8 +12,8 @@ Feature: login users
   Scenario: simple user login
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-    When user "user0" logs in using the webUI
+      | Alice    |
+    When user "Alice" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   @smokeTest @TestAlsoOnExternalUserBackend

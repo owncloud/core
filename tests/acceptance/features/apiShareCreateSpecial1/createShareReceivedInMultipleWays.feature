@@ -2,25 +2,25 @@
 Feature: share resources where the sharee receives the share in multiple ways
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   Scenario Outline: Creating a new share with user who already received a share through their group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    And user "user0" has shared file "welcome.txt" with group "grp1"
-    When user "user0" shares file "/welcome.txt" with user "user1" using the sharing API
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has shared file "welcome.txt" with group "grp1"
+    When user "Alice" shares file "/welcome.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with             | user1             |
-      | share_with_displayname | User One          |
+      | share_with             | Brian             |
+      | share_with_displayname | Brian Murphy      |
       | file_target            | /welcome.txt      |
       | path                   | /welcome.txt      |
       | permissions            | share,read,update |
-      | uid_owner              | user0             |
-      | displayname_owner      | User Zero         |
+      | uid_owner              | Alice             |
+      | displayname_owner      | Alice Hansen      |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
@@ -32,12 +32,12 @@ Feature: share resources where the sharee receives the share in multiple ways
 
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
     And group "grp4" has been created
-    And user "user1" has been added to group "grp4"
-    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
-    And user "user0" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
-    Then user "user1" should see the following elements
+    And user "Brian" has been added to group "grp4"
+    When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
+    And user "Alice" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
+    Then user "Brian" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
       | /PARENT/parent.txt       |
@@ -54,15 +54,15 @@ Feature: share resources where the sharee receives the share in multiple ways
 
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user0" has created folder "/test"
-    And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with group "grp1"
-    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
+    And user "Alice" has created folder "/test"
+    And user "Alice" has created folder "/test/sub"
+    And user "Alice" has shared folder "/test" with group "grp1"
+    When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" folder "/sub" should exist
+    And as "Brian" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -70,16 +70,16 @@ Feature: share resources where the sharee receives the share in multiple ways
 
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp0" has been created
-    And user "user0" has been added to group "grp0"
-    And user "user0" has created folder "/test"
-    And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with group "grp0"
-    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
+    And user "Alice" has been added to group "grp0"
+    And user "Alice" has created folder "/test"
+    And user "Alice" has created folder "/test/sub"
+    And user "Alice" has shared folder "/test" with group "grp0"
+    When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" folder "/sub" should exist
+    And as "Brian" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -89,28 +89,28 @@ Feature: share resources where the sharee receives the share in multiple ways
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | user1    |
-      | user2    |
-    And user "user1" has uploaded file with content "user1 file" to "/randomfile.txt"
-    And user "user2" has uploaded file with content "user2 file" to "/randomfile.txt"
-    When user "user1" shares file "randomfile.txt" with user "user0" with permissions "read" using the sharing API
-    And user "user0" gets the info of the last share using the sharing API
+      | Brian    |
+      | Carol    |
+    And user "Brian" has uploaded file with content "First data" to "/randomfile.txt"
+    And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
+    When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user1           |
-      | share_with  | user0           |
+      | uid_owner   | Brian           |
+      | share_with  | Alice           |
       | file_target | /randomfile.txt |
       | item_type   | file            |
       | permissions | read            |
-    When user "user2" shares file "randomfile.txt" with user "user0" with permissions "read,update" using the sharing API
-    And user "user0" gets the info of the last share using the sharing API
+    When user "Carol" shares file "randomfile.txt" with user "Alice" with permissions "read,update" using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user2               |
-      | share_with  | user0               |
+      | uid_owner   | Carol               |
+      | share_with  | Alice               |
       | file_target | /randomfile (2).txt |
       | item_type   | file                |
       | permissions | read,update         |
-    And the content of file "randomfile.txt" for user "user0" should be "user1 file"
-    And the content of file "randomfile (2).txt" for user "user0" should be "user2 file"
+    And the content of file "randomfile.txt" for user "Alice" should be "First data"
+    And the content of file "randomfile (2).txt" for user "Alice" should be "Second data"
     Examples:
       | ocs_api_version |
       | 1               |
@@ -120,30 +120,30 @@ Feature: share resources where the sharee receives the share in multiple ways
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | user1    |
-      | user2    |
-    And user "user1" has created folder "/zzzfolder"
-    And user "user1" has created folder "zzzfolder/user1"
-    And user "user2" has created folder "/zzzfolder"
-    And user "user2" has created folder "zzzfolder/user2"
-    When user "user1" shares folder "zzzfolder" with user "user0" with permissions "read,delete" using the sharing API
-    And user "user0" gets the info of the last share using the sharing API
+      | Brian    |
+      | Carol    |
+    And user "Brian" has created folder "/zzzfolder"
+    And user "Brian" has created folder "zzzfolder/Brian"
+    And user "Carol" has created folder "/zzzfolder"
+    And user "Carol" has created folder "zzzfolder/Carol"
+    When user "Brian" shares folder "zzzfolder" with user "Alice" with permissions "read,delete" using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user1       |
-      | share_with  | user0       |
+      | uid_owner   | Brian       |
+      | share_with  | Alice       |
       | file_target | /zzzfolder  |
       | item_type   | folder      |
       | permissions | read,delete |
-    When user "user2" shares folder "zzzfolder" with user "user0" with permissions "read,share" using the sharing API
-    And user "user0" gets the info of the last share using the sharing API
+    When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user2          |
-      | share_with  | user0          |
+      | uid_owner   | Carol          |
+      | share_with  | Alice          |
       | file_target | /zzzfolder (2) |
       | item_type   | folder         |
       | permissions | read,share     |
-    And as "user0" folder "zzzfolder/user1" should exist
-    And as "user0" folder "zzzfolder (2)/user2" should exist
+    And as "Alice" folder "zzzfolder/Brian" should exist
+    And as "Alice" folder "zzzfolder (2)/Carol" should exist
     Examples:
       | ocs_api_version |
       | 1               |
@@ -154,19 +154,19 @@ Feature: share resources where the sharee receives the share in multiple ways
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | user1    |
-      | user2    |
+      | Brian    |
+      | Carol    |
     And these groups have been created:
       | groupname |
       | grp1      |
-    And user "user1" has been added to group "grp1"
-    And user "user0" has uploaded file with content "user0 content" to "lorem.txt"
-    And user "user2" has uploaded file with content "user2 content" to "lorem.txt"
-    When user "user0" shares file "lorem.txt" with group "grp1" using the sharing API
-    And the administrator adds user "user2" to group "grp1" using the provisioning API
-    Then the content of file "lorem.txt" for user "user1" should be "user0 content"
-    And the content of file "lorem.txt" for user "user2" should be "user2 content"
-    And the content of file "lorem (2).txt" for user "user2" should be "user0 content"
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file with content "Shared content" to "lorem.txt"
+    And user "Carol" has uploaded file with content "My content" to "lorem.txt"
+    When user "Alice" shares file "lorem.txt" with group "grp1" using the sharing API
+    And the administrator adds user "Carol" to group "grp1" using the provisioning API
+    Then the content of file "lorem.txt" for user "Brian" should be "Shared content"
+    And the content of file "lorem.txt" for user "Carol" should be "My content"
+    And the content of file "lorem (2).txt" for user "Carol" should be "Shared content"
     Examples:
       | ocs_api_version |
       | 1               |

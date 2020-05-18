@@ -7,33 +7,33 @@ Feature: users cannot upload a file to or into an excluded directory using old c
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and skeleton files
 
   @issue-36645
   Scenario: Upload a file to an excluded directory name using old chunking
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "user0" uploads file "filesForUpload/textfile.txt" to "/.github" in 3 chunks using the WebDAV API
+    And user "Alice" uploads file "filesForUpload/textfile.txt" to "/.github" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "507"
     #Then the HTTP status code should be "403"
-    And as "user0" file ".github" should not exist
+    And as "Alice" file ".github" should not exist
 
   @issue-36645
   Scenario: Upload a file to an excluded directory name inside a parent directory using old chunking
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "user0" uploads file "filesForUpload/textfile.txt" to "/FOLDER/.github" in 3 chunks using the WebDAV API
+    And user "Alice" uploads file "filesForUpload/textfile.txt" to "/FOLDER/.github" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "507"
     #Then the HTTP status code should be "403"
-    And as "user0" folder "/FOLDER" should exist
-    But as "user0" file "/FOLDER/.github" should not exist
+    And as "Alice" folder "/FOLDER" should exist
+    But as "Alice" file "/FOLDER/.github" should not exist
 
   @skipOnOcV10.3 @issue-36645
   Scenario Outline: upload a file to a filename that matches excluded_directories_regex using old chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     Given the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "<filename>" in 3 chunks using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "<filename>" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "<http-status>"
-    And as "user0" file "<filename>" should not exist
+    And as "Alice" file "<filename>" should not exist
     Examples:
       | filename                        | http-status | comment     |
       | thisendswith.bad                | 507         | issue-36645 |
@@ -45,6 +45,6 @@ Feature: users cannot upload a file to or into an excluded directory using old c
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     Given the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "not-contains-virus-in-the-name.txt" in 3 chunks using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "not-contains-virus-in-the-name.txt" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "user0" file "not-contains-virus-in-the-name.txt" should exist
+    And as "Alice" file "not-contains-virus-in-the-name.txt" should exist

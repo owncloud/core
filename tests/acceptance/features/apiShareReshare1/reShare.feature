@@ -2,19 +2,19 @@
 Feature: sharing
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: User is not allowed to reshare file when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update"
-    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions "read,update" using the sharing API
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update"
+    When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" file "/textfile0.txt" should not exist
-    But as "user1" file "/textfile0.txt" should exist
+    And as "Carol" file "/textfile0.txt" should not exist
+    But as "Brian" file "/textfile0.txt" should exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -22,12 +22,12 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared folder "/FOLDER" with user "user1" with permissions "read,update"
-    When user "user1" shares folder "/FOLDER" with user "user2" with permissions "read,update" using the sharing API
+    And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "read,update"
+    When user "Brian" shares folder "/FOLDER" with user "Carol" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/FOLDER" should not exist
-    But as "user1" folder "/FOLDER" should exist
+    And as "Carol" folder "/FOLDER" should not exist
+    But as "Brian" folder "/FOLDER" should exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -36,11 +36,11 @@ Feature: sharing
   @smokeTest
   Scenario Outline: User is allowed to reshare file with the same permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "share,read"
-    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions "share,read" using the sharing API
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,read"
+    When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" file "/textfile0.txt" should exist
+    And as "Carol" file "/textfile0.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -48,11 +48,11 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared folder "/FOLDER" with user "user1" with permissions "share,read"
-    When user "user1" shares folder "/FOLDER" with user "user2" with permissions "share,read" using the sharing API
+    And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,read"
+    When user "Brian" shares folder "/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" folder "/FOLDER" should exist
+    And as "Carol" folder "/FOLDER" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -60,11 +60,11 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file with less permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "share,update,read"
-    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions "share,read" using the sharing API
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,update,read"
+    When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" file "/textfile0.txt" should exist
+    And as "Carol" file "/textfile0.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -72,11 +72,11 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with less permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared folder "/FOLDER" with user "user1" with permissions "share,update,read"
-    When user "user1" shares folder "/FOLDER" with user "user2" with permissions "share,read" using the sharing API
+    And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,update,read"
+    When user "Brian" shares folder "/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" folder "/FOLDER" should exist
+    And as "Carol" folder "/FOLDER" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -84,12 +84,12 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare file and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions <received_permissions>
-    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions <reshare_permissions> using the sharing API
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
+    When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" file "/textfile0.txt" should not exist
-    But as "user1" file "/textfile0.txt" should exist
+    And as "Carol" file "/textfile0.txt" should not exist
+    But as "Brian" file "/textfile0.txt" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
       # passing on more bits including reshare
@@ -109,22 +109,22 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions <received_permissions>
-    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions <reshare_permissions> using the sharing API
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
+    When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user2                 |
+      | share_with  | Carol                 |
       | file_target | /textfile0.txt        |
       | path        | /textfile0.txt        |
       | permissions | <granted_permissions> |
-      | uid_owner   | user1                 |
-    And as "user2" file "/textfile0.txt" should exist
+      | uid_owner   | Brian                 |
+    And as "Carol" file "/textfile0.txt" should exist
     # The receiver of the reshare can always delete their received share, even though they do not have delete permission
-    And user "user2" should be able to delete file "/textfile0.txt"
+    And user "Carol" should be able to delete file "/textfile0.txt"
     # But the upstream sharers will still have the file
-    But as "user1" file "/textfile0.txt" should exist
-    And as "user0" file "/textfile0.txt" should exist
+    But as "Brian" file "/textfile0.txt" should exist
+    And as "Alice" file "/textfile0.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code | received_permissions | reshare_permissions | granted_permissions |
       | 1               | 100             | 19                   | 23                  | 19                  |
@@ -146,12 +146,12 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared folder "/PARENT" with user "user1" with permissions <received_permissions>
-    When user "user1" shares folder "/PARENT" with user "user2" with permissions <reshare_permissions> using the sharing API
+    And user "Alice" has shared folder "/PARENT" with user "Brian" with permissions <received_permissions>
+    When user "Brian" shares folder "/PARENT" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/PARENT" should not exist
-    But as "user1" folder "/PARENT" should exist
+    And as "Carol" folder "/PARENT" should not exist
+    But as "Brian" folder "/PARENT" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
       # try to pass on more bits including reshare
@@ -183,12 +183,12 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and add delete permission bit (8)
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has shared folder "/PARENT" with user "user1" with permissions <received_permissions>
-    When user "user1" shares folder "/PARENT" with user "user2" with permissions <reshare_permissions> using the sharing API
+    And user "Alice" has shared folder "/PARENT" with user "Brian" with permissions <received_permissions>
+    When user "Brian" shares folder "/PARENT" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/PARENT" should not exist
-    But as "user1" folder "/PARENT" should exist
+    And as "Carol" folder "/PARENT" should not exist
+    But as "Brian" folder "/PARENT" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
       # try to pass on extra delete (including reshare)
@@ -208,14 +208,14 @@ Feature: sharing
 
   Scenario Outline: Update of reshare can reduce permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
-    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,create,update,read"
-    When user "user1" updates the last share using the sharing API with
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP" with user "Carol" with permissions "share,create,update,read"
+    When user "Brian" updates the last share using the sharing API with
       | permissions | share,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -223,14 +223,14 @@ Feature: sharing
 
   Scenario Outline: Update of reshare can increase permissions to the maximum allowed
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
-    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
-    When user "user1" updates the last share using the sharing API with
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP" with user "Carol" with permissions "share,read"
+    When user "Brian" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -238,14 +238,14 @@ Feature: sharing
 
   Scenario Outline: Do not allow update of reshare to exceed permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,read"
-    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
-    When user "user1" updates the last share using the sharing API with
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,read"
+    And user "Brian" has shared folder "/TMP" with user "Carol" with permissions "share,read"
+    When user "Brian" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -253,14 +253,14 @@ Feature: sharing
 
   Scenario Outline: Update of user reshare by the original share owner can increase permissions up to the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
-    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
-    When user "user0" updates the last share using the sharing API with
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP" with user "Carol" with permissions "share,read"
+    When user "Alice" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -268,14 +268,14 @@ Feature: sharing
 
   Scenario Outline: Update of user reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,update,read"
-    And user "user1" has shared folder "/TMP" with user "user2" with permissions "share,read"
-    When user "user0" updates the last share using the sharing API with
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,update,read"
+    And user "Brian" has shared folder "/TMP" with user "Carol" with permissions "share,read"
+    When user "Alice" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -284,15 +284,15 @@ Feature: sharing
   Scenario Outline: Update of group reshare by the original share owner can increase permissions up to permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been added to group "grp1"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
-    And user "user1" has shared folder "/TMP" with group "grp1" with permissions "share,read"
-    When user "user0" updates the last share using the sharing API with
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP" with group "grp1" with permissions "share,read"
+    When user "Alice" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -301,15 +301,15 @@ Feature: sharing
   Scenario Outline: Update of group reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been added to group "grp1"
-    And user "user0" has created folder "/TMP"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,update,read"
-    And user "user1" has shared folder "/TMP" with group "grp1" with permissions "share,read"
-    When user "user0" updates the last share using the sharing API with
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,update,read"
+    And user "Brian" has shared folder "/TMP" with group "grp1" with permissions "share,read"
+    When user "Alice" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
+    And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

@@ -7,8 +7,8 @@ So that I can extend my storage service
 
   Background:
     Given using server "REMOTE"
-    And user "user0" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "TestMnt"
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "TestMnt"
     And using server "LOCAL"
 
   Scenario: creating a webdav_owncloud external storage
@@ -16,7 +16,7 @@ So that I can extend my storage service
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
-      | user                   | user0              |
+      | user                   | Alice              |
       | password               | %regular%          |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
@@ -33,25 +33,25 @@ So that I can extend my storage service
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
-      | user                   | user0              |
+      | user                   | Alice              |
       | password               | %regular%          |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
     When user "admin" has uploaded file with content "Hello from Local!" to "TestMountPoint/test.txt"
     And using server "REMOTE"
-    Then as "user0" file "/TestMnt/test.txt" should exist
-    And the content of file "/TestMnt/test.txt" for user "user0" should be "Hello from Local!"
+    Then as "Alice" file "/TestMnt/test.txt" should exist
+    And the content of file "/TestMnt/test.txt" for user "Alice" should be "Hello from Local!"
 
   Scenario: deleting a webdav_owncloud external storage
     Given using server "REMOTE"
-    And user "user0" has created folder "TestMnt1"
+    And user "Alice" has created folder "TestMnt1"
     And using server "LOCAL"
     And the administrator creates an external mount point with the following configuration using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt1           |
       | secure                 | false              |
-      | user                   | user0              |
+      | user                   | Alice              |
       | password               | %regular%          |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint1    |

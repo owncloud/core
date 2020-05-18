@@ -1676,14 +1676,24 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
 		} elseif ($userName === 'regularuser') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'alice') {
+			return (string) $this->regularUserPassword;
 		} elseif ($userName === 'user0') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'brian') {
+			return (string) $this->alt1UserPassword;
 		} elseif ($userName === 'user1') {
 			return (string) $this->alt1UserPassword;
+		} elseif ($userName === 'carol') {
+			return (string) $this->alt2UserPassword;
 		} elseif ($userName === 'user2') {
 			return (string) $this->alt2UserPassword;
+		} elseif ($userName === 'david') {
+			return (string) $this->alt3UserPassword;
 		} elseif ($userName === 'user3') {
 			return (string) $this->alt3UserPassword;
+		} elseif ($userName === 'emily') {
+			return (string) $this->alt4UserPassword;
 		} elseif ($userName === 'user4') {
 			return (string) $this->alt4UserPassword;
 		} elseif ($userName === 'usergrp') {
@@ -1718,14 +1728,24 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['displayname'];
 		} elseif ($userName === 'regularuser') {
 			return 'Regular User';
+		} elseif ($userName === 'alice') {
+			return 'Alice Hansen';
 		} elseif ($userName === 'user0') {
 			return 'User Zero';
+		} elseif ($userName === 'brian') {
+			return 'Brian Murphy';
 		} elseif ($userName === 'user1') {
 			return 'User One';
+		} elseif ($userName === 'carol') {
+			return 'Carol King';
 		} elseif ($userName === 'user2') {
 			return 'User Two';
+		} elseif ($userName === 'david') {
+			return 'David Lopez';
 		} elseif ($userName === 'user3') {
 			return 'User Three';
+		} elseif ($userName === 'emily') {
+			return 'Emily Wagner';
 		} elseif ($userName === 'user4') {
 			return 'User Four';
 		} elseif ($userName === 'usergrp') {
@@ -1758,14 +1778,24 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['email'];
 		} elseif ($userName === 'regularuser') {
 			return 'regularuser@example.org';
+		} elseif ($userName === 'alice') {
+			return 'alice@example.org';
 		} elseif ($userName === 'user0') {
 			return 'user0@example.org';
+		} elseif ($userName === 'brian') {
+			return 'brian@example.org';
 		} elseif ($userName === 'user1') {
 			return 'user1@example.org';
+		} elseif ($userName === 'carol') {
+			return 'carol@example.org';
 		} elseif ($userName === 'user2') {
 			return 'user2@example.org';
+		} elseif ($userName === 'david') {
+			return 'david@example.org';
 		} elseif ($userName === 'user3') {
 			return 'user3@example.org';
+		} elseif ($userName === 'emily') {
+			return 'emily@example.org';
 		} elseif ($userName === 'user4') {
 			return 'user4@example.org';
 		} elseif ($userName === 'usergrp') {

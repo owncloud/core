@@ -4,12 +4,12 @@ Feature: Users sync
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user0    |
-      | user1    |
+      | Alice    |
+      | Brian    |
 
   Scenario Outline: Trying to sync a user when there is no external user backend
     Given using OCS API version "<ocs-api-version>"
-    When the administrator tries to sync user "user0" using the OCS API
+    When the administrator tries to sync user "Alice" using the OCS API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs-status-code>"
     And the OCS status message should be ""
@@ -33,7 +33,7 @@ Feature: Users sync
   @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user as another user which does not exist
     Given using OCS API version "<ocs-api-version>"
-    When user "nonexistentuser" tries to sync user "user1" using the OCS API
+    When user "nonexistentuser" tries to sync user "Brian" using the OCS API
     Then the HTTP status code should be "401"
     And the OCS status code should be "997"
     And the OCS status message should be "Unauthorised"
@@ -45,7 +45,7 @@ Feature: Users sync
   @smokeTest @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user by non admin user
     Given using OCS API version "<ocs-api-version>"
-    When user "user0" tries to sync user "user1" using the OCS API
+    When user "Alice" tries to sync user "Brian" using the OCS API
     Then the HTTP status code should be "<http-status-code>"
     And the OCS status code should be "<ocs-status-code>"
     And the OCS status message should be "Logged in user must be an admin"
@@ -57,7 +57,7 @@ Feature: Users sync
   @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user by admin using an incorrect password
     Given using OCS API version "<ocs-api-version>"
-    When the administrator tries to sync user "user1" using password "invalid" and the OCS API
+    When the administrator tries to sync user "Brian" using password "invalid" and the OCS API
     Then the HTTP status code should be "401"
     And the OCS status code should be "997"
     And the OCS status message should be "Unauthorised"

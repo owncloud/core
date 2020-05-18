@@ -2,13 +2,13 @@
 Feature: CORS headers
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   @files_sharing-app-required
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has added "https://aphno.badal" to the list of personal CORS domains
-    When user "user0" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers
+    And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers
       | header | value               |
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"
@@ -42,8 +42,8 @@ Feature: CORS headers
   @issue-34664
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has added "https://aphno.badal" to the list of personal CORS domains
-    When user "user0" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers
+    And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers
       | header | value               |
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"
@@ -85,8 +85,8 @@ Feature: CORS headers
   @files_sharing-app-required
   Scenario Outline: no CORS headers should be returned when CORS domain does not match Origin header
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has added "https://mero.badal" to the list of personal CORS domains
-    When user "user0" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers
+    And user "Alice" has added "https://mero.badal" to the list of personal CORS domains
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers
       | header | value               |
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"
@@ -144,8 +144,8 @@ Feature: CORS headers
   @issue-34679 @files_sharing-app-required
   Scenario Outline: CORS headers should be returned when invalid password is used
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has added "https://aphno.badal" to the list of personal CORS domains
-    When user "user0" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers using password "invalid"
+    And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "<endpoint>" with headers using password "invalid"
       | header | value               |
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"

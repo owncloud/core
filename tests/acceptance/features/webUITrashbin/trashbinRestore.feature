@@ -5,8 +5,8 @@ Feature: Restore deleted files/folders
   So that I can recover accidentally deleted files/folders in ownCloud
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user0" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
   @smokeTest
@@ -91,7 +91,7 @@ Feature: Restore deleted files/folders
 
   Scenario: Delete a file and then restore it when a file with the same name already exists
     Given the user has deleted file "lorem.txt"
-    And user "user0" has moved file "textfile0.txt" to "lorem.txt"
+    And user "Alice" has moved file "textfile0.txt" to "lorem.txt"
     And the user has browsed to the trashbin page
     Then folder "lorem.txt" should be listed in the trashbin on the webUI
     When the user restores file "lorem.txt" from the trashbin using the webUI
@@ -99,12 +99,12 @@ Feature: Restore deleted files/folders
     When the user browses to the files page
     Then file "lorem.txt" should be listed on the webUI
     And file "lorem (restored).txt" should be listed on the webUI
-    And the content of file "lorem.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "lorem.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
     And the content of "lorem (restored).txt" should be the same as the original "lorem.txt"
 
   Scenario: delete a file inside a folder and then restore the file after the folder has been deleted
-    Given user "user0" has created folder "folder-to-delete"
-    And user "user0" has moved file "lorem.txt" to "folder-to-delete/file-to-delete.txt"
+    Given user "Alice" has created folder "folder-to-delete"
+    And user "Alice" has moved file "lorem.txt" to "folder-to-delete/file-to-delete.txt"
     And the user has deleted file "folder-to-delete/file-to-delete.txt"
     And the user has deleted folder "folder-to-delete"
     And the user has browsed to the trashbin page

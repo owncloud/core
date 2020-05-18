@@ -7,29 +7,29 @@ Feature: Sharing files and folders with internal groups
   Background:
 	Given these users have been created with default attributes and without skeleton files:
 	  | username |
-	  | user0    |
-	  | user1    |
-	And user "user2" has been created with default attributes and skeleton files
+	  | Alice    |
+	  | Brian    |
+	And user "Carol" has been created with default attributes and skeleton files
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:
       | groupname |
       | <group>   |
-    And user "user0" has been added to group "<group>"
-    And user "user1" has been added to group "<group>"
-    And user "user2" has logged in using the webUI
+    And user "Alice" has been added to group "<group>"
+    And user "Brian" has been added to group "<group>"
+    And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "<group>" using the webUI
     And the user shares file "testimage.jpg" with group "<group>" using the webUI
-    And the user re-logs in as "user0" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared with "<group>" by "User Two" on the webUI
+    And folder "simple-folder" should be marked as shared with "<group>" by "Carol King" on the webUI
     And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "<group>" by "User Two" on the webUI
-    When the user re-logs in as "user1" using the webUI
+    And file "testimage.jpg" should be marked as shared with "<group>" by "Carol King" on the webUI
+    When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared with "<group>" by "User Two" on the webUI
+    And folder "simple-folder" should be marked as shared with "<group>" by "Carol King" on the webUI
     And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "<group>" by "User Two" on the webUI
+    And file "testimage.jpg" should be marked as shared with "<group>" by "Carol King" on the webUI
     Examples:
       | group     |
       | ?\?@#%@,; |
@@ -39,180 +39,180 @@ Feature: Sharing files and folders with internal groups
   Scenario: Share file with a user and a group with same name
     Given these groups have been created:
       | groupname |
-      | user0     |
-    And user "user0" has been added to group "user0"
-    And user "user1" has been added to group "user0"
-    And user "user2" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User Zero" using the webUI
-    And the user shares folder "simple-folder" with group "user0" using the webUI
-    When the user re-logs in as "user0" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
-    When the user re-logs in as "user1" using the webUI
-    Then folder "simple-folder" should be marked as shared with "user0" by "User Two" on the webUI
+      | Alice     |
+    And user "Alice" has been added to group "Alice"
+    And user "Brian" has been added to group "Alice"
+    And user "Carol" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    And the user shares folder "simple-folder" with group "Alice" using the webUI
+    When the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
+    When the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: Share file with a group and a user with same name
     Given these groups have been created:
       | groupname |
-      | user0     |
-    And user "user0" has been added to group "user0"
-    And user "user1" has been added to group "user0"
-    And user "user2" has logged in using the webUI
-    When the user shares folder "simple-folder" with group "user0" using the webUI
-    And the user shares folder "simple-folder" with user "User Zero" using the webUI
-    When the user re-logs in as "user0" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
-    When the user re-logs in as "user1" using the webUI
-    Then folder "simple-folder" should be marked as shared with "user0" by "User Two" on the webUI
+      | Alice     |
+    And user "Alice" has been added to group "Alice"
+    And user "Brian" has been added to group "Alice"
+    And user "Carol" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "Alice" using the webUI
+    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    When the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
+    When the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   Scenario: Share file with a user and again with a group with same name but different case
     Given these groups have been created:
       | groupname |
-      | User0     |
-    And user "user1" has been added to group "User0"
-    And user "user2" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "User Zero" using the webUI
-    And the user shares folder "simple-folder" with group "User0" using the webUI
-    When the user re-logs in as "user0" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
-    When the user re-logs in as "user1" using the webUI
-    Then folder "simple-folder" should be marked as shared with "User0" by "User Two" on the webUI
+      | Alice     |
+    And user "Brian" has been added to group "Alice"
+    And user "Carol" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    And the user shares folder "simple-folder" with group "Alice" using the webUI
+    When the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
+    When the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   Scenario: Share file with a group and again with a user with same name but different case
     Given these groups have been created:
       | groupname |
-      | User0     |
-    And user "user1" has been added to group "User0"
-    And user "user2" has logged in using the webUI
-    When the user shares folder "simple-folder" with group "User0" using the webUI
-    And the user shares folder "simple-folder" with user "User Zero" using the webUI
-    When the user re-logs in as "user0" using the webUI
-    Then folder "simple-folder" should be marked as shared by "User Two" on the webUI
-    When the user re-logs in as "user1" using the webUI
-    Then folder "simple-folder" should be marked as shared with "User0" by "User Two" on the webUI
+      | Alice     |
+    And user "Brian" has been added to group "Alice"
+    And user "Carol" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "Alice" using the webUI
+    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    When the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder" should be marked as shared by "Carol King" on the webUI
+    When the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be marked as shared with "Alice" by "Carol King" on the webUI
 
   @skipOnOcV10.3
   Scenario: Share file with a user and a group with same name and change sharing permissions of the group
 	Given these groups have been created:
 	  | groupname |
-	  | user0     |
-	And user "user1" has been added to group "user0"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "user0"
-	And user "user2" has logged in using the webUI
-	When the user sets the sharing permissions of group "user0" for "simple-folder" using the webUI to
+	  | Alice     |
+	And user "Brian" has been added to group "Alice"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "Alice"
+	And user "Carol" has logged in using the webUI
+	When the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | delete | no |
 	  | share  | no |
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | delete | yes |
 	  | share  | yes |
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 31             |
-	And the following permissions are seen for "simple-folder" in the sharing dialog for group "user0"
+	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | no |
 	  | share  | no |
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 7              |
 
   @skipOnOcV10.3
   Scenario: Share file with a user and a group with same name and change sharing permissions of the user
 	Given these groups have been created:
 	  | groupname |
-	  | user0     |
-	And user "user1" has been added to group "user0"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "user0"
-	And user "user2" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	  | Alice     |
+	And user "Brian" has been added to group "Alice"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "Alice"
+	And user "Carol" has logged in using the webUI
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | delete | no |
 	  | share  | no |
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | delete | no |
 	  | share  | no |
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 7              |
-	And the following permissions are seen for "simple-folder" in the sharing dialog for group "user0"
+	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | yes |
 	  | share  | yes |
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 31             |
 
   @skipOnOcV10.3
   Scenario: Share file with a user and a group with same name and change sharing permissions of both user and group
 	Given these groups have been created:
 	  | groupname |
-	  | user0     |
-	And user "user1" has been added to group "user0"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "user0"
-	And user "user2" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	  | Alice     |
+	And user "Brian" has been added to group "Alice"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "Alice"
+	And user "Carol" has logged in using the webUI
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | edit    | no |
 	  | create  | no |
-	And the user sets the sharing permissions of group "user0" for "simple-folder" using the webUI to
+	And the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | delete | no |
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | edit    | no |
 	  | create  | no |
-	And the following permissions are seen for "simple-folder" in the sharing dialog for group "user0"
+	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | no |
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 17             |
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 23             |
 
   @skipOnOcV10.3
   Scenario: Share file with a user and a group with same name and change sharing permissions and expiration date of the group
 	Given these groups have been created:
 	  | groupname |
-	  | user0     |
-	And user "user1" has been added to group "user0"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "user0"
-	And user "user2" has logged in using the webUI
-	When the user sets the sharing permissions of group "user0" for "simple-folder" using the webUI to
+	  | Alice     |
+	And user "Brian" has been added to group "Alice"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "Alice"
+	And user "Carol" has logged in using the webUI
+	When the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | share | no |
-	And the user changes expiration date for share of group "user0" to "+230 days" in the share dialog
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for group "user0"
+	And the user changes expiration date for share of group "Alice" to "+230 days" in the share dialog
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | share | no |
-	And the expiration date input field should be "+230 days" for the group "user0" in the share dialog
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the expiration date input field should be "+230 days" for the group "Alice" in the share dialog
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 15             |
 	  | expiration  | +230 days      |
-	And the expiration date input field should be empty for the user "User Zero" in the share dialog
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the expiration date input field should be empty for the user "Alice Hansen" in the share dialog
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 31             |
 	  | expiration  |                |
 
@@ -220,30 +220,30 @@ Feature: Sharing files and folders with internal groups
   Scenario: Share file with a user and a group with same name and change sharing permissions and expiration date of the user
 	Given these groups have been created:
 	  | groupname |
-	  | user0     |
-	And user "user1" has been added to group "user0"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "user0"
-	And user "user2" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	  | Alice     |
+	And user "Brian" has been added to group "Alice"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "Alice"
+	And user "Carol" has logged in using the webUI
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | share | no |
-	And the user changes expiration date for share of user "User Zero" to "+5 days" in the share dialog
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	And the user changes expiration date for share of user "Alice Hansen" to "+5 days" in the share dialog
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | share | no |
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 15             |
 	  | expiration  | +5 days        |
-	And the expiration date input field should be "+5 days" for the user "User Zero" in the share dialog
-	And the expiration date input field should be empty for the group "user0" in the share dialog
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the expiration date input field should be "+5 days" for the user "Alice Hansen" in the share dialog
+	And the expiration date input field should be empty for the group "Alice" in the share dialog
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 31             |
 	  | expiration  |                |
 
@@ -251,38 +251,38 @@ Feature: Sharing files and folders with internal groups
   Scenario: Share file with a user and a group with same name and change sharing permissions and expiration date of both user and group
 	Given these groups have been created:
 	  | groupname |
-	  | user0     |
-	And user "user1" has been added to group "user0"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "user0"
-	And user "user2" has logged in using the webUI
-	When the user sets the sharing permissions of user "User Zero" for "simple-folder" using the webUI to
+	  | Alice     |
+	And user "Brian" has been added to group "Alice"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "Alice"
+	And user "Carol" has logged in using the webUI
+	When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
 	  | edit    | no |
 	  | create  | no |
-	And the user changes expiration date for share of user "User Zero" to "+5 days" in the share dialog
-	And the user sets the sharing permissions of group "user0" for "simple-folder" using the webUI to
+	And the user changes expiration date for share of user "Alice Hansen" to "+5 days" in the share dialog
+	And the user sets the sharing permissions of group "Alice" for "simple-folder" using the webUI to
 	  | delete | no |
-	And the user changes expiration date for share of group "user0" to "+7 days" in the share dialog
-	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "User Zero"
+	And the user changes expiration date for share of group "Alice" to "+7 days" in the share dialog
+	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
 	  | edit    | no |
 	  | create  | no |
-	And the expiration date input field should be "+5 days" for the user "User Zero" in the share dialog
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the expiration date input field should be "+5 days" for the user "Alice Hansen" in the share dialog
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | expiration  | +5 days        |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 17             |
-	And the following permissions are seen for "simple-folder" in the sharing dialog for group "user0"
+	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | no |
-	And the expiration date input field should be "+7 days" for the group "user0" in the share dialog
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the expiration date input field should be "+7 days" for the group "Alice" in the share dialog
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | expiration  | +7 days        |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | permissions | 23             |
 
   @skipOnOcV10.3
@@ -290,27 +290,27 @@ Feature: Sharing files and folders with internal groups
 	Given these groups have been created:
 	  | groupname |
 	  | grp1      |
-	And user "user0" has been added to group "grp1"
-	And user "user1" has been added to group "grp1"
-	And user "user2" has shared folder "/simple-folder" with user "user0"
-	And user "user2" has shared folder "/simple-folder" with group "grp1"
-	And user "user2" has logged in using the webUI
+	And user "Alice" has been added to group "grp1"
+	And user "Brian" has been added to group "grp1"
+	And user "Carol" has shared folder "/simple-folder" with user "Alice"
+	And user "Carol" has shared folder "/simple-folder" with group "grp1"
+	And user "Carol" has logged in using the webUI
 	When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
 	  | edit    | no |
 	  | create  | no |
 	And the user changes expiration date for share of group "grp1" to "+5 days" in the share dialog
-	Then the information for user "user1" about the received share of folder "simple-folder" should include
+	Then the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
+	  | uid_owner   | Carol          |
 	  | share_with  | grp1           |
 	  | expiration  | +5 days        |
 	  | permissions | 17             |
-	And the information for user "user0" about the received share of folder "simple-folder" should include
+	And the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
-	  | uid_owner   | user2          |
-	  | share_with  | user0          |
+	  | uid_owner   | Carol          |
+	  | share_with  | Alice          |
 	  | expiration  |                |
 	  | permissions | 31             |
 
@@ -320,11 +320,11 @@ Feature: Sharing files and folders with internal groups
 	  | groupname |
 	  | grp1      |
 	  | grp2      |
-	And user "user0" has been added to group "grp1"
-	And user "user1" has been added to group "grp2"
-	And user "user2" has shared folder "/simple-folder" with group "grp1"
-	And user "user2" has shared folder "/simple-folder" with group "grp2"
-	And user "user2" has logged in using the webUI
+	And user "Alice" has been added to group "grp1"
+	And user "Brian" has been added to group "grp2"
+	And user "Carol" has shared folder "/simple-folder" with group "grp1"
+	And user "Carol" has shared folder "/simple-folder" with group "grp2"
+	And user "Carol" has logged in using the webUI
 	When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
 	  | edit    | no |
 	  | create  | no |
@@ -333,17 +333,17 @@ Feature: Sharing files and folders with internal groups
 	  | share    | no |
 	  | delete   | no |
 	And the user changes expiration date for share of group "grp2" to "+7 days" in the share dialog
-	Then the information for user "user0" about the received share of folder "simple-folder" should include
+	Then the information for user "Alice" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | expiration  | +5 days        |
-	  | uid_owner   | user2          |
+	  | uid_owner   | Carol          |
 	  | share_with  | grp1           |
 	  | permissions | 17             |
-	And the information for user "user1" about the received share of folder "simple-folder" should include
+	And the information for user "Brian" about the received share of folder "simple-folder" should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | expiration  | +7 days        |
-	  | uid_owner   | user2          |
+	  | uid_owner   | Carol          |
 	  | share_with  | grp2           |
 	  | permissions | 7              |

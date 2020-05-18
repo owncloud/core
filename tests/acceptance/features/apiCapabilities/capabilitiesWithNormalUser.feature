@@ -3,11 +3,11 @@ Feature: default capabilities for normal user
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and without skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @skipOnOcV10 @issue-ocis-reva-175 @issue-ocis-reva-176
   Scenario: getting default capabilities with normal user
-    When user "user0" retrieves the capabilities using the capabilities API
+    When user "Alice" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                           | value             |
       | core          | pollinterval                              | 60                |
@@ -50,7 +50,7 @@ Feature: default capabilities for normal user
   # in the response items in different environment (core & ocis-reva)
   @skipOnOcis @issue-ocis-reva-175 @issue-ocis-reva-176
   Scenario: getting default capabilities with normal user
-    When user "user0" retrieves the capabilities using the capabilities API
+    When user "Alice" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                           | value             |
       | core          | pollinterval                              | 60                |
