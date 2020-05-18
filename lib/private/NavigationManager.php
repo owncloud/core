@@ -195,6 +195,7 @@ class NavigationManager implements INavigationManager {
 		if ($phoenixBaseUrl) {
 			$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon.svg');
 			$this->add([
+				'id' => 'phoenix',
 				'href' => $phoenixBaseUrl,
 				'name' => 'Phoenix',
 				'icon' => $iconPath,
