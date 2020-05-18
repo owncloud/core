@@ -1231,9 +1231,10 @@ trait Provisioning {
 	public function adminChangesTheEmailOfUserToUsingTheProvisioningApi(
 		$user, $email
 	) {
+		$user = $this->getActualUsername($user);
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
-			$this->getActualUsername($user),
+			$user,
 			'email',
 			$email,
 			$this->getAdminUsername(),
@@ -1306,6 +1307,8 @@ trait Provisioning {
 	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
@@ -1326,6 +1329,8 @@ trait Provisioning {
 	public function userHasChangedTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
@@ -1353,6 +1358,7 @@ trait Provisioning {
 	public function adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$user, $displayname
 	) {
+		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
 			$user, 'displayname', $displayname
 		);
@@ -1371,6 +1377,7 @@ trait Provisioning {
 	public function adminHasChangedTheDisplayNameOfUser(
 		$user, $displayname
 	) {
+		$user = $this->getActualUsername($user);
 		if ($this->isTestingWithLdap()) {
 			$this->editLdapUserDisplayName(
 				$user, $displayname
@@ -1409,6 +1416,7 @@ trait Provisioning {
 	public function adminChangesTheDisplayOfUserUsingTheProvisioningApi(
 		$user, $displayname
 	) {
+		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
 			$user, 'display', $displayname
 		);
@@ -1463,6 +1471,8 @@ trait Provisioning {
 	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
@@ -1487,6 +1497,8 @@ trait Provisioning {
 	public function userChangesTheDisplayOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'display', $displayName
 		);
@@ -1505,6 +1517,8 @@ trait Provisioning {
 	public function userHasChangedTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);

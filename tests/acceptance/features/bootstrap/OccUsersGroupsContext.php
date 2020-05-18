@@ -242,9 +242,11 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheOccCommand($username, $newEmail) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:modify $username email $newEmail"
 		);
+		$this->featureContext->updateUserInCreatedUsersList($username, "email", $newEmail);
 	}
 
 	/**
@@ -257,9 +259,11 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheOccCommand($username, $newDisplayname) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:modify $username displayname '$newDisplayname'"
 		);
+		$this->featureContext->updateUserInCreatedUsersList($username, "displayname", $newDisplayname);
 	}
 
 	/**
@@ -286,9 +290,11 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDeletesUserUsingTheOccCommand($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:delete $username"
 		);
+		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
 	}
 
 	/**
