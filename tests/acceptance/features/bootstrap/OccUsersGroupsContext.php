@@ -565,9 +565,7 @@ class OccUsersGroupsContext implements Context {
 		}
 		foreach ($useridTable as $row) {
 			$row['display name'] = $this->featureContext->getDisplayNameForUser($row['uid']);
-			var_dump($row['display name']);
 			$row['uid'] = $this->featureContext->getActualUsername($row['uid']);
-			var_dump($row['uid']);
 			Assert::assertArrayHasKey(
 				$row['uid'],
 				$result,

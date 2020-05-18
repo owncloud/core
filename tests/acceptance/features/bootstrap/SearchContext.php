@@ -98,7 +98,6 @@ class SearchContext implements Context {
 		$path, $user, TableNode $properties
 	) {
 		$user = $this->featureContext->getActualUsername($user);
-		$normalizedUser = $this->featureContext->normalizeUsername($user);
 		$this->featureContext->verifyTableNodeColumns($properties, ['name', 'value']);
 		$properties = $properties->getHash();
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
@@ -111,7 +110,7 @@ class SearchContext implements Context {
 		foreach ($properties as $property) {
 			$foundProperty = false;
 			$property['value'] = $this->featureContext->substituteInLineCodes(
-				$property['value'], $normalizedUser
+				$property['value'], $user
 			);
 			foreach ($fileProperties as $fileProperty) {
 				if ($fileProperty['name'] === $property['name']) {

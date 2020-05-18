@@ -519,7 +519,7 @@ class WebDavPropertiesContext implements Context {
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
 		$value = $xmlPart[0]->__toString();
-		$user = \strtolower($this->featureContext->getActualUsername($user));
+		$user = $this->featureContext->getActualUsername($user);
 		$expectedValue = $this->featureContext->substituteInLineCodes(
 			$expectedValue, $user
 		);

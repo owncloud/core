@@ -774,8 +774,6 @@ class OccContext implements Context {
 			$text, $user
 		);
 		$displayname = $this->featureContext->getDisplayNameForUser($user);
-		var_dump($displayname);
-		var_dump($text);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
 			$commandOutput,

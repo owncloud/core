@@ -2935,7 +2935,7 @@ trait WebDav {
 	 */
 	public function headersShouldMatchRegularExpressions($user, TableNode $table) {
 		$this->verifyTableNodeColumnsCount($table, 2);
-		$user = \strtolower($this->getActualUsername($user));
+		$user = $this->getActualUsername($user);
 		foreach ($table->getTable() as $header) {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
