@@ -10,23 +10,14 @@ Feature: auth
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send PUT request to OCS endpoints as admin with wrong password
-    When user "another-admin" requests these endpoints with "PUT" including body using password "invalid" then the status codes about user "user0" should be as listed
+    When user "another-admin" requests these endpoints with "PUT" including body using password "invalid" then the status codes about user "Alice" should be as listed
       | endpoint                                         | ocs-code | http-code | body          |
-<<<<<<< HEAD
-      | /ocs/v1.php/cloud/users/Alice                    | 997      | 401       | doesnotmatter |
-      | /ocs/v2.php/cloud/users/Alice                    | 997      | 401       | doesnotmatter |
-      | /ocs/v1.php/cloud/users/Alice/disable            | 997      | 401       | doesnotmatter |
-      | /ocs/v2.php/cloud/users/Alice/disable            | 997      | 401       | doesnotmatter |
-      | /ocs/v1.php/cloud/users/Alice/enable             | 997      | 401       | doesnotmatter |
-      | /ocs/v2.php/cloud/users/Alice/enable             | 997      | 401       | doesnotmatter |
-=======
       | /ocs/v1.php/cloud/users/%username%               | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/%username%               | 997      | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users/%username%/disable       | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/%username%/disable       | 997      | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users/%username%/enable        | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/%username%/enable        | 997      | 401       | doesnotmatter |
->>>>>>> apiAuthOcs Remaining
       | /ocs/v1.php/apps/files_sharing/api/v1/shares/123 | 997      | 401       | doesnotmatter |
       | /ocs/v2.php/apps/files_sharing/api/v1/shares/123 | 997      | 401       | doesnotmatter |
 
@@ -35,22 +26,13 @@ Feature: auth
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send PUT request to OCS endpoints as admin with wrong password
-    When user "another-admin" requests these endpoints with "PUT" including body using password "invalid" then the status codes about user "user0" should be as listed
+    When user "another-admin" requests these endpoints with "PUT" including body using password "invalid" then the status codes about user "Alice" should be as listed
       | endpoint                                         | http-code | body          |
-<<<<<<< HEAD
-      | /ocs/v1.php/cloud/users/Alice                    | 401       | doesnotmatter |
-      | /ocs/v2.php/cloud/users/Alice                    | 401       | doesnotmatter |
-      | /ocs/v1.php/cloud/users/Alice/disable            | 401       | doesnotmatter |
-      | /ocs/v2.php/cloud/users/Alice/disable            | 401       | doesnotmatter |
-      | /ocs/v1.php/cloud/users/Alice/enable             | 401       | doesnotmatter |
-      | /ocs/v2.php/cloud/users/Alice/enable             | 401       | doesnotmatter |
-=======
       | /ocs/v1.php/cloud/users/%username%               | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/%username%               | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users/%username%/disable       | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/%username%/disable       | 401       | doesnotmatter |
       | /ocs/v1.php/cloud/users/%username%/enable        | 401       | doesnotmatter |
       | /ocs/v2.php/cloud/users/%username%/enable        | 401       | doesnotmatter |
->>>>>>> apiAuthOcs Remaining
       | /ocs/v1.php/apps/files_sharing/api/v1/shares/123 | 401       | doesnotmatter |
       | /ocs/v2.php/apps/files_sharing/api/v1/shares/123 | 401       | doesnotmatter |

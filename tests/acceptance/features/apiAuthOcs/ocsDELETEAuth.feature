@@ -8,7 +8,7 @@ Feature: auth
   @smokeTest @issue-32068 @skipOnOcis @issue-ocis-reva-30 @issue-ocis-reva-65
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
-    When user "another-admin" requests these endpoints with "DELETE" using password "invalid" then the status codes about user "user0" should be as listed
+    When user "another-admin" requests these endpoints with "DELETE" using password "invalid" then the status codes about user "Alice" should be as listed
       | endpoint                                                        | ocs-code | http-code |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
@@ -21,26 +21,17 @@ Feature: auth
       | /ocs/v2.php/cloud/apps/testing                                  | 997      | 401       |
       | /ocs/v1.php/cloud/groups/group1                                 | 997      | 401       |
       | /ocs/v2.php/cloud/groups/group1                                 | 997      | 401       |
-<<<<<<< HEAD
-      | /ocs/v1.php/cloud/users/Alice                                   | 997      | 401       |
-      | /ocs/v2.php/cloud/users/Alice                                   | 997      | 401       |
-      | /ocs/v1.php/cloud/users/Alice/groups                            | 997      | 401       |
-      | /ocs/v2.php/cloud/users/Alice/groups                            | 997      | 401       |
-      | /ocs/v1.php/cloud/users/Alice/subadmins                         | 997      | 401       |
-      | /ocs/v2.php/cloud/users/Alice/subadmins                         | 997      | 401       |
-=======
       | /ocs/v1.php/cloud/users/%username%                              | 997      | 401       |
       | /ocs/v2.php/cloud/users/%username%                              | 997      | 401       |
       | /ocs/v1.php/cloud/users/%username%/groups                       | 997      | 401       |
       | /ocs/v2.php/cloud/users/%username%/groups                       | 997      | 401       |
       | /ocs/v1.php/cloud/users/%username%/subadmins                    | 997      | 401       |
       | /ocs/v2.php/cloud/users/%username%/subadmins                    | 997      | 401       |
->>>>>>> apiAuthOcs Remaining
 
   @smokeTest @skipOnOcV10 @issue-ocis-reva-30 @issue-ocis-reva-65
    #after fixing all issues delete this Scenario and use the one above
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
-    When user "another-admin" requests these endpoints with "DELETE" using password "invalid" then the status codes about user "user0" should be as listed
+    When user "another-admin" requests these endpoints with "DELETE" using password "invalid" then the status codes about user "Alice" should be as listed
       | endpoint                                                        | http-code |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 401       |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/123 | 401       |
@@ -53,18 +44,9 @@ Feature: auth
       | /ocs/v2.php/cloud/apps/testing                                  | 401       |
       | /ocs/v1.php/cloud/groups/group1                                 | 401       |
       | /ocs/v2.php/cloud/groups/group1                                 | 401       |
-<<<<<<< HEAD
-      | /ocs/v1.php/cloud/users/Alice                                   | 401       |
-      | /ocs/v2.php/cloud/users/Alice                                   | 401       |
-      | /ocs/v1.php/cloud/users/Alice/groups                            | 401       |
-      | /ocs/v2.php/cloud/users/Alice/groups                            | 401       |
-      | /ocs/v1.php/cloud/users/Alice/subadmins                         | 401       |
-      | /ocs/v2.php/cloud/users/Alice/subadmins                         | 401       |
-=======
       | /ocs/v1.php/cloud/users/%username%                              | 401       |
       | /ocs/v2.php/cloud/users/%username%                              | 401       |
       | /ocs/v1.php/cloud/users/%username%/groups                       | 401       |
       | /ocs/v2.php/cloud/users/%username%/groups                       | 401       |
       | /ocs/v1.php/cloud/users/%username%/subadmins                    | 401       |
       | /ocs/v2.php/cloud/users/%username%/subadmins                    | 401       |
->>>>>>> apiAuthOcs Remaining

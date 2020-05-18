@@ -23,5 +23,25 @@
     "username": "123.Me.test_user@test-organization.org",
     "displayname": "RegularUser",
     "password": "12345678"
+  },
+  "Alice": {
+    "username": "aliiiice",
+    "displayname": "Alice User",
+    "password": "0123"
+  },
+  "Brian": {
+    "username": "Briaaaan",
+    "displayname": "User Brian",
+    "password": "01234"
+  },
+  "Carol": {
+    "username": "carol@123",
+    "displayname": "Carol User",
+    "password": "012345"
+  },
+  "David": {
+    "username": "123@david",
+    "displayname": "David User",
+    "password": "1234567"
   }
 }
