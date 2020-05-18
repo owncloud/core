@@ -67,14 +67,10 @@ class CommentsContext implements Context {
 			"POST",
 			$commentsPath,
 			['Content-Type' => 'application/json'],
-			'{"actorId":"Alice",
-			"actorDisplayName":"Alice",
-			"actorType":"users",
+			'{"actorType":"users",
 			"verb":"comment",
-			"message":"' . $content . '",
-			"creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
-			"objectType":"files"}',
-			"uploads"
+			"message":"' . $content . '"}',
+			"comments"
 		);
 		$this->featureContext->setResponse($response);
 		$responseHeaders = $response->getHeaders();
