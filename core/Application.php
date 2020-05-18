@@ -50,6 +50,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\Util;
+use OCP\License\ILicenseManager;
 
 /**
  * Class Application
@@ -119,7 +120,8 @@ class Application extends App {
 				$c->query('Session'),
 				$c->query('UserSession'),
 				$c->query('URLGenerator'),
-				$c->query('TwoFactorAuthManager')
+				$c->query('TwoFactorAuthManager'),
+				$c->query('ServerContainer')->getLicenseManager()
 			);
 		});
 		$container->registerService('TwoFactorChallengeController', static function (SimpleContainer $c) {
