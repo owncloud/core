@@ -233,6 +233,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
@@ -248,6 +249,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdminDeletesDoesNotTheseGroupsUsingTheWebUI(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
@@ -292,6 +294,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListedOnTheWebUI(
 		$shouldOrNot, TableNode $table
@@ -315,6 +318,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @Given the user/administrator has reloaded the users page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserReloadsTheUsersPage() {
 		$this->getSession()->reload();
@@ -672,9 +676,11 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $displayName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui($user, $displayName) {
 		$this->usersPage->setDisplayNameofUserTo($this->getSession(), $user, $displayName);
+		$this->featureContext->updateUserInCreatedUsersList($user, "displayname", $displayName);
 	}
 
 	/**
@@ -720,11 +726,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui($username, $email) {
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting('Show email address');
 		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);
+		$this->featureContext->updateUserInCreatedUsersList($username, "email", $email);
 	}
 
 	/**
