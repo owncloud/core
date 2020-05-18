@@ -131,7 +131,7 @@ class WebDavPropertiesContext implements Context {
 		}
 		$depth = 0;
 
-		$user = $this->featureContext->getActualUsername($this->featureContext->getCurrentUser());
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		if (\count($properties) > 1) {

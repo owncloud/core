@@ -488,7 +488,7 @@ class CommentsContext implements Context {
 			$expectedProperties,
 			["propertyName", "propertyValue"]
 		);
-		$user = \strtolower($this->featureContext->getActualUsername($user));
+		$user = $this->featureContext->getActualUsername($user);
 		$expectedProperties = $expectedProperties->getColumnsHash();
 		Assert::assertGreaterThanOrEqual(1, \count($expectedProperties));
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
