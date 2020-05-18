@@ -113,7 +113,7 @@ class LicenseManager implements ILicenseManager {
 	 *
 	 * @param bool $includeExtras if the 'apps' key is going to be returned
 	 */
-	public function getGracePeriod(bool $includeExtras = false) {
+	public function getGracePeriod(bool $includeExtras = false): ?array {
 		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);
 		if ($gracePeriod === null || !$this->isNowUnderGracePeriod($gracePeriod)) {
 			return null;
@@ -138,7 +138,7 @@ class LicenseManager implements ILicenseManager {
 	/**
 	 * @inheritDoc
 	 */
-	public function setLicenseString($licenseString) {
+	public function setLicenseString(?string $licenseString) {
 		// we can only set the ownCloud's license for now
 		if ($licenseString !== null) {
 			$this->licenseFetcher->setOwncloudLicense($licenseString);
@@ -188,12 +188,12 @@ class LicenseManager implements ILicenseManager {
 	 * Per-app licenses aren't implemented at the moment. This method will return the state
 	 * of the ownCloud's license for all apps (including public community apps)
 	 */
-	public function getLicenseStateFor(string $appid) {
+	public function getLicenseStateFor(string $appid): int {
 		$info = $this->getLicenseWithState($appid);
 		return $info[1];  // license state is the second item.
 	}
 
-	public function getLicenseMessageFor(string $appid, string $language = null) {
+	public function getLicenseMessageFor(string $appid, string $language = null): array {
 		$info = $this->getLicenseWithState($appid);
 		if ($info[0] === null) {
 			// no license
@@ -227,7 +227,7 @@ class LicenseManager implements ILicenseManager {
 	 * doesn't have a valid license, This way it's easier to keep track of what apps
 	 * have invalid license during the grace period
 	 */
-	public function checkLicenseFor(string $appid) {
+	public function checkLicenseFor(string $appid): bool {
 		$currentTime = $this->timeFactory->getTime();
 
 		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);

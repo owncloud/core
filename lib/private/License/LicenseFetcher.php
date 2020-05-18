@@ -40,7 +40,7 @@ class LicenseFetcher {
 	 * Get the license used by ownCloud
 	 * @return ILicense|null the license object or null if no license is found
 	 */
-	public function getOwncloudLicense() {
+	public function getOwncloudLicense(): ?ILicense {
 		$licenseKey = $this->config->getSystemValue('license-key', null);
 		if ($licenseKey === null) {
 			// check in the appconfig to see if it's there (for compatibility)

@@ -27,23 +27,24 @@ interface ILicense {
 	 * get the raw license string, such as "owncloud_28731_df987_234sf"
 	 * @return string
 	 */
-	public function getLicenseString();
+	public function getLicenseString(): string;
 
 	/**
 	 * Check if this license is valid. The license might be expired but valid
 	 * @return bool
 	 */
-	public function isValid();
+	public function isValid(): bool;
 
 	/**
 	 * Get the timestamp when this license expires. No matter if the license is
 	 * valid or not.
 	 * @return int the timestamp
 	 */
-	public function getExpirationTime();
+	public function getExpirationTime(): int;
 
 	/**
 	 * Get the type of the license, one of the LICENSE_TYPE_* constants
+	 * @return int
 	 */
-	public function getType();
+	public function getType(): int;
 }

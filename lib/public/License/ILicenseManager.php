@@ -48,7 +48,7 @@ interface ILicenseManager {
 	 * @return array|null array with "start" and "end" keys to define the grace period interval
 	 * or null if the grace period hasn't started or isn't defined
 	 */
-	public function getGracePeriod(bool $includeExtras = false);
+	public function getGracePeriod(bool $includeExtras = false): ?array;
 
 	/**
 	 * @since 10.5.0
@@ -62,7 +62,7 @@ interface ILicenseManager {
 	 * @param string|null $licenseString the new license or null if we don't want to change the
 	 * license but run the cleanup routines.
 	 */
-	public function setLicenseString($licenseString);
+	public function setLicenseString(?string $licenseString);
 
 	/**
 	 * @since 10.5.0
@@ -72,7 +72,7 @@ interface ILicenseManager {
 	 * @param string $appid the id of the app to get the license for
 	 * @return int one of the LICENSE_STATE_* constants
 	 */
-	public function getLicenseStateFor(string $appid);
+	public function getLicenseStateFor(string $appid): int;
 
 	/**
 	 * @since 10.5.0
@@ -94,7 +94,7 @@ interface ILicenseManager {
 	 * @param string $language the language to translate the messages to.
 	 * @return array containing the information as described above
 	 */
-	public function getLicenseMessageFor(string $appid, string $language = null);
+	public function getLicenseMessageFor(string $appid, string $language = null): array;
 
 	/**
 	 * @since 10.5.0
@@ -118,5 +118,5 @@ interface ILicenseManager {
 	 * @return bool true if there is a valid license or the grace period is active, false
 	 * otherwise.
 	 */
-	public function checkLicenseFor(string $appid);
+	public function checkLicenseFor(string $appid): bool;
 }

@@ -22,7 +22,7 @@ namespace OC\License;
 class BasicLicense implements ILicense {
 	private $rawLicense;
 	private $org;
-	private $date;
+	private $date = 0;  // to ensure an integer as expiration value
 	private $rawCodes;
 	private $codes;
 	private $checksum;
@@ -46,14 +46,14 @@ class BasicLicense implements ILicense {
 	/**
 	 * @inheritDoc
 	 */
-	public function getLicenseString() {
+	public function getLicenseString(): string {
 		return $this->rawLicense;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function isValid() {
+	public function isValid(): bool {
 		$dateString = \date('Ymd', $this->date);
 
 		$checksum = \sprintf('%x', \crc32(\strtolower($this->org) . 'zz' . \strtolower($this->rawCodes) . 'zz' . $dateString));
@@ -65,14 +65,14 @@ class BasicLicense implements ILicense {
 	/**
 	 * @inheritDoc
 	 */
-	public function getExpirationTime() {
+	public function getExpirationTime(): int {
 		return $this->date;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getType() {
+	public function getType(): int {
 		$hash = \strtoupper(\hash("crc32b", 'demo'));
 		if (\in_array($hash, $this->codes)) {
 			return ILicense::LICENSE_TYPE_DEMO;
