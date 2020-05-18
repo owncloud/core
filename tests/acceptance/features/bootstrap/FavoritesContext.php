@@ -203,6 +203,7 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function userListsFavoriteOfFolder($user, $folder, $limit = null) {
+		$renamedUser = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
 		$body
@@ -219,7 +220,7 @@ class FavoritesContext implements Context {
 
 		$body .= "	</oc:filter-files>";
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "REPORT", "/", null, $body,
+			$baseUrl, $renamedUser, $password, "REPORT", "/", null, $body,
 			$this->featureContext->getDavPathVersion()
 		);
 		$this->featureContext->setResponse($response);
@@ -339,10 +340,10 @@ class FavoritesContext implements Context {
 	public function changeFavStateOfAnElement(
 		$user, $path, $favOrUnfav
 	) {
-		$user = $this->featureContext->getActualUsername($user);
+		$renamedUser = $this->featureContext->getActualUsername($user);
 		return WebDavHelper::proppatch(
 			$this->featureContext->getBaseUrl(),
-			$user,
+			$renamedUser,
 			$this->featureContext->getPasswordForUser($user),
 			$path, 'favorite', $favOrUnfav, "oc='http://owncloud.org/ns'",
 			$this->featureContext->getDavPathVersion()

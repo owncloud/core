@@ -549,7 +549,7 @@ class WebDavPropertiesContext implements Context {
 		Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
-		$user = \strtolower($this->featureContext->getActualUsername($user));
+		$user = $this->featureContext->getActualUsername($user);
 		$value = $xmlPart[0]->__toString();
 		$pattern = $this->featureContext->substituteInLineCodes(
 			$pattern, $user, ['preg_quote' => ['/']]

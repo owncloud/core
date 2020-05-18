@@ -708,9 +708,10 @@ class TagsContext implements Context {
 	private function sendProppatchToSystemtags(
 		$user, $tagDisplayName, $propertyName, $propertyValue
 	) {
+		$renamedUser = $this->featureContext->getActualUsername($user);
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		$response = WebDavHelper::proppatch(
-			$this->featureContext->getBaseUrl(), $user,
+			$this->featureContext->getBaseUrl(), $renamedUser,
 			$this->featureContext->getPasswordForUser($user),
 			"/systemtags/$tagID", $propertyName, $propertyValue,
 			"oc='http://owncloud.org/ns'",
