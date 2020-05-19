@@ -61,7 +61,7 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
      * variable GOOGLE_APPLICATION_CREDENTIALS. Return null if
      * GOOGLE_APPLICATION_CREDENTIALS is not specified.
      *
-     * @return array JSON key | null
+     * @return array|null JSON key | null
      */
     public static function fromEnv()
     {
@@ -81,12 +81,13 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
      * Load a JSON key from a well known path.
      *
      * The well known path is OS dependent:
-     * - windows: %APPDATA%/gcloud/application_default_credentials.json
-     * - others: $HOME/.config/gcloud/application_default_credentials.json
      *
-     * If the file does not exists, this returns null.
+     * * windows: %APPDATA%/gcloud/application_default_credentials.json
+     * * others: $HOME/.config/gcloud/application_default_credentials.json
      *
-     * @return array JSON key | null
+     * If the file does not exist, this returns null.
+     *
+     * @return array|null JSON key | null
      */
     public static function fromWellKnownFile()
     {
@@ -108,9 +109,8 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
      * Create a new Credentials instance.
      *
      * @param string|array $scope the scope of the access request, expressed
-     *   either as an Array or as a space-delimited String.
+     *        either as an Array or as a space-delimited String.
      * @param array $jsonKey the JSON credentials.
-     *
      * @return ServiceAccountCredentials|UserRefreshCredentials
      */
     public static function makeCredentials($scope, array $jsonKey)
@@ -134,10 +134,9 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
      * Create an authorized HTTP Client from an instance of FetchAuthTokenInterface.
      *
      * @param FetchAuthTokenInterface $fetcher is used to fetch the auth token
-     * @param array $httpClientOptoins (optional) Array of request options to apply.
+     * @param array $httpClientOptions (optional) Array of request options to apply.
      * @param callable $httpHandler (optional) http client to fetch the token.
      * @param callable $tokenCallback (optional) function to be called when a new token is fetched.
-     *
      * @return \GuzzleHttp\Client
      */
     public static function makeHttpClient(
@@ -203,7 +202,6 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
      * @param array $metadata metadata hashmap
      * @param string $authUri optional auth uri
      * @param callable $httpHandler callback which delivers psr7 request
-     *
      * @return array updated metadata hashmap
      */
     public function updateMetadata(

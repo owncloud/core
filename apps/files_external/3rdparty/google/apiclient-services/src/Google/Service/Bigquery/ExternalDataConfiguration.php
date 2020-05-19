@@ -26,7 +26,6 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   protected $csvOptionsDataType = '';
   protected $googleSheetsOptionsType = 'Google_Service_Bigquery_GoogleSheetsOptions';
   protected $googleSheetsOptionsDataType = '';
-  public $hivePartitioningMode;
   protected $hivePartitioningOptionsType = 'Google_Service_Bigquery_HivePartitioningOptions';
   protected $hivePartitioningOptionsDataType = '';
   public $ignoreUnknownValues;
@@ -93,14 +92,6 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   public function getGoogleSheetsOptions()
   {
     return $this->googleSheetsOptions;
-  }
-  public function setHivePartitioningMode($hivePartitioningMode)
-  {
-    $this->hivePartitioningMode = $hivePartitioningMode;
-  }
-  public function getHivePartitioningMode()
-  {
-    return $this->hivePartitioningMode;
   }
   /**
    * @param Google_Service_Bigquery_HivePartitioningOptions

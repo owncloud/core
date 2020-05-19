@@ -44,7 +44,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to get or update LIA
    * settings.
    * @param array $optParams Optional parameters.
@@ -62,7 +62,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to retrieve
    * accessible Google My Business accounts.
    * @param array $optParams Optional parameters.
@@ -112,7 +112,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which GMB access is
    * requested.
    * @param string $gmbEmail The email of the Google My Business account.
@@ -131,7 +131,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account that manages the order. This
    * cannot be a multi-client account.
    * @param string $country The country for which inventory validation is
@@ -151,7 +151,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account that manages the order. This
    * cannot be a multi-client account.
    * @param string $contactEmail The email of the inventory verification contact.
@@ -175,7 +175,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to retrieve
    * accessible Google My Business accounts.
    * @param string $country The country for which the POS data provider is
@@ -198,7 +198,7 @@ class Google_Service_ShoppingContent_Resource_Liasettings extends Google_Service
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to get or update LIA
    * settings.
    * @param Google_Service_ShoppingContent_LiaSettings $postBody

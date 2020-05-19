@@ -30,9 +30,9 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * locations.
    *
    * Users should enable the Data Catalog API in the project identified by the
-   * `parent` parameter (see [Data Catalog Resource Project] (/data-
-   * catalog/docs/concepts/resource-project) for more information).
-   * (entryGroups.create)
+   * `parent` parameter (see [Data Catalog Resource Project]
+   * (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for
+   * more information). (entryGroups.create)
    *
    * @param string $parent Required. The name of the project this entry group is
    * in. Example:
@@ -58,9 +58,9 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
   /**
    * Deletes an EntryGroup. Only entry groups that do not contain entries can be
    * deleted. Users should enable the Data Catalog API in the project identified
-   * by the `name` parameter (see [Data Catalog Resource Project] (/data-
-   * catalog/docs/concepts/resource-project) for more information).
-   * (entryGroups.delete)
+   * by the `name` parameter (see [Data Catalog Resource Project]
+   * (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for
+   * more information). (entryGroups.delete)
    *
    * @param string $name Required. The name of the entry group. For example,
    * `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`.
@@ -130,11 +130,11 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * * projects/{project_id}/locations/{location}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. Token that specifies which page is
-   * requested. If empty, the first page is returned.
    * @opt_param int pageSize Optional. The maximum number of items to return.
    * Default is 10. Max limit is 1000. Throws an invalid argument for `page_size >
    * 1000`.
+   * @opt_param string pageToken Optional. Token that specifies which page is
+   * requested. If empty, the first page is returned.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListEntryGroupsResponse
    */
   public function listProjectsLocationsEntryGroups($parent, $optParams = array())
@@ -146,8 +146,8 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
   /**
    * Updates an EntryGroup. The user should enable the Data Catalog API in the
    * project identified by the `entry_group.name` parameter (see [Data Catalog
-   * Resource Project] (/data-catalog/docs/concepts/resource-project) for more
-   * information). (entryGroups.patch)
+   * Resource Project] (https://cloud.google.com/data-catalog/docs/concepts
+   * /resource-project) for more information). (entryGroups.patch)
    *
    * @param string $name The resource name of the entry group in URL format.
    * Example:

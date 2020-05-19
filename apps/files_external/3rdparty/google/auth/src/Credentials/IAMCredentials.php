@@ -43,11 +43,13 @@ class IAMCredentials
     {
         if (!is_string($selector)) {
             throw new \InvalidArgumentException(
-                'selector must be a string');
+                'selector must be a string'
+            );
         }
         if (!is_string($token)) {
             throw new \InvalidArgumentException(
-                'token must be a string');
+                'token must be a string'
+            );
         }
 
         $this->selector = $selector;

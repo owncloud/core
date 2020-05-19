@@ -116,10 +116,10 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
    * listed. Values are of the form `projects//instances/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Number of databases to be returned in the response.
-   * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListDatabasesResponse.
+   * @opt_param int pageSize Number of databases to be returned in the response.
+   * If 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_Spanner_ListDatabasesResponse
    */
   public function listProjectsInstancesDatabases($parent, $optParams = array())

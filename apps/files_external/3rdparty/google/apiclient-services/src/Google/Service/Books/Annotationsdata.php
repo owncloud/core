@@ -18,21 +18,21 @@
 class Google_Service_Books_Annotationsdata extends Google_Collection
 {
   protected $collection_key = 'items';
-  protected $itemsType = 'Google_Service_Books_Annotationdata';
+  protected $itemsType = 'Google_Service_Books_GeoAnnotationdata';
   protected $itemsDataType = 'array';
   public $kind;
   public $nextPageToken;
   public $totalItems;
 
   /**
-   * @param Google_Service_Books_Annotationdata
+   * @param Google_Service_Books_GeoAnnotationdata
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_Annotationdata
+   * @return Google_Service_Books_GeoAnnotationdata
    */
   public function getItems()
   {

@@ -1,0 +1,11 @@
+Change: Update icewind/smb from 3.2.3 to 3.2.4 and files_external dependencies
+
+This change updates the 3rd-party dependencies of files_external:
+  - Remove guzzlehttp/promises (v1.3.1)
+  - Update icewind/smb (v3.2.3 => v3.2.4)
+  - Update google/apiclient-services (v0.130 => v0.136)
+  - Update react/promise (v2.7.1 => v2.8.0)
+  - Update google/auth (v1.8.0 => v1.9.0)
+  - Update monolog/monolog (1.25.3 => 2.0.2)
+
+https://github.com/owncloud/core/pull/37415

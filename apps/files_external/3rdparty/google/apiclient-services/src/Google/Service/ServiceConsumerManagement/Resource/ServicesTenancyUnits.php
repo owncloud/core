@@ -171,11 +171,11 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * 'service.googleapis.com'.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Filter expression over tenancy resources field.
-   * Optional.
    * @opt_param string pageToken The continuation token, which is used to page
    * through large result sets. To get the next page of results, set this
    * parameter to the value of `nextPageToken` from the previous response.
+   * @opt_param string filter Filter expression over tenancy resources field.
+   * Optional.
    * @opt_param int pageSize The maximum number of results returned by this
    * request.
    * @return Google_Service_ServiceConsumerManagement_ListTenancyUnitsResponse

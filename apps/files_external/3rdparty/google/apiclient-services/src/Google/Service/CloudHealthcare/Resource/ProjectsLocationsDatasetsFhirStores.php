@@ -46,9 +46,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * De-identifies data from the source store and writes it to the destination
    * store. The metadata field type is OperationMetadata. If the request is
    * successful, the response field type is DeidentifyFhirStoreSummary. If errors
-   * occur, error is set. Error details are also logged to Stackdriver (see
-   * [Viewing logs](/healthcare/docs/how-tos/stackdriver-logging)).
-   * (fhirStores.deidentify)
+   * occur, error is set. Error details are also logged to Cloud Logging (see
+   * [Viewing logs](/healthcare/docs/how-tos/logging)). (fhirStores.deidentify)
    *
    * @param string $sourceStore Source FHIR store resource name. For example, `pro
    * jects/{project_id}/locations/{location_id}/datasets/{dataset_id}/fhirStores/{
@@ -84,10 +83,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * export by calling GetOperation.
    *
    * Immediate fatal errors appear in the error field, errors are also logged to
-   * Stackdriver (see [Viewing logs](/healthcare/docs/how-tos/stackdriver-
-   * logging)). Otherwise, when the operation finishes, a detailed response of
-   * type ExportResourcesResponse is returned in the response field. The metadata
-   * field type for this operation is OperationMetadata. (fhirStores.export)
+   * Cloud Logging (see [Viewing logs](/healthcare/docs/how-tos/logging)).
+   * Otherwise, when the operation finishes, a detailed response of type
+   * ExportResourcesResponse is returned in the response field. The metadata field
+   * type for this operation is OperationMetadata. (fhirStores.export)
    *
    * @param string $name The name of the FHIR store to export resource from. The
    * name should be in the format of `projects/{project_id}/locations/{location_id
@@ -133,6 +132,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_CloudHealthcare_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -160,8 +163,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * some resources fail to be imported, the FHIR store might be left in a state
    * that violates referential integrity.
    *
-   * The import process does not trigger PubSub notification or BigQuery streaming
-   * update, regardless of how those are configured on the FHIR store.
+   * The import process does not trigger Pub/Sub notification or BigQuery
+   * streaming update, regardless of how those are configured on the FHIR store.
    *
    * If a resource with the specified ID already exists, the most recent version
    * of the resource is overwritten without creating a new historical version,
@@ -199,10 +202,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * import by calling GetOperation.
    *
    * Immediate fatal errors appear in the error field, errors are also logged to
-   * Stackdriver (see [Viewing logs](/healthcare/docs/how-tos/stackdriver-
-   * logging)). Otherwise, when the operation finishes, a detailed response of
-   * type ImportResourcesResponse is returned in the response field. The metadata
-   * field type for this operation is OperationMetadata. (fhirStores.import)
+   * Cloud Logging (see [Viewing logs](/healthcare/docs/how-tos/logging)).
+   * Otherwise, when the operation finishes, a detailed response of type
+   * ImportResourcesResponse is returned in the response field. The metadata field
+   * type for this operation is OperationMetadata. (fhirStores.import)
    *
    * @param string $name The name of the FHIR store to import FHIR resources to.
    * The name should be in the format of `projects/{project_id}/locations/{locatio
@@ -224,14 +227,14 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * @param string $parent Name of the dataset.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Restricts stores returned to those matching a
-   * filter. Syntax:
-   * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
-   * Only filtering on labels is supported, for example `labels.key=value`.
    * @opt_param string pageToken The next_page_token value returned from the
    * previous List request, if any.
    * @opt_param int pageSize Limit on the number of FHIR stores to return in a
    * single response.  If zero the default page size of 100 is used.
+   * @opt_param string filter Restricts stores returned to those matching a
+   * filter. Syntax:
+   * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
+   * Only filtering on labels is supported, for example `labels.key=value`.
    * @return Google_Service_CloudHealthcare_ListFhirStoresResponse
    */
   public function listProjectsLocationsDatasetsFhirStores($parent, $optParams = array())
@@ -260,83 +263,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
     return $this->call('patch', array($params), "Google_Service_CloudHealthcare_FhirStore");
   }
   /**
-   * Searches for resources in the given FHIR store according to criteria
-   * specified as query parameters.
-   *
-   * Implements the FHIR standard search interaction
-   * ([DSTU2](http://hl7.org/implement/standards/fhir/DSTU2/http.html#search),
-   * [STU3](http://hl7.org/implement/standards/fhir/STU3/http.html#search),
-   * [R4](http://hl7.org/implement/standards/fhir/R4/http.html#search)) using the
-   * search semantics described in the FHIR Search specification
-   * ([DSTU2](http://hl7.org/implement/standards/fhir/DSTU2/search.html),
-   * [STU3](http://hl7.org/implement/standards/fhir/STU3/search.html),
-   * [R4](http://hl7.org/implement/standards/fhir/R4/search.html)).
-   *
-   * Supports three methods of search defined by the specification:
-   *
-   * *  `GET [base]?[parameters]` to search across all resources. *  `GET
-   * [base]/[type]?[parameters]` to search resources of a specified type. *  `POST
-   * [base]/[type]/_search?[parameters]` as an alternate form having the same
-   * semantics as the `GET` method.
-   *
-   * The `GET` methods do not support compartment searches. The `POST` method does
-   * not support `application/x-www-form-urlencoded` search parameters.
-   *
-   * On success, the response body will contain a JSON-encoded representation of a
-   * `Bundle` resource of type `searchset`, containing the results of the search.
-   * Errors generated by the FHIR store will contain a JSON-encoded
-   * `OperationOutcome` resource describing the reason for the error. If the
-   * request cannot be mapped to a valid API method on a FHIR store, a generic GCP
-   * error might be returned instead.
-   *
-   * The server's capability statement, retrieved through capabilities, indicates
-   * what search parameters are supported on each FHIR resource. A list of all
-   * search parameters defined by the specification can be found in the FHIR
-   * Search Parameter Registry
-   * ([STU3](http://hl7.org/implement/standards/fhir/STU3/searchparameter-
-   * registry.html), [R4](http://hl7.org/implement/standards/fhir/R4
-   * /searchparameter-registry.html)). FHIR search parameters for DSTU2 can be
-   * found on each resource's definition page.
-   *
-   * Supported search modifiers: `:missing`, `:exact`, `:contains`, `:text`,
-   * `:in`, `:not-in`, `:above`, `:below`, `:[type]`, `:not`, and `:recurse`.
-   *
-   * Supported search result parameters: `_sort`, `_count`, `_include`,
-   * `_revinclude`, `_summary=text`, `_summary=data`, and `_elements`.
-   *
-   * The maximum number of search results returned defaults to 100, which can be
-   * overridden by the `_count` parameter up to a maximum limit of 1000. If there
-   * are additional results, the returned `Bundle` will contain pagination links.
-   *
-   * Resources with a total size larger than 5MB or a field count larger than
-   * 50,000 might not be fully searchable as the server might trim its generated
-   * search index in those cases.
-   *
-   * Note: FHIR resources are indexed asynchronously, so there might be a slight
-   * delay between the time a resource is created or changes and when the change
-   * is reflected in search results. (fhirStores.search)
-   *
-   * @param string $parent Name of the FHIR store to retrieve resources from.
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string resourceType The FHIR resource type to search, such as
-   * Patient or Observation. For a complete list, see the FHIR Resource Index
-   * ([DSTU2](http://hl7.org/implement/standards/fhir/DSTU2/resourcelist.html),
-   * [STU3](http://hl7.org/implement/standards/fhir/STU3/resourcelist.html),
-   * [R4](http://hl7.org/implement/standards/fhir/R4/resourcelist.html)).
-   * @return Google_Service_CloudHealthcare_HttpBody
-   */
-  public function search($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('search', array($params), "Google_Service_CloudHealthcare_HttpBody");
-  }
-  /**
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (fhirStores.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -355,7 +285,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

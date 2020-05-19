@@ -27,6 +27,8 @@ class Google_Service_AdExchangeBuyerII_BidMetricsRow extends Google_Model
   protected $impressionsWonDataType = '';
   protected $measurableImpressionsType = 'Google_Service_AdExchangeBuyerII_MetricValue';
   protected $measurableImpressionsDataType = '';
+  protected $reachedQueriesType = 'Google_Service_AdExchangeBuyerII_MetricValue';
+  protected $reachedQueriesDataType = '';
   protected $rowDimensionsType = 'Google_Service_AdExchangeBuyerII_RowDimensions';
   protected $rowDimensionsDataType = '';
   protected $viewableImpressionsType = 'Google_Service_AdExchangeBuyerII_MetricValue';
@@ -101,6 +103,20 @@ class Google_Service_AdExchangeBuyerII_BidMetricsRow extends Google_Model
   public function getMeasurableImpressions()
   {
     return $this->measurableImpressions;
+  }
+  /**
+   * @param Google_Service_AdExchangeBuyerII_MetricValue
+   */
+  public function setReachedQueries(Google_Service_AdExchangeBuyerII_MetricValue $reachedQueries)
+  {
+    $this->reachedQueries = $reachedQueries;
+  }
+  /**
+   * @return Google_Service_AdExchangeBuyerII_MetricValue
+   */
+  public function getReachedQueries()
+  {
+    return $this->reachedQueries;
   }
   /**
    * @param Google_Service_AdExchangeBuyerII_RowDimensions

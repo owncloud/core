@@ -76,20 +76,4 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystores extends 
     $params = array_merge($params, $optParams);
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Keystore");
   }
-  /**
-   * Lists all keystores and truststores.
-   * (keystores.listOrganizationsEnvironmentsKeystores)
-   *
-   * @param string $parent Required. The name of the environment in which list
-   * keystores. Must be of the form
-   * `organizations/{organization}/environments/{environment}`.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsKeystores($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
 }

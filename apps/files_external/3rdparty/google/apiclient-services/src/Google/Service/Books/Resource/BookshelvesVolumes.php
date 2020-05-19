@@ -33,12 +33,12 @@ class Google_Service_Books_Resource_BookshelvesVolumes extends Google_Service_Re
    * @param string $shelf ID of bookshelf to retrieve volumes.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string maxResults Maximum number of results to return
-   * @opt_param bool showPreorders Set to true to show pre-ordered books. Defaults
-   * to false.
-   * @opt_param string source String to identify the originator of this request.
    * @opt_param string startIndex Index of the first element to return (starts at
    * 0)
+   * @opt_param string maxResults Maximum number of results to return
+   * @opt_param string source String to identify the originator of this request.
+   * @opt_param bool showPreorders Set to true to show pre-ordered books. Defaults
+   * to false.
    * @return Google_Service_Books_Volumes
    */
   public function listBookshelvesVolumes($userId, $shelf, $optParams = array())

@@ -93,10 +93,13 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
     return $this->call('list', array($params), "Google_Service_BigQueryReservation_ListCapacityCommitmentsResponse");
   }
   /**
-   * Merges capacity commitments of the same plan into one. Resulting capacity
-   * commitment has the longer commitment_end_time out of the two. Attempting to
-   * merge capacity commitments of different plan will fail with the error code
-   * `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.merge)
+   * Merges capacity commitments of the same plan into a single commitment.
+   *
+   * The resulting capacity commitment has the greater commitment_end_time out of
+   * the to-be-merged capacity commitments.
+   *
+   * Attempting to merge capacity commitments of different plan will fail with the
+   * error code `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.merge)
    *
    * @param string $parent Parent resource that identifies admin project and
    * location e.g., projects/myproject/locations/us
@@ -113,13 +116,14 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
   /**
    * Updates an existing capacity commitment.
    *
-   * Only plan and renewal_plan fields can be updated. Plan can only be changed to
-   * a plan of a longer commitment period. Attempting to change to a plan with
-   * shorter commitment period will fail with the error code
-   * `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.patch)
+   * Only `plan` and `renewal_plan` fields can be updated.
+   *
+   * Plan can only be changed to a plan of a longer commitment period. Attempting
+   * to change to a plan with shorter commitment period will fail with the error
+   * code `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.patch)
    *
    * @param string $name Output only. The resource name of the capacity
-   * commitment, e.g.,    projects/myproject/locations/US/capacityCommitments/123
+   * commitment, e.g., `projects/myproject/locations/US/capacityCommitments/123`
    * @param Google_Service_BigQueryReservation_CapacityCommitment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -135,10 +139,14 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
   }
   /**
    * Splits capacity commitment to two commitments of the same plan and
-   * commitment_end_time. A common use case to do that is to perform a downgrade
-   * e.g., in order to downgrade from 10000 slots to 8000, one might split 10000
-   * capacity commitment to 2000 and 8000, change the plan of the first one to
-   * flex and then delete it. (capacityCommitments.split)
+   * `commitment_end_time`.
+   *
+   * A common use case is to enable downgrading commitments.
+   *
+   * For example, in order to downgrade from 10000 slots to 8000, you might split
+   * a 10000 capacity commitment into commitments of 2000 and 8000. Then, you
+   * would change the plan of the first one to `FLEX` and then delete it.
+   * (capacityCommitments.split)
    *
    * @param string $name Required. The resource name e.g.,:
    * projects/myproject/locations/US/capacityCommitments/123

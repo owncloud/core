@@ -76,10 +76,10 @@ class Google_Service_GamesConfiguration_Resource_LeaderboardConfigurations exten
    * developer console.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param int maxResults The maximum number of resource configurations to
    * return in the response, used for paging. For any response, the actual number
-   * of resources returned may be less than the specified maxResults.
-   * @opt_param string pageToken The token returned by the previous request.
+   * of resources returned may be less than the specified `maxResults`.
    * @return Google_Service_GamesConfiguration_LeaderboardConfigurationListResponse
    */
   public function listLeaderboardConfigurations($applicationId, $optParams = array())

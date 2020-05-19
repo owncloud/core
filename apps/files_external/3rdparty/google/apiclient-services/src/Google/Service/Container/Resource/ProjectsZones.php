@@ -33,12 +33,13 @@ class Google_Service_Container_Resource_ProjectsZones extends Google_Service_Res
    * ID or project number](https://support.google.com/cloud/answer/6158840). This
    * field has been deprecated and replaced by the name field.
    * @param string $zone Deprecated. The name of the Google Compute Engine
-   * [zone](/compute/docs/zones#available) to return operations for. This field
-   * has been deprecated and replaced by the name field.
+   * [zone](https://cloud.google.com/compute/docs/zones#available) to return
+   * operations for. This field has been deprecated and replaced by the name
+   * field.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string name The name (project and location) of the server config
-   * to get, specified in the format 'projects/locations'.
+   * to get, specified in the format `projects/locations`.
    * @return Google_Service_Container_ServerConfig
    */
   public function getServerconfig($projectId, $zone, $optParams = array())

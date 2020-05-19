@@ -19,6 +19,7 @@ class Google_Service_CloudDebugger_Debuggee extends Google_Collection
 {
   protected $collection_key = 'sourceContexts';
   public $agentVersion;
+  public $canaryMode;
   public $description;
   protected $extSourceContextsType = 'Google_Service_CloudDebugger_ExtendedSourceContext';
   protected $extSourceContextsDataType = 'array';
@@ -40,6 +41,14 @@ class Google_Service_CloudDebugger_Debuggee extends Google_Collection
   public function getAgentVersion()
   {
     return $this->agentVersion;
+  }
+  public function setCanaryMode($canaryMode)
+  {
+    $this->canaryMode = $canaryMode;
+  }
+  public function getCanaryMode()
+  {
+    return $this->canaryMode;
   }
   public function setDescription($description)
   {

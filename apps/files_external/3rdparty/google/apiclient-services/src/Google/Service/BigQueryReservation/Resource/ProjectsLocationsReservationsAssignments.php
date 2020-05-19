@@ -26,25 +26,37 @@
 class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsAssignments extends Google_Service_Resource
 {
   /**
-   * Creates an object which allows the given project to submit jobs of a certain
-   * type using slots from the specified reservation. Currently a resource
-   * (project, folder, organization) can only have one assignment per {job_type,
-   * location}, and that reservation will be used for all jobs of the matching
-   * type. Within the organization, different assignments can be created on
-   * projects, folders or organization level. During query execution, the
-   * assignment is looked up at the project, folder and organization levels in
-   * that order. The first assignment found is applied to the query. When creating
-   * assignments, it does not matter if other assignments exist at higher levels.
-   * E.g: organizationA contains project1, project2. Assignments for
-   * organizationA, project1 and project2 could all be created, mapping to the
-   * same or different reservations. Returns `google.rpc.Code.PERMISSION_DENIED`
-   * if user does not have 'bigquery.admin' permissions on the project using the
-   * reservation and the project that owns this reservation. Returns
-   * `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment does not
-   * match location of the reservation. (assignments.create)
+   * Creates an assignment object which allows the given project to submit jobs of
+   * a certain type using slots from the specified reservation.
+   *
+   * Currently a resource (project, folder, organization) can only have one
+   * assignment per each (job_type, location) combination, and that reservation
+   * will be used for all jobs of the matching type.
+   *
+   * Different assignments can be created on different levels of the projects,
+   * folders or organization hierarchy.  During query execution, the assignment is
+   * looked up at the project, folder and organization levels in that order. The
+   * first assignment found is applied to the query.
+   *
+   * When creating assignments, it does not matter if other assignments exist at
+   * higher levels.
+   *
+   * Example:
+   *
+   * * The organization `organizationA` contains two projects, `project1`   and
+   * `project2`. * Assignments for all three entities (`organizationA`,
+   * `project1`, and   `project2`) could all be created and mapped to the same or
+   * different   reservations.
+   *
+   * Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have
+   * 'bigquery.admin' permissions on the project using the reservation and the
+   * project that owns this reservation.
+   *
+   * Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment
+   * does not match location of the reservation. (assignments.create)
    *
    * @param string $parent Required. The parent resource name of the assignment
-   * E.g.: projects/myproject/locations/US/reservations/team1-prod
+   * E.g. `projects/myproject/locations/US/reservations/team1-prod`
    * @param Google_Service_BigQueryReservation_Assignment $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_Assignment
@@ -56,15 +68,22 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsA
     return $this->call('create', array($params), "Google_Service_BigQueryReservation_Assignment");
   }
   /**
-   * Deletes a assignment. No expansion will happen. E.g: organizationA contains
-   * project1 and project2. Reservation res1 exists. CreateAssignment was invoked
-   * previously and following assignments were created explicitly:       Then
-   * deletion of  won't affect . After deletion of , queries from project1 will
-   * still use res1, while queries from project2 will use on-demand mode.
+   * Deletes a assignment. No expansion will happen.
+   *
+   * Example:
+   *
+   * * Organization `organizationA` contains two projects, `project1` and
+   * `project2`. * Reservation `res1` exists and was created previously. *
+   * CreateAssignment was used previously to define the following   associations
+   * between entities and reservations: ``   and ``
+   *
+   * In this example, deletion of the `` assignment won't affect the other
+   * assignment ``. After said deletion, queries from `project1` will still use
+   * `res1` while queries from `project2` will switch to use on-demand mode.
    * (assignments.delete)
    *
-   * @param string $name Required. Name of the resource, e.g.:
-   * projects/myproject/locations/US/reservations/team1-prod/assignments/123
+   * @param string $name Required. Name of the resource, e.g.
+   * `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_BigqueryreservationEmpty
    */
@@ -75,24 +94,38 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsA
     return $this->call('delete', array($params), "Google_Service_BigQueryReservation_BigqueryreservationEmpty");
   }
   /**
-   * Lists assignments. Only explicitly created assignments will be returned. E.g:
-   * organizationA contains project1 and project2. Reservation res1 exists.
-   * CreateAssignment was invoked previously and following assignments were
-   * created explicitly:       Then this API will just return the above two
-   * assignments for reservation res1, and no expansion/merge will happen.
-   * Wildcard "-" can be used for reservations in the request. In that case all
-   * assignments belongs to the specified project and location will be listed.
-   * Note "-" cannot be used for projects nor locations.
+   * Lists assignments.
+   *
+   * Only explicitly created assignments will be returned.
+   *
+   * Example:
+   *
+   * * Organization `organizationA` contains two projects, `project1` and
+   * `project2`. * Reservation `res1` exists and was created previously. *
+   * CreateAssignment was used previously to define the following   associations
+   * between entities and reservations: ``   and ``
+   *
+   * In this example, ListAssignments will just return the above two assignments
+   * for reservation `res1`, and no expansion/merge will happen.
+   *
+   * The wildcard "-" can be used for reservations in the request. In that case
+   * all assignments belongs to the specified project and location will be listed.
+   *
+   * **Note** "-" cannot be used for projects nor locations.
    * (assignments.listProjectsLocationsReservationsAssignments)
    *
    * @param string $parent Required. The parent resource name e.g.:
-   * projects/myproject/locations/US/reservations/team1-prod Or:
-   * projects/myproject/locations/US/reservations/-
+   *
+   * `projects/myproject/locations/US/reservations/team1-prod`
+   *
+   * Or:
+   *
+   * `projects/myproject/locations/US/reservations/-`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return.
+   * @opt_param int pageSize The maximum number of items to return per page.
    * @return Google_Service_BigQueryReservation_ListAssignmentsResponse
    */
   public function listProjectsLocationsReservationsAssignments($parent, $optParams = array())
@@ -102,15 +135,14 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsA
     return $this->call('list', array($params), "Google_Service_BigQueryReservation_ListAssignmentsResponse");
   }
   /**
-   * Moves a assignment under a new reservation. Customers can do this by deleting
-   * the existing assignment followed by creating another assignment under the new
-   * reservation, but this method provides a transactional way to do so, to make
-   * sure the assignee always has an associated reservation. Without the method
-   * customers might see some queries run on-demand which might be unexpected.
-   * (assignments.move)
+   * Moves an assignment under a new reservation.
    *
-   * @param string $name Required. The resource name of the assignment, e.g.:
-   * projects/myproject/locations/US/reservations/team1-prod/assignments/123
+   * This differs from removing an existing assignment and recreating a new one by
+   * providing a transactional change that ensures an assignee always has an
+   * associated reservation. (assignments.move)
+   *
+   * @param string $name Required. The resource name of the assignment, e.g.
+   * `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
    * @param Google_Service_BigQueryReservation_MoveAssignmentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_Assignment

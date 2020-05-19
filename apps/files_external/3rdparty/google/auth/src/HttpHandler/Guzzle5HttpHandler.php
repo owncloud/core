@@ -45,7 +45,6 @@ class Guzzle5HttpHandler
      *
      * @param RequestInterface $request
      * @param array $options
-     *
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $request, array $options = [])
@@ -62,7 +61,6 @@ class Guzzle5HttpHandler
      *
      * @param RequestInterface $request
      * @param array $options
-     *
      * @return Promise
      */
     public function async(RequestInterface $request, array $options = [])

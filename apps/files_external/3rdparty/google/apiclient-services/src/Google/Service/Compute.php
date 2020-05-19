@@ -7261,6 +7261,26 @@ class Google_Service_Compute extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'getIamPolicy' => array(
+              'path' => '{project}/regions/{region}/disks/{resource}/getIamPolicy',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'project' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'region' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'insert' => array(
               'path' => '{project}/regions/{region}/disks',
               'httpMethod' => 'POST',
@@ -7361,6 +7381,26 @@ class Google_Service_Compute extends Google_Service
                 'requestId' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),'setIamPolicy' => array(
+              'path' => '{project}/regions/{region}/disks/{resource}/setIamPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'project' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'region' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),'setLabels' => array(
