@@ -210,8 +210,6 @@ class NotificationsCoreContext implements Context {
 	public function matchNotification(
 		$notification, $user, $aboutUser, $regex, $formData
 	) {
-		$user = $this->featureContext->getActualUsername($user);
-
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
 			$notificationId = \reset($lastNotifications);
@@ -224,6 +222,7 @@ class NotificationsCoreContext implements Context {
 			'GET',
 			"/apps/notifications/api/v1/notifications/$notificationId?format=json"
 		);
+
 		Assert::assertEquals(
 			200,
 			$this->featureContext->getResponse()->getStatusCode(),
@@ -244,13 +243,8 @@ class NotificationsCoreContext implements Context {
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(
-					$notification['regex'], ['preg_quote' => ['/']]
+					$notification['regex'], $aboutUser, ['preg_quote' => ['/']]
 				);
-				if ($aboutUser !== null) {
-					$value = $this->featureContext->substituteInLineCodes(
-						$notification['regex'], $aboutUser
-					);
-				}
 				Assert::assertNotFalse(
 					(bool) \preg_match($value, $response['ocs']['data'][$notification['key']]),
 					"'$value' does not match '{$response['ocs']['data'][$notification['key']]}'"

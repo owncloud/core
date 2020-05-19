@@ -135,10 +135,10 @@ class OCSContext implements Context {
 		}
 
 		if ($user !== 'UNAUTHORIZED_USER') {
-			$user = $this->featureContext->getActualUsername($user);
 			if ($password === null) {
 				$password = $this->featureContext->getPasswordForUser($user);
 			}
+			$user = $this->featureContext->getActualUsername($user);
 		} else {
 			$user = null;
 			$password = null;
