@@ -24,7 +24,7 @@ Feature: Display notifications when receiving a share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
-#    Then user "Brian" should have 2 notifications
+    Then user "Brian" should have 2 notifications
     And the last notification of user "Brian" should match these regular expressions about user "Alice"
       | key         | regex                                           |
       | app         | /^files_sharing$/                               |

@@ -1975,12 +1975,36 @@ trait Sharing {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {
-			if (\in_array($field, ["share_with", "uid_owner", "uid_file_owner"])) {
+			if (\in_array($field, ["owner", "user"])) {
 				$value = $this->getActualUsername($value);
-			} elseif (\in_array($field, ["displayname_file_owner", "displayname_owner"])) {
-				$value = $this->getDisplayNameForUser($bodyRows["uid_owner"]);
-			} elseif ($field === "share_with_displayname") {
-				$value = $this->getDisplayNameForUser($bodyRows["share_with"]);
+			}
+			$value = $this->replaceValuesFromTable($field, $value);
+			Assert::assertTrue(
+				$this->isFieldInResponse($field, $value),
+				"$field doesn't have value '$value'"
+			);
+		}
+	}
+
+	/**
+	 * @Then the fields of the last response to user :sharer from server :serverSharer sharing with user :sharee from server :serverSharee should include
+	 *
+	 * @param string $sharer
+	 * @param string $serverSharer
+	 * @param string $sharee
+	 * @param string $serverSharee
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function checkFieldsOfLastResponseToUser($sharer, $serverSharer, $sharee, $serverSharee, $body) {
+		$this->verifyTableNodeColumnsCount($body, 2);
+		$bodyRows = $body->getRowsHash();
+		foreach ($bodyRows as $field => $value) {
+			if (\in_array($field, ["displayname_owner", "displayname_file_owner", "uid_owner", "uid_file_owner"])) {
+				$value = $this->substituteInLineCodes($value, $sharer);
+			} elseif (\in_array($field, ["share_with", "share_with_displayname"])) {
+				$value = $this->substituteInLineCodes($value, $sharee);
 			}
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(

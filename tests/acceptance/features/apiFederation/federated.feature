@@ -13,7 +13,7 @@ Feature: federated
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" from server "Local" sharing with user "Alice" from server "REMOTE" should include
       | id                     | A_NUMBER          |
       | item_type              | file              |
       | item_source            | A_NUMBER          |
@@ -24,11 +24,11 @@ Feature: federated
       | stime                  | A_NUMBER          |
       | storage                | A_NUMBER          |
       | mail_send              | 0                 |
-      | uid_owner              | Brian             |
+      | uid_owner              | %username%        |
       | file_parent            | A_NUMBER          |
-      | displayname_owner      | Brian Murphy      |
-      | share_with             | Alice@REMOTE      |
-      | share_with_displayname | Alice@REMOTE      |
+      | displayname_owner      | %displayname%     |
+      | share_with             | %username%@REMOTE |
+      | share_with_displayname | %username%@REMOTE |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
@@ -40,7 +40,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "/textfile0.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" from server "REMOTE" sharing with user "Brian" from server "LOCAL" should include
       | id                     | A_NUMBER          |
       | item_type              | file              |
       | item_source            | A_NUMBER          |
@@ -51,11 +51,11 @@ Feature: federated
       | stime                  | A_NUMBER          |
       | storage                | A_NUMBER          |
       | mail_send              | 0                 |
-      | uid_owner              | Alice             |
+      | uid_owner              | %username%        |
       | file_parent            | A_NUMBER          |
-      | displayname_owner      | Alice Hansen      |
-      | share_with             | Brian@LOCAL       |
-      | share_with_displayname | Brian@LOCAL       |
+      | displayname_owner      | %displayname%     |
+      | share_with             | %username%@LOCAL  |
+      | share_with_displayname | %username%@LOCAL  |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
@@ -172,7 +172,7 @@ Feature: federated
       | permissions | share,read,update  |
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" from server "LOCAL" sharing with user "Carol" from server "LOCAL" should include
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
@@ -183,11 +183,11 @@ Feature: federated
       | stime                  | A_NUMBER           |
       | storage                | A_NUMBER           |
       | mail_send              | 0                  |
-      | uid_owner              | Brian              |
+      | uid_owner              | %username%         |
       | file_parent            | A_NUMBER           |
-      | displayname_owner      | Brian Murphy       |
-      | share_with             | Carol              |
-      | share_with_displayname | Carol King         |
+      | displayname_owner      | %displayname%      |
+      | share_with             | %username%         |
+      | share_with_displayname | %displayname%      |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
