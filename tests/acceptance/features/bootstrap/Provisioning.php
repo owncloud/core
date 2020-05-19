@@ -3976,13 +3976,13 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user => $userData) {
-			if ($userData["shouldExist"]) {
+			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
 				$this->deleteUser($user);
 			}
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
-			if ($userData["shouldExist"]) {
+			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
 				$this->deleteUser($remoteUser);
 			}
 		}
