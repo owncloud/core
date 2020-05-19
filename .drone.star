@@ -1066,7 +1066,7 @@ def javascript():
 	if params['coverage']:
 		result['steps'].append({
 			'name': 'coverage-upload',
-			'image': 'plugins/codecov:2',
+			'image': 'plugins/codecov:latest',
 			'pull': 'always',
 			'environment': {
 				'CODECOV_TOKEN': {
@@ -1239,7 +1239,7 @@ def phptests(testType):
 					if params['coverage']:
 						result['steps'].append({
 							'name': 'coverage-upload',
-							'image': 'plugins/codecov:2',
+							'image': 'plugins/codecov:latest',
 							'pull': 'always',
 							'environment': {
 								'CODECOV_TOKEN': {
