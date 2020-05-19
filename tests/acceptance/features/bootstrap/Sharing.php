@@ -1395,8 +1395,6 @@ trait Sharing {
 	public function userHasSharedFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$user = $this->getActualUsername($user);
-		$group = $this->getActualUsername($group);
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user, $filepath, $group, $permissions, true
 		);
