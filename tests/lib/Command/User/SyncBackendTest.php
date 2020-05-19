@@ -213,7 +213,7 @@ class SyncBackendTest extends TestCase {
 
 	public function executeProvider() {
 		return [
-			['foo', 'Syncing foo ...'],
+			['foo', 'Searching for foo ...'],
 			[null, 'Analysing known accounts ...'],
 		];
 	}

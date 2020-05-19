@@ -24,7 +24,7 @@ namespace OC\Core\Command\User;
 
 use OC\User\Account;
 use OC\User\AccountMapper;
-use OC\User\Sync\AllUsersIterator;
+use OC\User\Sync\BackendUsersIterator;
 use OC\User\Sync\SeenUsersIterator;
 use OC\User\SyncService;
 use OCP\IConfig;
@@ -214,7 +214,7 @@ class SyncBackend extends Command {
 			$iterator = new SeenUsersIterator($this->accountMapper, $backendClass);
 		} else {
 			$output->writeln("Inserting new and updating all known users from $backendClass ...");
-			$iterator = new AllUsersIterator($backend);
+			$iterator = new BackendUsersIterator($backend);
 		}
 
 		$p = new ProgressBar($output);
@@ -251,10 +251,11 @@ class SyncBackend extends Command {
 		$uid,
 		$missingAccountsAction
 	) {
-		$output->writeln("Syncing $uid ...");
-		$userUids = $backend->getUsers('', null);
+		$output->writeln("Searching for $uid ...");
+
+		$iterator = new BackendUsersIterator($backend, $uid);
 		$userToSync = null;
-		foreach ($userUids as $userUid) {
+		foreach ($iterator as $userUid) {
 			if ($userUid === $uid) {
 				if ($userToSync === null) {
 					$userToSync = $userUid;
@@ -268,9 +269,11 @@ class SyncBackend extends Command {
 
 		if ($userToSync !== null) {
 			// Run the sync using the internal username if mapped
+			$output->writeln("Syncing $uid ...");
 			$syncService->run($backend, new \ArrayIterator([$userToSync]));
 		} else {
 			// Not found
+			$output->writeln("Exact match for user $uid not found in the backend.");
 			$this->handleRemovedUsers([$uid => $dummy], $input, $output, $missingAccountsAction);
 		}
 

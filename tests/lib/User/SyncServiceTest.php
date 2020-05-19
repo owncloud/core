@@ -26,7 +26,7 @@ namespace Test\User;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Database;
-use OC\User\Sync\AllUsersIterator;
+use OC\User\Sync\BackendUsersIterator;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -119,7 +119,7 @@ class SyncServiceTest extends TestCase {
 		// Ignore state flag
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend));
+		$s->run($backend, new BackendUsersIterator($backend));
 
 		static::invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
@@ -142,7 +142,7 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(1))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend));
+		$s->run($backend, new BackendUsersIterator($backend));
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
