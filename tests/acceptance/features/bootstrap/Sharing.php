@@ -1965,18 +1965,22 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then the fields of the last response should include
+	 * @Then the fields of the last response to user :user should include
 	 *
+	 * @param string $user
 	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
-	public function checkFields($body) {
+	public function checkFields($user, $body) {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {
-			if (\in_array($field, ["owner", "user"])) {
+			if (\in_array($field, ["owner", "user", "uid_owner", "uid_file_owner", "share_with"])) {
 				$value = $this->getActualUsername($value);
+			}
+			if (\in_array($field, ["displayname_file_owner", "displayname_owner"])) {
+				$value = $this->substituteInLineCodes($value, $user);
 			}
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
@@ -1987,17 +1991,15 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then the fields of the last response to user :sharer from server :serverSharer sharing with user :sharee from server :serverSharee should include
+	 * @Then the fields of the last response to user :sharer sharing with user :sharee should include
 	 *
 	 * @param string $sharer
-	 * @param string $serverSharer
 	 * @param string $sharee
-	 * @param string $serverSharee
 	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
-	public function checkFieldsOfLastResponseToUser($sharer, $serverSharer, $sharee, $serverSharee, $body) {
+	public function checkFieldsOfLastResponseToUser($sharer, $sharee, $body) {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {

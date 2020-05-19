@@ -13,7 +13,7 @@ Feature: federated
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Brian" from server "Local" sharing with user "Alice" from server "REMOTE" should include
+    And the fields of the last response to user "Brian" sharing with user "Alice" should include
       | id                     | A_NUMBER          |
       | item_type              | file              |
       | item_source            | A_NUMBER          |
@@ -40,7 +40,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "/textfile0.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" from server "REMOTE" sharing with user "Brian" from server "LOCAL" should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_NUMBER          |
       | item_type              | file              |
       | item_source            | A_NUMBER          |
@@ -67,7 +67,7 @@ Feature: federated
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" should include
       | id          | A_NUMBER                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_NUMBER                                   |
@@ -89,7 +89,7 @@ Feature: federated
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" should include
       | id          | A_NUMBER                 |
       | remote      | REMOTE                   |
       | remote_id   | A_NUMBER                 |
@@ -113,7 +113,7 @@ Feature: federated
     When user "Brian" retrieves the information of the last pending federated cloud share using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs-status>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" should include
       | id          | A_NUMBER                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_NUMBER                                   |
@@ -172,7 +172,7 @@ Feature: federated
       | permissions | share,read,update  |
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Brian" from server "LOCAL" sharing with user "Carol" from server "LOCAL" should include
+    And the fields of the last response to user "Brian" sharing with user "Carol" should include
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
@@ -306,7 +306,7 @@ Feature: federated
     And user "Brian" should see the following elements
       | /textfile0%20(2).txt |
     When user "Brian" gets the list of federated cloud shares using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Brian" should include
       | id          | A_NUMBER                 |
       | remote      | REMOTE                   |
       | remote_id   | A_NUMBER                 |
@@ -352,7 +352,7 @@ Feature: federated
     And user "Brian" should not see the following elements
       | /textfile0%20(2).txt |
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Brian" should include
       | id          | A_NUMBER                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_NUMBER                                   |
@@ -423,7 +423,7 @@ Feature: federated
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" should include
       | id          | A_NUMBER       |
       | remote      | REMOTE         |
       | name        | /zzzfolder     |
@@ -450,7 +450,7 @@ Feature: federated
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Brian" should include
       | id          | A_NUMBER                 |
       | remote      | REMOTE                   |
       | remote_id   | A_NUMBER                 |

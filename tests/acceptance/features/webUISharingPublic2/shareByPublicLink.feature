@@ -118,7 +118,7 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "21-07-2038"
     And the user gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | 21-07-2038 |
 
   Scenario: user tries to change the expiration date of the public link to past date using webUI
@@ -132,7 +132,7 @@ Feature: Share by public link
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "14-09-2017"
     And the user gets the info of the last share using the sharing API
     Then the user should see an error message on the public link share dialog saying "Expiration date is in the past"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | expiration | 14-10-2038 |
 
   Scenario: share two file with same name but different paths by public link
@@ -216,7 +216,7 @@ Feature: Share by public link
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
     Then the user should see an error message on the public link popup saying "Expiration date is required"
     And the user gets the info of the last share using the sharing API
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | expiration | + 5 days |
 
   Scenario: user deletes the expiration date of already existing public link using webUI when expiration date is set but not enforced
@@ -230,7 +230,7 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
     And the user gets the info of the last share using the sharing API
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | expiration |  |
 
   @mailhog @skipOnOcV10.3

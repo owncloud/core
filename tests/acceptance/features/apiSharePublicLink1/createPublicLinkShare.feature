@@ -13,15 +13,15 @@ Feature: create a public link share
       | path | randomfile.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | item_type              | file            |
       | mimetype               | text/plain      |
       | file_target            | /randomfile.txt |
       | path                   | /randomfile.txt |
       | permissions            | read            |
       | share_type             | public_link     |
-      | displayname_file_owner | Alice Hansen    |
-      | displayname_owner      | Alice Hansen    |
+      | displayname_file_owner | %displayname%   |
+      | displayname_owner      | %displayname%   |
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
@@ -45,15 +45,15 @@ Feature: create a public link share
       | password | %public%       |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | item_type              | file            |
       | mimetype               | text/plain      |
       | file_target            | /randomfile.txt |
       | path                   | /randomfile.txt |
       | permissions            | read            |
       | share_type             | public_link     |
-      | displayname_file_owner | Alice Hansen    |
-      | displayname_owner      | Alice Hansen    |
+      | displayname_file_owner | %displayname%   |
+      | displayname_owner      | %displayname%   |
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
@@ -82,15 +82,15 @@ Feature: create a public link share
       | permissions | all            |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | item_type              | file            |
       | mimetype               | text/plain      |
       | file_target            | /randomfile.txt |
       | path                   | /randomfile.txt |
       | permissions            | read            |
       | share_type             | public_link     |
-      | displayname_file_owner | Alice Hansen    |
-      | displayname_owner      | Alice Hansen    |
+      | displayname_file_owner | %displayname%   |
+      | displayname_owner      | %displayname%   |
       | uid_file_owner         | Alice           |
       | uid_owner              | Alice           |
       | name                   |                 |
@@ -111,15 +111,15 @@ Feature: create a public link share
       | path | PARENT |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
       | permissions            | read                 |
       | share_type             | public_link          |
-      | displayname_file_owner | Alice Hansen         |
-      | displayname_owner      | Alice Hansen         |
+      | displayname_file_owner | %displayname%        |
+      | displayname_owner      | %displayname%        |
       | uid_file_owner         | Alice                |
       | uid_owner              | Alice                |
       | name                   |                      |
@@ -145,15 +145,15 @@ Feature: create a public link share
       | permissions | change   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
       | permissions            | change               |
       | share_type             | public_link          |
-      | displayname_file_owner | Alice Hansen         |
-      | displayname_owner      | Alice Hansen         |
+      | displayname_file_owner | %displayname%        |
+      | displayname_owner      | %displayname%        |
       | uid_file_owner         | Alice                |
       | uid_owner              | Alice                |
       | name                   |                      |
@@ -176,7 +176,7 @@ Feature: create a public link share
       | password | %public%    |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | file_target            | /welcome.txt   |
       | path                   | /welcome.txt   |
       | item_type              | file           |
@@ -196,7 +196,7 @@ Feature: create a public link share
       | path | welcome.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | file_target | /welcome.txt |
       | path        | /welcome.txt |
       | item_type   | file         |
@@ -220,7 +220,7 @@ Feature: create a public link share
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id          | A_NUMBER    |
       | share_type  | public_link |
       | permissions | read        |
@@ -239,7 +239,7 @@ Feature: create a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | /afolder    |
       | permissions | read,create |
-    # And the fields of the last response should include
+    # And the fields of the last response to user "Alice" should include
     #  | id          | A_NUMBER    |
     #  | share_type  | public_link |
     #  | permissions | read        |
@@ -263,7 +263,7 @@ Feature: create a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | /afolder |
       | permissions | create   |
-    # And the fields of the last response should include
+    # And the fields of the last response to user "Alice" should include
     #  | id          | A_NUMBER    |
     #  | share_type  | public_link |
     #  | permissions | read        |
@@ -289,7 +289,7 @@ Feature: create a public link share
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     When user "Alice" tries to update the last share using the sharing API with
       | permissions | read,create |
-    # And the fields of the last response should include
+    # And the fields of the last response to user "Alice" should include
     #  | id          | A_NUMBER    |
     #  | share_type  | public_link |
     #  | permissions | read        |
@@ -315,7 +315,7 @@ Feature: create a public link share
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     When user "Alice" tries to update the last share using the sharing API with
       | permissions | <permission> |
-    # And the fields of the last response should include
+    # And the fields of the last response to user "Alice" should include
     #  | id          | A_NUMBER    |
     #  | share_type  | public_link |
     #  | permissions | read        |
@@ -348,7 +348,7 @@ Feature: create a public link share
       | permissions | read,update,create |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id          | A_NUMBER    |
       | share_type  | public_link |
       | permissions | read        |
@@ -382,7 +382,7 @@ Feature: create a public link share
       | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id          | A_NUMBER                  |
       | share_type  | public_link               |
       | permissions | read,update,create,delete |
@@ -401,7 +401,7 @@ Feature: create a public link share
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id          | A_NUMBER    |
       | share_type  | public_link |
       | permissions | read,create |
@@ -461,7 +461,7 @@ Feature: create a public link share
       | path | randomfile.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | file_target | /randomfile.txt |
       | path        | /randomfile.txt |
       | item_type   | file            |
@@ -472,7 +472,7 @@ Feature: create a public link share
     When user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | file_target | /randomfile.txt |
       | path        | /randomfile.txt |
       | item_type   | file            |

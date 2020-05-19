@@ -12,7 +12,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | expiration |  |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
@@ -34,7 +34,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | share_type  | user     |
       | file_target | /FOLDER  |
       | uid_owner   | Alice    |
@@ -59,7 +59,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | share_type  | user     |
       | file_target | /FOLDER  |
       | uid_owner   | Alice    |
@@ -85,7 +85,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +15 days   |
     And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | user     |
       | file_target | /FOLDER  |
       | uid_owner   | Alice    |
@@ -111,7 +111,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | permissions | read,share |
     And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | user    |
       | file_target | /FOLDER |
       | uid_owner   | Alice   |
@@ -134,7 +134,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | expiration |  |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
@@ -158,7 +158,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | share_type  | group    |
       | file_target | /FOLDER  |
       | uid_owner   | Alice    |
@@ -185,7 +185,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | share_type  | group    |
       | file_target | /FOLDER  |
       | uid_owner   | Alice    |
@@ -213,7 +213,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +15 days   |
     And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | group    |
       | file_target | /FOLDER  |
       | uid_owner   | Alice    |
@@ -242,7 +242,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDate  | +3 days    |
     And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | group   |
       | file_target | /FOLDER |
       | uid_owner   | Alice   |
@@ -262,7 +262,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And user "Brian" has been created with default attributes and without skeleton files
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | user           |
       | file_target | /textfile0.txt |
       | uid_owner   | Alice          |
@@ -304,7 +304,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | user           |
       | file_target | /textfile0.txt |
       | uid_owner   | Alice          |
@@ -349,7 +349,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "40"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -366,7 +366,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "15"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -382,7 +382,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | group          |
       | file_target | /textfile0.txt |
       | uid_owner   | Alice          |
@@ -428,7 +428,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | share_type  | group          |
       | file_target | /textfile0.txt |
       | uid_owner   | Alice          |
@@ -477,7 +477,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | +30 days |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
@@ -498,7 +498,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "15"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | +30 days |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
@@ -517,7 +517,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been added to group "grp1"
     When user "Alice" shares file "FOLDER" with group "grp1" with permissions "read,share" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration |  |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
@@ -534,7 +534,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been created with default attributes and without skeleton files
     When user "Alice" shares file "/FOLDER" with user "Brian" with permissions "read,share" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration |  |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
@@ -577,7 +577,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDateAsString | <date>        |
     Then the HTTP status code should be "200"
     And the OCS status code should be "200"
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | 2050-12-11 |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | 2050-12-11 |
@@ -601,7 +601,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareWith          | Brian             |
       | permissions        | read,share        |
       | expireDateAsString | <expiration_date> |
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | <expiration_date> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | <expiration_date> |
@@ -703,7 +703,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareType   | user          |
       | shareWith   | Brian         |
       | permissions | read,share    |
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | today |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | today |
@@ -724,7 +724,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareType   | user          |
       | shareWith   | Brian         |
       | permissions | read,share    |
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | expiration | tomorrow |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | tomorrow |

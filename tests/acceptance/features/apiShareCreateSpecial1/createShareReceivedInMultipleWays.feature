@@ -13,14 +13,14 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Alice" shares file "/welcome.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | share_with             | Brian             |
-      | share_with_displayname | Brian Murphy      |
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%        |
+      | share_with_displayname | %displayname%     |
       | file_target            | /welcome.txt      |
       | path                   | /welcome.txt      |
       | permissions            | share,read,update |
-      | uid_owner              | Alice             |
-      | displayname_owner      | Alice Hansen      |
+      | uid_owner              | %username%        |
+      | displayname_owner      | %displayname%     |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
@@ -95,7 +95,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | uid_owner   | Brian           |
       | share_with  | Alice           |
       | file_target | /randomfile.txt |
@@ -103,7 +103,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read            |
     When user "Carol" shares file "randomfile.txt" with user "Alice" with permissions "read,update" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | uid_owner   | Carol               |
       | share_with  | Alice               |
       | file_target | /randomfile (2).txt |
@@ -128,7 +128,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has created folder "zzzfolder/Carol"
     When user "Brian" shares folder "zzzfolder" with user "Alice" with permissions "read,delete" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | uid_owner   | Brian       |
       | share_with  | Alice       |
       | file_target | /zzzfolder  |
@@ -136,7 +136,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,delete |
     When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | uid_owner   | Carol          |
       | share_with  | Alice          |
       | file_target | /zzzfolder (2) |
