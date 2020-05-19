@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-14
+@api @TestAlsoOnExternalUserBackend @issue-ocis-reva-14
 Feature: move (rename) folder
   As a user
   I want to be able to move and rename folders
@@ -8,6 +8,7 @@ Feature: move (rename) folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
+  @skipOnOcis
   Scenario Outline: Renaming a folder to a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -20,6 +21,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Renaming a folder beginning with a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -32,6 +34,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: Renaming a folder including a backslash encoded should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
