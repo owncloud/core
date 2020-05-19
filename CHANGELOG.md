@@ -21,6 +21,7 @@ Summary
 * Bugfix - Cannot share with user name that has only numbers in the UI: [#37324](https://github.com/owncloud/core/issues/37324)
 * Bugfix - Fix error messages: [#37338](https://github.com/owncloud/core/issues/37338)
 * Bugfix - Allow unlimited access to PUT body if content length is 0: [#37394](https://github.com/owncloud/core/pull/37394)
+* Bugfix - Adjust user:sync --uid to use user backend iterator: [#37398](https://github.com/owncloud/core/pull/37398)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -152,6 +153,15 @@ Details
    Content-Length states that the empty body had been sent.
 
    https://github.com/owncloud/core/pull/37394
+
+* Bugfix - Adjust user:sync --uid to use user backend iterator: [#37398](https://github.com/owncloud/core/pull/37398)
+
+   It fixes the behavior for user:sync --uid that attempts to retrieve all user backend users
+   without limit at offset, that is not supported by LDAP backend. Instead, proper iterator and
+   search query has been used
+
+   https://github.com/owncloud/enterprise/issues/3981
+   https://github.com/owncloud/core/pull/37398
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
