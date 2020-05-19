@@ -32,7 +32,7 @@ class Google_Service_GamesManagement_Resource_Players extends Google_Service_Res
    *
    * @param string $applicationId The application ID from the Google Play
    * developer console.
-   * @param string $playerId A player ID. A value of me may be used in place of
+   * @param string $playerId A player ID. A value of `me` may be used in place of
    * the authenticated player's ID.
    * @param array $optParams Optional parameters.
    */
@@ -49,7 +49,7 @@ class Google_Service_GamesManagement_Resource_Players extends Google_Service_Res
    *
    * @param string $applicationId The application ID from the Google Play
    * developer console.
-   * @param string $playerId A player ID. A value of me may be used in place of
+   * @param string $playerId A player ID. A value of `me` may be used in place of
    * the authenticated player's ID.
    * @param array $optParams Optional parameters.
    */

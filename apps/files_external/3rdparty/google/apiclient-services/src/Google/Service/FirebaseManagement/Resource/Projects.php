@@ -48,8 +48,10 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * This method does not modify any billing account information on the underlying
    * GCP `Project`.
    *
-   * To call `AddFirebase`, a member must be an Editor or Owner for the existing
-   * GCP `Project`. Service accounts cannot call `AddFirebase`.
+   * To call `AddFirebase`, a project member or service account must have the
+   * following permissions (the IAM roles of Editor and Owner contain these
+   * permissions): `firebase.projects.update`, `resourcemanager.projects.get`,
+   * `serviceusage.services.enable`, and `serviceusage.services.get`.
    * (projects.addFirebase)
    *
    * @param string $project The resource name of the GCP `Project` to which

@@ -45,7 +45,8 @@ class Google_Service_Books_VolumeVolumeInfo extends Google_Collection
   public $publishedDate;
   public $publisher;
   public $ratingsCount;
-  public $readingModes;
+  protected $readingModesType = 'Google_Service_Books_VolumeVolumeInfoReadingModes';
+  protected $readingModesDataType = '';
   public $samplePageCount;
   protected $seriesInfoType = 'Google_Service_Books_Volumeseriesinfo';
   protected $seriesInfoDataType = '';
@@ -260,10 +261,16 @@ class Google_Service_Books_VolumeVolumeInfo extends Google_Collection
   {
     return $this->ratingsCount;
   }
-  public function setReadingModes($readingModes)
+  /**
+   * @param Google_Service_Books_VolumeVolumeInfoReadingModes
+   */
+  public function setReadingModes(Google_Service_Books_VolumeVolumeInfoReadingModes $readingModes)
   {
     $this->readingModes = $readingModes;
   }
+  /**
+   * @return Google_Service_Books_VolumeVolumeInfoReadingModes
+   */
   public function getReadingModes()
   {
     return $this->readingModes;

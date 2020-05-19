@@ -20,6 +20,7 @@ class Google_Service_ToolResults_History extends Google_Model
   public $displayName;
   public $historyId;
   public $name;
+  public $testPlatform;
 
   public function setDisplayName($displayName)
   {
@@ -44,5 +45,13 @@ class Google_Service_ToolResults_History extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setTestPlatform($testPlatform)
+  {
+    $this->testPlatform = $testPlatform;
+  }
+  public function getTestPlatform()
+  {
+    return $this->testPlatform;
   }
 }

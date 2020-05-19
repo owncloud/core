@@ -189,6 +189,10 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Gets the most recent health check results for this BackendService.
+   *
+   * Example request body:
+   *
+   * { "group": "/zones/us-east1-b/instanceGroups/lb-backend-example" }
    * (backendServices.getHealth)
    *
    * @param string $project

@@ -47,15 +47,15 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
    * match regular expression `[\w\s-.]{1,255}`. This must be provided for all
    * formats except 'selfsignedcert'; self-signed certs may specify the alias in
    * either this parameter or the JSON body.
-   * @opt_param string format Required. The format of the data. Must be either
-   * `selfsignedcert`, `keycertfile`, or `pkcs12`.
+   * @opt_param bool ignoreExpiryValidation If `true`, no expiry validation will
+   * be performed.
    * @opt_param string _password The password for the private key file, if it
    * exists.
+   * @opt_param string format Required. The format of the data. Must be either
+   * `selfsignedcert`, `keycertfile`, or `pkcs12`.
    * @opt_param bool ignoreNewlineValidation If `true`, do not throw an error when
    * the file contains a chain with no newline between each certificate. By
    * default, a newline is needed between each certificate in a chain.
-   * @opt_param bool ignoreExpiryValidation If `true`, no expiry validation will
-   * be performed.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Alias
    */
   public function create($parent, Google_Service_Apigee_GoogleApiHttpBody $postBody, $optParams = array())
@@ -127,21 +127,6 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
     return $this->call('getCertificate', array($params), "Google_Service_Apigee_GoogleApiHttpBody");
   }
   /**
-   * Lists all aliases. (aliases.listOrganizationsEnvironmentsKeystoresAliases)
-   *
-   * @param string $parent Required. The name of the keystore. Must be of the form
-   * `organizations/{organization}/environments/{environment}/keystores/{keystore}
-   * `.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsKeystoresAliases($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
-  /**
    * Updates the certificate in an alias. (aliases.update)
    *
    * @param string $name Required. The name of the alias. Must be of the form `org
@@ -150,11 +135,11 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool ignoreExpiryValidation Required. If `true`, no expiry
-   * validation will be performed.
    * @opt_param bool ignoreNewlineValidation If `true`, do not throw an error when
    * the file contains a chain with no newline between each certificate. By
    * default, a newline is needed between each certificate in a chain.
+   * @opt_param bool ignoreExpiryValidation Required. If `true`, no expiry
+   * validation will be performed.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Alias
    */
   public function update($name, Google_Service_Apigee_GoogleApiHttpBody $postBody, $optParams = array())

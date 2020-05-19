@@ -62,7 +62,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * Deletes a specific `ConnectivityTest`. (connectivityTests.delete)
    *
    * @param string $name Required. Connectivity Test resource name using the form:
-   * `projects/{project_id}/connectivityTests/{test_id}`
+   * `projects/{project_id}/locations/global/connectivityTests/{test_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_NetworkManagement_Operation
    */
@@ -106,6 +106,10 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_NetworkManagement_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -122,6 +126,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * Tests:     `projects/{project_id}/locations/global`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Number of `ConnectivityTests` to return.
    * @opt_param string filter Lists the `ConnectivityTests` that match the filter
    * expression. A filter expression filters the resources listed in the response.
    * The expression must be of the form `  ` where operators: `<`, `>`, `<=`,
@@ -130,7 +135,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * a synthetic field. Field names can be camelCase or snake_case.
    *
    * Examples: - Filter by name:   name =
-   * "projects/proj-1/connectivityTests/test-1
+   * "projects/proj-1/locations/global/connectivityTests/test-1
    *
    * - Filter by labels:   - Resources that have a key called `foo`
    * labels.foo:*   - Resources that have a key called `foo` whose value is `bar`
@@ -138,7 +143,6 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * @opt_param string pageToken Page token from an earlier query, as returned in
    * `next_page_token`.
    * @opt_param string orderBy Field to use to sort the list.
-   * @opt_param int pageSize Number of `ConnectivityTests` to return.
    * @return Google_Service_NetworkManagement_ListConnectivityTestsResponse
    */
   public function listProjectsLocationsNetworkmanagementGlobalConnectivityTests($parent, $optParams = array())
@@ -163,7 +167,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * `ConnectivityTest` for for more details. (connectivityTests.patch)
    *
    * @param string $name Required. Unique name of the resource using the form:
-   * `projects/{project_id}/tests/{test_id}`
+   * `projects/{project_id}/locations/global/connectivityTests/{test}`
    * @param Google_Service_NetworkManagement_ConnectivityTest $postBody
    * @param array $optParams Optional parameters.
    *
@@ -191,7 +195,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * reachability result returns a value of `UNKNOWN`. (connectivityTests.rerun)
    *
    * @param string $name Required. Connectivity Test resource name using the form:
-   * `projects/{project_id}/connectivityTests/{test_id}`
+   * `projects/{project_id}/locations/global/connectivityTests/{test_id}`
    * @param Google_Service_NetworkManagement_RerunConnectivityTestRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_NetworkManagement_Operation
@@ -206,7 +210,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (connectivityTests.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -225,7 +229,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

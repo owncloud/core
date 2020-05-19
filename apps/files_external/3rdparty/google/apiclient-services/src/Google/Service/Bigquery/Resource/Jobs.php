@@ -72,10 +72,10 @@ class Google_Service_Bigquery_Resource_Jobs extends Google_Service_Resource
    * @param string $jobId [Required] Job ID of the query job
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string startIndex Zero-based index of the starting row
    * @opt_param string location The geographic location where the job should run.
    * Required except for US and EU. See details at
    * https://cloud.google.com/bigquery/docs/locations#specifying_your_location.
+   * @opt_param string startIndex Zero-based index of the starting row
    * @opt_param string pageToken Page token, returned by a previous call, to
    * request the next page of results
    * @opt_param string timeoutMs How long to wait for the query to complete, in
@@ -117,22 +117,22 @@ class Google_Service_Bigquery_Resource_Jobs extends Google_Service_Resource
    * @param string $projectId Project ID of the jobs to list
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token, returned by a previous call, to
-   * request the next page of results
-   * @opt_param bool allUsers Whether to display jobs owned by all users in the
-   * project. Default false
-   * @opt_param string maxResults Maximum number of results to return
-   * @opt_param string maxCreationTime Max value for job creation time, in
-   * milliseconds since the POSIX epoch. If set, only jobs created before or at
-   * this timestamp are returned
    * @opt_param string stateFilter Filter for job state
    * @opt_param string projection Restrict information returned to a set of
    * selected fields
-   * @opt_param string parentJobId If set, retrieves only jobs whose parent is
-   * this job. Otherwise, retrieves only jobs which have no parent
    * @opt_param string minCreationTime Min value for job creation time, in
    * milliseconds since the POSIX epoch. If set, only jobs created after or at
    * this timestamp are returned
+   * @opt_param string parentJobId If set, retrieves only jobs whose parent is
+   * this job. Otherwise, retrieves only jobs which have no parent
+   * @opt_param bool allUsers Whether to display jobs owned by all users in the
+   * project. Default false
+   * @opt_param string pageToken Page token, returned by a previous call, to
+   * request the next page of results
+   * @opt_param string maxCreationTime Max value for job creation time, in
+   * milliseconds since the POSIX epoch. If set, only jobs created before or at
+   * this timestamp are returned
+   * @opt_param string maxResults Maximum number of results to return
    * @return Google_Service_Bigquery_JobList
    */
   public function listJobs($projectId, $optParams = array())

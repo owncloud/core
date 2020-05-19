@@ -54,6 +54,10 @@ class Google_Service_CloudFunctions_Resource_Operations extends Google_Service_R
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Required. A filter for matching the requested
+   * operations. The supported formats of filter are: To query for a specific
+   * function: project:*,location:*,function:* To query for all of the latest
+   * operations for a project: project:*,latest:true
    * @opt_param string name Must not be set.
    * @opt_param string pageToken Token identifying which result to start with,
    * which is returned by a previous list call. Pagination is only supported when
@@ -62,10 +66,6 @@ class Google_Service_CloudFunctions_Resource_Operations extends Google_Service_R
    * returned. Requested page size cannot exceed 100. If not set, the default page
    * size is 100. Pagination is only supported when querying for a specific
    * function.
-   * @opt_param string filter Required. A filter for matching the requested
-   * operations. The supported formats of filter are: To query for a specific
-   * function: project:*,location:*,function:* To query for all of the latest
-   * operations for a project: project:*,latest:true
    * @return Google_Service_CloudFunctions_ListOperationsResponse
    */
   public function listOperations($optParams = array())

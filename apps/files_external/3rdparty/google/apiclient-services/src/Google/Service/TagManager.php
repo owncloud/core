@@ -79,7 +79,7 @@ class Google_Service_TagManager extends Google_Service
     parent::__construct($client);
     $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
+    $this->batchPath = 'batch/tagmanager/v2';
     $this->version = 'v2';
     $this->serviceName = 'tagmanager';
 
@@ -297,13 +297,13 @@ class Google_Service_TagManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'includeDeleted' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -665,17 +665,17 @@ class Google_Service_TagManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'variableId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
                 'tagId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
                 'triggerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'variableId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,

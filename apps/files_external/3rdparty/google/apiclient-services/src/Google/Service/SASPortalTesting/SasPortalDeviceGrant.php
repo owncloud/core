@@ -17,7 +17,7 @@
 
 class Google_Service_SASPortalTesting_SasPortalDeviceGrant extends Google_Collection
 {
-  protected $collection_key = 'moveList';
+  protected $collection_key = 'suspensionReason';
   public $channelType;
   public $expireTime;
   protected $frequencyRangeType = 'Google_Service_SASPortalTesting_SasPortalFrequencyRange';
@@ -26,6 +26,7 @@ class Google_Service_SASPortalTesting_SasPortalDeviceGrant extends Google_Collec
   protected $moveListType = 'Google_Service_SASPortalTesting_SasPortalDpaMoveList';
   protected $moveListDataType = 'array';
   public $state;
+  public $suspensionReason;
 
   public function setChannelType($channelType)
   {
@@ -86,5 +87,13 @@ class Google_Service_SASPortalTesting_SasPortalDeviceGrant extends Google_Collec
   public function getState()
   {
     return $this->state;
+  }
+  public function setSuspensionReason($suspensionReason)
+  {
+    $this->suspensionReason = $suspensionReason;
+  }
+  public function getSuspensionReason()
+  {
+    return $this->suspensionReason;
   }
 }

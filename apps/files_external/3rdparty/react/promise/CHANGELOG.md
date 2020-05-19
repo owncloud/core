@@ -1,6 +1,33 @@
 CHANGELOG for 2.x
 =================
 
+* 2.8.0 (2020-05-12)
+
+    *   Mark `FulfilledPromise`, `RejectedPromise` and `LazyPromise` as deprecated for Promise v2 (and remove for Promise v3).
+        (#143 and #165 by @clue)
+
+        ```php
+        // deprecated
+        $fulfilled = new React\Promise\FulfilledPromise($value);
+        $rejected = new React\Promise\RejectedPromise($reason);
+
+        // recommended alternatives
+        $fulfilled = React\Promise\resolve($value);
+        $rejected = React\Promise\reject($reason);
+        ```
+
+    *   Fix: Fix checking whether cancellable promise is an object and avoid possible warning.
+        (#168 by @smscr and @jsor)
+
+    *   Improve documentation and add docblocks to functions and interfaces.
+        (#135 by @CharlotteDunois)
+
+    *   Add `.gitattributes` to exclude dev files from exports.
+        (#154 by @reedy)
+
+    *   Improve test suite, run tests on PHP 7.4 and update PHPUnit test setup.
+        (#163 by @clue)
+
 * 2.7.1 (2018-01-07)
 
     *   Fix: file_exists warning when resolving with long strings.

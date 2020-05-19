@@ -18,6 +18,7 @@
 class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Scheduling extends Google_Model
 {
   public $maxRunningTime;
+  public $maxWaitTime;
 
   public function setMaxRunningTime($maxRunningTime)
   {
@@ -26,5 +27,13 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Scheduling extend
   public function getMaxRunningTime()
   {
     return $this->maxRunningTime;
+  }
+  public function setMaxWaitTime($maxWaitTime)
+  {
+    $this->maxWaitTime = $maxWaitTime;
+  }
+  public function getMaxWaitTime()
+  {
+    return $this->maxWaitTime;
   }
 }

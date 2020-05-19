@@ -45,7 +45,7 @@ class Google_Service_ShoppingContent_Resource_Orderinvoices extends Google_Servi
   /**
    * Creates a refund invoice for one or more shipment groups, and triggers a
    * refund for orderinvoice enabled orders. This can only be used for line items
-   * that have previously been charged using createChargeInvoice. All amounts
+   * that have previously been charged using `createChargeInvoice`. All amounts
    * (except for the summary) are incremental with respect to the previous
    * invoice. (orderinvoices.createrefundinvoice)
    *

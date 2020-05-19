@@ -84,10 +84,10 @@ class Google_Service_CloudBuild_Resource_ProjectsBuilds extends Google_Service_R
    * @param string $projectId Required. ID of the project.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Number of results to return in the list.
    * @opt_param string filter The raw filter text to constrain the results.
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
+   * @opt_param int pageSize Number of results to return in the list.
    * @return Google_Service_CloudBuild_ListBuildsResponse
    */
   public function listProjectsBuilds($projectId, $optParams = array())

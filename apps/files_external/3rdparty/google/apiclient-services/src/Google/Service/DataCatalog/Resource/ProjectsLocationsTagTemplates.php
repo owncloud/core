@@ -28,12 +28,12 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplates extends 
   /**
    * Creates a tag template. The user should enable the Data Catalog API in the
    * project identified by the `parent` parameter (see [Data Catalog Resource
-   * Project](/data-catalog/docs/concepts/resource-project) for more information).
-   * (tagTemplates.create)
+   * Project](https://cloud.google.com/data-catalog/docs/concepts/resource-
+   * project) for more information). (tagTemplates.create)
    *
    * @param string $parent Required. The name of the project and the template
-   * location [region](/compute/docs/regions-zones/#available). NOTE: Currently,
-   * only the `us-central1 region` is supported.
+   * location [region](https://cloud.google.com/data-
+   * catalog/docs/concepts/regions.
    *
    * Example:
    *
@@ -54,8 +54,9 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplates extends 
   /**
    * Deletes a tag template and all tags using the template. Users should enable
    * the Data Catalog API in the project identified by the `name` parameter (see
-   * [Data Catalog Resource Project] (/data-catalog/docs/concepts/resource-
-   * project) for more information). (tagTemplates.delete)
+   * [Data Catalog Resource Project] (https://cloud.google.com/data-
+   * catalog/docs/concepts/resource-project) for more information).
+   * (tagTemplates.delete)
    *
    * @param string $name Required. The name of the tag template to delete.
    * Example:
@@ -122,9 +123,9 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplates extends 
    * template. The tag template fields are represented as separate resources and
    * should be updated using their own create/update/delete methods. Users should
    * enable the Data Catalog API in the project identified by the
-   * `tag_template.name` parameter (see [Data Catalog Resource Project] (/data-
-   * catalog/docs/concepts/resource-project) for more information).
-   * (tagTemplates.patch)
+   * `tag_template.name` parameter (see [Data Catalog Resource Project]
+   * (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for
+   * more information). (tagTemplates.patch)
    *
    * @param string $name The resource name of the tag template in URL format.
    * Example:

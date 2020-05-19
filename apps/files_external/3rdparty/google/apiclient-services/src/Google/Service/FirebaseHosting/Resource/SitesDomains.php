@@ -73,9 +73,9 @@ class Google_Service_FirebaseHosting_Resource_SitesDomains extends Google_Servic
    * format: sites/site-name
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The page size to return. Defaults to 50.
    * @opt_param string pageToken The next_page_token from a previous request, if
    * provided.
+   * @opt_param int pageSize The page size to return. Defaults to 50.
    * @return Google_Service_FirebaseHosting_ListDomainsResponse
    */
   public function listSitesDomains($parent, $optParams = array())

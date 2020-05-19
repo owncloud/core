@@ -67,7 +67,7 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
   /**
    * Deletes a single Instance. (instances.delete)
    *
-   * @param string $name Memcached instance resource name in the format:
+   * @param string $name Required. Memcached instance resource name in the format:
    * `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
    * `location_id` refers to a GCP region
    * @param array $optParams Optional parameters.
@@ -112,6 +112,10 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_CloudMemorystoreforMemcached_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -129,18 +133,18 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * `location_id` refers to a GCP region
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter List filter. For example, exclude all Memcached
-   * instances with name as my-instance by specifying "name != my-instance".
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous List request, if any.
-   * @opt_param string orderBy Sort results. Supported values are "name", "name
-   * desc" or "" (unsorted).
    * @opt_param int pageSize The maximum number of items to return.
    *
    * If not specified, a default value of 1000 will be used by the service.
    * Regardless of the page_size value, the response may include a partial list
    * and a caller should only rely on response's next_page_token to determine if
    * there are more instances left to be queried.
+   * @opt_param string filter List filter. For example, exclude all Memcached
+   * instances with name as my-instance by specifying "name != my-instance".
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous List request, if any.
+   * @opt_param string orderBy Sort results. Supported values are "name", "name
+   * desc" or "" (unsorted).
    * @return Google_Service_CloudMemorystoreforMemcached_ListInstancesResponse
    */
   public function listProjectsLocationsInstances($parent, $optParams = array())
@@ -178,7 +182,7 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (instances.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -197,7 +201,7 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

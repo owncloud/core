@@ -26,7 +26,6 @@ class Guzzle6HttpHandler
      *
      * @param RequestInterface $request
      * @param array $options
-     *
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $request, array $options = [])
@@ -40,7 +39,7 @@ class Guzzle6HttpHandler
      * @param RequestInterface $request
      * @param array $options
      *
-     * @return \GuzzleHttp\Promise\Promise
+     * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function async(RequestInterface $request, array $options = [])
     {

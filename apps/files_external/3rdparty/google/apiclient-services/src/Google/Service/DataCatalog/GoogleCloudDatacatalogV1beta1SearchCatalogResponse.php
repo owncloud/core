@@ -17,10 +17,11 @@
 
 class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogResponse extends Google_Collection
 {
-  protected $collection_key = 'results';
+  protected $collection_key = 'unreachable';
   public $nextPageToken;
   protected $resultsType = 'Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogResult';
   protected $resultsDataType = 'array';
+  public $unreachable;
 
   public function setNextPageToken($nextPageToken)
   {
@@ -43,5 +44,13 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogRespo
   public function getResults()
   {
     return $this->results;
+  }
+  public function setUnreachable($unreachable)
+  {
+    $this->unreachable = $unreachable;
+  }
+  public function getUnreachable()
+  {
+    return $this->unreachable;
   }
 }

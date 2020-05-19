@@ -21,6 +21,7 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta
   public $thumbnail;
   protected $tracksType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1Track';
   protected $tracksDataType = 'array';
+  public $version;
 
   public function setThumbnail($thumbnail)
   {
@@ -43,5 +44,13 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta
   public function getTracks()
   {
     return $this->tracks;
+  }
+  public function setVersion($version)
+  {
+    $this->version = $version;
+  }
+  public function getVersion()
+  {
+    return $this->version;
   }
 }

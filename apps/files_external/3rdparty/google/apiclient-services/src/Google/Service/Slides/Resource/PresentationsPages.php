@@ -55,7 +55,7 @@ class Google_Service_Slides_Resource_PresentationsPages extends Google_Service_R
    * @opt_param string thumbnailProperties.mimeType The optional mime type of the
    * thumbnail image.
    *
-   * If you don't specify the mime type, the default mime type will be PNG.
+   * If you don't specify the mime type, the mime type defaults to PNG.
    * @opt_param string thumbnailProperties.thumbnailSize The optional thumbnail
    * image size.
    *

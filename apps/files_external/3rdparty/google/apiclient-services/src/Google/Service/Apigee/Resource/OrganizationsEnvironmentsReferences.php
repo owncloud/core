@@ -71,21 +71,6 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsReferences extends
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Reference");
   }
   /**
-   * Lists all References in an environment as a JSON array.
-   * (references.listOrganizationsEnvironmentsReferences)
-   *
-   * @param string $parent Required. The parent environment name. Must be of the
-   * form `organizations/{org}/environments/{env}`.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsReferences($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
-  /**
    * Updates an existing Reference. Note that this operation has PUT semantics; it
    * will replace the entirety of the existing Reference with the resource in the
    * request body. (references.update)

@@ -28,7 +28,7 @@ class Google_Service_Vault_Resource_MattersSavedQueries extends Google_Service_R
   /**
    * Creates a saved query. (savedQueries.create)
    *
-   * @param string $matterId The matter id of the parent matter for which the
+   * @param string $matterId The matter ID of the parent matter for which the
    * saved query is to be created.
    * @param Google_Service_Vault_SavedQuery $postBody
    * @param array $optParams Optional parameters.
@@ -43,9 +43,9 @@ class Google_Service_Vault_Resource_MattersSavedQueries extends Google_Service_R
   /**
    * Deletes a saved query by Id. (savedQueries.delete)
    *
-   * @param string $matterId The matter id of the parent matter for which the
+   * @param string $matterId The matter ID of the parent matter for which the
    * saved query is to be deleted.
-   * @param string $savedQueryId Id of the saved query to be deleted.
+   * @param string $savedQueryId ID of the saved query to be deleted.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vault_VaultEmpty
    */
@@ -58,9 +58,9 @@ class Google_Service_Vault_Resource_MattersSavedQueries extends Google_Service_R
   /**
    * Retrieves a saved query by Id. (savedQueries.get)
    *
-   * @param string $matterId The matter id of the parent matter for which the
+   * @param string $matterId The matter ID of the parent matter for which the
    * saved query is to be retrieved.
-   * @param string $savedQueryId Id of the saved query to be retrieved.
+   * @param string $savedQueryId ID of the saved query to be retrieved.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vault_SavedQuery
    */
@@ -75,7 +75,7 @@ class Google_Service_Vault_Resource_MattersSavedQueries extends Google_Service_R
    * ListSavedQueriesResponse denotes no more saved queries to list.
    * (savedQueries.listMattersSavedQueries)
    *
-   * @param string $matterId The matter id of the parent matter for which the
+   * @param string $matterId The matter ID of the parent matter for which the
    * saved queries are to be retrieved.
    * @param array $optParams Optional parameters.
    *

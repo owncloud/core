@@ -205,7 +205,7 @@ class Google_Service_Classroom_Resource_CoursesCourseWork extends Google_Service
    * invalid fields are specified. If a field supports empty values, it can be
    * cleared by specifying it in the update mask and not in the CourseWork object.
    * If a field that does not support empty values is included in the update mask
-   * and not set in the CourseWork object, an `INVALID_ARGUMENT` error will be
+   * and not set in the CourseWork object, an `INVALID_ARGUMENT` error is
    * returned.
    *
    * The following fields may be specified by teachers:

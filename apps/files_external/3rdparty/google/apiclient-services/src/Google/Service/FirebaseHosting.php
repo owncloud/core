@@ -215,13 +215,13 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'update' => array(
@@ -267,13 +267,13 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -286,17 +286,7 @@ class Google_Service_FirebaseHosting extends Google_Service
         'versions',
         array(
           'methods' => array(
-            'clone' => array(
-              'path' => 'v1beta1/{+parent}/versions:clone',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'create' => array(
+            'create' => array(
               'path' => 'v1beta1/{+parent}/versions',
               'httpMethod' => 'POST',
               'parameters' => array(
@@ -305,11 +295,11 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'versionId' => array(
+                'sizeBytes' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'sizeBytes' => array(
+                'versionId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -333,15 +323,15 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -389,10 +379,6 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'status' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -400,6 +386,10 @@ class Google_Service_FirebaseHosting extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -469,13 +459,13 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -527,13 +517,13 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'update' => array(
@@ -579,13 +569,13 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -598,17 +588,7 @@ class Google_Service_FirebaseHosting extends Google_Service
         'versions',
         array(
           'methods' => array(
-            'clone' => array(
-              'path' => 'v1beta1/{+parent}/versions:clone',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'create' => array(
+            'create' => array(
               'path' => 'v1beta1/{+parent}/versions',
               'httpMethod' => 'POST',
               'parameters' => array(
@@ -645,10 +625,6 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -656,6 +632,10 @@ class Google_Service_FirebaseHosting extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(
@@ -701,10 +681,6 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'status' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -712,6 +688,10 @@ class Google_Service_FirebaseHosting extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),

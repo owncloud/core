@@ -26,6 +26,7 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelA
   protected $framesDataType = 'array';
   protected $segmentsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelSegment';
   protected $segmentsDataType = 'array';
+  public $version;
 
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Entity
@@ -82,5 +83,13 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelA
   public function getSegments()
   {
     return $this->segments;
+  }
+  public function setVersion($version)
+  {
+    $this->version = $version;
+  }
+  public function getVersion()
+  {
+    return $this->version;
   }
 }

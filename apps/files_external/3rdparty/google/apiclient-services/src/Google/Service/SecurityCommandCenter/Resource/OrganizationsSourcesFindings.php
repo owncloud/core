@@ -79,45 +79,6 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    * organizations/{organization_id}/sources/-
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Expression that defines the filter to apply across
-   * findings. The expression is a list of one or more restrictions combined via
-   * logical operators `AND` and `OR`. Parentheses are supported, and `OR` has
-   * higher precedence than `AND`.
-   *
-   * Restrictions have the form `  ` and may have a `-` character in front of them
-   * to indicate negation. Examples include:
-   *
-   * name source_properties.a_property security_marks.marks.marka
-   *
-   * The supported operators are:
-   *
-   * * `=` for all value types. * `>`, `<`, `>=`, `<=` for integer values. * `:`,
-   * meaning substring matching, for strings.
-   *
-   * The supported value types are:
-   *
-   * * string literals in quotes. * integer literals without quotes. * boolean
-   * literals `true` and `false` without quotes.
-   *
-   * The following field and operator combinations are supported:
-   *
-   * name: `=` parent: `=`, `:` resource_name: `=`, `:` state: `=`, `:` category:
-   * `=`, `:` external_uri: `=`, `:` event_time: `=`, `>`, `<`, `>=`, `<=`
-   *
-   *   Usage: This should be milliseconds since epoch or an RFC3339 string.
-   * Examples:     "event_time = \"2019-06-10T16:07:18-07:00\""     "event_time =
-   * 1560208038000"
-   *
-   * security_marks.marks: `=`, `:` source_properties: `=`, `:`, `>`, `<`, `>=`,
-   * `<=`
-   *
-   * For example, `source_properties.size = 100` is a valid filter string.
-   *
-   * Use a partial match on the empty string to filter based on a property
-   * existing: "source_properties.my_property : \"\""
-   *
-   * Use a negated partial match on the empty string to filter based on a property
-   * not existing: "-source_properties.my_property : \"\""
    * @opt_param string fieldMask Optional. A field mask to specify the Finding
    * fields to be listed in the response. An empty field mask will list all
    * fields.
@@ -169,6 +130,45 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    * If compare_duration is not specified, then the only possible state_change is
    * "UNUSED", which will be the state_change set for all findings present at
    * read_time.
+   * @opt_param string filter Expression that defines the filter to apply across
+   * findings. The expression is a list of one or more restrictions combined via
+   * logical operators `AND` and `OR`. Parentheses are supported, and `OR` has
+   * higher precedence than `AND`.
+   *
+   * Restrictions have the form `  ` and may have a `-` character in front of them
+   * to indicate negation. Examples include:
+   *
+   * name source_properties.a_property security_marks.marks.marka
+   *
+   * The supported operators are:
+   *
+   * * `=` for all value types. * `>`, `<`, `>=`, `<=` for integer values. * `:`,
+   * meaning substring matching, for strings.
+   *
+   * The supported value types are:
+   *
+   * * string literals in quotes. * integer literals without quotes. * boolean
+   * literals `true` and `false` without quotes.
+   *
+   * The following field and operator combinations are supported:
+   *
+   * name: `=` parent: `=`, `:` resource_name: `=`, `:` state: `=`, `:` category:
+   * `=`, `:` external_uri: `=`, `:` event_time: `=`, `>`, `<`, `>=`, `<=`
+   *
+   *   Usage: This should be milliseconds since epoch or an RFC3339 string.
+   * Examples:     "event_time = \"2019-06-10T16:07:18-07:00\""     "event_time =
+   * 1560208038000"
+   *
+   * security_marks.marks: `=`, `:` source_properties: `=`, `:`, `>`, `<`, `>=`,
+   * `<=`
+   *
+   * For example, `source_properties.size = 100` is a valid filter string.
+   *
+   * Use a partial match on the empty string to filter based on a property
+   * existing: "source_properties.my_property : \"\""
+   *
+   * Use a negated partial match on the empty string to filter based on a property
+   * not existing: "-source_properties.my_property : \"\""
    * @return Google_Service_SecurityCommandCenter_ListFindingsResponse
    */
   public function listOrganizationsSourcesFindings($parent, $optParams = array())

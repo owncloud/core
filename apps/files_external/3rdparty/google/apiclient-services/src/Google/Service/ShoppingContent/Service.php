@@ -26,6 +26,8 @@ class Google_Service_ShoppingContent_Service extends Google_Collection
   public $eligibility;
   protected $minimumOrderValueType = 'Google_Service_ShoppingContent_Price';
   protected $minimumOrderValueDataType = '';
+  protected $minimumOrderValueTableType = 'Google_Service_ShoppingContent_MinimumOrderValueTable';
+  protected $minimumOrderValueTableDataType = '';
   public $name;
   protected $pickupServiceType = 'Google_Service_ShoppingContent_PickupCarrierService';
   protected $pickupServiceDataType = '';
@@ -92,6 +94,20 @@ class Google_Service_ShoppingContent_Service extends Google_Collection
   public function getMinimumOrderValue()
   {
     return $this->minimumOrderValue;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_MinimumOrderValueTable
+   */
+  public function setMinimumOrderValueTable(Google_Service_ShoppingContent_MinimumOrderValueTable $minimumOrderValueTable)
+  {
+    $this->minimumOrderValueTable = $minimumOrderValueTable;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_MinimumOrderValueTable
+   */
+  public function getMinimumOrderValueTable()
+  {
+    return $this->minimumOrderValueTable;
   }
   public function setName($name)
   {

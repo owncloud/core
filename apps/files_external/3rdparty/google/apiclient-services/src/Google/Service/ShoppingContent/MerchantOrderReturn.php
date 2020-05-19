@@ -24,6 +24,8 @@ class Google_Service_ShoppingContent_MerchantOrderReturn extends Google_Collecti
   public $orderReturnId;
   protected $returnItemsType = 'Google_Service_ShoppingContent_MerchantOrderReturnItem';
   protected $returnItemsDataType = 'array';
+  protected $returnPricingInfoType = 'Google_Service_ShoppingContent_ReturnPricingInfo';
+  protected $returnPricingInfoDataType = '';
   protected $returnShipmentsType = 'Google_Service_ShoppingContent_ReturnShipment';
   protected $returnShipmentsDataType = 'array';
 
@@ -72,6 +74,20 @@ class Google_Service_ShoppingContent_MerchantOrderReturn extends Google_Collecti
   public function getReturnItems()
   {
     return $this->returnItems;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_ReturnPricingInfo
+   */
+  public function setReturnPricingInfo(Google_Service_ShoppingContent_ReturnPricingInfo $returnPricingInfo)
+  {
+    $this->returnPricingInfo = $returnPricingInfo;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_ReturnPricingInfo
+   */
+  public function getReturnPricingInfo()
+  {
+    return $this->returnPricingInfo;
   }
   /**
    * @param Google_Service_ShoppingContent_ReturnShipment

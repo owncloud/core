@@ -32,7 +32,7 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string driveId The ID of the shared drive for which the starting
-   * pageToken for listing future changes from that shared drive will be returned.
+   * pageToken for listing future changes from that shared drive is returned.
    * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
    * application supports both My Drives and shared drives. This parameter will
    * only be effective until June 1, 2020. Afterwards all applications are assumed
@@ -55,16 +55,16 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * previous response or to the response from the getStartPageToken method.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string driveId The shared drive from which changes will be
-   * returned. If specified the change IDs will be reflective of the shared drive;
-   * use the combined drive ID and change ID as an identifier.
+   * @opt_param string driveId The shared drive from which changes are returned.
+   * If specified the change IDs will be reflective of the shared drive; use the
+   * combined drive ID and change ID as an identifier.
    * @opt_param bool includeCorpusRemovals Whether changes should include the file
    * resource if the file is still accessible by the user at the time of the
    * request, even when a file was removed from the list of changes and there will
    * be no further change entries for this file.
    * @opt_param bool includeItemsFromAllDrives Deprecated - Whether both My Drive
    * and shared drive items should be included in results. This parameter will
-   * only be effective until June 1, 2020. Afterwards shared drive items will be
+   * only be effective until June 1, 2020. Afterwards shared drive items are
    * included in the results.
    * @opt_param bool includeRemoved Whether to include changes indicating that
    * items have been removed from the list of changes, for example by deletion or
@@ -101,16 +101,16 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * @param Google_Service_Drive_Channel $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string driveId The shared drive from which changes will be
-   * returned. If specified the change IDs will be reflective of the shared drive;
-   * use the combined drive ID and change ID as an identifier.
+   * @opt_param string driveId The shared drive from which changes are returned.
+   * If specified the change IDs will be reflective of the shared drive; use the
+   * combined drive ID and change ID as an identifier.
    * @opt_param bool includeCorpusRemovals Whether changes should include the file
    * resource if the file is still accessible by the user at the time of the
    * request, even when a file was removed from the list of changes and there will
    * be no further change entries for this file.
    * @opt_param bool includeItemsFromAllDrives Deprecated - Whether both My Drive
    * and shared drive items should be included in results. This parameter will
-   * only be effective until June 1, 2020. Afterwards shared drive items will be
+   * only be effective until June 1, 2020. Afterwards shared drive items are
    * included in the results.
    * @opt_param bool includeRemoved Whether to include changes indicating that
    * items have been removed from the list of changes, for example by deletion or

@@ -132,6 +132,22 @@ class Google_Service_Compute_Resource_RegionDisks extends Google_Service_Resourc
     return $this->call('get', array($params), "Google_Service_Compute_Disk");
   }
   /**
+   * Gets the access control policy for a resource. May be empty if no such policy
+   * or resource exists. (regionDisks.getIamPolicy)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $region The name of the region for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_Policy
+   */
+  public function getIamPolicy($project, $region, $resource, $optParams = array())
+  {
+    $params = array('project' => $project, 'region' => $region, 'resource' => $resource);
+    $params = array_merge($params, $optParams);
+    return $this->call('getIamPolicy', array($params), "Google_Service_Compute_Policy");
+  }
+  /**
    * Creates a persistent regional disk in the specified project using the data
    * included in the request. (regionDisks.insert)
    *
@@ -273,6 +289,23 @@ class Google_Service_Compute_Resource_RegionDisks extends Google_Service_Resourc
     $params = array('project' => $project, 'region' => $region, 'disk' => $disk, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('resize', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Sets the access control policy on the specified resource. Replaces any
+   * existing policy. (regionDisks.setIamPolicy)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $region The name of the region for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param Google_Service_Compute_RegionSetPolicyRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_Policy
+   */
+  public function setIamPolicy($project, $region, $resource, Google_Service_Compute_RegionSetPolicyRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'region' => $region, 'resource' => $resource, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('setIamPolicy', array($params), "Google_Service_Compute_Policy");
   }
   /**
    * Sets the labels on the target regional disk. (regionDisks.setLabels)

@@ -34,11 +34,11 @@ class Google_Service_DLP_Resource_LocationsInfoTypes extends Google_Service_Reso
    * Reserved for future extensions.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter filter to only return infoTypes supported by certain
+   * parts of the API. Defaults to supported_by=INSPECT.
    * @opt_param string languageCode BCP-47 language code for localized infoType
    * friendly names. If omitted, or if localized strings are not available, en-US
    * strings will be returned.
-   * @opt_param string filter filter to only return infoTypes supported by certain
-   * parts of the API. Defaults to supported_by=INSPECT.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListInfoTypesResponse
    */
   public function listLocationsInfoTypes($locationId, $optParams = array())

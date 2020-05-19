@@ -22,6 +22,7 @@ class Google_Service_SASPortalTesting_SasPortalInstallationParams extends Google
   public $antennaDowntilt;
   public $antennaGain;
   public $antennaModel;
+  public $cpeCbsdIndication;
   public $eirpCapability;
   public $height;
   public $heightType;
@@ -70,6 +71,14 @@ class Google_Service_SASPortalTesting_SasPortalInstallationParams extends Google
   public function getAntennaModel()
   {
     return $this->antennaModel;
+  }
+  public function setCpeCbsdIndication($cpeCbsdIndication)
+  {
+    $this->cpeCbsdIndication = $cpeCbsdIndication;
+  }
+  public function getCpeCbsdIndication()
+  {
+    return $this->cpeCbsdIndication;
   }
   public function setEirpCapability($eirpCapability)
   {

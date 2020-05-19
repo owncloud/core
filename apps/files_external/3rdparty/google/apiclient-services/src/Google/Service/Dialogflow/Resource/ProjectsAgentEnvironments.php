@@ -25,4 +25,24 @@
  */
 class Google_Service_Dialogflow_Resource_ProjectsAgentEnvironments extends Google_Service_Resource
 {
+  /**
+   * Returns the list of all non-draft environments of the specified agent.
+   * (environments.listProjectsAgentEnvironments)
+   *
+   * @param string $parent Required. The agent to list all environments from.
+   * Format: `projects//agent`.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string pageToken Optional. The next_page_token value returned from
+   * a previous list request.
+   * @opt_param int pageSize Optional. The maximum number of items to return in a
+   * single page. By default 100 and at most 1000.
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2ListEnvironmentsResponse
+   */
+  public function listProjectsAgentEnvironments($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowV2ListEnvironmentsResponse");
+  }
 }

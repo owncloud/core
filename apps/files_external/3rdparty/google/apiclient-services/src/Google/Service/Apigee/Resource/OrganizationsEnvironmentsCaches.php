@@ -39,20 +39,4 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsCaches extends Goo
     $params = array_merge($params, $optParams);
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleProtobufEmpty");
   }
-  /**
-   * Lists all caches in an environment.
-   * (caches.listOrganizationsEnvironmentsCaches)
-   *
-   * @param string $parent Required. The name of the parent environment under
-   * which to get caches. Must be of the form:
-   * `organizations/{organization_id}/environments/{environment_id}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsCaches($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
 }

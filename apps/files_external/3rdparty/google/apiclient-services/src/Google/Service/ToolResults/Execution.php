@@ -15,12 +15,15 @@
  * the License.
  */
 
-class Google_Service_ToolResults_Execution extends Google_Model
+class Google_Service_ToolResults_Execution extends Google_Collection
 {
+  protected $collection_key = 'dimensionDefinitions';
   protected $completionTimeType = 'Google_Service_ToolResults_Timestamp';
   protected $completionTimeDataType = '';
   protected $creationTimeType = 'Google_Service_ToolResults_Timestamp';
   protected $creationTimeDataType = '';
+  protected $dimensionDefinitionsType = 'Google_Service_ToolResults_MatrixDimensionDefinition';
+  protected $dimensionDefinitionsDataType = 'array';
   public $executionId;
   protected $outcomeType = 'Google_Service_ToolResults_Outcome';
   protected $outcomeDataType = '';
@@ -56,6 +59,20 @@ class Google_Service_ToolResults_Execution extends Google_Model
   public function getCreationTime()
   {
     return $this->creationTime;
+  }
+  /**
+   * @param Google_Service_ToolResults_MatrixDimensionDefinition
+   */
+  public function setDimensionDefinitions($dimensionDefinitions)
+  {
+    $this->dimensionDefinitions = $dimensionDefinitions;
+  }
+  /**
+   * @return Google_Service_ToolResults_MatrixDimensionDefinition
+   */
+  public function getDimensionDefinitions()
+  {
+    return $this->dimensionDefinitions;
   }
   public function setExecutionId($executionId)
   {

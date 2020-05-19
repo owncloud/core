@@ -115,13 +115,13 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersFilterSets extends Google
    * whose bidder is 123: `bidders/123/accounts/456`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. The server may return fewer
+   * results than requested. If unspecified, the server will pick an appropriate
+   * default.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListFilterSetsResponse.nextPageToken returned from the previous call to the
    * accounts.filterSets.list method.
-   * @opt_param int pageSize Requested page size. The server may return fewer
-   * results than requested. If unspecified, the server will pick an appropriate
-   * default.
    * @return Google_Service_AdExchangeBuyerII_ListFilterSetsResponse
    */
   public function listBiddersFilterSets($ownerName, $optParams = array())
