@@ -879,15 +879,14 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
-		$user = $this->getActualUsername($user);
-		$shareWith = $this->getActualUsername($shareWith);
+		$userActual = $this->getActualUsername($user);
 		if (\is_string($permissions) && !\is_numeric($permissions)) {
 			$permissions = $this->splitPermissionsString($permissions);
 		}
 		$this->waitToCreateShare();
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
-			$user,
+			$userActual,
 			$this->getPasswordForUser($user),
 			$path,
 			$shareType,
@@ -1145,30 +1144,30 @@ trait Sharing {
 	public function shareFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null, $getShareData = false
 	) {
-		$user1 = $this->getActualUsername($user1);
-		$user2 = $this->getActualUsername($user2);
+		$user1Actual = $this->getActualUsername($user1);
+		$user2Actual = $this->getActualUsername($user2);
 
 		$path = $this->getSharesEndpointPath("?path=$filepath");
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
-			$user1,
+			$user1Actual,
 			$this->getPasswordForUser($user1),
 			"GET",
 			$path,
 			[],
 			$this->ocsApiVersion
 		);
-		if ($getShareData && $this->isUserOrGroupInSharedData($user2, "user", $permissions)) {
+		if ($getShareData && $this->isUserOrGroupInSharedData($user2Actual, "user", $permissions)) {
 			return;
 		} else {
 			$this->createShare(
-				$user1, $filepath, 0, $user2, null, null, $permissions
+				$user1, $filepath, 0, $user2Actual, null, null, $permissions
 			);
 		}
 		if ($getShareData) {
 			$this->response = OcsApiHelper::sendRequest(
 				$this->getBaseUrl(),
-				$user1,
+				$user1Actual,
 				$this->getPasswordForUser($user1),
 				"GET",
 				$path,

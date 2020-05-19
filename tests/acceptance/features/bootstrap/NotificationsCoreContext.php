@@ -176,37 +176,39 @@ class NotificationsCoreContext implements Context {
 		$notification, $user, $formData
 	) {
 		$this->matchNotification(
-			$notification, $user, false, $formData
+			$notification, $user, $aboutUser = null, false, $formData
 		);
 	}
 
 	/**
-	 * @Then /^the (first|last) notification of user "([^"]*)" should match these regular expressions$/
+	 * @Then /^the (first|last) notification of user "([^"]*)" should match these regular expressions about user "([^"]*)"$/
 	 *
 	 * @param string $notification first|last
 	 * @param string $user
+	 * @param string $aboutUser
 	 * @param \Behat\Gherkin\Node\TableNode $formData
 	 *
 	 * @return void
 	 */
 	public function matchNotificationRegularExpression(
-		$notification, $user, $formData
+		$notification, $user, $aboutUser, $formData
 	) {
 		$this->matchNotification(
-			$notification, $user, true, $formData
+			$notification, $user, $aboutUser, true, $formData
 		);
 	}
 
 	/**
 	 * @param string $notification first|last
 	 * @param string $user
+	 * @param string $aboutUser
 	 * @param bool $regex
 	 * @param \Behat\Gherkin\Node\TableNode $formData
 	 *
 	 * @return void
 	 */
 	public function matchNotification(
-		$notification, $user, $regex, $formData
+		$notification, $user, $aboutUser, $regex, $formData
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 
@@ -244,6 +246,11 @@ class NotificationsCoreContext implements Context {
 				$value = $this->featureContext->substituteInLineCodes(
 					$notification['regex'], ['preg_quote' => ['/']]
 				);
+				if ($aboutUser !== null) {
+					$value = $this->featureContext->substituteInLineCodes(
+						$notification['regex'], $aboutUser
+					);
+				}
 				Assert::assertNotFalse(
 					(bool) \preg_match($value, $response['ocs']['data'][$notification['key']]),
 					"'$value' does not match '{$response['ocs']['data'][$notification['key']]}'"
