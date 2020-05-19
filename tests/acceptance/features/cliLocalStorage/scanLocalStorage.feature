@@ -41,7 +41,7 @@ Feature: Scanning files on local storage
       | /local_storage/folder2/hello2.txt |
     When the administrator scans the filesystem in path "/%username%/files/local_storage/folder1" of user "Alice" using the occ command
     And user "Alice" requests "/remote.php/dav/files/%username%/local_storage/folder1" with "PROPFIND" using basic auth
-    Then the propfind result of user "user0" should contain these entries:
+    Then the propfind result of user "Alice" should contain these entries:
       | /local_storage/folder1/hello1.txt |
     When user "Alice" requests "/remote.php/dav/files/%username%/local_storage/folder2" with "PROPFIND" using basic auth
     Then the propfind result of user "Alice" should not contain these entries:
@@ -125,7 +125,7 @@ Feature: Scanning files on local storage
     When user "David" requests "/remote.php/dav/files/%username%/local_storage3/folder3" with "PROPFIND" using basic auth
     Then the propfind result of user "David" should not contain these entries:
       | /local_storage3/folder3/hello3.txt |
-    When the administrator scans the filesystem for groups list "grp2,grp3" using the occ command
+    When the administrator scans the filesystem for groups list "grp1,grp2" using the occ command
     And user "Alice" requests "/remote.php/dav/files/%username%/local_storage1/folder1" with "PROPFIND" using basic auth
     Then the propfind result of user "Alice" should not contain these entries:
       | /local_storage1/folder1/hello1.txt |
@@ -214,7 +214,7 @@ Feature: Scanning files on local storage
     When user "Carol" requests "/remote.php/dav/files/%username%/local_storage2" with "PROPFIND" using basic auth
     Then the propfind result of user "Carol" should not contain these entries:
       | /local_storage2/hello1.txt |
-    When the administrator scans the filesystem for group "grp1" using the occ command
+    When the administrator scans the filesystem for group "grp0" using the occ command
     And user "Alice" requests "/remote.php/dav/files/%username%/local_storage1" with "PROPFIND" using basic auth
     Then the propfind result of user "Alice" should contain these entries:
       | /local_storage1/hello1.txt |
