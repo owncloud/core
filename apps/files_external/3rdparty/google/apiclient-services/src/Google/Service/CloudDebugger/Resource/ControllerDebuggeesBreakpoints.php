@@ -43,6 +43,8 @@ class Google_Service_CloudDebugger_Resource_ControllerDebuggeesBreakpoints exten
    * @param string $debuggeeId Required. Identifies the debuggee.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string agentId Identifies the agent. This is the ID returned in
+   * the RegisterDebuggee response.
    * @opt_param bool successOnTimeout If set to `true` (recommended), returns
    * `google.rpc.Code.OK` status and sets the `wait_expired` response field to
    * `true` when the server-selected timeout has expired.

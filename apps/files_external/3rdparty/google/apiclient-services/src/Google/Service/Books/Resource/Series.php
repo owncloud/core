@@ -28,13 +28,14 @@ class Google_Service_Books_Resource_Series extends Google_Service_Resource
   /**
    * Returns Series metadata for the given series ids. (series.get)
    *
-   * @param string|array $seriesId String that identifies the series
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string series_id String that identifies the series
    * @return Google_Service_Books_Series
    */
-  public function get($seriesId, $optParams = array())
+  public function get($optParams = array())
   {
-    $params = array('series_id' => $seriesId);
+    $params = array();
     $params = array_merge($params, $optParams);
     return $this->call('get', array($params), "Google_Service_Books_Series");
   }

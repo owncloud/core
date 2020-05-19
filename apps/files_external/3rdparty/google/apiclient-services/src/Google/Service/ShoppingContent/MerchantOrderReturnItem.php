@@ -21,11 +21,18 @@ class Google_Service_ShoppingContent_MerchantOrderReturnItem extends Google_Coll
   protected $customerReturnReasonType = 'Google_Service_ShoppingContent_CustomerReturnReason';
   protected $customerReturnReasonDataType = '';
   public $itemId;
+  protected $merchantRejectionReasonType = 'Google_Service_ShoppingContent_MerchantRejectionReason';
+  protected $merchantRejectionReasonDataType = '';
   protected $merchantReturnReasonType = 'Google_Service_ShoppingContent_RefundReason';
   protected $merchantReturnReasonDataType = '';
   protected $productType = 'Google_Service_ShoppingContent_OrderLineItemProduct';
   protected $productDataType = '';
+  protected $refundableAmountType = 'Google_Service_ShoppingContent_MonetaryAmount';
+  protected $refundableAmountDataType = '';
+  public $returnItemId;
   public $returnShipmentIds;
+  public $shipmentGroupId;
+  public $shipmentUnitId;
   public $state;
 
   /**
@@ -49,6 +56,20 @@ class Google_Service_ShoppingContent_MerchantOrderReturnItem extends Google_Coll
   public function getItemId()
   {
     return $this->itemId;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_MerchantRejectionReason
+   */
+  public function setMerchantRejectionReason(Google_Service_ShoppingContent_MerchantRejectionReason $merchantRejectionReason)
+  {
+    $this->merchantRejectionReason = $merchantRejectionReason;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_MerchantRejectionReason
+   */
+  public function getMerchantRejectionReason()
+  {
+    return $this->merchantRejectionReason;
   }
   /**
    * @param Google_Service_ShoppingContent_RefundReason
@@ -78,6 +99,28 @@ class Google_Service_ShoppingContent_MerchantOrderReturnItem extends Google_Coll
   {
     return $this->product;
   }
+  /**
+   * @param Google_Service_ShoppingContent_MonetaryAmount
+   */
+  public function setRefundableAmount(Google_Service_ShoppingContent_MonetaryAmount $refundableAmount)
+  {
+    $this->refundableAmount = $refundableAmount;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_MonetaryAmount
+   */
+  public function getRefundableAmount()
+  {
+    return $this->refundableAmount;
+  }
+  public function setReturnItemId($returnItemId)
+  {
+    $this->returnItemId = $returnItemId;
+  }
+  public function getReturnItemId()
+  {
+    return $this->returnItemId;
+  }
   public function setReturnShipmentIds($returnShipmentIds)
   {
     $this->returnShipmentIds = $returnShipmentIds;
@@ -85,6 +128,22 @@ class Google_Service_ShoppingContent_MerchantOrderReturnItem extends Google_Coll
   public function getReturnShipmentIds()
   {
     return $this->returnShipmentIds;
+  }
+  public function setShipmentGroupId($shipmentGroupId)
+  {
+    $this->shipmentGroupId = $shipmentGroupId;
+  }
+  public function getShipmentGroupId()
+  {
+    return $this->shipmentGroupId;
+  }
+  public function setShipmentUnitId($shipmentUnitId)
+  {
+    $this->shipmentUnitId = $shipmentUnitId;
+  }
+  public function getShipmentUnitId()
+  {
+    return $this->shipmentUnitId;
   }
   public function setState($state)
   {

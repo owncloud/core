@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -11,6 +11,9 @@
 
 namespace Monolog\Handler;
 
+use Monolog\Formatter\FormatterInterface;
+use Monolog\Formatter\HtmlFormatter;
+
 /**
  * Base class for all mail handlers
  *
@@ -21,9 +24,9 @@ abstract class MailHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($records as $record) {
             if ($record['level'] < $this->level) {
@@ -43,17 +46,17 @@ abstract class MailHandler extends AbstractProcessingHandler
      * @param string $content formatted email body to be sent
      * @param array  $records the array of log records that formed this content
      */
-    abstract protected function send($content, array $records);
+    abstract protected function send(string $content, array $records): void;
 
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
-        $this->send((string) $record['formatted'], array($record));
+        $this->send((string) $record['formatted'], [$record]);
     }
 
-    protected function getHighestRecord(array $records)
+    protected function getHighestRecord(array $records): array
     {
         $highestRecord = null;
         foreach ($records as $record) {
@@ -63,5 +66,20 @@ abstract class MailHandler extends AbstractProcessingHandler
         }
 
         return $highestRecord;
+    }
+
+    protected function isHtmlBody(string $body): bool
+    {
+        return substr($body, 0, 1) === '<';
+    }
+
+    /**
+     * Gets the default formatter.
+     *
+     * @return FormatterInterface
+     */
+    protected function getDefaultFormatter(): FormatterInterface
+    {
+        return new HtmlFormatter();
     }
 }

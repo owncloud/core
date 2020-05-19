@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -12,6 +12,7 @@
 namespace Monolog\Handler;
 
 use Monolog\Logger;
+use Monolog\ResettableInterface;
 use Monolog\Formatter\FormatterInterface;
 
 /**
@@ -22,8 +23,10 @@ use Monolog\Formatter\FormatterInterface;
  * @author Hennadiy Verkh
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class FilterHandler extends AbstractHandler
+class FilterHandler extends Handler implements ProcessableHandlerInterface, ResettableInterface, FormattableHandlerInterface
 {
+    use ProcessableHandlerTrait;
+
     /**
      * Handler or factory callable($record, $this)
      *
@@ -48,10 +51,10 @@ class FilterHandler extends AbstractHandler
     /**
      * @param callable|HandlerInterface $handler        Handler or factory callable($record|null, $filterHandler).
      * @param int|array                 $minLevelOrList A list of levels to accept or a minimum level if maxLevel is provided
-     * @param int                       $maxLevel       Maximum level to accept, only used if $minLevelOrList is not an array
+     * @param int|string                $maxLevel       Maximum level to accept, only used if $minLevelOrList is not an array
      * @param bool                      $bubble         Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct($handler, $minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY, $bubble = true)
+    public function __construct($handler, $minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY, bool $bubble = true)
     {
         $this->handler  = $handler;
         $this->bubble   = $bubble;
@@ -62,10 +65,7 @@ class FilterHandler extends AbstractHandler
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getAcceptedLevels()
+    public function getAcceptedLevels(): array
     {
         return array_flip($this->acceptedLevels);
     }
@@ -74,7 +74,7 @@ class FilterHandler extends AbstractHandler
      * @param int|string|array $minLevelOrList A list of levels to accept or a minimum level or level name if maxLevel is provided
      * @param int|string       $maxLevel       Maximum level or level name to accept, only used if $minLevelOrList is not an array
      */
-    public function setAcceptedLevels($minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY)
+    public function setAcceptedLevels($minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY): self
     {
         if (is_array($minLevelOrList)) {
             $acceptedLevels = array_map('Monolog\Logger::toMonologLevel', $minLevelOrList);
@@ -86,12 +86,14 @@ class FilterHandler extends AbstractHandler
             }));
         }
         $this->acceptedLevels = array_flip($acceptedLevels);
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return isset($this->acceptedLevels[$record['level']]);
     }
@@ -99,16 +101,14 @@ class FilterHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         if (!$this->isHandling($record)) {
             return false;
         }
 
         if ($this->processors) {
-            foreach ($this->processors as $processor) {
-                $record = call_user_func($processor, $record);
-            }
+            $record = $this->processRecord($record);
         }
 
         $this->getHandler($record)->handle($record);
@@ -119,9 +119,9 @@ class FilterHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
-        $filtered = array();
+        $filtered = [];
         foreach ($records as $record) {
             if ($this->isHandling($record)) {
                 $filtered[] = $record;
@@ -155,7 +155,7 @@ class FilterHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         $this->getHandler()->setFormatter($formatter);
 
@@ -165,8 +165,13 @@ class FilterHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function getFormatter()
+    public function getFormatter(): FormatterInterface
     {
         return $this->getHandler()->getFormatter();
+    }
+
+    public function reset()
+    {
+        $this->resetProcessors();
     }
 }

@@ -27,8 +27,8 @@ class Google_Service_Gmail_Resource_UsersSettingsDelegates extends Google_Servic
 {
   /**
    * Adds a delegate with its verification status set directly to accepted,
-   * without sending any verification email.  The delegate user must be a member
-   * of the same G Suite organization as the delegator user.
+   * without sending any verification email. The delegate user must be a member of
+   * the same G Suite organization as the delegator user.
    *
    * Gmail imposes limitations on the number of delegates and delegators each user
    * in a G Suite organization can have. These limits depend on your organization,
@@ -43,7 +43,7 @@ class Google_Service_Gmail_Resource_UsersSettingsDelegates extends Google_Servic
    * This method is only available to service account clients that have been
    * delegated domain-wide authority. (delegates.create)
    *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param Google_Service_Gmail_Delegate $postBody
    * @param array $optParams Optional parameters.
@@ -65,7 +65,7 @@ class Google_Service_Gmail_Resource_UsersSettingsDelegates extends Google_Servic
    * This method is only available to service account clients that have been
    * delegated domain-wide authority. (delegates.delete)
    *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param string $delegateEmail The email address of the user to be removed as a
    * delegate.
@@ -86,7 +86,7 @@ class Google_Service_Gmail_Resource_UsersSettingsDelegates extends Google_Servic
    * This method is only available to service account clients that have been
    * delegated domain-wide authority. (delegates.get)
    *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param string $delegateEmail The email address of the user whose delegate
    * relationship is to be retrieved.
@@ -105,7 +105,7 @@ class Google_Service_Gmail_Resource_UsersSettingsDelegates extends Google_Servic
    * This method is only available to service account clients that have been
    * delegated domain-wide authority. (delegates.listUsersSettingsDelegates)
    *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Gmail_ListDelegatesResponse

@@ -32,7 +32,7 @@ class Google_Service_CloudIAP_Resource_ProjectsBrandsIdentityAwareProxyClients e
    *
    * @param string $parent Required. Path to create the client in. In the
    * following format: projects/{project_number/id}/brands/{brand}. The project
-   * must belong to a GSuite account.
+   * must belong to a G Suite account.
    * @param Google_Service_CloudIAP_IdentityAwareProxyClient $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIAP_IdentityAwareProxyClient

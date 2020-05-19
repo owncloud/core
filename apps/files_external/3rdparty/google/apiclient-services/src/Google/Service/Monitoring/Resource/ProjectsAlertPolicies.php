@@ -31,10 +31,11 @@ class Google_Service_Monitoring_Resource_ProjectsAlertPolicies extends Google_Se
    * @param string $name Required. The project in which to create the alerting
    * policy. The format is: projects/[PROJECT_ID_OR_NUMBER] Note that this field
    * names the parent container in which the alerting policy will be written, not
-   * the name of the created policy. The alerting policy that is returned will
-   * have a name that contains a normalized representation of this name as a
-   * prefix but adds a suffix of the form /alertPolicies/[ALERT_POLICY_ID],
-   * identifying the policy in the container.
+   * the name of the created policy. |name| must be a host project of a workspace,
+   * otherwise INVALID_ARGUMENT error will return. The alerting policy that is
+   * returned will have a name that contains a normalized representation of this
+   * name as a prefix but adds a suffix of the form
+   * /alertPolicies/[ALERT_POLICY_ID], identifying the policy in the container.
    * @param Google_Service_Monitoring_AlertPolicy $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Monitoring_AlertPolicy
@@ -75,7 +76,7 @@ class Google_Service_Monitoring_Resource_ProjectsAlertPolicies extends Google_Se
     return $this->call('get', array($params), "Google_Service_Monitoring_AlertPolicy");
   }
   /**
-   * Lists the existing alerting policies for the project.
+   * Lists the existing alerting policies for the workspace.
    * (alertPolicies.listProjectsAlertPolicies)
    *
    * @param string $name Required. The project whose alert policies are to be

@@ -29,7 +29,7 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * Cancels the specified operation. (operations.cancel)
    *
    * @param string $name The name (project, location, operation id) of the
-   * operation to cancel. Specified in the format 'projects/locations/operations'.
+   * operation to cancel. Specified in the format `projects/locations/operations`.
    * @param Google_Service_Container_CancelOperationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Container_ContainerEmpty
@@ -44,7 +44,7 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * Gets the specified operation. (operations.get)
    *
    * @param string $name The name (project, location, operation id) of the
-   * operation to get. Specified in the format 'projects/locations/operations'.
+   * operation to get. Specified in the format `projects/locations/operations`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string projectId Deprecated. The Google Developers Console
@@ -52,8 +52,9 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * number](https://support.google.com/cloud/answer/6158840). This field has been
    * deprecated and replaced by the name field.
    * @opt_param string zone Deprecated. The name of the Google Compute Engine
-   * [zone](/compute/docs/zones#available) in which the cluster resides. This
-   * field has been deprecated and replaced by the name field.
+   * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+   * cluster resides. This field has been deprecated and replaced by the name
+   * field.
    * @opt_param string operationId Deprecated. The server-assigned `name` of the
    * operation. This field has been deprecated and replaced by the name field.
    * @return Google_Service_Container_Operation
@@ -69,7 +70,7 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * (operations.listProjectsLocationsOperations)
    *
    * @param string $parent The parent (project and location) where the operations
-   * will be listed. Specified in the format 'projects/locations'. Location "-"
+   * will be listed. Specified in the format `projects/locations`. Location "-"
    * matches all zones and all regions.
    * @param array $optParams Optional parameters.
    *
@@ -78,8 +79,9 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * number](https://support.google.com/cloud/answer/6158840). This field has been
    * deprecated and replaced by the parent field.
    * @opt_param string zone Deprecated. The name of the Google Compute Engine
-   * [zone](/compute/docs/zones#available) to return operations for, or `-` for
-   * all zones. This field has been deprecated and replaced by the parent field.
+   * [zone](https://cloud.google.com/compute/docs/zones#available) to return
+   * operations for, or `-` for all zones. This field has been deprecated and
+   * replaced by the parent field.
    * @return Google_Service_Container_ListOperationsResponse
    */
   public function listProjectsLocationsOperations($parent, $optParams = array())

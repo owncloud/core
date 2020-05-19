@@ -20,6 +20,7 @@ class Google_Service_Appengine_Application extends Google_Collection
   protected $collection_key = 'dispatchRules';
   public $authDomain;
   public $codeBucket;
+  public $databaseType;
   public $defaultBucket;
   public $defaultCookieExpiration;
   public $defaultHostname;
@@ -50,6 +51,14 @@ class Google_Service_Appengine_Application extends Google_Collection
   public function getCodeBucket()
   {
     return $this->codeBucket;
+  }
+  public function setDatabaseType($databaseType)
+  {
+    $this->databaseType = $databaseType;
+  }
+  public function getDatabaseType()
+  {
+    return $this->databaseType;
   }
   public function setDefaultBucket($defaultBucket)
   {

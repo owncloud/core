@@ -51,9 +51,6 @@ class Google_Service_Games_Resource_Applications extends Google_Service_Resource
    * application. (applications.played)
    *
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string builtinGameId Override used only by built-in games in Play
-   * Games application.
    */
   public function played($optParams = array())
   {

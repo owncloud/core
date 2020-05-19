@@ -56,9 +56,9 @@ class Google_Service_FirebaseHosting_Resource_SitesReleases extends Google_Servi
    * format: sites/site-name
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The page size to return. Defaults to 100.
    * @opt_param string pageToken The next_page_token from a previous request, if
    * provided.
+   * @opt_param int pageSize The page size to return. Defaults to 100.
    * @return Google_Service_FirebaseHosting_ListReleasesResponse
    */
   public function listSitesReleases($parent, $optParams = array())

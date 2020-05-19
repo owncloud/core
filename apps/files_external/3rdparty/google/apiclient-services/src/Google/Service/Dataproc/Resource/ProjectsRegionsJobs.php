@@ -108,6 +108,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
    * request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string clusterName Optional. If set, the returned jobs list
+   * includes only jobs that were submitted to the named cluster.
    * @opt_param string filter Optional. A filter constraining the jobs to list.
    * Filters are case-sensitive and have the following syntax:field = value AND
    * field = value ...where field is status.state or labels.[KEY], and [KEY] is a
@@ -122,8 +124,6 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
    * call, to request the next page of results.
    * @opt_param int pageSize Optional. The number of results to return in each
    * response.
-   * @opt_param string clusterName Optional. If set, the returned jobs list
-   * includes only jobs that were submitted to the named cluster.
    * @return Google_Service_Dataproc_ListJobsResponse
    */
   public function listProjectsRegionsJobs($projectId, $region, $optParams = array())
@@ -158,8 +158,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-   * PERMISSION_DENIED (jobs.setIamPolicy)
+   * existing policy.Can return NOT_FOUND, INVALID_ARGUMENT, and PERMISSION_DENIED
+   * errors. (jobs.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

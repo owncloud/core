@@ -22,6 +22,7 @@ class Google_Service_Sasportal_SasPortalInstallationParams extends Google_Model
   public $antennaDowntilt;
   public $antennaGain;
   public $antennaModel;
+  public $cpeCbsdIndication;
   public $eirpCapability;
   public $height;
   public $heightType;
@@ -70,6 +71,14 @@ class Google_Service_Sasportal_SasPortalInstallationParams extends Google_Model
   public function getAntennaModel()
   {
     return $this->antennaModel;
+  }
+  public function setCpeCbsdIndication($cpeCbsdIndication)
+  {
+    $this->cpeCbsdIndication = $cpeCbsdIndication;
+  }
+  public function getCpeCbsdIndication()
+  {
+    return $this->cpeCbsdIndication;
   }
   public function setEirpCapability($eirpCapability)
   {

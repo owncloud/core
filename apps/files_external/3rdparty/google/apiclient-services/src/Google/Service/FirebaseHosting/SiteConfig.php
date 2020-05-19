@@ -17,8 +17,17 @@
 
 class Google_Service_FirebaseHosting_SiteConfig extends Google_Model
 {
+  public $cloudLoggingEnabled;
   public $maxVersions;
 
+  public function setCloudLoggingEnabled($cloudLoggingEnabled)
+  {
+    $this->cloudLoggingEnabled = $cloudLoggingEnabled;
+  }
+  public function getCloudLoggingEnabled()
+  {
+    return $this->cloudLoggingEnabled;
+  }
   public function setMaxVersions($maxVersions)
   {
     $this->maxVersions = $maxVersions;

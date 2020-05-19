@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +19,7 @@ namespace Monolog\Processor;
 interface ProcessorInterface
 {
     /**
-     * @return array The processed records
+     * @return array The processed record
      */
-    public function __invoke(array $records);
+    public function __invoke(array $record);
 }

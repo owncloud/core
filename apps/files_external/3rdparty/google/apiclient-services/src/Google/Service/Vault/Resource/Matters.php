@@ -165,7 +165,7 @@ class Google_Service_Vault_Resource_Matters extends Google_Service_Resource
   }
   /**
    * Updates the specified matter. This updates only the name and description of
-   * the matter, identified by matter id. Changes to any other fields are ignored.
+   * the matter, identified by matter ID. Changes to any other fields are ignored.
    * Returns the default view of the matter. (matters.update)
    *
    * @param string $matterId The matter ID.

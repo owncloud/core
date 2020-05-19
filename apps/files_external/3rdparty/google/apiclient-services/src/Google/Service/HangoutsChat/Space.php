@@ -19,6 +19,8 @@ class Google_Service_HangoutsChat_Space extends Google_Model
 {
   public $displayName;
   public $name;
+  public $singleUserBotDm;
+  public $threaded;
   public $type;
 
   public function setDisplayName($displayName)
@@ -36,6 +38,22 @@ class Google_Service_HangoutsChat_Space extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setSingleUserBotDm($singleUserBotDm)
+  {
+    $this->singleUserBotDm = $singleUserBotDm;
+  }
+  public function getSingleUserBotDm()
+  {
+    return $this->singleUserBotDm;
+  }
+  public function setThreaded($threaded)
+  {
+    $this->threaded = $threaded;
+  }
+  public function getThreaded()
+  {
+    return $this->threaded;
   }
   public function setType($type)
   {

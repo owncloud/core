@@ -138,13 +138,13 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsOccurrences extends Goog
    * projects/{project_id}.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter The filter expression.
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
    * @opt_param string kind The kind of occurrences to filter on.
    * @opt_param int pageSize Number of occurrences to return in the list.
    * @opt_param string name The name field contains the project Id. For example:
    * "projects/{project_id} @Deprecated
-   * @opt_param string filter The filter expression.
    * @return Google_Service_ContainerAnalysis_ListOccurrencesResponse
    */
   public function listProjectsOccurrences($parent, $optParams = array())

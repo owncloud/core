@@ -26,8 +26,15 @@
 class Google_Service_ServiceManagement_Resource_Services extends Google_Service_Resource
 {
   /**
-   * Creates a new managed service. Please note one producer project can own no
-   * more than 20 services.
+   * Creates a new managed service.
+   *
+   * A managed service is immutable, and is subject to mandatory 30-day data
+   * retention. You cannot move a service or recreate it within 30 days after
+   * deletion.
+   *
+   * One producer project can own no more than 500 services. For security and
+   * reliability purposes, a production service should be hosted in a dedicated
+   * producer project.
    *
    * Operation (services.create)
    *
@@ -146,13 +153,13 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    * example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string view Specifies which parts of the Service Config should be
+   * returned in the response.
    * @opt_param string configId Required. The id of the service configuration
    * resource.
    *
    * This field must be specified for the server to return all fields, including
    * `SourceInfo`.
-   * @opt_param string view Specifies which parts of the Service Config should be
-   * returned in the response.
    * @return Google_Service_ServiceManagement_Service
    */
   public function getConfig($serviceName, $optParams = array())
@@ -191,17 +198,17 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string consumerId Include services consumed by the specified
+   * consumer.
+   *
+   * The Google Service Management implementation accepts the following forms: -
+   * project:
    * @opt_param string pageToken Token identifying which result to start with;
    * returned by a previous list call.
    * @opt_param int pageSize The max number of items to include in the response
    * list. Page size is 50 if not specified. Maximum value is 100.
    * @opt_param string producerProjectId Include services produced by the
    * specified project.
-   * @opt_param string consumerId Include services consumed by the specified
-   * consumer.
-   *
-   * The Google Service Management implementation accepts the following forms: -
-   * project:
    * @return Google_Service_ServiceManagement_ListServicesResponse
    */
   public function listServices($optParams = array())
@@ -214,7 +221,7 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (services.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -233,7 +240,7 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

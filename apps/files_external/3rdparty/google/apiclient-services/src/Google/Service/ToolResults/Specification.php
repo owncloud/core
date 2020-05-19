@@ -19,6 +19,8 @@ class Google_Service_ToolResults_Specification extends Google_Model
 {
   protected $androidTestType = 'Google_Service_ToolResults_AndroidTest';
   protected $androidTestDataType = '';
+  protected $iosTestType = 'Google_Service_ToolResults_IosTest';
+  protected $iosTestDataType = '';
 
   /**
    * @param Google_Service_ToolResults_AndroidTest
@@ -33,5 +35,19 @@ class Google_Service_ToolResults_Specification extends Google_Model
   public function getAndroidTest()
   {
     return $this->androidTest;
+  }
+  /**
+   * @param Google_Service_ToolResults_IosTest
+   */
+  public function setIosTest(Google_Service_ToolResults_IosTest $iosTest)
+  {
+    $this->iosTest = $iosTest;
+  }
+  /**
+   * @return Google_Service_ToolResults_IosTest
+   */
+  public function getIosTest()
+  {
+    return $this->iosTest;
   }
 }
