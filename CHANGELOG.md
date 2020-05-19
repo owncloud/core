@@ -34,6 +34,7 @@ Summary
 * Change - Update Symfony components to 4.4.8: [#37319](https://github.com/owncloud/core/pull/37319)
 * Change - Update symfony/polyfill (1.15.0 => 1.16.0): [#37367](https://github.com/owncloud/core/pull/37367)
 * Change - Update sabre/xml (2.2.0 => 2.2.1): [#37369](https://github.com/owncloud/core/pull/37369)
+* Change - Update icewind/smb from 3.1.2 to 3.2.3 in files_external/3rdparty: [#37370](https://github.com/owncloud/core/pull/37370)
 * Change - Update react/promise (v2.7.1 => v2.8.0): [#37383](https://github.com/owncloud/core/pull/37383)
 * Change - Update league/flysystem (1.0.67 => 1.0.68): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Update symfony/polyfill (1.16.0 => 1.17.0): [#37385](https://github.com/owncloud/core/pull/37385)
@@ -239,6 +240,10 @@ Details
 * Change - Update sabre/xml (2.2.0 => 2.2.1): [#37369](https://github.com/owncloud/core/pull/37369)
 
    https://github.com/owncloud/core/pull/37369
+
+* Change - Update icewind/smb from 3.1.2 to 3.2.3 in files_external/3rdparty: [#37370](https://github.com/owncloud/core/pull/37370)
+
+   https://github.com/owncloud/core/pull/37370
 
 * Change - Update react/promise (v2.7.1 => v2.8.0): [#37383](https://github.com/owncloud/core/pull/37383)
 
