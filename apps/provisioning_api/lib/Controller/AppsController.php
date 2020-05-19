@@ -86,9 +86,9 @@ class AppsController extends OCSController {
 	 * @return Result
 	 */
 	public function getAppInfo($appId) {
-		$info = \OCP\App::getAppInfo($appId);
+		$info = $this->appManager->getAppInfo($appId);
 		if ($info !== null) {
-			return new Result(OC_App::getAppInfo($appId));
+			return new Result($info);
 		} else {
 			return new Result(null, \OCP\API::RESPOND_NOT_FOUND, 'The request app was not found');
 		}
