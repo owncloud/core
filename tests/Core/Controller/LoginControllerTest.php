@@ -27,6 +27,7 @@ use OC\Core\Controller\LoginController;
 use OC\User\Session;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
@@ -52,6 +53,8 @@ class LoginControllerTest extends TestCase {
 	private $urlGenerator;
 	/** @var Manager | \PHPUnit\Framework\MockObject\MockObject */
 	private $twoFactorManager;
+	/** @var ILicenseManager */
+	private $licenseManager;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -66,6 +69,7 @@ class LoginControllerTest extends TestCase {
 		$this->twoFactorManager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
+		$this->licenseManager = $this->createMock(ILicenseManager::class);
 
 		$this->loginController = new LoginController(
 			'core',
@@ -75,7 +79,8 @@ class LoginControllerTest extends TestCase {
 			$this->session,
 			$this->userSession,
 			$this->urlGenerator,
-			$this->twoFactorManager
+			$this->twoFactorManager,
+			$this->licenseManager
 		);
 	}
 
@@ -150,6 +155,107 @@ class LoginControllerTest extends TestCase {
 			'rememberLoginState' => 0
 		];
 
+		$this->licenseManager->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
+			]);
+
+		$expectedResponse = new TemplateResponse('core', 'login', $params, 'guest');
+		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('', '%2Findex.php%2Ff%2F17', ''));
+	}
+
+	public function responseForNotLoggedinUserDifferentLicensesProvider() {
+		// use only license_state, type and translated_message fields, the rest aren't used for now
+		return [
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_MISSING,
+					'type' => -1,
+					'translated_message' => ['license missing'],
+				],
+				false,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_INVALID,
+					'type' => -1,
+					'translated_message' => ['license invalid'],
+				],
+				true,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_EXPIRED,
+					'type' => 0,
+					'translated_message' => ['normal license expired'],
+				],
+				true,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_EXPIRED,
+					'type' => 1,
+					'translated_message' => ['demo license expired'],
+				],
+				true,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
+					'type' => 0,
+					'translated_message' => ['normal license about to expire'],
+				],
+				false,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
+					'type' => 1,
+					'translated_message' => ['demo license about to expire'],
+				],
+				true,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_VALID,
+					'type' => 0,
+					'translated_message' => ['normal license valid'],
+				],
+				false,
+			],
+			[
+				[
+					'license_state' => ILicenseManager::LICENSE_STATE_VALID,
+					'type' => 1,
+					'translated_message' => ['demo license valid'],
+				],
+				true,
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider responseForNotLoggedinUserDifferentLicensesProvider
+	 */
+	public function testResponseForNotLoggedinUserDifferentLicenses($licenseInfo, $shouldShowMessage) {
+		$params = [
+			'messages' => [],
+			'loginName' => '',
+			'user_autofocus' => true,
+			'redirect_url' => '%2Findex.php%2Ff%2F17',
+			'canResetPassword' => true,
+			'resetPasswordLink' => null,
+			'alt_login' => [],
+			'rememberLoginAllowed' => false,
+			'rememberLoginState' => 0
+		];
+
+		if ($shouldShowMessage) {
+			$params['licenseMessage'] = \implode('<br/>', $licenseInfo['translated_message']);
+		}
+
+		$this->licenseManager->method('getLicenseMessageFor')->willReturn($licenseInfo);
+
 		$expectedResponse = new TemplateResponse('core', 'login', $params, 'guest');
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('', '%2Findex.php%2Ff%2F17', ''));
 	}
@@ -175,6 +281,11 @@ class LoginControllerTest extends TestCase {
 					],
 				]
 			);
+
+		$this->licenseManager->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
+			]);
 
 		$expectedResponse = new TemplateResponse(
 			'core',
@@ -244,6 +355,11 @@ class LoginControllerTest extends TestCase {
 			->with('LdapUser')
 			->willReturn($user);
 
+		$this->licenseManager->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
+			]);
+
 		$expectedResponse = new TemplateResponse(
 			'core',
 			'login',
@@ -284,6 +400,11 @@ class LoginControllerTest extends TestCase {
 			->method('get')
 			->with('0')
 			->willReturn($user);
+
+		$this->licenseManager->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
+			]);
 
 		$expectedResponse = new TemplateResponse(
 			'core',
@@ -357,7 +478,8 @@ class LoginControllerTest extends TestCase {
 				$this->session,
 				$this->userSession,
 				$this->urlGenerator,
-				$this->twoFactorManager
+				$this->twoFactorManager,
+				$this->licenseManager
 			])
 			->getMock();
 		$this->loginController->expects($this->once())
