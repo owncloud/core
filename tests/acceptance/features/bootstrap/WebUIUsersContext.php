@@ -145,7 +145,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			$this->getSession(), $username, $password, $email, $groups
 		);
 
-		$shouldExist = ($attemptTo === "");
+		$shouldExist = ($attemptTo === "creates");
 
 		$this->featureContext->addUserToCreatedUsersList(
 			$username, $password, "", $email, $shouldExist
@@ -223,7 +223,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdminDeletesDoesNotDeleteGroupUsingWebUI($name) {
 		$this->usersPage->deleteGroup($name, $this->getSession(), false);
-		$this->featureContext->rememberThatGroupIsNotExpectedToExist($name);
 	}
 
 	/**
@@ -380,7 +379,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdministratorDoesNotDeleteTheUser($username) {
 		$this->usersPage->deleteUser($username, false);
-		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
 	}
 
 	/**
