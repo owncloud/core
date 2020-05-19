@@ -38,6 +38,7 @@ Summary
 * Change - Update react/promise (v2.7.1 => v2.8.0): [#37383](https://github.com/owncloud/core/pull/37383)
 * Change - Update league/flysystem (1.0.67 => 1.0.68): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Update symfony/polyfill (1.16.0 => 1.17.0): [#37385](https://github.com/owncloud/core/pull/37385)
+* Change - Added federated shares scan cronjob depreciating incoming-shares:poll: [#37391](https://github.com/owncloud/core/pull/37391)
 
 Details
 -------
@@ -261,6 +262,19 @@ Details
    symfony/polyfill-mbstring symfony/polyfill-php72 symfony/polyfill-php73
 
    https://github.com/owncloud/core/pull/37385
+
+* Change - Added federated shares scan cronjob depreciating incoming-shares:poll: [#37391](https://github.com/owncloud/core/pull/37391)
+
+   We've fixed the behavior for federated shares poll command that in certain conditions was
+   producing stale filecache entries, and replaced it by fed shares scan cronjob.
+
+   ScanExternalShares that was added is a background job used to scan external shares (federated
+   shares) that are eligible for scanning to ensure integrity of the file cache - i.e. satisfy
+   preconditions as last user login, last scan and whether root storage updated.
+
+   https://github.com/owncloud/enterprise/issues/3902
+   https://github.com/owncloud/core/pull/37391
+   https://doc.owncloud.com/server/admin_manual/configuration/files/federated_cloud_sharing_configuration.html
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
