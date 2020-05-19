@@ -100,6 +100,7 @@ OC.L10N.register(
     "Public upload disabled by the administrator" : "שיתוף ציבורי מנוטרל על ידי המנהל",
     "Public upload is only possible for publicly shared folders" : "העלאה ציבורית אפשרית רק אל תיקיות משותפות ציבוריות",
     "Sharing %s failed because the back end does not allow shares from type %s" : "שיתוף %s נכשל כיוון שהצד האחרוי ינו מאפשר שיתוף מסוג %s",
+    "shareWith parameter must be a string" : "פרמטר shareWith חייב להיות מחרוזת",
     "Unknown share type" : "סוג שיתוף אינו מוכר",
     "Not a directory" : "אינה תיקייה",
     "Could not lock path" : "לא ניתן היה לנעול נתיב",
