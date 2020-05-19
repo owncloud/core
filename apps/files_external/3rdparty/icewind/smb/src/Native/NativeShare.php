@@ -94,9 +94,7 @@ class NativeShare extends AbstractShare {
 			$name = $file['name'];
 			if ($name !== '.' and $name !== '..') {
 				$fullPath = $path . '/' . $name;
-				$files [] = new NativeFileInfo($this, $fullPath, $name, function () use ($fullPath) {
-					return $this->getStat($fullPath);
-				});
+				$files [] = new NativeFileInfo($this, $fullPath, $name);
 			}
 		}
 
@@ -109,7 +107,12 @@ class NativeShare extends AbstractShare {
 	 * @return \Icewind\SMB\IFileInfo
 	 */
 	public function stat($path) {
-		return new NativeFileInfo($this, $path, self::mb_basename($path), $this->getStat($path));
+		$info = new NativeFileInfo($this, $path, self::mb_basename($path));
+
+		// trigger attribute loading
+		$info->getSize();
+
+		return $info;
 	}
 
 	/**
@@ -127,10 +130,6 @@ class NativeShare extends AbstractShare {
 		}
 
 		return '';
-	}
-
-	private function getStat($path) {
-		return $this->getState()->stat($this->buildUrl($path));
 	}
 
 	/**
@@ -198,12 +197,14 @@ class NativeShare extends AbstractShare {
 	 */
 	public function put($source, $target) {
 		$sourceHandle = fopen($source, 'rb');
-		$targetHandle = $this->getState()->create($this->buildUrl($target));
+		$targetUrl = $this->buildUrl($target);
+
+		$targetHandle = $this->getState()->create($targetUrl);
 
 		while ($data = fread($sourceHandle, NativeReadStream::CHUNK_SIZE)) {
-			$this->getState()->write($targetHandle, $data);
+			$this->getState()->write($targetHandle, $data, $targetUrl);
 		}
-		$this->getState()->close($targetHandle);
+		$this->getState()->close($targetHandle, $targetUrl);
 		return true;
 	}
 
@@ -237,14 +238,14 @@ class NativeShare extends AbstractShare {
 			} else {
 				$reason = 'Unknown error';
 			}
-			$this->getState()->close($sourceHandle);
+			$this->getState()->close($sourceHandle, $this->buildUrl($source));
 			throw new InvalidResourceException('Failed opening local file "' . $target . '" for writing: ' . $reason);
 		}
 
 		while ($data = $this->getState()->read($sourceHandle, NativeReadStream::CHUNK_SIZE)) {
 			fwrite($targetHandle, $data);
 		}
-		$this->getState()->close($sourceHandle);
+		$this->getState()->close($sourceHandle, $this->buildUrl($source));
 		return true;
 	}
 
