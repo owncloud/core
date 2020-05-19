@@ -15,7 +15,7 @@ Feature: update a public link share
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -30,7 +30,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | Alice Hansen         |
+      | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -64,7 +64,7 @@ Feature: update a public link share
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -79,7 +79,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | Alice Hansen         |
+      | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -96,7 +96,7 @@ Feature: update a public link share
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -110,7 +110,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | Alice Hansen         |
+      | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -127,7 +127,7 @@ Feature: update a public link share
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id                | A_NUMBER                  |
       | item_type         | folder                    |
       | item_source       | A_NUMBER                  |
@@ -141,7 +141,7 @@ Feature: update a public link share
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
       | file_parent       | A_NUMBER                  |
-      | displayname_owner | Alice Hansen              |
+      | displayname_owner | %displayname%             |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |
     Examples:
@@ -158,7 +158,7 @@ Feature: update a public link share
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -172,7 +172,7 @@ Feature: update a public link share
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | Alice Hansen         |
+      | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
     Examples:
@@ -189,7 +189,7 @@ Feature: update a public link share
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" should include
       | id                | A_NUMBER                  |
       | item_type         | folder                    |
       | item_source       | A_NUMBER                  |
@@ -203,7 +203,7 @@ Feature: update a public link share
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
       | file_parent       | A_NUMBER                  |
-      | displayname_owner | Alice Hansen              |
+      | displayname_owner | %displayname%             |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |
     Examples:
@@ -298,7 +298,7 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | permissions | read,update,create |
     When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "403"
@@ -321,7 +321,7 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | permissions | read,update,create,delete |
     When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "204"

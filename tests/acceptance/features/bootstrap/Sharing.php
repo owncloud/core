@@ -1331,10 +1331,11 @@ trait Sharing {
 	public function shareFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null, $getShareData = false
 	) {
+		$userActual = $this->getActualUsername($user);
 		$path = $this->getSharesEndpointPath("?path=$filepath");
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
-			$user,
+			$userActual,
 			$this->getPasswordForUser($user),
 			"GET",
 			$path,
@@ -1351,7 +1352,7 @@ trait Sharing {
 		if ($getShareData) {
 			$this->response = OcsApiHelper::sendRequest(
 				$this->getBaseUrl(),
-				$user,
+				$userActual,
 				$this->getPasswordForUser($user),
 				"GET",
 				$path,
@@ -1375,7 +1376,6 @@ trait Sharing {
 	public function userSharesFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$user = $this->getActualUsername($user);
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user, $filepath, $group, $permissions
 		);
@@ -1789,7 +1789,7 @@ trait Sharing {
 			200,
 			"Error getting info of last share for user $user"
 		);
-		$this->checkFields($body);
+		$this->checkFields($user, $body);
 	}
 
 	/**
@@ -1991,7 +1991,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then the fields of the last response to user :sharer sharing with user :sharee should include
+	 * @Then the fields of the last response to user :sharer sharing with (user|group) :sharee should include
 	 *
 	 * @param string $sharer
 	 * @param string $sharee
