@@ -435,19 +435,26 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames and emails with a heading | username | and | email |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'email']);
 		foreach ($table as $row) {
-			$userEmail = $this->usersPage->getEmailOfUser($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			if ($this->featureContext->isTestingReplacingUsernames()) {
+				$expectedEmail = $this->featureContext->getEmailAddressForUser($user);
+			} else {
+				$expectedEmail = $row['email'];
+			}
+			$userEmail = $this->usersPage->getEmailOfUser($user);
 			Assert::assertEquals(
-				$row['email'],
+				$expectedEmail,
 				$userEmail,
 				__METHOD__
 				. " The email of user '"
-				. $row['username']
+				. $user
 				. "' is expected to be '"
-				. $row['email']
+				. $expectedEmail
 				. "', but got '$userEmail' instead."
 			);
 		}
