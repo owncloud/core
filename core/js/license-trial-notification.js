@@ -28,7 +28,7 @@ OC.License = {
 		'    </p>' +
 		'    {{/each}}' +
 		'    <br/>' +
-		'    <p><a class="button" href="{{clickable_link}}">{{clickable_link_text}}</a></p>' +
+		'    <p><a class="button" target="_blank" href="{{clickable_link}}">{{clickable_link_text}}</a></p>' +
 		'    <br/>' +
 		'    <p>{{time_remaining_msg}}</p>' +
 		'  </div>' +
@@ -74,7 +74,7 @@ OC.License = {
 					time_remaining_msg: t('core', 'Remaining time: {rtime}', {
 						rtime: relativeTime
 					}),
-					clickable_link: 'https://marketplace.owncloud.com/demo-key',
+					clickable_link: 'https://owncloud.com/try-enterprise/',
 					clickable_link_text: t('core', 'Get your demo key'),
 					placeholder: t('core', 'Enter license key'),
 					license_button_text: t('core', 'Set new key')
