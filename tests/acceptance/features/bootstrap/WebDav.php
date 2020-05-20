@@ -2925,6 +2925,32 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the following headers should match these regular expressions
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function headersShouldMatchRegularExpressions(TableNode $table) {
+		$this->verifyTableNodeColumnsCount($table, 2);
+		foreach ($table->getTable() as $header) {
+			$headerName = $header[0];
+			$expectedHeaderValue = $header[1];
+			$expectedHeaderValue = $this->substituteInLineCodes(
+				$expectedHeaderValue, ['preg_quote' => ['/']]
+			);
+
+			$returnedHeaders = $this->response->getHeader($headerName);
+			$returnedHeader = $returnedHeaders[0];
+			Assert::assertNotFalse(
+				(bool) \preg_match($expectedHeaderValue, $returnedHeader),
+				"'$expectedHeaderValue' does not match '$returnedHeader'"
+			);
+		}
+	}
+
+	/**
 	 * @Then the following headers should match these regular expressions for user :user
 	 *
 	 * @param string $user
@@ -2933,7 +2959,7 @@ trait WebDav {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function headersShouldMatchRegularExpressions($user, TableNode $table) {
+	public function headersShouldMatchRegularExpressionsForUser($user, TableNode $table) {
 		$this->verifyTableNodeColumnsCount($table, 2);
 		$user = $this->getActualUsername($user);
 		foreach ($table->getTable() as $header) {

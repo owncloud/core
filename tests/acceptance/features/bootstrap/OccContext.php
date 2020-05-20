@@ -769,11 +769,9 @@ class OccContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
-		$user = $this->featureContext->getActualUsername($user);
 		$text = $this->featureContext->substituteInLineCodes(
 			$text, $user
 		);
-		$displayname = $this->featureContext->getDisplayNameForUser($user);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
 			$commandOutput,

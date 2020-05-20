@@ -2362,6 +2362,7 @@ trait Sharing {
 	public function deletePublicLinkShareUsingTheSharingApi(
 		$user, $name, $path
 	) {
+		$user = $this->getActualUsername($user);
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
