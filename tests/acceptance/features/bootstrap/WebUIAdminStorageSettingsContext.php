@@ -158,19 +158,20 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	public function theAdministratorAddsUserAsTheApplicableUserForTheLastLocalStorageMountUsingTheUsingTheWebui(
 		$action, $userOrGroup, $user
 	) {
-		$user = $this->featureContext->getUserDisplayName($user);
+		$user = $this->featureContext->getActualUsername($user);
+		$displayName = $this->featureContext->getUserDisplayName($user);
 		if ($action === "adds" || $action === "added") {
 			$this->adminStorageSettingsPage->addApplicableToLastMount(
 				$this->getSession(),
-				$user
+				$displayName
 			);
 		} else {
 			if ($userOrGroup === "group") {
-				$user = $user . " (group)";
+				$displayName = $displayName . " (group)";
 			}
 			$this->adminStorageSettingsPage->removeApplicableFromLastMount(
 				$this->getSession(),
-				$user
+				$displayName
 			);
 		}
 	}
