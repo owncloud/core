@@ -1231,15 +1231,17 @@ trait Provisioning {
 	public function adminChangesTheEmailOfUserToUsingTheProvisioningApi(
 		$user, $email
 	) {
+		$user = $this->getActualUsername($user);
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
-			$this->getActualUsername($user),
+			$user,
 			'email',
 			$email,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
 		);
+		$this->createdUsers[$user]["email"] = $email;
 	}
 
 	/**
@@ -1305,11 +1307,14 @@ trait Provisioning {
 	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
 			$email
 		);
+		$this->createdUsers[$targetUser]["email"] = $email;
 	}
 
 	/**
@@ -1324,12 +1329,15 @@ trait Provisioning {
 	public function userHasChangedTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
 			$email
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->createdUsers[$targetUser]["email"] = $email;
 	}
 
 	/**
@@ -1350,9 +1358,11 @@ trait Provisioning {
 	public function adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$user, $displayname
 	) {
+		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
 			$user, 'displayname', $displayname
 		);
+		$this->createdUsers[$user]["displayname"] = $displayname;
 	}
 
 	/**
@@ -1367,6 +1377,7 @@ trait Provisioning {
 	public function adminHasChangedTheDisplayNameOfUser(
 		$user, $displayname
 	) {
+		$user = $this->getActualUsername($user);
 		if ($this->isTestingWithLdap()) {
 			$this->editLdapUserDisplayName(
 				$user, $displayname
@@ -1384,6 +1395,7 @@ trait Provisioning {
 		);
 		$this->setResponse($response);
 		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
+		$this->createdUsers[$user]["displayname"] = $displayname;
 	}
 
 	/**
@@ -1404,9 +1416,11 @@ trait Provisioning {
 	public function adminChangesTheDisplayOfUserUsingTheProvisioningApi(
 		$user, $displayname
 	) {
+		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
 			$user, 'display', $displayname
 		);
+		$this->createdUsers[$user]["displayname"] = $displayname;
 	}
 
 	/**
@@ -1457,9 +1471,12 @@ trait Provisioning {
 	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
+		$this->createdUsers[$targetUser]["displayname"] = $displayName;
 	}
 
 	/**
@@ -1480,9 +1497,12 @@ trait Provisioning {
 	public function userChangesTheDisplayOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'display', $displayName
 		);
+		$this->createdUsers[$targetUser]["displayname"] = $displayName;
 	}
 
 	/**
@@ -1497,10 +1517,13 @@ trait Provisioning {
 	public function userHasChangedTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->createdUsers[$targetUser]["displayname"] = $displayName;
 	}
 	/**
 	 *
@@ -2013,6 +2036,22 @@ trait Provisioning {
 			$this->createdUsers[$user] = $userData;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteUsers[$user] = $userData;
+		}
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $key key for userData used in createdList
+	 * @param string $value value for update
+	 *
+	 * @return void
+	 */
+	public function updateUserInCreatedUsersList($user, $key, $value) {
+		$user = $this->normalizeUsername($user);
+		if ($this->currentServer === 'LOCAL') {
+			$this->createdUsers[$user][$key] = $value;
+		} elseif ($this->currentServer === 'REMOTE') {
+			$this->createdRemoteUsers[$user][$key] = $value;
 		}
 	}
 
@@ -3937,11 +3976,15 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user => $userData) {
-			$this->deleteUser($user);
+			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
+				$this->deleteUser($user);
+			}
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
-			$this->deleteUser($remoteUser);
+			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
+				$this->deleteUser($remoteUser);
+			}
 		}
 		$this->usingServer($previousServer);
 	}
@@ -3956,11 +3999,15 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			$this->cleanupGroup($group);
+			if ($groupData["shouldExist"] and $groupData["possibleToDelete"]) {
+				$this->cleanupGroup($group);
+			}
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			$this->cleanupGroup($remoteGroup);
+			if ($groupData["shouldExist"] and $groupData["possibleToDelete"]) {
+				$this->cleanupGroup($remoteGroup);
+			}
 		}
 		$this->usingServer($previousServer);
 	}

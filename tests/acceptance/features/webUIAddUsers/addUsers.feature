@@ -197,7 +197,6 @@ Feature: add users
       | password with spaces         | password with spaces        |
 
   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
-    Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
@@ -213,7 +212,6 @@ Feature: add users
       | password with spaces         | password with spaces        |
 
   Scenario: admin creates a user without setting password and user sets empty spaces as password
-    Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
