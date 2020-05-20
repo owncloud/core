@@ -1818,7 +1818,7 @@ trait Sharing {
 			"Error getting info of last share for user $user"
 		);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
-		$this->checkFields($body);
+		$this->checkFields($user, $body);
 	}
 
 	/**
