@@ -1469,6 +1469,7 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function sharedByHasNoTags($fileName, $sharingUser) {
+		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 		$responseXml = $this->requestTagsForFile($sharingUser, $fileName);
 		$tagList = $responseXml->xpath("//d:prop");
 		// The array of tags has a single "empty" item at the start.
@@ -1500,6 +1501,7 @@ class TagsContext implements Context {
 				$user = $this->featureContext->getAdminUsername();
 			} else {
 				$user = $this->featureContext->getCurrentUser();
+				$user = $this->featureContext->getActualUsername($user);
 			}
 		}
 		$this->sharedByHasNoTags($fileName, $user);

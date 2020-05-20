@@ -1771,45 +1771,49 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getDisplayNameForUser($userName) {
 		$usernames = $this->usersToBeReplaced();
-		$userName = $this->normalizeUsername($userName);
+		$userNameNormalized = $this->normalizeUsername($userName);
 		if (isset($usernames)) {
-			if (isset($usernames[$userName])) {
+			if (isset($usernames[$userNameNormalized])) {
+				return $usernames[$userNameNormalized]['displayname'];
+			} elseif (isset($usernames[$userName])) {
 				return $usernames[$userName]['displayname'];
 			}
 		}
-		$userName = $this->getActualUsername($userName);
-		if (\array_key_exists($userName, $this->createdUsers)) {
-			return (string) $this->createdUsers[$userName]['displayname'];
-		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
-			return (string) $this->createdRemoteUsers[$userName]['displayname'];
-		} elseif ($userName === 'regularuser') {
+		$username = $this->getActualUsername($userNameNormalized);
+		if (\array_key_exists($username, $this->createdUsers) && !isset($this->createdUsers[$username]['displayname'])) {
+			return (string) $userName;
+		} elseif (\array_key_exists($username, $this->createdUsers)) {
+			return (string) $this->createdUsers[$username]['displayname'];
+		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
+			return (string) $this->createdRemoteUsers[$username]['displayname'];
+		} elseif ($username === 'regularuser') {
 			return 'Regular User';
-		} elseif ($userName === 'alice') {
+		} elseif ($username === 'alice') {
 			return 'Alice Hansen';
-		} elseif ($userName === 'user0') {
+		} elseif ($username === 'user0') {
 			return 'User Zero';
-		} elseif ($userName === 'brian') {
+		} elseif ($username === 'brian') {
 			return 'Brian Murphy';
-		} elseif ($userName === 'user1') {
+		} elseif ($username === 'user1') {
 			return 'User One';
-		} elseif ($userName === 'carol') {
+		} elseif ($username === 'carol') {
 			return 'Carol King';
-		} elseif ($userName === 'user2') {
+		} elseif ($username === 'user2') {
 			return 'User Two';
-		} elseif ($userName === 'david') {
+		} elseif ($username === 'david') {
 			return 'David Lopez';
-		} elseif ($userName === 'user3') {
+		} elseif ($username === 'user3') {
 			return 'User Three';
-		} elseif ($userName === 'emily') {
+		} elseif ($username === 'emily') {
 			return 'Emily Wagner';
-		} elseif ($userName === 'user4') {
+		} elseif ($username === 'user4') {
 			return 'User Four';
-		} elseif ($userName === 'usergrp') {
+		} elseif ($username === 'usergrp') {
 			return 'User Grp';
-		} elseif ($userName === 'sharee1') {
+		} elseif ($username === 'sharee1') {
 			return 'Sharee One';
-		} elseif (\in_array($userName, ["grp1", "***redacted***"])) {
-			return $userName;
+		} elseif (\in_array($username, ["grp1", "***redacted***"])) {
+			return $username;
 		} else {
 			return null;
 		}

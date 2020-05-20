@@ -191,9 +191,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function logInWithUsernameUsingTheWebUI($username) {
+		$usernameActual = $this->featureContext->getActualUsername($username);
 		$this->theUserBrowsesToTheLoginPage();
 		$this->logInWithUsernameAndPasswordUsingTheWebUI(
-			$username,
+			$usernameActual,
 			$this->featureContext->getPasswordForUser($username)
 		);
 	}

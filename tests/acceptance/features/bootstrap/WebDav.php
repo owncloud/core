@@ -2938,7 +2938,7 @@ trait WebDav {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$expectedHeaderValue = $this->substituteInLineCodes(
-				$expectedHeaderValue, ['preg_quote' => ['/']]
+				$expectedHeaderValue, null, ['preg_quote' => ['/']]
 			);
 
 			$returnedHeaders = $this->response->getHeader($headerName);

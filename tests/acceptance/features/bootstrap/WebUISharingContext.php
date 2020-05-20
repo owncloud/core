@@ -313,13 +313,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		if ($userOrGroup === "user") {
 			$user = $this->featureContext->substituteInLineCodes($name);
+			$userActual = $this->featureContext->getDisplayNameForUser($user);
 			if ($remote === "remote") {
 				$this->sharingDialog->shareWithRemoteUser(
-					$user, $this->getSession(), $maxRetries, $quiet
+					$userActual, $this->getSession(), $maxRetries, $quiet
 				);
 			} else {
 				$this->sharingDialog->shareWithUser(
-					$user, $this->getSession(), $maxRetries, $quiet
+					$userActual, $this->getSession(), $maxRetries, $quiet
 				);
 			}
 		} else {
