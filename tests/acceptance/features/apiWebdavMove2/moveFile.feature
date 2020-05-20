@@ -21,20 +21,19 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario Outline: Moving and overwriting a file
     Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/textfile0.txt" using the WebDAV API
+    When user "Alice" moves file "/textfile0.txt" to "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9]{1,32}"$/ |
-    And the downloaded content when downloading file "/textfile0.txt" for user "Alice" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/textfile1.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
       | old         |
       | new         |
 
-  @skipOnOcis
   Scenario Outline: Moving (renaming) a file to be only different case
     Given using <dav_version> DAV path
     When user "Alice" moves file "/textfile0.txt" to "/TextFile0.txt" using the WebDAV API
@@ -46,7 +45,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario Outline: Moving (renaming) a file to a file with only different case to an existing file
     Given using <dav_version> DAV path
     When user "Alice" moves file "/textfile1.txt" to "/TextFile0.txt" using the WebDAV API
@@ -58,7 +57,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @skipOnOcis
   Scenario Outline: Moving (renaming) a file to a file in a folder with only different case to an existing file
     Given using <dav_version> DAV path
     When user "Alice" moves file "/textfile1.txt" to "/PARENT/Parent.txt" using the WebDAV API
@@ -202,7 +200,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @skipOnOcis
   Scenario Outline: move file into a not-existing folder
     Given using <dav_version> DAV path
     When user "Alice" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the WebDAV API
@@ -222,7 +219,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @skipOnOcis
   Scenario Outline: Checking file id after a move
     Given using <dav_version> DAV path
     And user "Alice" has stored id of file "/textfile0.txt"
@@ -276,18 +272,16 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @skipOnOcis
   Scenario Outline: renaming to a file with special characters
-    When user "Alice" moves file "/welcome.txt" to "/<renamed_file>" using the WebDAV API
+    When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the downloaded content when downloading file "/<renamed_file>" for user "Alice" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | renamed_file  |
       | #oc ab?cd=ef# |
       | *a@b#c$e%f&g* |
       | 1 2 3##.##    |
 
-  @skipOnOcis
   Scenario Outline: renaming file with dots in the path
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
