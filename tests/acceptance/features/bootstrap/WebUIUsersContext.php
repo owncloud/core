@@ -100,6 +100,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI(
 		$username, $quota
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 
@@ -114,6 +115,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorSetsInvalidQuotaOfUserUsingTheWebUI(
 		$username, $quota
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->setQuotaOfUserTo(
 			$username, $quota, $this->getSession(), false
 		);
@@ -133,6 +135,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email = null, TableNode $groupsTable = null
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
 		if ($groupsTable !== null) {
 			$groups = $groupsTable->getColumn(0);
@@ -416,6 +419,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
+		$username = $this->featureContext->getActualUsername($username);
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
 		Assert::assertEquals(
 			$quota,
