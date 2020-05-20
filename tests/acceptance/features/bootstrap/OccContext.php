@@ -2470,6 +2470,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasClearedTheVersionsForUser($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteAllVersionsForUserUsingOccCommand($user);
 		Assert::assertSame(
 			"Delete versions of   $user",
