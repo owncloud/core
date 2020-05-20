@@ -245,17 +245,19 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user logs in with email :email and invalid password :password using the webUI
+	 * @Given the user :user logs in with email and invalid password :password using the webUI
 	 *
-	 * @param string $email
+	 * @param string $user
 	 * @param string $password
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserLogsInWithEmailAndInvalidPasswordUsingTheWebui(
-		$email, $password
+		$user, $password
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$email = $this->featureContext->getEmailAddressForUser($user);
 		$this->loginPage->loginAs($email, $password, 'LoginPage');
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
 		$this->webUILoginShouldHaveBeenUnsuccessful();
@@ -295,6 +297,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function theUserHasLoggedInWithUsernameAndInvalidPasswordUsingTheWebUI(
 		$username, $password
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
 			$username,
 			$password
@@ -574,15 +577,17 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user follows the password reset link from email address :emailAddress
-	 * @Given the user has followed the password reset link from email address :emailAddress
+	 * @When the user follows the password reset link from email address of the user :user
+	 * @Given the user has followed the password reset link from email address of the user :user
 	 *
-	 * @param string $emailAddress
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
+	public function theUserFollowsThePasswordResetLinkFromTheirEmail($user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$emailAddress = $this->featureContext->getEmailAddressForUser($user);
 		$this->webUIGeneralContext->followLinkFromEmail(
 			$emailAddress,
 			"/Use the following link to reset your password: (http.*)/",
@@ -591,16 +596,18 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user follows the password reset link from email address :emailAddress but supplying invalid user name :username
+	 * @When the user follows the password reset link from email address of the user :user but supplying invalid user name :username
 	 *
-	 * @param string $emailAddress
+	 * @param string $user
 	 * @param string $username
 	 *
 	 * @return void
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidUsername(
-		$emailAddress, $username
+		$user, $username
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$emailAddress = $this->featureContext->getEmailAddressForUser($user);
 		$link = $this->webUIGeneralContext->getLinkFromEmail(
 			$emailAddress,
 			"/Use the following link to reset your password: (http.*)/",
@@ -617,15 +624,17 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user follows the password reset link from email address :emailAddress but supplying an invalid token
+	 * @When the user follows the password reset link from email address of the user :user but supplying an invalid token
 	 *
-	 * @param string $emailAddress
+	 * @param string $user
 	 *
 	 * @return void
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidToken(
-		$emailAddress
+		$user
 	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$emailAddress = $this->featureContext->getEmailAddressForUser($user);
 		$link = $this->webUIGeneralContext->getLinkFromEmail(
 			$emailAddress,
 			"/Use the following link to reset your password: (http.*)/",

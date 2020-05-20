@@ -9,7 +9,7 @@ Feature: reset the password using an email address
       | username |
       | Alice    |
     And the user has browsed to the login page
-    And the user logs in with email "alice@example.org" and invalid password "%alt2%" using the webUI
+    And the user "Alice" logs in with email and invalid password "%alt2%" using the webUI
 
   @smokeTest
   Scenario: send password reset email
@@ -18,7 +18,7 @@ Feature: reset the password using an email address
       """
       The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders. If it is not there ask your local administrator.
       """
-    And the email address "alice@example.org" should have received an email with the body containing
+    And the user "Alice" should have received an email with the body containing
       """
       Use the following link to reset your password: <a href=
       """
@@ -26,11 +26,11 @@ Feature: reset the password using an email address
   @skipOnEncryption @smokeTest
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
-    And the user follows the password reset link from email address "alice@example.org"
+    And the user follows the password reset link from email address of the user "Alice"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with the same password using the webUI
     Then the user should be redirected to the login page
-    And the email address "alice@example.org" should have received an email with the body containing
+    And the user "Alice" should have received an email with the body containing
       """
       Password changed successfully
       """
