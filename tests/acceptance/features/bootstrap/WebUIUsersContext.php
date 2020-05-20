@@ -713,6 +713,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function addsUserToGroupUsingTheWebui($user, $group) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group);
 	}
 
