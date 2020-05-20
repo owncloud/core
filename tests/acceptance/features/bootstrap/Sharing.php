@@ -1992,7 +1992,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the fields of the last response to user "([^"]*)" sharing with "(user|group)" "([^"]*)" should include$/
+	 * @Then /^the fields of the last response to user "([^"]*)" sharing with (?:user|group) "([^"]*)" should include$/
 	 *
 	 * @param string $sharer
 	 * @param string $sharee
