@@ -23,7 +23,7 @@ Feature: get file properties
       | new         | /strängé file.txt |
       | new         | /नेपाली.txt       |
 
-  @skipOnOcis @issue-ocis-reva-122
+  @skipOnOcis @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
@@ -41,7 +41,7 @@ Feature: get file properties
       | new         | /file ?2.txt  | dav\/files\/Alice\/file%20%3f2\.txt    |
       | new         | /file &2.txt  | dav\/files\/Alice\/file%20%262\.txt    |
 
-  @skipOnOcV10 @issue-ocis-reva-122
+  @skipOnOcV10 @issue-ocis-reva-214
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
@@ -60,7 +60,7 @@ Feature: get file properties
       | new         | /file ?2.txt  | dav\/files\/Alice\/file%20%3F2\.txt  |
       | new         | /file &2.txt  | dav\/files\/Alice\/file%20&2\.txt    |
 
-  @skipOnOcis @issue-ocis-reva-122
+  @skipOnOcis @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
@@ -87,7 +87,7 @@ Feature: get file properties
       | new         | /folder ?2.txt  | dav\/files\/Alice\/folder%20%3f2\.txt                                     |
       | new         | /folder &2.txt  | dav\/files\/Alice\/folder%20%262\.txt                                     |
 
-  @skipOnOcV10 @issue-ocis-reva-122
+  @skipOnOcV10 @issue-ocis-reva-214
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
