@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-57
+@api @TestAlsoOnExternalUserBackend @issue-ocis-reva-57
 Feature: set file properties
   As a user
   I want to be able to set meta-information about files
@@ -20,7 +20,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcis @issue-ocis-reva-217
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
@@ -44,7 +44,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcis  @issue-ocis-reva-217
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes and skeleton files
