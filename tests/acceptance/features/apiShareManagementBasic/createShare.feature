@@ -420,7 +420,7 @@ Feature: sharing
     When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" sharing with user "Brian" o should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with  | grp1           |
       | file_target | /textfile0.txt |
       | path        | /textfile0.txt |

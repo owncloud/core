@@ -1069,6 +1069,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserInResponse($user) {
+		$user = $this->getActualUsername($user);
 		Assert::assertTrue(
 			$this->isFieldInResponse('share_with', "$user"),
 			"'share_with' value '$user' was not found in response"
@@ -1432,6 +1433,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null) {
+		$sharee = $this->getActualUsername($sharee);
 		$this->createShare(
 			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
@@ -1457,6 +1459,7 @@ trait Sharing {
 	public function userShouldBeAbleToShareUsingTheSharingApi(
 		$sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null
 	) {
+		$sharee = $this->getActualUsername($sharee);
 		$this->createShare(
 			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
@@ -1735,10 +1738,10 @@ trait Sharing {
 	public function userGetsAllTheSharesWithResharesFromTheFileUsingTheSharingApi(
 		$user, $path
 	) {
-		$user = $this->getActualUsername($user);
+		$userActual = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
-			$user,
+			$userActual,
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?reshares=true&path=$path"),
