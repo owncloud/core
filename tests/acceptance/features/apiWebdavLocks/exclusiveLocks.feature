@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-18
+@api @TestAlsoOnExternalUserBackend @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-172
 Feature: there can be only one exclusive lock on a resource
 
   Background:

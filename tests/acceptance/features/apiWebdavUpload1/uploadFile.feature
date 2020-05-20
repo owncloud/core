@@ -63,7 +63,7 @@ Feature: upload file
       | new         | /folder ?2.txt                   | file ?2.txt                   |
       | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
 
-  @skipOnOcis @issue-ocis-reva-18
+  @skipOnOcis @issue-ocis-reva-15
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile.part" using the WebDAV API

@@ -252,7 +252,7 @@ Feature: get file properties
       | new         |
 
   @smokeTest
-  @skipOnOcis @issue-ocis-reva-57
+  @skipOnOcis @issue-ocis-reva-216
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -285,7 +285,7 @@ Feature: get file properties
       | /remote.php/dav/files/does-not-exist |
       | /remote.php/dav/does-not-exist       |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @skipOnOcis @issue-ocis-reva-57 @issue-ocis-reva-217
   Scenario: add, receive multiple custom meta properties to a file
     Given user "Alice" has created folder "/TestFolder"
     And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
@@ -305,7 +305,7 @@ Feature: get file properties
       | /TestFolder/test1.txt | status       | HTTP/1.1 200 OK |
 
   @issue-36920
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcis @issue-ocis-reva-57
+  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcis @issue-ocis-reva-57 @issue-ocis-reva-217
   Scenario: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given user "Alice" has created folder "/TestFolder"
     And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
