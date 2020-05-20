@@ -3999,13 +3999,17 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			if ($groupData["shouldExist"] and $groupData["possibleToDelete"]) {
+			if (isset($groupData["shouldExist"]) && $groupData["shouldExist"]
+				&& $groupData["possibleToDelete"]
+			) {
 				$this->cleanupGroup($group);
 			}
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			if ($groupData["shouldExist"] and $groupData["possibleToDelete"]) {
+			if (isset($groupData["shouldExist"]) && $groupData["shouldExist"]
+				&& $groupData["possibleToDelete"]
+			) {
 				$this->cleanupGroup($remoteGroup);
 			}
 		}
