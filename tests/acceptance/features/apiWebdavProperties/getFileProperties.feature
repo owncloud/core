@@ -252,7 +252,7 @@ Feature: get file properties
       | new         |
 
   @smokeTest
-  @skipOnOcis @issue-ocis-reva-57
+  @skipOnOcis @issue-ocis-reva-216
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"

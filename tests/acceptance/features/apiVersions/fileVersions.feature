@@ -119,7 +119,7 @@ Feature: dav-versions
     Then the content of file "/textfile0.txt" for user "user0" should be "Dav-Test"
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
-  @skipOnOcis @issue-ocis-reva-57 @skipOnOracle
+  @skipOnOcis @issue-ocis-reva-196 @skipOnOracle
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
     Given user "user0" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
@@ -129,7 +129,7 @@ Feature: dav-versions
     And as user "user0" the webdav checksum of "/davtest.txt" via propfind should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8 MD5:45a72715acdd5019c5be30bdbb75233e ADLER32:1ecd03df"
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
-  @skipOnOcis @issue-ocis-reva-57 @skip @issue-37026
+  @skipOnOcis @issue-ocis-reva-196 @skip @issue-37026
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
     Given user "user0" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
