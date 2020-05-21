@@ -2114,22 +2114,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $key key for userData used in createdList
-	 * @param string $value value for update
-	 *
-	 * @return void
-	 */
-	public function updateUserInCreatedUsersList($user, $key, $value) {
-		$user = $this->normalizeUsername($user);
-		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user][$key] = $value;
-		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user][$key] = $value;
-		}
-	}
-
-	/**
 	 * remember the password of a user that already exists so that you can use
 	 * ordinary test steps after changing their password.
 	 *
