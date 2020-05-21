@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-14
+@api @TestAlsoOnExternalUserBackend @issue-ocis-reva-14
 Feature: move (rename) folder
   As a user
   I want to be able to move and rename folders
@@ -8,6 +8,7 @@ Feature: move (rename) folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
+  @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: Renaming a folder to a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -20,6 +21,20 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  @issue-ocis-reva-211 @skipOnOcV10
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Renaming a folder to a backslash is allowed
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/testshare"
+    When user "Alice" moves folder "/testshare" to "\" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" folder "\" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: Renaming a folder beginning with a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -32,6 +47,20 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  @issue-ocis-reva-211 @skipOnOcV10
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Renaming a folder beginning with a backslash is allowed
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/testshare"
+    When user "Alice" moves folder "/testshare" to "\testshare" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" folder "\testshare" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: Renaming a folder including a backslash encoded should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -39,6 +68,19 @@ Feature: move (rename) folder
     Then the HTTP status code should be "400"
     And user "Alice" should see the following elements
       | /testshare/ |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @issue-ocis-reva-211 @skipOnOcV10
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: Renaming a folder including a backslash encoded is allowed
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/testshare"
+    When user "Alice" moves folder "/testshare" to "/hola\hola" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" folder "/hola\hola" should exist
     Examples:
       | dav_version |
       | old         |
