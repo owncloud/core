@@ -49,13 +49,13 @@ class EmailContext implements Context {
 
 	/**
 	 * @param $address
-	 * @param $sender
 	 * @param PyStringNode $content
+	 * @param $sender
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertThatEmailContains($address, $sender, PyStringNode $content) {
+	public function assertThatEmailContains($address, PyStringNode $content, $sender = null) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent, $sender
@@ -80,9 +80,22 @@ class EmailContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, $user, $sender, PyStringNode $content) {
+	public function emailAddressShouldHaveReceivedAnEmailFromUserWithBodyContaining($address, $user, $sender, PyStringNode $content) {
 		$address = $this->featureContext->substituteInLineCodes($address, $user);
-		$this->assertThatEmailContains($address, $sender, $content);
+		$this->assertThatEmailContains($address, $content, $sender);
+	}
+
+	/**
+	 * @Then the email address :address should have received an email with the body containing
+	 *
+	 * @param string $address
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, PyStringNode $content) {
+		$this->assertThatEmailContains($address, $content);
 	}
 
 	/**

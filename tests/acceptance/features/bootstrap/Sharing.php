@@ -1822,18 +1822,19 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the information for user "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" should include$/
+	 * @Then /^the information for user "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" shared with (user|group) should include$/
 	 *
 	 * @param string $user
 	 * @param string $fileOrFolder
 	 * @param string $fileName
+	 * @param string $type
 	 * @param TableNode $body should provide share_type
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theFieldsOfTheResponseForUserForResourceShouldInclude(
-		$user, $fileOrFolder, $fileName, TableNode $body
+		$user, $fileOrFolder, $fileName, $type, TableNode $body
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($body, 2);
@@ -1861,6 +1862,12 @@ trait Sharing {
 
 		$this->getShareData($user, $share_id);
 		foreach ($bodyRows as $field => $value) {
+			if ($type === "user" && \in_array($field, ["share_with"])) {
+				$value = $this->getActualUsername($value);
+			}
+			if (\in_array($field, ["uid_owner"])) {
+				$value = $this->getActualUsername($value);
+			}
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
 				$this->isFieldInResponse($field, $value),

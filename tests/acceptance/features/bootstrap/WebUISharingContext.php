@@ -225,6 +225,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function expirationFieldEmptyForUser($type, $receiver) {
+		if ($type === "user") {
+			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
+		}
 		$expirationDateInInputField = $this->sharingDialog->getExpirationDateFor($receiver, $type);
 		Assert::assertEquals(
 			"",
@@ -244,6 +247,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function expirationDateChangedTo($type, $receiver, $days) {
+		if ($type === "user") {
+			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
+		}
 		$expectedDate = \date('d-m-Y', \strtotime($days));
 		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
 		$this->sharingDialog->setExpirationDateFor($this->getSession(), $receiver, $type, $expectedDate);
@@ -260,6 +266,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function expirationDateShouldBe($days, $type, $receiver) {
+		if ($type === "user") {
+			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
+		}
 		if (\strtotime($days) !== false) {
 			$expectedExpirationDate = \date('d-m-Y', \strtotime($days));
 			$actualExpirationDate = $this->sharingDialog->getExpirationDateFor($receiver, $type);
@@ -828,6 +837,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeRows($permissionsTable, [], ['share', 'edit', 'create', 'change', 'delete']);
 
 		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		if ($userOrGroup === "user") {
+			$userName = $this->featureContext->getDisplayNameForUser($userName);
+		}
 		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
 		$this->sharingDialog->checkSharingPermissions(
 			$userOrGroup, $userName, $permissionsTable->getRowsHash(), $this->getSession()
