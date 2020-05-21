@@ -49,7 +49,7 @@ Feature: reset the password
       """
       Password changed successfully
       """
-    And the reset email to "alice@example.org" should be from "owncloud@foobar.com"
+    And the reset email to user "Alice" should be from "owncloud@foobar.com"
 
   @skipOnEncryption
   Scenario: using the password reset token plus invalid username does not work

@@ -97,14 +97,17 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @Then the reset email to :receiverAddress should be from :senderAddress
+	 * @Then the reset email to user :user should be from :senderAddress
 	 *
-	 * @param string $receiverAddress
+	 * @param string $user receiver
 	 * @param string $senderAddress
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
+	public function theResetEmailSenderEmailAddressShouldBe($user, $senderAddress) {
+		$user = $this->featureContext->getActualUsername($user);
+		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
 		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
 		Assert::assertStringContainsString(
 			$senderAddress,

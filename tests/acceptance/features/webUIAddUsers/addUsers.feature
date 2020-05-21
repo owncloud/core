@@ -180,7 +180,7 @@ Feature: add users
       """
       Password changed successfully
       """
-    And the reset email to "guiusr1@owncloud" should be from "owncloud@foobar.com"
+    And the reset email to user "Brian" should be from "owncloud@foobar.com"
 
   Scenario Outline: admin creates a user and sets password containing special characters
     Given user "brand-new-user" has been deleted
