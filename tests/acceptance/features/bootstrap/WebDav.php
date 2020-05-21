@@ -1045,6 +1045,7 @@ trait WebDav {
 	public function contentOfFileForUserUsingPasswordShouldBePlusEndOfLine(
 		$fileName, $user, $password, $content
 	) {
+		$user = $this->getActualUsername($user);
 		$this->contentOfFileForUserUsingPasswordShouldBe(
 			$fileName, $user, $password, "$content\n"
 		);

@@ -335,6 +335,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminDisablesUserUsingTheWebui($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting("Show enabled/disabled option");
 		$this->usersPage->disableUser($username);
@@ -349,6 +350,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDisabledUserTriesToLogin($username, $password) {
+		$password = $this->featureContext->substituteInLineCodes($password, $username);
+		$username = $this->featureContext->getActualUsername($username);
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$password = $this->featureContext->getActualPassword($password);
 		/**
@@ -369,6 +372,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDeletesTheUser($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->deleteUser($username, true);
 		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
 	}
@@ -381,6 +385,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDoesNotDeleteTheUser($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->deleteUser($username, false);
 	}
 
@@ -394,6 +399,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theDeletedUserTriesToLogin($username, $password) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
+		$password = $this->featureContext->substituteInLineCodes($password, $username);
+		$username = $this->featureContext->getActualUsername($username);
 		$this->loginPage->loginAs($username, $password, 'LoginPage');
 	}
 
@@ -688,6 +695,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui($user, $displayName) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->setDisplayNameofUserTo($this->getSession(), $user, $displayName);
 		$this->featureContext->rememberUserDisplayName($user, $displayName);
 	}
@@ -701,6 +709,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChangesThePasswordOfUserToUsingTheWebui($user, $password) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->changeUserPassword($this->getSession(), $user, $password);
 	}
 
@@ -726,6 +735,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRemovesUserFromGroupUsingTheWebui($user, $group) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group, false);
 	}
 
@@ -739,6 +749,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui($username, $email) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting('Show email address');
 		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);
