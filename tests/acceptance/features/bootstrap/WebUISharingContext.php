@@ -1607,6 +1607,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function itShouldNotBePossibleToShareFileFolderUsingTheWebUI(
 		$fileName, $userOrGroup = null, $shareWith = null
 	) {
+		if ($userOrGroup === "user") {
+			$receiverDisplay = $this->featureContext->getDisplayNameForUser($shareWith);
+		} else {
+			$receiverDisplay = $shareWith;
+		}
 		$sharingWasPossible = false;
 		try {
 			$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
@@ -1618,9 +1623,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$shareWithText = "";
 			} else {
 				if ($userOrGroup === "user") {
-					$shareWithText = $this->sharingDialog->userStringsToMatchAutoComplete($shareWith);
+					$shareWithText = $this->sharingDialog->userStringsToMatchAutoComplete($receiverDisplay);
 				} else {
-					$shareWithText = $this->sharingDialog->groupStringsToMatchAutoComplete($shareWith);
+					$shareWithText = $this->sharingDialog->groupStringsToMatchAutoComplete($receiverDisplay);
 				}
 			}
 			$possibleMessages = [
@@ -1648,7 +1653,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		Assert::assertFalse(
 			$sharingWasPossible,
 			__METHOD__
-			. " Unexpectedly, it was possible to share the file/folder '$fileName' with '$userOrGroup' '$shareWith'."
+			. " Unexpectedly, it was possible to share the file/folder '$fileName' with '$userOrGroup' '$receiverDisplay'."
 		);
 	}
 
