@@ -1,0 +1,15 @@
+Bugfix: Allow clearing a user email address or display name
+
+The occ user:modify command would not allow the email or display name of a user
+to be cleared. This problem has been fixed.
+
+The email of a user can be cleared with:
+occ user:modify <username> email ''
+
+The display name of a user can be cleared with:
+occ user:modify <username> displayname ''
+
+And the effective display name reverts to the username.
+
+https://github.com/owncloud/core/issues/37424
+https://github.com/owncloud/core/pull/37425
