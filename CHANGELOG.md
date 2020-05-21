@@ -40,6 +40,7 @@ Summary
 * Change - Update league/flysystem (1.0.67 => 1.0.68): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Update symfony/polyfill (1.16.0 => 1.17.0): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Added federated shares scan cronjob depreciating incoming-shares:poll: [#37391](https://github.com/owncloud/core/pull/37391)
+* Change - Update laminas/laminas-zendframework-bridge (1.0.3 => 1.0.4): [#37421](https://github.com/owncloud/core/pull/37421)
 
 Details
 -------
@@ -285,6 +286,10 @@ Details
    https://github.com/owncloud/enterprise/issues/3902
    https://github.com/owncloud/core/pull/37391
    https://doc.owncloud.com/server/admin_manual/configuration/files/federated_cloud_sharing_configuration.html
+
+* Change - Update laminas/laminas-zendframework-bridge (1.0.3 => 1.0.4): [#37421](https://github.com/owncloud/core/pull/37421)
+
+   https://github.com/owncloud/core/pull/37421
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
