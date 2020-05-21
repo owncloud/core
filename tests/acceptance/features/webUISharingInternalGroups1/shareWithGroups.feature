@@ -24,14 +24,14 @@ Feature: Sharing files and folders with internal groups
     And the user shares file "testimage.jpg" with group "grp1" using the webUI
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared with "grp1" by "Carol King" on the webUI
+    And folder "simple-folder" should be marked as shared with "grp1" by "Carol" on the webUI
     And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "grp1" by "Carol King" on the webUI
+    And file "testimage.jpg" should be marked as shared with "grp1" by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared with "grp1" by "Carol King" on the webUI
+    And folder "simple-folder" should be marked as shared with "grp1" by "Carol" on the webUI
     And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "grp1" by "Carol King" on the webUI
+    And file "testimage.jpg" should be marked as shared with "grp1" by "Carol" on the webUI
 
   @TestAlsoOnExternalUserBackend @skipOnFIREFOX
   Scenario: share a file with an internal group a member overwrites and unshares the file
@@ -140,13 +140,13 @@ Feature: Sharing files and folders with internal groups
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email for group "grp1" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address "alice@example.org" should have received an email with the body containing
+    And the email address "%emailaddress%" of user "Alice" should have received an email from user "Carol" with the body containing
       """
-      just letting you know that Carol King shared lorem.txt with you.
+      just letting you know that %displayname% shared lorem.txt with you.
       """
-    And the email address "brian@example.org" should have received an email with the body containing
+    And the email address "%emailaddress%" of user "Brian" should have received an email from user "Carol" with the body containing
       """
-      just letting you know that Carol King shared lorem.txt with you.
+      just letting you know that %displayname% shared lorem.txt with you.
       """
 
   @mailhog @skipOnOcV10.3
@@ -198,13 +198,13 @@ Feature: Sharing files and folders with internal groups
     Then dialog should be displayed on the webUI
       | title                       | content                                                                          |
       | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |
-    And the email address "alice@example.org" should have received an email with the body containing
+    And the email address "%emailaddress%" of user "Alice" should have received an email from user "Carol" with the body containing
       """
-      just letting you know that Carol King shared lorem.txt with you.
+      just letting you know that %displayname% shared lorem.txt with you.
       """
-    And the email address "brian@example.org" should have received an email with the body containing
+    And the email address "%emailaddress%" of user "Brian" should have received an email from user "Carol" with the body containing
       """
-      just letting you know that Carol King shared lorem.txt with you.
+      just letting you know that %displayname% shared lorem.txt with you.
       """
 
   Scenario: user added to a group has a share that matches the skeleton of added user
@@ -214,7 +214,7 @@ Feature: Sharing files and folders with internal groups
     When user "Carol" logs in using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And file "lorem (2).txt" should be listed on the webUI
-    And file "lorem (2).txt" should be marked as shared with "grp1" by "Alice Hansen" on the webUI
+    And file "lorem (2).txt" should be marked as shared with "grp1" by "Alice" on the webUI
     And the content of file "lorem (2).txt" for user "Carol" should be "some content"
 
   Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names
@@ -231,11 +231,11 @@ Feature: Sharing files and folders with internal groups
     And the user shares folder "simple-folder" with group "<group_id2>" using the webUI
     And the user shares folder "simple-folder" with group "<group_id3>" using the webUI
     And the user re-logs in as "Alice" using the webUI
-    Then folder "simple-folder" should be marked as shared with "<group_id1>" by "Regular User" on the webUI
+    Then folder "simple-folder" should be marked as shared with "<group_id1>" by "some-user" on the webUI
     When the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be marked as shared with "<group_id2>" by "Regular User" on the webUI
+    Then folder "simple-folder" should be marked as shared with "<group_id2>" by "some-user" on the webUI
     When the user re-logs in as "Carol" using the webUI
-    Then folder "simple-folder (2)" should be marked as shared with "<group_id3>" by "Regular User" on the webUI
+    Then folder "simple-folder (2)" should be marked as shared with "<group_id3>" by "some-user" on the webUI
     Examples:
       | group_id1            | group_id2            | group_id3            |
       | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
@@ -307,7 +307,7 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has logged in using the webUI
     And the user has shared file "/lorem.txt" with group "grp1"
     And the user re-logs in as "Brian" using the webUI
-    Then file "lorem.txt" should be marked as shared with "grp1" by "Alice Hansen" on the webUI
+    Then file "lorem.txt" should be marked as shared with "grp1" by "Alice" on the webUI
     When the administrator deletes group "grp1" using the provisioning API
     And the user reloads the current page of the webUI
     Then file "lorem.txt" should not be listed on the webUI
@@ -395,5 +395,5 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user opens folder "simple-folder/sub-folder" using the webUI
     And the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
-    Then user "Brian Murphy" should be listed as share receiver via "simple-folder" on the webUI
+    Then user "Brian" should be listed as share receiver via "simple-folder" on the webUI
     And group "grp1" should be listed as share receiver via "sub-folder" on the webUI

@@ -2565,6 +2565,14 @@ class FeatureContext extends BehatVariablesContext {
 					"getPasswordForUser"
 				],
 				"parameter" => [$user]
+			],
+			[
+				"code" => "%emailaddress%",
+				"function" => [
+					$this,
+					"getEmailAddressForUser"
+				],
+				"parameter" => [$user]
 			]
 		];
 

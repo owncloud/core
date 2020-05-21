@@ -2373,6 +2373,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$name = $this->featureContext->substituteInLineCodes($name);
 		$name = \trim($name, $name[0]);
 		$item = \trim($item, $item[0]);
+		$name = $this->featureContext->getDisplayNameForUser($name);
 
 		$sharingDialog = $this->filesPage->getSharingDialog();
 		$shareTreeItem = $sharingDialog->getShareTreeItem($type, $name, $item);

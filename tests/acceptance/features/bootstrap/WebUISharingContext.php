@@ -1445,6 +1445,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function fileFolderShouldBeMarkedAsSharedBy(
 		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
 	) {
+		$sharerName = $this->featureContext->getDisplayNameForUser($sharerName);
 		//close any open sharing dialog
 		//if there is no dialog open and we try to close it
 		//an exception will be thrown, but we do not care
