@@ -60,6 +60,16 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * @var string
 	 */
+	private $adminDisplayName = '';
+
+	/**
+	 * @var string
+	 */
+	private $adminEmailAddress = '';
+
+	/**
+	 * @var string
+	 */
 	private $originalAdminPassword = '';
 
 	/**
@@ -1635,6 +1645,15 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
 		);
+	}
+
+	/**
+	 * @param $user
+	 *
+	 * @return boolean
+	 */
+	public function isAdminUsername($user) {
+		return ($user === $this->getAdminUsername());
 	}
 
 	/**

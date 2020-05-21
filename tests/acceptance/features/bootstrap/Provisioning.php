@@ -150,6 +150,70 @@ trait Provisioning {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $displayName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function rememberUserDisplayName($user, $displayName) {
+		$user = $this->normalizeUsername($user);
+		if ($this->isAdminUsername($user)) {
+			$this->adminDisplayName = $displayName;
+		} else {
+			if ($this->currentServer === 'LOCAL') {
+				if (\array_key_exists($user, $this->createdUsers)) {
+					$this->createdUsers[$user]['displayname'] = $displayName;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember display name '$displayName' for non-existent local user '$user'"
+					);
+				}
+			} elseif ($this->currentServer === 'REMOTE') {
+				if (\array_key_exists($user, $this->createdRemoteUsers)) {
+					$this->createdRemoteUsers[$user]['displayname'] = $displayName;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember display name '$displayName' for non-existent remote user '$user'"
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function rememberUserEmailAddress($user, $emailAddress) {
+		$user = $this->normalizeUsername($user);
+		if ($this->isAdminUsername($user)) {
+			$this->adminEmailAddress = $emailAddress;
+		} else {
+			if ($this->currentServer === 'LOCAL') {
+				if (\array_key_exists($user, $this->createdUsers)) {
+					$this->createdUsers[$user]['email'] = $emailAddress;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent local user '$user'"
+					);
+				}
+			} elseif ($this->currentServer === 'REMOTE') {
+				if (\array_key_exists($user, $this->createdRemoteUsers)) {
+					$this->createdRemoteUsers[$user]['email'] = $emailAddress;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent remote user '$user'"
+					);
+				}
+			}
+		}
+	}
+
+	/**
 	 * returns an array of the user display names, keyed by username
 	 * if no "Display Name" is set the user-name is returned instead
 	 *
@@ -1241,7 +1305,7 @@ trait Provisioning {
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
 		);
-		$this->createdUsers[$user]["email"] = $email;
+		$this->rememberUserEmailAddress($user, $email);
 	}
 
 	/**
@@ -1314,7 +1378,7 @@ trait Provisioning {
 			$targetUser,
 			$email
 		);
-		$this->createdUsers[$targetUser]["email"] = $email;
+		$this->rememberUserEmailAddress($targetUser, $email);
 	}
 
 	/**
@@ -1337,7 +1401,7 @@ trait Provisioning {
 			$email
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
-		$this->createdUsers[$targetUser]["email"] = $email;
+		$this->rememberUserEmailAddress($targetUser, $email);
 	}
 
 	/**
@@ -1350,41 +1414,41 @@ trait Provisioning {
 	 * @When /^the administrator changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
-		$user, $displayname
+		$user, $displayName
 	) {
 		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
-			$user, 'displayname', $displayname
+			$user, 'displayname', $displayName
 		);
-		$this->createdUsers[$user]["displayname"] = $displayname;
+		$this->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
 	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminHasChangedTheDisplayNameOfUser(
-		$user, $displayname
+		$user, $displayName
 	) {
 		$user = $this->getActualUsername($user);
 		if ($this->isTestingWithLdap()) {
 			$this->editLdapUserDisplayName(
-				$user, $displayname
+				$user, $displayName
 			);
 		} else {
 			$this->adminChangesTheDisplayNameOfUserUsingKey(
-				$user, 'displayname', $displayname
+				$user, 'displayname', $displayName
 			);
 		}
 		$response = UserHelper::getUser(
@@ -1394,8 +1458,8 @@ trait Provisioning {
 			$this->getAdminPassword()
 		);
 		$this->setResponse($response);
-		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
-		$this->createdUsers[$user]["displayname"] = $displayname;
+		$this->theDisplayNameReturnedByTheApiShouldBe($displayName);
+		$this->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
@@ -1408,38 +1472,38 @@ trait Provisioning {
 	 * @When /^the administrator changes the display of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayOfUserUsingTheProvisioningApi(
-		$user, $displayname
+		$user, $displayName
 	) {
 		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
-			$user, 'display', $displayname
+			$user, 'display', $displayName
 		);
-		$this->createdUsers[$user]["displayname"] = $displayname;
+		$this->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
 	 *
 	 * @param string $user
 	 * @param string $key
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayNameOfUserUsingKey(
-		$user, $key, $displayname
+		$user, $key, $displayName
 	) {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
 			$key,
-			$displayname,
+			$displayName,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
@@ -1476,7 +1540,7 @@ trait Provisioning {
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
-		$this->createdUsers[$targetUser]["displayname"] = $displayName;
+		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 
 	/**
@@ -1502,7 +1566,7 @@ trait Provisioning {
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'display', $displayName
 		);
-		$this->createdUsers[$targetUser]["displayname"] = $displayName;
+		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 
 	/**
@@ -1523,7 +1587,7 @@ trait Provisioning {
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
-		$this->createdUsers[$targetUser]["displayname"] = $displayName;
+		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 	/**
 	 *
@@ -2033,25 +2097,19 @@ trait Provisioning {
 		];
 
 		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user] = $userData;
+			// Only remember this user creation if it was expected to have been successful
+			// or the user has not been processed before. Some tests create a user the
+			// first time (successfully) and then purposely try to create the user again.
+			// The 2nd user creation is expected to fail, and in that case we want to
+			// still remember the details of the first user creation.
+			if ($shouldExist || !\array_key_exists($user, $this->createdUsers)) {
+				$this->createdUsers[$user] = $userData;
+			}
 		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user] = $userData;
-		}
-	}
-
-	/**
-	 * @param string $user
-	 * @param string $key key for userData used in createdList
-	 * @param string $value value for update
-	 *
-	 * @return void
-	 */
-	public function updateUserInCreatedUsersList($user, $key, $value) {
-		$user = $this->normalizeUsername($user);
-		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user][$key] = $value;
-		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user][$key] = $value;
+			// See comment above about the LOCAL case. The logic is the same for the remote case.
+			if ($shouldExist || !\array_key_exists($user, $this->createdRemoteUsers)) {
+				$this->createdRemoteUsers[$user] = $userData;
+			}
 		}
 	}
 
@@ -3963,6 +4021,28 @@ trait Provisioning {
 		} else {
 			$this->cleanupDatabaseUsers();
 			$this->cleanupDatabaseGroups();
+			$this->resetAdminUserAttributes();
+		}
+	}
+
+	/**
+	 *
+	 * @return void
+	 */
+	public function resetAdminUserAttributes() {
+		if ($this->adminDisplayName !== '') {
+			$this->adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
+				$this->getAdminUsername(),
+				''
+			);
+		}
+		if ($this->adminEmailAddress !== '') {
+			// ToDo: set the admin email address back to empty
+			//       but see core issue 37424 - setting to empty is not working
+			$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
+				$this->getAdminUsername(),
+				'test.admin@example.org'
+			);
 		}
 	}
 
@@ -3976,15 +4056,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user => $userData) {
-			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
-				$this->deleteUser($user);
-			}
+			$this->deleteUser($user);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
-			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
-				$this->deleteUser($remoteUser);
-			}
+			$this->deleteUser($remoteUser);
 		}
 		$this->usingServer($previousServer);
 	}
@@ -3999,19 +4075,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			if (isset($groupData["shouldExist"]) && $groupData["shouldExist"]
-				&& $groupData["possibleToDelete"]
-			) {
-				$this->cleanupGroup($group);
-			}
+			$this->cleanupGroup($group);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			if (isset($groupData["shouldExist"]) && $groupData["shouldExist"]
-				&& $groupData["possibleToDelete"]
-			) {
-				$this->cleanupGroup($remoteGroup);
-			}
+			$this->cleanupGroup($remoteGroup);
 		}
 		$this->usingServer($previousServer);
 	}

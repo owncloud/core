@@ -678,7 +678,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui($user, $displayName) {
 		$this->usersPage->setDisplayNameofUserTo($this->getSession(), $user, $displayName);
-		$this->featureContext->updateUserInCreatedUsersList($user, "displayname", $displayName);
+		$this->featureContext->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
@@ -730,7 +730,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting('Show email address');
 		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);
-		$this->featureContext->updateUserInCreatedUsersList($username, "email", $email);
+		$this->featureContext->rememberUserEmailAddress($username, $email);
 	}
 
 	/**

@@ -155,8 +155,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->changeFullname(
 			$newFullName, $this->getSession()
 		);
-		$this->featureContext->updateUserInCreatedUsersList(
-			$this->featureContext->getCurrentUser(), "displayname", $newFullName
+		$this->featureContext->rememberUserDisplayName(
+			$this->featureContext->getCurrentUser(),
+			$newFullName
 		);
 	}
 
@@ -188,8 +189,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->changeEmailAddress(
 			$emailAddress, $this->getSession()
 		);
-		$this->featureContext->updateUserInCreatedUsersList(
-			$this->featureContext->getCurrentUser(), "email", $emailAddress
+		$this->featureContext->rememberUserEmailAddress(
+			$this->featureContext->getCurrentUser(),
+			$emailAddress
 		);
 	}
 

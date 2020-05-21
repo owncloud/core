@@ -246,7 +246,7 @@ class OccUsersGroupsContext implements Context {
 		$this->occContext->invokingTheCommand(
 			"user:modify $username email $newEmail"
 		);
-		$this->featureContext->updateUserInCreatedUsersList($username, "email", $newEmail);
+		$this->featureContext->rememberUserEmailAddress($username, $newEmail);
 	}
 
 	/**
@@ -263,7 +263,7 @@ class OccUsersGroupsContext implements Context {
 		$this->occContext->invokingTheCommand(
 			"user:modify $username displayname '$newDisplayname'"
 		);
-		$this->featureContext->updateUserInCreatedUsersList($username, "displayname", $newDisplayname);
+		$this->featureContext->rememberUserDisplayName($username, $newDisplayname);
 	}
 
 	/**
