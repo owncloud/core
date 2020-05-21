@@ -1,0 +1,8 @@
+Bugfix: Allow clearing a user email address with the Provisioning API
+
+Specifying the empty string as the email address is now valid when editing a
+user with the Provisioning API. This allows the email address of a user to be
+cleared.
+
+https://github.com/owncloud/core/issues/37424
+https://github.com/owncloud/core/pull/37427
