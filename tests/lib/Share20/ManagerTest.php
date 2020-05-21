@@ -3148,20 +3148,77 @@ class ManagerTest extends \Test\TestCase {
 		$share = $this->createMock('\OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 		$share->method('getPassword')->willReturn('password');
+		$share->method('getNodeId')->willReturn(100);
+		$share->method('getNodeType')->willReturn('file');
+		$share->method('getSharedBy')->willReturn('initiator');
+		$share->method('getToken')->willReturn('token');
+
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforelinkauth',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforelinkauth';
+				$calledBeforeEvent[] = $event;
+			});
+
+		$hookListener = $this->getMockBuilder('Dummy')->setMethods(['access'])->getMock();
+		\OCP\Util::connectHook('OCP\Share', 'share_link_access', $hookListener, 'access');
+		$calledShareLinkAccess = [];
+		$this->eventDispatcher->addListener('share.linkaccess',
+			function (GenericEvent $event) use (&$calledShareLinkAccess) {
+				$calledShareLinkAccess[] = 'share.linkaccess';
+				$calledShareLinkAccess[] = $event;
+			});
+		$hookListener->expects($this->once())
+			->method('access')
+			->with($this->callback(function (array $data) {
+				return $data['itemType'] === 'file' &&
+					$data['itemSource'] === 100 &&
+					$data['uidOwner'] === 'initiator' &&
+					$data['token'] === 'token' &&
+					$data['errorCode'] === 403 &&
+					$data['errorMessage'] === 'Wrong password';
+			}));
 
 		$this->hasher->method('verify')->with('invalidpassword', 'password', '')->willReturn(false);
 
 		$this->assertFalse($this->manager->checkPassword($share, 'invalidpassword'));
+
+		$this->assertEquals('share.linkaccess', $calledShareLinkAccess[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledShareLinkAccess[1]);
+		$this->assertArrayHasKey('shareObject', $calledShareLinkAccess[1]);
+		$this->assertEquals('100', $calledShareLinkAccess[1]->getArgument('shareObject')->getNodeId());
+		$this->assertEquals('file', $calledShareLinkAccess[1]->getArgument('shareObject')->getNodeType());
+		$this->assertEquals('initiator', $calledShareLinkAccess[1]->getArgument('shareObject')->getSharedBy());
+		$this->assertEquals('token', $calledShareLinkAccess[1]->getArgument('shareObject')->getToken());
+		$this->assertEquals(403, $calledShareLinkAccess[1]->getArgument('errorCode'));
+		$this->assertEquals('Wrong password', $calledShareLinkAccess[1]->getArgument('errorMessage'));
+		$this->assertEquals('share.beforelinkauth', $calledBeforeEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
 	}
 
 	public function testCheckPasswordValidPassword() {
 		$share = $this->createMock('\OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 		$share->method('getPassword')->willReturn('passwordHash');
-
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforelinkauth',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforelinkauth';
+				$calledBeforeEvent[] = $event;
+			});
+		$calledAfterEvent = [];
+		$this->eventDispatcher->addListener('share.afterlinkauth',
+			function (GenericEvent $event) use (&$calledAfterEvent) {
+				$calledAfterEvent[] = 'share.afterlinkauth';
+				$calledAfterEvent[] = $event;
+			});
 		$this->hasher->method('verify')->with('password', 'passwordHash', '')->willReturn(true);
 
 		$this->assertTrue($this->manager->checkPassword($share, 'password'));
+		$this->assertEquals('share.beforelinkauth', $calledBeforeEvent[0]);
+		$this->assertEquals('share.afterlinkauth', $calledAfterEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
 	}
 
 	public function testCheckPasswordUpdateShare() {

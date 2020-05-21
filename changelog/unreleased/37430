@@ -1,0 +1,6 @@
+Bugfix: Emit link share auth events on DAV access to password-protected links
+
+DAV access for the password-protected links was not emitting link share auth events that need to be emitted.
+This problem has been fixed.
+
+https://github.com/owncloud/core/pull/37430

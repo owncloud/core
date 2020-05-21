@@ -30,7 +30,6 @@
 namespace OCA\Files_Sharing\Tests\Controllers;
 
 use OC\Files\Filesystem;
-use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -41,7 +40,6 @@ use OCP\IUserManager;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\ShareNotFound;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @group DB
@@ -223,24 +221,9 @@ class ShareControllerTest extends \Test\TestCase {
 			->with('files_sharing.sharecontroller.showShare', ['token'=>'token'])
 			->willReturn('redirect');
 
-		$beforeLinkAuthCalled = false;
-		$this->eventDispatcher->addListener(
-			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
-				$beforeLinkAuthCalled = true;
-			}
-		);
-		$afterLinkAuthCalled = false;
-		$this->eventDispatcher->addListener(
-			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
-				$afterLinkAuthCalled = true;
-			}
-		);
-
 		$response = $this->shareController->authenticate('token', 'validpassword');
 		$expectedResponse =  new RedirectResponse('redirect');
 		$this->assertEquals($expectedResponse, $response);
-		$this->assertEquals(true, $beforeLinkAuthCalled);
-		$this->assertEquals(true, $afterLinkAuthCalled);
 	}
 
 	public function testAuthenticateInvalidPassword() {
@@ -267,55 +250,9 @@ class ShareControllerTest extends \Test\TestCase {
 			->expects($this->never())
 			->method('set');
 
-		$hookListner = $this->getMockBuilder('Dummy')->setMethods(['access'])->getMock();
-		\OCP\Util::connectHook('OCP\Share', 'share_link_access', $hookListner, 'access');
-
-		$calledShareLinkAccess = [];
-		$this->eventDispatcher->addListener('share.linkaccess',
-			function (GenericEvent $event) use (&$calledShareLinkAccess) {
-				$calledShareLinkAccess[] = 'share.linkaccess';
-				$calledShareLinkAccess[] = $event;
-			});
-
-		$beforeLinkAuthCalled = false;
-		$this->eventDispatcher->addListener(
-			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
-				$beforeLinkAuthCalled = true;
-			}
-		);
-		$afterLinkAuthCalled = false;
-		$this->eventDispatcher->addListener(
-			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
-				$afterLinkAuthCalled = true;
-			}
-		);
-
-		$hookListner->expects($this->once())
-			->method('access')
-			->with($this->callback(function (array $data) {
-				return $data['itemType'] === 'file' &&
-					$data['itemSource'] === 100 &&
-					$data['uidOwner'] === 'initiator' &&
-					$data['token'] === 'token' &&
-					$data['errorCode'] === 403 &&
-					$data['errorMessage'] === 'Wrong password';
-			}));
-
 		$response = $this->shareController->authenticate('token', 'invalidpassword');
 		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', ['wrongpw' => true], 'guest');
 		$this->assertEquals($expectedResponse, $response);
-
-		$this->assertEquals('share.linkaccess', $calledShareLinkAccess[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledShareLinkAccess[1]);
-		$this->assertArrayHasKey('shareObject', $calledShareLinkAccess[1]);
-		$this->assertEquals('42', $calledShareLinkAccess[1]->getArgument('shareObject')->getId());
-		$this->assertEquals('file', $calledShareLinkAccess[1]->getArgument('shareObject')->getNodeType());
-		$this->assertEquals('initiator', $calledShareLinkAccess[1]->getArgument('shareObject')->getSharedBy());
-		$this->assertEquals('token', $calledShareLinkAccess[1]->getArgument('shareObject')->getToken());
-		$this->assertEquals(403, $calledShareLinkAccess[1]->getArgument('errorCode'));
-		$this->assertEquals('Wrong password', $calledShareLinkAccess[1]->getArgument('errorMessage'));
-		$this->assertEquals(true, $beforeLinkAuthCalled);
-		$this->assertEquals(false, $afterLinkAuthCalled);
 	}
 
 	public function testShowShareInvalidToken() {

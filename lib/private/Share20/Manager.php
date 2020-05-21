@@ -1490,10 +1490,31 @@ class Manager implements IManager {
 		}
 
 		$newHash = '';
+		$beforeEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.beforelinkauth', $beforeEvent);
 		if (!$this->hasher->verify($password, $share->getPassword(), $newHash)) {
+			$token = $share->getToken();
+			$uidOwner = $share->getSharedBy();
+			$itemType = $share->getNodeType();
+			$itemSource = $share->getNodeId();
+			$errorCode = 403;
+			$errorMessage = 'Wrong password';
+			\OC_Hook::emit('OCP\Share', 'share_link_access', [
+				'itemType' => $itemType,
+				'itemSource' => $itemSource,
+				'uidOwner' => $uidOwner,
+				'token' => $token,
+				'errorCode' => $errorCode,
+				'errorMessage' => $errorMessage,
+			]);
+			$publicShareLinkAccessEvent = new GenericEvent(null,
+				['shareObject' => $share, 'errorCode' => $errorCode,
+					'errorMessage' => $errorMessage]);
+			$this->eventDispatcher->dispatch('share.linkaccess', $publicShareLinkAccessEvent);
 			return false;
 		}
-
+		$afterEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.afterlinkauth', $afterEvent);
 		if (!empty($newHash)) {
 			$share->setPassword($newHash);
 			$provider = $this->factory->getProviderForType($share->getShareType());
