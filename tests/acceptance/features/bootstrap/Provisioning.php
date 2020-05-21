@@ -2033,9 +2033,19 @@ trait Provisioning {
 		];
 
 		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user] = $userData;
+			// Only remember this user creation if it was expected to have been successful
+			// or the user has not been processed before. Some tests create a user the
+			// first time (successfully) and then purposely try to create the user again.
+			// The 2nd user creation is expected to fail, and in that case we want to
+			// still remember the details of the first user creation.
+			if ($shouldExist || !\array_key_exists($user, $this->createdUsers)) {
+				$this->createdUsers[$user] = $userData;
+			}
 		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user] = $userData;
+			// See comment above about the LOCAL case. The logic is the same for the remote case.
+			if ($shouldExist || !\array_key_exists($user, $this->createdRemoteUsers)) {
+				$this->createdRemoteUsers[$user] = $userData;
+			}
 		}
 	}
 
