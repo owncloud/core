@@ -140,11 +140,11 @@ Feature: Sharing files and folders with internal groups
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email for group "grp1" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address "%emailaddress%" of user "Alice" should have received an email from user "Carol" with the body containing
+    And the email address of user "Alice" should have received an email from user "Carol" with the body containing
       """
       just letting you know that %displayname% shared lorem.txt with you.
       """
-    And the email address "%emailaddress%" of user "Brian" should have received an email from user "Carol" with the body containing
+    And the email address of user "Brian" should have received an email from user "Carol" with the body containing
       """
       just letting you know that %displayname% shared lorem.txt with you.
       """
@@ -198,11 +198,11 @@ Feature: Sharing files and folders with internal groups
     Then dialog should be displayed on the webUI
       | title                       | content                                                                          |
       | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |
-    And the email address "%emailaddress%" of user "Alice" should have received an email from user "Carol" with the body containing
+    And the email address of user "Alice" should have received an email from user "Carol" with the body containing
       """
       just letting you know that %displayname% shared lorem.txt with you.
       """
-    And the email address "%emailaddress%" of user "Brian" should have received an email from user "Carol" with the body containing
+    And the email address of user "Brian" should have received an email from user "Carol" with the body containing
       """
       just letting you know that %displayname% shared lorem.txt with you.
       """

@@ -59,7 +59,7 @@ Feature: restrict Sharing
     When the user browses to the files page
     Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
     And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 

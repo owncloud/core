@@ -48,9 +48,9 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @param $address
+	 * @param string $address
 	 * @param PyStringNode $content
-	 * @param $sender
+	 * @param string|null $sender
 	 *
 	 * @return void
 	 * @throws Exception
@@ -70,9 +70,8 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @Then the email address :address of user :user should have received an email from user :sender with the body containing
+	 * @Then the email address of user :user should have received an email from user :sender with the body containing
 	 *
-	 * @param string $address
 	 * @param string $user
 	 * @param string $sender
 	 * @param PyStringNode $content
@@ -80,8 +79,8 @@ class EmailContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function emailAddressShouldHaveReceivedAnEmailFromUserWithBodyContaining($address, $user, $sender, PyStringNode $content) {
-		$address = $this->featureContext->substituteInLineCodes($address, $user);
+	public function theUserShouldHaveReceivedAnEmailFromUserWithBodyContaining($user, $sender, PyStringNode $content) {
+		$address = $this->featureContext->getEmailAddressForUser($user);
 		$this->assertThatEmailContains($address, $content, $sender);
 	}
 
@@ -99,7 +98,7 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @Then the user :user should have received an email with the body containing
+	 * @Then the email address of user :user should have received an email with the body containing
 	 *
 	 * @param string $user
 	 * @param PyStringNode $content
@@ -108,7 +107,6 @@ class EmailContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserShouldHaveReceivedAnEmailWithBodyContaining($user, PyStringNode $content) {
-		$user = $this->featureContext->getActualUsername($user);
 		$address = $this->featureContext->getEmailAddressForUser($user);
 		$this->assertThatEmailContains($address, $content);
 	}
@@ -123,7 +121,6 @@ class EmailContext implements Context {
 	 * @throws Exception
 	 */
 	public function theResetEmailSenderEmailAddressShouldBe($user, $senderAddress) {
-		$user = $this->featureContext->getActualUsername($user);
 		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
 		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
 		Assert::assertStringContainsString(
