@@ -3986,15 +3986,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user => $userData) {
-			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
-				$this->deleteUser($user);
-			}
+			$this->deleteUser($user);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
-			if (isset($userData["shouldExist"]) and $userData["shouldExist"]) {
-				$this->deleteUser($remoteUser);
-			}
+			$this->deleteUser($remoteUser);
 		}
 		$this->usingServer($previousServer);
 	}
@@ -4009,19 +4005,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			if (isset($groupData["shouldExist"]) && $groupData["shouldExist"]
-				&& $groupData["possibleToDelete"]
-			) {
-				$this->cleanupGroup($group);
-			}
+			$this->cleanupGroup($group);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			if (isset($groupData["shouldExist"]) && $groupData["shouldExist"]
-				&& $groupData["possibleToDelete"]
-			) {
-				$this->cleanupGroup($remoteGroup);
-			}
+			$this->cleanupGroup($remoteGroup);
 		}
 		$this->usingServer($previousServer);
 	}
