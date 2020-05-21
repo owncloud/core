@@ -15,9 +15,9 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has shared file "testimage.jpg" with user "Alice"
     When user "Alice" logs in using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared by "Brian Murphy" on the webUI
+    And folder "simple-folder (2)" should be marked as shared by "Brian" on the webUI
     And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared by "Brian Murphy" on the webUI
+    And file "testimage (2).jpg" should be marked as shared by "Brian" on the webUI
     When the user opens folder "simple-folder (2)" using the webUI
     Then file "lorem.txt" should be listed on the webUI
     But folder "simple-folder (2)" should not be listed on the webUI
@@ -38,7 +38,7 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has shared file "lorem.txt" with user "Alice"
     And user "Brian" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
-    And the user shares file "lorem.txt" with user "Alice Hansen" using the webUI
+    And the user shares file "lorem.txt" with user "Alice" using the webUI
     And the user browses to the shared-with-others page
     Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
@@ -51,8 +51,8 @@ Feature: Sharing files and folders with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     When the user opens the share dialog for file "lorem.txt"
-    And the user deletes share with user "Brian Murphy" for the current file
-    Then the user "Brian Murphy" should not be in share with user list
+    And the user deletes share with user "Brian" for the current file
+    Then the user "Brian" should not be in share with user list
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
     And as "Brian" file "lorem (2).txt" should not exist
 
@@ -105,9 +105,9 @@ Feature: Sharing files and folders with internal users
     And user "Carol" has shared folder "zzzfolder" with user "Alice"
     When user "Alice" logs in using the webUI
     Then folder "zzzfolder" should be listed on the webUI
-    And folder "zzzfolder" should be marked as shared by "Brian Murphy" on the webUI
+    And folder "zzzfolder" should be marked as shared by "Brian" on the webUI
     And folder "zzzfolder (2)" should be listed on the webUI
-    And folder "zzzfolder (2)" should be marked as shared by "Carol King" on the webUI
+    And folder "zzzfolder (2)" should be marked as shared by "Carol" on the webUI
 
   Scenario Outline:  user names are not case-sensitive, sharing same file to user specifying different upper and lower case names
     Given these users have been created with default attributes and without skeleton files:
@@ -141,7 +141,7 @@ Feature: Sharing files and folders with internal users
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables restrict users to only share with groups they are member of using the webUI
     And the user re-logs in as "Alice" using the webUI
-    And the user shares folder "simple-folder" with user "Brian Murphy" using the webUI
+    And the user shares folder "simple-folder" with user "Brian" using the webUI
     Then as "Brian" folder "/simple-folder" should exist
 
   Scenario: sharer should be able to share a file to a user when only share with groups they are member of is enabled
@@ -155,7 +155,7 @@ Feature: Sharing files and folders with internal users
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables restrict users to only share with groups they are member of using the webUI
     And the user re-logs in as "Alice" using the webUI
-    And the user shares file "lorem.txt" with user "Brian Murphy" using the webUI
+    And the user shares file "lorem.txt" with user "Brian" using the webUI
     Then as "Brian" file "/lorem.txt" should exist
 
   @skipOnOcV10.3
@@ -168,8 +168,8 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has created folder "simple-folder"
     And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | edit | no |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
@@ -181,7 +181,7 @@ Feature: Sharing files and folders with internal users
     When the user uploads file "textfile.txt" using the webUI
     Then as "Alice" file "simple-folder/textfile.txt" should not exist
     And file "textfile.txt" should not be listed on the webUI
-    When the user shares file "lorem.txt" with user "Carol King" using the webUI
+    When the user shares file "lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
 
   @skipOnOcV10.3
@@ -193,8 +193,8 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has created folder "simple-folder"
     And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | change | no |
       | delete | no |
     And the user re-logs in as "Alice" using the webUI
@@ -214,8 +214,8 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has created folder "simple-folder"
     And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | create | no |
       | delete | no |
     And the user re-logs in as "Alice" using the webUI
@@ -235,8 +235,8 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has created folder "simple-folder"
     And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | change | no |
       | create | no |
     And the user re-logs in as "Alice" using the webUI
@@ -256,8 +256,8 @@ Feature: Sharing files and folders with internal users
     And user "Brian" has created folder "simple-folder"
     And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | share | no |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
@@ -315,9 +315,9 @@ Feature: Sharing files and folders with internal users
     And user "<username>" has shared file "testimage.jpg" with user "Alice"
     When user "Alice" logs in using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared by "Regular User" on the webUI
+    And folder "simple-folder (2)" should be marked as shared by "<username>" on the webUI
     And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared by "Regular User" on the webUI
+    And file "testimage (2).jpg" should be marked as shared by "<username>" on the webUI
     When the user opens folder "simple-folder (2)" using the webUI
     Then file "lorem.txt" should be listed on the webUI
     But folder "simple-folder (2)" should not be listed on the webUI

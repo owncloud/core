@@ -7,7 +7,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
-    And the user shares file "new-lorem.txt" with user "Alice Hansen" using the webUI
+    And the user shares file "new-lorem.txt" with user "Alice" using the webUI
     And the user re-logs in as "Alice" using the webUI
     Then the content of "new-lorem.txt" should not be the same as the local "new-lorem.txt"
 		# overwrite the received shared file
@@ -27,7 +27,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
-    And the user shares folder "new-simple-folder" with user "Alice Hansen" using the webUI
+    And the user shares folder "new-simple-folder" with user "Alice" using the webUI
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "new-simple-folder" using the webUI
     Then the content of "lorem.txt" should not be the same as the local "lorem.txt"
@@ -56,7 +56,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
-    And the user shares folder "new-simple-folder" with user "Alice Hansen" using the webUI
+    And the user shares folder "new-simple-folder" with user "Alice" using the webUI
 		# unshare the received shared folder and check it is gone
     And the user re-logs in as "Alice" using the webUI
     And the user unshares folder "new-simple-folder" using the webUI
@@ -75,8 +75,8 @@ Feature: misc scenarios on sharing with internal users
       | Alice    |
       | Brian    |
     And user "Brian" has logged in using the webUI
-    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | delete | no |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder (2)" using the webUI
@@ -258,11 +258,11 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email for user "Brian Murphy" using the webUI
-    Then the user should not be able to send the share notification by email for user "Brian Murphy" using the webUI
+    When the user sends the share notification by email for user "Brian" using the webUI
+    Then the user should not be able to send the share notification by email for user "Brian" using the webUI
     When the user reloads the current page of the webUI
     And the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email for user "Brian Murphy" using the webUI
+    Then the user should not be able to send the share notification by email for user "Brian" using the webUI
 
   @skipOnOcV10.3
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
@@ -272,7 +272,7 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     When the user opens the share dialog for file "lorem.txt"
-    Then the user should not be able to send the share notification by email for user "Brian Murphy" using the webUI
+    Then the user should not be able to send the share notification by email for user "Brian" using the webUI
 
   @mailhog @skipOnOcV10.3
   Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
@@ -285,11 +285,11 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared folder "simple-folder" with user "Brian"
     And the user has opened the share dialog for folder "simple-folder"
-    When the user sends the share notification by email for user "Brian Murphy" using the webUI
+    When the user sends the share notification by email for user "Brian" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address "brian@example.org" should have received an email with the body containing
+    And the email address "%emailaddress%" of user "Brian" should have received an email from user "Alice" with the body containing
       """
-      just letting you know that Alice shared simple-folder with you.
+      just letting you know that %displayname% shared simple-folder with you.
       """
 
   @issue-35787
@@ -300,7 +300,7 @@ Feature: misc scenarios on sharing with internal users
       | Brian    |
     And user "Brian" has logged in using the webUI
     And user "Brian" has uploaded file with content "edited original content" to "/lorem.txt"
-    When the user shares file "lorem.txt" with user "Alice Hansen" using the webUI
+    When the user shares file "lorem.txt" with user "Alice" using the webUI
     Then the content of file "lorem.txt" for user "Brian" should be "edited original content"
     When the user re-logs in as "Alice" using the webUI
     Then the content of "lorem.txt" should be the same as the original "lorem.txt"
@@ -319,19 +319,19 @@ Feature: misc scenarios on sharing with internal users
     And user "Carol" has shared folder "/simple-folder" with user "Alice"
     And user "Carol" has shared folder "/simple-folder" with user "Brian"
     And user "Carol" has logged in using the webUI
-    When the user sets the sharing permissions of user "USER (Brian)" for "simple-folder" using the webUI to
+    When the user sets the sharing permissions of user "Brian" for "simple-folder" using the webUI to
       | edit    | no |
       | create  | no |
-    And the user sets the sharing permissions of user "USER (Alice)" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | share    | no |
       | delete   | no |
-    Then the information for user "Alice" about the received share of folder "simple-folder" should include
+    Then the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
       | share_type  | user           |
       | file_target | /simple-folder |
       | uid_owner   | Carol          |
       | share_with  | Alice          |
       | permissions | 7              |
-    And the information for user "Brian" about the received share of folder "simple-folder" should include
+    And the information for user "Brian" about the received share of folder "simple-folder" shared with user should include
       | share_type  | user           |
       | file_target | /simple-folder |
       | uid_owner   | Carol          |

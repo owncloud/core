@@ -447,7 +447,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserDeleteShareWithUser($userOrGroup, $name) {
-		$this->sharingDialog->deleteShareWith($this->getSession(), $userOrGroup, \trim($name, '""'));
+		$name = \trim($name, '""');
+		if ($userOrGroup === "user") {
+			$name = $this->featureContext->getDisplayNameForUser($name);
+		}
+		$this->sharingDialog->deleteShareWith($this->getSession(), $userOrGroup, $name);
 	}
 
 	/**
@@ -801,6 +805,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
 		$userOrGroup, $userName, $fileName, TableNode $permissionsTable
 	) {
+		if ($userOrGroup === "user") {
+			$userName = $this->featureContext->getDisplayNameForUser($userName);
+		}
 		$this->featureContext->verifyTableNodeRows(
 			$permissionsTable,
 			[],
