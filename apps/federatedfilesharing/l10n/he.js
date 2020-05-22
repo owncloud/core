@@ -19,6 +19,7 @@ OC.L10N.register(
     "Share with me through my #ownCloud Federated Cloud ID" : "שיתוף איתי באמצעות מספר זהות שרת ה- #ownCloud המאוגד שלי",
     "Federated Cloud Sharing" : "ענן שיתוף מאוגד",
     "Open documentation" : "תיעוד פתוח",
+    "Periodically synchronize outdated federated shares for active users" : "תקופתית מסנכרן שיתופים מאוגדים ישנים למשתמשים פעילים",
     "Allow users on this server to send shares to other servers" : "מאפשר למשתמשים בשרת זה לשלוח שיתופים לשרתים אחרים",
     "Allow users on this server to receive shares from other servers" : "מאפשר למשתמשים בשרת זה לקבל שיתופים משרתים אחרים",
     "Automatically accept remote shares from trusted servers" : "אישור אוטומטי לשיתוף מרוחק משרתים מהימנים",
