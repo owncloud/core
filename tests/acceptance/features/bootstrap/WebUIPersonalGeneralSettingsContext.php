@@ -216,6 +216,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
 		Assert::assertEquals(
 			$userFederatedCloudId,

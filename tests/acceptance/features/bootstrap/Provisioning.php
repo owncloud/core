@@ -4023,6 +4023,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkAttributesForUser($user, $body) {
+		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(), "GET", "/cloud/users/$user",
