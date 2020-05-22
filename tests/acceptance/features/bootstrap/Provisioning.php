@@ -4037,11 +4037,9 @@ trait Provisioning {
 			);
 		}
 		if ($this->adminEmailAddress !== '') {
-			// ToDo: set the admin email address back to empty
-			//       but see core issue 37424 - setting to empty is not working
 			$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
 				$this->getAdminUsername(),
-				'test.admin@example.org'
+				''
 			);
 		}
 	}
