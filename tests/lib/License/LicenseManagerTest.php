@@ -167,6 +167,11 @@ class LicenseManagerTest extends TestCase {
 			->with('core-license-complains')
 			->willReturn(['appid1', 'appid2', 'appid3', 'appid4', 'appid5']);
 
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['grace_period.demo_key.link', 'https://owncloud.com/try-enterprise/', 'proto://link'],
+			]));
+
 		$this->appManager->method('getAppPath')
 			->will($this->returnValueMap([
 				['appid1', 'randomPath1'],
@@ -195,6 +200,7 @@ class LicenseManagerTest extends TestCase {
 
 		$expected = [
 			'apps' => $apps,
+			'demoKeyLink' => 'proto://link',
 			'start' => $gracePeriodStart,
 			'end' => $gracePeriodStart + LicenseManager::GRACE_PERIOD,
 		];

@@ -108,8 +108,9 @@ class LicenseManager implements ILicenseManager {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * An additional key 'apps' will be returned with the list of apps actively using
-	 * the grace period if the "includeExtras" is used
+	 * If the "includeExtras" is used, the following keys will be added:
+	 * - "apps" => list of apps actively using the grace period
+	 * - "demoKeyLink" => an url with a web page to get a demo key
 	 *
 	 * @param bool $includeExtras if the 'apps' key is going to be returned
 	 */
@@ -121,9 +122,10 @@ class LicenseManager implements ILicenseManager {
 
 		if ($includeExtras) {
 			$apps = $this->getAppComplains();
-
+			$demoKeyLink = $this->config->getSystemValue('grace_period.demo_key.link', 'https://owncloud.com/try-enterprise/');
 			return [
 				'apps' => $apps,
+				'demoKeyLink' => $demoKeyLink,
 				'start' => (int)$gracePeriod,
 				'end' => (int)$gracePeriod + self::GRACE_PERIOD,
 			];
