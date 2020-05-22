@@ -228,11 +228,11 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     And the user has opened the share dialog for file "lorem.txt"
-    When the user sends the share notification by email for user "Brian Murphy" using the webUI
+    When the user sends the share notification by email for user "Brian" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address of user "Brian" should have received an email with the body containing
+    And the email address of user "Brian" should have received an email from user "Alice" with the body containing
       """
-      just letting you know that Alice Hansen shared lorem.txt with you.
+      just letting you know that %displayname% shared lorem.txt with you.
       """
 
   @mailhog @skipOnOcV10.3
@@ -246,9 +246,9 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email for user "Brian" using the webUI
-    Then dialog should be displayed on the webUI
-      | title                       | content                                             |
-      | Email notification not sent | Couldn't send mail to following recipient(s): Brian |
+    Then 1 dialog mentioning user "Brian" should be displayed on the webUI
+      | title                       | content                                                     |
+      | Email notification not sent | Couldn't send mail to following recipient(s): %displayname% |
 
   @mailhog @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once
@@ -287,7 +287,7 @@ Feature: misc scenarios on sharing with internal users
     And the user has opened the share dialog for folder "simple-folder"
     When the user sends the share notification by email for user "Brian" using the webUI
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-    And the email address of user "Brian" should have received an email with the body containing
+    And the email address of user "Brian" should have received an email from user "Alice" with the body containing
       """
       just letting you know that %displayname% shared simple-folder with you.
       """

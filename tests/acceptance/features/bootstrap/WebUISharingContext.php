@@ -805,9 +805,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
 		$userOrGroup, $userName, $fileName, TableNode $permissionsTable
 	) {
-		if ($userOrGroup === "user") {
-			$userName = $this->featureContext->getDisplayNameForUser($userName);
-		}
 		$this->featureContext->verifyTableNodeRows(
 			$permissionsTable,
 			[],
@@ -816,6 +813,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		if ($userOrGroup === "user") {
+			$userName = $this->featureContext->getActualUsername($userName);
+		}
 		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
 		$this->sharingDialog->setSharingPermissions(
 			$userOrGroup, $userName, $permissionsTable->getRowsHash(), $this->getSession()
@@ -1124,6 +1124,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function sendShareNotificationByEmailUsingTheWebui($type, $receiver) {
+		if ($type === "user") {
+			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
+		}
 		Assert::assertNotNull(
 			$this->sharingDialog, "Sharing Dialog is not open"
 		);

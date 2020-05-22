@@ -617,8 +617,9 @@ trait Provisioning {
 			} else {
 				$userAttribute['displayName'] = null;
 			}
-
-			if (isset($row['email'])) {
+			if ($this->isTestingReplacingUsernames()) {
+				$userAttribute['email'] = $this->getEmailAddressForUser($row['username']);
+			} elseif (isset($row['email'])) {
 				$userAttribute['email'] = $row['email'];
 			} elseif ($setDefaultAttributes) {
 				$userAttribute['email'] = $this->getEmailAddressForUser($userAttribute['userid']);
@@ -629,7 +630,9 @@ trait Provisioning {
 				$userAttribute['email'] = null;
 			}
 
-			if (isset($row['password'])) {
+			if ($this->isTestingReplacingUsernames()) {
+				$userAttribute['password'] = $this->getPasswordForUser($row['username']);
+			} elseif (isset($row['password'])) {
 				$userAttribute['password'] = $this->getActualPassword($row['password']);
 			} else {
 				$userAttribute['password'] = $this->getPasswordForUser($row['username']);

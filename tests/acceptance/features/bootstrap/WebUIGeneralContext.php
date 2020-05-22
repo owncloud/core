@@ -371,16 +371,17 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed on the webUI$/
+	 * @Then /^((?:\d)|no)?\s?dialog[s]?(?: mentioning user "([^"]*)")? should be displayed on the webUI$/
 	 *
 	 * @param int|string|null $count
+	 * @param string|null $user
 	 * @param TableNode|null $table of expected dialogs format must be:
 	 *                              | title | content |
 	 *
 	 * @return void
 	 */
 	public function dialogsShouldBeDisplayedOnTheWebUI(
-		$count = null, TableNode $table = null
+		$count = null, $user = null, TableNode $table = null
 	) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
 		//check if the correct number of dialogs are open
@@ -417,7 +418,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
 					$expectedDialogs[$dialogI]['content']
 						= $this->featureContext->substituteInLineCodes(
-							$expectedDialogs[$dialogI]['content']
+							$expectedDialogs[$dialogI]['content'], $user
 						);
 					if ($content === $expectedDialogs[$dialogI]['content']
 						&& $title === $expectedDialogs[$dialogI]['title']
