@@ -132,6 +132,10 @@ class WebDavHelper {
 			}
 			$propertyBody .= "<$namespacePrefix:$property/>";
 		}
+		$folderDepth = "" . $folderDepth;
+		if ($folderDepth !== '0' && $folderDepth !== '1' && $folderDepth !== 'infinity') {
+			throw new InvalidArgumentException('Invalid depth value ' . $folderDepth);
+		}
 		$headers = ['Depth' => $folderDepth];
 		$body = "<?xml version=\"1.0\"?>
 				<d:propfind
