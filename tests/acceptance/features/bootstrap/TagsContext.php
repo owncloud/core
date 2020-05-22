@@ -1142,7 +1142,7 @@ class TagsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$user,
 			$this->featureContext->getPasswordForUser($user),
-			$fullPath, $properties, 'systemtags',
+			$fullPath, $properties, 1, 'systemtags',
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);

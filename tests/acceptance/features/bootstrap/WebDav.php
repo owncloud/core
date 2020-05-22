@@ -1416,7 +1416,7 @@ trait WebDav {
 		$user, $elements, $expectedToBeListed = true
 	) {
 		$this->verifyTableNodeColumnsCount($elements, 1);
-		$responseXmlObject = $this->listFolder($user, "/", 5);
+		$responseXmlObject = $this->listFolder($user, "/", "infinity");
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
