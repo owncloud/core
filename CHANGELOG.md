@@ -42,6 +42,7 @@ Summary
 * Change - Added federated shares scan cronjob depreciating incoming-shares:poll: [#37391](https://github.com/owncloud/core/pull/37391)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.3 => 1.0.4): [#37421](https://github.com/owncloud/core/pull/37421)
 * Change - Update opis/closure (3.5.1 => 3.5.2): [#37431](https://github.com/owncloud/core/pull/37431)
+* Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
 Details
 -------
@@ -295,6 +296,21 @@ Details
 * Change - Update opis/closure (3.5.1 => 3.5.2): [#37431](https://github.com/owncloud/core/pull/37431)
 
    https://github.com/owncloud/core/pull/37431
+
+* Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
+
+   The new grace period allows you to try enterprise apps for 24 hours without having a valid
+   license key. This grace period will be available only once, and it will start just right after
+   enabling the first enterprise app. Once the grace period ends, the enterprise apps will be
+   disabled (unless you have a valid license).
+
+   License management has been moved into core and it will replace the enterprise_key app. There
+   is no big change in the functionality other than a couple of improvements: The settings page
+   (admin's general section) now has a field to enter your license key from there, and it will take
+   into account whether the config.php is read-only. You can also enter a license key from the
+   grace period popup.
+
+   https://github.com/owncloud/core/pull/36814
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
