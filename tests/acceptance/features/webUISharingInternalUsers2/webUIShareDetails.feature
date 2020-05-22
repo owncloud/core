@@ -138,5 +138,5 @@ Feature: WebUI share details for shares created using internal users
     And user "Alice" has logged in using the webUI
     And the user has opened folder "simple-folder/sub-folder" using the webUI
     When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
-    Then user "Brian Murphy" should be listed as share receiver via "simple-folder" on the webUI
-    And user "Carol King" should be listed as share receiver via "sub-folder" on the webUI
+    Then user "Brian" should be listed as share receiver via "simple-folder" on the webUI
+    And user "Carol" should be listed as share receiver via "sub-folder" on the webUI

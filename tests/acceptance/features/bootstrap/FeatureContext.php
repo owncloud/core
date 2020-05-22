@@ -1712,43 +1712,44 @@ class FeatureContext extends BehatVariablesContext {
 	public function getPasswordForUser($userName) {
 		$usernames = $this->usersToBeReplaced();
 		$userName = $this->normalizeUsername($userName);
+		$username = $this->getActualUsername($userName);
+		if ($username === $this->getAdminUsername()) {
+			return (string) $this->getAdminPassword();
+		} elseif (\array_key_exists($username, $this->createdUsers)) {
+			return (string) $this->createdUsers[$username]['password'];
+		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
+			return (string) $this->createdRemoteUsers[$username]['password'];
+		}
 		if (isset($usernames)) {
 			if (isset($usernames[$userName])) {
 				return $usernames[$userName]['password'];
 			}
 		}
-		$userName = $this->getActualUsername($userName);
-		if ($userName === $this->getAdminUsername()) {
-			return (string) $this->getAdminPassword();
-		} elseif (\array_key_exists($userName, $this->createdUsers)) {
-			return (string) $this->createdUsers[$userName]['password'];
-		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
-			return (string) $this->createdRemoteUsers[$userName]['password'];
-		} elseif ($userName === 'regularuser') {
+		if ($username === 'regularuser') {
 			return (string) $this->regularUserPassword;
-		} elseif ($userName === 'alice') {
+		} elseif ($username === 'alice') {
 			return (string) $this->regularUserPassword;
-		} elseif ($userName === 'user0') {
+		} elseif ($username === 'user0') {
 			return (string) $this->regularUserPassword;
-		} elseif ($userName === 'brian') {
+		} elseif ($username === 'brian') {
 			return (string) $this->alt1UserPassword;
-		} elseif ($userName === 'user1') {
+		} elseif ($username === 'user1') {
 			return (string) $this->alt1UserPassword;
-		} elseif ($userName === 'carol') {
+		} elseif ($username === 'carol') {
 			return (string) $this->alt2UserPassword;
-		} elseif ($userName === 'user2') {
+		} elseif ($username === 'user2') {
 			return (string) $this->alt2UserPassword;
-		} elseif ($userName === 'david') {
+		} elseif ($username === 'david') {
 			return (string) $this->alt3UserPassword;
-		} elseif ($userName === 'user3') {
+		} elseif ($username === 'user3') {
 			return (string) $this->alt3UserPassword;
-		} elseif ($userName === 'emily') {
+		} elseif ($username === 'emily') {
 			return (string) $this->alt4UserPassword;
-		} elseif ($userName === 'user4') {
+		} elseif ($username === 'user4') {
 			return (string) $this->alt4UserPassword;
-		} elseif ($userName === 'usergrp') {
+		} elseif ($username === 'usergrp') {
 			return (string) $this->regularUserPassword;
-		} elseif ($userName === 'sharee1') {
+		} elseif ($username === 'sharee1') {
 			return (string) $this->regularUserPassword;
 		} else {
 			// The user has not been created yet and is not one of the pre-known
@@ -1772,13 +1773,6 @@ class FeatureContext extends BehatVariablesContext {
 	public function getDisplayNameForUser($userName) {
 		$usernames = $this->usersToBeReplaced();
 		$userNameNormalized = $this->normalizeUsername($userName);
-		if (isset($usernames)) {
-			if (isset($usernames[$userNameNormalized])) {
-				return $usernames[$userNameNormalized]['displayname'];
-			} elseif (isset($usernames[$userName])) {
-				return $usernames[$userName]['displayname'];
-			}
-		}
 		$username = $this->getActualUsername($userNameNormalized);
 		if (\array_key_exists($username, $this->createdUsers) && !isset($this->createdUsers[$username]['displayname'])) {
 			return (string) $userName;
@@ -1786,7 +1780,15 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdUsers[$username]['displayname'];
 		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
 			return (string) $this->createdRemoteUsers[$username]['displayname'];
-		} elseif ($username === 'regularuser') {
+		}
+		if (isset($usernames)) {
+			if (isset($usernames[$userNameNormalized])) {
+				return $usernames[$userNameNormalized]['displayname'];
+			} elseif (isset($usernames[$userName])) {
+				return $usernames[$userName]['displayname'];
+			}
+		}
+		if ($username === 'regularuser') {
 			return 'Regular User';
 		} elseif ($username === 'alice') {
 			return 'Alice Hansen';
