@@ -82,6 +82,9 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	protected $mountOptions = [];
 	protected $owner = null;
 
+	public function __construct($parameters) {
+	}
+
 	/**
 	 * Remove a file or folder
 	 *

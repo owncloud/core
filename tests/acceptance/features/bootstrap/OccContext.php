@@ -191,6 +191,31 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $mountPoint
+	 * @param boolean $setting
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function setExtStorageSharingUsingTheOccCommand($mountPoint, $setting = true) {
+		$command = "files_external:option";
+
+		$mountId = $this->featureContext->getStorageId($mountPoint);
+
+		$key = "enable_sharing";
+
+		if ($setting) {
+			$value = "true";
+		} else {
+			$value = "false";
+		}
+
+		$this->invokingTheCommand(
+			"$command $mountId $key $value"
+		);
+	}
+
+	/**
+	 * @param string $mountPoint
 	 * @param string $setting "never" (switch it off) otherwise "Once every direct access"
 	 *
 	 * @return void
@@ -430,6 +455,51 @@ class OccContext implements Context {
 	 */
 	public function listLocalStorageMountOptions() {
 		$this->invokingTheCommand('files_external:list --mount-options --output=json');
+	}
+
+	/**
+	 * List available backends
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listAvailableBackends() {
+		$this->invokingTheCommand('files_external:backends --output=json');
+	}
+
+	/**
+	 * List available backends of type
+	 *
+	 * @param String $type
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listAvailableBackendsOfType($type) {
+		$this->invokingTheCommand('files_external:backends ' . $type . ' --output=json');
+	}
+
+	/**
+	 * List backend of type
+	 *
+	 * @param String $type
+	 * @param String $backend
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listBackendOfType($type, $backend) {
+		$this->invokingTheCommand('files_external:backends ' . $type . ' ' . $backend . ' --output=json');
+	}
+
+	/**
+	 * List created local storage mount with --show-password
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function listLocalStorageShowPassword() {
+		$this->invokingTheCommand('files_external:list --show-password --output=json');
 	}
 
 	/**
@@ -891,6 +961,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has set the external storage :mountPoint to sharing
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminHasSetTheExtStorageToSharing($mountPoint) {
+		$this->setExtStorageSharingUsingTheOccCommand($mountPoint);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
 	 * @When the administrator sets the external storage :mountPoint to be never scanned automatically using the occ command
 	 *
 	 * @param string $mountPoint
@@ -1242,6 +1325,106 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator configures the key :key with value :value for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminConfiguresLocalStorageMountUsingTheOccCommand($key, $value, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:config",
+				$mountId,
+				$key,
+				$value
+			]
+		);
+	}
+
+	/**
+	 * @When the administrator lists the available backends using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsAvailableBackendsUsingTheOccCommand() {
+		$this->listAvailableBackends();
+	}
+
+	/**
+	 * @When the administrator lists the available backends of type :type using the occ command
+	 *
+	 * @param String $type
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsAvailableBackendsOfTypeUsingTheOccCommand($type) {
+		$this->listAvailableBackendsOfType($type);
+	}
+
+	/**
+	 * @When the administrator lists the :backend backend of type :backendType using the occ command
+	 *
+	 * @param String $backend
+	 * @param String $backendType
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsBackendOfTypeUsingTheOccCommand($backend, $backendType) {
+		$this->listBackendOfType($backendType, $backend);
+	}
+
+	/**
+	 * @When the administrator lists configurations with the existing key :key for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsConfigurationsWithExistingKeyForLocalStorageMountUsingTheOccCommand($key, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:config",
+				$mountId,
+				$key,
+			]
+		);
+	}
+
+	/**
+	 * @Given the administrator has configured the key :key with value :value for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminConfiguredLocalStorageMountUsingTheOccCommand($key, $value, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:config",
+				$mountId,
+				$key,
+				$value
+			]
+		);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
 	 * @When the administrator lists the local storage using the occ command
 	 *
 	 * @return void
@@ -1269,6 +1452,16 @@ class OccContext implements Context {
 	 */
 	public function adminListsLocalStorageMountOptionsUsingTheOccCommand() {
 		$this->listLocalStorageMountOptions();
+	}
+
+	/**
+	 * @When the administrator lists the local storage with --show-password using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsLocalStorageShowPasswordUsingTheOccCommand() {
+		$this->listLocalStorageShowPassword();
 	}
 
 	/**
@@ -1318,6 +1511,108 @@ class OccContext implements Context {
 				$i['localStorage'],
 				$createdLocalStorage,
 				"{$i['localStorage']} exists but was not expected to exist"
+			);
+		}
+	}
+
+	/**
+	 * @Then the following backend types should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingBackendTypesShouldBeListed($table) {
+		$expectedBackendTypes = $table->getColumnsHash();
+		foreach ($expectedBackendTypes as $expectedBackendTypeEntry) {
+			Assert::assertArrayHasKey(
+				'backend-type',
+				$expectedBackendTypeEntry,
+				__METHOD__
+				. " The provided expected backend type entry '"
+				. \implode(', ', $expectedBackendTypeEntry)
+				. "' do not have key 'backend-type'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = \array_keys((array) $commandOutput);
+		foreach ($expectedBackendTypes as $backendTypesEntry) {
+			Assert::assertContains(
+				$backendTypesEntry['backend-type'],
+				$keys,
+				__METHOD__
+				. " ${backendTypesEntry['backend-type']} is not contained in '"
+				. \implode(', ', $keys)
+				. "' but was expected to be."
+			);
+		}
+	}
+
+	/**
+	 * @Then the following authentication/storage backends should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingBackendsShouldBeListed($table) {
+		$expectedBackends = $table->getColumnsHash();
+		foreach ($expectedBackends as $expectedBackendEntry) {
+			Assert::assertArrayHasKey(
+				'backends',
+				$expectedBackendEntry,
+				__METHOD__
+				. " The provided expected backend entry '"
+				. \implode(', ', $expectedBackendEntry)
+				. "' do not have key 'backends'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = \array_keys((array) $commandOutput);
+		foreach ($expectedBackends as $backendsEntry) {
+			Assert::assertContains(
+				$backendsEntry['backends'],
+				$keys,
+				__METHOD__
+				. " ${backendsEntry['backends']} is not contained in '"
+				. \implode(', ', $keys)
+				. "' but was expected to be."
+			);
+		}
+	}
+
+	/**
+	 * @Then the following authentication/storage backend keys should be listed:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingBackendKeysOfTypeShouldBeListed($table) {
+		$expectedBackendKeys = $table->getColumnsHash();
+		foreach ($expectedBackendKeys as $expectedBackendKeyEntry) {
+			Assert::assertArrayHasKey(
+				'backend-keys',
+				$expectedBackendKeyEntry,
+				__METHOD__
+				. " The provided expected backend key entry '"
+				. \implode(', ', $expectedBackendKeyEntry)
+				. "' do not have key 'backend-keys'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = \array_keys((array) $commandOutput);
+		foreach ($expectedBackendKeys as $backendKeysEntry) {
+			Assert::assertContains(
+				$backendKeysEntry['backend-keys'],
+				$keys,
+				__METHOD__
+				. " ${backendKeysEntry['backend-keys']} is not contained in '"
+				. \implode(', ', $keys)
+				. "' but was expected to be."
 			);
 		}
 	}
@@ -1383,20 +1678,32 @@ class OccContext implements Context {
 						);
 					}
 					if (isset($expectedStorageEntry['ApplicableUsers'])) {
-						Assert::assertEquals(
-							$expectedStorageEntry['ApplicableUsers'],
-							$listedStorageEntry->applicable_users,
-							"ApplicableUsers column does not have the expected value for storage "
-							. $expectedStorageEntry['MountPoint']
-						);
+						$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
+						$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
+						foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
+							Assert::assertContains(
+								$expectedApplicableUserEntry,
+								$listedApplicableUsers,
+								__METHOD__
+								. " '$expectedApplicableUserEntry' is not listed in '"
+								. \implode(', ', $listedApplicableUsers)
+								. "'"
+							);
+						}
 					}
 					if (isset($expectedStorageEntry['ApplicableGroups'])) {
-						Assert::assertEquals(
-							$expectedStorageEntry['ApplicableGroups'],
-							$listedStorageEntry->applicable_groups,
-							"ApplicableGroups column does not have the expected value for storage "
-							. $expectedStorageEntry['MountPoint']
-						);
+						$listedApplicableGroups = \explode(', ', $listedStorageEntry->applicable_groups);
+						$expectedApplicableGroups = \explode(', ', $expectedStorageEntry['ApplicableGroups']);
+						foreach ($expectedApplicableGroups as $expectedApplicableGroupEntry) {
+							Assert::assertContains(
+								$expectedApplicableGroupEntry,
+								$listedApplicableGroups,
+								__METHOD__
+								. " '$expectedApplicableGroupEntry' is not listed in '"
+								. \implode(', ', $listedApplicableGroups)
+								. "'"
+							);
+						}
 					}
 					if (isset($expectedStorageEntry['Type'])) {
 						Assert::assertEquals(
@@ -1407,10 +1714,191 @@ class OccContext implements Context {
 						);
 					}
 					$isStorageEntryListed = true;
+					break;
 				}
 			}
-			Assert::assertTrue($isStorageEntryListed, "Expected local storage {$expectedStorageEntry['MountPoint']} not found");
+			Assert::assertTrue($isStorageEntryListed, __METHOD__ . " Expected local storage {$expectedStorageEntry['MountPoint']} not found");
 		}
+	}
+
+	/**
+	 * @Then the configuration output should be :expectedOutput
+	 *
+	 * @param string $expectedOutput
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theConfigurationOutputShouldBe($expectedOutput) {
+		$actualOutput = $this->featureContext->getStdOutOfOccCommand();
+		$trimmedOutput = \trim($actualOutput);
+		Assert::assertEquals(
+			$expectedOutput,
+			$trimmedOutput,
+			__METHOD__
+			. " The expected configuration output was '$expectedOutput', but got '$actualOutput' instead."
+		);
+	}
+
+	/**
+	 * @Then the following should be included in the configuration of local storage :localStorage:
+	 *
+	 * @param string $localStorage
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingShouldBeIncludedInTheConfigurationOfLocalStorage($localStorage, TableNode $table) {
+		$expectedConfigurations = $table->getColumnsHash();
+		foreach ($expectedConfigurations as $expectedConfigurationEntry) {
+			Assert::assertArrayHasKey(
+				'configuration',
+				$expectedConfigurationEntry,
+				__METHOD__
+				. " The provided expected configuration entry '"
+				. \implode(', ', $expectedConfigurationEntry)
+				. "' do not have key 'configuration'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$isStorageEntryListed = false;
+		foreach ($commandOutput as $listedStorageEntry) {
+			if ($listedStorageEntry->mount_point === $localStorage) {
+				$isStorageEntryListed = true;
+				$configurations = $listedStorageEntry->configuration;
+				$configurationsSplitted = \explode(', ', $configurations);
+				foreach ($expectedConfigurations as $expectedConfigArray) {
+					foreach ($expectedConfigArray as $expectedConfigEntry) {
+						Assert::assertContains(
+							$expectedConfigEntry,
+							$configurationsSplitted,
+							__METHOD__
+							. " $expectedConfigEntry is not contained in '"
+							. \implode(', ', $configurationsSplitted)
+							. "' but was expected to be."
+						);
+					}
+				}
+				break;
+			}
+		}
+		Assert::assertTrue($isStorageEntryListed, "Expected local storage '$localStorage' not found ");
+	}
+
+	/**
+	 * @When the administrator adds an option with key :key and value :value for the local storage mount :localStorage
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminAddsOptionForLocalStorageMountUsingTheOccCommand($key, $value, $localStorage) {
+		$mountId = $this->featureContext->getStorageId($localStorage);
+		$this->featureContext->runOcc(
+			[
+				"files_external:option",
+				$mountId,
+				$key,
+				$value
+			]
+		);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @Then the following should be included in the options of local storage :localStorage:
+	 *
+	 * @param string $localStorage
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingShouldBeIncludedInTheOptionsOfLocalStorage($localStorage, TableNode $table) {
+		$expectedOptions = $table->getColumnsHash();
+		foreach ($expectedOptions as $expectedOptionEntry) {
+			Assert::assertArrayHasKey(
+				'options',
+				$expectedOptionEntry,
+				__METHOD__
+				. " The provided expected option '"
+				. \implode(', ', $expectedOptionEntry)
+				. "' do not have key 'option'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$isStorageEntryListed = false;
+		foreach ($commandOutput as $listedStorageEntry) {
+			if ($listedStorageEntry->mount_point === $localStorage) {
+				$isStorageEntryListed = true;
+				$options = $listedStorageEntry->options;
+				$optionsSplitted = \explode(', ', $options);
+				foreach ($expectedOptions as $expectedOptionArray) {
+					foreach ($expectedOptionArray as $expectedOptionEntry) {
+						Assert::assertContains(
+							$expectedOptionEntry,
+							$optionsSplitted,
+							__METHOD__
+							. " $expectedOptionEntry is not contained in '"
+							. \implode(', ', $optionsSplitted)
+							. "' , but was expected to be."
+						);
+					}
+				}
+				break;
+			}
+		}
+		Assert::assertTrue($isStorageEntryListed, "Expected local storage '$localStorage' not found ");
+	}
+
+	/**
+	 * @Then the following should not be included in the options of local storage :localStorage:
+	 *
+	 * @param string $localStorage
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingShouldNotBeIncludedInTheOptionsOfLocalStorage($localStorage, TableNode $table) {
+		$expectedOptions = $table->getColumnsHash();
+		foreach ($expectedOptions as $expectedOptionEntry) {
+			Assert::assertArrayHasKey(
+				'options',
+				$expectedOptionEntry,
+				__METHOD__
+				. " The provided expected option '"
+				. \implode(', ', $expectedOptionEntry)
+				. "' do not have key 'options'"
+			);
+		}
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$isStorageEntryListed = false;
+		foreach ($commandOutput as $listedStorageEntry) {
+			if ($listedStorageEntry->mount_point === $localStorage) {
+				$isStorageEntryListed = true;
+				$options = $listedStorageEntry->options;
+				$optionsSplitted = \explode(', ', $options);
+				foreach ($expectedOptions as $expectedOptionArray) {
+					foreach ($expectedOptionArray as $expectedOptionEntry) {
+						Assert::assertNotContains(
+							$expectedOptionEntry,
+							$optionsSplitted,
+							__METHOD__
+							. " $expectedOptionEntry is contained in '"
+							. \implode(', ', $optionsSplitted)
+							. "' , but was not expected to be."
+						);
+					}
+				}
+				break;
+			}
+		}
+		Assert::assertTrue($isStorageEntryListed, "Expected local storage '$localStorage' not found ");
 	}
 
 	/**
@@ -1441,6 +1929,34 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator has deleted local storage :folder using the occ command
+	 *
+	 * @param string $folder
+	 *
+	 * @return integer
+	 * @throws Exception
+	 */
+	public function administratorHasDeletedFolder($folder) {
+		$createdLocalStorage = [];
+		$this->listLocalStorageMount();
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($commandOutput as $i) {
+			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
+		}
+		foreach ($createdLocalStorage as $key => $value) {
+			if ($value === $folder) {
+				$mount_id = $key;
+			}
+		}
+		if (!isset($mount_id)) {
+			throw  new Exception("Id not found for folder to be deleted");
+		}
+		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
+		$this->theCommandShouldHaveBeenSuccessful();
+		return (int) $mount_id;
+	}
+
+	/**
 	 * @When the administrator exports the local storage mounts using the occ command
 	 *
 	 * @return void
@@ -1448,6 +1964,29 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorExportsTheMountsUsingTheOccCommand() {
 		$this->invokingTheCommand('files_external:export');
+	}
+
+	/**
+	 * @When the administrator imports the local storage mount from file :file using the occ command
+	 *
+	 * @param $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorImportsTheMountFromFileUsingTheOccCommand($file) {
+		$this->invokingTheCommand('files_external:import ' . $file);
+	}
+
+	/**
+	 * @When the administrator has exported the local storage mounts using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasExportedTheMountsUsingTheOccCommand() {
+		$this->invokingTheCommand('files_external:export');
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
@@ -1636,7 +2175,7 @@ class OccContext implements Context {
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param boolean $type
+	 * @param string $type
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1657,7 +2196,7 @@ class OccContext implements Context {
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param boolean $type
+	 * @param string $type
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1886,7 +2425,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasClearedTheVersionsForAllUsers() {
 		$this->deleteAllVersionsForAllUsersUsingTheOccCommand();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			"Delete all versions",
 			\trim($this->featureContext->getStdOutOfOccCommand()),
 			"Expected 'Delete all versions' to be contained in the output of occ command: "

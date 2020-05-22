@@ -103,6 +103,10 @@ class HookManager {
 		$uid = $params['uid'];
 		if (isset($this->usersToDelete[$uid])) {
 			$this->syncService->deleteUser($this->usersToDelete[$uid]);
+		} else {
+			// the user wasn't found in the userManager. Assume it was deleted before
+			// and try to delete from the syncService if it's the only one.
+			$this->syncService->deleteUserByUidIfUnique($uid);  // not interested in the result
 		}
 
 		foreach ($this->calendarsToDelete as $calendar) {

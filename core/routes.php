@@ -52,6 +52,9 @@ $application->registerRoutes($this, [
 		['name' => 'TwoFactorChallenge#showChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'GET'],
 		['name' => 'TwoFactorChallenge#solveChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'POST'],
 		['name' => 'Cron#run', 'url' => '/cron', 'verb' => 'GET'],
+		['name' => 'License#getGracePeriod', 'url' => '/license/graceperiod', 'verb' => 'GET'],
+		['name' => 'License#setNewLicense', 'url' => '/license/license', 'verb' => 'POST'],
+		['name' => 'License#getLicenseMessage', 'url' => '/license/licenseMessage', 'verb' => 'GET'],
 	],
 	'ocs' => [
 		['root' => '/cloud', 'name' => 'Cloud#getCapabilities', 'url' => '/capabilities', 'verb' => 'GET'],

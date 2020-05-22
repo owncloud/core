@@ -19,6 +19,7 @@
 
 namespace OCA\DAV\Tests\Unit\Files;
 
+use OC\Files\Node\File;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Files\IFileNode;
 use OCA\DAV\Files\PreviewPlugin;
@@ -30,7 +31,10 @@ use OCP\Files\StorageNotAvailableException;
 use OCP\IImage;
 use OCP\IPreview;
 use OCP\Lock\LockedException;
+use PHPUnit\Framework\MockObject\MockObject;
+use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\Server;
@@ -42,15 +46,15 @@ use OCP\Files\FileInfo;
 
 class PreviewPluginTest extends TestCase {
 
-	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var RequestInterface | MockObject */
 	private $request;
-	/** @var IPreviewNode | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IPreviewNode | MockObject */
 	private $previewNode;
-	/** @var IPreview | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IPreview | MockObject */
 	private $previewManager;
 	/** @var PreviewPlugin */
 	private $plugin;
-	/** @var ResponseInterface| \PHPUnit\Framework\MockObject\MockObject */
+	/** @var ResponseInterface| MockObject */
 	private $response;
 
 	public function setUp(): void {
@@ -59,42 +63,42 @@ class PreviewPluginTest extends TestCase {
 		$this->previewManager = $this->createMock(IPreview::class);
 		$this->previewManager->method('isAvailable')->willReturn(true);
 
-		$this->previewNode = $this->createMock([IPreviewNode::class, FileInfo::class]);
+		$this->previewNode = $this->createMock(File::class);
 
 		$this->request = $this->createMock(RequestInterface::class);
-		/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject $response */
+		/** @var ResponseInterface | MockObject $response */
 		$this->response = $this->createMock(ResponseInterface::class);
 
 		$this->initPlugin();
 	}
 
-	private function initPlugin() {
-		/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject $timeFactory */
+	private function initPlugin(): void {
+		/** @var ITimeFactory | MockObject $timeFactory */
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(1234567);
 
 		$this->plugin = new PreviewPlugin($timeFactory, $this->previewManager);
 
-		/** @var IFileNode | \PHPUnit\Framework\MockObject\MockObject $node */
+		/** @var IFileNode | MockObject $node */
 		$node = $this->createMock(IFileNode::class);
 		$node->method('getNode')->willReturn($this->previewNode);
 
-		/** @var Tree | \PHPUnit\Framework\MockObject\MockObject $tree */
+		/** @var Tree | MockObject $tree */
 		$tree = $this->createMock(Tree::class);
 		$tree->method('getNodeForPath')->willReturn($node);
 
-		/** @var Server | \PHPUnit\Framework\MockObject\MockObject $server */
+		/** @var Server | MockObject $server */
 		$server = $this->createMock(Server::class);
 		$server->tree = $tree;
 
 		$this->plugin->initialize($server);
 	}
 
-	public function testPreviewParamNotSet() {
+	public function testPreviewParamNotSet(): void {
 		$this->request
 			->expects($this->once())
 			->method('getQueryParameters')
-			->will($this->returnValue([]));
+			->willReturn([]);
 		$this->assertTrue($this->plugin->httpGet($this->request, $this->response));
 	}
 
@@ -102,13 +106,13 @@ class PreviewPluginTest extends TestCase {
 	 * @param $expectedExceptionClass
 	 * @param $exception
 	 * @throws Forbidden
-	 * @throws \OCA\DAV\Connector\Sabre\Exception\FileLocked
-	 * @throws \Sabre\DAV\Exception\NotAuthenticated
-	 * @throws \Sabre\DAV\Exception\NotFound
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
+	 * @throws FileLocked
+	 * @throws NotAuthenticated
+	 * @throws NotFound
+	 * @throws ServiceUnavailable
 	 * @dataProvider providesExceptions
 	 */
-	public function testPreviewWithExceptions($expectedExceptionClass, $exception) {
+	public function testPreviewWithExceptions($expectedExceptionClass, $exception): void {
 		$this->previewNode->method('getThumbnail')->willThrowException($exception);
 
 		$this->request->method('getQueryParameters')->willReturn([
@@ -119,7 +123,7 @@ class PreviewPluginTest extends TestCase {
 		$this->plugin->httpGet($this->request, $this->response);
 	}
 
-	public function providesExceptions() {
+	public function providesExceptions(): array {
 		return [
 			[Forbidden::class, new GenericEncryptionException()],
 			[ServiceUnavailable::class, new StorageNotAvailableException()],
@@ -128,7 +132,7 @@ class PreviewPluginTest extends TestCase {
 		];
 	}
 
-	public function testPreviewNoImage() {
+	public function testPreviewNoImage(): void {
 		$this->previewNode->method('getThumbnail')->willReturn(null);
 
 		$this->request->method('getQueryParameters')->willReturn([
@@ -139,7 +143,19 @@ class PreviewPluginTest extends TestCase {
 		$this->plugin->httpGet($this->request, $this->response);
 	}
 
-	public function testPreviewDisabled() {
+	public function testInvalidPreviewParameters(): void {
+		$this->previewNode->method('getThumbnail')->willThrowException(new \Exception('Invalid parameter'));
+
+		$this->request->method('getQueryParameters')->willReturn([
+			'preview' => '1',
+			'x' => 'abcd'
+		]);
+
+		$this->expectException(BadRequest::class);
+		$this->plugin->httpGet($this->request, $this->response);
+	}
+
+	public function testPreviewDisabled(): void {
 		$this->previewManager = $this->createMock(IPreview::class);
 		$this->previewManager->expects($this->once())
 			->method('isAvailable')
@@ -158,7 +174,7 @@ class PreviewPluginTest extends TestCase {
 		$this->plugin->httpGet($this->request, $this->response);
 	}
 
-	public function testPreviewCreatesImage() {
+	public function testPreviewCreatesImage(): void {
 		$image = $this->createMock(IImage::class);
 		$image->method('valid')->willReturn(true);
 		$this->previewNode->method('getThumbnail')->willReturn($image);
@@ -174,7 +190,7 @@ class PreviewPluginTest extends TestCase {
 			['Content-Type', 'application/octet-stream'],
 			['Content-Disposition', 'attachment'],
 			['Cache-Control', 'max-age=86400, must-revalidate'],
-			['Expires', \gmdate("D, d M Y H:i:s", 1234567 + 86400) . " GMT"]
+			['Expires', \gmdate('D, d M Y H:i:s', 1234567 + 86400) . ' GMT']
 		);
 
 		$this->assertFalse($this->plugin->httpGet($this->request, $this->response));

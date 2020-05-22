@@ -71,7 +71,6 @@
     "%s enter the database username and name." : "%s ป้อนชื่อผู้ใช้ฐานข้อมูล และชื่อ",
     "%s enter the database username." : "%s ใส่ชื่อผู้ใช้ฐานข้อมูล",
     "%s enter the database name." : "%s ใส่ชื่อฐานข้อมูล",
-    "%s you may not use dots in the database name" : "%s บางที่คุณไม่ควรมีจุดในชื่อฐานข้อมูล",
     "%s enter the database name or connection string." : "%s ป้อนชื่อฐานข้อมูลหรือสตริงการเชื่อมต่อ",
     "Oracle connection could not be established" : "ไม่สามารถสร้างการเชื่อมต่อกับ Oracle ",
     "Oracle username and/or password not valid" : "Oracle ชื่อผู้ใช้ และ/หรือ รหัสผ่านไม่ถูกต้อง",
@@ -88,6 +87,7 @@
     "Set an admin password." : "ตั้งค่ารหัสผ่านผู้ดูแลระบบ",
     "Can't create or write into the data directory %s" : "ไม่สามารถสร้างหรือเขียนลงในข้อมูลไดเรกทอรี %s",
     "Can't create or write into the apps-external directory %s" : "ไม่สามารถสร้างหรือเขียนลงในไดเรกทอรีภายนอกแอป %s",
+    "Can't update %s - it is a directory" : "ไม่สามารถอัปเดต %s เพราะว่ามันเป็นไดเร็กทอรี่",
     "Can't update %s" : "ไม่สามารถอัปเดต %s",
     "Invalid Federated Cloud ID" : "ไอดีคลาวด์สหพันธ์ไม่ถูกต้อง",
     "Internal mail notification for shared files is not allowed" : "ไม่อนุญาตการแจ้งเตือนไฟล์ที่แชร์สำหรับเมลภายใน",
@@ -183,6 +183,7 @@
     "Storage incomplete configuration. %s" : "การตั้งค่าการจัดเก็บข้อมูลไม่สำเร็จ %s",
     "Storage connection error. %s" : "ข้อผิดพลาดการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s",
     "Storage is temporarily not available" : "ไม่สามารถใช้พื้นที่จัดเก็บได้ชั่วคราว",
-    "Storage connection timeout. %s" : "หมดเวลาการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s"
+    "Storage connection timeout. %s" : "หมดเวลาการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s",
+    "\"%s\" is locked" : "\"%s\" ถูกล็อคแล้ว"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

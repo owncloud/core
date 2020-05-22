@@ -6,12 +6,12 @@ Feature: create folder
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
-    When user "user0" creates folder "<folder_name>" using the WebDAV API
-    Then as "user0" folder "<folder_name>" should exist
+    When user "Alice" creates folder "<folder_name>" using the WebDAV API
+    Then as "Alice" folder "<folder_name>" should exist
     Examples:
       | dav_version | folder_name     |
       | old         | /upload         |
@@ -33,8 +33,9 @@ Feature: create folder
   @smokeTest
   Scenario Outline: Creating a folder
     Given using <dav_version> DAV path
-    And user "user0" has created folder "/test_folder"
-    When user "user0" gets the following properties of folder "/test_folder" using the WebDAV API
+    And user "Alice" has created folder "/test_folder"
+    When user "Alice" gets the following properties of folder "/test_folder" using the WebDAV API
+      | propertyName   |
       | d:resourcetype |
     Then the single response should contain a property "d:resourcetype" with a child property "d:collection"
     Examples:
@@ -44,8 +45,9 @@ Feature: create folder
 
   Scenario Outline: Creating a folder with special chars
     Given using <dav_version> DAV path
-    And user "user0" has created folder "/test_folder:5"
-    When user "user0" gets the following properties of folder "/test_folder:5" using the WebDAV API
+    And user "Alice" has created folder "/test_folder:5"
+    When user "Alice" gets the following properties of folder "/test_folder:5" using the WebDAV API
+      | propertyName   |
       | d:resourcetype |
     Then the single response should contain a property "d:resourcetype" with a child property "d:collection"
     Examples:
@@ -56,13 +58,69 @@ Feature: create folder
   @skipOnOcis @issue-ocis-reva-15
   Scenario Outline: Creating a directory which contains .part should not be possible
     Given using <dav_version> DAV path
-    When user "user0" creates folder "/folder.with.ext.part" using the WebDAV API
+    When user "Alice" creates folder "/folder.with.ext.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And the DAV exception should be "OCA\DAV\Connector\Sabre\Exception\InvalidPath"
     And the DAV message should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
     And the DAV reason should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
-    And user "user0" should not see the following elements
+    And user "Alice" should not see the following elements
       | /folder.with.ext.part |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skipOnOcis @issue-ocis-reva-168
+  Scenario Outline: try to create a folder that already exists
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "my-data"
+    When user "Alice" creates folder "my-data" using the WebDAV API
+    Then the HTTP status code should be "405"
+    And as "Alice" folder "my-data" should exist
+    And the DAV exception should be "Sabre\DAV\Exception\MethodNotAllowed"
+    And the DAV message should be "The resource you tried to create already exists"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skipOnOcV10 @issue-ocis-reva-168
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: try to create a folder that already exists
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "my-data"
+    When user "Alice" creates folder "my-data" using the WebDAV API
+    Then the HTTP status code should be "405"
+    And as "Alice" folder "my-data" should exist
+    And the body of the response should be empty
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skipOnOcis @issue-ocis-reva-168
+  Scenario Outline: try to create a folder with a name of an existing file
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded data" to "/my-data.txt"
+    When user "Alice" creates folder "my-data.txt" using the WebDAV API
+    Then the HTTP status code should be "405"
+    And the DAV exception should be "Sabre\DAV\Exception\MethodNotAllowed"
+    And the DAV message should be "The resource you tried to create already exists"
+    And the content of file "/my-data.txt" for user "Alice" should be "uploaded data"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skipOnOcV10 @issue-ocis-reva-168
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: try to create a folder with a name of an existing file
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded data" to "/my-data.txt"
+    When user "Alice" creates folder "my-data.txt" using the WebDAV API
+    Then the HTTP status code should be "405"
+    And the body of the response should be empty
+    And the content of file "/my-data.txt" for user "Alice" should be "uploaded data"
     Examples:
       | dav_version |
       | old         |

@@ -35,6 +35,7 @@ use OCP\ILogger;
 use OCP\IL10N;
 use OCP\IUserSession;
 use OCP\AppFramework\QueryException;
+use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\Defaults;
@@ -53,6 +54,7 @@ use OC\Settings\Panels\Admin\Certificates;
 use OC\Settings\Panels\Admin\Encryption;
 use OC\Settings\Panels\Admin\FileSharing;
 use OC\Settings\Panels\Admin\Legal;
+use OC\Settings\Panels\Admin\License;
 use OC\Settings\Panels\Admin\Mail;
 use OC\Settings\Panels\Admin\Logging;
 use OC\Settings\Panels\Admin\SecurityWarning;
@@ -92,6 +94,8 @@ class SettingsManager implements ISettingsManager {
 	protected $lockingProvider;
 	/** @var CertificateManager  */
 	protected $certificateManager;
+	/** @var ILicenseManager */
+	protected $licenseManager;
 
 	/**
 	 * Holds a cache of ISettings with keys for type
@@ -129,6 +133,7 @@ class SettingsManager implements ISettingsManager {
 								Helper $helper,
 								ILockingProvider $lockingProvider,
 								IDBConnection $dbconnection,
+								ILicenseManager $licenseManager,
 								$certificateManager,
 								IFactory $lfactory) {
 		$this->l = $l;
@@ -142,6 +147,7 @@ class SettingsManager implements ISettingsManager {
 		$this->helper = $helper;
 		$this->lockingProvider = $lockingProvider;
 		$this->dbconnection = $dbconnection;
+		$this->licenseManager = $licenseManager;
 		$this->certificateManager = $certificateManager;
 		$this->lfactory = $lfactory;
 	}
@@ -238,6 +244,7 @@ class SettingsManager implements ISettingsManager {
 				Certificates::class,
 				Apps::class,
 				Legal::class,
+				License::class,
 				Status::class
 			];
 		} elseif ($type === 'personal') {
@@ -296,6 +303,7 @@ class SettingsManager implements ISettingsManager {
 			Tips::class => new Tips(),
 			LegacyAdmin::class => new LegacyAdmin($this->helper),
 			Apps::class => new Apps($this->config),
+			License::class => new License($this->licenseManager),
 			Legal::class => new Legal($this->config)
 		];
 		if (isset($panels[$className])) {

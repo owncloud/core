@@ -37,6 +37,8 @@
  */
 namespace OC;
 
+use OCP\License\ILicenseManager;
+
 class TemplateLayout extends \OC_Template {
 	private static $versionHash = '';
 
@@ -67,6 +69,21 @@ class TemplateLayout extends \OC_Template {
 			$integrityChecker = \OC::$server->getIntegrityCodeChecker();
 			if (\OC_User::isAdminUser(\OC_User::getUser()) && $integrityChecker->isCodeCheckEnforced() && !$integrityChecker->hasPassedCheck()) {
 				\OCP\Util::addScript('core', 'integritycheck-failed-notification');
+			}
+
+			// grace period notification
+			$licenseManager = \OC::$server->getLicenseManager();
+			$gracePeriod = $licenseManager->getGracePeriod();
+			if (\OC_User::isAdminUser(\OC_User::getUser()) && ($gracePeriod && \time() < $gracePeriod['end'])) {
+				\OCP\Util::addScript('core', 'license-trial-notification');
+			}
+
+			// license state notification (only if the license isn't valid and isn't missing)
+			$licenseState = $licenseManager->getLicenseStateFor('core');
+			$shouldShowLicenseState = $licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
+				$licenseState !== ILicenseManager::LICENSE_STATE_MISSING;
+			if (\OC_User::isAdminUser(\OC_User::getUser()) && $shouldShowLicenseState) {
+				\OCP\Util::addScript('core', 'license-state-notification');
 			}
 
 			// Add navigation entry

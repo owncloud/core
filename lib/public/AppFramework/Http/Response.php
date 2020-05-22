@@ -42,11 +42,11 @@ use OCP\AppFramework\Http;
 class Response {
 
 	/**
-	 * Headers - defaults to ['Cache-Control' => 'no-cache, must-revalidate']
+	 * Headers - defaults to ['Cache-Control' => 'no-cache, no-store, must-revalidate']
 	 * @var array
 	 */
 	private $headers = [
-		'Cache-Control' => 'no-cache, must-revalidate'
+		'Cache-Control' => 'no-cache, no-store, must-revalidate'
 	];
 
 	/**

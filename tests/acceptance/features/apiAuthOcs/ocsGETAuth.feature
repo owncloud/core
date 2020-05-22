@@ -2,11 +2,12 @@
 Feature: auth
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
@@ -32,6 +33,7 @@ Feature: auth
   @skipOnOcV10
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication then the status codes should be as listed
@@ -64,7 +66,7 @@ Feature: auth
   @issue-ocis-reva-34
   @issue-ocis-reva-35
   Scenario: using OCS with non-admin basic auth
-    When the user "user0" requests these endpoints with "GET" with basic auth then the status codes should be as listed
+    When the user "Alice" requests these endpoints with "GET" with basic auth then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
@@ -95,32 +97,34 @@ Feature: auth
   @issue-ocis-reva-35
   #after fixing all issues delete this Scenario and use the one above
   Scenario: using OCS with non-admin basic auth
-    When the user "user0" requests these endpoints with "GET" with basic auth then the status codes should be as listed
+    When the user "Alice" requests these endpoints with "GET" with basic auth then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 998      | 200       |
-      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 998      | 200       |
+      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 998      | 404       |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 998      | 200       |
-      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 998      | 200       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 998      | 404       |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 998      | 200       |
-      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 998      | 200       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 998      | 404       |
      # | /ocs/v1.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
      # | /ocs/v2.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
       | /ocs/v1.php/cloud/apps                                      | 998      | 200       |
-      | /ocs/v2.php/cloud/apps                                      | 998      | 200       |
+      | /ocs/v2.php/cloud/apps                                      | 998      | 404       |
       | /ocs/v1.php/cloud/groups                                    | 998      | 200       |
-      | /ocs/v2.php/cloud/groups                                    | 998      | 200       |
+      | /ocs/v2.php/cloud/groups                                    | 998      | 404       |
       | /ocs/v1.php/cloud/users                                     | 403      | 200       |
-      | /ocs/v2.php/cloud/users                                     | 403      | 200       |
+      | /ocs/v2.php/cloud/users                                     | 403      | 403       |
       | /ocs/v1.php/config                                          | 100      | 200       |
       | /ocs/v2.php/config                                          | 100      | 200       |
       | /ocs/v1.php/privatedata/getattribute                        | 998      | 200       |
-      | /ocs/v2.php/privatedata/getattribute                        | 998      | 200       |
+      | /ocs/v2.php/privatedata/getattribute                        | 998      | 404       |
 
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
-    When user "user0" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
+    When user "Alice" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |
@@ -144,9 +148,10 @@ Feature: auth
   @skipOnOcV10
   @issue-ocis-reva-29
   @issue-ocis-reva-30
+  @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: using OCS as normal user with wrong password
-    When user "user0" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
+    When user "Alice" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
       | endpoint                                                    | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 401       |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               | 401       |
@@ -181,8 +186,11 @@ Feature: auth
 
   @skipOnOcis
   @issue-ocis-reva-65
+  @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as admin user with wrong password
-    When the administrator requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
+    Given user "another-admin" has been created with default attributes and without skeleton files
+    And user "another-admin" has been added to group "admin"
+    When user "another-admin" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |
@@ -206,8 +214,8 @@ Feature: auth
   @skipOnOcis
   @issue-ocis-reva-28
   Scenario: using OCS with token auth of a normal user
-    Given a new client token for "user0" has been generated
-    When user "user0" requests these endpoints with "GET" using basic token auth then the status codes should be as listed
+    Given a new client token for "Alice" has been generated
+    When user "Alice" requests these endpoints with "GET" using basic token auth then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
@@ -230,7 +238,7 @@ Feature: auth
 
   @skipOnOcis
   Scenario: using OCS with browser session of normal user
-    Given a new browser session for "user0" has been started
+    Given a new browser session for "Alice" has been started
     When the user requests these endpoints with "GET" using a new browser session then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
@@ -255,7 +263,7 @@ Feature: auth
   @skipOnOcis
   @issue-ocis-reva-60
   Scenario: using OCS with an app password of a normal user
-    Given a new browser session for "user0" has been started
+    Given a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"
     When the user requests these endpoints with "GET" using the generated app password then the status codes should be as listed
       | endpoint                                                    | ocs-code | http-code |

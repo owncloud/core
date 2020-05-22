@@ -8,11 +8,20 @@ Feature: add users
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
-  Scenario: use the webUI to create a simple user
-    When the administrator creates a user with the name "guiusr1" and the password "%regular%" using the webUI
+  Scenario Outline: use the webUI to create a simple user
+    When the administrator creates a user with the name "<username>" and the password "<password>" using the webUI
     And the administrator logs out of the webUI
-    And user "guiusr1" logs in using the webUI
+    And user "<username>" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | username | password  |
+      | guiusr1  | %regular% |
+      | user-1   | %regular% |
+      | 0.0      | %regular% |
+      | 123      | %regular% |
+      | -123     | %regular% |
+      | null     | %regular% |
+      | nil      | %regular% |
 
   @skipOnOcV10.3
   Scenario: use the webUI to create a user with special valid characters
@@ -31,6 +40,12 @@ Feature: add users
       | a(=  | "%alt3%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
       | a`*^ | "%alt4%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
 
+  @skipOnOcV10.3 @skipOnOcV10.4
+  Scenario: use the webUI to create a user with special invalid username
+    When the administrator attempts to create these users then the notifications should be as listed
+      | user | password    | notification                                                                                                    |
+      | meta | "%alt4%"    | Error creating user: The special username meta is not allowed                                                   |
+
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
     Then notifications should be displayed on the webUI with the text
@@ -45,6 +60,7 @@ Feature: add users
       | user | password    |
       | "a"  | "%regular%" |
       | "a1" | "%alt1%"    |
+      | "-1" | "%alt1%"    |
 
   @smokeTest
   Scenario: use the webUI to create a simple user with an Email address but without a password
@@ -155,7 +171,7 @@ Feature: add users
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: check if the sender email address is valid
-    When the administrator creates a user with the name "user1" and the email "guiusr1@owncloud" without a password using the webUI
+    When the administrator creates a user with the name "Brian" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "guiusr1@owncloud" using the webUI
     And the user sets the password to "%regular%" and confirms with the same password using the webUI
@@ -181,7 +197,6 @@ Feature: add users
       | password with spaces         | password with spaces        |
 
   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
-    Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
@@ -197,7 +212,6 @@ Feature: add users
       | password with spaces         | password with spaces        |
 
   Scenario: admin creates a user without setting password and user sets empty spaces as password
-    Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
@@ -211,11 +225,11 @@ Feature: add users
     Then user "<username>" should exist
     And the user should be redirected to a webUI page with the title "Files - %productname%"
     Examples:
-      | creation-username | login-username | username       |
-      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
-      | brand-new-user    | Brand-New-User | Brand-New-User |
-      | Brand-New-User    | BRAND-NEW-USER | brand-new-user |
-      | brand-new-user    | Brand-New-User | BRAND-NEW-USER |
+      | creation-username  | login-username  | username        |
+      | Mixed-Case-user    | mixed-case-user | MIXED-CASE-USER |
+      | mixed-case-user    | Mixed-Case-user | Mixed-Case-user |
+      | Mixed-Case-user    | MIXED-CASE-USER | mixed-case-user |
+      | mixed-case-user    | Mixed-Case-user | MIXED-CASE-USER |
 
   Scenario Outline: user names are not case-sensitive, multiple users can't exist with different upper and lower case names
     When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI
@@ -226,7 +240,7 @@ Feature: add users
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A user with that name already exists. |
     Examples:
-      | user_id1       | user_id2       | user_id3       |
-      | Brand-New-User | brand-new-user | BRAND-NEW-USER |
-      | brand-new-user | BRAND-NEW-USER | Brand-New-User |
-      | BRAND-NEW-USER | Brand-New-User | brand-new-user |
+      | user_id1        | user_id2        | user_id3        |
+      | Mixed-Case-user | mixed-case-user | MIXED-CASE-USER |
+      | mixed-case-user | MIXED-CASE-USER | Mixed-Case-user |
+      | MIXED-CASE-USER | Mixed-Case-user | mixed-case-user |

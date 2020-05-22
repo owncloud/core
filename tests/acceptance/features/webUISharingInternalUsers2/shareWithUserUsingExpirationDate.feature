@@ -7,268 +7,295 @@ Feature: Sharing files and folders with internal users with expiration date set/
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user1    |
-      | user2    |
-    And user "user3" has been created with default attributes and skeleton files
+      | Alice    |
+      | Brian    |
+    And user "Carol" has been created with default attributes and skeleton files
 
   Scenario: expiration date is disabled for sharing with users, user shares with another user
-    Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "no"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be empty for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
+    And the expiration date input field should be empty for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  |            |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
 
   Scenario: expiration date is disabled for sharing with users but enabled for sharing with groups, user shares with another user
-    Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "no"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
 
   Scenario: expiration date is enabled for sharing with users, user shares file with another user
-    Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
+    And the expiration date input field should be "+7 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +7 days    |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
 
   Scenario Outline: expiration date is enforced for user, user shares file
-    Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "<num_days>"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be "<days>" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
+    And the expiration date input field should be "<days>" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | <days>     |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
     Examples:
       | num_days | days     |
       | 3        | +3 days  |
       | 0        | today    |
 
   Scenario: expiration date is enforced for user, user shares and tries to change expiration date more than allowed
-    Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "3"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    And the user changes expiration date for share of user "User Two" to "+4 days" in the share dialog
-    Then the expiration date input field should be "+3 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    And the user changes expiration date for share of user "Brian Murphy" to "+4 days" in the share dialog
+    Then the expiration date input field should be "+3 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
 
   Scenario: expiration date is enforced for user, user reshares received file with another user
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "3"
-    And user "user3" has shared file "lorem.txt" with user "user1"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be "+3 days" for the user "User Two" in the share dialog
-    Then the information of the last share of user "user1" should include
+    And user "Carol" has shared file "lorem.txt" with user "Alice"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
+    And the expiration date input field should be "+3 days" for the user "Brian Murphy" in the share dialog
+    Then the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user3" has shared file "lorem.txt" with user "user1"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
-    Then the information of the last share of user "user1" should include
+    And user "Carol" has shared file "lorem.txt" with user "Alice"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
+    And the expiration date input field should be "+7 days" for the user "Brian Murphy" in the share dialog
+    Then the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +7 days    |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user, but removes default expiration date
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user3" has shared file "lorem.txt" with user "user1"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    And the user clears the expiration date input field for share of user "User Two" in the share dialog
-    Then the expiration date input field should be empty for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Carol" has shared file "lorem.txt" with user "Alice"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    And the user clears the expiration date input field for share of user "Brian Murphy" in the share dialog
+    Then the expiration date input field should be empty for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
       | expiration  |            |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user, but changes expiration date
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user3" has shared file "lorem.txt" with user "user1"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    And the user changes expiration date for share of user "User Two" to "+15 days" in the share dialog
-    Then the expiration date input field should be "+15 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Carol" has shared file "lorem.txt" with user "Alice"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    And the user changes expiration date for share of user "Brian Murphy" to "+15 days" in the share dialog
+    Then the expiration date input field should be "+15 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
       | expiration  | +15 days   |
 
   Scenario: expiration date is enabled but not enforced, user shares through api and checks the expiration date on webUI
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user3" has created a share with settings
+    And user "Carol" has created a share with settings
       | path        | /lorem.txt |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Alice      |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And user "user3" has logged in using the webUI
+    And user "Carol" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
-    Then the expiration date input field should be "+15 days" for the user "User One" in the share dialog
+    Then the expiration date input field should be "+15 days" for the user "Alice Hansen" in the share dialog
 
   Scenario: expiration date is enabled but not enforced, user receives a share with expiration date and reshares with expiration date less than the original
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user3" has created a share with settings
+    And user "Carol" has created a share with settings
       | path        | /lorem.txt |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Alice      |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
-    When the user changes expiration date for share of user "User Two" to "+10 days" in the share dialog
-    Then the expiration date input field should be "+10 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be "+7 days" for the user "Brian Murphy" in the share dialog
+    When the user changes expiration date for share of user "Brian Murphy" to "+10 days" in the share dialog
+    Then the expiration date input field should be "+10 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
       | expiration  | +10 days   |
 
   Scenario: expiration date is enabled but not enforced, user receives a share with expiration date and reshares it, setting a date further in future than the original
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user3" has created a share with settings
+    And user "Carol" has created a share with settings
       | path        | /lorem.txt |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Alice      |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be "+7 days" for the user "User Two" in the share dialog
-    When the user changes expiration date for share of user "User Two" to "+20 days" in the share dialog
-    Then the expiration date input field should be "+20 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be "+7 days" for the user "Brian Murphy" in the share dialog
+    When the user changes expiration date for share of user "Brian Murphy" to "+20 days" in the share dialog
+    Then the expiration date input field should be "+20 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
       | expiration  | +20 days   |
 
   Scenario: expiration date is enabled and enforced, user receives a share with expiration date and tries to reshare with expiration date less than the original
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user3" has created a share with settings
+    And user "Carol" has created a share with settings
       | path        | /lorem.txt |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Alice      |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be "+30 days" for the user "User Two" in the share dialog
-    When the user changes expiration date for share of user "User Two" to "+20 days" in the share dialog
-    Then the expiration date input field should be "+20 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be "+30 days" for the user "Brian Murphy" in the share dialog
+    When the user changes expiration date for share of user "Brian Murphy" to "+20 days" in the share dialog
+    Then the expiration date input field should be "+20 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
       | expiration  | +20 days   |
 
   Scenario: expiration date is enabled and enforced, user receives a share with expiration date and tries to reshare it with a date further in future than the original
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user3" has created a share with settings
+    And user "Carol" has created a share with settings
       | path        | /lorem.txt |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Alice      |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be "+30 days" for the user "User Two" in the share dialog
-    When the user changes expiration date for share of user "User Two" to "+40 days" in the share dialog
-    Then the expiration date input field should be "+30 days" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be "+30 days" for the user "Brian Murphy" in the share dialog
+    When the user changes expiration date for share of user "Brian Murphy" to "+40 days" in the share dialog
+    Then the expiration date input field should be "+30 days" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
       | expiration  | +30 days   |
 
   Scenario: expiration date is enabled and enforced, user receives a folder from a user share with expiration date and shares sub-folder with another user
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user3" has created a share with settings
+    And user "Carol" has created a share with settings
       | path        | /simple-folder |
       | shareType   | user           |
-      | shareWith   | user1          |
+      | shareWith   | Alice          |
       | permissions | read,share     |
       | expireDate  | +15 days       |
-    And user "user1" has logged in using the webUI
+    And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
-    And the user shares file "simple-empty-folder" with user "User Two" using the webUI without closing the share dialog
-    Then the expiration date input field should be "+30 days" for the user "User Two" in the share dialog
-    When the user changes expiration date for share of user "User Two" to "+20 days" in the share dialog
-    And the information of the last share of user "user1" should include
+    And the user shares file "simple-empty-folder" with user "Brian Murphy" using the webUI without closing the share dialog
+    Then the expiration date input field should be "+30 days" for the user "Brian Murphy" in the share dialog
+    When the user changes expiration date for share of user "Brian Murphy" to "+20 days" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user                 |
       | file_target | /simple-empty-folder |
-      | uid_owner   | user1                |
+      | uid_owner   | Alice                |
       | expiration  | +20 days             |
-      | share_with  | user2                |
+      | share_with  | Brian                |
 
   Scenario Outline: expiration date is disabled for sharing with users, user shares file with another user and sets expiration date
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "no"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
-    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "user1" has logged in using the webUI
-    When the user shares file "lorem.txt" with user "User Two" using the webUI without closing the share dialog
-    And the user changes expiration date for share of user "User Two" to "<days>" in the share dialog
-    Then the expiration date input field should be visible for the user "User Two" in the share dialog
-    And the expiration date input field should be "<days>" for the user "User Two" in the share dialog
-    And the information of the last share of user "user1" should include
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with user "Brian Murphy" using the webUI without closing the share dialog
+    And the user changes expiration date for share of user "Brian Murphy" to "<days>" in the share dialog
+    Then the expiration date input field should be visible for the user "Brian Murphy" in the share dialog
+    And the expiration date input field should be "<days>" for the user "Brian Murphy" in the share dialog
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | <days>     |
-      | uid_owner   | user1      |
+      | uid_owner   | Alice      |
     Examples:
       | days     |
       | +15 days |
       | +1 days  |
       | today    |
+
+  Scenario: share with multiple users and change the sharing permissions and expiration date
+    Given user "Carol" has shared folder "/simple-folder" with user "Alice"
+    And user "Carol" has shared folder "/simple-folder" with user "Brian"
+    And user "Carol" has logged in using the webUI
+    When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+      | edit    | no |
+      | create  | no |
+    And the user changes expiration date for share of user "Alice Hansen" to "+5 days" in the share dialog
+    Then the information for user "Alice" about the received share of folder "simple-folder" should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | expiration  | +5 days        |
+      | uid_owner   | Carol          |
+      | share_with  | Alice          |
+      | permissions | 17             |
+    When the user sets the sharing permissions of user "Brian Murphy" for "simple-folder" using the webUI to
+      | share    | no |
+      | delete   | no |
+    And the user changes expiration date for share of user "Brian Murphy" to "+7 days" in the share dialog
+    Then the information for user "Brian" about the received share of folder "simple-folder" should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | expiration  | +7 days        |
+      | uid_owner   | Carol          |
+      | share_with  | Brian          |
+      | permissions | 7              |

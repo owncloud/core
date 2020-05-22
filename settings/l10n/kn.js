@@ -63,7 +63,6 @@ OC.L10N.register(
     "A valid password must be provided" : "ಸರಿಯಾದ ಬಳಕೆದಾರ ಗುಪ್ತಪದ ಒದಗಿಸಬೇಕಾಗಿದೆ",
     "A valid email must be provided" : "﻿ಮಾನ್ಯ ಬಳಕೆದಾರ ಇ-ಅಂಚೆಯನ್ನು ಒದಗಿಸಬೇಕಾಗುತ್ತದೆ",
     "Cheers!" : "ಆನಂದಿಸಿ !",
-    "Forum" : "﻿ವೇದಿಕೆ",
     "Language" : "﻿ಭಾಷೆ",
     "Documentation:" : "﻿ದಾಖಲೆ:",
     "Enable only for specific groups" : "﻿ಕೇವಲ ನಿರ್ದಿಷ್ಟ ಗುಂಪುಗಳಿಗೆ ಸಕ್ರಿಯಗೊಳಿಸಿ",

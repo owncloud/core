@@ -11,6 +11,16 @@ script('federatedfilesharing', 'settings-admin');
 		href="<?php p(link_to_docs('admin-sharing-federated')); ?>"></a>
 
 	<p>
+		<input type="checkbox" name="cronjob_scan_external_enabled" id="cronjobScanExternalEnabled" class="checkbox"
+			   value="1" <?php if ($_['cronjobScanExternalEnabled']) {
+	print_unescaped('checked="checked"');
+} ?> />
+		<label for="cronjobScanExternalEnabled">
+			<?php p($l->t('Periodically synchronize outdated federated shares for active users'));?>
+		</label>
+	</p>
+
+	<p>
 		<input type="checkbox" name="outgoing_server2server_share_enabled" id="outgoingServer2serverShareEnabled" class="checkbox"
 			   value="1" <?php if ($_['outgoingServer2serverShareEnabled']) {
 	print_unescaped('checked="checked"');

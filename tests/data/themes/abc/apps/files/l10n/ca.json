@@ -9,6 +9,7 @@
     "Upload cancelled." : "La pujada s'ha cancel·lat.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "No es pot pujar {filename} perquè és una carpeta o té 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "No hi ha prou espai lliure, està carregant {size1} però només pot {size2}",
+    "You don’t have permission to upload or create files here" : "No teniu permisos per a pujar o crear els fitxers aquí",
     "Uploading..." : "Pujant...",
     "..." : "...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Hi ha una pujada en curs. Si abandoneu la pàgina la pujada es cancel·larà.",
@@ -24,6 +25,8 @@
     "Pending" : "Pendent",
     "Unable to determine date" : "No s'ha pogut determinar la data",
     "Invalid path" : "El camí no és vàlid",
+    "This operation is forbidden" : "Operació prohibida",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Directori no disponible. Comproveu els registres o poseu-vos en contacte amb l'administrador",
     "group" : "grup",
     "Remote share" : "Compartició remota",
     "Name" : "Nom",
@@ -32,7 +35,6 @@
     "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetes"],
     "_%n file_::_%n files_" : ["%n fitxer","%n fitxers"],
     "{dirs} and {files}" : "{dirs} i {files}",
-    "You don’t have permission to upload or create files here" : "No teniu permisos per a pujar o crear els fitxers aquí",
     "_Uploading %n file_::_Uploading %n files_" : ["Pujant %n fitxer","Pujant %n fitxers"],
     "New" : "Nou",
     "Unknown user" : "Usuari desconegut",
@@ -74,6 +76,7 @@
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Els fitxers que esteu intentant pujar excedeixen la mida màxima de pujada del servidor",
     "No favorites" : "No hi ha favorits",
     "Files and folders you mark as favorite will show up here" : "Aquí apareixeran els arxius i carpetes que vostè marqui com favorits",
-    "Text file" : "Fitxer de text"
+    "Text file" : "Fitxer de text",
+    "New text file.txt" : "Nou fitxer de text .txt"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

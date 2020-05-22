@@ -192,7 +192,7 @@ class Encryption extends Wrapper {
 	 * @return resource
 	 * @throws \BadMethodCallException
 	 */
-	protected static function wrapSource($source, $context, $protocol, $class, $mode = 'r+') {
+	protected static function wrapSource($source, $context = [], $protocol = null, $class = null, $mode = 'r+') {
 		try {
 			\stream_wrapper_register($protocol, $class);
 			if (@\rewinddir($source) === false) {
@@ -215,7 +215,7 @@ class Encryption extends Wrapper {
 	 * @return array
 	 * @throws \BadMethodCallException
 	 */
-	protected function loadContext($name) {
+	protected function loadContext($name = null) {
 		$context = parent::loadContext($name);
 
 		foreach ($this->expectedContextProperties as $property) {

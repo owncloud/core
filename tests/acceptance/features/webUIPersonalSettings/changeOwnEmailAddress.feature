@@ -5,8 +5,8 @@ Feature: Change own email address on the personal settings page
   So that I can be reached by the owncloud server
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
@@ -14,5 +14,5 @@ Feature: Change own email address on the personal settings page
   Scenario: Change email address
     When the user changes the email address to "new-address@owncloud.com" using the webUI
     And the user follows the email change confirmation link received by "new-address@owncloud.com" using the webUI
-    Then the attributes of user "user1" returned by the API should include
+    Then the attributes of user "Alice" returned by the API should include
       | email | new-address@owncloud.com |

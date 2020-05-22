@@ -75,7 +75,7 @@ class LoggingContext implements Context {
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = \json_decode($logLines[$lineNo], true);
 			if ($logEntry === null) {
-				throw new \Exception("the logline :\n{$logLines[$lineNo]} is not valid JSON");
+				throw new \Exception("the log line :\n{$logLines[$lineNo]} is not valid JSON");
 			}
 
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
@@ -108,7 +108,7 @@ class LoggingContext implements Context {
 							$message
 						);
 					} elseif ($comparingMode === 'containing') {
-						Assert::assertContains(
+						Assert::assertStringContainsString(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
@@ -256,7 +256,7 @@ class LoggingContext implements Context {
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			if ($logEntry === null) {
-				throw new \Exception("the logline :\n{$logLine} is not valid JSON");
+				throw new \Exception("the log line :\n{$logLine} is not valid JSON");
 			}
 			//reindex the array, we might have deleted entries
 			$expectedLogEntries = \array_values($expectedLogEntries);
@@ -352,7 +352,7 @@ class LoggingContext implements Context {
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			if ($logEntry === null) {
-				throw new \Exception("the logline :\n$logLine is not valid JSON");
+				throw new \Exception("the log line :\n$logLine is not valid JSON");
 			}
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
 				$match = true; // start by assuming the worst, we match the unwanted log entry

@@ -41,6 +41,7 @@ class PublicLinkTab extends OwncloudPage {
 	private $createLinkBtnXpath = ".//button[@class='addLink']";
 	private $popupXpath = ".//div[@class='oc-dialog' and not(contains(@style,'display: none'))]";
 	private $linkEntryByNameXpath = ".//*[@class='link-entry--title' and .=%s]/..";
+	private $linkEntriesNamesXpath = "//div[@id='shareDialogLinkList']//span[@class='link-entry--title']";
 	private $linkUrlInputXpath = ".//input";
 	private $publicLinkWarningMessageXpath = ".//*[@class='error-message-global'][last()]";
 	private $linkEditBtnXpath = "//div[@class='link-entry--icon-button editLink']";
@@ -344,5 +345,19 @@ class PublicLinkTab extends OwncloudPage {
 			" could not find link entry with the given name"
 		);
 		return $linkEntry;
+	}
+
+	/**
+	 * gets listed public links names created/re-shares
+	 *
+	 * @return array
+	 */
+	public function getListedPublicLinksNames() {
+		$namesArray = [];
+		$visibleNamesArray = $this->findAll("xpath", $this->linkEntriesNamesXpath);
+		foreach ($visibleNamesArray as $entry) {
+			\array_push($namesArray, $entry->getText());
+		}
+		return $namesArray;
 	}
 }

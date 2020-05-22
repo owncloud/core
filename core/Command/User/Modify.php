@@ -92,11 +92,6 @@ class Modify extends Base {
 		if (\in_array($input->getArgument('key'), $this->allowedKeys, true) === false) {
 			throw new \InvalidArgumentException('Supported keys are ' . \implode(', ', $this->allowedKeys));
 		}
-
-		$value = $input->getArgument('value');
-		if (($value === '') || ($value === null)) {
-			throw new \InvalidArgumentException('The value cannot be empty');
-		}
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -117,8 +112,8 @@ class Modify extends Base {
 			return 1;
 		}
 
-		if (($key === 'email') && ($value !== null) && ($value !== '')) {
-			if ($this->mailer->validateMailAddress($value) === true) {
+		if ($key === 'email') {
+			if (($value === '') || ($this->mailer->validateMailAddress($value) === true)) {
 				$user->setEMailAddress($value);
 				$output->writeln("The email address of $uid updated to $value");
 				return 0;
@@ -127,7 +122,7 @@ class Modify extends Base {
 			return 1;
 		}
 
-		if (($key === 'displayname') && ($value !== null) && ($value !== '')) {
+		if ($key === 'displayname') {
 			if ($user->setDisplayName($value) === true) {
 				$output->writeln('The displayname of ' . $uid . ' updated to ' . $value);
 				return 0;

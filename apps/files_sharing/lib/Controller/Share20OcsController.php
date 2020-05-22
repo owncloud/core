@@ -404,7 +404,7 @@ class Share20OcsController extends OCSController {
 				$userAutoAccept = $this->config->getUserValue($shareWith, 'files_sharing', 'auto_accept_share', 'yes') === 'yes';
 			}
 			// Valid user is required to share
-			if ($shareWith === null || !$this->userManager->userExists($shareWith)) {
+			if (!\is_string($shareWith) || !$this->userManager->userExists($shareWith)) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 404, $this->l->t('Please specify a valid user'));
 			}
@@ -422,7 +422,7 @@ class Share20OcsController extends OCSController {
 			}
 
 			// Valid group is required to share
-			if ($shareWith === null || !$this->groupManager->groupExists($shareWith)) {
+			if (!\is_string($shareWith) || !$this->groupManager->groupExists($shareWith)) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 404, $this->l->t('Please specify a valid group'));
 			}
@@ -494,7 +494,10 @@ class Share20OcsController extends OCSController {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 403, $this->l->t('Sharing %s failed because the back end does not allow shares from type %s', [$path->getPath(), $shareType]));
 			}
-
+			if (!\is_string($shareWith)) {
+				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+				return new Result(null, 404, $this->l->t('shareWith parameter must be a string'));
+			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
 		} else {
@@ -586,7 +589,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		if ($includeTags) {
-			$formatted = \OCA\Files\Helper::populateTags($formatted, 'file_source');
+			$formatted = \OCA\Files\Helper::populateTagsForShares($formatted);
 		}
 
 		return new Result($formatted);
@@ -716,7 +719,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		if ($includeTags) {
-			$formatted = \OCA\Files\Helper::populateTags($formatted, 'file_source');
+			$formatted = \OCA\Files\Helper::populateTagsForShares($formatted);
 		}
 
 		if ($path !== null) {

@@ -44,7 +44,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function emergency($message, array $context = []) {
@@ -56,7 +56,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function alert($message, array $context = []) {
@@ -68,7 +68,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function critical($message, array $context = []) {
@@ -81,7 +81,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function error($message, array $context = []) {
@@ -93,7 +93,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function warning($message, array $context = []) {
@@ -105,7 +105,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function notice($message, array $context = []) {
@@ -117,7 +117,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function info($message, array $context = []) {
@@ -129,7 +129,7 @@ class CommandLogger implements ILogger {
 	 *
 	 * @param string $message
 	 * @param array $context
-	 * @return null
+	 * @return void
 	 * @since 7.0.0
 	 */
 	public function debug($message, array $context = []) {

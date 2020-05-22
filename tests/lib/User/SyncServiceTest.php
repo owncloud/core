@@ -26,7 +26,7 @@ namespace Test\User;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Database;
-use OC\User\Sync\AllUsersIterator;
+use OC\User\Sync\BackendUsersIterator;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -37,6 +37,14 @@ use OCP\User\IProvidesQuotaBackend;
 use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use Test\TestCase;
+
+// ToDo: phpunit9 createMock will no longer allow an array of interface names.
+//       Dummy interfaces have been created here for the tests.
+//       Find a better solution.
+interface IUserInterfaceWithQuotaBackendTest extends UserInterface, IProvidesQuotaBackend {
+}
+interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvidesUserNameBackend {
+}
 
 class SyncServiceTest extends TestCase {
 
@@ -83,7 +91,7 @@ class SyncServiceTest extends TestCase {
 	public function testSetupNewAccount() {
 		$mapper = $this->createMock(AccountMapper::class);
 		// Create a mapper which supports providing a home
-		$backend = $this->createMock([UserInterface::class, \OCP\User\IProvidesHomeBackend::class]);
+		$backend = $this->createMock(UserInterface::class);
 		$config = $this->createMock(IConfig::class);
 		$logger = $this->createMock(ILogger::class);
 		$account = $this->createMock(Account::class);
@@ -111,7 +119,7 @@ class SyncServiceTest extends TestCase {
 		// Ignore state flag
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend));
+		$s->run($backend, new BackendUsersIterator($backend));
 
 		static::invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
@@ -120,7 +128,7 @@ class SyncServiceTest extends TestCase {
 	 * Pass in a backend that has new users anc check that they accounts are inserted
 	 */
 	public function testSetupNewAccountLogsErrorOnException() {
-		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+		/** @var UserInterface | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(UserInterface::class);
 
 		$backendUids = ['thisuserhasntbeenseenbefore'];
@@ -134,13 +142,13 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(1))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend));
+		$s->run($backend, new BackendUsersIterator($backend));
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
 
-		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
-		$backend = $this->createMock([UserInterface::class, IProvidesHomeBackend::class]);
+		/** @var Database | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(Database::class);
 		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome'])->getMock();
 
 		// Account returns existing home
@@ -253,8 +261,8 @@ class SyncServiceTest extends TestCase {
 		$a = $this->getMockBuilder(Account::class)->setMethods(['setQuota'])->getMock();
 
 		if ($backendProvidesQuota) {
-			/** @var UserInterface | IProvidesQuotaBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
-			$backend = $this->createMock([UserInterface::class, IProvidesQuotaBackend::class]);
+			/** @var IUserInterfaceWithQuotaBackendTest | \PHPUnit\Framework\MockObject\MockObject $backend */
+			$backend = $this->createMock(IUserInterfaceWithQuotaBackendTest::class);
 			$backend->expects($this->exactly(1))->method('getQuota')->willReturn($backendQuota);
 		} else {
 			$backend = $this->createMock(UserInterface::class);
@@ -283,8 +291,8 @@ class SyncServiceTest extends TestCase {
 		$a = $this->createMock(Account::class);
 		$a->method('__call')->with('getUserId')->willReturn('user1');
 
-		/** @var UserInterface | IProvidesUserNameBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
-		$backend = $this->createMock([UserInterface::class, IProvidesUserNameBackend::class]);
+		/** @var IUserInterfaceWithUserNameBackendTest | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(IUserInterfaceWithUserNameBackendTest::class);
 		$backend->expects($this->once())
 			->method('getUserName')
 			->willReturn('userName1');

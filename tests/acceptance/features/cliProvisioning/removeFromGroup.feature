@@ -33,28 +33,28 @@ Feature: remove a user from a group
     But user "brand-new-user" should belong to group "<group_id2>"
     And user "brand-new-user" should belong to group "<group_id3>"
     Examples:
-      | user_id        | group_id1 | group_id2 | group_id3 |
-      | BRAND-NEW-USER | New-Group | new-group | NEW-GROUP |
-      | Brand-New-User | new-group | NEW-GROUP | New-Group |
-      | brand-new-user | NEW-GROUP | New-Group | new-group |
+      | user_id        | group_id1            | group_id2            | group_id3            |
+      | BRAND-NEW-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
+      | Brand-New-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
+      | brand-new-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
   Scenario: admin tries to remove a user from a group which does not exist
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "not-group" has been deleted
-    When the administrator removes user "brand-new-user" from group "not-group" using the occ command
+    And group "nonexistentgroup" has been deleted
+    When the administrator removes user "brand-new-user" from group "nonexistentgroup" using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'Group "not-group" does not exist'
+    And the command output should contain the text 'Group "nonexistentgroup" does not exist'
 
   Scenario: admin tries to remove a user from a group which the user is not a member of
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "new-group" has been created
-    When the administrator removes user "brand-new-user" from group "new-group" using the occ command
+    And group "brand-new-group" has been created
+    When the administrator removes user "brand-new-user" from group "brand-new-group" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'Member "brand-new-user" could not be found in group "new-group"'
+    And the command output should contain the text 'Member "brand-new-user" could not be found in group "brand-new-group"'
 
   Scenario: admin tries to remove a user who does not exist from an existing group
-    Given user "not-a-user" has been deleted
-    And group "new-group" has been created
-    When the administrator removes user "not-a-user" from group "new-group" using the occ command
+    Given user "nonexistentuser" has been deleted
+    And group "brand-new-group" has been created
+    When the administrator removes user "nonexistentuser" from group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text 'Member "not-a-user" does not exist - not removed from group "new-group"'
+    And the command output should contain the text 'Member "nonexistentuser" does not exist - not removed from group "brand-new-group"'

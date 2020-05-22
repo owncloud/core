@@ -226,6 +226,7 @@ OC.L10N.register(
     "Share with users or groups…" : "Share with users or groups…",
     "Share with users or remote users…" : "Share with users or remote users…",
     "Error removing share" : "Error removing share",
+    "Unknown Share" : "Unknown Share",
     "Non-existing tag #{tag}" : "Non-existing tag #{tag}",
     "restricted" : "restricted",
     "invisible" : "invisible",

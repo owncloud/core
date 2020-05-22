@@ -106,7 +106,6 @@ OC.L10N.register(
     "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Please set the password by accessing it: <a href=\"%s\">Here</a><br><br>" : "Kaixo, <br><br>jakinarazten jada %s kontua duzula. <br><br>Zure erabiltailea: %s <br> Mesedez ezarri pasahitza bertaratuz: <a href=\"%s\"> Hemen </a><br><br>",
     "Cheers!" : "Ongi izan!",
     "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Kaixo,\n\norain %s kontu bat duzula esateko besterik ez.\n\nZure erabiltzailea: %s\nSar zaitez: %s\n\n",
-    "Forum" : "Foroa",
     "Language" : "Hizkuntza",
     "Documentation:" : "Dokumentazioa:",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Aplikazioa ezin da instalatu hurrengo menpekotasunak betetzen ez direlako:",

@@ -417,7 +417,7 @@ class Setup {
 						]
 					]
 				];
-						
+
 				$config->setSystemValues($defaultAppsPaths);
 			}
 
@@ -465,7 +465,13 @@ class Setup {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
 
-		$htaccessContent = \file_get_contents(self::pathToHtaccess());
+		$htaccessPath = self::pathToHtaccess();
+		if (\is_dir($htaccessPath)) {
+			throw new \Exception(
+				$il10n->t("Can't update %s - it is a directory", [$htaccessPath])
+			);
+		}
+		$htaccessContent = \file_get_contents($htaccessPath);
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
 		$htaccessContent = \explode($content, $htaccessContent, 2)[0];
 
@@ -510,11 +516,11 @@ class Setup {
 
 		if ($content !== '') {
 			$fileWriteResult = @\file_put_contents(
-				self::pathToHtaccess(), $htaccessContent . $content . "\n"
+				$htaccessPath, $htaccessContent . $content . "\n"
 			);
 			if ($fileWriteResult === false) {
 				throw new \Exception(
-					$il10n->t("Can't update %s", [self::pathToHtaccess()])
+					$il10n->t("Can't update %s", [$htaccessPath])
 				);
 			}
 		}

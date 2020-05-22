@@ -407,7 +407,7 @@ class DavTest extends TestCase {
 	public function testFileTypeDir() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir/file%25type', $this->contains('{DAV:}resourcetype'))
+			->with('some%25dir/file%25type', $this->containsIdentical('{DAV:}resourcetype'))
 			->willReturn([
 				'{DAV:}resourcetype' => $this->getResourceTypeResponse(true)
 			]);
@@ -418,7 +418,7 @@ class DavTest extends TestCase {
 	public function testFileTypeFile() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir/file%25type', $this->contains('{DAV:}resourcetype'))
+			->with('some%25dir/file%25type', $this->containsIdentical('{DAV:}resourcetype'))
 			->willReturn([]);
 
 		$this->assertEquals('file', $this->instance->filetype('/some%dir/file%type'));
@@ -427,7 +427,7 @@ class DavTest extends TestCase {
 	public function testFileTypeNotFound() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir/file%25type', $this->contains('{DAV:}resourcetype'))
+			->with('some%25dir/file%25type', $this->containsIdentical('{DAV:}resourcetype'))
 			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_FOUND));
 
 		$this->assertFalse($this->instance->filetype('/some%dir/file%type'));
@@ -440,7 +440,7 @@ class DavTest extends TestCase {
 
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir/file%25type', $this->contains('{DAV:}resourcetype'))
+			->with('some%25dir/file%25type', $this->containsIdentical('{DAV:}resourcetype'))
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
 		$this->instance->filetype('/some%dir/file%type');
@@ -637,7 +637,7 @@ class DavTest extends TestCase {
 		// isCreatable on parent / getPermissions
 		$this->davClient->expects($this->at(1))
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn([
 				'{http://owncloud.org/ns}permissions' => 'RDWCK'
 			]);
@@ -670,7 +670,7 @@ class DavTest extends TestCase {
 		// isCreatable on parent / getPermissions
 		$this->davClient->expects($this->at(1))
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn([
 				'{http://owncloud.org/ns}permissions' => 'R'
 			]);
@@ -779,7 +779,7 @@ class DavTest extends TestCase {
 	public function testFreeSpace($propFindResponse, $apiResponse) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}quota-available-bytes'), 0)
+			->with('some%25dir', $this->containsIdentical('{DAV:}quota-available-bytes'), 0)
 			->willReturn($propFindResponse);
 
 		$this->assertEquals($apiResponse, $this->instance->free_space('/some%dir'));
@@ -830,7 +830,7 @@ class DavTest extends TestCase {
 		// propfind after proppatch, to check if applied
 		$this->davClient->expects($this->at(2))
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}getlastmodified'), 0)
+			->with('some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0)
 			->willReturn([
 				'{DAV:}getlastmodified' => $readMtime
 			]);
@@ -848,7 +848,7 @@ class DavTest extends TestCase {
 		// isCreatable on parent / getPermissions
 		$this->davClient->expects($this->at(1))
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn([
 				'{http://owncloud.org/ns}permissions' => 'RDWCK'
 			]);
@@ -900,7 +900,7 @@ class DavTest extends TestCase {
 		// maybe the file disappeared in-between ?
 		$this->davClient->expects($this->at(2))
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}getlastmodified'), 0)
+			->with('some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0)
 			->willReturn(false);
 
 		$this->assertFalse($this->instance->touch('/some%dir', 1508496363));
@@ -935,7 +935,7 @@ class DavTest extends TestCase {
 	public function testRename($httpMethod, $storageMethod, $isDir, $extra) {
 		$mock = $this->davClient->expects($this->once())
 			->method('propfind')
-			->with('new%25path/new%25file.txt', $this->contains('{DAV:}resourcetype'));
+			->with('new%25path/new%25file.txt', $this->containsIdentical('{DAV:}resourcetype'));
 		$mock->willReturn([
 				'{DAV:}resourcetype' => $this->getResourceTypeResponse($isDir)
 			]);
@@ -972,7 +972,7 @@ class DavTest extends TestCase {
 	public function testStat($davResponse, $apiResponse) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir/file%25type', $this->logicalAnd($this->contains('{DAV:}getlastmodified'), $this->contains('{DAV:}getcontentlength')))
+			->with('some%25dir/file%25type', $this->logicalAnd($this->containsIdentical('{DAV:}getlastmodified'), $this->containsIdentical('{DAV:}getcontentlength')))
 			->willReturn($davResponse);
 
 		$this->assertEquals($apiResponse, $this->instance->stat('/some%dir/file%type'));
@@ -981,7 +981,7 @@ class DavTest extends TestCase {
 	public function testStatRoot() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('', $this->logicalAnd($this->contains('{DAV:}getlastmodified'), $this->contains('{DAV:}getcontentlength')))
+			->with('', $this->logicalAnd($this->containsIdentical('{DAV:}getlastmodified'), $this->containsIdentical('{DAV:}getcontentlength')))
 			->willReturn(['{DAV:}getlastmodified' => '2017-10-20T12:46:03+02:00']);
 
 		$this->assertEquals(['mtime' => 1508496363, 'size' => 0], $this->instance->stat(''));
@@ -1035,7 +1035,7 @@ class DavTest extends TestCase {
 	public function testMimeType($davResponse, $apiResponse) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir/file%25type', $this->logicalAnd($this->contains('{DAV:}resourcetype'), $this->contains('{DAV:}getcontenttype')))
+			->with('some%25dir/file%25type', $this->logicalAnd($this->containsIdentical('{DAV:}resourcetype'), $this->containsIdentical('{DAV:}getcontenttype')))
 			->willReturn($davResponse);
 
 		$this->assertEquals($apiResponse, $this->instance->getMimeType('/some%dir/file%type'));
@@ -1069,7 +1069,7 @@ class DavTest extends TestCase {
 	public function testPermissions($perms, $creatable, $updatable, $deletable, $sharable) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn([
 				'{http://owncloud.org/ns}permissions' => $perms
 			]);
@@ -1084,7 +1084,7 @@ class DavTest extends TestCase {
 	public function testNoPermissionsDir() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn(['{DAV:}resourcetype' => $this->getResourceTypeResponse(true)]);
 
 		// all perms given
@@ -1098,7 +1098,7 @@ class DavTest extends TestCase {
 	public function testNoPermissionsFile() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn(['{DAV:}resourcetype' => $this->getResourceTypeResponse(false)]);
 
 		// all perms given except create
@@ -1112,7 +1112,7 @@ class DavTest extends TestCase {
 	public function testGetPermissionsUnexist() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{http://owncloud.org/ns}permissions'))
+			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
 			->willReturn(false);
 
 		// all perms given
@@ -1140,7 +1140,7 @@ class DavTest extends TestCase {
 	public function testGetEtag() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}getetag'))
+			->with('some%25dir', $this->containsIdentical('{DAV:}getetag'))
 			->willReturn([
 				'{DAV:}getetag' => '"thisisanetagisntit"'
 			]);
@@ -1151,7 +1151,7 @@ class DavTest extends TestCase {
 	public function testGetEtagFallback() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}getetag'))
+			->with('some%25dir', $this->containsIdentical('{DAV:}getetag'))
 			->willReturn([]);
 
 		// unique id
@@ -1161,7 +1161,7 @@ class DavTest extends TestCase {
 	public function testGetEtagUnexist() {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}getetag'))
+			->with('some%25dir', $this->containsIdentical('{DAV:}getetag'))
 			->willReturn(false);
 
 		$this->assertNull($this->instance->getETag('some%dir'));
@@ -1174,7 +1174,7 @@ class DavTest extends TestCase {
 
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', $this->contains('{DAV:}getetag'))
+			->with('some%25dir', $this->containsIdentical('{DAV:}getetag'))
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
 		$this->instance->getETag('some%dir');
@@ -1285,10 +1285,10 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->with('some%25dir',
 				$this->logicalAnd(
-					$this->contains('{DAV:}getetag'),
-					$this->contains('{DAV:}getlastmodified'),
-					$this->contains('{http://owncloud.org/ns}permissions'),
-					$this->contains('{http://open-collaboration-services.org/ns}share-permissions')
+					$this->containsIdentical('{DAV:}getetag'),
+					$this->containsIdentical('{DAV:}getlastmodified'),
+					$this->containsIdentical('{http://owncloud.org/ns}permissions'),
+					$this->containsIdentical('{http://open-collaboration-services.org/ns}share-permissions')
 				)
 			)
 			->willReturn($davResponse);

@@ -114,11 +114,12 @@ class OCSContext implements Context {
 	 * @param string $url
 	 * @param TableNode|null $body
 	 * @param string|null $password
+	 * @param array $headers
 	 *
 	 * @return void
 	 */
 	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
-		$user, $verb, $url, $body = null, $password = null
+		$user, $verb, $url, $body = null, $password = null, $headers = null
 	) {
 		/**
 		 * array of the data to be sent in the body.
@@ -143,7 +144,7 @@ class OCSContext implements Context {
 
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(), $user, $password, $verb,
-			$url, $bodyArray, $this->featureContext->getOcsApiVersion()
+			$url, $bodyArray, $this->featureContext->getOcsApiVersion(), $headers
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -570,7 +571,7 @@ class OCSContext implements Context {
 			$this->featureContext->getResponse()
 		);
 		if (\is_array($statusCode)) {
-			Assert::assertContains(
+			Assert::assertContainsEquals(
 				$responseStatusCode, $statusCode,
 				$message
 			);

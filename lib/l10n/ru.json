@@ -71,7 +71,6 @@
     "%s enter the database username and name." : "%s укажите имя пользователя и название для базы данных.",
     "%s enter the database username." : "%s введите имя пользователя базы данных.",
     "%s enter the database name." : "%s введите имя базы данных.",
-    "%s you may not use dots in the database name" : "%s Вы не можете использовать точки в имени базы данных",
     "%s enter the database name or connection string." : "1%s введите название базы данных или строку подключения",
     "Oracle connection could not be established" : "Соединение с Oracle не может быть установлено",
     "Oracle username and/or password not valid" : "Неверное имя пользователя и/или пароль Oracle",
@@ -88,6 +87,7 @@
     "Set an admin password." : "Задать пароль для admin.",
     "Can't create or write into the data directory %s" : "Невозможно создать или записать в каталог данных %s",
     "Can't create or write into the apps-external directory %s" : "Не удалось создать или записать в каталоге внешних приложений %s",
+    "Can't update %s - it is a directory" : "Невозможно обновить %s - это каталог",
     "Can't update %s" : "Не получается обновить %s",
     "Invalid Federated Cloud ID" : "Неверный ID в объединении облачных хранилищ.",
     "Internal mail notification for shared files is not allowed" : "Внутреннее уведомление почтой для совместного доступа к файлам не разрешено",
@@ -183,6 +183,7 @@
     "Storage incomplete configuration. %s" : "Неполная конфигурация хранилища.  %s",
     "Storage connection error. %s" : "Ошибка подключения к хранилищу. %s",
     "Storage is temporarily not available" : "Хранилище временно не доступно",
-    "Storage connection timeout. %s" : "Истекло время ожидания подключения к хранилищу. %s"
+    "Storage connection timeout. %s" : "Истекло время ожидания подключения к хранилищу. %s",
+    "\"%s\" is locked" : "«%s» заблокировано"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

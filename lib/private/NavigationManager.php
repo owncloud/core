@@ -26,6 +26,7 @@
 namespace OC;
 
 use OCP\App\IAppManager;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\INavigationManager;
 use OCP\IURLGenerator;
@@ -51,17 +52,21 @@ class NavigationManager implements INavigationManager {
 	private $userSession;
 	/** @var IGroupManager */
 	private $groupManager;
+	/** @var IConfig */
+	private $config;
 
 	public function __construct(IAppManager $appManager = null,
-						 IURLGenerator $urlGenerator = null,
-						 IFactory $l10nFac = null,
-						 IUserSession $userSession = null,
-						 IGroupManager$groupManager = null) {
+								IURLGenerator $urlGenerator = null,
+								IFactory $l10nFac = null,
+								IUserSession $userSession = null,
+								IGroupManager $groupManager = null,
+								IConfig $config = null) {
 		$this->appManager = $appManager;
 		$this->urlGenerator = $urlGenerator;
 		$this->l10nFac = $l10nFac;
 		$this->userSession = $userSession;
 		$this->groupManager = $groupManager;
+		$this->config = $config;
 	}
 
 	/**
@@ -173,7 +178,7 @@ class NavigationManager implements INavigationManager {
 			}
 
 			if ($iconPath === null) {
-				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon');
+				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon.svg');
 			}
 
 			$this->add([
@@ -182,6 +187,19 @@ class NavigationManager implements INavigationManager {
 				'href' => $route,
 				'icon' => $iconPath,
 				'name' => $l->t($name),
+			]);
+		}
+
+		// add phoenix if setup
+		$phoenixBaseUrl = $this->config->getSystemValue('phoenix.baseUrl', null);
+		if ($phoenixBaseUrl) {
+			$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon.svg');
+			$this->add([
+				'id' => 'phoenix',
+				'href' => $phoenixBaseUrl,
+				'name' => 'Phoenix',
+				'icon' => $iconPath,
+				'order' => 99
 			]);
 		}
 	}

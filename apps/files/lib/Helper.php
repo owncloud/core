@@ -207,42 +207,28 @@ class Helper {
 	/**
 	 * Populate the result set with file tags
 	 *
-	 * @param array $fileList
-	 * @param string $fileIdentifier identifier attribute name for values in $fileList
-	 * @return array file list populated with tags
+	 * @param array $shareList
+	 * @return array share list populated with tags
 	 */
-	public static function populateTags(array $fileList, $fileIdentifier = 'fileid') {
-		$filesById = [];
-		foreach ($fileList as $fileData) {
-			$filesById[$fileData[$fileIdentifier]] = $fileData;
+	public static function populateTagsForShares($shareList) {
+		$fileIdList = [];
+		foreach ($shareList as $share) {
+			$fileIdList[] = $share['file_source'];
 		}
+		$fileIdList = \array_unique($fileIdList);
 		$tagger = \OC::$server->getTagManager()->load('files');
-		$tags = $tagger->getTagsForObjects(\array_keys($filesById));
-
+		$tags = $tagger->getTagsForObjects($fileIdList);
 		if (!\is_array($tags)) {
 			throw new \UnexpectedValueException('$tags must be an array');
 		}
 
-		if (!empty($tags)) {
-			foreach ($tags as $fileId => $fileTags) {
-				$filesById[$fileId]['tags'] = $fileTags;
-			}
-
-			foreach ($filesById as $key => $fileWithTags) {
-				foreach ($fileList as $key2 => $file) {
-					if ($file[$fileIdentifier] == $key) {
-						$fileList[$key2] = $fileWithTags;
-					}
-				}
-			}
-
-			foreach ($fileList as $key => $file) {
-				if (!\array_key_exists('tags', $file)) {
-					$fileList[$key]['tags'] = [];
-				}
+		foreach ($shareList as $key => $share) {
+			$shareList[$key]['tags'] = [];
+			if (\array_key_exists($share['file_source'], $tags)) {
+				$shareList[$key]['tags'] = $tags[$share['file_source']];
 			}
 		}
-		return $fileList;
+		return $shareList;
 	}
 
 	/**

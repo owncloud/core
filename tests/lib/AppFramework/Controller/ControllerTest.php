@@ -169,7 +169,7 @@ class ControllerTest extends TestCase {
 	public function testFormatDataResponseJSON() {
 		$expectedHeaders = [
 			'test' => 'something',
-			'Cache-Control' => 'no-cache, must-revalidate',
+			'Cache-Control' => 'no-cache, no-store, must-revalidate',
 			'Content-Type' => 'application/json; charset=utf-8',
 			'Content-Security-Policy' => "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'",
 		];

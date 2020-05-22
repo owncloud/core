@@ -5,19 +5,19 @@ Feature: Change Login Password
   So that I can login with my new password
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
   Scenario: Change password
     When the user changes the password to "%alt3%" using the webUI
-    And the user re-logs in with username "user1" and password "%alt3%" using the webUI
+    And the user re-logs in with username "Alice" and password "%alt3%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario Outline: Change password to some unusual values
     When the user changes the password to "<new_password>" using the webUI
-    And the user re-logs in with username "user1" and password "<new_password>" using the webUI
+    And the user re-logs in with username "Alice" and password "<new_password>" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
     Examples:
       | new_password                 | comment                               |
@@ -30,7 +30,7 @@ Feature: Change Login Password
     Then a password error message should be displayed on the webUI with the text "Wrong current password"
 
   Scenario: New password is same as current password
-    When the user changes the password to "%alt1%" using the webUI
+    When the user changes the password to "%regular%" using the webUI
     Then a password error message should be displayed on the webUI with the text "The new password cannot be the same as the previous one"
 
   Scenario Outline: Password change with invalid or no new password

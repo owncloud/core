@@ -97,6 +97,10 @@ class EncryptionTest extends TestCase {
 		// get a instance of the stream wrapper
 		$streamWrapper = $this->getMockBuilder('\OC\Files\Stream\Encryption')
 			->setMethods(['loadContext', 'writeHeader', 'skipHeader'])->disableOriginalConstructor()->getMock();
+		$streamWrapper->expects($this->once())
+			->method('loadContext')
+			->with('ocencryption')
+			->willReturn(['sourceFileOfRename' => 'dummyfile']);
 
 		// set internal properties of the stream wrapper
 		$stream = new \ReflectionClass('\OC\Files\Stream\Encryption');

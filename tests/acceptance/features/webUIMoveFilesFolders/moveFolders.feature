@@ -5,8 +5,8 @@ Feature: move folders
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
   Scenario: An attempt to move a folder into a sub-folder using rename is not allowed

@@ -1273,8 +1273,8 @@ class ManagerTest extends \Test\TestCase {
 			);
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['sharedBy', $sharedBy],
-			['sharedWith', $sharedWith],
+			['sharedBy', false, $sharedBy],
+			['sharedWith', false, $sharedWith],
 		]));
 
 		$this->config
@@ -1306,8 +1306,8 @@ class ManagerTest extends \Test\TestCase {
 			);
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['sharedBy', $sharedBy],
-			['sharedWith', $sharedWith],
+			['sharedBy', false, $sharedBy],
+			['sharedWith', false, $sharedWith],
 		]));
 
 		$this->config
@@ -2069,8 +2069,8 @@ class ManagerTest extends \Test\TestCase {
 		$this->userManager->expects($this->any())
 			->method('get')
 			->will($this->returnValueMap([
-				['user1', $user1],
-				['user2', $user2]
+				['user1', false, $user1],
+				['user2', false, $user2]
 			]));
 
 		if ($sharetype === 'user') {
@@ -2186,8 +2186,8 @@ class ManagerTest extends \Test\TestCase {
 			->getMock();
 		$this->userManager->method('get')
 			->will($this->returnValueMap([
-				['user1', $this->createMock(IUser::class)],
-				['user2', null]
+				['user1', false, $this->createMock(IUser::class)],
+				['user2', false, null]
 			]));
 		$share = $this->createShare('23', \OCP\Share::SHARE_TYPE_USER,
 			'/foo', 'user2', 'user1', 'user1',
@@ -2207,7 +2207,7 @@ class ManagerTest extends \Test\TestCase {
 			->getMock();
 		$this->userManager->method('get')
 			->will($this->returnValueMap([
-				['user1', $this->createMock(IUser::class)],
+				['user1', false, $this->createMock(IUser::class)],
 			]));
 		$share = $this->createShare('23', \OCP\Share::SHARE_TYPE_USER,
 			'/foo', 'user2', 'user1', 'user1',
@@ -2227,8 +2227,8 @@ class ManagerTest extends \Test\TestCase {
 			->getMock();
 		$this->userManager->method('get')
 			->will($this->returnValueMap([
-				['user1', $this->createMock(IUser::class)],
-				['user2', $this->createMock(IUser::class)],
+				['user1', false, $this->createMock(IUser::class)],
+				['user2', false, $this->createMock(IUser::class)],
 			]));
 		$this->view->expects($this->once())
 			->method('file_exists')

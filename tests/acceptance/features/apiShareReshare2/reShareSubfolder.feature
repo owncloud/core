@@ -2,20 +2,21 @@
 Feature: a subfolder of a received share can be reshared
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
 
+  @smokeTest
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "/TMP"
-    And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,read"
-    When user "user1" shares folder "/TMP/SUB" with user "user2" with permissions "share,read" using the sharing API
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has created folder "/TMP/SUB"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,read"
+    When user "Brian" shares folder "/TMP/SUB" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" folder "/SUB" should exist
-    And as "user1" file "/TMP/SUB" should exist
+    And as "Carol" folder "/SUB" should exist
+    And as "Brian" file "/TMP/SUB" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -23,15 +24,15 @@ Feature: a subfolder of a received share can be reshared
 
   Scenario Outline: User is not allowed to reshare a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "/TMP"
-    And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions <received_permissions>
-    When user "user1" shares folder "/TMP/SUB" with user "user2" with permissions <reshare_permissions> using the sharing API
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has created folder "/TMP/SUB"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions <received_permissions>
+    When user "Brian" shares folder "/TMP/SUB" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/SUB" should not exist
-    But as "user1" file "/TMP/SUB" should exist
+    And as "Carol" folder "/SUB" should not exist
+    But as "Brian" file "/TMP/SUB" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
       # try to pass on more bits including reshare
@@ -77,19 +78,19 @@ Feature: a subfolder of a received share can be reshared
 
   Scenario Outline: User is allowed to update reshare of a sub-folder with less permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "/TMP"
-    And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
-    And user "user1" has shared folder "/TMP/SUB" with user "user2" with permissions "share,create,update,read"
-    When user "user1" updates the last share using the sharing API with
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has created folder "/TMP/SUB"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP/SUB" with user "Carol" with permissions "share,create,update,read"
+    When user "Brian" updates the last share using the sharing API with
       | permissions | share,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" folder "/SUB" should exist
-    But user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    And as "user1" file "/TMP/SUB" should exist
-    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
+    And as "Carol" folder "/SUB" should exist
+    But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
+    And as "Brian" file "/TMP/SUB" should exist
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -97,19 +98,19 @@ Feature: a subfolder of a received share can be reshared
 
   Scenario Outline: User is allowed to update reshare of a sub-folder to the maximum allowed permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "/TMP"
-    And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,create,update,read"
-    And user "user1" has shared folder "/TMP/SUB" with user "user2" with permissions "share,read"
-    When user "user1" updates the last share using the sharing API with
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has created folder "/TMP/SUB"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP/SUB" with user "Carol" with permissions "share,read"
+    When user "Brian" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user2" folder "/SUB" should exist
-    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    And as "user1" file "/TMP/SUB" should exist
-    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
+    And as "Carol" folder "/SUB" should exist
+    And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
+    And as "Brian" file "/TMP/SUB" should exist
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -117,19 +118,19 @@ Feature: a subfolder of a received share can be reshared
 
   Scenario Outline: User is not allowed to update reshare of a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created folder "/TMP"
-    And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has shared folder "/TMP" with user "user1" with permissions "share,read"
-    And user "user1" has shared folder "/TMP/SUB" with user "user2" with permissions "share,read"
-    When user "user1" updates the last share using the sharing API with
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has created folder "/TMP/SUB"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,read"
+    And user "Brian" has shared folder "/TMP/SUB" with user "Carol" with permissions "share,read"
+    When user "Brian" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/SUB" should exist
-    But user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    And as "user1" file "/TMP/SUB" should exist
-    But user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
+    And as "Carol" folder "/SUB" should exist
+    But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
+    And as "Brian" file "/TMP/SUB" should exist
+    But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |

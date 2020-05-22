@@ -195,13 +195,6 @@ $CONFIG = [
 'defaultapp' => 'files',
 
 /**
- * Enable or remove the Help menu item in the user menu
- * The Help menu can be found in top right of the ownCloud Web interface.
- * `true` enables the Help menu item, `false` removes the help item.
- */
-'knowledgebaseenabled' => true,
-
-/**
  * Enable or disable avatars or user profile photos
  * `true` enables avatars, or user profile photos, `false` disables them.
  * These appear on the User page, on user's Personal pages and are used by some apps
@@ -267,7 +260,8 @@ $CONFIG = [
 /**
  * Define the directory where the skeleton files are located
  * These files will be copied to the data directory of new users.
- * Leave empty to not copy any skeleton files.
+ * Leave this directory empty if you do not want to copy any skeleton files.
+ * A valid path must be given for this key otherwise errors will be generated in owncloud.log.
  */
 'skeletondirectory' => '/path/to/owncloud/core/skeleton',
 

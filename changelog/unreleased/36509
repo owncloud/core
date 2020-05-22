@@ -1,0 +1,7 @@
+Change: Support PHP 7.4
+
+PHP 7.4 was released in Dec 2019. ownCloud server now supports PHP 7.4.
+
+https://github.com/owncloud/core/issues/36509
+https://github.com/owncloud/core/pull/37302
+https://www.php.net/supported-versions.php

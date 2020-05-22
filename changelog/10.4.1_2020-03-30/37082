@@ -1,0 +1,3 @@
+Change: Hardening Cache-Control headers for some responses
+
+https://github.com/owncloud/core/pull/37082

@@ -42,7 +42,7 @@ set_up_external_storage() {
       exit 1
       ;;
   esac
-  FILES_EXTERNAL_TEST_TO_RUN="apps/files_external/tests/Storage/${FILES_EXTERNAL_TEST_TO_RUN}"
+  FILES_EXTERNAL_TEST_TO_RUN="../apps/files_external/tests/Storage/${FILES_EXTERNAL_TEST_TO_RUN}"
 }
 
 if [[ "${DB_TYPE}" == "sqlite" || -z "${DB_TYPE}" || "${COVERAGE}" == "true" ]]; then
@@ -54,15 +54,17 @@ fi
 # show a little debug information
 php occ app:list
 
-phpunit_cmd="php ./lib/composer/bin/phpunit"
+phpunit_cmd="php ../lib/composer/bin/phpunit"
 if [[ "${COVERAGE}" == "true" ]]; then
-    phpunit_cmd="phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit"
+    phpunit_cmd="phpdbg -d memory_limit=4096M -rr ../lib/composer/bin/phpunit"
 fi
 
 if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
     set_up_external_storage
-    $phpunit_cmd --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-external-clover-"${DB_TYPE}".xml
-    $phpunit_cmd --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_TEST_TO_RUN}"
+    cd tests
+    $phpunit_cmd --configuration phpunit-autotest-external.xml ${GROUP} --coverage-clover output/coverage/autotest-external-clover-"${DB_TYPE}".xml
+    $phpunit_cmd --configuration phpunit-autotest-external.xml ${GROUP} --coverage-clover output/coverage/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_TEST_TO_RUN}"
 else
-    $phpunit_cmd --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-clover-"${DB_TYPE}".xml
+    cd tests
+    $phpunit_cmd --configuration phpunit-autotest.xml ${GROUP} --coverage-clover output/coverage/autotest-clover-"${DB_TYPE}".xml
 fi

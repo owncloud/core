@@ -898,7 +898,12 @@ fi
 # If the caller did not mention specific tags, skip the skipped tests by default
 if [ "${BEHAT_TAGS_OPTION_FOUND}" = false ]
 then
-	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip"
+  #  If the caller has already specified specifically to run "@skip" scenarios
+  #  then do not append "not @skip"
+  if [[ ! ${BEHAT_FILTER_TAGS} =~ "&&@skip&&" ]]
+  then
+	  BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip"
+  fi
 fi
 
 if [ -n "${BROWSER_VERSION}" ]

@@ -187,7 +187,7 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	private function error($message, array $additional= []) {
-		return \array_merge(['status' => 'error', 'msg' => $message], $additional);
+		return \array_merge(['status' => 'error', 'msg' => \htmlspecialchars($message)], $additional);
 	}
 
 	/**

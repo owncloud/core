@@ -21,7 +21,6 @@
 
 namespace OC\Files\Storage\Wrapper;
 
-use OCP\ICache;
 use OC\Cache\CappedMemoryCache;
 
 /**
@@ -33,7 +32,7 @@ use OC\Cache\CappedMemoryCache;
 class Encoding extends Wrapper {
 
 	/**
-	 * @var ICache
+	 * @var CappedMemoryCache
 	 */
 	private $namesCache;
 

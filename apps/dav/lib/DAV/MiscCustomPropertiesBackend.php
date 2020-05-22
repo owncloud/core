@@ -36,11 +36,11 @@ use Sabre\DAV\INode;
 class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	const SELECT_BY_PATH_STMT = 'SELECT * FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
 	const INSERT_BY_PATH_STMT = 'INSERT INTO `*PREFIX*dav_properties`'
-	. ' (`propertypath`, `propertyname`, `propertyvalue`) VALUES(?,?,?)';
+	. ' (`propertypath`, `propertyname`, `propertyvalue`, `propertytype`) VALUES(?,?,?,?)';
 	const UPDATE_BY_PATH_STMT = 'UPDATE `*PREFIX*dav_properties`'
 	. ' SET `propertypath` = ? WHERE `propertypath` = ?';
 	const UPDATE_BY_PATH_AND_NAME_STMT = 'UPDATE `*PREFIX*dav_properties` '
-	. 'SET `propertyvalue` = ? WHERE `propertypath` = ? AND `propertyname` = ?';
+	. 'SET `propertyvalue` = ?, `propertytype` = ? WHERE `propertypath` = ? AND `propertyname` = ?';
 	const DELETE_BY_PATH_STMT = 'DELETE FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
 	const DELETE_BY_PATH_AND_NAME_STMT = 'DELETE FROM `*PREFIX*dav_properties`'
 	. ' WHERE `propertypath` = ? AND `propertyname` = ?';
@@ -110,9 +110,6 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	protected function updateProperties($path, INode $node, $changedProperties) {
 		$existingProperties = $this->getProperties($path, $node, []);
-		$deleteStatement = self::DELETE_BY_PATH_AND_NAME_STMT;
-		$insertStatement = self::INSERT_BY_PATH_STMT;
-		$updateStatement = self::UPDATE_BY_PATH_AND_NAME_STMT;
 
 		// TODO: use "insert or update" strategy ?
 		$this->connection->beginTransaction();
@@ -121,7 +118,8 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			// If it was null, we need to delete the property
 			if ($propertyValue === null) {
 				if ($propertyExists) {
-					$this->connection->executeUpdate($deleteStatement,
+					$this->connection->executeUpdate(
+						self::DELETE_BY_PATH_AND_NAME_STMT,
 						[
 							$path,
 							$propertyName
@@ -129,18 +127,23 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 					);
 				}
 			} else {
+				$propertyData = $this->encodeValue($propertyValue);
 				if (!$propertyExists) {
-					$this->connection->executeUpdate($insertStatement,
+					$this->connection->executeUpdate(
+						self::INSERT_BY_PATH_STMT,
 						[
 							$path,
 							$propertyName,
-							$propertyValue
+							$propertyData['value'],
+							$propertyData['type']
 						]
 					);
 				} else {
-					$this->connection->executeUpdate($updateStatement,
+					$this->connection->executeUpdate(
+						self::UPDATE_BY_PATH_AND_NAME_STMT,
 						[
-							$propertyValue,
+							$propertyData['value'],
+							$propertyData['type'],
 							$path,
 							$propertyName
 						]

@@ -28,6 +28,7 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
+use TestHelpers\FileHandlingHelper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
@@ -81,9 +82,21 @@ trait Provisioning {
 	];
 
 	/**
+	 * Check if this is the admin group. That group is always a local group in
+	 * ownCloud10, even if other groups come from LDAP.
+	 *
+	 * @param string $groupname
+	 *
+	 * @return boolean
+	 */
+	public function isLocalAdminGroup($groupname) {
+		return ($groupname === "admin");
+	}
+
+	/**
 	 * Usernames are not case-sensitive, and can generally be specified with any
 	 * mix of upper and lower case. For remembering usernames use the normalized
-	 * form so that "User0" and "user0" are remembered as the same user.
+	 * form so that "alice" and "Alice" are remembered as the same user.
 	 *
 	 * @param string $username
 	 *
@@ -134,6 +147,70 @@ trait Provisioning {
 			}
 		}
 		return $username;
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $displayName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function rememberUserDisplayName($user, $displayName) {
+		$user = $this->normalizeUsername($user);
+		if ($this->isAdminUsername($user)) {
+			$this->adminDisplayName = $displayName;
+		} else {
+			if ($this->currentServer === 'LOCAL') {
+				if (\array_key_exists($user, $this->createdUsers)) {
+					$this->createdUsers[$user]['displayname'] = $displayName;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember display name '$displayName' for non-existent local user '$user'"
+					);
+				}
+			} elseif ($this->currentServer === 'REMOTE') {
+				if (\array_key_exists($user, $this->createdRemoteUsers)) {
+					$this->createdRemoteUsers[$user]['displayname'] = $displayName;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember display name '$displayName' for non-existent remote user '$user'"
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function rememberUserEmailAddress($user, $emailAddress) {
+		$user = $this->normalizeUsername($user);
+		if ($this->isAdminUsername($user)) {
+			$this->adminEmailAddress = $emailAddress;
+		} else {
+			if ($this->currentServer === 'LOCAL') {
+				if (\array_key_exists($user, $this->createdUsers)) {
+					$this->createdUsers[$user]['email'] = $emailAddress;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent local user '$user'"
+					);
+				}
+			} elseif ($this->currentServer === 'REMOTE') {
+				if (\array_key_exists($user, $this->createdRemoteUsers)) {
+					$this->createdRemoteUsers[$user]['email'] = $emailAddress;
+				} else {
+					throw new \Exception(
+						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent remote user '$user'"
+					);
+				}
+			}
+		}
 	}
 
 	/**
@@ -289,12 +366,13 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" has been created with default attributes and skeleton files$/
 	 *
 	 * @param string $user
+	 * @param boolean $skeleton
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasBeenCreatedWithDefaultAttributes($user) {
-		$this->createUser($user);
+	public function userHasBeenCreatedWithDefaultAttributes($user, $skeleton = true) {
+		$this->createUser($user, null, null, null, true, null, true, $skeleton);
 		$this->userShouldExist($user);
 	}
 
@@ -310,7 +388,7 @@ trait Provisioning {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			$this->userHasBeenCreatedWithDefaultAttributes($user);
+			$this->userHasBeenCreatedWithDefaultAttributes($user, false);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->runOcc(
@@ -367,6 +445,20 @@ trait Provisioning {
 				null, null, $baseUrl
 			);
 		}
+	}
+
+	/**
+	 * @Given the administrator has set the system language to :defaultLanguage
+	 *
+	 * @param $defaultLanguage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasSetTheSystemLanguageTo($defaultLanguage) {
+		$this->runOcc(
+			["config:system:set default_language --value $defaultLanguage"]
+		);
 	}
 
 	/**
@@ -466,7 +558,6 @@ trait Provisioning {
 		];
 		$this->ldap = new Ldap($options);
 		$this->ldap->bind();
-
 		$this->importLdifFile(
 			__DIR__ . (string)$suiteParameters['ldapInitialUserFilePath']
 		);
@@ -559,11 +650,15 @@ trait Provisioning {
 	 */
 	public function createLdapUser($setting) {
 		$ou = "TestUsers";
-		$newDN = 'uid=' . $setting["userid"] . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		// Some special characters need to be escaped in LDAP DN and attributes
+		// The special characters allowed in a username (UID) are +_.@-
+		// Of these, only + has to be escaped.
+		$userId = \str_replace('+', '\+', $setting["userid"]);
+		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
 		$uidNumber = \count($this->ldapCreatedUsers) + 1;
 		$entry = [];
-		$entry['cn'] = $setting["userid"];
-		$entry['sn'] = $setting["userid"];
+		$entry['cn'] = $userId;
+		$entry['sn'] = $userId;
 		$entry['homeDirectory'] = '/home/openldap/' . $setting["userid"];
 		$entry['objectclass'][] = 'posixAccount';
 		$entry['objectclass'][] = 'inetOrgPerson';
@@ -1200,15 +1295,17 @@ trait Provisioning {
 	public function adminChangesTheEmailOfUserToUsingTheProvisioningApi(
 		$user, $email
 	) {
+		$user = $this->getActualUsername($user);
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
-			$this->getActualUsername($user),
+			$user,
 			'email',
 			$email,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
 		);
+		$this->rememberUserEmailAddress($user, $email);
 	}
 
 	/**
@@ -1274,11 +1371,14 @@ trait Provisioning {
 	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
 			$email
 		);
+		$this->rememberUserEmailAddress($targetUser, $email);
 	}
 
 	/**
@@ -1293,12 +1393,15 @@ trait Provisioning {
 	public function userHasChangedTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
 			$email
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->rememberUserEmailAddress($targetUser, $email);
 	}
 
 	/**
@@ -1311,38 +1414,41 @@ trait Provisioning {
 	 * @When /^the administrator changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
-		$user, $displayname
+		$user, $displayName
 	) {
+		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
-			$user, 'displayname', $displayname
+			$user, 'displayname', $displayName
 		);
+		$this->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
 	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminHasChangedTheDisplayNameOfUser(
-		$user, $displayname
+		$user, $displayName
 	) {
+		$user = $this->getActualUsername($user);
 		if ($this->isTestingWithLdap()) {
 			$this->editLdapUserDisplayName(
-				$user, $displayname
+				$user, $displayName
 			);
 		} else {
 			$this->adminChangesTheDisplayNameOfUserUsingKey(
-				$user, 'displayname', $displayname
+				$user, 'displayname', $displayName
 			);
 		}
 		$response = UserHelper::getUser(
@@ -1352,7 +1458,8 @@ trait Provisioning {
 			$this->getAdminPassword()
 		);
 		$this->setResponse($response);
-		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
+		$this->theDisplayNameReturnedByTheApiShouldBe($displayName);
+		$this->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
@@ -1365,36 +1472,38 @@ trait Provisioning {
 	 * @When /^the administrator changes the display of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayOfUserUsingTheProvisioningApi(
-		$user, $displayname
+		$user, $displayName
 	) {
+		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
-			$user, 'display', $displayname
+			$user, 'display', $displayName
 		);
+		$this->rememberUserDisplayName($user, $displayName);
 	}
 
 	/**
 	 *
 	 * @param string $user
 	 * @param string $key
-	 * @param string $displayname
+	 * @param string $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayNameOfUserUsingKey(
-		$user, $key, $displayname
+		$user, $key, $displayName
 	) {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
 			$key,
-			$displayname,
+			$displayName,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
@@ -1426,9 +1535,12 @@ trait Provisioning {
 	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
+		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 
 	/**
@@ -1449,9 +1561,12 @@ trait Provisioning {
 	public function userChangesTheDisplayOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'display', $displayName
 		);
+		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 
 	/**
@@ -1466,10 +1581,13 @@ trait Provisioning {
 	public function userHasChangedTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$requestingUser = $this->getActualUsername($requestingUser);
+		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 	/**
 	 *
@@ -1979,9 +2097,19 @@ trait Provisioning {
 		];
 
 		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user] = $userData;
+			// Only remember this user creation if it was expected to have been successful
+			// or the user has not been processed before. Some tests create a user the
+			// first time (successfully) and then purposely try to create the user again.
+			// The 2nd user creation is expected to fail, and in that case we want to
+			// still remember the details of the first user creation.
+			if ($shouldExist || !\array_key_exists($user, $this->createdUsers)) {
+				$this->createdUsers[$user] = $userData;
+			}
 		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user] = $userData;
+			// See comment above about the LOCAL case. The logic is the same for the remote case.
+			if ($shouldExist || !\array_key_exists($user, $this->createdRemoteUsers)) {
+				$this->createdRemoteUsers[$user] = $userData;
+			}
 		}
 	}
 
@@ -2036,6 +2164,7 @@ trait Provisioning {
 	 * @param bool $initialize initialize the user skeleton files etc
 	 * @param string|null $method how to create the user api|occ, default api
 	 * @param bool $setDefault sets the missing values to some default
+	 * @param bool $skeleton
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -2047,7 +2176,8 @@ trait Provisioning {
 		$email = null,
 		$initialize = true,
 		$method = null,
-		$setDefault = true
+		$setDefault = true,
+		$skeleton = null
 	) {
 		$user = $this->getActualUsername($user);
 
@@ -2066,7 +2196,8 @@ trait Provisioning {
 			$email = $this->getEmailAddressForUser($user);
 
 			if ($email === null) {
-				$email = $user . '@owncloud.org';
+				// escape @ & space if present in userId
+				$email = \str_replace(["@", " "], "", $user) . '@owncloud.org';
 			}
 		}
 
@@ -2126,6 +2257,16 @@ trait Provisioning {
 						$initialize,
 						$settings
 					);
+					if ($skeleton) {
+						$skeletonDir = \getenv("SKELETON_DIR");
+						if ($skeletonDir) {
+							$dataDir = \getenv("OCIS_REVA_DATA_ROOT") . "data/$user/files";
+							if (!\file_exists($dataDir)) {
+								\mkdir($dataDir, 0777, true);
+							}
+							OcisHelper::recurseCopy($skeletonDir, $dataDir);
+						}
+					}
 				} catch (LdapException $exception) {
 					throw new Exception(
 						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"
@@ -2415,7 +2556,10 @@ trait Provisioning {
 	 */
 	public function addUserToGroup($user, $group, $method = null, $checkResult = false) {
 		$user = $this->getActualUsername($user);
-		if ($method === null && $this->isTestingWithLdap()) {
+		if ($method === null
+			&& $this->isTestingWithLdap()
+			&& !$this->isLocalAdminGroup($group)
+		) {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
@@ -3063,7 +3207,10 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminHasRemovedUserFromGroup($user, $group) {
-		if ($this->isTestingWithLdap() && \in_array($group, $this->ldapCreatedGroups)) {
+		if ($this->isTestingWithLdap()
+			&& !$this->isLocalAdminGroup($group)
+			&& \in_array($group, $this->ldapCreatedGroups)
+		) {
 			$this->removeUserFromLdapGroup($user, $group);
 		} else {
 			$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
@@ -3273,8 +3420,8 @@ trait Provisioning {
 		$users = $usersList->getRows();
 		$usersSimplified = $this->simplifyArray($users);
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
-		Assert::assertEquals(
-			$usersSimplified, $respondedArray, "", 0.0, 10, true
+		Assert::assertEqualsCanonicalizing(
+			$usersSimplified, $respondedArray
 		);
 	}
 
@@ -3290,8 +3437,8 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		Assert::assertEquals(
-			$groupsSimplified, $respondedArray, "", 0.0, 10, true
+		Assert::assertEqualsCanonicalizing(
+			$groupsSimplified, $respondedArray
 		);
 	}
 
@@ -3341,8 +3488,8 @@ trait Provisioning {
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		Assert::assertEquals(
-			$simplifiedTableRows, $respondedArray, "", 0.0, 10, true
+		Assert::assertEqualsCanonicalizing(
+			$simplifiedTableRows, $respondedArray
 		);
 	}
 
@@ -3874,6 +4021,26 @@ trait Provisioning {
 		} else {
 			$this->cleanupDatabaseUsers();
 			$this->cleanupDatabaseGroups();
+			$this->resetAdminUserAttributes();
+		}
+	}
+
+	/**
+	 *
+	 * @return void
+	 */
+	public function resetAdminUserAttributes() {
+		if ($this->adminDisplayName !== '') {
+			$this->adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
+				$this->getAdminUsername(),
+				''
+			);
+		}
+		if ($this->adminEmailAddress !== '') {
+			$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
+				$this->getAdminUsername(),
+				''
+			);
 		}
 	}
 

@@ -469,6 +469,7 @@ class Manager implements IManager {
 			'accepted' => &$accepted,
 			'message' => &$message,
 			'passwordSet' => $share->getPassword() !== null,
+			'shareType' => $share->getShareType(),
 		]);
 
 		if (!$accepted) {
@@ -946,9 +947,9 @@ class Manager implements IManager {
 
 		$this->generalChecks($share);
 
-		//Verify the expiration date
-		$this->validateExpirationDate($share);
 		if ($share->getExpirationDate() != $originalShare->getExpirationDate()) {
+			//Verify the expiration date
+			$this->validateExpirationDate($share);
 			$expirationDateUpdated = true;
 		}
 

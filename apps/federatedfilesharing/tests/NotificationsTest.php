@@ -2,8 +2,9 @@
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,6 +24,7 @@
 namespace OCA\FederatedFileSharing\Tests;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -207,49 +209,127 @@ class NotificationsTest extends \Test\TestCase {
 	 * @dataProvider dataTryHttpPostToShareEndpointInException
 	 *
 	 * @param $exception
+	 * @param $isDiscoveryException
+	 * @param $allowHttpFallback
+	 * @param $expectedTries
 	 * @param array $expected
 	 */
-	public function testTryHttpPostToShareEndpointInException($exception, $expected) {
+	public function testTryHttpPostToShareEndpointInException($exception, $isDiscoveryException, $allowHttpFallback, $expectedTries, $expected) {
 		$notifications = $this->getInstance();
-		$clientMock = $this->createMock(IClient::class);
-		$clientMock->method('post')
-			->willThrowException($exception);
-		$this->httpClientService->method('newClient')->willReturn($clientMock);
-		$result = $this->invokePrivate(
-			$notifications,
-			'tryHttpPostToShareEndpoint',
-			[
-				'domain',
-				'/notifications',
-				[],
-			]
-		);
 
-		$this->assertEquals($expected, $result);
+		if ($isDiscoveryException) {
+			$this->discoveryManager->expects($this->exactly($expectedTries))->method('getShareEndpoint')
+				->willThrowException($exception);
+			$this->createMock(IClient::class)
+				->expects($this->exactly(0))->method('post');
+		} else {
+			$this->discoveryManager->expects($this->exactly($expectedTries))->method('getShareEndpoint');
+			$clientMock = $this->createMock(IClient::class);
+			$clientMock->expects($this->exactly($expectedTries))->method('post')
+				->willThrowException($exception);
+			$this->httpClientService->method('newClient')->willReturn($clientMock);
+		}
+
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('sharing.federation.allowHttpFallback', false)
+			->willReturn($allowHttpFallback);
+
+		try {
+			$result = $this->invokePrivate(
+				$notifications,
+				'tryHttpPostToShareEndpoint',
+				[
+					'domain',
+					'/notifications',
+					[]
+				]
+			);
+
+			$this->assertEquals($expected, $result);
+		} catch (\Exception $e) {
+			$this->assertNull($expected);
+		}
 	}
 
 	public function dataTryHttpPostToShareEndpointInException() {
 		$responseMock = $this->createMock(IResponse::class);
 		$responseMock->method('getBody')
 			->willReturn('User does not exist');
-		$clientExceptionMock = $this->createMock(ClientException::class);
-		$clientExceptionMock->method('getResponse')->willReturn($responseMock);
 
-		$exceptionMock = $this->createMock(\Exception::class);
+		$discExceptionMock = $this->createMock(ClientException::class);
+		$discExceptionMock->method('getResponse')->willReturn($responseMock);
+
+		$postExceptionMock = $this->createMock(ClientException::class);
+		$postExceptionMock->method('getResponse')->willReturn($responseMock);
+
+		$exceptionMock = new \Exception('Internal Server Error', 500);
+
+		$httpExceptionMock = new \Exception('Invalid SSL Certificate', 526);
+
 		return [
+			// expect client exception in post with 2 tries
 			[
-				$clientExceptionMock,
+				$postExceptionMock,
+				false,
+				false,
+				2,
 				[
 					'success' => false,
 					'result' => 'User does not exist',
 				]
 			],
+			// expect client exception in discovery with 2 tries
 			[
-				$exceptionMock,
+				$discExceptionMock,
+				true,
+				false,
+				2,
+				[
+					'success' => false,
+					'result' => 'User does not exist',
+				]
+			],
+			// expect http exception in post with 1 try as http fallback not allowed
+			[
+				$httpExceptionMock,
+				false,
+				false,
+				1,
 				[
 					'success' => false,
 					'result' => '',
 				]
+			],
+			// expect http exception in discovery with 1 try as http fallback not allowed
+			[
+				$httpExceptionMock,
+				true,
+				false,
+				1,
+				[
+					'success' => false,
+					'result' => '',
+				]
+			],
+			// expect http exception in discovery with 2 tries as http fallback allowed
+			[
+				$httpExceptionMock,
+				true,
+				true,
+				2,
+				[
+					'success' => false,
+					'result' => '',
+				]
+			],
+			// expect internal server error with error thrown in test
+			[
+				$exceptionMock,
+				false,
+				false,
+				1,
+				null
 			],
 		];
 	}

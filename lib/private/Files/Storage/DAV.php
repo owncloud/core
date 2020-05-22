@@ -684,7 +684,7 @@ class DAV extends Common {
 			// client request is in \OC\HTTP\Client
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$response = $this->client->request($method, $this->encodePath($path), $body);
-			return $response['statusCode'] == $expected;
+			return isset($response['statusCode']) && $response['statusCode'] == $expected;
 		} catch (ClientHttpException $e) {
 			if ($e->getHttpStatus() === Http::STATUS_NOT_FOUND && $method === 'DELETE') {
 				$this->statCache->clear($path . '/');
@@ -807,16 +807,18 @@ class DAV extends Common {
 				return false;
 			}
 			if (isset($response['{DAV:}getetag'])) {
-				$cachedData = $this->getCache()->get($path);
 				$etag = \trim($response['{DAV:}getetag'], '"');
-				if (!empty($etag) && $cachedData['etag'] !== $etag) {
+				$cachedData = $this->getCache()->get($path);
+				$cachedEtag = $cachedData['etag'] ?? null;
+				if (!empty($etag) && $cachedEtag !== $etag) {
 					return true;
 				} elseif (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
 					$sharePermissions = (int)$response['{http://open-collaboration-services.org/ns}share-permissions'];
 					return $sharePermissions !== $cachedData['permissions'];
 				} elseif (isset($response['{http://owncloud.org/ns}permissions'])) {
 					$permissions = $this->parsePermissions($response['{http://owncloud.org/ns}permissions']);
-					return $permissions !== $cachedData['permissions'];
+					$cachedPermissions = $cachedData['permissions'] ?? null;
+					return $permissions !== $cachedPermissions;
 				} else {
 					return false;
 				}

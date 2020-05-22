@@ -2,19 +2,19 @@
 Feature: a default expiration date can be specified for shares with users or groups
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
       | expiration |  |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -25,11 +25,11 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares with expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Brian      |
       | permissions | read,share |
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
@@ -37,10 +37,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the fields of the last response should include
       | share_type  | user     |
       | file_target | /FOLDER  |
-      | uid_owner   | user0    |
+      | uid_owner   | Alice    |
       | expiration  | +15 days |
-      | share_with  | user1    |
-    And the response when user "user1" gets the info of the last share should include
+      | share_with  | Brian    |
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -50,11 +50,11 @@ Feature: a default expiration date can be specified for shares with users or gro
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date not enabled, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Brian      |
       | permissions | read,share |
       | expireDate  | +15 days   |
     Then the OCS status code should be "<ocs_status_code>"
@@ -62,10 +62,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the fields of the last response should include
       | share_type  | user     |
       | file_target | /FOLDER  |
-      | uid_owner   | user0    |
-      | share_with  | user1    |
+      | uid_owner   | Alice    |
+      | share_with  | Brian    |
       | expiration  | +15 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -76,22 +76,22 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares with expiration date and then disables
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Brian      |
       | permissions | read,share |
       | expireDate  | +15 days   |
     And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | share_type  | user     |
       | file_target | /FOLDER  |
-      | uid_owner   | user0    |
-      | share_with  | user1    |
+      | uid_owner   | Alice    |
+      | share_with  | Brian    |
       | expiration  | +15 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
       | ocs_api_version |
@@ -103,21 +103,21 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
-      | shareWith   | user1      |
+      | shareWith   | Brian      |
       | permissions | read,share |
     And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | share_type  | user    |
       | file_target | /FOLDER |
-      | uid_owner   | user0   |
-      | share_with  | user1   |
+      | uid_owner   | Alice   |
+      | share_with  | Brian   |
       | expiration  | +7 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +7 days |
     Examples:
       | ocs_api_version |
@@ -128,15 +128,15 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" shares folder "/FOLDER" with group "grp1" using the sharing API
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response should include
       | expiration |  |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -147,10 +147,10 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares with expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
       | shareWith   | grp1       |
@@ -161,10 +161,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the fields of the last response should include
       | share_type  | group    |
       | file_target | /FOLDER  |
-      | uid_owner   | user0    |
+      | uid_owner   | Alice    |
       | expiration  | +15 days |
       | share_with  | grp1     |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -174,10 +174,10 @@ Feature: a default expiration date can be specified for shares with users or gro
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date not enabled for groups, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
       | shareWith   | grp1       |
@@ -188,10 +188,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the fields of the last response should include
       | share_type  | group    |
       | file_target | /FOLDER  |
-      | uid_owner   | user0    |
+      | uid_owner   | Alice    |
       | expiration  | +15 days |
       | share_with  | grp1     |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -202,24 +202,24 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares with expiration date and then disables
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
       | shareWith   | grp1       |
       | permissions | read,share |
       | expireDate  | +15 days   |
     And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | share_type  | group    |
       | file_target | /FOLDER  |
-      | uid_owner   | user0    |
+      | uid_owner   | Alice    |
       | share_with  | grp1     |
       | expiration  | +15 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
       | ocs_api_version |
@@ -231,24 +231,24 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
       | shareWith   | grp1       |
       | permissions | read,share |
       | expireDate  | +3 days    |
     And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | share_type  | group   |
       | file_target | /FOLDER |
-      | uid_owner   | user0   |
+      | uid_owner   | Alice   |
       | share_with  | grp1    |
       | expiration  | +3 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +3 days |
     Examples:
       | ocs_api_version |
@@ -260,15 +260,15 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "textfile0.txt" with user "user1" using the sharing API
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     Then the fields of the last response should include
       | share_type  | user           |
       | file_target | /textfile0.txt |
-      | uid_owner   | user0          |
-      | share_with  | user1          |
+      | uid_owner   | Alice          |
+      | share_with  | Brian          |
       | expiration  | +7 days        |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +7 days |
     Examples:
       | ocs_api_version |
@@ -280,17 +280,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | permissions | read,share    |
       | expireDate  | +10 days      |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -302,15 +302,15 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "textfile0.txt" with user "user1" using the sharing API
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     Then the fields of the last response should include
       | share_type  | user           |
       | file_target | /textfile0.txt |
-      | uid_owner   | user0          |
-      | share_with  | user1          |
+      | uid_owner   | Alice          |
+      | share_with  | Brian          |
       | expiration  | +30 days       |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -323,17 +323,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | permissions | read,share    |
       | expireDate  | +40 days      |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -345,10 +345,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "textfile0.txt" with user "user1" with permissions "read,share" using the sharing API
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "40"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration | +30 days |
     Examples:
@@ -362,10 +362,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "textfile0.txt" with user "user1" with permissions "read,share" using the sharing API
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "15"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration | +30 days |
     Examples:
@@ -378,17 +378,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" shares file "textfile0.txt" with group "grp1" using the sharing API
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
     Then the fields of the last response should include
       | share_type  | group          |
       | file_target | /textfile0.txt |
-      | uid_owner   | user0          |
+      | uid_owner   | Alice          |
       | share_with  | grp1           |
       | expiration  | +7 days        |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +7 days |
     Examples:
       | ocs_api_version |
@@ -400,10 +400,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
       | shareWith   | grp1          |
@@ -412,7 +412,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -424,17 +424,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" shares file "textfile0.txt" with group "grp1" using the sharing API
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
     Then the fields of the last response should include
       | share_type  | group          |
       | file_target | /textfile0.txt |
-      | uid_owner   | user0          |
+      | uid_owner   | Alice          |
       | share_with  | grp1           |
       | expiration  | +30 days       |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -447,10 +447,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
       | shareWith   | grp1          |
@@ -459,7 +459,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -471,15 +471,15 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration | +30 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -492,15 +492,15 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "15"
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration | +30 days |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
       | ocs_api_version |
@@ -512,14 +512,14 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    When user "user0" shares file "FOLDER" with group "grp1" with permissions "read,share" using the sharing API
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Brian" has been added to group "grp1"
+    When user "Alice" shares file "FOLDER" with group "grp1" with permissions "read,share" using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration |  |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version |
@@ -531,12 +531,12 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" shares file "/FOLDER" with user "user1" with permissions "read,share" using the sharing API
-    And user "user0" gets the info of the last share using the sharing API
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "/FOLDER" with user "Brian" with permissions "read,share" using the sharing API
+    And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration |  |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version |
@@ -548,17 +548,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
-      | shareWith          | user1         |
+      | shareWith          | Brian         |
       | permissions        | read,share    |
       | expireDateAsString | INVALID-DATE  |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 404             | 200              |
@@ -568,18 +568,18 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enforced for users, user shares with different time format
     Given using OCS API version "2"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
-      | shareWith          | user1         |
+      | shareWith          | Brian         |
       | permissions        | read,share    |
       | expireDateAsString | <date>        |
     Then the HTTP status code should be "200"
     And the OCS status code should be "200"
     Then the fields of the last response should include
       | expiration | 2050-12-11 |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | 2050-12-11 |
     Examples:
       | date                |
@@ -594,16 +594,16 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt     |
       | shareType          | user              |
-      | shareWith          | user1             |
+      | shareWith          | Brian             |
       | permissions        | read,share        |
       | expireDateAsString | <expiration_date> |
     Then the fields of the last response should include
       | expiration | <expiration_date> |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | <expiration_date> |
     Examples:
       | ocs_api_version | expiration_date | default | enforce |
@@ -625,17 +625,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
-      | shareWith          | user1         |
+      | shareWith          | Brian         |
       | permissions        | read,share    |
       | expireDateAsString | yesterday     |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Expiration date is in the past"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | default | enforce |
       | 1               | 404             | 200              | yes     | yes     |
@@ -650,17 +650,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
-      | shareWith          | user1         |
+      | shareWith          | Brian         |
       | permissions        | read,share    |
       | expireDateAsString | 123           |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | default | enforce |
       | 1               | 404             | 200              | yes     | yes     |
@@ -675,17 +675,17 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
-      | shareWith          | user1         |
+      | shareWith          | Brian         |
       | permissions        | read,share    |
       | expireDateAsString | -10 days      |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Expiration date is in the past"
-    And user "user1" should not have any received shares
+    And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 404             | 200              |
@@ -697,15 +697,15 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "0"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | permissions | read,share    |
     Then the fields of the last response should include
       | expiration | today |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | today |
     Examples:
       | ocs_api_version |
@@ -718,15 +718,15 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "1"
-    And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" creates a share using the sharing API with settings
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | permissions | read,share    |
     Then the fields of the last response should include
       | expiration | tomorrow |
-    And the response when user "user1" gets the info of the last share should include
+    And the response when user "Brian" gets the info of the last share should include
       | expiration | tomorrow |
     Examples:
       | ocs_api_version |

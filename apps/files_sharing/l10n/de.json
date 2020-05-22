@@ -98,6 +98,7 @@
     "Public upload disabled by the administrator" : "Das öffentliche Hochladen ist durch den Administrator deaktiviert",
     "Public upload is only possible for publicly shared folders" : "Das öffentliche Hochladen ist nur für öffentlich freigegebene Ordner erlaubt",
     "Sharing %s failed because the back end does not allow shares from type %s" : "Freigabe von %s fehlgeschlagen, da das Backend die Freigabe vom Typ %s nicht erlaubt.",
+    "shareWith parameter must be a string" : "\"shareWith\"-Parameter muss eine Zeichenkette sein",
     "Unknown share type" : "Unbekannter Freigabetyp",
     "Not a directory" : "Kein Verzeichnis",
     "Could not lock path" : "Pfad konnte nicht gesperrt werden",

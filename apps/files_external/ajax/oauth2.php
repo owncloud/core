@@ -25,9 +25,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-\set_include_path(\get_include_path().PATH_SEPARATOR.
-	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
-require_once 'Google/autoload.php';
 
 OCP\JSON::checkAppEnabled('files_external');
 OCP\JSON::checkLoggedIn();
@@ -60,7 +57,7 @@ if (isset($_POST['client_id'], $_POST['client_secret'], $_POST['redirect'])) {
 			try {
 				$token = $client->authenticate((string)$_POST['code']);
 				OCP\JSON::success(['data' => [
-					'token' => $token
+					'token' => \json_encode($token)
 				]]);
 			} catch (Exception $exception) {
 				OCP\JSON::error(['data' => [

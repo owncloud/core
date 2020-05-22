@@ -31,8 +31,10 @@ interface IScanner {
 	const SCAN_RECURSIVE = true;
 	const SCAN_SHALLOW = false;
 
+	const REUSE_NONE = 0;
 	const REUSE_ETAG = 1;
 	const REUSE_SIZE = 2;
+	const REUSE_ONLY_FOR_FILES = 4;  // apply the reuse (either tag or size) only to files, not folders
 
 	/**
 	 * scan a single file and store it in the cache

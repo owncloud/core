@@ -29,7 +29,7 @@ Feature: add users to group
     And the HTTP status code should be "200"
     Examples:
       | group_id            | comment                                 |
-      | new-group           | dash                                    |
+      | brand-new-group     | dash                                    |
       | the.group           | dot                                     |
       | left,right          | comma                                   |
       | 0                   | The "false" group                       |
@@ -68,26 +68,26 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "mixed-case-user" has been created with default attributes and skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
     When the administrator adds user "<user_id>" to group "<group_id1>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And user "brand-new-user" should belong to group "<group_id1>"
-    But user "brand-new-user" should not belong to group "<group_id2>"
-    And user "brand-new-user" should not belong to group "<group_id3>"
+    And user "mixed-case-user" should belong to group "<group_id1>"
+    But user "mixed-case-user" should not belong to group "<group_id2>"
+    And user "mixed-case-user" should not belong to group "<group_id3>"
     Examples:
-      | user_id        | group_id1 | group_id2 | group_id3 |
-      | BRAND-NEW-USER | New-Group | new-group | NEW-GROUP |
-      | Brand-New-User | new-group | NEW-GROUP | New-Group |
-      | brand-new-user | NEW-GROUP | New-Group | new-group |
+      | user_id         | group_id1            | group_id2            | group_id3            |
+      | Mixed-Case-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
+      | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
+      | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
   @skipOnLDAP
   Scenario: normal user tries to add himself to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    When user "brand-new-user" tries to add himself to group "new-group" using the provisioning API
+    When user "brand-new-user" tries to add himself to group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data
@@ -95,8 +95,8 @@ Feature: add users to group
   @skipOnLDAP
   Scenario: admin tries to add user to a group which does not exist
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "not-group" has been deleted
-    When the administrator tries to add user "brand-new-user" to group "not-group" using the provisioning API
+    And group "nonexistentgroup" has been deleted
+    When the administrator tries to add user "brand-new-user" to group "nonexistentgroup" using the provisioning API
     Then the OCS status code should be "102"
     And the HTTP status code should be "200"
     And the API should not return any data
@@ -111,9 +111,9 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario: admin tries to add a user which does not exist to a group
-    Given user "not-user" has been deleted
-    And group "new-group" has been created
-    When the administrator tries to add user "not-user" to group "new-group" using the provisioning API
+    Given user "nonexistentuser" has been deleted
+    And group "brand-new-group" has been created
+    When the administrator tries to add user "nonexistentuser" to group "brand-new-group" using the provisioning API
     Then the OCS status code should be "103"
     And the HTTP status code should be "200"
     And the API should not return any data
@@ -124,23 +124,23 @@ Feature: add users to group
       | username       |
       | brand-new-user |
       | subadmin       |
-    And group "new-group" has been created
-    And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" tries to add user "brand-new-user" to group "new-group" using the provisioning API
+    And group "brand-new-group" has been created
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" tries to add user "brand-new-user" to group "brand-new-group" using the provisioning API
     Then the OCS status code should be "104"
     And the HTTP status code should be "200"
-    And user "brand-new-user" should not belong to group "new-group"
+    And user "brand-new-user" should not belong to group "brand-new-group"
 
   @skipOnLDAP
   Scenario: a subadmin cannot add users to groups the subadmin is not responsible for
     Given these users have been created with default attributes and skeleton files:
-      | username       |
-      | brand-new-user |
-      | other-subadmin |
-    And group "new-group" has been created
-    And group "other-group" has been created
-    And user "other-subadmin" has been made a subadmin of group "other-group"
-    When user "other-subadmin" tries to add user "brand-new-user" to group "new-group" using the provisioning API
+      | username         |
+      | brand-new-user   |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And group "another-new-group" has been created
+    And user "another-subadmin" has been made a subadmin of group "another-new-group"
+    When user "another-subadmin" tries to add user "brand-new-user" to group "brand-new-group" using the provisioning API
     Then the OCS status code should be "104"
     And the HTTP status code should be "200"
-    And user "brand-new-user" should not belong to group "new-group"
+    And user "brand-new-user" should not belong to group "brand-new-group"

@@ -63,7 +63,6 @@
     "%s enter the database username and name." : "%s entratz lo nom d'utilizaire e lo nom de la basa de donadas.",
     "%s enter the database username." : "%s entratz lo nom d'utilizaire de la banca de donadas.",
     "%s enter the database name." : "%s entratz lo nom de la banca de donadas.",
-    "%s you may not use dots in the database name" : "%s podètz pas utilizar de punts dins lo nom de la banca de donadas",
     "Oracle connection could not be established" : "La connexion Oracle pòt pas èsser establida",
     "Oracle username and/or password not valid" : "Nom d'utilizaire e/o senhal de la basa Oracle invalid(s)",
     "DB Error: \"%s\"" : "Error de la basa de donadas : \"%s\"",

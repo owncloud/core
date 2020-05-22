@@ -144,16 +144,20 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @When the user changes the full name to :newFullname using the webUI
-	 * @Given the user has changed the full name to :newFullname using the webUI
+	 * @When the user changes the full name to :newFullName using the webUI
+	 * @Given the user has changed the full name to :newFullName using the webUI
 	 *
-	 * @param string $newFullname
+	 * @param string $newFullName
 	 *
 	 * @return void
 	 */
-	public function theUserChangesTheFullnameToUsingTheWebUI($newFullname) {
+	public function theUserChangesTheFullNameToUsingTheWebUI($newFullName) {
 		$this->personalGeneralSettingsPage->changeFullname(
-			$newFullname, $this->getSession()
+			$newFullName, $this->getSession()
+		);
+		$this->featureContext->rememberUserDisplayName(
+			$this->featureContext->getCurrentUser(),
+			$newFullName
 		);
 	}
 
@@ -184,6 +188,10 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function theUserChangesTheEmailAddressToUsingTheWebUI($emailAddress) {
 		$this->personalGeneralSettingsPage->changeEmailAddress(
 			$emailAddress, $this->getSession()
+		);
+		$this->featureContext->rememberUserEmailAddress(
+			$this->featureContext->getCurrentUser(),
+			$emailAddress
 		);
 	}
 

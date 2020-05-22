@@ -149,7 +149,7 @@ class Repair implements IOutput {
 				\OC::$server->getUserManager(),
 				\OC::$server->getAvatarManager(),
 				\OC::$server->getLazyRootFolder(),
-				\OC::$server->getL10N('core'),
+				\OC::$server->getL10N('lib'),
 				\OC::$server->getLogger()
 			),
 			new MoveAvatarIntoSubFolder(
@@ -158,7 +158,7 @@ class Repair implements IOutput {
 				\OC::$server->getUserManager(),
 				\OC::$server->getAvatarManager(),
 				\OC::$server->getLazyRootFolder(),
-				\OC::$server->getL10N('core'),
+				\OC::$server->getL10N('lib'),
 				\OC::$server->getLogger()
 			),
 			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager(), \OC::$server->getLazyRootFolder()),

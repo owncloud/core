@@ -5,8 +5,8 @@ Feature: Change own full name on the personal settings page
   So that other users can recognize me by it
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
@@ -14,5 +14,5 @@ Feature: Change own full name on the personal settings page
     When the user changes the full name to "my#very&weird?नेपालि%name" using the webUI
     And the user reloads the current page of the webUI
     Then "my#very&weird?नेपालि%name" should be shown as the name of the current user on the WebUI
-    And the attributes of user "user1" returned by the API should include
+    And the attributes of user "Alice" returned by the API should include
       | displayname | my#very&weird?नेपालि%name |

@@ -50,11 +50,24 @@ class ExpirationTest extends \Test\TestCase {
 			[ 'auto', $today, $back35Days, true, true],
 			[ 'auto', $today, $ahead100Days, true, true],
 
+			// same with 'auto'
+			[ 'zzzzzz', $today, $back10Days, false, false],
+			[ 'zzzzzz', $today, $back35Days, false, false],
+			[ 'zzzzzz', $today, $back10Days, true, true],
+			[ 'zzzzzz', $today, $back35Days, true, true],
+			[ 'zzzzzz', $today, $ahead100Days, true, true],
+
 			// The same with 'auto'
 			[ 'auto, auto', $today, $back10Days, false, false],
 			[ 'auto, auto', $today, $back35Days, false, false],
 			[ 'auto, auto', $today, $back10Days, true, true],
 			[ 'auto, auto', $today, $back35Days, true, true],
+
+			// same with 'auto'
+			[ 'zzzzzz, zzzzzz', $today, $back10Days, false, false],
+			[ 'zzzzzz, zzzzzz', $today, $back35Days, false, false],
+			[ 'zzzzzz, zzzzzz', $today, $back10Days, true, true],
+			[ 'zzzzzz, zzzzzz', $today, $back35Days, true, true],
 
 			// Keep for 15 days but expire anytime if space needed
 			[ '15, auto', $today, $back10Days, false, false],
@@ -110,39 +123,56 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
-	public function configData() {
+	public function shouldAutoExpireProvider() {
 		return [
-			[ 'disabled', null, null, null],
-			[ 'auto', Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ 'auto,auto', Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ 'auto, auto', Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ 'auto, 3', Expiration::NO_OBLIGATION, 3, true ],
-			[ '5, auto', 5, Expiration::NO_OBLIGATION, true ],
-			[ '3, 5', 3, 5, false ],
-			[ '10, 3', 10, 10, false ],
-			[ 'g,a,r,b,a,g,e',  Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ],
-			[ '-3,8',  Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ]
+			['disabled', false],
+			['auto', true],
+			['zzzzzz', true],
+			['auto, auto', true],
+			['zzzzzz, zzzzzz', true],
+			['15, auto', true],
+			['auto, 15', true],
+			['15, 25', false],
+			['25, 15', false],
 		];
 	}
 
 	/**
-	 * @dataProvider configData
-	 *
-	 * @param string $configValue
-	 * @param int $expectedMinAge
-	 * @param int $expectedMaxAge
-	 * @param bool $expectedCanPurgeToSaveSpace
+	 * @dataProvider shouldAutoExpireProvider
 	 */
-	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace) {
-		$mockedConfig = $this->getMockedConfig($configValue);
-		$mockedTimeFactory = $this->getMockedTimeFactory(
-				\time()
-		);
+	public function testShouldAutoExpire($retentionObligation, $expectedResult) {
+		$mockedConfig = $this->getMockedConfig($retentionObligation);
+		$mockedTimeFactory = $this->getMockedTimeFactory(100*self::SECONDS_PER_DAY);
 
 		$expiration = new Expiration($mockedConfig, $mockedTimeFactory);
-		$this->assertAttributeEquals($expectedMinAge, 'minAge', $expiration);
-		$this->assertAttributeEquals($expectedMaxAge, 'maxAge', $expiration);
-		$this->assertAttributeEquals($expectedCanPurgeToSaveSpace, 'canPurgeToSaveSpace', $expiration);
+
+		$this->assertSame($expectedResult, $expiration->shouldAutoExpire());
+	}
+
+	public function getMaxAgeAsTimestampProvider() {
+		return [
+			['disabled', false],
+			['auto', false],
+			['zzzzzz', false],
+			['auto, auto', false],
+			['zzzzzz, zzzzzz', false],
+			['15, auto', false],
+			['auto, 15', (100 - 15) * self::SECONDS_PER_DAY],
+			['15, 25', (100 - 25) * self::SECONDS_PER_DAY],
+			['25, 15', (100 - 25) * self::SECONDS_PER_DAY],
+		];
+	}
+
+	/**
+	 * @dataProvider getMaxAgeAsTimestampPRovider
+	 */
+	public function testGetMaxAgeAsTimestamp($retentionObligation, $expectedResult) {
+		$mockedConfig = $this->getMockedConfig($retentionObligation);
+		$mockedTimeFactory = $this->getMockedTimeFactory(100*self::SECONDS_PER_DAY);
+
+		$expiration = new Expiration($mockedConfig, $mockedTimeFactory);
+
+		$this->assertSame($expectedResult, $expiration->getMaxAgeAsTimestamp());
 	}
 
 	/**

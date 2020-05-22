@@ -39,7 +39,7 @@ namespace OCP\Activity;
 interface IConsumer {
 	/**
 	 * @param IEvent $event
-	 * @return null
+	 * @return void
 	 * @since 6.0.0
 	 * @since 8.2.0 Replaced the parameters with an IEvent object
 	 */

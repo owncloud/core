@@ -5,13 +5,13 @@ Feature: Renaming files inside a folder with problematic name
   So that I can recognize my file easily
 
   Background:
-    Given user "user1" has been created with default attributes and without skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has logged in using the webUI
 
   Scenario Outline: Rename the existing file inside a problematic folder
-    Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And user "user1" has created folder "<folder>"
-    And user "user1" has moved file "/randomfile.txt" to "/<folder>/randomfile.txt"
+    Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "Alice" has created folder "<folder>"
+    And user "Alice" has moved file "/randomfile.txt" to "/<folder>/randomfile.txt"
     And the user reloads the current page of the webUI
     When the user opens folder "<folder>" using the webUI
     And the user renames file "randomfile.txt" to "???.txt" using the webUI

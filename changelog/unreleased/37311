@@ -1,0 +1,8 @@
+Bugfix: Rewrite code to fix some notices under PHP 7.4
+
+Fixed "Trying to access array offset on value of type" notices in
+OC\Files\Storage\DAV and OCA\FederatedFileSharing\FederatedShareProvider
+under PHP 7.4.
+
+https://github.com/owncloud/core/pull/37311
+https://github.com/owncloud/core/issues/37303

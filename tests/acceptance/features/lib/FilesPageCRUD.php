@@ -194,7 +194,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		if (\is_array($toFileName)) {
-			$toFileName = \implode($toFileName);
+			$toFileName = \implode('', $toFileName);
 		}
 
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
@@ -412,7 +412,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {
 			if (\is_array($name)) {
-				$name = \implode($name);
+				$name = \implode('', $name);
 			}
 			$message = "INFORMATION: retried to delete file '$name' $counter times";
 			echo $message;

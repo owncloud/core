@@ -25,6 +25,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\SharingHelper;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -159,7 +160,8 @@ class FederationContext implements Context {
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
 			'POST',
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
 			null
@@ -203,6 +205,24 @@ class FederationContext implements Context {
 	}
 
 	/**
+	 * @Then user :user should not have any pending federated cloud share
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userShouldHaveNoLastPendingFederatedCloudShare($user) {
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		$responseXml = $this->featureContext->getResponseXml();
+		$xmlPart = $responseXml->xpath("//data/element[last()]/id");
+		Assert::assertTrue(
+			!\is_array($xmlPart) || (\count($xmlPart) === 0),
+			__METHOD__
+			. " No pending federated cloud shares were expected, but got unexpectedly."
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" retrieves the information of the last pending federated cloud share using the sharing API$/
 	 *
 	 * @param string $user
@@ -232,7 +252,8 @@ class FederationContext implements Context {
 	public function userGetsTheListOfPendingFederatedCloudShares($user) {
 		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
 		$this->featureContext->asUser($user);
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
 			'GET',
 			$url,
 			null
@@ -294,8 +315,8 @@ class FederationContext implements Context {
 	 */
 	public function userRequestsSharedSecretUsingTheFederationApi($user) {
 		$url = '/apps/federation/api/v1/request-shared-secret';
-		$this->featureContext->asUser($user);
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
 			'POST',
 			$url,
 			null

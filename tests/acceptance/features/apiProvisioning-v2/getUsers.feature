@@ -23,9 +23,9 @@ Feature: get users
       | username         |
       | brand-new-user   |
       | another-new-user |
-    And group "new-group" has been created
-    And user "brand-new-user" has been added to group "new-group"
-    And user "brand-new-user" has been made a subadmin of group "new-group"
+    And group "brand-new-group" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     When user "brand-new-user" gets the list of all users using the provisioning API
     Then the users returned by the API should be
       | brand-new-user |
@@ -35,10 +35,10 @@ Feature: get users
   @issue-31276
   Scenario: normal user tries to get other users
     Given these users have been created with default attributes and skeleton files:
-      | username   |
-      | normaluser |
-      | newuser    |
-    When user "normaluser" gets the list of all users using the provisioning API
+      | username         |
+      | brand-new-user   |
+      | another-new-user |
+    When user "brand-new-user" gets the list of all users using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"

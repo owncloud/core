@@ -27,7 +27,6 @@ use Guzzle\Http\Exception\BadResponseException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
@@ -304,6 +303,8 @@ trait WebDav {
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
 	 * @param string|null $password
+	 * @param array $urlParameter
+	 * @param string $doDavRequestAsUser
 	 *
 	 * @return ResponseInterface
 	 */
@@ -316,7 +317,9 @@ trait WebDav {
 		$type = "files",
 		$davPathVersion = null,
 		$stream = false,
-		$password = null
+		$password = null,
+		$urlParameter = [],
+		$doDavRequestAsUser = null
 	) {
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
@@ -333,7 +336,28 @@ trait WebDav {
 			$this->getBaseUrl(),
 			$user, $password, $method,
 			$path, $headers, $body, $davPathVersion,
-			$type, null, "basic", $stream, $this->httpRequestTimeout
+			$type, null, "basic", $stream, $this->httpRequestTimeout, null, $urlParameter, $doDavRequestAsUser
+		);
+	}
+
+	/**
+	 * @param $user
+	 * @param $path
+	 * @param $doDavRequestAsUser
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return ResponseInterface
+	 */
+	public function downloadPreviews($user, $path, $doDavRequestAsUser, $width, $height) {
+		$urlParameter = [
+			'x' => $width,
+			'y' => $height,
+			'forceIcon' => '0',
+			'preview' => '1'
+		];
+		$this->response = $this->makeDavRequest(
+			$user, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $doDavRequestAsUser
 		);
 	}
 
@@ -1153,7 +1177,6 @@ trait WebDav {
 	 */
 	public function theSizeOfTheFileShouldBe($size) {
 		$responseXml = HttpRequestHelper::getResponseXml($this->response);
-		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
 		$actualSize = (string) $xmlPart[0];
 		Assert::assertEquals(
@@ -1275,18 +1298,12 @@ trait WebDav {
 			$this->getPasswordForUser($user), 'GET', $path,
 			[], null, 2, $type
 		);
-		$actualCode = $response->getStatusCode();
-		$message = "$entry '$path' expected to not exist " .
-				   "(status code {$actualCode}, expected ";
 
-		if (OcisHelper::isTestingOnOcis()) {
-			//OCIS currently shows error 500 when accessing a not existing file
-			//https://github.com/owncloud/ocis-reva/issues/13
-			Assert::assertEquals(500, $actualCode, $message . "500)");
-		} else {
-			$message .= "401 - 404)";
-			Assert::assertGreaterThanOrEqual(401, $actualCode, $message);
-			Assert::assertLessThanOrEqual(404, $actualCode, $message);
+		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
+			throw new \Exception(
+				"$entry '$path' expected to not exist " .
+				"(status code {$response->getStatusCode()}, expected 401 - 404)"
+			);
 		}
 
 		return $response;
@@ -1399,7 +1416,7 @@ trait WebDav {
 		$user, $elements, $expectedToBeListed = true
 	) {
 		$this->verifyTableNodeColumnsCount($elements, 1);
-		$responseXmlObject = $this->listFolder($user, "/", 5);
+		$responseXmlObject = $this->listFolder($user, "/", "infinity");
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
@@ -2933,6 +2950,53 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user downloads the preview of :path with width :width and height :height using the WebDAV API
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function downloadPreviewOfFiles($user, $path, $width, $height) {
+		$this->downloadPreviews(
+			$user, $path, null, $width, $height
+		);
+	}
+
+	/**
+	 * @When user :user1 downloads the preview of :path of :user2 with width :width and height :height using the WebDAV API
+	 *
+	 * @param $user1
+	 * @param $path
+	 * @param $doDavRequestAsUser
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function downloadPreviewOfOtherUser($user1, $path, $doDavRequestAsUser, $width, $height) {
+		$this->downloadPreviews(
+			$user1, $path, $doDavRequestAsUser, $width, $height
+		);
+	}
+
+	/**
+	 * @Then the downloaded image should be :width pixels wide and :height pixels high
+	 *
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function imageDimensionsShouldBe($width, $height) {
+		$size = \getimagesizefromstring($this->response->getBody()->getContents());
+		Assert::assertNotFalse($size, "could not get size of image");
+		Assert::assertEquals($width, $size[0], "width not as expected");
+		Assert::assertEquals($height, $size[1], "height not as expected");
+	}
+	/**
 	 * @param string $user
 	 * @param string $path
 	 *
@@ -3126,6 +3190,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string|null $user
+	 *
+	 * @return array
+	 */
+	public function findEntryFromReportResponse($user) {
+		$responseXmlObj = $this->getResponseXmlObject();
+		$responseResources = [];
+		$hrefs = $responseXmlObj->xpath('//d:href');
+		foreach ($hrefs as $href) {
+			$hrefParts = \explode("/", $href[0]);
+			if (\in_array($user, $hrefParts)) {
+				$entry = \urldecode(\end($hrefParts));
+				\array_push($responseResources, $entry);
+			} else {
+				throw new Error("Expected user: $hrefParts[5] but found: $user");
+			}
+		}
+		return $responseResources;
+	}
+
+	/**
 	 * parses a PROPFIND response from $this->response into xml
 	 * and returns found search results if found else returns false
 	 *
@@ -3154,7 +3239,7 @@ trait WebDav {
 		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 
 		// topWebDavPath should be something like /remote.php/webdav/ or
-		// /remote.php/dav/files/user0/
+		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];

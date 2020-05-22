@@ -61,7 +61,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	/**
 	 * @return string
 	 */
-	private function getLoginSuccessPageTitle() {
+	private function getExpectedLoginSuccessPageTitle() {
 		// When the login succeeds, we end up on the Files page
 		return "Files - " . $this->featureContext->getProductNameFromStatus();
 	}
@@ -72,18 +72,16 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function webUILoginShouldHaveBeenSuccessful() {
-		$actualTitle = $this->getLoginSuccessPageTitle();
-		$expectedTitle = 'Files - ownCloud';
 		Assert::assertEquals(
-			$expectedTitle,
-			$actualTitle
+			$this->getExpectedLoginSuccessPageTitle(),
+			$this->filesPage->getPageTitle()
 		);
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getLoginFailedPageTitle() {
+	private function getExpectedLoginFailedPageTitle() {
 		// When the login fails, we end up at a page with a title that is the
 		// themed product name, e.g. "ownCloud"
 		return $this->featureContext->getProductNameFromStatus();
@@ -93,11 +91,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function webUILoginShouldHaveBeenUnsuccessful() {
-		$actualTitle = $this->getLoginFailedPageTitle();
-		$expectedTitle = 'ownCloud';
 		Assert::assertEquals(
-			$expectedTitle,
-			$actualTitle
+			$this->getExpectedLoginFailedPageTitle(),
+			$this->loginPage->getPageTitle()
 		);
 	}
 
@@ -460,14 +456,14 @@ class WebUILoginContext extends RawMinkContext implements Context {
 				$username, $password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
-				$this->getLoginSuccessPageTitle()
+				$this->getExpectedLoginSuccessPageTitle()
 			);
 		} else {
 			$this->userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
 				$username, $password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
-				$this->getLoginFailedPageTitle()
+				$this->getExpectedLoginFailedPageTitle()
 			);
 		}
 	}
@@ -610,7 +606,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			"Couldn't find password reset link in the email"
 		);
 		// The link has a form like:
-		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/Brian
 		// pop off the last part and replace it with the invalid username
 		$linkParts = \explode('/', $link);
 		\array_pop($linkParts);
@@ -635,7 +631,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			"Couldn't find password reset link in the email"
 		);
 		// The link has a form like:
-		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/Brian
 		$linkParts = \explode('/', $link);
 		$username = \array_pop($linkParts);
 		$goodToken = \array_pop($linkParts);

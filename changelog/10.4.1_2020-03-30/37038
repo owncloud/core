@@ -1,0 +1,9 @@
+Bugfix: Initialize the user before the transfer command
+
+Trying to transfer the ownership of files to a user who hadn't logged in was causing problems
+because the FS of such user wasn't initialized and it wasn't possible to move the files there.
+The command appeared to work, but the files weren't moved.
+
+Now such user has the FS initialized so the transfer can be completed normally.
+
+https://github.com/owncloud/core/pull/37038

@@ -146,7 +146,7 @@ class FederatedShareProvider implements IShareProvider {
 		$itemType = $share->getNodeType();
 		$permissions = $share->getPermissions();
 		$sharedBy = $share->getSharedBy();
-		
+
 		/*
 		 * Check if file is not already shared with the remote user
 		 */
@@ -240,7 +240,7 @@ class FederatedShareProvider implements IShareProvider {
 			$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
 			$sharedWith = $share->getSharedWith();
 			$shareWithAddress = new Address($sharedWith);
-			$status = $this->notifications->sendRemoteShare(
+			$result = $this->notifications->sendRemoteShare(
 				$shareWithAddress,
 				$ownerAddress,
 				$sharedByAddress,
@@ -252,8 +252,16 @@ class FederatedShareProvider implements IShareProvider {
 			/* Check for failure or null return from sending and pick up an error message
 			 * if there is one coming from the remote server, otherwise use a generic one.
 			 */
-			if (!$status || $status['ocs']['meta']['status'] === 'failure') {
-				$msg = $status['ocs']['meta']['message'];
+			if (\is_bool($result)) {
+				$status = $result;
+			} elseif (isset($result['ocs']['meta']['status'])) {
+				$status = $result['ocs']['meta']['status'];
+			} else {
+				$status = false;
+			}
+
+			if ($status === false) {
+				$msg = $result['ocs']['meta']['message'] ?? false;
 				if (!$msg) {
 					$message_t = $this->l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
 						[$share->getNode()->getName(), $share->getSharedWith()]);
@@ -631,10 +639,10 @@ class FederatedShareProvider implements IShareProvider {
 			}
 			$cursor->closeCursor();
 		}
-		
+
 		return $shares;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */
@@ -701,7 +709,7 @@ class FederatedShareProvider implements IShareProvider {
 			->from($this->shareTable)
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
-		
+
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
 		$cursor->closeCursor();
@@ -949,6 +957,16 @@ class FederatedShareProvider implements IShareProvider {
 	public function userDeletedFromGroup($uid, $gid) {
 		// We don't handle groups here
 		return;
+	}
+
+	/**
+	 * check if scan of federated shares from other ownCloud instances should be performed
+	 *
+	 * @return bool
+	 */
+	public function isCronjobScanExternalEnabled() {
+		$result = $this->config->getAppValue('files_sharing', 'cronjob_scan_external_enabled', 'no');
+		return ($result === 'yes') ? true : false;
 	}
 
 	/**

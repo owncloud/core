@@ -150,7 +150,7 @@ class TrashbinContext implements Context {
 			$asUser,
 			$password,
 			"/trash-bin/$user/$path",
-			1,
+			"infinity",
 			[
 				'oc:trashbin-original-filename',
 				'oc:trashbin-original-location',
@@ -204,11 +204,6 @@ class TrashbinContext implements Context {
 		);
 		$this->featureContext->setResponse($response);
 		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
-		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
-		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
-		$responseXmlObject->registerXPathNamespace(
-			'ocs', 'http://open-collaboration-services.org/ns'
-		);
 		$this->featureContext->setResponseXmlObject($responseXmlObject);
 	}
 
@@ -357,8 +352,9 @@ class TrashbinContext implements Context {
 	 */
 	private function convertTrashbinHref($href) {
 		$trashItemHRef = \trim($href, '/');
+		$trashItemHRef = \strstr($trashItemHRef, '/trash-bin');
 		$parts = \explode('/', $trashItemHRef);
-		return '/' . \join('/', \array_slice($parts, -3));
+		return '/' . \join('/', $parts);
 	}
 
 	/**
@@ -410,7 +406,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in the trashbin$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -463,7 +459,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * Function to check if an element is in trashbin
+	 * Function to check if an element is in the trashbin
 	 *
 	 * @param string $user
 	 * @param string $originalPath
@@ -631,7 +627,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should exist in the trashbin$/
 	 *
 	 * @param string $user
 	 * @param string $originalPath
@@ -648,7 +644,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should not exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should not exist in the trashbin/
 	 *
 	 * @param string $user
 	 * @param string $originalPath

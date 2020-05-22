@@ -132,6 +132,10 @@ class WebDavHelper {
 			}
 			$propertyBody .= "<$namespacePrefix:$property/>";
 		}
+		$folderDepth = (string) $folderDepth;
+		if ($folderDepth !== '0' && $folderDepth !== '1' && $folderDepth !== 'infinity') {
+			throw new InvalidArgumentException('Invalid depth value ' . $folderDepth);
+		}
 		$headers = ['Depth' => $folderDepth];
 		$body = "<?xml version=\"1.0\"?>
 				<d:propfind
@@ -146,55 +150,6 @@ class WebDavHelper {
 			$davPathVersionToUse, $type
 		);
 	}
-
-	/**
-	 * sends HTTP request PROPFIND method with multiple properties
-	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $path
-	 * @param array $properties
-	 * @param string $namespaceString
-	 * @param int $folderDepth
-	 * @param string $type
-	 * @param int $davPathVersionToUse
-	 *
-	 * @return ResponseInterface
-	 */
-	public static function propfindWithMultipleProps(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$properties,
-		$namespaceString = "oc='http://owncloud.org/ns'",
-		$folderDepth = 0,
-		$type = "files",
-		$davPathVersionToUse = 2
-	) {
-		$propertyBody = "";
-		foreach ($properties as $property) {
-			[$namespacePrefix, $namespace, $property] = self::getPropertyWithNamespaceInfo(
-				$namespaceString,
-				$property
-			);
-			$propertyBody .= "\n\t\t<$namespacePrefix:$property/>";
-		}
-		$body = "<?xml version=\"1.0\"?>
-				<d:propfind
-				   xmlns:d=\"DAV:\"
-				   xmlns:oc=\"http://owncloud.org/ns\"
-				   xmlns:ocs=\"http://open-collaboration-services.org/ns\">
-				    <d:prop>$propertyBody
-				    </d:prop>
-				</d:propfind>";
-		return self::makeDavRequest(
-			$baseUrl, $user, $password, "PROPFIND", $path, null, $body,
-			$davPathVersionToUse, $type
-		);
-	}
-
 	/**
 	 *
 	 * @param string $baseUrl
@@ -301,8 +256,8 @@ class WebDavHelper {
 	) {
 		$propertyBody = "";
 		foreach ($propertiesArray as $propertyArray) {
-			$property = $propertyArray["property"];
-			$value = $propertyArray["value"];
+			$property = $propertyArray["propertyName"];
+			$value = $propertyArray["propertyValue"];
 			[$namespacePrefix, $namespace, $property] = self::getPropertyWithNamespaceInfo(
 				$namespaceString,
 				$property
@@ -364,8 +319,6 @@ class WebDavHelper {
 			$folderDepth, $type, $davPathVersionToUse
 		);
 		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
-		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
-		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
 		$responseXmlObject->registerXPathNamespace(
 			'ocs', 'http://open-collaboration-services.org/ns'
 		);
@@ -392,6 +345,8 @@ class WebDavHelper {
 	 *                     than download it all up-front.
 	 * @param int $timeout
 	 * @param Client|null $client
+	 * @param array $urlParameter to concatenate with path
+	 * @param string $doDavRequestAsUser run the DAV as this user, if null its same as $user
 	 *
 	 * @return ResponseInterface
 	 */
@@ -409,13 +364,24 @@ class WebDavHelper {
 		$authType = "basic",
 		$stream = false,
 		$timeout = 0,
-		$client = null
+		$client = null,
+		$urlParameter = [],
+		$doDavRequestAsUser = null
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
-		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
+		if ($doDavRequestAsUser === null) {
+			$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
+		} else {
+			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type);
+		}
 		//replace %, # and ? and in the path, Guzzle will not encode them
-		$urlSpecialChar = [['%', '#', '?'],['%25', '%23', '%3F']];
+		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
 		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+
+		if (!empty($urlParameter)) {
+			$urlParameter = \http_build_query($urlParameter, '', '&');
+			$path .= '?' . $urlParameter;
+		}
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 
 		if ($authType === 'bearer') {
@@ -466,6 +432,9 @@ class WebDavHelper {
 		}
 		if ($type === "archive") {
 			return "remote.php/dav/archive/$user/files";
+		}
+		if ($type === "customgroups") {
+			return "remote.php/dav/";
 		}
 		if ($davPathVersionToUse === 1) {
 			$path = "remote.php/webdav/";

@@ -246,7 +246,7 @@ class Helper extends \OC\Share\Constants {
 	 */
 	public static function splitUserRemote($id) {
 		if (\strpos($id, '@') === false) {
-			$l = \OC::$server->getL10N('core');
+			$l = \OC::$server->getL10N('lib');
 			$hint = $l->t('Invalid Federated Cloud ID');
 			throw new HintException('Invalid Federated Cloud ID', $hint);
 		}
@@ -282,7 +282,7 @@ class Helper extends \OC\Share\Constants {
 			}
 		}
 
-		$l = \OC::$server->getL10N('core');
+		$l = \OC::$server->getL10N('lib');
 		$hint = $l->t('Invalid Federated Cloud ID');
 		throw new HintException('Invalid Fededrated Cloud ID', $hint);
 	}

@@ -367,7 +367,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$style,
 			'style attribute of details thumbnail is null'
 		);
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$this->getCurrentFolderFilePath(),
 			$style,
 			__METHOD__
@@ -1326,7 +1326,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 		if (\is_array($relativePath)) {
 			// Store the single full concatenated file or folder name.
-			$breadCrumbs[] = \implode($relativePath);
+			$breadCrumbs[] = \implode('', $relativePath);
 			// The passed-in path is itself an array of pieces of a single file
 			// or folder name. That is done when the file or folder name contains
 			// both single and double quotes. The pieces of the file or folder
@@ -1522,7 +1522,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		if (\is_array($name)) {
-			$nameText = \implode($name);
+			$nameText = \implode('', $name);
 		} else {
 			$nameText = $name;
 		}
@@ -1554,10 +1554,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			);
 		} else {
 			if (\is_array($name)) {
-				$name = \implode($name);
+				$name = \implode('', $name);
 			}
 			if ($fileRow === null) {
-				Assert::assertContains(
+				Assert::assertStringContainsString(
 					"could not find file with the name '$name'",
 					$exceptionMessage,
 					"found $fileLocationText when it should not be listed"
@@ -1731,7 +1731,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		try {
 			$this->deleteTheFileUsingTheWebUI($name, false);
 		} catch (ElementNotFoundException $e) {
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"could not find button 'Delete' in action Menu",
 				$e->getMessage(),
 				__METHOD__

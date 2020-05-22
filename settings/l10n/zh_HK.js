@@ -22,7 +22,6 @@ OC.L10N.register(
     "undo" : "復原",
     "never" : "永不",
     "enabled" : "已啟用",
-    "Forum" : "討論區",
     "Language" : "語言",
     "Sharing" : "分享",
     "days" : "天",

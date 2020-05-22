@@ -402,7 +402,7 @@ OC.FileUpload.prototype = {
 			if (response.errorThrown === 'timeout') {
 				return {
 					status: 0,
-					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
+					message: t('files', 'Upload timeout for file "{file}"', {file: this.getFileName()})
 				};
 			}
 
@@ -430,17 +430,17 @@ OC.FileUpload.prototype = {
 			}
 		} else if (response.result) {
 			response = response.result;
-		} else {
+		} else if (response.jqXHR) {
 			if (response.jqXHR.status === 0 && response.jqXHR.statusText === 'error') {
 				// timeout (IE11)
 				return {
 					status: 0,
-					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
+					message: t('files', 'Upload timeout for file "{file}"', {file: this.getFileName()})
 				};
 			}
 			return {
 				status: response.jqXHR.status,
-				message: t('core', 'Unknown error "{error}" uploading file "{file}"', {error: response.jqXHR.statusText, file: this.getFileName()})
+				message: t('files', 'Unknown error "{error}" uploading file "{file}"', {error: response.jqXHR.statusText, file: this.getFileName()})
 			};
 		}
 		return response;
@@ -893,7 +893,7 @@ OC.Uploader.prototype = _.extend({
 		} else {
 			if (progress >= total) {
 				// change message if we stalled at 100%
-				this.$uploadprogressbar.find('.label .desktop').text(t('core', 'Processing files...'));
+				this.$uploadprogressbar.find('.label .desktop').text(t('files', 'Processing files...'));
 			}
 			if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
 				// TODO: move to "fileuploadprogress" event instead and use data.uploadedBytes
@@ -1201,6 +1201,10 @@ OC.Uploader.prototype = _.extend({
 					} else if (status === 412) {
 						// file already exists
 						self.showConflict(upload);
+					} else if (status === 403) {
+						// not enough space
+						const message = t('files', 'You don’t have permission to upload or create files here');
+						OC.Notification.show(message, {type: 'error'});
 					} else if (status === 404) {
 						// target folder does not exist any more
 						var dir = upload.getFullPath();
@@ -1269,12 +1273,11 @@ OC.Uploader.prototype = _.extend({
 
 			if (this._supportAjaxUploadWithProgress()) {
 				//remaining time
-				var lastUpdate = new Date().getMilliseconds();
-				var lastSize = 0;
 				var bufferSize = 20;
 				var buffer = [];
 				var bufferIndex = 0;
 				var bufferTotal = 0;
+				var filledBufferSize = 0;
 				for(var i = 0; i < bufferSize;i++){
 					buffer[i] = 0;
 				}
@@ -1308,19 +1311,20 @@ OC.Uploader.prototype = _.extend({
 				fileupload.on('fileuploadprogressall', function(e, data) {
 					self.log('progress handle fileuploadprogressall', e, data);
 					var progress = (data.loaded / data.total) * 100;
-					var thisUpdate = new Date().getMilliseconds();
-					var diffUpdate = (thisUpdate - lastUpdate)/1000; // eg. 2s
-					lastUpdate = thisUpdate;
-					var diffSize = data.loaded - lastSize;
-					lastSize = data.loaded;
-					diffSize = diffSize / diffUpdate; // apply timing factor, eg. 1mb/2s = 0.5mb/s
-					var remainingSeconds = ((data.total - data.loaded) / diffSize);
+					var remainingBits = (data.total - data.loaded) * 8;
+					var remainingSeconds = remainingBits / data.bitrate;
+
+					//Take the average remaining seconds of the last bufferSize events
+					//to prevent fluctuation and provide a smooth experience
 					if (isFinite(remainingSeconds) && remainingSeconds >= 0) {
 						bufferTotal = bufferTotal - (buffer[bufferIndex]) + remainingSeconds;
-						buffer[bufferIndex] = remainingSeconds; //buffer to make it smoother
+						buffer[bufferIndex] = remainingSeconds;
 						bufferIndex = (bufferIndex + 1) % bufferSize;
+						if (filledBufferSize < bufferSize) {
+							filledBufferSize++;
+						}
 					}
-					var smoothRemainingSeconds = (bufferTotal / bufferSize); //seconds
+					var smoothRemainingSeconds = (bufferTotal / filledBufferSize);
 					var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
 					self.$uploadprogressbar.attr('data-loaded', data.loaded);
 					self.$uploadprogressbar.attr('data-total', data.total);

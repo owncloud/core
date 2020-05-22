@@ -22,10 +22,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\Files_Sharing\Tests\API;
+namespace OCA\Files_Sharing\Tests\Controller;
 
 use OC\OCS\Result;
-use OC\Share\Constants;
 use OC\Share20\Manager;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
@@ -54,8 +53,6 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IShare;
 use OCP\Share\IAttributes as IShareAttributes;
 use OCP\Share\IManager;
-use OCP\Files\File;
-use OCP\Files\Storage;
 
 /**
  * Class Share20OcsControllerTest
@@ -160,10 +157,6 @@ class Share20OcsControllerTest extends TestCase {
 			$this->eventDispatcher,
 			$this->sharingBlacklist
 		);
-	}
-
-	public function tearDown(): void {
-		parent::tearDown();
 	}
 
 	/**
@@ -595,9 +588,9 @@ class Share20OcsControllerTest extends TestCase {
 		$group->method('getGID')->willReturn('groupId');
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['userId', $user],
-			['initiatorId', $initiator],
-			['ownerId', $owner],
+			['userId', false, $user],
+			['initiatorId', false, $initiator],
+			['ownerId', false, $owner],
 		]));
 		$this->groupManager->method('get')->will($this->returnValueMap([
 			['group', $group],
@@ -765,7 +758,19 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
-	public function testCreateShareUserNoValidShareWith() {
+	public function InvalidShareWithProvider() {
+		return [
+			['invaliduser'],
+			[123456],
+			[null]
+		];
+	}
+
+	/**
+	 * @dataProvider InvalidShareWithProvider
+	 * @param mixed $shareWith
+	 */
+	public function testCreateShareUserNoValidShareWith($shareWith) {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
 
@@ -775,7 +780,7 @@ class Share20OcsControllerTest extends TestCase {
 				['path', null, 'valid-path'],
 				['permissions', null, \OCP\Constants::PERMISSION_ALL],
 				['shareType', $this->any(), Share::SHARE_TYPE_USER],
-				['shareWith', $this->any(), 'invalidUser'],
+				['shareWith', $this->any(), $shareWith],
 			]));
 
 		$userFolder = $this->createMock('\OCP\Files\Folder');
@@ -869,7 +874,11 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
-	public function testCreateShareGroupNoValidShareWith() {
+	/**
+	 * @dataProvider InvalidShareWithProvider
+	 * @param mixed $shareWith
+	 */
+	public function testCreateShareGroupNoValidShareWith($shareWith) {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
 		$this->shareManager->method('createShare')->will($this->returnArgument(0));
@@ -879,8 +888,8 @@ class Share20OcsControllerTest extends TestCase {
 				->will($this->returnValueMap([
 						['path', null, 'valid-path'],
 						['permissions', null, \OCP\Constants::PERMISSION_ALL],
-						['shareType', $this->any(), Share::SHARE_TYPE_GROUP],
-						['shareWith', $this->any(), 'invalidGroup'],
+						['shareType', '-1', Share::SHARE_TYPE_GROUP],
+						['shareWith', null, $shareWith],
 				]));
 
 		$userFolder = $this->createMock('\OCP\Files\Folder');
@@ -900,7 +909,11 @@ class Share20OcsControllerTest extends TestCase {
 				->with('valid-path')
 				->willReturn($path);
 
-		$expected = new Result(null, 404, 'Please specify a valid user');
+		$this->shareManager->expects($this->once())
+			->method('allowGroupSharing')
+			->willReturn(true);
+
+		$expected = new Result(null, 404, 'Please specify a valid group');
 
 		$path->expects($this->once())
 			->method('lock')
@@ -1401,6 +1414,52 @@ class Share20OcsControllerTest extends TestCase {
 
 		$expected = new Result(null);
 		$result = $ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	/**
+	 * @dataProvider InvalidShareWithProvider
+	 * @param mixed $shareWith
+	 */
+	public function testCreateShareRemoteNoValidShareWith($shareWith) {
+		$share = $this->newShare();
+		$this->shareManager->method('newShare')->willReturn($share);
+		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn(true);
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, 'valid-path'],
+				['permissions', null, \OCP\Constants::PERMISSION_ALL],
+				['shareType', '-1', Share::SHARE_TYPE_REMOTE],
+				['shareWith', $this->any(), $shareWith]
+			]));
+
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+
+		$path = $this->createMock('\OCP\Files\File');
+		$storage = $this->createMock('OCP\Files\Storage');
+		$storage->method('instanceOfStorage')
+			->with('OCA\Files_Sharing\External\Storage')
+			->willReturn(false);
+		$path->method('getStorage')->willReturn($storage);
+		$userFolder->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$path->expects($this->once())
+			->method('lock')
+			->with(ILockingProvider::LOCK_SHARED);
+
+		$expected = new Result(null, 404, 'shareWith parameter must be a string');
+		$result = $this->ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
@@ -2352,9 +2411,9 @@ class Share20OcsControllerTest extends TestCase {
 				'mail_send' => 0,
 				'mimetype' => 'myMimeType',
 			], $share, [
-				['owner', $owner],
-				['initiator', $initiator],
-				['recipient', $recipient],
+				['owner', false, $owner],
+				['initiator', false, $initiator],
+				['recipient', false, $recipient],
 			], false
 		];
 
@@ -2733,9 +2792,9 @@ class Share20OcsControllerTest extends TestCase {
 		$recipient->method('getEMailAddress')->willReturn('email@example.com');
 
 		$this->userManager->method('get')->will($this->returnValueMap([
-			['initiator', $initiator],
-			['recipient', $recipient],
-			['owner', $owner],
+			['initiator', false, $initiator],
+			['recipient', false, $recipient],
+			['owner', false, $owner],
 		]));
 
 		$ocs = new Share20OcsController(

@@ -25,6 +25,20 @@ abstract class TestBase extends \Test\TestCase {
 	 */
 	abstract protected function getNew();
 
+	protected function tearDown(): void {
+		if (\count($this->instance->getFiles()) === 0) {
+			// make sure to leave the archive with something in it, otherwise PHP ZipArchive cleanup emits:
+			// PHP Warning: Unknown: Cannot destroy the zip context: Can't remove file: No such file or directory in Unknown on line 0
+			// which can cause the unit test run to finish with error status
+			$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
+			$this->instance->addFile('lorem.txt', $textFile);
+		}
+		parent::tearDown();
+	}
+	protected function getArchiveTestDataDir() {
+		return \OC::$SERVERROOT . '/tests/data/archive';
+	}
+
 	public function testGetFiles() {
 		$this->instance=$this->getExisting();
 		$allFiles=$this->instance->getFiles();
@@ -51,10 +65,24 @@ abstract class TestBase extends \Test\TestCase {
 		}
 	}
 
+	public function testGetFilesFromEmptyArchive() {
+		$this->instance=$this->getNew();
+		$allFiles=$this->instance->getFiles();
+		$this->assertCount(0, $allFiles, 'found ' . \count($allFiles) . ' files but expected no files');
+	}
+
+	public function testGetFilesFromEmptiedArchive() {
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
+		$this->instance=$this->getNew();
+		$this->instance->addFile('lorem.txt', $textFile);
+		$this->instance->remove('lorem.txt');
+		$allFiles=$this->instance->getFiles();
+		$this->assertCount(0, $allFiles, 'found ' . \count($allFiles) . ' files but expected no files');
+	}
+
 	public function testContent() {
 		$this->instance=$this->getExisting();
-		$dir=\OC::$SERVERROOT.'/tests/data';
-		$textFile=$dir.'/lorem.txt';
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->assertStringEqualsFile($textFile, $this->instance->getFile('lorem.txt'));
 
 		$tmpFile=\OCP\Files::tmpFile('.txt');
@@ -63,8 +91,7 @@ abstract class TestBase extends \Test\TestCase {
 	}
 
 	public function testWrite() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
-		$textFile=$dir.'/lorem.txt';
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->instance=$this->getNew();
 		$this->assertCount(0, $this->instance->getFiles());
 		$this->instance->addFile('lorem.txt', $textFile);
@@ -78,24 +105,24 @@ abstract class TestBase extends \Test\TestCase {
 	}
 
 	public function testReadStream() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->instance=$this->getExisting();
 		$fh=$this->instance->getStream('lorem.txt', 'r');
 		$this->assertTrue((bool)$fh);
 		$content=\fread($fh, $this->instance->filesize('lorem.txt'));
 		\fclose($fh);
-		$this->assertStringEqualsFile($dir.'/lorem.txt', $content);
+		$this->assertStringEqualsFile($textFile, $content);
 	}
 	public function testWriteStream() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->instance=$this->getNew();
 		$fh=$this->instance->getStream('lorem.txt', 'w');
-		$source=\fopen($dir.'/lorem.txt', 'r');
+		$source=\fopen($textFile, 'r');
 		\OCP\Files::streamCopy($source, $fh);
 		\fclose($source);
 		\fclose($fh);
 		$this->assertTrue($this->instance->fileExists('lorem.txt'));
-		$this->assertStringEqualsFile($dir.'/lorem.txt', $this->instance->getFile('lorem.txt'));
+		$this->assertStringEqualsFile($textFile, $this->instance->getFile('lorem.txt'));
 	}
 	public function testFolder() {
 		$this->instance=$this->getNew();
@@ -109,19 +136,18 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertFalse($this->instance->fileExists('/test/'));
 	}
 	public function testExtract() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->instance=$this->getExisting();
 		$tmpDir=\OCP\Files::tmpFolder();
 		$this->instance->extract($tmpDir);
 		$this->assertFileExists($tmpDir.'lorem.txt');
 		$this->assertFileExists($tmpDir.'dir/lorem.txt');
 		$this->assertFileExists($tmpDir.'logo-wide.png');
-		$this->assertFileEquals($dir.'/lorem.txt', $tmpDir.'lorem.txt');
+		$this->assertFileEquals($textFile, $tmpDir.'lorem.txt');
 		\OCP\Files::rmdirr($tmpDir);
 	}
 	public function testMoveRemove() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
-		$textFile=$dir.'/lorem.txt';
+		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->instance=$this->getNew();
 		$this->instance->addFile('lorem.txt', $textFile);
 		$this->assertFalse($this->instance->fileExists('target.txt'));
@@ -133,9 +159,8 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertFalse($this->instance->fileExists('target.txt'));
 	}
 	public function testRecursive() {
-		$dir=\OC::$SERVERROOT.'/tests/data';
 		$this->instance=$this->getNew();
-		$this->instance->addRecursive('/dir', $dir);
+		$this->instance->addRecursive('/dir', $this->getArchiveTestDataDir());
 		$this->assertTrue($this->instance->fileExists('/dir/lorem.txt'));
 		$this->assertTrue($this->instance->fileExists('/dir/data.zip'));
 		$this->assertTrue($this->instance->fileExists('/dir/data.tar.gz'));

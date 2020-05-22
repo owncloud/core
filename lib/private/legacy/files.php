@@ -155,8 +155,11 @@ class OC_Files {
 					$file = $dir . '/' . $file;
 					if (\OC\Files\Filesystem::is_file($file)) {
 						$fileSize = \OC\Files\Filesystem::filesize($file);
+						$fileOpts = [
+							'timestamp' => \OC\Files\Filesystem::filemtime($file),
+						];
 						$fh = \OC\Files\Filesystem::fopen($file, 'r');
-						$streamer->addFileFromStream($fh, \basename($file), $fileSize);
+						$streamer->addFileFromStream($fh, \basename($file), $fileSize, $fileOpts);
 						\fclose($fh);
 					} elseif (\OC\Files\Filesystem::is_dir($file)) {
 						$streamer->addDirRecursive($file);
@@ -174,14 +177,14 @@ class OC_Files {
 		} catch (\OCP\Lock\LockedException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
-			$l = \OC::$server->getL10N('core');
+			$l = \OC::$server->getL10N('lib');
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			\OC_Template::printErrorPage($l->t('File is currently busy, please try again later'), $hint);
 		} catch (\OCP\Files\ForbiddenException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
-			$l = \OC::$server->getL10N('core');
+			$l = \OC::$server->getL10N('lib');
 			\OC_Template::printErrorPage($l->t('Access to this resource or one of its sub-items has been denied.'), $ex->getMessage(), 403);
 		} catch (\OC\ForbiddenException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
@@ -189,12 +192,9 @@ class OC_Files {
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
-			$l = \OC::$server->getL10N('core');
+			$l = \OC::$server->getL10N('lib');
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
-			if ($event->hasArgument('message')) {
-				$hint .= ' ' . $event->getArgument('message');
-			}
 			\OC_Template::printErrorPage($l->t('File cannot be downloaded'), $hint);
 		}
 	}
@@ -260,7 +260,7 @@ class OC_Files {
 		$filename = $dir . '/' . $name;
 		OC_Util::obEnd();
 		$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
-		
+
 		$rangeArray = [];
 
 		if (isset($params['range']) && \substr($params['range'], 0, 6) === 'bytes=') {

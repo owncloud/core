@@ -38,7 +38,6 @@ OC.L10N.register(
     "add group" : "խումբ ավելացնել",
     "enabled" : "միացված",
     "Cheers!" : "Չը՛խկ",
-    "Forum" : "Ֆորում",
     "Language" : "Լեզու",
     "by %s" : "%s կողմից",
     "days" : "օր",

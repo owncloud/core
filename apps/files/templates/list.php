@@ -28,6 +28,7 @@
 	<div class="icon-folder"></div>
 	<h2><?php p($l->t('No files in here')); ?></h2>
 	<p class="uploadmessage hidden"><?php p($l->t('Upload some content or sync with your devices!')); ?></p>
+	<p class="nouploadmessage hidden"><?php p($l->t('You don’t have permission to upload or create files here')); ?></p>
 </div>
 
 <div class="nofilterresults emptycontent hidden">

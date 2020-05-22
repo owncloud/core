@@ -955,7 +955,6 @@ trait Sharing {
 					) . " 00:00:00";
 			}
 		}
-
 		$contentExpected = (string) $contentExpected;
 
 		if (\count($data->element) > 0) {
@@ -1529,16 +1528,18 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets the info of the last share in language "([^"]*)" using the sharing API$/
 	 * @When /^user "([^"]*)" gets the info of the last share using the sharing API$/
 	 *
 	 * @param string $user
+	 * @param string $language
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
+	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
 		$share_id = $this->getLastShareIdOf($user);
-		$this->getShareData($user, $share_id);
+		$this->getShareData($user, $share_id, $language);
 	}
 
 	/**
@@ -1605,13 +1606,18 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param int $share_id
+	 * @param string $language
 	 *
 	 * @return void
 	 */
-	public function getShareData($user, $share_id) {
+	public function getShareData($user, $share_id, $language=null) {
 		$url = $this->getSharesEndpointPath("/$share_id");
+		$headers = [];
+		if ($language !== null) {
+			$headers['Accept-Language'] = $language;
+		}
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, "GET", $url, null
+			$user, "GET", $url, null, null, $headers
 		);
 	}
 
@@ -1790,31 +1796,30 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the information for (user|group) "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" should include$/
+	 * @Then /^the information for user "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" should include$/
 	 *
-	 * @param string $userOrGroup
 	 * @param string $user
 	 * @param string $fileOrFolder
 	 * @param string $fileName
-	 * @param TableNode $body
+	 * @param TableNode $body should provide share_type
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theFieldsOfTheResponseForUserForResourceShouldInclude(
-		$userOrGroup, $user, $fileOrFolder, $fileName, TableNode $body
+		$user, $fileOrFolder, $fileName, TableNode $body
 	) {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$fileName = $fileName[0] === "/" ? $fileName : '/' . $fileName;
 		$data = $this->getAllSharesSharedWithUser($user);
+		Assert::assertNotEmpty($data, 'No shares found for ' . $user);
 
-		if (empty($data)) {
-			throw new Exception('No shares found for ' . $user);
-		}
+		$bodyRows = $body->getRowsHash();
+		Assert::assertArrayHasKey('share_type', $bodyRows, 'share_type is not provided');
 		$share_id = null;
 		foreach ($data as $share) {
 			if ($share['file_target'] === $fileName && $share['item_type'] === $fileOrFolder) {
-				if (($share['share_type'] === SharingHelper::getShareType($userOrGroup))
+				if (($share['share_type'] === SharingHelper::getShareType($bodyRows['share_type']))
 				) {
 					$share_id = $share['id'];
 				}
@@ -1823,7 +1828,6 @@ trait Sharing {
 
 		Assert::assertNotNull($share_id, "Could not find share id for " . $user);
 
-		$bodyRows = $body->getRowsHash();
 		if (\array_key_exists('expiration', $bodyRows) && $bodyRows['expiration'] !== '') {
 			$bodyRows['expiration'] = \date('d-m-Y', \strtotime($bodyRows['expiration']));
 		}
@@ -2029,12 +2033,22 @@ trait Sharing {
 			);
 		}
 
-		// check if attributes received from table is subset of actualAttributes
-		Assert::assertArraySubset(
-			$attributes,
-			$actualAttributesArray,
-			"The additional sharing attributes did not include the expected attributes. See the differences below."
-		);
+		// check if the expected attributes received from table match actualAttributes
+		foreach ($attributes as $row) {
+			$foundRow = false;
+			foreach ($actualAttributesArray as $item) {
+				if (($item['scope'] === $row['scope'])
+					&& ($item['key'] === $row['key'])
+					&& ($item['enabled'] === $row['enabled'])
+				) {
+					$foundRow = true;
+				}
+			}
+			Assert::assertTrue(
+				$foundRow,
+				"Could not find expected attribute with scope '" . $row['scope'] . "' and key '" . $row['key'] . "'"
+			);
+		}
 	}
 
 	/**
@@ -2143,7 +2157,7 @@ trait Sharing {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userRemovesAllSharesFromTheFileNamedzz($user, $fileName) {
+	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$this->removeAllSharesFromResource($user, $fileName);
 	}
 
@@ -2288,8 +2302,8 @@ trait Sharing {
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = $this->getSharesEndpointPath("/$share_id");
-		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
-			"DELETE", $url, null
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user, "DELETE", $url, null
 		);
 	}
 
@@ -2414,13 +2428,8 @@ trait Sharing {
 			$row['path'] = "/" . \trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
-					Assert::assertArraySubset(
-						$row,
-						$share,
-						"Expected '"
-						. \ implode(', ', $row)
-						. "' was not included in the share of the user. See the difference below"
-					);
+					Assert::assertArrayHasKey('path', $share);
+					Assert::assertEquals($row['path'], $share['path']);
 					$found = true;
 					break;
 				} catch (PHPUnit\Framework\ExpectationFailedException $e) {
@@ -2452,14 +2461,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the administrator adds group :group to the exclude group from sharing list using the occ command
+	 * @When the administrator adds group :group to the exclude groups from receiving shares list using the occ command
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function administratorAddsGroupToExcludeFromSharingList($group) {
+	public function administratorAddsGroupToExcludeFromReceivingSharesList($group) {
 		//get current groups
 		$occExitCode = $this->runOcc(
 			['config:app:get files_sharing blacklisted_receiver_groups']
@@ -2785,6 +2794,13 @@ trait Sharing {
 				'capabilitiesParameter' => 'public@@@expire_date@@@enforced',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_enforce_expire_date',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user@@@send_mail',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_mail_notification',
 				'testingState' => false
 			],
 			[

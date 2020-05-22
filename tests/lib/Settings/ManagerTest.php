@@ -22,6 +22,7 @@
 namespace Test;
 
 use OC\Settings\SettingsManager;
+use OCP\License\ILicenseManager;
 
 class SettingsManagerTest extends TestCase {
 
@@ -40,6 +41,7 @@ class SettingsManagerTest extends TestCase {
 	protected $dbconnection;
 	protected $certificateManager;
 	protected $factory;
+	protected $licenseManager;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -58,6 +60,7 @@ class SettingsManagerTest extends TestCase {
 		$this->certificateManager = $this->getMockBuilder('\OC\Security\CertificateManager')
 			->disableOriginalConstructor()->getMock();
 		$this->factory = $this->getMockBuilder('\OCP\L10N\IFactory')->getMock();
+		$this->licenseManager = $this->createMock(ILicenseManager::class);
 
 		$this->settingsManager = new SettingsManager(
 			$this->l,
@@ -71,6 +74,7 @@ class SettingsManagerTest extends TestCase {
 			$this->helper,
 			$this->lockingProvider,
 			$this->dbconnection,
+			$this->licenseManager,
 			$this->certificateManager,
 			$this->factory
 		);

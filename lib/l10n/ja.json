@@ -70,7 +70,6 @@
     "%s enter the database username and name." : "%s データベース名とデータベースのユーザー名を入力してください。",
     "%s enter the database username." : "%s のデータベースのユーザー名を入力してください。",
     "%s enter the database name." : "%s のデータベース名を入力してください。",
-    "%s you may not use dots in the database name" : "%s ではデータベース名にドットを利用できないかもしれません。",
     "Oracle connection could not be established" : "Oracleへの接続が確立できませんでした。",
     "Oracle username and/or password not valid" : "Oracleのユーザー名もしくはパスワードは有効ではありません",
     "DB Error: \"%s\"" : "DBエラー: \"%s\"",

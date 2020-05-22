@@ -68,7 +68,6 @@
     "%s enter the database username and name." : "%s въведете потребителско име и името за базата с данни.",
     "%s enter the database username." : "%s въведете потребителско име за базата данни.",
     "%s enter the database name." : "%s въведете име на базата данни.",
-    "%s you may not use dots in the database name" : "%s, не можете да използвате точки в името на базата данни",
     "%s enter the database name or connection string." : "%s въведете името на базата данни или свързващия низ.",
     "Oracle connection could not be established" : "Не може да се установи връзка с Oracle",
     "Oracle username and/or password not valid" : "Невалидно Oracle потребителско име и/или парола.",

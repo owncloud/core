@@ -146,7 +146,7 @@ class RepairSubSharesTest extends TestCase {
 		$this->assertCount(3, $results);
 
 		foreach ($results as $id) {
-			$this->assertContains($id, $getAllIdsPerUser[$id['share_with']]);
+			$this->assertContainsEquals($id, $getAllIdsPerUser[$id['share_with']]);
 		}
 	}
 
@@ -228,7 +228,7 @@ class RepairSubSharesTest extends TestCase {
 		$this->assertCount(7, $results);
 
 		foreach ($results as $id) {
-			$this->assertContains($id, $getAllIdsPerUser['ids']);
+			$this->assertContainsEquals($id, $getAllIdsPerUser['ids']);
 		}
 
 		//Verify that these ids are not there
@@ -295,7 +295,7 @@ class RepairSubSharesTest extends TestCase {
 		$this->assertCount(6, $results);
 
 		foreach ($results as $id) {
-			$this->assertContains($id, $getAllIdsPerUser['ids']);
+			$this->assertContainsEquals($id, $getAllIdsPerUser['ids']);
 			if (\array_search($id, $results, true) === 5) {
 				for ($i = $id['id'] + 1; $i < $id['id'] + 486; $i++) {
 					$this->assertNotContains(['id' => $i], $results);

@@ -51,6 +51,7 @@ class SharingDialog extends OwncloudPage {
 	private $suffixToIdentifyRemoteUsers = " Federated";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
+	private $permissionsFieldByUserNameWithExtraInfo = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li[@data-share-with='%s']";
 	private $permissionsFieldByUserName = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li";
 	private $permissionsFieldByGroupName = "//*[@id='shareWithList']//span[contains(text(), '%s (group)')]/parent::li";
 	private $permissionLabelXpath = ".//label[@for='%s']";
@@ -338,7 +339,6 @@ class SharingDialog extends OwncloudPage {
 			$userElements = $autocompleteNodeElement->findAll(
 				"xpath", $this->autocompleteItemsTextXpath
 			);
-
 			$userFound = false;
 			foreach ($userElements as $user) {
 				if ($this->getTrimmedText($user) === $nameToMatch) {
@@ -437,9 +437,22 @@ class SharingDialog extends OwncloudPage {
 				$this->permissionsFieldByGroupName, $shareReceiverName
 			);
 		} else {
-			$xpathLocator = \sprintf(
-				$this->permissionsFieldByUserName, $shareReceiverName
-			);
+			// For users having same display name we pass $shareReceiverName in the format "displayName (userName)"
+			// Let's hope display name of user in other cases is not in the above mentioned format, otherwise this will fail
+			if (\preg_match('/\(*\)/', $shareReceiverName)
+				&& !\strpos($shareReceiverName, '(federated)')
+			) {
+				$nameDisplayNameArray = \explode('(', $shareReceiverName);
+				$shareReceiverName = \trim($nameDisplayNameArray[0]);
+				$additionalInfo = \trim($nameDisplayNameArray[1], '()');
+				$xpathLocator = \sprintf(
+					$this->permissionsFieldByUserNameWithExtraInfo, $shareReceiverName, $additionalInfo
+				);
+			} else {
+				$xpathLocator = \sprintf(
+					$this->permissionsFieldByUserName, $shareReceiverName
+				);
+			}
 		}
 		$permissionsField = $this->waitTillElementIsNotNull($xpathLocator);
 		$this->assertElementNotNull(

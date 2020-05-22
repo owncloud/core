@@ -53,7 +53,7 @@ class OC_Response {
 				\header('Cache-Control: max-age='.$cache_time.', must-revalidate');
 			} else {
 				self::setExpiresHeader(0);
-				\header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+				\header('Cache-Control: no-cache, no-store, must-revalidate, post-check=0, pre-check=0');
 			}
 		} else {
 			\header('Cache-Control: cache');

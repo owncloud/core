@@ -1,0 +1,8 @@
+Bugfix: Properly store complex Webdav properties
+
+Fixed: setting custom complex DAV property and reading it returned
+just an 'Object' string instead of the original property value.
+
+https://github.com/owncloud/core/pull/37314
+https://github.com/owncloud/core/issues/32670
+https://github.com/owncloud/core/issues/37027

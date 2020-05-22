@@ -95,15 +95,6 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    cliExternalStorage:
-      paths:
-        - '%paths.base%/../features/cliExternalStorage'
-      context: *common_ldap_suite_context
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - OccContext:
-
     apiProvisioning-v1:
       paths:
         - '%paths.base%/../features/apiProvisioning-v1'
@@ -357,6 +348,16 @@ default:
         - SearchContext:
         - PublicWebDavContext:
         - WebDavPropertiesContext:
+        - TagsContext:
+
+    apiWebdavPreviews:
+      paths:
+        - '%paths.base%/../features/apiWebdavPreviews'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
+        - OccContext:
 
     apiWebdavProperties:
       paths:
@@ -388,6 +389,13 @@ default:
         - OccContext:
         - PublicWebDavContext:
 
+    apiTranslation:
+      paths:
+        - '%paths.base%/../features/apiTranslation'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     cliAppManagement:
       paths:
         - '%paths.base%/../features/cliAppManagement'
@@ -404,6 +412,16 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+
+    cliExternalStorage:
+      paths:
+        - '%paths.base%/../features/cliExternalStorage'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
+        - OccContext:
+        - WebDavPropertiesContext:
 
     cliLocalStorage:
       paths:
@@ -463,6 +481,7 @@ default:
         - WebUIHelpAndTipsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
         - OccContext:
 
     webUIComments:

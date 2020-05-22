@@ -43,7 +43,7 @@ use OCP\IGroup;
 use OC\Authentication\TwoFactorAuth\Manager;
 
 class UsersTest extends OriginalTest {
-	
+
 	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 	/** @var \OC\Group\Manager | PHPUnit\Framework\MockObject\MockObject */
@@ -987,6 +987,31 @@ class UsersTest extends OriginalTest {
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.org']]));
+	}
+
+	public function testEditUserRegularUserSelfEditClearEmail() {
+		$loggedInUser = $this->createMock(IUser::class);
+		$loggedInUser
+			->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('UserToEdit'));
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($loggedInUser));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('UserToEdit')
+			->will($this->returnValue($targetUser));
+		$targetUser
+			->expects($this->once())
+			->method('setEMailAddress')
+			->with('');
+
+		$expected = new Result(null, 100);
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => '']]));
 	}
 
 	public function testEditUserRegularUserSelfEditChangeEmailInvalid() {
@@ -2203,6 +2228,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testAddSubAdminWithNotExistingTargetUser() {
+		$_POST['groupid'] = 'nevermind';
 		$this->userManager
 			->expects($this->once())
 			->method('get')

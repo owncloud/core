@@ -330,15 +330,15 @@ class Notifications {
 		$try = 0;
 
 		while ($result['success'] === false && $try < 2) {
-			if ($useOcm) {
-				$endpoint = $this->discoveryManager->getOcmShareEndpoint($protocol . $remoteDomain);
-				$endpoint .= $urlSuffix;
-			} else {
-				$relativePath = $this->discoveryManager->getShareEndpoint($protocol . $remoteDomain);
-				$endpoint = $protocol . $remoteDomain . $relativePath . $urlSuffix . '?format=' . self::RESPONSE_FORMAT;
-			}
-
 			try {
+				if ($useOcm) {
+					$endpoint = $this->discoveryManager->getOcmShareEndpoint($protocol . $remoteDomain);
+					$endpoint .= $urlSuffix;
+				} else {
+					$relativePath = $this->discoveryManager->getShareEndpoint($protocol . $remoteDomain);
+					$endpoint = $protocol . $remoteDomain . $relativePath . $urlSuffix . '?format=' . self::RESPONSE_FORMAT;
+				}
+
 				$options = [
 					'timeout' => 10,
 					'connect_timeout' => 10,
@@ -364,6 +364,7 @@ class Notifications {
 				if ($e->getCode() === Http::STATUS_INTERNAL_SERVER_ERROR) {
 					throw $e;
 				}
+
 				$allowHttpFallback = $this->config->getSystemValue('sharing.federation.allowHttpFallback', false) === true;
 				if (!$allowHttpFallback) {
 					break;

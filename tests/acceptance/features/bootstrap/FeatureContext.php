@@ -60,6 +60,16 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * @var string
 	 */
+	private $adminDisplayName = '';
+
+	/**
+	 * @var string
+	 */
+	private $adminEmailAddress = '';
+
+	/**
+	 * @var string
+	 */
 	private $originalAdminPassword = '';
 
 	/**
@@ -1221,7 +1231,7 @@ class FeatureContext extends BehatVariablesContext {
 				$message = "HTTP status code $actualStatusCode is not one of the expected values";
 			}
 
-			Assert::assertContains(
+			Assert::assertContainsEquals(
 				$actualStatusCode, $expectedStatusCode,
 				$message
 			);
@@ -1638,6 +1648,15 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @param $user
+	 *
+	 * @return boolean
+	 */
+	public function isAdminUsername($user) {
+		return ($user === $this->getAdminUsername());
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getAdminUsername() {
@@ -1676,14 +1695,24 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
 		} elseif ($userName === 'regularuser') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'alice') {
+			return (string) $this->regularUserPassword;
 		} elseif ($userName === 'user0') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'brian') {
+			return (string) $this->alt1UserPassword;
 		} elseif ($userName === 'user1') {
 			return (string) $this->alt1UserPassword;
+		} elseif ($userName === 'carol') {
+			return (string) $this->alt2UserPassword;
 		} elseif ($userName === 'user2') {
 			return (string) $this->alt2UserPassword;
+		} elseif ($userName === 'david') {
+			return (string) $this->alt3UserPassword;
 		} elseif ($userName === 'user3') {
 			return (string) $this->alt3UserPassword;
+		} elseif ($userName === 'emily') {
+			return (string) $this->alt4UserPassword;
 		} elseif ($userName === 'user4') {
 			return (string) $this->alt4UserPassword;
 		} elseif ($userName === 'usergrp') {
@@ -1711,9 +1740,6 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getDisplayNameForUser($userName) {
 		$userName = $this->getActualUsername($userName);
-		// The hard-coded user names and display names are also in ldap-users.ldif
-		// for testing in an LDAP environment. The mapping must be kept the
-		// same in both places.
 		$userName = $this->normalizeUsername($userName);
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['displayname'];
@@ -1721,14 +1747,24 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['displayname'];
 		} elseif ($userName === 'regularuser') {
 			return 'Regular User';
+		} elseif ($userName === 'alice') {
+			return 'Alice Hansen';
 		} elseif ($userName === 'user0') {
 			return 'User Zero';
+		} elseif ($userName === 'brian') {
+			return 'Brian Murphy';
 		} elseif ($userName === 'user1') {
 			return 'User One';
+		} elseif ($userName === 'carol') {
+			return 'Carol King';
 		} elseif ($userName === 'user2') {
 			return 'User Two';
+		} elseif ($userName === 'david') {
+			return 'David Lopez';
 		} elseif ($userName === 'user3') {
 			return 'User Three';
+		} elseif ($userName === 'emily') {
+			return 'Emily Wagner';
 		} elseif ($userName === 'user4') {
 			return 'User Four';
 		} elseif ($userName === 'usergrp') {
@@ -1754,9 +1790,6 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getEmailAddressForUser($userName) {
 		$userName = $this->getActualUsername($userName);
-		// The hard-coded user names and email addresses are also in ldap-users.ldif
-		// for testing in an LDAP environment. The mapping must be kept the
-		// same in both places.
 		$userName = $this->normalizeUsername($userName);
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['email'];
@@ -1764,14 +1797,24 @@ class FeatureContext extends BehatVariablesContext {
 			return (string) $this->createdRemoteUsers[$userName]['email'];
 		} elseif ($userName === 'regularuser') {
 			return 'regularuser@example.org';
+		} elseif ($userName === 'alice') {
+			return 'alice@example.org';
 		} elseif ($userName === 'user0') {
 			return 'user0@example.org';
+		} elseif ($userName === 'brian') {
+			return 'brian@example.org';
 		} elseif ($userName === 'user1') {
 			return 'user1@example.org';
+		} elseif ($userName === 'carol') {
+			return 'carol@example.org';
 		} elseif ($userName === 'user2') {
 			return 'user2@example.org';
+		} elseif ($userName === 'david') {
+			return 'david@example.org';
 		} elseif ($userName === 'user3') {
 			return 'user3@example.org';
+		} elseif ($userName === 'emily') {
+			return 'emily@example.org';
 		} elseif ($userName === 'user4') {
 			return 'user4@example.org';
 		} elseif ($userName === 'usergrp') {
@@ -1913,7 +1956,35 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @Given the administrator has created file :path with content :content in local storage :mountPount
+	 * @Given the administrator has created a file :path with the last exported content using the testing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasCreatedAFileWithLastExportedContent(
+		$path
+	) {
+		$commandOutput = $this->getStdOutOfOccCommand();
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/file",
+			[
+				'file' => "/$path",
+				'content' => $commandOutput
+			],
+			$this->getOcsApiVersion()
+		);
+		$lastExportedContent = $this->getStdOutOfOccCommand();
+		$this->theFileWithContentShouldExistInTheServerRoot($path, $lastExportedContent);
+	}
+
+	/**
+	 * @Given the administrator has created file :path with content :content in local storage :mountPoint
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -2007,7 +2078,7 @@ class FeatureContext extends BehatVariablesContext {
 		$jsonRespondedEncoded = \json_encode((string) $this->response->getBody());
 		Assert::assertEquals(
 			$jsonExpectedEncoded, $jsonRespondedEncoded,
-			"The json responded: {$jsonRespondedEncoded} doesnot match with json expected: {$jsonExpectedEncoded}"
+			"The json responded: {$jsonRespondedEncoded} does not match with json expected: {$jsonExpectedEncoded}"
 		);
 	}
 
@@ -2096,6 +2167,24 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * send request to list a server file
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function listTrashbinFileInServerRoot($path) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/dir?dir={$path}"
+		);
+		$this->setResponse($response);
+	}
+
+	/**
 	 * @Then the file :path with content :content should exist in the server root
 	 *
 	 * @param string $path
@@ -2110,7 +2199,6 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getResponse()->getStatusCode(),
 			"Failed to read the file {$path}"
 		);
-
 		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
 		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($fileContent);

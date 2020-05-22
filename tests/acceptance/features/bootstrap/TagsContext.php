@@ -1142,7 +1142,7 @@ class TagsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$user,
 			$this->featureContext->getPasswordForUser($user),
-			$fullPath, $properties, 'systemtags',
+			$fullPath, $properties, 1, 'systemtags',
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
@@ -1284,7 +1284,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" adds tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by "([^"]*)" using the WebDAV API$/
+	 * @When /^user "([^"]*)" adds tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by user "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -1306,7 +1306,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has added tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has added tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by user "([^"]*)"$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -1329,7 +1329,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Then /^the HTTP status when user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should be "([^"]*)"$/
+	 * @Then /^the HTTP status when user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by user "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $fileName
@@ -1339,7 +1339,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theHttpStatusWhenuserRequestsTagsForEntryOwnedByShouldBe(
+	public function theHttpStatusWhenUserRequestsTagsForEntryOwnedByShouldBe(
 		$user, $fileName, $sharingUser, $status
 	) {
 		$this->requestTagsForFile($user, $fileName, $sharingUser);
@@ -1374,11 +1374,11 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have the following tags$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by user "([^"]*)" should have the following tags$/
 	 *
 	 * @param string $fileName
 	 * @param string $sharingUser
-	 * @param TableNode $table  - Table containg tags. Should have two columns ('name' and 'type')
+	 * @param TableNode $table  - Table containing tags. Should have two columns ('name' and 'type')
 	 *                          e.g.
 	 *                          | name | type   |
 	 *                          | tag1 | normal |
@@ -1624,6 +1624,113 @@ class TagsContext implements Context {
 			$fileName,
 			$shareUser
 		);
+	}
+
+	/**
+	 * search resources with tags using the REPORT webDAV method
+	 *
+	 * @param $user
+	 * @param TableNode $tagNames
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function searchForTagsOfFileWithReportUsingWebDAVApi($user, $tagNames) {
+		$this->featureContext->verifyTableNodeColumnsCount($tagNames, 1);
+		$tagNames = $tagNames->getRows();
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$password = $this->featureContext->getPasswordForUser($user);
+		$createdTagsArray = $this->getListOfCreatedTags();
+		$createdTagIds = [];
+		$createdTagNames = [];
+		foreach ($createdTagsArray as $tagId => $tagArray) {
+			\array_push($createdTagIds, $tagId);
+			\array_push($createdTagNames, $tagArray['name']);
+		}
+		$body = "<?xml version='1.0' encoding='utf-8' ?>\n" .
+			"	<oc:filter-files xmlns:d='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
+			"		<oc:filter-rules>\n";
+		foreach ($tagNames as $tagName) {
+			$found = \in_array($tagName[0], $createdTagNames);
+			if ($found) {
+				$index = \array_search($tagName[0], $createdTagNames);
+				$body .=
+					"			<oc:systemtag>$createdTagIds[$index]</oc:systemtag>\n";
+			} else {
+				throw new Error(
+					"Expected: Tag with name $tagName[0] to be in created list, but not found!" .
+					"List of created Tags: " . \implode(",", $createdTagNames)
+				);
+			}
+		}
+		$body .=
+			"		</oc:filter-rules>\n" .
+			"	</oc:filter-files>";
+		$response = WebDavHelper::makeDavRequest(
+			$baseUrl, $user, $password, "REPORT", null, null, $body, 2
+		);
+		$this->featureContext->setResponse($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
+		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
+		$this->featureContext->setResponseXmlObject($responseXmlObject);
+	}
+
+	/**
+	 * @When user :user searches for resources tagged with all of the following tags using the webDAV API
+	 *
+	 * @param string $user
+	 * @param TableNode $tagNames
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSearchesForFollowingTagsUsingWebDAVApi($user, TableNode $tagNames) {
+		$this->searchForTagsOfFileWithReportUsingWebDAVApi(
+			$user, $tagNames
+		);
+	}
+
+	/**
+	 * @When user :user searches for resources tagged with tag :tagName using the webDAV API
+	 *
+	 * @param string $user
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSearchesForTagUsingWebDavAPI($user, $tagName) {
+		$tagName = new TableNode([[$tagName]]);
+		$this->searchForTagsOfFileWithReportUsingWebDAVApi($user, $tagName);
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the response should (not |)contain (file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $shouldOrNot
+	 * @param string $fileOrFolder
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function asUserFileShouldBeTaggedWithTagName($user, $shouldOrNot, $fileOrFolder, $path) {
+		$expected = ($shouldOrNot === "");
+		$responseResourcesArray = $this->featureContext->findEntryFromReportResponse($user);
+		if ($expected) {
+			Assert::assertTrue(
+				\in_array($path, $responseResourcesArray),
+				"Expected: $fileOrFolder $path to be present in last response, but not found! \n" .
+				"Resource from response: " . \implode(",", $responseResourcesArray)
+			);
+		} else {
+			Assert::assertFalse(
+				\in_array($path, $responseResourcesArray),
+				"Expected: $fileOrFolder $path not to be present in last response, but found present! \n" .
+				"Resource from response: " . \implode(",", $responseResourcesArray)
+			);
+		}
 	}
 
 	/**

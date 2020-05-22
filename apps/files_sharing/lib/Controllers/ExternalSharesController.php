@@ -88,16 +88,18 @@ class ExternalSharesController extends Controller {
 	 */
 	public function create($id) {
 		$shareInfo = $this->externalManager->getShare($id);
-		$event = new GenericEvent(null,
-			[
-				'shareAcceptedFrom' => $shareInfo['owner'],
-				'sharedAcceptedBy' => $shareInfo['user'],
-				'sharedItem' => $shareInfo['name'],
-				'remoteUrl' => $shareInfo['remote']
-			]
-		);
-		$this->dispatcher->dispatch('remoteshare.accepted', $event);
-		$this->externalManager->acceptShare($id);
+		if ($shareInfo !== false) {
+			$event = new GenericEvent(null,
+				[
+					'shareAcceptedFrom' => $shareInfo['owner'],
+					'sharedAcceptedBy' => $shareInfo['user'],
+					'sharedItem' => $shareInfo['name'],
+					'remoteUrl' => $shareInfo['remote']
+				]
+			);
+			$this->dispatcher->dispatch('remoteshare.accepted', $event);
+			$this->externalManager->acceptShare($id);
+		}
 		return new JSONResponse();
 	}
 
@@ -110,16 +112,18 @@ class ExternalSharesController extends Controller {
 	 */
 	public function destroy($id) {
 		$shareInfo = $this->externalManager->getShare($id);
-		$event = new GenericEvent(null,
-			[
-				'shareAcceptedFrom' => $shareInfo['owner'],
-				'sharedAcceptedBy' => $shareInfo['user'],
-				'sharedItem' => $shareInfo['name'],
-				'remoteUrl' => $shareInfo['remote']
-			]
-		);
-		$this->dispatcher->dispatch('remoteshare.declined', $event);
-		$this->externalManager->declineShare($id);
+		if ($shareInfo !== false) {
+			$event = new GenericEvent(null,
+				[
+					'shareAcceptedFrom' => $shareInfo['owner'],
+					'sharedAcceptedBy' => $shareInfo['user'],
+					'sharedItem' => $shareInfo['name'],
+					'remoteUrl' => $shareInfo['remote']
+				]
+			);
+			$this->dispatcher->dispatch('remoteshare.declined', $event);
+			$this->externalManager->declineShare($id);
+		}
 		return new JSONResponse();
 	}
 

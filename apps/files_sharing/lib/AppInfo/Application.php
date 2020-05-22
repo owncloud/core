@@ -28,9 +28,12 @@
 namespace OCA\Files_Sharing\AppInfo;
 
 use OC\AppFramework\Utility\SimpleContainer;
+use OC\Files\Filesystem;
+use OCA\Files_Sharing\Controller\RemoteOcsController;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
+use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use OCA\Files_Sharing\MountProvider;
 use OCA\Files_Sharing\Notifier;
@@ -94,6 +97,24 @@ class Application extends App {
 				$c->query(NotificationPublisher::class),
 				$server->getEventDispatcher(),
 				$c->query(SharingBlacklist::class)
+			);
+		});
+
+		$container->registerService('RemoteOcsController', function (SimpleContainer $c) use ($server) {
+			$user = $server->getUserSession()->getUser();
+			$uid = $user ? $user->getUID() : null;
+			return new RemoteOcsController(
+				$c->query('AppName'),
+				$server->getRequest(),
+				new Manager(
+					$server->getDatabaseConnection(),
+					Filesystem::getMountManager(),
+					Filesystem::getLoader(),
+					$server->getNotificationManager(),
+					$server->getEventDispatcher(),
+					$uid
+				),
+				$uid
 			);
 		});
 

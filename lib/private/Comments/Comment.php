@@ -302,7 +302,7 @@ class Comment implements IComment {
 	/**
 	 * sets the date of the most recent child
 	 *
-	 * @param \DateTime $dateTime
+	 * @param \DateTime|null $dateTime
 	 * @return IComment
 	 * @since 9.0.0
 	 */

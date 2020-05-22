@@ -158,7 +158,7 @@ class Manager implements IManager {
 	 *  - setSubject()
 	 *
 	 * @param IEvent $event
-	 * @return null
+	 * @return void
 	 * @throws \BadMethodCallException if required values have not been set
 	 */
 	public function publish(IEvent $event) {
@@ -201,7 +201,7 @@ class Manager implements IManager {
 	 * @param string $affectedUser  Recipient of the activity
 	 * @param string $type          Type of the notification
 	 * @param int    $priority      Priority of the notification
-	 * @return null
+	 * @return void
 	 */
 	public function publishActivity($app, $subject, $subjectParams, $message, $messageParams, $file, $link, $affectedUser, $type, $priority) {
 		$event = $this->generateEvent();

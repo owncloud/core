@@ -71,7 +71,6 @@
     "%s enter the database username and name." : "%s introduza o nome e o nome de usuario da base de datos.",
     "%s enter the database username." : "%s introduza o nome de usuario da base de datos",
     "%s enter the database name." : "%s introduza o nome da base de datos",
-    "%s you may not use dots in the database name" : "%s non se poden empregar puntos na base de datos",
     "%s enter the database name or connection string." : "%s introduza o nome da base de datos ou a cadea de conexión.",
     "Oracle connection could not be established" : "Non foi posíbel estabelecer a conexión con Oracle",
     "Oracle username and/or password not valid" : "O nome de usuario e/ou contrasinal de Oracle é incorrecto",
@@ -88,6 +87,7 @@
     "Set an admin password." : "Estabeleza un contrasinal de administrador",
     "Can't create or write into the data directory %s" : "Non é posíbel crear ou escribir o directorio «data» %s",
     "Can't create or write into the apps-external directory %s" : "Non é posíbel pode crear ou escribir no directorio de aplicacións externas %s",
+    "Can't update %s - it is a directory" : "Non é posíbel actualizar %s: é un directorio",
     "Can't update %s" : "Non é posíbel actualizar %s",
     "Invalid Federated Cloud ID" : "ID de nube federada incorrecto",
     "Internal mail notification for shared files is not allowed" : "Non se permite a notificación interna de correo para os ficheiros compartidos",
@@ -143,7 +143,7 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Non é posíbel instalar a aplicación «%s» por mor de non cumprirse as dependencias: %s",
     "A safe home for all your data" : "Un lugar seguro para todos os seus datos",
     "Imprint" : "Impresión",
-    "Privacy Policy" : "Política de privacidade",
+    "Privacy Policy" : "Directiva de privacidade",
     "File is currently busy, please try again later" : "O ficheiro está ocupado neste momento, tenteo máis tarde.",
     "Access to this resource or one of its sub-items has been denied." : "Denegouse o acceso a este recurso ou a algún dos seus subelementos.",
     "File cannot be downloaded" : "Non é posíbel descargar o ficheiro",
@@ -183,6 +183,7 @@
     "Storage incomplete configuration. %s" : "Configuración incompleta do almacenamento. %s",
     "Storage connection error. %s" : "Produciuse un erro na conexión do almacenamento. %s",
     "Storage is temporarily not available" : "O almacenamento non está dispoñíbel temporalmente",
-    "Storage connection timeout. %s" : "Esgotouse o tempo de conexión co almacenamento. %s"
+    "Storage connection timeout. %s" : "Esgotouse o tempo de conexión co almacenamento. %s",
+    "\"%s\" is locked" : "«%s» está bloqueado"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

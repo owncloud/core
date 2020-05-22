@@ -8,26 +8,26 @@ Feature: restrict resharing
   Background:
     Given these users have been created with default attributes and without skeleton files:
       | username |
-      | user1    |
-      | user2    |
+      | Alice    |
+      | Brian    |
     And these groups have been created:
       | groupname |
       | grp1      |
-    And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp1"
-    And user "user1" has created folder "simple-folder"
-    And user "user2" has created folder "simple-folder"
-    And user "user2" has logged in using the webUI
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "simple-folder"
+    And user "Brian" has created folder "simple-folder"
+    And user "Brian" has logged in using the webUI
 
   @skipOnMICROSOFTEDGE @skipOnFIREFOX @TestAlsoOnExternalUserBackend @files_sharing-app-required
   @smokeTest @skipOnOcV10.3
   Scenario: share a folder with another internal user and prohibit resharing
     Given the setting "Allow resharing" in the section "Sharing" has been enabled
     And the user has browsed to the files page
-    When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
       | share | no |
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then it should not be possible to share folder "simple-folder (2)" using the webUI
 
   @TestAlsoOnExternalUserBackend @files_sharing-app-required
@@ -35,6 +35,6 @@ Feature: restrict resharing
   Scenario: forbid resharing globally
     Given the setting "Allow resharing" in the section "Sharing" has been disabled
     And the user has browsed to the files page
-    When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user re-logs in as "user1" using the webUI
+    When the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then it should not be possible to share folder "simple-folder (2)" using the webUI

@@ -555,6 +555,32 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user changes the expiration of the public link :linkName of file/folder :name to :expiration
+	 *
+	 * @param string $linkName
+	 * @param string $name
+	 * @param string $expiration
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserChangesTheExpirationOfThePublicLinkToCertainDate($linkName, $name, $expiration) {
+		$session = $this->getSession();
+		$this->theUserOpensTheShareDialogForFileFolder($name);
+		$this->theUserHasOpenedThePublicLinkShareTab();
+		$expiration = \date('d-m-Y', \strtotime($expiration));
+		$this->publicSharingPopup = $this->publicShareTab->editLink(
+			$session,
+			$linkName,
+			null,
+			null,
+			null,
+			$expiration
+		);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
 	 * @When the user opens the create public link share popup
 	 *
 	 * @return void
@@ -715,7 +741,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		try {
 			$this->publicShareTab->getLinkUrl($this->linkName);
 		} catch (Exception $e) {
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"could not find link entry with the given name",
 				$e->getMessage()
 			);
@@ -896,6 +922,36 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicLinkFilesPage->open();
 		$this->publicLinkFilesPage->waitTillPageIsLoaded($this->getSession());
 		$this->webUIGeneralContext->setCurrentPageObject($this->publicLinkFilesPage);
+	}
+
+	/**
+	 * @Then add to your owncloud button should be displayed on the webUI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAddToYourOwncloudButtonShouldBeVisible() {
+		$isPresent = $this->publicLinkFilesPage->isAddtoServerButtonPresent();
+		Assert::assertTrue(
+			$isPresent,
+			__METHOD__
+			. " The add to your owncloud button is not present unexpectedly."
+		);
+	}
+
+	/**
+	 * @Then add to your owncloud button should not be displayed on the webUI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAddToYourOwncloudButtonShouldNotBeVisible() {
+		$isPresent = $this->publicLinkFilesPage->isAddtoServerButtonPresent();
+		Assert::assertFalse(
+			$isPresent,
+			__METHOD__
+			. " The add to your owncloud button is present unexpectedly."
+		);
 	}
 
 	/**
@@ -1082,7 +1138,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		} catch (Exception $e) {
 			$errorMessage = $e->getMessage();
 		}
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			"could not find notify by email button",
 			$errorMessage,
 			"User was not expected to be able to send the share notification by email but was"
@@ -1418,14 +1474,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			. "' instead."
 		);
 		if ($fileOrFolder === "folder") {
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"folder-shared.svg",
 				$row->findThumbnail()->getAttribute("style"),
 				__METHOD__
 				. " 'folder-shared.svg' is expected to be contained in the 'style' attribute of the thumbnail of particular row."
 			);
 			$detailsDialog = $this->filesPage->getDetailsDialog();
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				"folder-shared.svg",
 				$detailsDialog->findThumbnail()->getAttribute("style"),
 				__METHOD__
@@ -1612,7 +1668,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->generalErrorPage->setPagePath($path);
 		$this->generalErrorPage->open();
 		$actualErrorMsg = $this->generalErrorPage->getErrorMessage();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$errorMsg,
 			$actualErrorMsg,
 			__METHOD__
@@ -1636,11 +1692,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function createPublicShareLink($name, $settings = null) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		//close any open sharing dialog
-		//if there is no dialog open and we try to close it
-		//an exception will be thrown, but we do not care
 		try {
 			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
+		} catch (ElementNotFoundException $e) {
+			//if there is no dialog open and we try to close it
+			//an exception will be thrown, but we do not care
 		}
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
@@ -1654,6 +1710,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				['name', 'permission', 'password', 'expiration', 'email', 'personalMessage', 'emailToSelf']
 			);
 			$settingsArray = $settings->getRowsHash();
+			if (\array_key_exists('expiration', $settingsArray) && $settingsArray['expiration'] !== '') {
+				$settingsArray['expiration'] = \date('d-m-Y', \strtotime($settingsArray['expiration']));
+			}
 			if (!isset($settingsArray['name'])) {
 				$settingsArray['name'] = null;
 			}
@@ -1706,7 +1765,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theTextPreviewOfThePublicLinkShouldContain($content) {
 		$previewText = $this->publicLinkFilesPage->getPreviewText();
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$content, $previewText,
 			__METHOD__ . " file preview does not contain expected content"
 		);
@@ -1781,7 +1840,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$lastCreatedPublicLink = \end($createdPublicLinks);
-		Assert::assertContains(
+		Assert::assertStringContainsString(
 			$lastCreatedPublicLink["url"],
 			$content,
 			__METHOD__
@@ -1914,5 +1973,52 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				"Expected: " . $filename . " not to be marked as shared but it is"
 			);
 		}
+	}
+
+	/**
+	 * @Then a public link share with name :arg1 should be visible on the webUI
+	 *
+	 * @param string $expectedLinkEntryName
+	 *
+	 * @return void
+	 */
+	public function publicLinkShareWithNameShouldBeVisibleOnTheWebUI($expectedLinkEntryName) {
+		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
+		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
+	}
+
+	/**
+	 * @Then :arg1 public link shares with name :arg2 should be visible on the webUI
+	 *
+	 * @param string $expectedCount
+	 * @param string $expectedLinkEntryName
+	 *
+	 * @return void
+	 */
+	public function publicLinkSharesWithNameShouldBeVisibleOnTheWebUI($expectedCount, $expectedLinkEntryName) {
+		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
+		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
+		Assert::assertEquals(
+			\array_count_values($actualNamesArrayOfPublicLinks)[$expectedLinkEntryName],
+			$expectedCount
+		);
+	}
+
+	/**
+	 * @When the user closes the federation sharing dialog
+	 *
+	 * @return void
+	 */
+	public function theUserClosesFederationShareDialog() {
+		$this->filesPage->closeFederationDialog();
+	}
+
+	/**
+	 * @When the user accepts the pending remote share using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserAcceptsThePendingRemoteSharesUsingTheWebui() {
+		$this->sharedWithYouPage->acceptPendingShare();
 	}
 }

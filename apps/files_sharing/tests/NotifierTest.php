@@ -311,8 +311,8 @@ class NotifierTest extends \Test\TestCase {
 
 		$this->userManager->method('get')
 			->will($this->returnValueMap([
-				[$subjectParams[0], $user1],
-				[$subjectParams[1], $user2],
+				[$subjectParams[0], false, $user1],
+				[$subjectParams[1], false, $user2],
 		]));
 
 		$this->config->method('getAppValue')

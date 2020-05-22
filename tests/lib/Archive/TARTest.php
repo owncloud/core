@@ -16,15 +16,10 @@ class TARTest extends TestBase {
 	}
 
 	protected function getExisting() {
-		$dir = \OC::$SERVERROOT . '/tests/data';
-		return new TAR($dir . '/data.tar.gz');
+		return new TAR($this->getArchiveTestDataDir() . '/data.tar.gz');
 	}
 
 	protected function getNew() {
 		return new TAR(\OCP\Files::tmpFile('.tar.gz'));
-	}
-	public function testRecursive() {
-		// Skip this test. It is causing a memory problem, core issue 35685
-		$this->assertTrue(true);
 	}
 }

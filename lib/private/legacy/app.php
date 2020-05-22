@@ -387,7 +387,7 @@ class OC_App {
 
 		// check for required dependencies
 		$config = \OC::$server->getConfig();
-		$l = \OC::$server->getL10N('core');
+		$l = \OC::$server->getL10N('lib');
 		$info = self::getAppInfo($app);
 		if ($info === null) {
 			throw new \Exception("$app can't be enabled since it is not installed.");

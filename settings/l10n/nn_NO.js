@@ -38,7 +38,6 @@ OC.L10N.register(
     "A valid username must be provided" : "Du må oppgje eit gyldig brukarnamn",
     "A valid password must be provided" : "Du må oppgje eit gyldig passord",
     "Cheers!" : "Skål!",
-    "Forum" : "Forum",
     "Language" : "Språk",
     "Cron" : "Cron",
     "Open documentation" : "Opne dokumentasjon.",

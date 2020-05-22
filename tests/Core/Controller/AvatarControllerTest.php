@@ -116,7 +116,7 @@ class AvatarControllerTest extends TestCase {
 		$this->userMock->expects($this->any())->method('getDisplayName')->willReturn('displayName');
 		$this->userMock->expects($this->any())->method('getUID')->willReturn('userId');
 		$this->userManager->expects($this->any())->method('get')
-			->willReturnMap([['userId', $this->userMock]]);
+			->willReturnMap([['userId', false, $this->userMock]]);
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($this->userMock);
 
 		$this->avatarFile = $this->createMock('OCP\Files\File');
@@ -322,7 +322,7 @@ class AvatarControllerTest extends TestCase {
 		$this->cache->expects($this->once())->method('get')->willReturn(\file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.gif'));
 
 		//Create request return
-		$reqRet = ['error' => [0], 'tmp_name' => [$fileName], 'size' => \filesize(\OC::$SERVERROOT.'/tests/data/testimage.gif')];
+		$reqRet = ['error' => [0], 'tmp_name' => [$fileName], 'size' => [\filesize(\OC::$SERVERROOT.'/tests/data/testimage.gif')]];
 		$this->request->expects($this->once())->method('getUploadedFile')->willReturn($reqRet);
 
 		$response = $this->avatarController->postAvatar(null);

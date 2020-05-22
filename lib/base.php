@@ -251,7 +251,7 @@ class OC {
 				echo $l->t('This can usually be fixed by giving the webserver write access to the config directory')."\n";
 				echo "\n";
 				echo $l->t('See %s', [ $urlGenerator->linkToDocs('admin-dir_permissions') ])."\n";
-				exit;
+				exit(1);
 			} else {
 				OC_Template::printErrorPage(
 					$l->t('Cannot write into "config" directory!'),
@@ -530,7 +530,7 @@ class OC {
 			// we can't use the template error page here, because this needs the
 			// DI container which isn't available yet
 			print($e->getMessage());
-			exit();
+			exit(1);
 		}
 
 		// setup the basic server
@@ -631,10 +631,6 @@ class OC {
 
 		// set back user
 		\OC::$server->getSession()->set('user_id', $uid);
-
-		//try to set the session lifetime
-		$sessionLifeTime = self::getSessionLifeTime();
-		@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
 
 		$systemConfig = \OC::$server->getSystemConfig();
 
@@ -1014,10 +1010,15 @@ class OC {
 	 *
 	 * Note: This is mainly for internal purposes. You're encouraged to use the ownCloud's logger
 	 * for anything you need to log.
+	 *
+	 * @param Throwable $ex
 	 */
-	public static function crashLog(\Throwable $ex) {
-		$dataDir = self::$config->getValue('datadirectory', self::$SERVERROOT . '/data');
-		$crashDir = self::$config->getValue('crashdirectory', $dataDir);
+	public static function crashLog(\Throwable $ex): void {
+		$crashDir = self::$SERVERROOT . '/data';
+		if (self::$config) {
+			$dataDir = self::$config->getValue('datadirectory', self::$SERVERROOT . '/data');
+			$crashDir = self::$config->getValue('crashdirectory', $dataDir);
+		}
 
 		$filename = "${crashDir}/crash-" . \date('Y-m-d') . '.log';
 
@@ -1029,7 +1030,7 @@ class OC {
 			'id' => $currentEntryId,
 			'class' => \get_class($ex),
 			'message' => $ex->getMessage(),
-			'stacktrace' => \array_map(function ($elem) {
+			'stacktrace' => \array_map(static function ($elem) {
 				unset($elem['args'], $elem['type']);
 				return $elem;
 			}, $ex->getTrace()),
@@ -1045,7 +1046,7 @@ class OC {
 				'id' => $currentEntryId,
 				'class' => \get_class($ex),
 				'message' => $ex->getMessage(),
-				'stacktrace' => \array_map(function ($elem) {
+				'stacktrace' => \array_map(static function ($elem) {
 					unset($elem['args'], $elem['type']);
 					return $elem;
 				}, $ex->getTrace()),

@@ -20,7 +20,7 @@ class Connection extends RawConnection {
 	/** @var Parser */
 	private $parser;
 
-	public function __construct($command, Parser $parser, $env = array()) {
+	public function __construct($command, Parser $parser, $env = []) {
 		parent::__construct($command, $env);
 		$this->parser = $parser;
 	}
@@ -65,8 +65,12 @@ class Connection extends RawConnection {
 		$promptLine = $this->readLine(); //first line is prompt
 		$this->parser->checkConnectionError($promptLine);
 
-		$output = array();
-		$line = $this->readLine();
+		$output = [];
+		if (!$this->isPrompt($promptLine)) {
+			$line = $promptLine;
+		} else {
+			$line = $this->readLine();
+		}
 		if ($line === false) {
 			$this->unknownError($promptLine);
 		}
@@ -113,8 +117,9 @@ class Connection extends RawConnection {
 	}
 
 	public function close($terminate = true) {
-		if (is_resource($this->getInputStream())) {
-			$this->write('close' . PHP_EOL);
+		if (get_resource_type($this->getInputStream()) === 'stream') {
+			// ignore any errors while trying to send the close command, the process might already be dead
+			@$this->write('close' . PHP_EOL);
 		}
 		parent::close($terminate);
 	}

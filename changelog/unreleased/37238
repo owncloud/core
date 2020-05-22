@@ -1,0 +1,6 @@
+Change: Replace jeremeamia/superclosure with opis/closure
+
+jeremeamia/superclosure library is no longer maintained.
+Replace it with the recommended opis/closure library.
+
+https://github.com/owncloud/core/pull/37238

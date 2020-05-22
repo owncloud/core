@@ -31,7 +31,7 @@ interface IManager extends IApp, INotifier {
 	/**
 	 * @param \Closure $service The service must implement IApp, otherwise a
 	 *                          \InvalidArgumentException is thrown later
-	 * @return null
+	 * @return void
 	 * @since 9.0.0
 	 */
 	public function registerApp(\Closure $service);
@@ -41,7 +41,7 @@ interface IManager extends IApp, INotifier {
 	 *                          \InvalidArgumentException is thrown later
 	 * @param \Closure $info    An array with the keys 'id' and 'name' containing
 	 *                          the app id and the app name
-	 * @return null
+	 * @return void
 	 * @since 9.0.0
 	 */
 	public function registerNotifier(\Closure $service, \Closure $info);

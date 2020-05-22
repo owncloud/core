@@ -159,7 +159,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 
 	/**
 	 * @param string $gid
-	 * @return \OC\Group\Group
+	 * @return \OC\Group\Group|null
 	 */
 	public function get($gid) {
 		if (isset($this->cachedGroups[$gid])) {
@@ -171,7 +171,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/**
 	 * @param string $gid
 	 * @param string $displayName
-	 * @return \OCP\IGroup
+	 * @return \OC\Group\Group|null
 	 */
 	protected function getGroupObject($gid, $displayName = null) {
 		$backends = [];

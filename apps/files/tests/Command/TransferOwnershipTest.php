@@ -25,6 +25,7 @@ use OC\Encryption\Manager;
 use OC\Share20\ProviderFactory;
 use OCA\Files\Command\TransferOwnership;
 use OCP\Files\Mount\IMountManager;
+use OCP\Files\IRootFolder;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share;
@@ -58,6 +59,8 @@ class TransferOwnershipTest extends TestCase {
 	 * @var IMountManager
 	 */
 	private $mountManager;
+	/** @var IRootFolder */
+	private $rootFolder;
 
 	/**
 	 * @var Manager | MockObject
@@ -89,11 +92,13 @@ class TransferOwnershipTest extends TestCase {
 		$this->userManager = \OC::$server->getUserManager();
 		$this->shareManager = \OC::$server->getShareManager();
 		$this->mountManager = \OC::$server->getMountManager();
+		$this->rootFolder = \OC::$server->getRootFolder();
 		$this->encryptionManager = $this->createMock(Manager::class);
 		$this->providerFactory = new ProviderFactory(\OC::$server);
 
 		$this->sourceUser = $this->createUser('source-user');
 		$this->targetUser = $this->createUser('target-user');
+		$this->unloggedUser = $this->createUser('unlogged-user');
 		$this->loginAsUser('source-user');
 		$this->logout();
 		$this->loginAsUser('target-user');
@@ -105,6 +110,7 @@ class TransferOwnershipTest extends TestCase {
 			$this->userManager,
 			$this->shareManager,
 			$this->mountManager,
+			$this->rootFolder,
 			$this->encryptionManager,
 			$this->providerFactory
 		);
@@ -115,6 +121,7 @@ class TransferOwnershipTest extends TestCase {
 		$this->shareManager->userDeleted('share-receiver');
 		$this->shareManager->userDeleted($this->sourceUser->getUID());
 		$this->shareManager->userDeleted($this->targetUser->getUID());
+		$this->shareManager->userDeleted($this->unloggedUser->getUID());
 		parent::tearDown();
 	}
 
@@ -219,5 +226,22 @@ class TransferOwnershipTest extends TestCase {
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount($expectedSourceShareCount, $sourceShares);
 		$this->assertCount($expectedTargetShareCount, $targetShares);
+	}
+
+	public function testTransferAllFilesToUnlogged() {
+		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
+		$input = [
+			'source-user' => $this->sourceUser->getUID(),
+			'destination-user' => $this->unloggedUser->getUID(),
+		];
+		$this->commandTester->execute($input);
+		$this->assertSame(0, $this->commandTester->getStatusCode());
+		$output = $this->commandTester->getDisplay();
+
+		$this->assertStringContainsString('Transferring files to unlogged-user', $output);
+		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
+		$targetShares = $this->shareManager->getSharesBy($this->unloggedUser->getUID(), Share::SHARE_TYPE_USER);
+		$this->assertCount(0, $sourceShares);
+		$this->assertCount(4, $targetShares);
 	}
 }

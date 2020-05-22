@@ -2,25 +2,25 @@
 Feature: resharing a resource with an expiration date
 
   Background:
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
 
   @skipOnOcV10.3
   Scenario Outline: User should be able to set expiration while resharing a file with user
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
       | expireDate  | +3 days       |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | +3 days |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | +3 days |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -30,11 +30,11 @@ Feature: resharing a resource with an expiration date
   @skipOnOcV10.3
   Scenario Outline: User should be able to set expiration while resharing a file with group
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user2" has been added to group "grp1"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
       | permissions | change        |
@@ -42,9 +42,9 @@ Feature: resharing a resource with an expiration date
       | expireDate  | +3 days       |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | +3 days |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | +3 days |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -57,18 +57,18 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | <expected-expire-date> |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
@@ -83,20 +83,20 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And group "grp1" has been created
-    And user "user2" has been added to group "grp1"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
       | permissions | change        |
       | shareWith   | grp1          |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | <expected-expire-date> |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
@@ -110,18 +110,18 @@ Feature: resharing a resource with an expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | <expected-expire-date> |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
@@ -135,20 +135,20 @@ Feature: resharing a resource with an expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "<enforce-expire-date>"
-    And user "user3" has been created with default attributes and without skeleton files
-    And group "grp2" has been created
-    And user "user3" has been added to group "grp2"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
       | permissions | change        |
-      | shareWith   | grp2          |
+      | shareWith   | grp1          |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | <expected-expire-date> |
-    And the response when user "user3" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
@@ -163,19 +163,19 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
       | expireDate  | +20 days      |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | +20 days |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | +20 days |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code |
@@ -190,21 +190,21 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "user3" has been created with default attributes and without skeleton files
-    And group "grp2" has been created
-    And user "user3" has been added to group "grp2"
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
       | permissions | change        |
-      | shareWith   | grp2          |
+      | shareWith   | grp1          |
       | expireDate  | +20 days      |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | +20 days |
-    And the response when user "user3" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | +20 days |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code |
@@ -216,18 +216,18 @@ Feature: resharing a resource with an expiration date
   @skipOnOcV10.3
   Scenario Outline: Setting default expiry date and enforcement after the share is created
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    And user "user1" has shared file "/textfile0.txt" with user "user2"
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has shared file "/textfile0.txt" with user "Carol"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "4"
-    When user "user1" gets the info of the last share using the sharing API
+    When user "Brian" gets the info of the last share using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration |  |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code |
@@ -243,19 +243,19 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And group "grp1" has been created
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user1" has been added to group "grp1"
-    And user "user0" has shared file "/textfile0.txt" with group "grp1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with group "grp1" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | <expected-expire-date> |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
@@ -271,20 +271,20 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And group "grp1" has been created
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user1" has been added to group "grp1"
-    And user "user0" has shared file "/textfile0.txt" with group "grp1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with group "grp1" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
       | expireDate  | +20 days      |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration | <expected-expire-date> |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <expected-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | expected-expire-date | ocs_status_code |
@@ -299,18 +299,18 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions "read,update,share"
-    When user "user1" creates a share using the sharing API with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user1" should include
+    And the information of the last share of user "Brian" should include
       | expiration |  |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration |  |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code |
@@ -325,23 +325,23 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created a share with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | all           |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | expireDate  | +20 days      |
-    When user "user1" creates a share using the sharing API with settings
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user0" should include
+    And the information of the last share of user "Alice" should include
       | expiration | +20 days |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | <actual-expire-date> |
     Examples:
       | ocs_api_version | default-expire-date | enforce-expire-date | actual-expire-date | ocs_status_code |
@@ -358,24 +358,24 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created a share with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | all           |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | expireDate  | +20 days      |
-    When user "user1" creates a share using the sharing API with settings
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
       | expireDate  | +40 days      |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    And the information of the last share of user "user0" should include
+    And the information of the last share of user "Alice" should include
       | expiration | +20 days |
-    And the response when user "user2" gets the info of the last share should include
+    And the response when user "Carol" gets the info of the last share should include
       | expiration | +40 days |
     Examples:
       | ocs_api_version | default-expire-date | ocs_status_code |
@@ -390,22 +390,22 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created a share with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | all           |
-      | shareWith   | user1         |
+      | shareWith   | Brian         |
       | expireDate  | +20 days      |
-    When user "user1" creates a share using the sharing API with settings
+    When user "Brian" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | permissions | change        |
-      | shareWith   | user2         |
+      | shareWith   | Carol         |
       | expireDate  | +40 days      |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
-    And the information of the last share of user "user0" should include
+    And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     Examples:
       | ocs_api_version | default-expire-date | http_status_code |

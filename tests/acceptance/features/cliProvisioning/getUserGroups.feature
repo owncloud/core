@@ -8,12 +8,12 @@ Feature: get user groups
   Scenario: admin gets groups of an user
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "unused-group" has been created
-    And group "new-group" has been created
+    And group "brand-new-group" has been created
     And group "0" has been created
     And group "Admin & Finance (NP)" has been created
     And group "admin:Pokhara@Nepal" has been created
     And group "नेपाली" has been created
-    And user "brand-new-user" has been added to group "new-group"
+    And user "brand-new-user" has been added to group "brand-new-group"
     And user "brand-new-user" has been added to group "0"
     And user "brand-new-user" has been added to group "Admin & Finance (NP)"
     And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
@@ -22,7 +22,7 @@ Feature: get user groups
     Then the command should have been successful
     And the groups returned by the occ command should be
       | group                |
-      | new-group            |
+      | brand-new-group      |
       | 0                    |
       | Admin & Finance (NP) |
       | admin:Pokhara@Nepal  |

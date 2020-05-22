@@ -47,7 +47,8 @@ class LockedException extends \Exception {
 	 * @since 8.1.0
 	 */
 	public function __construct($path, \Exception $previous = null) {
-		parent::__construct('"' . $path . '" is locked', 0, $previous);
+		$message = \OC::$server->getL10N('lib')->t('"%s" is locked', $path);
+		parent::__construct($message, 0, $previous);
 		$this->path = $path;
 	}
 

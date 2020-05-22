@@ -1,0 +1,10 @@
+Bugfix: Add share type to the verifyExpirationDate hook
+
+The verifyExpirationDate hook notifies the password_policy app about proposed
+expiration dates of shares. The share type was not being passed in the hook.
+This meant that the password_policy app incorrectly processed user and group
+share expiration dates. See the linked issue for details.
+The problem has been corrected.
+
+https://github.com/owncloud/core/pull/37135
+https://github.com/owncloud/password_policy/issues/287
