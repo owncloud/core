@@ -119,7 +119,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
     And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "simple-folder" with user "Carol King" using the sharing API
+    Then user "Alice" should not be able to share folder "simple-folder" with user "Carol" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
     Given these users have been created with default attributes and skeleton files:
@@ -136,7 +136,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share file "/testimage (2).jpg" with user "David Lopez" using the sharing API
+    Then user "Alice" should not be able to share file "/testimage (2).jpg" with user "David" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -152,7 +152,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "/common" with user "David Lopez" using the sharing API
+    Then user "Alice" should not be able to share folder "/common" with user "David" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file inside a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -169,7 +169,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share file "/common/testimage.jpg" with user "David Lopez" using the sharing API
+    Then user "Alice" should not be able to share file "/common/testimage.jpg" with user "David" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a folder inside a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -178,13 +178,15 @@ Feature: misc scenarios on sharing with internal users
       | Brian    |
       | Carol    |
       | David    |
+    And group "grp1" has been created
+    And user "Alice" has been added to group "grp1"
     And user "Carol" has created folder "/common"
     And user "Carol" has created folder "/common/inside-common"
     And user "Carol" has shared folder "/common" with user "Alice"
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "/common/inside-common" with user "David Lopez" using the sharing API
+    Then user "Alice" should not be able to share folder "/common/inside-common" with user "David" using the sharing API
 
   Scenario: user tries to share a file from a group which is blacklisted from sharing using webUI from files page
     Given group "grp1" has been created
@@ -215,7 +217,7 @@ Feature: misc scenarios on sharing with internal users
     And the user opens the sharing tab from the file action menu of file "testimage (2).jpg" using the webUI
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
     And the share-with field should not be visible in the details panel
-    And user "Alice" should not be able to share file "testimage (2).jpg" with user "Carol King" using the sharing API
+    And user "Alice" should not be able to share file "testimage (2).jpg" with user "Carol" using the sharing API
 
   @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
