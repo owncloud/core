@@ -39,6 +39,11 @@ script('core', [
 			<!-- the following div ensures that the spinner is always inside the #message div -->
 			<div style="clear: both;"></div>
 		</div>
+		<?php if (isset($_['licenseMessage'])): ?>
+			<div class="warning">
+				<?php print_unescaped($_['licenseMessage']); ?>
+			</div>
+		<?php endif; ?>
 		<p class="grouptop<?php if (!empty($_['invalidpassword'])) {
 	?> shake<?php
 } ?>">

@@ -32,6 +32,7 @@ use OC_Util;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
@@ -59,6 +60,9 @@ class LoginController extends Controller {
 	/** @var Manager */
 	private $twoFactorManager;
 
+	/** @var ILicenseManager */
+	private $licenseManager;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
@@ -70,7 +74,7 @@ class LoginController extends Controller {
 	 * @param Manager $twoFactorManager
 	 */
 	public function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session,
-		Session $userSession, IURLGenerator $urlGenerator, Manager $twoFactorManager) {
+		Session $userSession, IURLGenerator $urlGenerator, Manager $twoFactorManager, ILicenseManager $licenseManager) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->config = $config;
@@ -78,6 +82,7 @@ class LoginController extends Controller {
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
 		$this->twoFactorManager = $twoFactorManager;
+		$this->licenseManager = $licenseManager;
 	}
 
 	/**
@@ -178,6 +183,19 @@ class LoginController extends Controller {
 			(\strpos($this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)),
 					$this->urlGenerator->getAbsoluteURL('/index.php/f/')) !== false)) {
 			$parameters['accessLink'] = true;
+		}
+
+		$licenseMessageInfo = $this->licenseManager->getLicenseMessageFor('core');
+		// show license message only if there is a license
+		$licenseState = $licenseMessageInfo['license_state'];
+		if ($licenseState !== ILicenseManager::LICENSE_STATE_MISSING) {
+			// license type === 1 implies it's a demo license
+			if ($licenseMessageInfo['type'] === 1 ||
+				($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
+					$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE)
+			) {
+				$parameters['licenseMessage'] = \implode('<br/>', $licenseMessageInfo['translated_message']);
+			}
 		}
 
 		return new TemplateResponse(
