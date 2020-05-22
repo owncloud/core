@@ -22,6 +22,8 @@ Summary
 * Bugfix - Fix error messages: [#37338](https://github.com/owncloud/core/issues/37338)
 * Bugfix - Allow unlimited access to PUT body if content length is 0: [#37394](https://github.com/owncloud/core/pull/37394)
 * Bugfix - Adjust user:sync --uid to use user backend iterator: [#37398](https://github.com/owncloud/core/pull/37398)
+* Bugfix - Allow clearing a user email address or display name: [#37424](https://github.com/owncloud/core/issues/37424)
+* Bugfix - Allow clearing a user email address with the Provisioning API: [#37424](https://github.com/owncloud/core/issues/37424)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -165,6 +167,28 @@ Details
 
    https://github.com/owncloud/enterprise/issues/3981
    https://github.com/owncloud/core/pull/37398
+
+* Bugfix - Allow clearing a user email address or display name: [#37424](https://github.com/owncloud/core/issues/37424)
+
+   The occ user:modify command would not allow the email or display name of a user to be cleared.
+   This problem has been fixed.
+
+   The email of a user can be cleared with: occ user:modify <username> email ''
+
+   The display name of a user can be cleared with: occ user:modify <username> displayname ''
+
+   And the effective display name reverts to the username.
+
+   https://github.com/owncloud/core/issues/37424
+   https://github.com/owncloud/core/pull/37425
+
+* Bugfix - Allow clearing a user email address with the Provisioning API: [#37424](https://github.com/owncloud/core/issues/37424)
+
+   Specifying the empty string as the email address is now valid when editing a user with the
+   Provisioning API. This allows the email address of a user to be cleared.
+
+   https://github.com/owncloud/core/issues/37424
+   https://github.com/owncloud/core/pull/37427
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
