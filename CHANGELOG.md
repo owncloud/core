@@ -41,6 +41,7 @@ Summary
 * Change - Update symfony/polyfill (1.16.0 => 1.17.0): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Added federated shares scan cronjob depreciating incoming-shares:poll: [#37391](https://github.com/owncloud/core/pull/37391)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.3 => 1.0.4): [#37421](https://github.com/owncloud/core/pull/37421)
+* Change - Update opis/closure (3.5.1 => 3.5.2): [#37431](https://github.com/owncloud/core/pull/37431)
 
 Details
 -------
@@ -290,6 +291,10 @@ Details
 * Change - Update laminas/laminas-zendframework-bridge (1.0.3 => 1.0.4): [#37421](https://github.com/owncloud/core/pull/37421)
 
    https://github.com/owncloud/core/pull/37421
+
+* Change - Update opis/closure (3.5.1 => 3.5.2): [#37431](https://github.com/owncloud/core/pull/37431)
+
+   https://github.com/owncloud/core/pull/37431
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
