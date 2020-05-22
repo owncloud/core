@@ -13,6 +13,16 @@ Feature: edit users
     And the user attributes returned by the API should include
       | email | brand-new-user@example.com |
 
+  Scenario: the administrator can clear a user email
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And the administrator has changed the email of user "brand-new-user" to "brand-new-user@example.com"
+    When the administrator changes the email of user "brand-new-user" to "''" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text 'The email address of brand-new-user updated to '
+    And user "brand-new-user" should exist
+    And the user attributes returned by the API should include
+      | email | |
+
   Scenario: the administrator can edit a user display name
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator changes the display name of user "brand-new-user" to "A New User" using the occ command
@@ -21,6 +31,16 @@ Feature: edit users
     And user "brand-new-user" should exist
     And the user attributes returned by the API should include
       | displayname | A New User |
+
+  Scenario: the administrator can clear a user display name and then it defaults to the username
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And the administrator has changed the display name of user "brand-new-user" to "A New User"
+    When the administrator changes the display name of user "brand-new-user" to "" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text 'The displayname of brand-new-user updated to '
+    And user "brand-new-user" should exist
+    And the user attributes returned by the API should include
+      | displayname | brand-new-user |
 
   @issue-23603
   Scenario: the administrator can edit a user quota

@@ -67,10 +67,6 @@ class ModifyTest extends TestCase {
 			[true, 'foo', null, '', 'The key cannot be empty'],
 			[true, 'foo', '', '', 'The key cannot be empty'],
 			[true, 'foo', 'test', '', 'Supported keys are displayname, email'],
-			[true, 'foo', 'displayname', '', 'The value cannot be empty'],
-			[true, 'foo', 'email', '', 'The value cannot be empty'],
-			[true, 'foo', 'email', null, 'The value cannot be empty'],
-			[true, 'foo', 'displayname', null, 'The value cannot be empty'],
 		];
 	}
 
@@ -139,7 +135,9 @@ class ModifyTest extends TestCase {
 	public function providerExecuteMethod() {
 		return [
 			['foo', 'displayname', 'foo123'],
+			['foo', 'displayname', ''],
 			['foo', 'email', 'foo@bar.com'],
+			['foo', 'email', ''],
 			['foo', 'email', 'foo@bar.com@foobar'], //Test for invalid email
 		];
 	}
@@ -170,10 +168,12 @@ class ModifyTest extends TestCase {
 				->method('setEMailAddress')
 				->with($value)
 				->willReturn(null);
-			$validateEmail = \OC::$server->getMailer()->validateMailAddress($value);
-			$this->mailer->expects($this->once())
-				->method('validateMailAddress')
-				->willReturn($validateEmail);
+			if ($value !== '') {
+				$validateEmail = \OC::$server->getMailer()->validateMailAddress($value);
+				$this->mailer->expects($this->once())
+					->method('validateMailAddress')
+					->willReturn($validateEmail);
+			}
 		} elseif ($key === 'displayname') {
 			$user->expects($this->once())
 				->method('setDisplayName')
