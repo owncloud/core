@@ -32,12 +32,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
-  @issue-ocis-reva-20
-  @issue-ocis-reva-26
-  @issue-ocis-reva-43
-  @issue-ocis-reva-44
-  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -71,35 +65,6 @@ Feature: sharing
       | 1               | 2                     | 2                   | 100             |
       | 2               | 2                     | 2                   | 200             |
 
-  @skipOnOcV10
-  @issue-ocis-reva-20
-  @issue-ocis-reva-26
-  @issue-ocis-reva-43
-  @issue-ocis-reva-44
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions <requested_permissions> using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the OCS status message should be "OK"
-    Examples:
-      | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
-      # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
-      | 1               | 31                    | 31                  | 100             |
-      | 2               | 31                    | 31                  | 100             |
-      # Ask for read, share (17), create and delete. You get share plus read
-      | 1               | 29                    | 31                  | 100             |
-      | 2               | 29                    | 31                  | 100             |
-      # Ask for read, update, create, delete. You get read plus update.
-      | 1               | 15                    | 15                  | 100             |
-      | 2               | 15                    | 15                  | 100             |
-      # Ask for just update. You get exactly update (you do not get read or anything else)
-      | 1               | 2                     | 2                   | 100             |
-      | 2               | 2                     | 2                   | 100             |
-
   Scenario Outline: Creating a share of a file with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -112,51 +77,6 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 400              |
-
-  @skipOnOcV10
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario or adjust it, so that it works also with oC10
-  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file with content "Random data" to "randomfile.txt"
-    When user "Alice" shares file "/randomfile.txt" with user "Brian" using the sharing API
-    Then the OCS status code should be "100"
-    And the OCS status message should be "OK"
-    And the HTTP status code should be "<http_status_code>"
-    And as "Brian" file "randomfile.txt" should not exist
-    Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 200              |
-
-  @skipOnOcV10
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario or adjust it, so that it works also with oC10
-  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    When user "Alice" shares file "/doesNotExist/randomfile.txt" with user "Brian" using the sharing API
-    And the HTTP status code should be "<http_status_code>"
-    And as "Brian" file "randomfile.txt" should not exist
-    Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
-
-  @skipOnOcV10
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario or adjust it, so that it works also with oC10
-  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    When user "Alice" shares file "/NotExistingFile.txt" with user "Brian" using the sharing API
-    And the HTTP status code should be "<http_status_code>"
-    And as "Brian" file "randomfile.txt" should not exist
-    Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
 
   @skipOnOcis
   @issue-ocis-reva-64
@@ -189,12 +109,6 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @skipOnOcis
-  @issue-ocis-reva-20
-  @issue-ocis-reva-26
-  @issue-ocis-reva-43
-  @issue-ocis-reva-46
-  @issue-ocis-reva-64
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -218,26 +132,6 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
-
-  @skipOnOcV10
-  @issue-ocis-reva-20
-  @issue-ocis-reva-26
-  @issue-ocis-reva-43
-  @issue-ocis-reva-46
-  @issue-ocis-reva-64
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/FOLDER"
-    When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the OCS status message should be "OK"
-    And the HTTP status code should be "200"
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 100             |
 
   @skipOnOcis @issue-ocis-reva-34
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)

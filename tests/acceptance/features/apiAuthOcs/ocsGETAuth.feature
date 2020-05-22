@@ -114,7 +114,7 @@ Feature: auth
       | /ocs/v1.php/cloud/users                                     | 403      | 200       |
       | /ocs/v2.php/cloud/users                                     | 403      | 403       |
       | /ocs/v1.php/config                                          | 100      | 200       |
-      | /ocs/v2.php/config                                          | 100      | 200       |
+      | /ocs/v2.php/config                                          | 200      | 200       |
       | /ocs/v1.php/privatedata/getattribute                        | 998      | 200       |
       | /ocs/v2.php/privatedata/getattribute                        | 998      | 404       |
 
