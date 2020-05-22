@@ -607,22 +607,26 @@ trait Provisioning {
 			$userAttribute['userid'] = $this->getActualUsername($row['username']);
 			if (isset($row['displayname'])) {
 				$userAttribute['displayName'] = $row['displayname'];
-			} elseif ($this->isTestingReplacingUsernames()) {
-				$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
 			} elseif ($setDefaultAttributes) {
-				$userAttribute['displayName'] = $this->getDisplayNameForUser($userAttribute['userid']);
+				if ($this->isTestingReplacingUsernames()) {
+					$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
+				} else {
+					$userAttribute['displayName'] = $this->getDisplayNameForUser($userAttribute['userid']);
+				}
 				if ($userAttribute['displayName'] === null) {
 					$userAttribute['displayName'] = $this->getDisplayNameForUser('regularuser');
 				}
 			} else {
 				$userAttribute['displayName'] = null;
 			}
-			if ($this->isTestingReplacingUsernames()) {
-				$userAttribute['email'] = $this->getEmailAddressForUser($row['username']);
-			} elseif (isset($row['email'])) {
+			if (isset($row['email'])) {
 				$userAttribute['email'] = $row['email'];
 			} elseif ($setDefaultAttributes) {
-				$userAttribute['email'] = $this->getEmailAddressForUser($userAttribute['userid']);
+				if ($this->isTestingReplacingUsernames()) {
+					$userAttribute['email'] = $this->getEmailAddressForUser($row['username']);
+				} else {
+					$userAttribute['email'] = $this->getEmailAddressForUser($userAttribute['userid']);
+				}
 				if ($userAttribute['email'] === null) {
 					$userAttribute['email'] = $row['username'] . '@owncloud.org';
 				}
@@ -630,11 +634,12 @@ trait Provisioning {
 				$userAttribute['email'] = null;
 			}
 
-			if ($this->isTestingReplacingUsernames()) {
-				$userAttribute['password'] = $this->getPasswordForUser($row['username']);
-			} elseif (isset($row['password'])) {
+			if (isset($row['password'])) {
 				$userAttribute['password'] = $this->getActualPassword($row['password']);
 			} else {
+				if ($this->isTestingReplacingUsernames()) {
+					$userAttribute['password'] = $this->getPasswordForUser($row['username']);
+				}
 				$userAttribute['password'] = $this->getPasswordForUser($row['username']);
 			}
 			// Add request body to the bodies array. we will use that later to loop through created users.

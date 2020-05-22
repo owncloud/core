@@ -473,17 +473,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'quota']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($user);
 			Assert::assertEquals(
 				true,
 				$visible,
 				__METHOD__
 				. " The quota of user '"
-				. $row['username']
+				. $user
 				. "' was expected to be visible to the administrator in the User Management page, but is not."
 			);
 		}
@@ -495,17 +497,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($user);
 			Assert::assertEquals(
 				false,
 				$visible,
 				__METHOD__
 				. " The quota of user '"
-				. $row['username']
+				. $user
 				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
 			);
 		}
@@ -517,17 +521,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames column with a heading | username |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($user);
 			Assert::assertEquals(
 				true,
 				$visible,
 				__METHOD__
 				. " The password of user '"
-				. $row['username']
+				. $user
 				. "' was expected to be visible to the administrator in the User Management page, but is not."
 			);
 		}
@@ -539,17 +545,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames column with a heading | username |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldNotBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($user);
 			Assert::assertEquals(
 				false,
 				$visible,
 				__METHOD__
 				. " The password of user '"
-				. $row['username']
+				. $user
 				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
 			);
 		}
@@ -561,21 +569,32 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames and storage locations with a heading | username | and | storage location |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeStorageLocationOfTheseUsers(
 		TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'storage location']);
 		foreach ($table as $row) {
-			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($user);
+			if ($this->featureContext->isTestingReplacingUsernames()) {
+				$expectedUserStorageLocation = $row["storage location"];
+				$expectedUserStorageLocationSplitted = \explode("/", $expectedUserStorageLocation);
+				$lastIndexOfArray = \count($expectedUserStorageLocationSplitted) - 1;
+				$expectedUserStorageLocationSplitted[$lastIndexOfArray] = $user;
+				$expectedUserStorageLocation = \implode("/", $expectedUserStorageLocationSplitted);
+			} else {
+				$expectedUserStorageLocation = $row["storage location"];
+			}
 			Assert::assertStringContainsString(
-				$row['storage location'],
+				$expectedUserStorageLocation,
 				$userStorageLocation,
 				__METHOD__
 				. "'"
-				. $row['storage location']
+				. $expectedUserStorageLocation
 				. "' is not contained in the storage location of '"
-				. $row['username']
+				. $user
 				. "'."
 			);
 		}
@@ -593,7 +612,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'last login']);
 		foreach ($table as $row) {
-			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$userLastLogin = $this->usersPage->getLastLoginOfUser($user);
 
 			Assert::assertStringContainsString(
 				$row['last login'],
@@ -602,7 +622,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 				. "'"
 				. $row['last login']
 				. "' is not contained in the last login of '"
-				. $row['username']
+				. $user
 				. "'."
 			);
 		}

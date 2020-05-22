@@ -822,7 +822,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
-		if ($userOrGroup === "user") {
+		$userAdditionalInfoFromAppConfig = \TestHelpers\AppConfigHelper::getAppConfig(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			'core',
+			'user_additional_info_field'
+		);
+		if ($userAdditionalInfoFromAppConfig["value"] === "id" && $userOrGroup === "user") {
 			$userName = $this->featureContext->getActualUsername($userName);
 			$userName = $this->featureContext->getDisplayNameForUser($userName);
 		}
@@ -1021,6 +1028,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function userReactsToShareOfferedByUsingWebUI(
 		$action, $share, $offeredBy
 	) {
+		$offeredBy = $this->featureContext->getActualUsername($offeredBy);
+		$offeredByUserDisplayName = $this->featureContext->getDisplayNameForUser($offeredBy);
 		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
 		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
 			$share, $this->getSession()
@@ -1028,7 +1037,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$found = false;
 		foreach ($fileRows as $fileRow) {
-			if ($offeredBy === $fileRow->getSharer()) {
+			if ($offeredByUserDisplayName === $fileRow->getSharer()) {
 				if (\substr($action, 0, 6) === "accept") {
 					$fileRow->acceptShare($this->getSession());
 				} else {
@@ -1041,7 +1050,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if ($found === false) {
 			throw new Exception(
 				__METHOD__ .
-				" could not find share '$share' offered by '$offeredBy'"
+				" could not find share '$share' offered by '$offeredByUserDisplayName'"
 			);
 		}
 	}
@@ -1566,6 +1575,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function assertShareSharedByIsInStateOnWebUI($item, $sharedBy, $state) {
+		$sharedBy = $this->featureContext->getActualUsername($sharedBy);
+		$sharedByUserDisplayName = $this->featureContext->getDisplayNameForUser($sharedBy);
+
 		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
 		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
 			$item, $this->getSession()
@@ -1573,19 +1585,19 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$found = false;
 		$currentState = null;
 		foreach ($fileRows as $fileRow) {
-			if ($sharedBy === $fileRow->getSharer()) {
+			if ($sharedByUserDisplayName === $fileRow->getSharer()) {
 				$found = true;
 				$currentState = $fileRow->getShareState();
 				break;
 			}
 		}
 		Assert::assertTrue(
-			$found, "could not find item called $item shared by $sharedBy"
+			$found, "could not find item called $item shared by $sharedByUserDisplayName"
 		);
 		Assert::assertSame(
 			$state,
 			$currentState,
-			" The file/folder '$item' shared by '$sharedBy' is expected to be state '$state', "
+			" The file/folder '$item' shared by '$sharedByUserDisplayName' is expected to be state '$state', "
 			. "but is actually found in state '$currentState' in the shared-with-you page."
 		);
 	}
