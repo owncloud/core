@@ -1474,6 +1474,10 @@ class Manager implements IManager {
 
 	/**
 	 * Verify the password of a public share
+	 * Dispatches following events:
+	 * 'share.beforepasswordcheck' is dispatched before every password verification
+	 * 'share.afterpasswordcheck' is dispatched after successful password verifications
+	 * 'share.failedpasswordcheck' is dispatched after unsuccessful password verifications
 	 *
 	 * @param \OCP\Share\IShare $share
 	 * @param string $password
@@ -1488,12 +1492,16 @@ class Manager implements IManager {
 		if ($password === null || $share->getPassword() === null) {
 			return false;
 		}
-
+		$beforeEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.beforepasswordcheck', $beforeEvent);
 		$newHash = '';
 		if (!$this->hasher->verify($password, $share->getPassword(), $newHash)) {
+			$failEvent = new GenericEvent(null, ['shareObject' => $share]);
+			$this->eventDispatcher->dispatch('share.failedpasswordcheck', $failEvent);
 			return false;
 		}
-
+		$afterEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.afterpasswordcheck', $afterEvent);
 		if (!empty($newHash)) {
 			$share->setPassword($newHash);
 			$provider = $this->factory->getProviderForType($share->getShareType());
