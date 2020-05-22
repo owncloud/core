@@ -310,8 +310,9 @@ class Users {
 				}
 				break;
 			case 'email':
-				if (\filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
-					$targetUser->setEMailAddress($parameters['_put']['value']);
+				$emailAddress = $parameters['_put']['value'];
+				if (($emailAddress === '') || \filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+					$targetUser->setEMailAddress($emailAddress);
 				} else {
 					return new Result(null, 102);
 				}

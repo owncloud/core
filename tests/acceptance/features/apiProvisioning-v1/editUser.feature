@@ -70,6 +70,16 @@ Feature: edit users
     And the HTTP status code should be "200"
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
 
+  Scenario: the administrator can clear an existing user email
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    When the administrator changes the email of user "brand-new-user" to "" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the email address of user "brand-new-user" should be ""
+
   @smokeTest
   Scenario: a subadmin should be able to edit the user information in their group
     Given these users have been created with default attributes and skeleton files:
