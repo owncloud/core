@@ -123,6 +123,7 @@ OC.L10N.register(
     "days" : "dae",
     "Allow users to share file via social media" : "Laat gebruikers d.m.v. sosiale media deel",
     "None" : "Geen",
+    "Save" : "Bewaar",
     "Log" : "Log",
     "What to log" : "Wat om te log",
     "Download logfile (%s)" : "Laai loglêer af (%s)",

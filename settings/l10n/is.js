@@ -207,6 +207,7 @@ OC.L10N.register(
     "Imprint URL" : "Vefslóð á lagalega yfirlýsingu",
     "Privacy Policy URL:" : "Slóð á stefnu um meðferð persónulegra gagna:",
     "Privacy Policy URL" : "Slóð á stefnu um meðferð persónulegra gagna",
+    "Save" : "Vista",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Allt (aflúsun, upplýsingar, viðvaranir, villur og alvarlegar aðvaranir)",
     "Info, warnings, errors and fatal issues" : "Upplýsingar, viðvaranir, villur og alvarlegar aðvaranir",
     "Warnings, errors and fatal issues" : "Viðvaranir, villur og alvarlegar aðvaranir",

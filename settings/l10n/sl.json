@@ -172,6 +172,7 @@
     "These groups will still be able to receive shares, but not to initiate them." : "Te skupine lahko sprejemajo mape v souporabo, ne morejo pa souporabe dovoliti",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Dovoli samodejno dokončanje uporabniškega imena pri dodeljevanju datotek ali map v souporabo. Če je možnost onemogočena, je treba vpisati celotno uporabniško ime.",
     "None" : "Brez",
+    "Save" : "Shrani",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Vse (podrobnosti, opozorila, hrošče, napake in usodni dogodki)",
     "Info, warnings, errors and fatal issues" : "Podrobnosti, opozorila, napake in usodni dogodki",
     "Warnings, errors and fatal issues" : "Opozorila, napake in usodni dogodki",

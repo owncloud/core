@@ -188,6 +188,7 @@ OC.L10N.register(
     "None" : "Geen",
     "User ID" : "User ID",
     "Email address" : "E-mailadres",
+    "Save" : "Opslaan",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Alles (fatale problemen, fouten, waarschuwingen, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, waarschuwingen, fouten en fatale problemen",
     "Warnings, errors and fatal issues" : "Waarschuwingen, fouten en fatale problemen",

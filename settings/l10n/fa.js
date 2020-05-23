@@ -154,6 +154,7 @@ OC.L10N.register(
     "Restrict users to only share with users in their groups" : "محدود کردن کاربران برای اشتراک‌گذاری تنها میان کاربران گروه خود",
     "Exclude groups from sharing" : "مستثنی شدن گروه ها از اشتراک گذاری",
     "None" : "هیچ‌کدام",
+    "Save" : "ذخیره",
     "Everything (fatal issues, errors, warnings, info, debug)" : "همه موارد (مشکلات مهلک، خطاها، اخطارها، اطلاعات، خطایابی)",
     "Info, warnings, errors and fatal issues" : "اطلاعات، اخطارها، خطاها، مشکلات اساسی",
     "Warnings, errors and fatal issues" : "اخطارها، خطاها، مشکلات مهلک",

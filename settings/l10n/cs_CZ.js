@@ -208,6 +208,7 @@ OC.L10N.register(
     "None" : "Žádné",
     "User ID" : "ID uživatele",
     "Email address" : "Emailová adresa",
+    "Save" : "Uložit",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Vše (fatální problémy, chyby, varování, informační, ladící)",
     "Info, warnings, errors and fatal issues" : "Informace, varování, chyby a fatální problémy",
     "Warnings, errors and fatal issues" : "Varování, chyby a fatální problémy",

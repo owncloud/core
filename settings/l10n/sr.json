@@ -128,6 +128,7 @@
     "Exclude groups from sharing" : "Изузми групе из дељења",
     "These groups will still be able to receive shares, but not to initiate them." : "Ове групе ће моћи да примају дељења али не и да их праве.",
     "None" : "Ништа",
+    "Save" : "Сачувај",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Све (фаталне проблеме, грешке, упозорења, информације, отклањање грешака)",
     "Info, warnings, errors and fatal issues" : "Информације, упозорења, грешке и фатални проблеми",
     "Warnings, errors and fatal issues" : "Упозорења, грешке и фатални проблеми",

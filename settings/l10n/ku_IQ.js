@@ -6,6 +6,7 @@ OC.L10N.register(
     "All" : "هەمووی",
     "Enable" : "چالاککردن",
     "None" : "هیچ",
+    "Save" : "پاشکه‌وتکردن",
     "Login" : "چوونەژوورەوە",
     "Encryption" : "نهێنیکردن",
     "Server address" : "ناونیشانی ڕاژه",

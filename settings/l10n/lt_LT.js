@@ -129,6 +129,7 @@ OC.L10N.register(
     "Allow resharing" : "Leisti dalintis",
     "Allow sharing with groups" : "Leisti dalintis su grupėmis",
     "None" : "Nieko",
+    "Save" : "Išsaugoti",
     "Errors and fatal issues" : "Klaidos ir kritinės problemos",
     "Fatal issues only" : "Tik kritinės problemos",
     "Log" : "Žurnalas",

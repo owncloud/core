@@ -143,6 +143,7 @@
     "These groups will still be able to receive shares, but not to initiate them." : "Grup ini akan tetap dapat menerima berbagi, tatapi tidak dapat membagikan.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Izinkan penyelesai otomatis pada nama pengguna di jendela dialog berbagi. Jika ini dinonaktifkan, nama pengguna utuh perlu dimasukkan.",
     "None" : "Tidak ada",
+    "Save" : "Simpan",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Semuanya (Masalah fatal, kesalahan, peringatan, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, peringatan, kesalahan dan masalah fatal",
     "Warnings, errors and fatal issues" : "Peringatan, kesalahan dan masalah fatal",

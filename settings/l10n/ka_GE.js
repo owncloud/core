@@ -32,6 +32,7 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "დაუშვი აპლიკაციების უფლება  Share API –ზე",
     "Allow resharing" : "გადაზიარების დაშვება",
     "None" : "არა",
+    "Save" : "შენახვა",
     "Log" : "ლოგი",
     "Login" : "ლოგინი",
     "Encryption" : "ენკრიპცია",

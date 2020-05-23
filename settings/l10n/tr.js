@@ -223,6 +223,7 @@ OC.L10N.register(
     "Imprint URL" : "Yayıncı bağlantısı",
     "Privacy Policy URL:" : "Mahremiyet Politikası URL:",
     "Privacy Policy URL" : "Mahremiyet Politikası URL",
+    "Save" : "Kaydet",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Her şey (Ciddi sorunlar, hatalar, uyarılar, bilgi, hata ayıklama)",
     "Info, warnings, errors and fatal issues" : "Bilgi, uyarılar, hatalar ve ciddi sorunlar",
     "Warnings, errors and fatal issues" : "Uyarılar, hatalar ve ciddi sorunlar",

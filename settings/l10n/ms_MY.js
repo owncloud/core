@@ -12,6 +12,7 @@ OC.L10N.register(
     "Groups" : "Kumpulan",
     "never" : "jangan",
     "Language" : "Bahasa",
+    "Save" : "Simpan",
     "Log" : "Log",
     "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",

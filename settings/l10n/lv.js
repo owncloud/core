@@ -129,6 +129,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Izslēgt grupas no kopīgošanas",
     "None" : "Nav",
     "Email address" : "E-pasta adrese",
+    "Save" : "Saglabāt",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Viss (letālas problēmas, kļūdas, brīdinājumi, informatīvas ziņas, atkļūdošanas paziņojumi)",
     "Info, warnings, errors and fatal issues" : "Informatīvas ziņas, brīdinājumi, kļūdas un letālas problēmas",
     "Warnings, errors and fatal issues" : "Brīdinājumi, kļūdas un letālas problēmas",

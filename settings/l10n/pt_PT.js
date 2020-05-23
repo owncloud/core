@@ -187,6 +187,7 @@ OC.L10N.register(
     "Restrict enumeration to group members" : "Restringir enumeração a membros do grupo",
     "None" : "Nenhum",
     "Email address" : "Endereço de correio eletrónico",
+    "Save" : "Guardar",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Tudo (problemas fatais, erros, avisos, informação, depuração)",
     "Info, warnings, errors and fatal issues" : "Informação, avisos, erros e problemas fatais",
     "Warnings, errors and fatal issues" : "Avisos, erros e problemas fatais",

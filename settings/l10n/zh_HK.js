@@ -26,6 +26,7 @@ OC.L10N.register(
     "Sharing" : "分享",
     "days" : "天",
     "None" : "空",
+    "Save" : "儲存",
     "Log" : "日誌",
     "Login" : "登入",
     "Encryption" : "加密",

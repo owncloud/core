@@ -190,6 +190,7 @@ OC.L10N.register(
     "Imprint URL" : "Печат URL",
     "Privacy Policy URL:" : "Политика за приватност URL:",
     "Privacy Policy URL" : "Политика за приватност URL",
+    "Save" : "Сними",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Се (Фатални работи, грешки, предупредувања, информации, дебаг)",
     "Info, warnings, errors and fatal issues" : "Информации, предупредувања, грешки и фатални работи",
     "Warnings, errors and fatal issues" : "Предупредувања, грешки и фатални работи",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Delete" : "తొలగించు",
     "Language" : "భాష",
+    "Save" : "భద్రపరచు",
     "Server address" : "సేవకి చిరునామా",
     "Add" : "చేర్చు",
     "Cancel" : "రద్దుచేయి",

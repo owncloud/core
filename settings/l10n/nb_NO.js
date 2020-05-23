@@ -212,6 +212,7 @@ OC.L10N.register(
     "Legal" : "Juridisk informasjon",
     "Privacy Policy URL:" : "Personverns Regler URL:",
     "Privacy Policy URL" : "Personverns Regler URL",
+    "Save" : "Lagre",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Alt (fatale problemer, feil, advarsler, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, advarsler, feil og fatale problemer",
     "Warnings, errors and fatal issues" : "Advarsler, feil og fatale problemer",

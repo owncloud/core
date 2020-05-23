@@ -147,6 +147,7 @@ OC.L10N.register(
     "Allow sharing with groups" : "Permite partajarea cu grupuri",
     "Exclude groups from sharing" : "Exclude grupuri de la partajare",
     "None" : "Niciuna",
+    "Save" : "Salvează",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Tot (erori fatale, erori, avertizări, informări, depanare)",
     "Info, warnings, errors and fatal issues" : "Informări, avertizări, erori și erori fatale",
     "Warnings, errors and fatal issues" : "Avertizări, erori și erori fatale",

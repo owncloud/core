@@ -71,6 +71,7 @@ OC.L10N.register(
     "Expire after " : "ನಿಶ್ವಸಿಸುವ ಅವಧಿ",
     "days" : "﻿ದಿನಗಳು",
     "None" : "﻿ಯಾವುದೂ ಇಲ್ಲ",
+    "Save" : "﻿ಉಳಿಸಿ",
     "Everything (fatal issues, errors, warnings, info, debug)" : "﻿ಎಲ್ಲ ರೀತಿಗಳು (ವಿನಾಶಕ ಸಮಸ್ಯೆಗಳು, ದೋಷಗಳು, ಎಚ್ಚರಿಕೆಗಳನ್ನು, ಮಾಹಿತಿ, ಇತರೆ )",
     "Info, warnings, errors and fatal issues" : "﻿ಮಾಹಿತಿ, ಎಚ್ಚರಿಕೆ, ದೋಷಗಳು ಮತ್ತು ಮಾರಕ ಸಮಸ್ಯೆಗಳು",
     "Warnings, errors and fatal issues" : "﻿ಎಚ್ಚರಿಕೆ, ದೋಷಗಳು ಮತ್ತು ಮಾರಕ ಸಮಸ್ಯೆಗಳು",

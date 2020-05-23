@@ -10,6 +10,7 @@ OC.L10N.register(
     "undo" : "dadwneud",
     "never" : "byth",
     "None" : "Dim",
+    "Save" : "Cadw",
     "Login" : "Mewngofnodi",
     "Encryption" : "Amgryptiad",
     "Add" : "Ychwanegu",

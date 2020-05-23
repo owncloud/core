@@ -142,6 +142,7 @@ OC.L10N.register(
     "These groups will still be able to receive shares, but not to initiate them." : "Aqueles gropes poiràn pas mai iniciar cap de partiment, mas poiràn totjorn rejónher los partiments faches per d'autres. ",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Lo verrolhatge transaccional de fichièrs utiliza la banca de donadas. Per obténer de  performàncias melhoras, es recomandat d'utilizar puslèu memcache. Consultatz la <a target=\"_blank\" href=\"%s\">documentacion ↗</a> per mai d'informacions.",
     "None" : "Pas cap",
+    "Save" : "Enregistrar",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Tot (errors fatalas, errors, avertiments, informacions, desbugatge)",
     "Info, warnings, errors and fatal issues" : "Informacions, avertiments, errors e errors fatalas",
     "Warnings, errors and fatal issues" : "Avertiments, errors e errors fatalas",

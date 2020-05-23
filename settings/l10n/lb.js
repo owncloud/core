@@ -141,6 +141,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Gruppe vum Deelen ausschléissen",
     "These groups will still be able to receive shares, but not to initiate them." : "Dës Gruppe kënnen weiderhin Undeeler kréien, mee kënnen se net ufänken.",
     "None" : "Keng",
+    "Save" : "Späicheren",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Alles (fatal Aspekter, Feeler, Warnungen, Informatiounen, Debug)",
     "Info, warnings, errors and fatal issues" : " Informatiounen, Warnungen, Feeler a fatal Aspekter",
     "Warnings, errors and fatal issues" : "Warnungen, Feeler a fatal Aspekter",

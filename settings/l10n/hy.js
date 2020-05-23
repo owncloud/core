@@ -41,6 +41,7 @@ OC.L10N.register(
     "Language" : "Լեզու",
     "by %s" : "%s կողմից",
     "days" : "օր",
+    "Save" : "Պահել",
     "Log" : "Լոգ",
     "Server address" : "Սերվերի հասցե",
     "Port" : "Պորտ",

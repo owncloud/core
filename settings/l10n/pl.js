@@ -207,6 +207,7 @@ OC.L10N.register(
     "Legal" : "Informacje prawne",
     "Privacy Policy URL:" : "URL do polityki prywatności:",
     "Privacy Policy URL" : "URL do polityki prywatności",
+    "Save" : "Zapisz",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Wszystko  (Informacje, ostrzeżenia, błędy i poważne problemy, debug)",
     "Info, warnings, errors and fatal issues" : "Informacje, ostrzeżenia, błędy i poważne problemy",
     "Warnings, errors and fatal issues" : "Ostrzeżenia, błędy i poważne problemy",

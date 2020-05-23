@@ -21,6 +21,7 @@ OC.L10N.register(
     "Language" : "Linguage",
     "days" : "dies",
     "None" : "Necun",
+    "Save" : "Salveguardar",
     "Log" : "Registro",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Particularmente quando usar le cliente scriptorio pro synchronisar files, le uso de SQLite es discoragiate.",
     "Get the apps to sync your files" : "Obtene le apps (applicationes) pro synchronizar tu files",

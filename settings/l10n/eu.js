@@ -135,6 +135,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Baztertu taldeak partekatzean",
     "These groups will still be able to receive shares, but not to initiate them." : "Talde hauek oraindik jaso ahal izango dute partekatzeak, baina ezingo dute partekatu",
     "None" : "Ezer",
+    "Save" : "Gorde",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Dena (arazo larriak, erroreak, abisuak, informazioa, arazketa)",
     "Info, warnings, errors and fatal issues" : "Informazioa, abisuak, erroreak eta arazo larriak.",
     "Warnings, errors and fatal issues" : "Abisuak, erroreak eta arazo larriak",

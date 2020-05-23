@@ -90,6 +90,7 @@ OC.L10N.register(
     "Restrict users to only share with users in their groups" : "Restringir a usuarios para que solo puedan compartir con usuarios dentro de sus grupos",
     "Allow users to send mail notification for shared files to other users" : "Permitir a usuarios mandar notificaciones por correo para archivos compartidos por otros usuarios",
     "None" : "Ninguno",
+    "Save" : "Guardar",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Todo (Información, Avisos, Errores, debug y problemas fatales)",
     "Info, warnings, errors and fatal issues" : "Información, Avisos, Errores y problemas fatales",
     "Warnings, errors and fatal issues" : "Advertencias, errores y problemas fatales",

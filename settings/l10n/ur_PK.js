@@ -11,6 +11,7 @@ OC.L10N.register(
     "Good password" : "اچھا پاسورڈ",
     "Strong password" : "مضبوط پاسورڈ",
     "Cheers!" : "واہ!",
+    "Save" : "حفظ",
     "Add" : "شامل کریں",
     "Cancel" : "منسوخ کریں",
     "Password" : "پاسورڈ",

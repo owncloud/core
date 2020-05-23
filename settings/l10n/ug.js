@@ -27,6 +27,7 @@ OC.L10N.register(
     "Language" : "تىل",
     "Sharing" : "ھەمبەھىر",
     "None" : "يوق",
+    "Save" : "ساقلا",
     "Log" : "خاتىرە",
     "Login" : "تىزىمغا كىرىڭ",
     "Encryption" : "شىفىرلاش",

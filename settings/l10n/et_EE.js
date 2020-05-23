@@ -120,6 +120,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Eemalda grupid jagamisest",
     "These groups will still be able to receive shares, but not to initiate them." : "Need grupid saavad vastu võtta jagamisi, kuid ise jagamisi algatada ei saa.",
     "None" : "Pole",
+    "Save" : "Salvesta",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Kõik (tõsised probleemid, veateated, hoiatused, info, veatuvastus)",
     "Info, warnings, errors and fatal issues" : "Info, hoiatused, veateted ja tõsised probleemid",
     "Warnings, errors and fatal issues" : "Hoiatused, veateated ja tõsised probleemid",

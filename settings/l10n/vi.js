@@ -68,6 +68,7 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Cho phép các ứng dụng sử dụng chia sẻ API",
     "Allow resharing" : "Cho phép chia sẻ lại",
     "None" : "Không gì cả",
+    "Save" : "Lưu",
     "Log" : "Log",
     "Login" : "Đăng nhập",
     "Encryption" : "Mã hóa",

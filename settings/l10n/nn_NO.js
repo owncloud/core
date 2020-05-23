@@ -48,6 +48,7 @@ OC.L10N.register(
     "days" : "dagar",
     "Allow resharing" : "Tillat vidaredeling",
     "None" : "Ingen",
+    "Save" : "Lagra",
     "Log" : "Logg",
     "What to log" : "Kva skal sparast",
     "Download logfile (%s)" : "Last ned logg (%s)",

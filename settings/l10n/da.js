@@ -184,6 +184,7 @@ OC.L10N.register(
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Tillad autofuldførelse af brugernavnet i delings dialogboksen. Hvis funktion er deaktiveret skal det fulde brugernavn indtastes.",
     "Restrict enumeration to group members" : "Begræns nummereringen til gruppemedlemmer",
     "None" : "Ingen",
+    "Save" : "Gem",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Alt (alvorlige fejl, fejl, advarsler, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, advarsler, fejl og alvorlige fejl",
     "Warnings, errors and fatal issues" : "Advarsler, fejl og alvorlige fejl",

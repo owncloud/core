@@ -143,6 +143,7 @@ OC.L10N.register(
     "These groups will still be able to receive shares, but not to initiate them." : "Ці групи зможуть отримувати спільні файли, але не зможуть відправляти їх.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Дозволи автодоповнення імені користувача в діалозі спільного доступу. Якщо вимкнено - треба буде вводити повне ім’я користувача.",
     "None" : "Жоден",
+    "Save" : "Зберегти",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Усі (критичні проблеми, помилки, попередження, інформаційні, налагодження)",
     "Info, warnings, errors and fatal issues" : "Інформаційні, попередження, помилки та критичні проблеми",
     "Warnings, errors and fatal issues" : "Попередження, помилки та критичні проблеми",

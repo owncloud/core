@@ -209,6 +209,7 @@ OC.L10N.register(
     "None" : "없음",
     "User ID" : "사용자 ID",
     "Email address" : "이메일 주소",
+    "Save" : "저장",
     "Everything (fatal issues, errors, warnings, info, debug)" : "모두(치명적 문제, 오류, 경고, 정보, 디버그)",
     "Info, warnings, errors and fatal issues" : "정보, 경고, 오류, 치명적 문제",
     "Warnings, errors and fatal issues" : "경고, 오류, 치명적 문제",

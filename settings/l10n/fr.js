@@ -205,6 +205,7 @@ OC.L10N.register(
     "None" : "Aucun",
     "User ID" : "ID utilisateur",
     "Email address" : "Adresse mail",
+    "Save" : "Enregistrer",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Tout (erreurs fatales, erreurs, avertissements, informations, debogage)",
     "Info, warnings, errors and fatal issues" : "Informations, avertissements, erreurs et erreurs fatales",
     "Warnings, errors and fatal issues" : "Avertissements, erreurs et erreurs fatales",

@@ -108,6 +108,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Qrupları paylaşımdan ayır",
     "These groups will still be able to receive shares, but not to initiate them." : "Bu qruplar paylaşımları hələdə ala biləcəklər ancaq, yarada bilməyəcəklər",
     "None" : "Heç bir",
+    "Save" : "Saxla",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Hər şey(ən pis hadisələr, səhvlər, xəbərdarlıqlar, məlmat, araşdırma səhvləri)",
     "Info, warnings, errors and fatal issues" : "Məlmat, xəbərdarlıqlar, səhvlər və ən pis hadisələr",
     "Warnings, errors and fatal issues" : "Xəbərdarlıqlar, səhvlər və ən pis hadisələr",

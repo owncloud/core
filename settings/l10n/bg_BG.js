@@ -174,6 +174,7 @@ OC.L10N.register(
     "None" : "Няма",
     "User ID" : "Потребителско ID",
     "Email address" : "Имейл адрес",
+    "Save" : "Запазване",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Всичко (фатални проблеми, грешки, предупреждения, информация, дебъгване)",
     "Info, warnings, errors and fatal issues" : "информация, предупреждения, грешки и фатални проблеми",
     "Warnings, errors and fatal issues" : "Предупреждения, грешки и фатални проблеми",

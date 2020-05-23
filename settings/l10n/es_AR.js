@@ -221,6 +221,7 @@ OC.L10N.register(
     "Imprint URL" : "Estampar URL",
     "Privacy Policy URL:" : "URL de Política de Privacidad:",
     "Privacy Policy URL" : "URL de Política de Privacidad",
+    "Save" : "Guardar",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Todo (notificaciones fatales, errores, advertencias, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, advertencias, errores y notificaciones fatales",
     "Warnings, errors and fatal issues" : "Advertencias, errores y notificaciones fatales",

@@ -160,6 +160,7 @@
     "These groups will still be able to receive shares, but not to initiate them." : "Estos grupos van poder siguir recibiendo conteníos compartíos, pero nun van poder anicialos",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Permitir autocompletar nome d'usuariu nel diálogu d'acción. Si esto ta desactiváu, el nome d'usuariu completu tien d'introducise.",
     "None" : "Dengún",
+    "Save" : "Guardar",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Too (Información, Avisos, Fallos, debug y problemes fatales)",
     "Info, warnings, errors and fatal issues" : "Información, Avisos, Fallos y problemes fatales",
     "Warnings, errors and fatal issues" : "Avisos, fallos y problemes fatales",

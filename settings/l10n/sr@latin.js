@@ -19,6 +19,7 @@ OC.L10N.register(
     "never" : "nikada",
     "Cheers!" : "U zdravlje!",
     "Language" : "Jezik",
+    "Save" : "Sačuvaj",
     "Port" : "Port",
     "Get the apps to sync your files" : "Preuzmite aplikacije za sinhronizaciju Vaših fajlova",
     "Desktop client" : "Desktop klijent",

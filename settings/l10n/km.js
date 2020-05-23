@@ -41,6 +41,7 @@ OC.L10N.register(
     "Allow public uploads" : "អនុញ្ញាត​ការ​ផ្ទុក​ឡើង​ជា​សាធារណៈ",
     "Allow resharing" : "អនុញ្ញាត​ការ​ចែក​រំលែក​ម្ដង​ទៀត",
     "None" : "គ្មាន",
+    "Save" : "រក្សាទុក",
     "Log" : "Log",
     "Login" : "ចូល",
     "Encryption" : "កូដនីយកម្ម",

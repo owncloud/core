@@ -37,6 +37,7 @@ OC.L10N.register(
     "Expire after " : "এরপর মেয়াদোত্তীর্ণ হও",
     "days" : "দিনগুলি",
     "None" : "কোনটিই নয়",
+    "Save" : "সংরক্ষণ",
     "Login" : "প্রবেশ",
     "Send mode" : "পাঠানো মোড",
     "Encryption" : "সংকেতায়ন",

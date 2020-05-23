@@ -122,6 +122,7 @@
     "Exclude groups from sharing" : "Vybrať skupiny zo zdieľania",
     "These groups will still be able to receive shares, but not to initiate them." : "Tieto skupiny budú môcť stále zdieľať, ale sami nemôžu zdieľať ostatným.",
     "None" : "Žiadny",
+    "Save" : "Uložiť",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Všetko (fatálne problémy, chyby, upozornenia, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, upozornenia, chyby a fatálne problémy",
     "Warnings, errors and fatal issues" : "Upozornenia, chyby a fatálne problémy",

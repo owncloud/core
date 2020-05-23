@@ -223,6 +223,7 @@ OC.L10N.register(
     "Imprint URL" : "נתיב הטבעה",
     "Privacy Policy URL:" : "נתיב מדיניות פרטיות:",
     "Privacy Policy URL" : "נתיב מדיניות פרטיות",
+    "Save" : "שמירה",
     "Everything (fatal issues, errors, warnings, info, debug)" : "הכול (נושאים חמורים, שגיאות, אזהרות, מידע, ניפוי שגיאות)",
     "Info, warnings, errors and fatal issues" : "מידע, אזהרות, שגיאות ונושאים חמורים",
     "Warnings, errors and fatal issues" : "אזהרות, שגיאות ונושאים חמורים",

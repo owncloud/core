@@ -90,6 +90,7 @@
     "Exclude groups from sharing" : "Isključite grupe iz dijeljenja",
     "These groups will still be able to receive shares, but not to initiate them." : "Ove će grupe i dalje moći primati dijeljene resurse, ali ne i inicirati ih",
     "None" : "Ništa",
+    "Save" : "Spremi",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Sve (fatalni problemi, greške, upozorenja, info, ispravljanje pogrešaka)",
     "Info, warnings, errors and fatal issues" : "Informacije, upozorenja, greške i fatalni problemi",
     "Warnings, errors and fatal issues" : "Upozorenja, greške i fatalni problemi",

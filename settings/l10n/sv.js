@@ -173,6 +173,7 @@ OC.L10N.register(
     "These groups will still be able to receive shares, but not to initiate them." : "Dessa grupper kommer fortfarande kunna ta emot delningar, men inte skapa delningar.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Tillåt användarnamn att autokompletteras i delningsfönstret. Om det är inaktiverat krävs fullständigt användarnamn i rutan.",
     "None" : "Ingen",
+    "Save" : "Spara",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Allting (allvarliga fel, fel, varningar, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, varningar och allvarliga fel",
     "Warnings, errors and fatal issues" : "Varningar, fel och allvarliga fel",

@@ -78,6 +78,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Isključite grupe iz dijeljenja zajedničkih resursa",
     "These groups will still be able to receive shares, but not to initiate them." : "Ove će grupe još uvijek moći primati dijeljene resurse, ali ne i inicirati ih",
     "None" : "Ništa",
+    "Save" : "Spremi",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Sve (kobni problemi, pogreške, upozorenja, ispravljanje pogrešaka)",
     "Info, warnings, errors and fatal issues" : "Informacije, upozorenja, pogreške i kobni problemi",
     "Warnings, errors and fatal issues" : "Upozorenja, pogreške i kobni problemi",

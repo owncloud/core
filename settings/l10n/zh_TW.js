@@ -164,6 +164,7 @@ OC.L10N.register(
     "These groups will still be able to receive shares, but not to initiate them." : "這些群組仍然能接受其他人的分享，但是沒有辦法發起分享",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "允許使用者名稱自動補齊在分享對話框，如果取消這個功能，必須完整輸入使用者名稱",
     "None" : "無",
+    "Save" : "儲存",
     "Everything (fatal issues, errors, warnings, info, debug)" : "全部（嚴重問題、錯誤、警告、資訊、除錯訊息）",
     "Info, warnings, errors and fatal issues" : "嚴重問題、錯誤、警告、資訊",
     "Warnings, errors and fatal issues" : "嚴重問題、錯誤、警告",
