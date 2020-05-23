@@ -70,6 +70,7 @@ Feature: edit users
     And the HTTP status code should be "200"
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
 
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario: the administrator can clear an existing user email
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"

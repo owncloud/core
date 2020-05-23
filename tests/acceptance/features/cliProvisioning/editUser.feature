@@ -13,6 +13,7 @@ Feature: edit users
     And the user attributes returned by the API should include
       | email | brand-new-user@example.com |
 
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario: the administrator can clear a user email
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator has changed the email of user "brand-new-user" to "brand-new-user@example.com"
@@ -32,6 +33,7 @@ Feature: edit users
     And the user attributes returned by the API should include
       | displayname | A New User |
 
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario: the administrator can clear a user display name and then it defaults to the username
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "A New User"
