@@ -253,7 +253,7 @@ class SyncBackend extends Command {
 	) {
 		$output->writeln("Searching for $uid ...");
 
-		$iterator = new BackendUsersIterator($backend, $uid);
+		$iterator = new BackendUsersIterator($backend, '');
 		$userToSync = null;
 		foreach ($iterator as $userUid) {
 			if ($userUid === $uid) {
