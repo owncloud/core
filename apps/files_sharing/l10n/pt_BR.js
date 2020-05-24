@@ -100,6 +100,7 @@ OC.L10N.register(
     "Public upload disabled by the administrator" : "Envio público foi desativado pelo administrador",
     "Public upload is only possible for publicly shared folders" : "Envio pública só é possível para pastas compartilhadas publicamente",
     "Sharing %s failed because the back end does not allow shares from type %s" : "O compartilhando %s falhou porque o backend não permite ações de tipo %s",
+    "shareWith parameter must be a string" : "o parâmetro compartilharCom deve ser uma sequência de caracteres",
     "Unknown share type" : "Tipo de compartilhamento desconhecido",
     "Not a directory" : "Não é um diretório",
     "Could not lock path" : "Não foi possível bloquear o caminho",

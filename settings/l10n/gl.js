@@ -223,6 +223,8 @@ OC.L10N.register(
     "Imprint URL" : "URL de impresión",
     "Privacy Policy URL:" : "URL da directiva de privacidade:",
     "Privacy Policy URL" : "URL da directiva de privacidade:",
+    "Enterprise license key" : "Chave de licenza Empresarial",
+    "Enter a new license:" : "Introduza a nova licenza:",
     "Save" : "Gardar",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Todo (incidencias críticas, erros, avisos, información, depuración)",
     "Info, warnings, errors and fatal issues" : "Información, avisos, erros e incidencias críticas",
