@@ -19,6 +19,7 @@ OC.L10N.register(
     "Share with me through my #ownCloud Federated Cloud ID" : "Поделитесь со мной через мой #ownCloud ID в объединении облачных хранилищ",
     "Federated Cloud Sharing" : "Объединение облачных хранилищ",
     "Open documentation" : "Открыть документацию",
+    "Periodically synchronize outdated federated shares for active users" : "Периодически синхронизировать устаревшие федеративные ресурсы для активных пользователей",
     "Allow users on this server to send shares to other servers" : "Разрешить пользователям делиться с пользователями других серверов",
     "Allow users on this server to receive shares from other servers" : "Разрешить пользователям использовать общие ресурсы с других серверов",
     "Automatically accept remote shares from trusted servers" : "Автоматически принимать удалённый доступ от доверенных серверов",
