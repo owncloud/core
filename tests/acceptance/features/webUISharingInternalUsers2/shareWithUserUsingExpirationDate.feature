@@ -277,7 +277,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     Given user "Carol" has shared folder "/simple-folder" with user "Alice"
     And user "Carol" has shared folder "/simple-folder" with user "Brian"
     And user "Carol" has logged in using the webUI
-    When the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    When the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | edit    | no |
       | create  | no |
     And the user changes expiration date for share of user "Alice" to "+5 days" in the share dialog
