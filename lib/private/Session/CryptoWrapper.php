@@ -89,7 +89,21 @@ class CryptoWrapper {
 				if ($webRoot === '') {
 					$webRoot = '/';
 				}
-				\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
+
+				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
+					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
+				} else {
+					$options = [
+						"expires" => 0,
+						"path" => $webRoot,
+						"domain" => '',
+						"secure" => $secureCookie,
+						"httponly" => true,
+						"samesite" => 'strict'
+					];
+
+					\setcookie(self::COOKIE_NAME, $this->passphrase, $options);
+				}
 			}
 		}
 	}
