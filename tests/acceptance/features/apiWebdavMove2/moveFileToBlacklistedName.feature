@@ -8,11 +8,23 @@ Feature: users cannot move (rename) a file to a blacklisted name
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis
+  @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: rename a file to a filename that is banned by default
     Given using <dav_version> DAV path
     When user "Alice" moves file "/welcome.txt" to "/.htaccess" using the WebDAV API
     Then the HTTP status code should be "403"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @issue-ocis-reva-211 @skipOnOcV10
+  #after fixing the issues delete this Scenario and use the one above
+  Scenario Outline: rename a file to a filename that is banned by default
+    Given using <dav_version> DAV path
+    When user "Alice" moves file "/welcome.txt" to "/.htaccess" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/.htaccess" should exist
     Examples:
       | dav_version |
       | old         |
@@ -57,17 +69,6 @@ Feature: users cannot move (rename) a file to a blacklisted name
       | /FOLDER/bannedfilename                 | 201       | yes    |
       | /FOLDER/bannedfilenamewithoutdot       | 201       | yes    |
       | /FOLDER/not-contains-banned-string.txt | 201       | yes    |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-  @issue-ocis-reva-211 @skipOnOcV10
-  Scenario Outline: rename a file to a filename that is banned by default
-    Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/.htaccess" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/.htaccess" should exist
     Examples:
       | dav_version |
       | old         |

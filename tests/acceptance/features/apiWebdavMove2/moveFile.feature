@@ -209,11 +209,23 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @skipOnOcis
+  @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: rename a file into an invalid filename
     Given using <dav_version> DAV path
     When user "Alice" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
     Then the HTTP status code should be "400"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @issue-ocis-reva-211 @skipOnOcV10
+  #after fixing the issues delete this Scenario and use the one above
+  Scenario Outline: rename a file into an invalid filename
+    Given using <dav_version> DAV path
+    When user "Alice" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/a\\a" should exist
     Examples:
       | dav_version |
       | old         |
@@ -255,7 +267,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @skipOnOcis
+  @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: Renaming a file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
@@ -267,6 +279,18 @@ Feature: move (rename) file
       | /welcome.txt |
     But user "Alice" should not see the following elements
       | /welcome.part |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @issue-ocis-reva-211 @skipOnOcV10
+  #after fixing the issues delete this Scenario and use the one above
+  Scenario Outline: Renaming a file to a path with extension .part is possible
+    Given using <dav_version> DAV path
+    When user "Alice" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/welcome.part" should exist
     Examples:
       | dav_version |
       | old         |
