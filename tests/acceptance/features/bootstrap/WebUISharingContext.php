@@ -830,9 +830,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			'core',
 			'user_additional_info_field'
 		);
-		if ($userAdditionalInfoFromAppConfig["value"] === "id" && $userOrGroup === "user") {
-			$userName = $this->featureContext->getActualUsername($userName);
-			$userName = $this->featureContext->getDisplayNameForUser($userName);
+		if ($userOrGroup === "user") {
+			$userNameActual = $this->featureContext->getActualUsername($userName);
+			$userName = $this->featureContext->getDisplayNameForUser($userNameActual);
+			if ($userAdditionalInfoFromAppConfig["value"] === "id") {
+				$userName = $userName . " (" . $userNameActual . ")";
+			}
 		}
 		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
 		$this->sharingDialog->setSharingPermissions(
