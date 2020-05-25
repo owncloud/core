@@ -152,6 +152,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSharesFileFolderWithUserUsingTheWebUI(
 		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
 			$folder, "user", $remote, $user, $maxRetries, $quiet
 		);
