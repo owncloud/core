@@ -45,7 +45,9 @@ Summary
 * Change - Update laminas/laminas-zendframework-bridge (1.0.3 => 1.0.4): [#37421](https://github.com/owncloud/core/pull/37421)
 * Change - Update opis/closure (3.5.1 => 3.5.2): [#37431](https://github.com/owncloud/core/pull/37431)
 * Change - Update opis/closure (3.5.2 => 3.5.3): [#37443](https://github.com/owncloud/core/pull/37443)
+* Change - Update doctrine/lexer (1.2.0 => 1.2.1): [#37448](https://github.com/owncloud/core/pull/37448)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
+* Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 
 Details
 -------
@@ -326,6 +328,10 @@ Details
 
    https://github.com/owncloud/core/pull/37443
 
+* Change - Update doctrine/lexer (1.2.0 => 1.2.1): [#37448](https://github.com/owncloud/core/pull/37448)
+
+   https://github.com/owncloud/core/pull/37448
+
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
    The new grace period allows you to try enterprise apps for 24 hours without having a valid
@@ -340,6 +346,13 @@ Details
    grace period popup.
 
    https://github.com/owncloud/core/pull/36814
+
+* Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
+
+   'share.beforepasswordcheck', 'share.afterpasswordcheck' and
+   'share.failedpasswordcheck' events have been added for share password validations.
+
+   https://github.com/owncloud/core/pull/37438
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
