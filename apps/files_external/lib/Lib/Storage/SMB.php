@@ -223,6 +223,12 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$result = [];
 			$children = $this->share->dir($path);
 			foreach ($children as $fileInfo) {
+				$fullPath = "{$path}/{$fileInfo->getName()}";
+				if (isset($this->statCache[$fullPath])) {
+					// reference in the cache might have its fileinfo's mode
+					// already resolved, so use that
+					$fileInfo = $this->statCache[$fullPath];
+				}
 				// check if the file is readable before adding it to the list
 				// can't use "isReadable" function here, use smb internals instead
 				try {
@@ -231,7 +237,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 					} else {
 						$result[] = $fileInfo;
 						//remember entry so we can answer file_exists and filetype without a full stat
-						$this->statCache[$path . '/' . $fileInfo->getName()] = $fileInfo;
+						$this->statCache[$fullPath] = $fileInfo;
 					}
 				} catch (NotFoundException $e) {
 					$this->swallow(__FUNCTION__, $e);
