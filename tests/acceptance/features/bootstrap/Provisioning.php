@@ -1061,6 +1061,38 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator sends a user creation request with the following attributes using the provisioning API:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminSendsUserCreationRequestWithFollowingAttributesUsingTheProvisioningApi(TableNode $table) {
+		$this->verifyTableNodeRows($table, ["username", "password"], ["email", "displayname"]);
+		$table = $table->getRowsHash();
+		$username = $this->getActualUsername($table["username"]);
+		$password = $this->getActualPassword($table["password"]);
+		$displayname = \array_key_exists("displayname", $table) ? $table["displayname"] : null;
+		$email = \array_key_exists("email", $table) ? $table["email"] : null;
+		$userAttributes = [
+			"userid" => $username,
+			"password" => $password,
+			"displayname" => $displayname,
+			"email" => $email
+		];
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$this->getAdminUsername(),
+			"POST",
+			"/cloud/users",
+			$userAttributes
+		);
+		$this->addUserToCreatedUsersList(
+			$username, $password, $displayname, $email
+		);
+	}
+
+	/**
 	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
