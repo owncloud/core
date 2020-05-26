@@ -1,0 +1,6 @@
+Enhancement: Add 3 new events (before-fail-after) for share password validations
+
+'share.beforepasswordcheck', 'share.afterpasswordcheck' and 'share.failedpasswordcheck'
+events have been added for share password validations.
+
+https://github.com/owncloud/core/pull/37438

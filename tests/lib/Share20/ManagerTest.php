@@ -3151,7 +3151,23 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->hasher->method('verify')->with('invalidpassword', 'password', '')->willReturn(false);
 
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforepasswordcheck',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforepasswordcheck';
+				$calledBeforeEvent[] = $event;
+			});
+		$calledFailEvent = [];
+		$this->eventDispatcher->addListener('share.failedpasswordcheck',
+			function (GenericEvent $event) use (&$calledFailEvent) {
+				$calledFailEvent[] = 'share.failedpasswordcheck';
+				$calledFailEvent[] = $event;
+			});
 		$this->assertFalse($this->manager->checkPassword($share, 'invalidpassword'));
+		$this->assertEquals('share.beforepasswordcheck', $calledBeforeEvent[0]);
+		$this->assertEquals('share.failedpasswordcheck', $calledFailEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledFailEvent[1]);
 	}
 
 	public function testCheckPasswordValidPassword() {
@@ -3159,9 +3175,26 @@ class ManagerTest extends \Test\TestCase {
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 		$share->method('getPassword')->willReturn('passwordHash');
 
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforepasswordcheck',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforepasswordcheck';
+				$calledBeforeEvent[] = $event;
+			});
+		$calledAfterEvent = [];
+		$this->eventDispatcher->addListener('share.afterpasswordcheck',
+			function (GenericEvent $event) use (&$calledAfterEvent) {
+				$calledAfterEvent[] = 'share.afterpasswordcheck';
+				$calledAfterEvent[] = $event;
+			});
+
 		$this->hasher->method('verify')->with('password', 'passwordHash', '')->willReturn(true);
 
 		$this->assertTrue($this->manager->checkPassword($share, 'password'));
+		$this->assertEquals('share.beforepasswordcheck', $calledBeforeEvent[0]);
+		$this->assertEquals('share.afterpasswordcheck', $calledAfterEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
 	}
 
 	public function testCheckPasswordUpdateShare() {
