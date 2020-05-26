@@ -36,8 +36,7 @@ config = {
 			'databases': [
 				'sqlite',
 				'mariadb:10.2',
-			],
-			'coverage': False
+			]
 		},
 		'external-samba-windows' : {
 			'phpVersions': [
