@@ -51,6 +51,12 @@ OC.License = {
 				if (!data || data.apps < 1) {
 					return;
 				}
+
+				var link = 'https://owncloud.com/try-enterprise/';
+				if (data.demoKeyLink) {
+					link = data.demoKeyLink;
+				}
+
 				// adjust moment's time thresholds for better accuracy:
 				// it will show "24 hours" instead of "a day" and "89 minutes" instead of "2 hours"
 				// we'll have to restore the defaults afterwards.
@@ -74,7 +80,7 @@ OC.License = {
 					time_remaining_msg: t('core', 'Remaining time: {rtime}', {
 						rtime: relativeTime
 					}),
-					clickable_link: 'https://owncloud.com/try-enterprise/',
+					clickable_link: link,
 					clickable_link_text: t('core', 'Get your demo key'),
 					placeholder: t('core', 'Enter license key'),
 					license_button_text: t('core', 'Set new key')
