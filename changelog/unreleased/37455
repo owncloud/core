@@ -1,0 +1,11 @@
+Change: Prioritize config.php file over other configurations
+
+Previously, in case there were several configuration files, all those files
+were merged into one. If there were duplicated configuration keys, the values
+were overwritten.
+
+Now, the files are merged the same way, but if there are duplicated configuration
+keys, they won't be overwritten. This means that the config.php contents will
+always be present.
+
+https://github.com/owncloud/core/pull/37455
