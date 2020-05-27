@@ -394,7 +394,7 @@ class Log implements ILogger {
 		if ($level >= $minLevel) {
 			$logger = $this->logger;
 			// check if logger supports extra fields
-			if (!empty($extraFields) && \is_callable($logger, 'writeExtra')) {
+			if (!empty($extraFields) && \is_callable([$logger, 'writeExtra'])) {
 				\call_user_func([$logger, 'writeExtra'], $app, $formattedMessage, $level, $logConditionFile, $extraFields);
 			} else {
 				\call_user_func([$logger, 'write'], $app, $formattedMessage, $level, $logConditionFile);
