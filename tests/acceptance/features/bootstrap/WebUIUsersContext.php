@@ -148,7 +148,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$shouldExist = ($attemptTo === "creates");
 
 		$this->featureContext->addUserToCreatedUsersList(
-			$username, $password, "", $email, $shouldExist
+			$username, $password, $username, $email, $shouldExist
 		);
 		if (\is_array($groups)) {
 			foreach ($groups as $group) {

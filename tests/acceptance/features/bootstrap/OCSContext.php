@@ -112,7 +112,7 @@ class OCSContext implements Context {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
-	 * @param TableNode|null $body
+	 * @param TableNode|array|null $body
 	 * @param string|null $password
 	 * @param array $headers
 	 *
@@ -130,6 +130,8 @@ class OCSContext implements Context {
 		$bodyArray = [];
 		if ($body instanceof TableNode) {
 			$bodyArray = $body->getRowsHash();
+		} elseif ($body !== null && \is_array($body)) {
+			$bodyArray = $body;
 		}
 
 		if ($user !== 'UNAUTHORIZED_USER') {
