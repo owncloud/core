@@ -24,6 +24,7 @@ Summary
 * Bugfix - Adjust user:sync --uid to use user backend iterator: [#37398](https://github.com/owncloud/core/pull/37398)
 * Bugfix - Allow clearing a user email address or display name: [#37424](https://github.com/owncloud/core/issues/37424)
 * Bugfix - Allow clearing a user email address with the Provisioning API: [#37424](https://github.com/owncloud/core/issues/37424)
+* Bugfix - Logging of extra fields when logger does not have a writeExtra method: [#37453](https://github.com/owncloud/core/issues/37453)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -193,6 +194,17 @@ Details
 
    https://github.com/owncloud/core/issues/37424
    https://github.com/owncloud/core/pull/37427
+
+* Bugfix - Logging of extra fields when logger does not have a writeExtra method: [#37453](https://github.com/owncloud/core/issues/37453)
+
+   If a logger in use does not have a writeExtra method then an error message would be generated when
+   a log entry with extra data happens.
+
+   This problem has been corrected. In this case the basic log information will be written without
+   the extra data.
+
+   https://github.com/owncloud/core/issues/37453
+   https://github.com/owncloud/core/pull/37454
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
