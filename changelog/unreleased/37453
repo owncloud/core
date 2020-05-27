@@ -1,0 +1,10 @@
+Bugfix: Logging of extra fields when logger does not have a writeExtra method
+
+If a logger in use does not have a writeExtra method then an error message would
+be generated when a log entry with extra data happens.
+
+This problem has been corrected. In this case the basic log information will be
+written without the extra data.
+
+https://github.com/owncloud/core/issues/37453
+https://github.com/owncloud/core/pull/37454
