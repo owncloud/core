@@ -219,7 +219,13 @@ class Config {
 	/**
 	 * Loads the config file
 	 *
-	 * Reads the config file and saves it to the cache
+	 * Reads the config file and saves it to the cache.
+	 * In case of multiple cofiguration files, the contents will be mixed. In case of
+	 * duplicated keys, the keys won't be overwritten
+	 * The files will be loaded using "natural order", except for the "config.php" file.
+	 * (see https://www.php.net/manual/en/function.natsort.php)
+	 * "config.php" file will always loaded first. This means that the contents of the
+	 * "config.php" file will win over the rest of the files.
 	 *
 	 * @throws \Exception If no lock could be acquired or the config file has not been found
 	 */
@@ -253,7 +259,7 @@ class Config {
 			unset($CONFIG);
 			include $file;
 			if (isset($CONFIG) && \is_array($CONFIG)) {
-				$this->cache = \array_merge($this->cache, $CONFIG);
+				$this->cache = $this->cache + $CONFIG;  // merge but don't override
 			}
 
 			// Close the file pointer and release the lock
