@@ -1541,6 +1541,13 @@ $CONFIG = [
 'dav.enable.async' => false,
 
 /**
+ * Show the grace period popup
+ * Decide whether show or not the grace period popup. There is no change in the
+ * behaviour of the grace period.
+ */
+'grace_period.demo_key.show_popup' => true,
+
+/**
  * Link to get a demo key during active grace period
  * The admin will be directed to that web page if he clicks in the "get a demo key"
  * link in the grace period popup. It's expected that the web page contains instructions
