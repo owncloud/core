@@ -76,21 +76,6 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsTargetservers exte
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1TargetServer");
   }
   /**
-   * Lists all TargetServers in an environment as a JSON array.
-   * (targetservers.listOrganizationsEnvironmentsTargetservers)
-   *
-   * @param string $parent Required. The parent environment name. Must be of the
-   * form `organizations/{org}/environments/{env}`.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsTargetservers($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
-  /**
    * Updates an existing TargetServer. Note that this operation has PUT semantics;
    * it will replace the entirety of the existing TargetServer with the resource
    * in the request body. (targetservers.update)

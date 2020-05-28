@@ -17,10 +17,12 @@
 
 class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1beta1Filter extends Google_Collection
 {
-  protected $collection_key = 'services';
+  protected $collection_key = 'subaccounts';
   public $creditTypesTreatment;
+  public $labels;
   public $projects;
   public $services;
+  public $subaccounts;
 
   public function setCreditTypesTreatment($creditTypesTreatment)
   {
@@ -29,6 +31,14 @@ class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1beta1Filter e
   public function getCreditTypesTreatment()
   {
     return $this->creditTypesTreatment;
+  }
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  public function getLabels()
+  {
+    return $this->labels;
   }
   public function setProjects($projects)
   {
@@ -45,5 +55,13 @@ class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1beta1Filter e
   public function getServices()
   {
     return $this->services;
+  }
+  public function setSubaccounts($subaccounts)
+  {
+    $this->subaccounts = $subaccounts;
+  }
+  public function getSubaccounts()
+  {
+    return $this->subaccounts;
   }
 }

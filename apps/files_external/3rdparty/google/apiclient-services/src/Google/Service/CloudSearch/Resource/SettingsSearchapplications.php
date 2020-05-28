@@ -89,11 +89,11 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
-   * help with debugging, set this field. Otherwise, ignore this field.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.  The default value is 10
    * @opt_param int pageSize The maximum number of items to return.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_ListSearchApplicationsResponse
    */
   public function listSettingsSearchapplications($optParams = array())

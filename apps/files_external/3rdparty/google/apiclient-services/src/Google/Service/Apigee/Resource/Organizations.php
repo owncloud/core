@@ -26,8 +26,9 @@
 class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resource
 {
   /**
-   * Creates an Apigee organization. See [Create an organization](/hybrid/precog-
-   * provision). (organizations.create)
+   * Creates an Apigee organization. See [Create an
+   * organization](https://docs.apigee.com/hybrid/latest/precog-provision).
+   * (organizations.create)
    *
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Organization $postBody
    * @param array $optParams Optional parameters.
@@ -44,8 +45,8 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('create', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
-   * Gets the profile for an Apigee organization. See
-   * [Organizations](/hybrid/terminology#organizations). (organizations.get)
+   * Gets the profile for an Apigee organization. See [Organizations](https://docs
+   * .apigee.com/hybrid/latest/terminology#organizations). (organizations.get)
    *
    * @param string $name Required. Apigee organization name in the following
    * format:   `organizations/{org}`
@@ -59,37 +60,6 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Organization");
   }
   /**
-   * Gets metrics for an organization. (organizations.getMetrics)
-   *
-   * @param string $parent Required. Name of the Apigee organization. Use the
-   * following structure in your request:   `organizations/{org}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Metrics
-   */
-  public function getMetrics($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('getMetrics', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Metrics");
-  }
-  /**
-   * Lists details for all portals. (organizations.getSites)
-   *
-   * @param string $parent Required. Name of the Apigee organization. Use the
-   * following structure in your request:   `organizations/{org}`
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string zmsId
-   * @opt_param string domain
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1SiteListResponse
-   */
-  public function getSites($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('getSites', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1SiteListResponse");
-  }
-  /**
    * Lists the service accounts with the permissions required to allow the
    * Synchronizer to download environment data from the control plane.
    *
@@ -99,8 +69,12 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
    * `setSyncAuthorization`, then the existing authorization is overwritten
    * indiscriminately.
    *
-   * For more information, see [Enable Synchronizer access](/hybrid/install-sa-
-   * keys). (organizations.getSyncAuthorization)
+   * For more information, see [Enable Synchronizer
+   * access](https://docs.apigee.com/hybrid/latest/synchronizer-access#enable-
+   * synchronizer-access).
+   *
+   * **Note**: Available to Apigee hybrid only.
+   * (organizations.getSyncAuthorization)
    *
    * @param string $name Required. Name of the Apigee organization. Use the
    * following structure in your request:  `organizations/{org}`
@@ -115,26 +89,12 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('getSyncAuthorization', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1SyncAuthorization");
   }
   /**
-   * Gets the current state of the portal application. (organizations.getSystem)
-   *
-   * @param string $parent Required. Name of the Apigee organization. Use the
-   * following structure in your request:   `organizations/{org}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1SystemState
-   */
-  public function getSystem($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('getSystem', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1SystemState");
-  }
-  /**
    * Lists the Apigee organizations and associated GCP projects that you have
-   * permission to access. See [Organizations](/hybrid/terminology#organizations).
-   * (organizations.listOrganizations)
+   * permission to access. See [Organizations](https://docs.apigee.com/hybrid/late
+   * st/terminology#organizations). (organizations.listOrganizations)
    *
-   * @param string $parent Required. Apigee organization name in the following
-   * format:   `organizations/{org}`
+   * @param string $parent Required. Use the following structure in your request:
+   * `organizations`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListOrganizationsResponse
    */
@@ -155,8 +115,12 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
    * the call to `setSyncAuthorization`, then the existing authorization is
    * overwritten indiscriminately.
    *
-   * For more information, see [Enable Synchronizer access](/hybrid/install-sa-
-   * keys). (organizations.setSyncAuthorization)
+   * For more information, see [Enable Synchronizer
+   * access](https://docs.apigee.com/hybrid/latest/synchronizer-access#enable-
+   * synchronizer-access).
+   *
+   * **Note**: Available to Apigee hybrid only.
+   * (organizations.setSyncAuthorization)
    *
    * @param string $name Required. Name of the Apigee organization. Use the
    * following structure in your request:  `organizations/{org}`

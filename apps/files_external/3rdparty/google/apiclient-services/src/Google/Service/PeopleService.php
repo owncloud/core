@@ -36,6 +36,9 @@ class Google_Service_PeopleService extends Google_Service
   /** See and download your contacts. */
   const CONTACTS_READONLY =
       "https://www.googleapis.com/auth/contacts.readonly";
+  /** See and download your organization's GSuite directory. */
+  const DIRECTORY_READONLY =
+      "https://www.googleapis.com/auth/directory.readonly";
   /** View your street addresses. */
   const USER_ADDRESSES_READ =
       "https://www.googleapis.com/auth/user.addresses.read";
@@ -45,6 +48,9 @@ class Google_Service_PeopleService extends Google_Service
   /** View your email addresses. */
   const USER_EMAILS_READ =
       "https://www.googleapis.com/auth/user.emails.read";
+  /** See your gender. */
+  const USER_GENDER_READ =
+      "https://www.googleapis.com/auth/user.gender.read";
   /** See your education, work history and org info. */
   const USER_ORGANIZATION_READ =
       "https://www.googleapis.com/auth/user.organization.read";
@@ -134,17 +140,17 @@ class Google_Service_PeopleService extends Google_Service
               'path' => 'v1/contactGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'syncToken' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'syncToken' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),'update' => array(
@@ -224,11 +230,11 @@ class Google_Service_PeopleService extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'personFields' => array(
+                'requestMask.includeField' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'requestMask.includeField' => array(
+                'personFields' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -237,18 +243,18 @@ class Google_Service_PeopleService extends Google_Service
               'path' => 'v1/people:batchGet',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'personFields' => array(
+                'resourceNames' => array(
                   'location' => 'query',
                   'type' => 'string',
+                  'repeated' => true,
                 ),
                 'requestMask.includeField' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'resourceNames' => array(
+                'personFields' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
                 ),
               ),
             ),'updateContact' => array(
@@ -294,23 +300,15 @@ class Google_Service_PeopleService extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'requestMask.includeField' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'sortOrder' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'requestSyncToken' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'requestMask.includeField' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -318,9 +316,17 @@ class Google_Service_PeopleService extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'personFields' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'requestSyncToken' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),

@@ -346,7 +346,7 @@ class Google_Service_Compute_Resource_NodeGroups extends Google_Service_Resource
     return $this->call('listNodes', array($params), "Google_Service_Compute_NodeGroupsListNodes");
   }
   /**
-   * Patch the node group. (nodeGroups.patch)
+   * Updates the specified node group. (nodeGroups.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

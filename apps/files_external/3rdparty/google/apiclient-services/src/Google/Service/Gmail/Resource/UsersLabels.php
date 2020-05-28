@@ -85,7 +85,8 @@ class Google_Service_Gmail_Resource_UsersLabels extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Gmail_ListLabelsResponse");
   }
   /**
-   * Patch the specified label. (labels.patch)
+   * Updates the specified label. This method supports patch semantics.
+   * (labels.patch)
    *
    * @param string $userId The user's email address. The special value me can be
    * used to indicate the authenticated user.

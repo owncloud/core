@@ -29,7 +29,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * Creates an environment in an organization. (environments.create)
    *
    * @param string $parent Required. Name of the organization in which the
-   * environment will be created in the following format:  `organizations/{org}`
+   * environment will be created. Use the following structure in your request:
+   * `organizations/{org}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Environment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -44,11 +45,10 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
     return $this->call('create', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
-   * Deletes an environment from an organization. Returns the deleted environment
-   * resource. (environments.delete)
+   * Deletes an environment from an organization. (environments.delete)
    *
-   * @param string $name Required. Name of the environment to delete in the
-   * following format:  `organizations/{org}/environments/{env}`
+   * @param string $name Required. Name of the environment. Use the following
+   * structure in your request:  `organizations/{org}/environments/{env}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleLongrunningOperation
    */
@@ -61,8 +61,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
   /**
    * Gets environment details. (environments.get)
    *
-   * @param string $name Required. Name of the environment in the following
-   * format:  `organizations/{org}/environments/{env}`
+   * @param string $name Required. Name of the environment. Use the following
+   * structure in your request:  `organizations/{org}/environments/{env}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Environment
    */
@@ -73,33 +73,12 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Environment");
   }
   /**
-   * Get Google Cloud Storage (GCS) signed url for specific organization and
-   * environment. Collection agent uses this signed url to upload data to GCS
-   * bucket. (environments.getDatalocation)
-   *
-   * @param string $name Required. The parent organization and environment names.
-   * Must be of the form `organizations/{org}/environments/{env}/datalocation`.
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string repo Required. Repository name
-   * @opt_param string contentType Content-Type for uploaded file.
-   * @opt_param string relativeFilePath Required. Relative path to the GCS bucket
-   * @opt_param string dataset Required. Dataset could be one of `api`, `mint`,
-   * `trace` and `event`
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1DataLocation
-   */
-  public function getDatalocation($name, $optParams = array())
-  {
-    $params = array('name' => $name);
-    $params = array_merge($params, $optParams);
-    return $this->call('getDatalocation', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1DataLocation");
-  }
-  /**
-   * Gets the debug mask singleton resource for an Environment.
+   * Gets the debug mask singleton resource for an environment.
    * (environments.getDebugmask)
    *
-   * @param string $name Required. The name of the Environment debug mask to get.
-   * Must be of the form `organizations/{org}/environments/{env}/debugmask`.
+   * @param string $name Required. Name of the debug mask. Use the following
+   * structure in your request:
+   * `organizations/{org}/environments/{env}/debugmask`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1DebugMask
    */
@@ -114,7 +93,7 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * (environments.getDeployedConfig)
    *
    * @param string $name Required. Name of the environment deployed configuration
-   * resource in the following format:
+   * resource. Use the following structure in your request:
    * `organizations/{org}/environments/{env}/deployedConfig`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentConfig
@@ -127,7 +106,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
   }
   /**
    * Gets the IAM policy on an environment. For more information, see [Manage
-   * users, roles, and permissions using the API](/hybrid/manage-users-roles).
+   * users, roles, and permissions using the
+   * API](https://docs.apigee.com/hybrid/latest/manage-users-roles).
    *
    * You must have the `apigee.environments.getIamPolicy` permission to call this
    * API. (environments.getIamPolicy)
@@ -146,6 +126,10 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_Apigee_GoogleIamV1Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -155,24 +139,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
     return $this->call('getIamPolicy', array($params), "Google_Service_Apigee_GoogleIamV1Policy");
   }
   /**
-   * Lists all environments in an organization.
-   * (environments.listOrganizationsEnvironments)
-   *
-   * @param string $parent Required. Name of the organization in the following
-   * format:   `organizations/{org}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironments($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
-  /**
    * Sets the IAM policy on an environment, if the policy already exists it will
    * be replaced. For more information, see [Manage users, roles, and permissions
-   * using the API](/hybrid/manage-users-roles).
+   * using the API](https://docs.apigee.com/hybrid/latest/manage-users-roles).
    *
    * You must have the `apigee.environments.setIamPolicy` permission to call this
    * API. (environments.setIamPolicy)
@@ -195,8 +164,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * assign a random name for this subscription. The "name" and "push_config" must
    * *not* be specified. (environments.subscribe)
    *
-   * @param string $parent Required. Name of the environment to subscribe in the
-   * following format:  `organizations/{org}/environments/{env}`
+   * @param string $parent Required. Name of the environment. Use the following
+   * structure in your request:  `organizations/{org}/environments/{env}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Subscription
    */
@@ -229,8 +198,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * Deletes a subscription for the environment's Pub/Sub topic.
    * (environments.unsubscribe)
    *
-   * @param string $parent Required. Name of the environment to subscribe in the
-   * following format:  `organizations/{org}/environments/{env}`
+   * @param string $parent Required. Name of the environment. Use the following
+   * structure in your request:  `organizations/{org}/environments/{env}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Subscription $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleProtobufEmpty
@@ -249,8 +218,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * the properties are removed. To get the current list of properties for the
    * environment, use the [Get Environment API](get). (environments.update)
    *
-   * @param string $name Required. Name of the environment to update in the
-   * following format:  `organizations/{org}/environments/{env}`
+   * @param string $name Required. Name of the environment. Use the following
+   * structure in your request:  `organizations/{org}/environments/{env}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Environment $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Environment
@@ -265,14 +234,15 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * Updates the debug mask singleton resource for an environment.
    * (environments.updateDebugmask)
    *
-   * @param string $name The DebugMask resource name.
+   * @param string $name Name of the debug mask.
    * @param Google_Service_Apigee_GoogleCloudApigeeV1DebugMask $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool replaceRepeatedFields If true, repeated fields covered by the
-   * update_mask will replace the existing values. The default behavior is to
-   * append.
-   * @opt_param string updateMask Field mask to support partial updates.
+   * @opt_param string updateMask Field debug mask to support partial updates.
+   * @opt_param bool replaceRepeatedFields Boolean flag that specifies whether to
+   * replace existing values in the debug mask when doing an update. Set to true
+   * to replace existing values. The default behavior is to append the values
+   * (false).
    * @return Google_Service_Apigee_GoogleCloudApigeeV1DebugMask
    */
   public function updateDebugmask($name, Google_Service_Apigee_GoogleCloudApigeeV1DebugMask $postBody, $optParams = array())
@@ -290,8 +260,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * environment, use the [Get Environment API](get).
    * (environments.updateEnvironment)
    *
-   * @param string $name Required. Name of the environment to update in the
-   * following format:  `organizations/{org}/environments/{env}`
+   * @param string $name Required. Name of the environment. Use the following
+   * structure in your request:  `organizations/{org}/environments/{env}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Environment $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Environment

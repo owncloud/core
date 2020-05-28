@@ -178,20 +178,11 @@ class Google_Service_Games extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'builtinGameId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
               ),
             ),'updateMultiple' => array(
               'path' => 'achievements/updateMultiple',
               'httpMethod' => 'POST',
-              'parameters' => array(
-                'builtinGameId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
+              'parameters' => array(),
             ),
           )
         )
@@ -223,12 +214,7 @@ class Google_Service_Games extends Google_Service
             ),'played' => array(
               'path' => 'applications/played',
               'httpMethod' => 'POST',
-              'parameters' => array(
-                'builtinGameId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
+              'parameters' => array(),
             ),'verify' => array(
               'path' => 'applications/{applicationId}/verify',
               'httpMethod' => 'GET',

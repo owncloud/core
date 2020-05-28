@@ -119,10 +119,10 @@ class Google_Service_Dataproc_Resource_ProjectsLocationsAutoscalingPolicies exte
    * projects/{project_id}/locations/{location}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. The page token, returned by a previous
-   * call, to request the next page of results.
    * @opt_param int pageSize Optional. The maximum number of results to return in
    * each response. Must be less than or equal to 1000. Defaults to 100.
+   * @opt_param string pageToken Optional. The page token, returned by a previous
+   * call, to request the next page of results.
    * @return Google_Service_Dataproc_ListAutoscalingPoliciesResponse
    */
   public function listProjectsLocationsAutoscalingPolicies($parent, $optParams = array())
@@ -133,8 +133,8 @@ class Google_Service_Dataproc_Resource_ProjectsLocationsAutoscalingPolicies exte
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-   * PERMISSION_DENIED (autoscalingPolicies.setIamPolicy)
+   * existing policy.Can return NOT_FOUND, INVALID_ARGUMENT, and PERMISSION_DENIED
+   * errors. (autoscalingPolicies.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

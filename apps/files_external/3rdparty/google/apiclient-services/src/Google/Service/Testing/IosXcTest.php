@@ -18,6 +18,7 @@
 class Google_Service_Testing_IosXcTest extends Google_Model
 {
   public $appBundleId;
+  public $testSpecialEntitlements;
   protected $testsZipType = 'Google_Service_Testing_FileReference';
   protected $testsZipDataType = '';
   public $xcodeVersion;
@@ -31,6 +32,14 @@ class Google_Service_Testing_IosXcTest extends Google_Model
   public function getAppBundleId()
   {
     return $this->appBundleId;
+  }
+  public function setTestSpecialEntitlements($testSpecialEntitlements)
+  {
+    $this->testSpecialEntitlements = $testSpecialEntitlements;
+  }
+  public function getTestSpecialEntitlements()
+  {
+    return $this->testSpecialEntitlements;
   }
   /**
    * @param Google_Service_Testing_FileReference

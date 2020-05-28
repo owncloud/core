@@ -127,10 +127,10 @@ class Google_Service_Classroom_Resource_UserProfilesGuardianInvitations extends 
    * The list request must be otherwise identical to the one that resulted in this
    * token.
    * @opt_param string invitedEmailAddress If specified, only results with the
-   * specified `invited_email_address` will be returned.
+   * specified `invited_email_address` are returned.
    * @opt_param string states If specified, only results with the specified
-   * `state` values will be returned. Otherwise, results with a `state` of
-   * `PENDING` will be returned.
+   * `state` values are returned. Otherwise, results with a `state` of `PENDING`
+   * are returned.
    * @opt_param int pageSize Maximum number of items to return. Zero or
    * unspecified indicates that the server may assign a maximum.
    *
@@ -171,7 +171,7 @@ class Google_Service_Classroom_Resource_UserProfilesGuardianInvitations extends 
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Mask that identifies which fields on the course
-   * to update. This field is required to do an update. The update will fail if
+   * to update. This field is required to do an update. The update fails if
    * invalid fields are specified. The following fields are valid:
    *
    * * `state`

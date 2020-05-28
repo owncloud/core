@@ -29,8 +29,9 @@ class Google_Service_Logging_Resource_Organizations extends Google_Service_Resou
    * Gets the Logs Router CMEK settings for the given resource.Note: CMEK for the
    * Logs Router can currently only be configured for GCP organizations. Once
    * configured, it applies to all projects and folders in the GCP
-   * organization.See Enabling CMEK for Logs Router for more information.
-   * (organizations.getCmekSettings)
+   * organization.See Enabling CMEK for Logs Router
+   * (https://cloud.google.com/logging/docs/routing/managed-encryption) for more
+   * information. (organizations.getCmekSettings)
    *
    * @param string $name Required. The resource for which to retrieve CMEK
    * settings. "projects/[PROJECT_ID]/cmekSettings"
@@ -56,7 +57,8 @@ class Google_Service_Logging_Resource_Organizations extends Google_Service_Resou
    * organization.UpdateCmekSettings will fail if 1) kms_key_name is invalid, or
    * 2) the associated service account does not have the required
    * roles/cloudkms.cryptoKeyEncrypterDecrypter role assigned for the key, or 3)
-   * access to the key is disabled.See Enabling CMEK for Logs Router for more
+   * access to the key is disabled.See Enabling CMEK for Logs Router
+   * (https://cloud.google.com/logging/docs/routing/managed-encryption) for more
    * information. (organizations.updateCmekSettings)
    *
    * @param string $name Required. The resource name for the CMEK settings to

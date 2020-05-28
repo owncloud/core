@@ -17,14 +17,32 @@
 
 class Google_Service_CloudRun_Probe extends Google_Model
 {
+  protected $execType = 'Google_Service_CloudRun_ExecAction';
+  protected $execDataType = '';
   public $failureThreshold;
-  protected $handlerType = 'Google_Service_CloudRun_Handler';
-  protected $handlerDataType = '';
+  protected $httpGetType = 'Google_Service_CloudRun_HTTPGetAction';
+  protected $httpGetDataType = '';
   public $initialDelaySeconds;
   public $periodSeconds;
   public $successThreshold;
+  protected $tcpSocketType = 'Google_Service_CloudRun_TCPSocketAction';
+  protected $tcpSocketDataType = '';
   public $timeoutSeconds;
 
+  /**
+   * @param Google_Service_CloudRun_ExecAction
+   */
+  public function setExec(Google_Service_CloudRun_ExecAction $exec)
+  {
+    $this->exec = $exec;
+  }
+  /**
+   * @return Google_Service_CloudRun_ExecAction
+   */
+  public function getExec()
+  {
+    return $this->exec;
+  }
   public function setFailureThreshold($failureThreshold)
   {
     $this->failureThreshold = $failureThreshold;
@@ -34,18 +52,18 @@ class Google_Service_CloudRun_Probe extends Google_Model
     return $this->failureThreshold;
   }
   /**
-   * @param Google_Service_CloudRun_Handler
+   * @param Google_Service_CloudRun_HTTPGetAction
    */
-  public function setHandler(Google_Service_CloudRun_Handler $handler)
+  public function setHttpGet(Google_Service_CloudRun_HTTPGetAction $httpGet)
   {
-    $this->handler = $handler;
+    $this->httpGet = $httpGet;
   }
   /**
-   * @return Google_Service_CloudRun_Handler
+   * @return Google_Service_CloudRun_HTTPGetAction
    */
-  public function getHandler()
+  public function getHttpGet()
   {
-    return $this->handler;
+    return $this->httpGet;
   }
   public function setInitialDelaySeconds($initialDelaySeconds)
   {
@@ -70,6 +88,20 @@ class Google_Service_CloudRun_Probe extends Google_Model
   public function getSuccessThreshold()
   {
     return $this->successThreshold;
+  }
+  /**
+   * @param Google_Service_CloudRun_TCPSocketAction
+   */
+  public function setTcpSocket(Google_Service_CloudRun_TCPSocketAction $tcpSocket)
+  {
+    $this->tcpSocket = $tcpSocket;
+  }
+  /**
+   * @return Google_Service_CloudRun_TCPSocketAction
+   */
+  public function getTcpSocket()
+  {
+    return $this->tcpSocket;
   }
   public function setTimeoutSeconds($timeoutSeconds)
   {

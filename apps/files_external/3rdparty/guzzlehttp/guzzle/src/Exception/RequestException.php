@@ -1,11 +1,10 @@
 <?php
 namespace GuzzleHttp\Exception;
 
-use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Ring\Exception\ConnectException;
-use GuzzleHttp\Exception\ConnectException as HttpConnectException;
-use GuzzleHttp\Ring\Future\FutureInterface;
+use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * HTTP Request exception
@@ -15,22 +14,27 @@ class RequestException extends TransferException
     /** @var RequestInterface */
     private $request;
 
-    /** @var ResponseInterface */
+    /** @var ResponseInterface|null */
     private $response;
+
+    /** @var array */
+    private $handlerContext;
 
     public function __construct(
         $message,
         RequestInterface $request,
         ResponseInterface $response = null,
-        \Exception $previous = null
+        \Exception $previous = null,
+        array $handlerContext = []
     ) {
         // Set the code of the exception if the response is set and not future.
-        $code = $response && !($response instanceof FutureInterface)
+        $code = $response && !($response instanceof PromiseInterface)
             ? $response->getStatusCode()
             : 0;
         parent::__construct($message, $code, $previous);
         $this->request = $request;
         $this->response = $response;
+        $this->handlerContext = $handlerContext;
     }
 
     /**
@@ -43,13 +47,9 @@ class RequestException extends TransferException
      */
     public static function wrapException(RequestInterface $request, \Exception $e)
     {
-        if ($e instanceof RequestException) {
-            return $e;
-        } elseif ($e instanceof ConnectException) {
-            return new HttpConnectException($e->getMessage(), $request, null, $e);
-        } else {
-            return new RequestException($e->getMessage(), $request, null, $e);
-        }
+        return $e instanceof RequestException
+            ? $e
+            : new RequestException($e->getMessage(), $request, null, $e);
     }
 
     /**
@@ -58,35 +58,91 @@ class RequestException extends TransferException
      * @param RequestInterface  $request  Request
      * @param ResponseInterface $response Response received
      * @param \Exception        $previous Previous exception
+     * @param array             $ctx      Optional handler context.
      *
      * @return self
      */
     public static function create(
         RequestInterface $request,
         ResponseInterface $response = null,
-        \Exception $previous = null
+        \Exception $previous = null,
+        array $ctx = []
     ) {
         if (!$response) {
-            return new self('Error completing request', $request, null, $previous);
+            return new self(
+                'Error completing request',
+                $request,
+                null,
+                $previous,
+                $ctx
+            );
         }
 
-        $level = floor($response->getStatusCode() / 100);
-        if ($level == '4') {
-            $label = 'Client error response';
-            $className = __NAMESPACE__ . '\\ClientException';
-        } elseif ($level == '5') {
-            $label = 'Server error response';
-            $className = __NAMESPACE__ . '\\ServerException';
+        $level = (int) floor($response->getStatusCode() / 100);
+        if ($level === 4) {
+            $label = 'Client error';
+            $className = ClientException::class;
+        } elseif ($level === 5) {
+            $label = 'Server error';
+            $className = ServerException::class;
         } else {
-            $label = 'Unsuccessful response';
+            $label = 'Unsuccessful request';
             $className = __CLASS__;
         }
 
-        $message = $label . ' [url] ' . $request->getUrl()
-            . ' [status code] ' . $response->getStatusCode()
-            . ' [reason phrase] ' . $response->getReasonPhrase();
+        $uri = $request->getUri();
+        $uri = static::obfuscateUri($uri);
 
-        return new $className($message, $request, $response, $previous);
+        // Client Error: `GET /` resulted in a `404 Not Found` response:
+        // <html> ... (truncated)
+        $message = sprintf(
+            '%s: `%s %s` resulted in a `%s %s` response',
+            $label,
+            $request->getMethod(),
+            $uri,
+            $response->getStatusCode(),
+            $response->getReasonPhrase()
+        );
+
+        $summary = static::getResponseBodySummary($response);
+
+        if ($summary !== null) {
+            $message .= ":\n{$summary}\n";
+        }
+
+        return new $className($message, $request, $response, $previous, $ctx);
+    }
+
+    /**
+     * Get a short summary of the response
+     *
+     * Will return `null` if the response is not printable.
+     *
+     * @param ResponseInterface $response
+     *
+     * @return string|null
+     */
+    public static function getResponseBodySummary(ResponseInterface $response)
+    {
+        return \GuzzleHttp\Psr7\get_message_body_summary($response);
+    }
+
+    /**
+     * Obfuscates URI if there is a username and a password present
+     *
+     * @param UriInterface $uri
+     *
+     * @return UriInterface
+     */
+    private static function obfuscateUri(UriInterface $uri)
+    {
+        $userInfo = $uri->getUserInfo();
+
+        if (false !== ($pos = strpos($userInfo, ':'))) {
+            return $uri->withUserInfo(substr($userInfo, 0, $pos), '***');
+        }
+
+        return $uri;
     }
 
     /**
@@ -117,5 +173,20 @@ class RequestException extends TransferException
     public function hasResponse()
     {
         return $this->response !== null;
+    }
+
+    /**
+     * Get contextual information about the error from the underlying handler.
+     *
+     * The contents of this array will vary depending on which handler you are
+     * using. It may also be just an empty array. Relying on this data will
+     * couple you to a specific handler, but can give more debug information
+     * when needed.
+     *
+     * @return array
+     */
+    public function getHandlerContext()
+    {
+        return $this->handlerContext;
     }
 }

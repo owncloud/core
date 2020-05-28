@@ -38,8 +38,8 @@ class Google_Service_DataCatalog_Resource_Catalog extends Google_Service_Resourc
    * pages. Also note that results returned (and not returned) can vary across
    * repeated search queries.
    *
-   * See [Data Catalog Search Syntax](/data-catalog/docs/how-to/search-reference)
-   * for more information. (catalog.search)
+   * See [Data Catalog Search Syntax](https://cloud.google.com/data-catalog/docs
+   * /how-to/search-reference) for more information. (catalog.search)
    *
    * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogRequest $postBody
    * @param array $optParams Optional parameters.

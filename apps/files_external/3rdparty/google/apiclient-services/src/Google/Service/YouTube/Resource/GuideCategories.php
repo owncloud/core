@@ -26,23 +26,16 @@
 class Google_Service_YouTube_Resource_GuideCategories extends Google_Service_Resource
 {
   /**
-   * Returns a list of categories that can be associated with YouTube channels.
-   * (guideCategories.listGuideCategories)
+   * Retrieves a list of guide categories. (guideCategories.listGuideCategories)
    *
-   * @param string $part The part parameter specifies the guideCategory resource
-   * properties that the API response will include. Set the parameter value to
-   * snippet.
+   * @param string|array $part The part parameter specifies the guideCategory
+   * resource properties that the API response will include. Set the parameter
+   * value to snippet.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string hl The hl parameter specifies the language that will be
-   * used for text values in the API response.
-   * @opt_param string id The id parameter specifies a comma-separated list of the
-   * YouTube channel category ID(s) for the resource(s) that are being retrieved.
-   * In a guideCategory resource, the id property specifies the YouTube channel
-   * category ID.
-   * @opt_param string regionCode The regionCode parameter instructs the API to
-   * return the list of guide categories available in the specified country. The
-   * parameter value is an ISO 3166-1 alpha-2 country code.
+   * @opt_param string id Return the guide categories with the given IDs.
+   * @opt_param string regionCode Return all categories in the given region code.
+   * @opt_param string hl
    * @return Google_Service_YouTube_GuideCategoryListResponse
    */
   public function listGuideCategories($part, $optParams = array())

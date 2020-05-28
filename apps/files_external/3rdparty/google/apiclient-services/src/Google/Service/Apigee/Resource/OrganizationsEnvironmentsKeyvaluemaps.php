@@ -56,20 +56,4 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeyvaluemaps exten
     $params = array_merge($params, $optParams);
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1KeyValueMap");
   }
-  /**
-   * List key value maps in an environment.
-   * (keyvaluemaps.listOrganizationsEnvironmentsKeyvaluemaps)
-   *
-   * @param string $parent Required. The name of the environment in which to list
-   * key value maps. Must be of the form
-   * `organizations/{organization}/environments/{environment}`.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsKeyvaluemaps($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
 }

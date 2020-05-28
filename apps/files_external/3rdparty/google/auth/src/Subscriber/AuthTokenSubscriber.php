@@ -79,21 +79,24 @@ class AuthTokenSubscriber implements SubscriberInterface
     /**
      * Updates the request with an Authorization header when auth is 'fetched_auth_token'.
      *
-     *   use GuzzleHttp\Client;
-     *   use Google\Auth\OAuth2;
-     *   use Google\Auth\Subscriber\AuthTokenSubscriber;
+     * Example:
+     * ```
+     * use GuzzleHttp\Client;
+     * use Google\Auth\OAuth2;
+     * use Google\Auth\Subscriber\AuthTokenSubscriber;
      *
-     *   $config = [..<oauth config param>.];
-     *   $oauth2 = new OAuth2($config)
-     *   $subscriber = new AuthTokenSubscriber($oauth2);
+     * $config = [..<oauth config param>.];
+     * $oauth2 = new OAuth2($config)
+     * $subscriber = new AuthTokenSubscriber($oauth2);
      *
-     *   $client = new Client([
-     *      'base_url' => 'https://www.googleapis.com/taskqueue/v1beta2/projects/',
-     *      'defaults' => ['auth' => 'google_auth']
-     *   ]);
-     *   $client->getEmitter()->attach($subscriber);
+     * $client = new Client([
+     *     'base_url' => 'https://www.googleapis.com/taskqueue/v1beta2/projects/',
+     *     'defaults' => ['auth' => 'google_auth']
+     * ]);
+     * $client->getEmitter()->attach($subscriber);
      *
-     *   $res = $client->get('myproject/taskqueues/myqueue');
+     * $res = $client->get('myproject/taskqueues/myqueue');
+     * ```
      *
      * @param BeforeEvent $event
      */

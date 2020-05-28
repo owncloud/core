@@ -18,18 +18,27 @@
 class Google_Service_Apigee_GoogleCloudApigeeV1ListDebugSessionsResponse extends Google_Collection
 {
   protected $collection_key = 'sessions';
-  protected $sessionsType = 'Google_Service_Apigee_GoogleCloudApigeeV1Sesssion';
+  public $nextPageToken;
+  protected $sessionsType = 'Google_Service_Apigee_GoogleCloudApigeeV1Session';
   protected $sessionsDataType = 'array';
 
+  public function setNextPageToken($nextPageToken)
+  {
+    $this->nextPageToken = $nextPageToken;
+  }
+  public function getNextPageToken()
+  {
+    return $this->nextPageToken;
+  }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Sesssion
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Session
    */
   public function setSessions($sessions)
   {
     $this->sessions = $sessions;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Sesssion
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Session
    */
   public function getSessions()
   {

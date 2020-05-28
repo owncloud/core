@@ -51,6 +51,34 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
    * The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string view Required. Specifies which information is returned
+   * about the time series.
+   * @opt_param string aggregation.groupByFields The set of fields to preserve
+   * when cross_series_reducer is specified. The group_by_fields determine how the
+   * time series are partitioned into subsets prior to applying the aggregation
+   * operation. Each subset contains time series that have the same value for each
+   * of the grouping fields. Each individual time series is a member of exactly
+   * one subset. The cross_series_reducer is applied to each subset of time
+   * series. It is not possible to reduce across different resource types, so this
+   * field implicitly contains resource.type. Fields not specified in
+   * group_by_fields are aggregated away. If group_by_fields is not specified and
+   * all the time series have the same resource type, then the time series are
+   * aggregated into a single output time series. If cross_series_reducer is not
+   * defined, this field is ignored.
+   * @opt_param string interval.endTime Required. The end of the time interval.
+   * @opt_param string aggregation.alignmentPeriod The alignment_period specifies
+   * a time interval, in seconds, that is used to divide the data in all the time
+   * series into consistent blocks of time. This will be done before the per-
+   * series aligner can be applied to the data.The value must be at least 60
+   * seconds. If a per-series aligner other than ALIGN_NONE is specified, this
+   * field is required or an error is returned. If no per-series aligner is
+   * specified, or the aligner ALIGN_NONE is specified, then this field is
+   * ignored.
+   * @opt_param int pageSize A positive number that is the maximum number of
+   * results to return. If page_size is empty or more than 100,000 results, the
+   * effective page_size is 100,000 results. If view is set to FULL, this is the
+   * maximum number of Points returned. If view is set to HEADERS, this is the
+   * maximum number of TimeSeries returned.
    * @opt_param string orderBy Unsupported: must be left blank. The points in each
    * time series are currently returned in reverse time order (most recent to
    * oldest).
@@ -90,34 +118,6 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
    * @opt_param string interval.startTime Optional. The beginning of the time
    * interval. The default value for the start time is the end time. The start
    * time must not be later than the end time.
-   * @opt_param string view Required. Specifies which information is returned
-   * about the time series.
-   * @opt_param string aggregation.groupByFields The set of fields to preserve
-   * when cross_series_reducer is specified. The group_by_fields determine how the
-   * time series are partitioned into subsets prior to applying the aggregation
-   * operation. Each subset contains time series that have the same value for each
-   * of the grouping fields. Each individual time series is a member of exactly
-   * one subset. The cross_series_reducer is applied to each subset of time
-   * series. It is not possible to reduce across different resource types, so this
-   * field implicitly contains resource.type. Fields not specified in
-   * group_by_fields are aggregated away. If group_by_fields is not specified and
-   * all the time series have the same resource type, then the time series are
-   * aggregated into a single output time series. If cross_series_reducer is not
-   * defined, this field is ignored.
-   * @opt_param string interval.endTime Required. The end of the time interval.
-   * @opt_param string aggregation.alignmentPeriod The alignment_period specifies
-   * a time interval, in seconds, that is used to divide the data in all the time
-   * series into consistent blocks of time. This will be done before the per-
-   * series aligner can be applied to the data.The value must be at least 60
-   * seconds. If a per-series aligner other than ALIGN_NONE is specified, this
-   * field is required or an error is returned. If no per-series aligner is
-   * specified, or the aligner ALIGN_NONE is specified, then this field is
-   * ignored.
-   * @opt_param int pageSize A positive number that is the maximum number of
-   * results to return. If page_size is empty or more than 100,000 results, the
-   * effective page_size is 100,000 results. If view is set to FULL, this is the
-   * maximum number of Points returned. If view is set to HEADERS, this is the
-   * maximum number of TimeSeries returned.
    * @return Google_Service_Monitoring_ListTimeSeriesResponse
    */
   public function listProjectsTimeSeries($name, $optParams = array())
@@ -127,8 +127,8 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
     return $this->call('list', array($params), "Google_Service_Monitoring_ListTimeSeriesResponse");
   }
   /**
-   * Queries time series using the time series query language. This method does
-   * not require a Workspace. (timeSeries.query)
+   * Queries time series using Monitoring Query Language. This method does not
+   * require a Workspace. (timeSeries.query)
    *
    * @param string $name Required. The project on which to execute the request.
    * The format is: projects/[PROJECT_ID_OR_NUMBER]

@@ -26,22 +26,6 @@
 class Google_Service_FirebaseHosting_Resource_SitesVersions extends Google_Service_Resource
 {
   /**
-   * Creates a new version on the target site using the content of the specified
-   * version. (versions.cloneSitesVersions)
-   *
-   * @param string $parent Required. The target site where the cloned version will
-   * reside, in the format: `sites/{site}`
-   * @param Google_Service_FirebaseHosting_CloneVersionRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_FirebaseHosting_Operation
-   */
-  public function cloneSitesVersions($parent, Google_Service_FirebaseHosting_CloneVersionRequest $postBody, $optParams = array())
-  {
-    $params = array('parent' => $parent, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('clone', array($params), "Google_Service_FirebaseHosting_Operation");
-  }
-  /**
    * Creates a new version for a site. (versions.create)
    *
    * @param string $parent Required. The parent to create the version for, in the
@@ -83,15 +67,15 @@ class Google_Service_FirebaseHosting_Resource_SitesVersions extends Google_Servi
    * format: sites/site-name
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of versions to return. The service
-   * may return fewer than this value. If unspecified, at most 25 versions will be
-   * returned. The maximum value is 100; values above 100 will be coerced to 100
    * @opt_param string filter The filter string used to return a subset of
    * versions in the response. Currently supported fields for filtering are: name,
    * status, and create_time. Filter processing will be implemented in accordance
    * with go/filtering.
    * @opt_param string pageToken The next_page_token from a previous request, if
    * provided.
+   * @opt_param int pageSize The maximum number of versions to return. The service
+   * may return fewer than this value. If unspecified, at most 25 versions will be
+   * returned. The maximum value is 100; values above 100 will be coerced to 100
    * @return Google_Service_FirebaseHosting_ListVersionsResponse
    */
   public function listSitesVersions($parent, $optParams = array())

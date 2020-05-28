@@ -26,22 +26,15 @@
 class Google_Service_YouTube_Resource_SuperChatEvents extends Google_Service_Resource
 {
   /**
-   * Lists Super Chat events for a channel. (superChatEvents.listSuperChatEvents)
+   * Retrieves a list of resources, possibly filtered.
+   * (superChatEvents.listSuperChatEvents)
    *
-   * @param string $part The part parameter specifies the superChatEvent resource
-   * parts that the API response will include. Supported values are id and
-   * snippet.
+   * @param string|array $part The part parameter specifies the superChatEvent
+   * resource parts that the API response will include. Supported values are id
+   * and snippet.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string hl The hl parameter instructs the API to retrieve localized
-   * resource metadata for a specific application language that the YouTube
-   * website supports. The parameter value must be a language code included in the
-   * list returned by the i18nLanguages.list method.
-   *
-   * If localized resource details are available in that language, the resource's
-   * snippet.localized object will contain the localized values. However, if
-   * localized details are not available, the snippet.localized object will
-   * contain resource details in the resource's default language.
+   * @opt_param string hl Return rendered funding amounts in specified language.
    * @opt_param string maxResults The maxResults parameter specifies the maximum
    * number of items that should be returned in the result set.
    * @opt_param string pageToken The pageToken parameter identifies a specific

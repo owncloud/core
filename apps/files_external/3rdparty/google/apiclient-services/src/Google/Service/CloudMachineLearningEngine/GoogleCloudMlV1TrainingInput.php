@@ -31,6 +31,7 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1TrainingInput ext
   protected $masterConfigType = 'Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ReplicaConfig';
   protected $masterConfigDataType = '';
   public $masterType;
+  public $network;
   public $packageUris;
   protected $parameterServerConfigType = 'Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ReplicaConfig';
   protected $parameterServerConfigDataType = '';
@@ -144,6 +145,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1TrainingInput ext
   public function getMasterType()
   {
     return $this->masterType;
+  }
+  public function setNetwork($network)
+  {
+    $this->network = $network;
+  }
+  public function getNetwork()
+  {
+    return $this->network;
   }
   public function setPackageUris($packageUris)
   {

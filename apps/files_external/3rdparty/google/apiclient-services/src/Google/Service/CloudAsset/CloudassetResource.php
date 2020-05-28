@@ -20,6 +20,7 @@ class Google_Service_CloudAsset_CloudassetResource extends Google_Model
   public $data;
   public $discoveryDocumentUri;
   public $discoveryName;
+  public $location;
   public $parent;
   public $resourceUrl;
   public $version;
@@ -47,6 +48,14 @@ class Google_Service_CloudAsset_CloudassetResource extends Google_Model
   public function getDiscoveryName()
   {
     return $this->discoveryName;
+  }
+  public function setLocation($location)
+  {
+    $this->location = $location;
+  }
+  public function getLocation()
+  {
+    return $this->location;
   }
   public function setParent($parent)
   {

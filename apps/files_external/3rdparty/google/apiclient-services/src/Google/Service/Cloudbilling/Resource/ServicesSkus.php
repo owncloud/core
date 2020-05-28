@@ -33,6 +33,14 @@ class Google_Service_Cloudbilling_Resource_ServicesSkus extends Google_Service_R
    * "services/DA34-426B-A397"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string currencyCode The ISO 4217 currency code for the pricing
+   * info in the response proto. Will use the conversion rate as of start_time.
+   * Optional. If not specified USD will be used.
+   * @opt_param string endTime Optional exclusive end time of the time range for
+   * which the pricing versions will be returned. Timestamps in the future are not
+   * allowed. The time range has to be within a single calendar month in
+   * America/Los_Angeles timezone. Time range as a whole is optional. If not
+   * specified, the latest pricing will be returned (up to 12 hours old at most).
    * @opt_param string pageToken A token identifying a page of results to return.
    * This should be a `next_page_token` value returned from a previous `ListSkus`
    * call. If unspecified, the first page of results is returned.
@@ -42,14 +50,6 @@ class Google_Service_Cloudbilling_Resource_ServicesSkus extends Google_Service_R
    * America/Los_Angeles timezone. Time range as a whole is optional. If not
    * specified, the latest pricing will be returned (up to 12 hours old at most).
    * @opt_param int pageSize Requested page size. Defaults to 5000.
-   * @opt_param string currencyCode The ISO 4217 currency code for the pricing
-   * info in the response proto. Will use the conversion rate as of start_time.
-   * Optional. If not specified USD will be used.
-   * @opt_param string endTime Optional exclusive end time of the time range for
-   * which the pricing versions will be returned. Timestamps in the future are not
-   * allowed. The time range has to be within a single calendar month in
-   * America/Los_Angeles timezone. Time range as a whole is optional. If not
-   * specified, the latest pricing will be returned (up to 12 hours old at most).
    * @return Google_Service_Cloudbilling_ListSkusResponse
    */
   public function listServicesSkus($parent, $optParams = array())

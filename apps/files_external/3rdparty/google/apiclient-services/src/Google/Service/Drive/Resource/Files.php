@@ -34,9 +34,9 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter will only
-   * take effect if the item is not in a shared drive. Requests that specify more
-   * than one parent will fail.
+   * that aims for all items to have exactly one parent. This parameter only takes
+   * effect if the item is not in a shared drive. Requests that specify more than
+   * one parent fail.
    * @opt_param bool ignoreDefaultVisibility Whether to ignore the domain's
    * default visibility settings for the created file. Domain administrators can
    * choose to make all uploaded files visible to the domain by default; this
@@ -68,9 +68,9 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter will only
-   * take effect if the item is not in a shared drive. Requests that specify more
-   * than one parent will fail.
+   * that aims for all items to have exactly one parent. This parameter only takes
+   * effect if the item is not in a shared drive. Requests that specify more than
+   * one parent fail.
    * @opt_param bool ignoreDefaultVisibility Whether to ignore the domain's
    * default visibility settings for the created file. Domain administrators can
    * choose to make all uploaded files visible to the domain by default; this
@@ -197,7 +197,7 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @opt_param string driveId ID of the shared drive to search.
    * @opt_param bool includeItemsFromAllDrives Deprecated - Whether both My Drive
    * and shared drive items should be included in results. This parameter will
-   * only be effective until June 1, 2020. Afterwards shared drive items will be
+   * only be effective until June 1, 2020. Afterwards shared drive items are
    * included in the results.
    * @opt_param bool includeTeamDriveItems Deprecated use
    * includeItemsFromAllDrives instead.
@@ -242,12 +242,12 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    *
    * @opt_param string addParents A comma-separated list of parent IDs to add.
    * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter will only
-   * take effect if the item is not in a shared drive. If the item's owner makes a
-   * request to add a single parent, the item will be removed from all current
-   * folders and placed in the requested folder. Other requests that increase the
-   * number of parents will fail, except when the canAddMyDriveParent file
-   * capability is true and a single parent is being added.
+   * that aims for all items to have exactly one parent. This parameter only takes
+   * effect if the item is not in a shared drive. If the item's owner makes a
+   * request to add a single parent, the item is removed from all current folders
+   * and placed in the requested folder. Other requests that increase the number
+   * of parents fail, except when the canAddMyDriveParent file capability is true
+   * and a single parent is being added.
    * @opt_param bool keepRevisionForever Whether to set the 'keepForever' field in
    * the new head revision. This is only applicable to files with binary content
    * in Google Drive. Only 200 revisions for the file can be kept forever. If the

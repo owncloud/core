@@ -117,10 +117,10 @@ class Google_Service_Bigquery_Resource_Jobs extends Google_Service_Resource
    * @param string $projectId Project ID of the jobs to list
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token, returned by a previous call, to
-   * request the next page of results
    * @opt_param bool allUsers Whether to display jobs owned by all users in the
    * project. Default false
+   * @opt_param string pageToken Page token, returned by a previous call, to
+   * request the next page of results
    * @opt_param string maxResults Maximum number of results to return
    * @opt_param string maxCreationTime Max value for job creation time, in
    * milliseconds since the POSIX epoch. If set, only jobs created before or at

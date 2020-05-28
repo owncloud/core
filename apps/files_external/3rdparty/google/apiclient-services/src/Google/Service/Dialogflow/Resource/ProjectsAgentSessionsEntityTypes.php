@@ -106,10 +106,10 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentSessionsEntityTypes extend
    * specified, we assume default '-' user.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of items to return in a
-   * single page. By default 100 and at most 1000.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous list request.
+   * @opt_param int pageSize Optional. The maximum number of items to return in a
+   * single page. By default 100 and at most 1000.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2ListSessionEntityTypesResponse
    */
   public function listProjectsAgentSessionsEntityTypes($parent, $optParams = array())

@@ -34,10 +34,10 @@ class Google_Service_ContainerAnalysis_Resource_ProvidersNotesOccurrences extend
    * "provider/{provider_id}/notes/{note_id}"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter The filter expression.
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
    * @opt_param int pageSize Number of notes to return in the list.
-   * @opt_param string filter The filter expression.
    * @return Google_Service_ContainerAnalysis_ListNoteOccurrencesResponse
    */
   public function listProvidersNotesOccurrences($name, $optParams = array())

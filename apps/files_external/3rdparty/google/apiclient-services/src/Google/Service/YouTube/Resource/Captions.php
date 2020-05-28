@@ -26,27 +26,23 @@
 class Google_Service_YouTube_Resource_Captions extends Google_Service_Resource
 {
   /**
-   * Deletes a specified caption track. (captions.delete)
+   * Deletes a resource. (captions.delete)
    *
-   * @param string $id The id parameter identifies the caption track that is being
-   * deleted. The value is a caption track ID as identified by the id property in
-   * a caption resource.
+   * @param string $id
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
+   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
+   * indicates that the request's authorization credentials identify a YouTube CMS
+   * user who is acting on behalf of the content owner specified in the parameter
+   * value. This parameter is intended for YouTube content partners that own and
+   * manage many different YouTube channels. It allows content owners to
+   * authenticate once and get access to all their video and channel data, without
+   * having to provide authentication credentials for each individual channel. The
+   * actual CMS account that the user authenticates with must be linked to the
+   * specified YouTube content owner.
    * @opt_param string onBehalfOf ID of the Google+ Page for the channel that the
    * request is be on behalf of
-   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
-   * exclusively for YouTube content partners.
-   *
-   * The onBehalfOfContentOwner parameter indicates that the request's
-   * authorization credentials identify a YouTube CMS user who is acting on behalf
-   * of the content owner specified in the parameter value. This parameter is
-   * intended for YouTube content partners that own and manage many different
-   * YouTube channels. It allows content owners to authenticate once and get
-   * access to all their video and channel data, without having to provide
-   * authentication credentials for each individual channel. The actual CMS
-   * account that the user authenticates with must be linked to the specified
-   * YouTube content owner.
    */
   public function delete($id, $optParams = array())
   {
@@ -55,38 +51,28 @@ class Google_Service_YouTube_Resource_Captions extends Google_Service_Resource
     return $this->call('delete', array($params));
   }
   /**
-   * Downloads a caption track. The caption track is returned in its original
-   * format unless the request specifies a value for the tfmt parameter and in its
-   * original language unless the request specifies a value for the tlang
-   * parameter. (captions.download)
+   * Downloads a caption track. (captions.download)
    *
-   * @param string $id The id parameter identifies the caption track that is being
-   * retrieved. The value is a caption track ID as identified by the id property
-   * in a caption resource.
+   * @param string $id The ID of the caption track to download, required for One
+   * Platform.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string tfmt Convert the captions into this format. Supported
+   * options are sbv, srt, and vtt.
+   * @opt_param string tlang tlang is the language code; machine translate the
+   * captions into this language.
+   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
+   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
+   * indicates that the request's authorization credentials identify a YouTube CMS
+   * user who is acting on behalf of the content owner specified in the parameter
+   * value. This parameter is intended for YouTube content partners that own and
+   * manage many different YouTube channels. It allows content owners to
+   * authenticate once and get access to all their video and channel data, without
+   * having to provide authentication credentials for each individual channel. The
+   * actual CMS account that the user authenticates with must be linked to the
+   * specified YouTube content owner.
    * @opt_param string onBehalfOf ID of the Google+ Page for the channel that the
    * request is be on behalf of
-   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
-   * exclusively for YouTube content partners.
-   *
-   * The onBehalfOfContentOwner parameter indicates that the request's
-   * authorization credentials identify a YouTube CMS user who is acting on behalf
-   * of the content owner specified in the parameter value. This parameter is
-   * intended for YouTube content partners that own and manage many different
-   * YouTube channels. It allows content owners to authenticate once and get
-   * access to all their video and channel data, without having to provide
-   * authentication credentials for each individual channel. The actual CMS
-   * account that the user authenticates with must be linked to the specified
-   * YouTube content owner.
-   * @opt_param string tfmt The tfmt parameter specifies that the caption track
-   * should be returned in a specific format. If the parameter is not included in
-   * the request, the track is returned in its original format.
-   * @opt_param string tlang The tlang parameter specifies that the API response
-   * should return a translation of the specified caption track. The parameter
-   * value is an ISO 639-1 two-letter language code that identifies the desired
-   * caption language. The translation is generated by using machine translation,
-   * such as Google Translate.
    */
   public function download($id, $optParams = array())
   {
@@ -95,35 +81,27 @@ class Google_Service_YouTube_Resource_Captions extends Google_Service_Resource
     return $this->call('download', array($params));
   }
   /**
-   * Uploads a caption track. (captions.insert)
+   * Inserts a new resource into this collection. (captions.insert)
    *
-   * @param string $part The part parameter specifies the caption resource parts
-   * that the API response will include. Set the parameter value to snippet.
+   * @param string|array $part The part parameter specifies the caption resource
+   * parts that the API response will include. Set the parameter value to snippet.
    * @param Google_Service_YouTube_Caption $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool sync Extra parameter to allow automatically syncing the
+   * uploaded caption/transcript with the audio.
    * @opt_param string onBehalfOf ID of the Google+ Page for the channel that the
    * request is be on behalf of
    * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
-   * exclusively for YouTube content partners.
-   *
-   * The onBehalfOfContentOwner parameter indicates that the request's
-   * authorization credentials identify a YouTube CMS user who is acting on behalf
-   * of the content owner specified in the parameter value. This parameter is
-   * intended for YouTube content partners that own and manage many different
-   * YouTube channels. It allows content owners to authenticate once and get
-   * access to all their video and channel data, without having to provide
-   * authentication credentials for each individual channel. The actual CMS
-   * account that the user authenticates with must be linked to the specified
-   * YouTube content owner.
-   * @opt_param bool sync The sync parameter indicates whether YouTube should
-   * automatically synchronize the caption file with the audio track of the video.
-   * If you set the value to true, YouTube will disregard any time codes that are
-   * in the uploaded caption file and generate new time codes for the captions.
-   *
-   * You should set the sync parameter to true if you are uploading a transcript,
-   * which has no time codes, or if you suspect the time codes in your file are
-   * incorrect and want YouTube to try to fix them.
+   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
+   * indicates that the request's authorization credentials identify a YouTube CMS
+   * user who is acting on behalf of the content owner specified in the parameter
+   * value. This parameter is intended for YouTube content partners that own and
+   * manage many different YouTube channels. It allows content owners to
+   * authenticate once and get access to all their video and channel data, without
+   * having to provide authentication credentials for each individual channel. The
+   * actual CMS account that the user authenticates with must be linked to the
+   * specified YouTube content owner.
    * @return Google_Service_YouTube_Caption
    */
   public function insert($part, Google_Service_YouTube_Caption $postBody, $optParams = array())
@@ -133,77 +111,59 @@ class Google_Service_YouTube_Resource_Captions extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_YouTube_Caption");
   }
   /**
-   * Returns a list of caption tracks that are associated with a specified video.
-   * Note that the API response does not contain the actual captions and that the
-   * captions.download method provides the ability to retrieve a caption track.
-   * (captions.listCaptions)
+   * Retrieves a list of resources, possibly filtered. (captions.listCaptions)
    *
-   * @param string $part The part parameter specifies a comma-separated list of
-   * one or more caption resource parts that the API response will include. The
+   * @param string $videoId Returns the captions for the specified video.
+   * @param string|array $part The part parameter specifies a comma-separated list
+   * of one or more caption resource parts that the API response will include. The
    * part names that you can include in the parameter value are id and snippet.
-   * @param string $videoId The videoId parameter specifies the YouTube video ID
-   * of the video for which the API should return caption tracks.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string id The id parameter specifies a comma-separated list of IDs
-   * that identify the caption resources that should be retrieved. Each ID must
-   * identify a caption track associated with the specified video.
+   * @opt_param string id Returns the captions with the given IDs for Stubby or
+   * Apiary.
+   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
+   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
+   * indicates that the request's authorization credentials identify a YouTube CMS
+   * user who is acting on behalf of the content owner specified in the parameter
+   * value. This parameter is intended for YouTube content partners that own and
+   * manage many different YouTube channels. It allows content owners to
+   * authenticate once and get access to all their video and channel data, without
+   * having to provide authentication credentials for each individual channel. The
+   * actual CMS account that the user authenticates with must be linked to the
+   * specified YouTube content owner.
    * @opt_param string onBehalfOf ID of the Google+ Page for the channel that the
    * request is on behalf of.
-   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
-   * exclusively for YouTube content partners.
-   *
-   * The onBehalfOfContentOwner parameter indicates that the request's
-   * authorization credentials identify a YouTube CMS user who is acting on behalf
-   * of the content owner specified in the parameter value. This parameter is
-   * intended for YouTube content partners that own and manage many different
-   * YouTube channels. It allows content owners to authenticate once and get
-   * access to all their video and channel data, without having to provide
-   * authentication credentials for each individual channel. The actual CMS
-   * account that the user authenticates with must be linked to the specified
-   * YouTube content owner.
    * @return Google_Service_YouTube_CaptionListResponse
    */
-  public function listCaptions($part, $videoId, $optParams = array())
+  public function listCaptions($videoId, $part, $optParams = array())
   {
-    $params = array('part' => $part, 'videoId' => $videoId);
+    $params = array('videoId' => $videoId, 'part' => $part);
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_YouTube_CaptionListResponse");
   }
   /**
-   * Updates a caption track. When updating a caption track, you can change the
-   * track's draft status, upload a new caption file for the track, or both.
-   * (captions.update)
+   * Updates an existing resource. (captions.update)
    *
-   * @param string $part The part parameter serves two purposes in this operation.
-   * It identifies the properties that the write operation will set as well as the
-   * properties that the API response will include. Set the property value to
-   * snippet if you are updating the track's draft status. Otherwise, set the
-   * property value to id.
+   * @param string|array $part The part parameter specifies a comma-separated list
+   * of one or more caption resource parts that the API response will include. The
+   * part names that you can include in the parameter value are id and snippet.
    * @param Google_Service_YouTube_Caption $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string onBehalfOf ID of the Google+ Page for the channel that the
-   * request is be on behalf of
+   * request is on behalf of.
+   * @opt_param bool sync Extra parameter to allow automatically syncing the
+   * uploaded caption/transcript with the audio.
    * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
-   * exclusively for YouTube content partners.
-   *
-   * The onBehalfOfContentOwner parameter indicates that the request's
-   * authorization credentials identify a YouTube CMS user who is acting on behalf
-   * of the content owner specified in the parameter value. This parameter is
-   * intended for YouTube content partners that own and manage many different
-   * YouTube channels. It allows content owners to authenticate once and get
-   * access to all their video and channel data, without having to provide
-   * authentication credentials for each individual channel. The actual CMS
-   * account that the user authenticates with must be linked to the specified
-   * YouTube content owner.
-   * @opt_param bool sync Note: The API server only processes the parameter value
-   * if the request contains an updated caption file.
-   *
-   * The sync parameter indicates whether YouTube should automatically synchronize
-   * the caption file with the audio track of the video. If you set the value to
-   * true, YouTube will automatically synchronize the caption track with the audio
-   * track.
+   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
+   * indicates that the request's authorization credentials identify a YouTube CMS
+   * user who is acting on behalf of the content owner specified in the parameter
+   * value. This parameter is intended for YouTube content partners that own and
+   * manage many different YouTube channels. It allows content owners to
+   * authenticate once and get access to all their video and channel data, without
+   * having to provide authentication credentials for each individual channel. The
+   * actual CMS account that the user authenticates with must be linked to the
+   * specified YouTube content owner.
    * @return Google_Service_YouTube_Caption
    */
   public function update($part, Google_Service_YouTube_Caption $postBody, $optParams = array())

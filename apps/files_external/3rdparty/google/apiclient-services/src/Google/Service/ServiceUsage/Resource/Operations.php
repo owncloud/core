@@ -94,8 +94,8 @@ class Google_Service_ServiceUsage_Resource_Operations extends Google_Service_Res
    *
    * @opt_param string name The name of the operation's parent resource.
    * @opt_param string pageToken The standard list page token.
-   * @opt_param int pageSize The standard list page size.
    * @opt_param string filter The standard list filter.
+   * @opt_param int pageSize The standard list page size.
    * @return Google_Service_ServiceUsage_ListOperationsResponse
    */
   public function listOperations($optParams = array())

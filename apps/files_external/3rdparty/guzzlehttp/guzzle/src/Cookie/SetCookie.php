@@ -1,12 +1,10 @@
 <?php
 namespace GuzzleHttp\Cookie;
 
-use GuzzleHttp\ToArrayInterface;
-
 /**
  * Set-Cookie object
  */
-class SetCookie implements ToArrayInterface
+class SetCookie
 {
     /** @var array */
     private static $defaults = [
@@ -37,18 +35,17 @@ class SetCookie implements ToArrayInterface
         $data = self::$defaults;
         // Explode the cookie string using a series of semicolons
         $pieces = array_filter(array_map('trim', explode(';', $cookie)));
-        // The name of the cookie (first kvp) must include an equal sign.
-        if (empty($pieces) || !strpos($pieces[0], '=')) {
+        // The name of the cookie (first kvp) must exist and include an equal sign.
+        if (empty($pieces[0]) || !strpos($pieces[0], '=')) {
             return new self($data);
         }
 
         // Add the cookie pieces into the parsed data array
         foreach ($pieces as $part) {
-
             $cookieParts = explode('=', $part, 2);
             $key = trim($cookieParts[0]);
             $value = isset($cookieParts[1])
-                ? trim($cookieParts[1], " \n\r\t\0\x0B\"")
+                ? trim($cookieParts[1], " \n\r\t\0\x0B")
                 : true;
 
             // Only check for non-cookies when cookies have been found
@@ -88,8 +85,8 @@ class SetCookie implements ToArrayInterface
     {
         $str = $this->data['Name'] . '=' . $this->data['Value'] . '; ';
         foreach ($this->data as $k => $v) {
-            if ($k != 'Name' && $k != 'Value' && $v !== null && $v !== false) {
-                if ($k == 'Expires') {
+            if ($k !== 'Name' && $k !== 'Value' && $v !== null && $v !== false) {
+                if ($k === 'Expires') {
                     $str .= 'Expires=' . gmdate('D, d M Y H:i:s \G\M\T', $v) . '; ';
                 } else {
                     $str .= ($v === true ? $k : "{$k}={$v}") . '; ';
@@ -230,7 +227,7 @@ class SetCookie implements ToArrayInterface
     /**
      * Get whether or not this is a secure cookie
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function getSecure()
     {
@@ -250,7 +247,7 @@ class SetCookie implements ToArrayInterface
     /**
      * Get whether or not this is a session cookie
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function getDiscard()
     {
@@ -288,15 +285,43 @@ class SetCookie implements ToArrayInterface
     }
 
     /**
-     * Check if the cookie matches a path value
+     * Check if the cookie matches a path value.
      *
-     * @param string $path Path to check against
+     * A request-path path-matches a given cookie-path if at least one of
+     * the following conditions holds:
+     *
+     * - The cookie-path and the request-path are identical.
+     * - The cookie-path is a prefix of the request-path, and the last
+     *   character of the cookie-path is %x2F ("/").
+     * - The cookie-path is a prefix of the request-path, and the first
+     *   character of the request-path that is not included in the cookie-
+     *   path is a %x2F ("/") character.
+     *
+     * @param string $requestPath Path to check against
      *
      * @return bool
      */
-    public function matchesPath($path)
+    public function matchesPath($requestPath)
     {
-        return !$this->getPath() || 0 === stripos($path, $this->getPath());
+        $cookiePath = $this->getPath();
+
+        // Match on exact matches or when path is the default empty "/"
+        if ($cookiePath === '/' || $cookiePath == $requestPath) {
+            return true;
+        }
+
+        // Ensure that the cookie-path is a prefix of the request path.
+        if (0 !== strpos($requestPath, $cookiePath)) {
+            return false;
+        }
+
+        // Match if the last character of the cookie-path is "/"
+        if (substr($cookiePath, -1, 1) === '/') {
+            return true;
+        }
+
+        // Match if the first character not included in cookie path is "/"
+        return substr($requestPath, strlen($cookiePath), 1) === '/';
     }
 
     /**
@@ -323,7 +348,7 @@ class SetCookie implements ToArrayInterface
             return false;
         }
 
-        return (bool) preg_match('/\.' . preg_quote($cookieDomain) . '$/i', $domain);
+        return (bool) preg_match('/\.' . preg_quote($cookieDomain, '/') . '$/', $domain);
     }
 
     /**
@@ -350,8 +375,13 @@ class SetCookie implements ToArrayInterface
         }
 
         // Check if any of the invalid characters are present in the cookie name
-        if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
-            return "Cookie name must not cannot invalid characters: =,; \\t\\r\\n\\013\\014";
+        if (preg_match(
+            '/[\x00-\x20\x22\x28-\x29\x2c\x2f\x3a-\x40\x5c\x7b\x7d\x7f]/',
+            $name
+        )) {
+            return 'Cookie name must not contain invalid characters: ASCII '
+                . 'Control characters (0-31;127), space, tab and the '
+                . 'following characters: ()<>@,;:\"/?={}';
         }
 
         // Value must not be empty, but can be 0

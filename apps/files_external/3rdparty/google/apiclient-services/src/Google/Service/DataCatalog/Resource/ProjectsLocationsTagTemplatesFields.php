@@ -28,12 +28,12 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplatesFields ex
   /**
    * Creates a field in a tag template. The user should enable the Data Catalog
    * API in the project identified by the `parent` parameter (see [Data Catalog
-   * Resource Project](/data-catalog/docs/concepts/resource-project) for more
-   * information). (fields.create)
+   * Resource Project](https://cloud.google.com/data-catalog/docs/concepts
+   * /resource-project) for more information). (fields.create)
    *
    * @param string $parent Required. The name of the project and the template
-   * location [region](/compute/docs/regions-zones/#available). NOTE: Currently,
-   * only the `us-central1 region` is supported.
+   * location [region](https://cloud.google.com/data-
+   * catalog/docs/concepts/regions).
    *
    * Example:
    *
@@ -57,8 +57,9 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplatesFields ex
   /**
    * Deletes a field in a tag template and all uses of that field. Users should
    * enable the Data Catalog API in the project identified by the `name` parameter
-   * (see [Data Catalog Resource Project] (/data-catalog/docs/concepts/resource-
-   * project) for more information). (fields.delete)
+   * (see [Data Catalog Resource Project] (https://cloud.google.com/data-
+   * catalog/docs/concepts/resource-project) for more information).
+   * (fields.delete)
    *
    * @param string $name Required. The name of the tag template field to delete.
    * Example:
@@ -82,8 +83,8 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplatesFields ex
    * Updates a field in a tag template. This method cannot be used to update the
    * field type. Users should enable the Data Catalog API in the project
    * identified by the `name` parameter (see [Data Catalog Resource Project]
-   * (/data-catalog/docs/concepts/resource-project) for more information).
-   * (fields.patch)
+   * (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for
+   * more information). (fields.patch)
    *
    * @param string $name Required. The name of the tag template field. Example:
    *
@@ -115,8 +116,8 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplatesFields ex
   /**
    * Renames a field in a tag template. The user should enable the Data Catalog
    * API in the project identified by the `name` parameter (see [Data Catalog
-   * Resource Project](/data-catalog/docs/concepts/resource-project) for more
-   * information). (fields.rename)
+   * Resource Project](https://cloud.google.com/data-catalog/docs/concepts
+   * /resource-project) for more information). (fields.rename)
    *
    * @param string $name Required. The name of the tag template. Example:
    *

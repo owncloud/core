@@ -46,6 +46,11 @@ class FetchAuthTokenCache implements
      */
     private $cache;
 
+    /**
+     * @param FetchAuthTokenInterface $fetcher A credentials fetcher
+     * @param array $cacheConfig Configuration for the cache
+     * @param CacheItemPoolInterface $cache
+     */
     public function __construct(
         FetchAuthTokenInterface $fetcher,
         array $cacheConfig = null,
@@ -66,9 +71,7 @@ class FetchAuthTokenCache implements
      * from the supplied fetcher.
      *
      * @param callable $httpHandler callback which delivers psr7 request
-     *
      * @return array the response
-     *
      * @throws \Exception
      */
     public function fetchAuthToken(callable $httpHandler = null)
@@ -125,14 +128,14 @@ class FetchAuthTokenCache implements
      * Sign a blob using the fetcher.
      *
      * @param string $stringToSign The string to sign.
-     * @param bool $forceOpenssl Require use of OpenSSL for local signing. Does
+     * @param bool $forceOpenSsl Require use of OpenSSL for local signing. Does
      *        not apply to signing done using external services. **Defaults to**
      *        `false`.
      * @return string The resulting signature.
      * @throws \RuntimeException If the fetcher does not implement
      *     `Google\Auth\SignBlobInterface`.
      */
-    public function signBlob($stringToSign, $forceOpenSsl =  false)
+    public function signBlob($stringToSign, $forceOpenSsl = false)
     {
         if (!$this->fetcher instanceof SignBlobInterface) {
             throw new \RuntimeException(

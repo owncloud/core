@@ -41,6 +41,8 @@ class Google_Service_ServiceNetworking extends Google_Service
   public $operations;
   public $services;
   public $services_connections;
+  public $services_dnsRecordSets;
+  public $services_dnsZones;
   public $services_roles;
   
   /**
@@ -107,13 +109,13 @@ class Google_Service_ServiceNetworking extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -219,13 +221,83 @@ class Google_Service_ServiceNetworking extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'force' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'force' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
+              ),
+            ),
+          )
+        )
+    );
+    $this->services_dnsRecordSets = new Google_Service_ServiceNetworking_Resource_ServicesDnsRecordSets(
+        $this,
+        $this->serviceName,
+        'dnsRecordSets',
+        array(
+          'methods' => array(
+            'add' => array(
+              'path' => 'v1/{+parent}/dnsRecordSets:add',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'remove' => array(
+              'path' => 'v1/{+parent}/dnsRecordSets:remove',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'update' => array(
+              'path' => 'v1/{+parent}/dnsRecordSets:update',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->services_dnsZones = new Google_Service_ServiceNetworking_Resource_ServicesDnsZones(
+        $this,
+        $this->serviceName,
+        'dnsZones',
+        array(
+          'methods' => array(
+            'add' => array(
+              'path' => 'v1/{+parent}/dnsZones:add',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'remove' => array(
+              'path' => 'v1/{+parent}/dnsZones:remove',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),

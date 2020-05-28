@@ -26,9 +26,10 @@
 class Google_Service_YouTube_Resource_MembershipsLevels extends Google_Service_Resource
 {
   /**
-   * Lists pricing levels for a channel. (membershipsLevels.listMembershipsLevels)
+   * Retrieves a list of all pricing levels offered by a creator to the fans.
+   * (membershipsLevels.listMembershipsLevels)
    *
-   * @param string $part The part parameter specifies the membershipsLevel
+   * @param string|array $part The part parameter specifies the membershipsLevel
    * resource parts that the API response will include. Supported values are id
    * and snippet.
    * @param array $optParams Optional parameters.

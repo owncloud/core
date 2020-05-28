@@ -26,10 +26,9 @@
 class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
 {
   /**
-   * Deletes a comment. (comments.delete)
+   * Deletes a resource. (comments.delete)
    *
-   * @param string $id The id parameter specifies the comment ID for the resource
-   * that is being deleted.
+   * @param string $id
    * @param array $optParams Optional parameters.
    */
   public function delete($id, $optParams = array())
@@ -39,12 +38,11 @@ class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
     return $this->call('delete', array($params));
   }
   /**
-   * Creates a reply to an existing comment. Note: To create a top-level comment,
-   * use the commentThreads.insert method. (comments.insert)
+   * Inserts a new resource into this collection. (comments.insert)
    *
-   * @param string $part The part parameter identifies the properties that the API
-   * response will include. Set the parameter value to snippet. The snippet part
-   * has a quota cost of 2 units.
+   * @param string|array $part The part parameter identifies the properties that
+   * the API response will include. Set the parameter value to snippet. The
+   * snippet part has a quota cost of 2 units.
    * @param Google_Service_YouTube_Comment $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_YouTube_Comment
@@ -56,35 +54,26 @@ class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_YouTube_Comment");
   }
   /**
-   * Returns a list of comments that match the API request parameters.
-   * (comments.listComments)
+   * Retrieves a list of resources, possibly filtered. (comments.listComments)
    *
-   * @param string $part The part parameter specifies a comma-separated list of
-   * one or more comment resource properties that the API response will include.
+   * @param string|array $part The part parameter specifies a comma-separated list
+   * of one or more comment resource properties that the API response will
+   * include.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string id The id parameter specifies a comma-separated list of
-   * comment IDs for the resources that are being retrieved. In a comment
-   * resource, the id property specifies the comment's ID.
-   * @opt_param string maxResults The maxResults parameter specifies the maximum
-   * number of items that should be returned in the result set.
-   *
-   * Note: This parameter is not supported for use in conjunction with the id
-   * parameter.
+   * @opt_param string textFormat The requested text format for the returned
+   * comments.
    * @opt_param string pageToken The pageToken parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
-   * nextPageToken property identifies the next page of the result that can be
+   * nextPageToken and prevPageToken properties identify other pages that could be
    * retrieved.
-   *
-   * Note: This parameter is not supported for use in conjunction with the id
-   * parameter.
-   * @opt_param string parentId The parentId parameter specifies the ID of the
-   * comment for which replies should be retrieved.
-   *
-   * Note: YouTube currently supports replies only for top-level comments.
-   * However, replies to replies may be supported in the future.
-   * @opt_param string textFormat This parameter indicates whether the API should
-   * return comments formatted as HTML or as plain text.
+   * @opt_param string maxResults The maxResults parameter specifies the maximum
+   * number of items that should be returned in the result set.
+   * @opt_param string parentId Returns replies to the specified comment. Note,
+   * currently YouTube features only one level of replies (ie replies to top level
+   * comments). However replies to replies may be supported in the future.
+   * @opt_param string id Returns the comments with the given IDs for One
+   * Platform.
    * @return Google_Service_YouTube_CommentListResponse
    */
   public function listComments($part, $optParams = array())
@@ -97,8 +86,8 @@ class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
    * Expresses the caller's opinion that one or more comments should be flagged as
    * spam. (comments.markAsSpam)
    *
-   * @param string $id The id parameter specifies a comma-separated list of IDs of
-   * comments that the caller believes should be classified as spam.
+   * @param string|array $id Flags the comments with the given IDs as spam in the
+   * caller's opinion.
    * @param array $optParams Optional parameters.
    */
   public function markAsSpam($id, $optParams = array())
@@ -108,22 +97,21 @@ class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
     return $this->call('markAsSpam', array($params));
   }
   /**
-   * Sets the moderation status of one or more comments. The API request must be
-   * authorized by the owner of the channel or video associated with the comments.
+   * Sets the moderation status of one or more comments.
    * (comments.setModerationStatus)
    *
-   * @param string $id The id parameter specifies a comma-separated list of IDs
-   * that identify the comments for which you are updating the moderation status.
-   * @param string $moderationStatus Identifies the new moderation status of the
-   * specified comments.
+   * @param string|array $id Modifies the moderation status of the comments with
+   * the given IDs
+   * @param string $moderationStatus Specifies the requested moderation status.
+   * Note, comments can be in statuses, which are not available through this call.
+   * For example, this call does not allow to mark a comment as 'likely spam'.
+   * Valid values: MODERATION_STATUS_PUBLISHED, MODERATION_STATUS_HELD_FOR_REVIEW,
+   * MODERATION_STATUS_REJECTED.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool banAuthor The banAuthor parameter lets you indicate that you
-   * want to automatically reject any additional comments written by the comment's
-   * author. Set the parameter value to true to ban the author.
-   *
-   * Note: This parameter is only valid if the moderationStatus parameter is also
-   * set to rejected.
+   * @opt_param bool banAuthor If set to true the author of the comment gets added
+   * to the ban list. This means all future comments of the author will
+   * autmomatically be rejected. Only valid in combination with STATUS_REJECTED.
    */
   public function setModerationStatus($id, $moderationStatus, $optParams = array())
   {
@@ -132,12 +120,12 @@ class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
     return $this->call('setModerationStatus', array($params));
   }
   /**
-   * Modifies a comment. (comments.update)
+   * Updates an existing resource. (comments.update)
    *
-   * @param string $part The part parameter identifies the properties that the API
-   * response will include. You must at least include the snippet part in the
-   * parameter value since that part contains all of the properties that the API
-   * request can update.
+   * @param string|array $part The part parameter identifies the properties that
+   * the API response will include. You must at least include the snippet part in
+   * the parameter value since that part contains all of the properties that the
+   * API request can update.
    * @param Google_Service_YouTube_Comment $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_YouTube_Comment

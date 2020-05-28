@@ -34,11 +34,11 @@ class Google_Service_Gmail_Resource_UsersHistory extends Google_Service_Resource
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token to retrieve a specific page of results
-   * in the list.
+   * @opt_param string historyTypes History types to be returned by the function
    * @opt_param string labelId Only return messages with a label matching the ID.
    * @opt_param string maxResults The maximum number of history records to return.
-   * @opt_param string historyTypes History types to be returned by the function
+   * @opt_param string pageToken Page token to retrieve a specific page of results
+   * in the list.
    * @opt_param string startHistoryId Required. Returns history records after the
    * specified startHistoryId. The supplied startHistoryId should be obtained from
    * the historyId of a message, thread, or previous list response. History IDs
@@ -46,7 +46,7 @@ class Google_Service_Gmail_Resource_UsersHistory extends Google_Service_Resource
    * valid IDs. Supplying an invalid or out of date startHistoryId typically
    * returns an HTTP 404 error code. A historyId is typically valid for at least a
    * week, but in some rare circumstances may be valid for only a few hours. If
-   * you receive an HTTP 404 error response, your  application should perform a
+   * you receive an HTTP 404 error response, your application should perform a
    * full sync. If you receive no nextPageToken in the response, there are no
    * updates to retrieve and you can store the returned historyId for a future
    * request.

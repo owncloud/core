@@ -26,12 +26,11 @@
 class Google_Service_YouTube_Resource_CommentThreads extends Google_Service_Resource
 {
   /**
-   * Creates a new top-level comment. To add a reply to an existing comment, use
-   * the comments.insert method instead. (commentThreads.insert)
+   * Inserts a new resource into this collection. (commentThreads.insert)
    *
-   * @param string $part The part parameter identifies the properties that the API
-   * response will include. Set the parameter value to snippet. The snippet part
-   * has a quota cost of 2 units.
+   * @param string|array $part The part parameter identifies the properties that
+   * the API response will include. Set the parameter value to snippet. The
+   * snippet part has a quota cost of 2 units.
    * @param Google_Service_YouTube_CommentThread $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_YouTube_CommentThread
@@ -43,56 +42,35 @@ class Google_Service_YouTube_Resource_CommentThreads extends Google_Service_Reso
     return $this->call('insert', array($params), "Google_Service_YouTube_CommentThread");
   }
   /**
-   * Returns a list of comment threads that match the API request parameters.
+   * Retrieves a list of resources, possibly filtered.
    * (commentThreads.listCommentThreads)
    *
-   * @param string $part The part parameter specifies a comma-separated list of
-   * one or more commentThread resource properties that the API response will
+   * @param string|array $part The part parameter specifies a comma-separated list
+   * of one or more commentThread resource properties that the API response will
    * include.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string allThreadsRelatedToChannelId The
-   * allThreadsRelatedToChannelId parameter instructs the API to return all
-   * comment threads associated with the specified channel. The response can
-   * include comments about the channel or about the channel's videos.
-   * @opt_param string channelId The channelId parameter instructs the API to
-   * return comment threads containing comments about the specified channel. (The
-   * response will not include comments left on videos that the channel uploaded.)
-   * @opt_param string id The id parameter specifies a comma-separated list of
-   * comment thread IDs for the resources that should be retrieved.
-   * @opt_param string maxResults The maxResults parameter specifies the maximum
-   * number of items that should be returned in the result set.
-   *
-   * Note: This parameter is not supported for use in conjunction with the id
-   * parameter.
-   * @opt_param string moderationStatus Set this parameter to limit the returned
-   * comment threads to a particular moderation state.
-   *
-   * Note: This parameter is not supported for use in conjunction with the id
-   * parameter.
-   * @opt_param string order The order parameter specifies the order in which the
-   * API response should list comment threads. Valid values are: - time - Comment
-   * threads are ordered by time. This is the default behavior. - relevance -
-   * Comment threads are ordered by relevance.Note: This parameter is not
-   * supported for use in conjunction with the id parameter.
+   * @opt_param string videoId Returns the comment threads of the specified video.
+   * @opt_param string order
+   * @opt_param string searchTerms Limits the returned comment threads to those
+   * matching the specified key words. Not compatible with the 'id' filter.
    * @opt_param string pageToken The pageToken parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
-   * nextPageToken property identifies the next page of the result that can be
+   * nextPageToken and prevPageToken properties identify other pages that could be
    * retrieved.
-   *
-   * Note: This parameter is not supported for use in conjunction with the id
-   * parameter.
-   * @opt_param string searchTerms The searchTerms parameter instructs the API to
-   * limit the API response to only contain comments that contain the specified
-   * search terms.
-   *
-   * Note: This parameter is not supported for use in conjunction with the id
-   * parameter.
-   * @opt_param string textFormat Set this parameter's value to html or plainText
-   * to instruct the API to return the comments left by users in html formatted or
-   * in plain text.
-   * @opt_param string videoId The videoId parameter instructs the API to return
-   * comment threads associated with the specified video ID.
+   * @opt_param string textFormat The requested text format for the returned
+   * comments.
+   * @opt_param string maxResults The maxResults parameter specifies the maximum
+   * number of items that should be returned in the result set.
+   * @opt_param string moderationStatus Limits the returned comment threads to
+   * those with the specified moderation status. Not compatible with the 'id'
+   * filter. Valid values: published, heldForReview, likelySpam.
+   * @opt_param string allThreadsRelatedToChannelId Returns the comment threads of
+   * all videos of the channel and the channel comments as well.
+   * @opt_param string id Returns the comment threads with the given IDs for
+   * Stubby or Apiary.
+   * @opt_param string channelId Returns the comment threads for all the channel
+   * comments (ie does not include comments left on videos).
    * @return Google_Service_YouTube_CommentThreadListResponse
    */
   public function listCommentThreads($part, $optParams = array())
@@ -102,10 +80,10 @@ class Google_Service_YouTube_Resource_CommentThreads extends Google_Service_Reso
     return $this->call('list', array($params), "Google_Service_YouTube_CommentThreadListResponse");
   }
   /**
-   * Modifies the top-level comment in a comment thread. (commentThreads.update)
+   * Updates an existing resource. (commentThreads.update)
    *
-   * @param string $part The part parameter specifies a comma-separated list of
-   * commentThread resource properties that the API response will include. You
+   * @param string|array $part The part parameter specifies a comma-separated list
+   * of commentThread resource properties that the API response will include. You
    * must at least include the snippet part in the parameter value since that part
    * contains all of the properties that the API request can update.
    * @param Google_Service_YouTube_CommentThread $postBody

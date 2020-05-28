@@ -21,7 +21,8 @@ class Google_Service_Bigquery_JobConfigurationQuery extends Google_Collection
   public $allowLargeResults;
   protected $clusteringType = 'Google_Service_Bigquery_Clustering';
   protected $clusteringDataType = '';
-  public $connectionProperties;
+  protected $connectionPropertiesType = 'Google_Service_Bigquery_ConnectionProperty';
+  protected $connectionPropertiesDataType = 'array';
   public $createDisposition;
   protected $defaultDatasetType = 'Google_Service_Bigquery_DatasetReference';
   protected $defaultDatasetDataType = '';
@@ -73,10 +74,16 @@ class Google_Service_Bigquery_JobConfigurationQuery extends Google_Collection
   {
     return $this->clustering;
   }
+  /**
+   * @param Google_Service_Bigquery_ConnectionProperty
+   */
   public function setConnectionProperties($connectionProperties)
   {
     $this->connectionProperties = $connectionProperties;
   }
+  /**
+   * @return Google_Service_Bigquery_ConnectionProperty
+   */
   public function getConnectionProperties()
   {
     return $this->connectionProperties;

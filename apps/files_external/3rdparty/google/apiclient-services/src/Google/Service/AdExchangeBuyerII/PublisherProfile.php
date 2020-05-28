@@ -24,6 +24,7 @@ class Google_Service_AdExchangeBuyerII_PublisherProfile extends Google_Collectio
   public $displayName;
   public $domains;
   public $googlePlusUrl;
+  public $isParent;
   public $logoUrl;
   public $mediaKitUrl;
   public $overview;
@@ -82,6 +83,14 @@ class Google_Service_AdExchangeBuyerII_PublisherProfile extends Google_Collectio
   public function getGooglePlusUrl()
   {
     return $this->googlePlusUrl;
+  }
+  public function setIsParent($isParent)
+  {
+    $this->isParent = $isParent;
+  }
+  public function getIsParent()
+  {
+    return $this->isParent;
   }
   public function setLogoUrl($logoUrl)
   {

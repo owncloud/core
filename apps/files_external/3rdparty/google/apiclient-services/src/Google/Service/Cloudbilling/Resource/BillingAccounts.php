@@ -81,6 +81,10 @@ class Google_Service_Cloudbilling_Resource_BillingAccounts extends Google_Servic
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_Cloudbilling_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
