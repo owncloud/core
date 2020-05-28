@@ -62,7 +62,6 @@
 				var self = this;
 				var $target = $(event.target).closest('.lock-entry');
 				var lockIndex = parseInt($target.attr('data-index'), 10);
-
 				var currentLock = this.model.get('activeLocks')[lockIndex];
 
 				// FIXME: move to FileInfoModel
@@ -75,7 +74,6 @@
 							// implicit clone of array else backbone doesn't fire change event
 							var locks = _.without(self.model.get('activeLocks') || [], currentLock);
 							self.model.set('activeLocks', locks);
-							self.render();
 						}
 						else if (result.status === 403) {
 							OC.Notification.show(t('files', 'Could not unlock, please contact the lock owner {owner}', {owner: currentLock.owner}));
@@ -121,7 +119,21 @@
 			canDisplay: function(fileInfo) {
 				// don't display if no lock is set
 				return fileInfo && fileInfo.get('activeLocks') && fileInfo.get('activeLocks').length > 0;
-			}
+			},
+
+			setFileInfo: function(fileInfo) {
+				if (this.model !== fileInfo) {
+					this.model = fileInfo;
+					this.render();
+					if (fileInfo) {
+						const self = this;
+						this.model.on('change', function(data) {
+							self.render();
+						});
+					}
+				}
+			},
+
 		});
 
 	OCA.Files.LockTabView = LockTabView;

@@ -22,6 +22,7 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use Sabre\DAV\Locks\Backend\BackendInterface;
+use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\INode;
 use Sabre\DAV\Exception\MethodNotAllowed;
@@ -84,5 +85,19 @@ class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
 		} else {
 			throw new MethodNotAllowed('Locking not allowed from public endpoint');
 		}
+	}
+
+	/**
+	 * Generates the response for successful LOCK requests.
+	 * @todo this method can be removed once upstream released a new version with this fix https://github.com/sabre-io/dav/pull/1273
+	 *
+	 * @return string
+	 */
+	protected function generateLockResponse(LockInfo $lockInfo) {
+		$contextUri = $this->server->getBaseUri();
+
+		return $this->server->xml->write('{DAV:}prop', [
+			'{DAV:}lockdiscovery' => new LockDiscovery([$lockInfo]),
+		], $contextUri);
 	}
 }

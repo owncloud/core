@@ -763,6 +763,43 @@
 			return promise;
 		},
 
+		lock: function(path, options) {
+			if (!path) {
+				throw 'Missing argument "path"';
+			}
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			options = _.extend({
+				'pathIsUrl' : false
+			}, options);
+
+			const lockBody = "<?xml version='1.0' encoding='UTF-8'?>\n" +
+				"<d:lockinfo xmlns:d='DAV:'>\n" +
+				"	<d:lockscope>\n" +
+				"		<d:exclusive/>\n" +
+				"	</d:lockscope>\n" +
+				"</d:lockinfo>\n";
+
+			this._client.request(
+				'LOCK',
+				options.pathIsUrl ? path : this._buildUrl(path),
+				{},
+				lockBody
+			).then(
+				function(result) {
+					if (self._isSuccessStatus(result.status)) {
+						deferred.resolve(result.status, result);
+					} else {
+						result = _.extend(result, self._getSabreException(result));
+						deferred.reject(result.status, result);
+					}
+				}
+			);
+			return promise;
+		},
+
 		/**
 		 * Creates a directory
 		 *
