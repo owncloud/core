@@ -72,9 +72,11 @@ class TemplateLayout extends \OC_Template {
 			}
 
 			// grace period notification
+			$shouldShowGracePopup = $this->config->getSystemValue('grace_period.demo_key.show_popup', true);
 			$licenseManager = \OC::$server->getLicenseManager();
 			$gracePeriod = $licenseManager->getGracePeriod();
-			if (\OC_User::isAdminUser(\OC_User::getUser()) && ($gracePeriod && \time() < $gracePeriod['end'])) {
+			$isGracePeriodActive = $gracePeriod && \time() < $gracePeriod['end'];
+			if ($shouldShowGracePopup && \OC_User::isAdminUser(\OC_User::getUser()) && $isGracePeriodActive) {
 				\OCP\Util::addScript('core', 'license-trial-notification');
 			}
 
