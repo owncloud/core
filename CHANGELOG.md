@@ -48,6 +48,7 @@ Summary
 * Change - Use strict samesite cookie: [#37442](https://github.com/owncloud/core/pull/37442)
 * Change - Update opis/closure (3.5.2 => 3.5.3): [#37443](https://github.com/owncloud/core/pull/37443)
 * Change - Update doctrine/lexer (1.2.0 => 1.2.1): [#37448](https://github.com/owncloud/core/pull/37448)
+* Change - Update doctrine/cache (1.10.0 => 1.10.1): [#37458](https://github.com/owncloud/core/pull/37458)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 
@@ -348,6 +349,10 @@ Details
 * Change - Update doctrine/lexer (1.2.0 => 1.2.1): [#37448](https://github.com/owncloud/core/pull/37448)
 
    https://github.com/owncloud/core/pull/37448
+
+* Change - Update doctrine/cache (1.10.0 => 1.10.1): [#37458](https://github.com/owncloud/core/pull/37458)
+
+   https://github.com/owncloud/core/pull/37458
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
