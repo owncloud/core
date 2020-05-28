@@ -119,12 +119,9 @@
 					}).map(function(xmlvalue) {
 						return parseLockNode(xmlvalue);
 					}).value();
-
 				}
 				return data;
 			});
-
-
 		},
 
 		/**
@@ -153,6 +150,42 @@
 					fileList.showDetailsView(fileName, 'lockTabView');
 				}
 			});
+
+			if (oc_appconfig.files.enable_lock_file_action) {
+				fileList.fileActions.registerAction({
+					name: 'lock',
+					mime: 'all',
+					displayName: t('files', 'Lock file'),
+					permissions: OC.PERMISSION_UPDATE,
+					type: OCA.Files.FileActions.TYPE_DROPDOWN,
+					iconClass: 'icon-lock-open',
+					actionHandler: function (filename, context) {
+						const file = context.fileInfoModel.getFullPath();
+						context.fileInfoModel._filesClient.lock(file).then(function (result, response) {
+							const xml = response.xhr.responseXML;
+							const activelock = xml.getElementsByTagNameNS('DAV:', 'activelock');
+							const lock = parseLockNode(activelock[0]);
+							context.fileInfoModel.set('activeLocks', [lock]);
+						}, function (error) {
+							console.log(error)
+							OC.Notification.show(t('files', 'Failed to lock.'));
+						});
+					}
+				});
+
+				fileList.fileActions.addAdvancedFilter(function (actions, context) {
+					var $file = context.$file;
+					if (context.fileInfoModel && context.fileInfoModel.attributes.mimetype === 'httpd/unix-directory') {
+						delete (actions.lock);
+						return actions;
+					}
+					var isLocked = $file.data('activelocks');
+					if (isLocked && isLocked.length > 0) {
+						delete (actions.lock);
+					}
+					return actions;
+				});
+			}
 
 		},
 
