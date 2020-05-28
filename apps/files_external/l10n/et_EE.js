@@ -20,6 +20,8 @@ OC.L10N.register(
     "External mount error" : "Välise seostamise tõrge",
     "Username" : "Kasutajanimi",
     "Password" : "Parool",
+    "Credentials saved" : "Kasutajaandmed on salvestatud",
+    "Credentials saving failed" : "Kasutajaandmete salvestamine ebaõnnestus",
     "Credentials required" : "Kasutajatunnused on nõutud",
     "Save" : "Salvesta",
     "Storage with id \"%i\" not found" : "Salvestuskohta ID-ga \"%i\" ei leitud",
