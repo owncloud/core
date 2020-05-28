@@ -51,6 +51,7 @@ Summary
 * Change - Update doctrine/cache (1.10.0 => 1.10.1): [#37458](https://github.com/owncloud/core/pull/37458)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
+* Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
 
 Details
 -------
@@ -375,6 +376,13 @@ Details
    'share.failedpasswordcheck' events have been added for share password validations.
 
    https://github.com/owncloud/core/pull/37438
+
+* Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
+
+   We've cached some additional information that will boost the performance of external
+   storages. This boost will be particularly noticeable for SMB connections
+
+   https://github.com/owncloud/core/pull/37451
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
