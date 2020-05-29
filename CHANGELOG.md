@@ -28,6 +28,7 @@ Summary
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
+* Change - Adjust wording displayed for empty additional settings panel: [#36775](https://github.com/owncloud/core/pull/36775)
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 * Change - Keep the mtime of files and folders inside the tarball: [#37222](https://github.com/owncloud/core/pull/37222)
 * Change - Replace jeremeamia/superclosure with opis/closure: [#37238](https://github.com/owncloud/core/pull/37238)
@@ -233,6 +234,12 @@ Details
    https://github.com/owncloud/core/issues/36510
    https://github.com/owncloud/core/pull/37100
    https://www.php.net/supported-versions.php
+
+* Change - Adjust wording displayed for empty additional settings panel: [#36775](https://github.com/owncloud/core/pull/36775)
+
+   The wording displayed when the admin personal settings panel is empty has been improved.
+
+   https://github.com/owncloud/core/pull/36775
 
 * Change - Add index on addressbookid: [#3625](https://github.com/owncloud/enterprise/issues/3625)
 
