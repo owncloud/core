@@ -21,9 +21,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
   Scenario: test the single steps of sharing a folder to a remote server
-    When the user shares folder "simple-folder" with remote user "Alice@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
-    And the user shares folder "simple-empty-folder" with remote user "Alice@%remote_server_without_scheme%" using the webUI
+    And the user shares folder "simple-empty-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And using server "REMOTE"
     Then as "Alice" folder "/simple-folder (2)" should exist
@@ -89,9 +89,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
     When the user opens folder "simple-folder" using the webUI
     And the user opens the share dialog for folder "sub-folder"
-    Then federated user "Alice@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
     When the user opens the share dialog for file "textfile.txt"
-    Then federated user "Alice@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
 
   @skipOnOcV10.3
   Scenario: sharing details of items inside a shared folder shared with local user and federated user
@@ -102,5 +102,5 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has shared folder "simple-folder/sub-folder" with user "Brian"
     When the user opens folder "simple-folder/sub-folder" using the webUI
     And the user opens the share dialog for file "textfile.txt"
-    Then federated user "Alice@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
-    And user "Brian Murphy" should be listed as share receiver via "sub-folder" on the webUI
+    Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    And user "Brian" with displayname "%displayname%" should be listed as share receiver via "sub-folder" on the webUI

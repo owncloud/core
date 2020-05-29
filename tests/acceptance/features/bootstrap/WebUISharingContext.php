@@ -138,11 +138,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
+	 * @When /^the user shares (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" ?(?:with displayname "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $folder
 	 * @param string $remote
 	 * @param string $user
+	 * @param string|null $username
 	 * @param int $maxRetries
 	 * @param boolean $quiet
 	 *
@@ -150,9 +151,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSharesFileFolderWithUserUsingTheWebUI(
-		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder, $remote, $user, $username = null, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$user = $this->featureContext->getActualUsername($user);
+		if ($remote === "remote" || $remote === "federated") {
+			$user = $this->featureContext->substituteInLineCodes($username, $user);
+		}
 		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
 			$folder, "user", $remote, $user, $maxRetries, $quiet
 		);
@@ -331,15 +335,15 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$folder, $this->getSession()
 		);
 		if ($userOrGroup === "user") {
-			$user = $this->featureContext->substituteInLineCodes($name);
-			$userActual = $this->featureContext->getDisplayNameForUser($user);
 			if ($remote === "remote") {
 				$this->sharingDialog->shareWithRemoteUser(
-					$userActual, $this->getSession(), $maxRetries, $quiet
+					$name, $this->getSession(), $maxRetries, $quiet
 				);
 			} else {
+				$user = $this->featureContext->substituteInLineCodes($name);
+				$name = $this->featureContext->getDisplayNameForUser($user);
 				$this->sharingDialog->shareWithUser(
-					$userActual, $this->getSession(), $maxRetries, $quiet
+					$name, $this->getSession(), $maxRetries, $quiet
 				);
 			}
 		} else {
