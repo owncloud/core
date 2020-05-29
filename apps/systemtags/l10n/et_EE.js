@@ -8,6 +8,7 @@ OC.L10N.register(
     "No files found for the selected tags" : "Valitud siltidega faile ei leitud",
     "%s (restricted)" : "%s (piiratud)",
     "%s (invisible)" : "%s (nähtamatu)",
+    "%s (static)" : "%s (staatiline)",
     "No files in here" : "Siin ei ole faile",
     "No entries found in this folder" : "Selles kaustast ei leitud kirjeid",
     "Name" : "Nimi",

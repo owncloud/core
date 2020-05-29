@@ -76,6 +76,7 @@ OC.L10N.register(
     "For more info, please ask the person who sent this link." : "Täpsema info saamiseks palun pöördu lingi saatnud isiku poole.",
     "Download" : "Lae alla",
     "Download %s" : "Laadi alla %s",
-    "Direct link" : "Otsene link"
+    "Direct link" : "Otsene link",
+    "Nothing to configure." : "Pole midagi seadistada."
 },
 "nplurals=2; plural=(n != 1);");
