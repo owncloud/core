@@ -28,8 +28,8 @@ OC.L10N.register(
     "New Password" : "Neues Passwort",
     "Personal" : "Persönlich",
     "Admin" : "Administration",
-    "Other" : "Anderes",
     "Settings" : "Einstellungen",
-    "Group" : "Gruppe"
+    "Group" : "Gruppe",
+    "Other" : "Anderes"
 },
 "nplurals=2; plural=(n != 1);");

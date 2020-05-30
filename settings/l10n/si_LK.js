@@ -37,9 +37,9 @@ OC.L10N.register(
     "Username" : "පරිශීලක නම",
     "Personal" : "පෞද්ගලික",
     "Admin" : "පරිපාලක",
-    "Other" : "වෙනත්",
     "Settings" : "සිටුවම්",
     "Default Quota" : "සාමාන්‍ය සලාකය",
+    "Other" : "වෙනත්",
     "Quota" : "සලාකය"
 },
 "nplurals=2; plural=(n != 1);");

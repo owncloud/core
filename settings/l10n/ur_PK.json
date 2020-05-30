@@ -18,8 +18,8 @@
     "Username" : "یوزر نیم",
     "Personal" : "شخصی",
     "Admin" : "ایڈمن",
-    "Other" : "دیگر",
     "Settings" : "ترتیبات",
-    "Group" : "گروپ"
+    "Group" : "گروپ",
+    "Other" : "دیگر"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

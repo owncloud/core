@@ -41,11 +41,11 @@ OC.L10N.register(
     "New Password" : "Nove contrasigno",
     "Personal" : "Personal",
     "Admin" : "Administration",
-    "Other" : "Altere",
     "Settings" : "Configurationes",
     "E-Mail" : "E-posta",
     "Group" : "Gruppo",
     "Default Quota" : "Quota predeterminate",
+    "Other" : "Altere",
     "Quota" : "Quota"
 },
 "nplurals=2; plural=(n != 1);");

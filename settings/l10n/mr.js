@@ -4,7 +4,7 @@ OC.L10N.register(
     "Delete" : "का",
     "Share" : "वाटा",
     "Name" : "नाव",
-    "Other" : "इतर",
-    "Settings" : "सेटिंग्ज"
+    "Settings" : "सेटिंग्ज",
+    "Other" : "इतर"
 },
 "nplurals=2; plural=(n != 1);");
