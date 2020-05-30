@@ -374,14 +374,13 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed on the webUI$/
 	 *
 	 * @param int|string|null $count
-	 * @param string|null $user
 	 * @param TableNode|null $table of expected dialogs format must be:
 	 *                              | title | content |
 	 *
 	 * @return void
 	 */
 	public function dialogsShouldBeDisplayedOnTheWebUI(
-		$count = null, $user = null, TableNode $table = null
+		$count = null, TableNode $table = null
 	) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
 		//check if the correct number of dialogs are open
@@ -408,7 +407,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			);
 		}
 		if ($table !== null) {
-			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content', 'user']);
+			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content'], ['user']);
 			$expectedDialogs = $table->getHash();
 			//we iterate first through the real dialogs because that way we can
 			//save time by calling getMessage() & getTitle() only once
@@ -416,12 +415,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$content = $dialog->getMessage();
 				$title = $dialog->getTitle();
 				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
-					if ($user !== null) {
-						$expectedDialogs[$dialogI]['content']
-							= $this->featureContext->substituteInLineCodes(
-								$expectedDialogs[$dialogI]['content'], $user
-							);
-					} else {
+					if (isset($expectedDialogs[$dialogI]['user'])) {
 						$expectedDialogs[$dialogI]['content']
 							= $this->featureContext->substituteInLineCodes(
 								$expectedDialogs[$dialogI]['content'], $expectedDialogs[$dialogI]['user']

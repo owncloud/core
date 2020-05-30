@@ -1834,7 +1834,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string|null
 	 */
 	public function getEmailAddressForUser($userName) {
-		$userName = $this->getActualUsername($userName);
+		//		$userName = $this->getActualUsername($userName);
 		$userName = $this->normalizeUsername($userName);
 		if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['email'];

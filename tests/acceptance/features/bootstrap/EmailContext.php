@@ -85,16 +85,17 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @Then the email address :address should have received an email with the body containing
+	 * @Then /^the email address "(?P<address>[^"]*)" should have received an email ?(?:from user "(?P<user>[^"]*)")? with the body containing$/
 	 *
 	 * @param string $address
 	 * @param PyStringNode $content
+	 * @param string|null $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, PyStringNode $content) {
-		$this->assertThatEmailContains($address, $content);
+	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, $content, $user = null) {
+		$this->assertThatEmailContains($address, $content, $user);
 	}
 
 	/**

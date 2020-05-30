@@ -57,9 +57,9 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -70,16 +70,16 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email       | foo@bar.co |
       | emailToSelf | true       |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
-    And the email address "alice@example.org" should have received an email with the body containing
+    And the email address of user "Alice" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
-    And the email address "alice@example.org" should have received an email containing the last shared public link
+    And the email address "alice@example.org" of user "Alice" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email with multiple addresses
     Given user "Alice" has created folder "/simple-folder"
@@ -87,13 +87,13 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co, foo@barr.co |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
-    And the email address "foo@barr.co" should have received an email with the body containing
+    And the email address "foo@barr.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "foo@barr.co" should have received an email containing the last shared public link
@@ -105,9 +105,9 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email           | foo@bar.co  |
       | personalMessage | lorem ipsum |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email with the body containing
     """
@@ -133,13 +133,13 @@ Feature: Share by public link
       | foo1234@bar.co  |
       | foo5678@barr.co |
     And the user creates the public link using the webUI
-    Then the email address "foo5678@bar.co" should have received an email with the body containing
+    Then the email address "foo5678@bar.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
-    And the email address "foo1234@barr.co" should have received an email with the body containing
+    And the email address "foo1234@barr.co" should have received an email from user "Alice" with the body containing
     """
-    Alice Hansen shared simple-folder with you
+    %displayname% shared simple-folder with you
     """
     And the email address "foo5678@bar.co" should have received an email containing the last shared public link
     And the email address "foo1234@barr.co" should have received an email containing the last shared public link

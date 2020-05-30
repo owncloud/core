@@ -1885,14 +1885,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the email address :address should have received an email containing the last shared public link
+	 * @Then /^the email address "(?P<address>[^"]*)" ?(?:of user "(?P<user>[^"]*)")? should have received an email containing the last shared public link$/
 	 *
-	 * @param string $address
+	 * @param string|null $address
+	 * @param string|null $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink($address) {
+	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink($address = null, $user = null) {
+		if ($address === null) {
+			$address = $this->featureContext->getEmailAddressForUser($user);
+		}
 		$content = EmailHelper::getBodyOfLastEmail(
 			EmailHelper::getLocalMailhogUrl(),
 			$address
