@@ -55,9 +55,9 @@ Feature: Reshare by public link
     And user "Brian" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
       """
-      Brian Murphy shared simple-folder with you
+      %displayname% shared simple-folder with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -71,9 +71,9 @@ Feature: Reshare by public link
     When the user opens folder "simple-folder" using the webUI
     And the user creates a new public link for file "randomfile.txt" using the webUI with
       | email | foo@bar.co |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
       """
-      Brian Murphy shared randomfile.txt with you
+      %displayname% shared randomfile.txt with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -85,9 +85,9 @@ Feature: Reshare by public link
     And user "Brian" has logged in using the webUI
     When the user creates a new public link for file "randomfile.txt" using the webUI with
       | email | foo@bar.co |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
       """
-      Brian Murphy shared randomfile.txt with you
+      %displayname% shared randomfile.txt with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
@@ -99,13 +99,13 @@ Feature: Reshare by public link
     And user "Brian" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co, foo@barr.co |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
       """
-      Brian Murphy shared simple-folder with you
+      %displayname% shared simple-folder with you
       """
-    And the email address "foo@barr.co" should have received an email with the body containing
+    And the email address "foo@barr.co" should have received an email from user "Brian" with the body containing
       """
-      Brian Murphy shared simple-folder with you
+      %displayname% shared simple-folder with you
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "foo@barr.co" should have received an email containing the last shared public link
@@ -119,9 +119,9 @@ Feature: Reshare by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email           | foo@bar.co  |
       | personalMessage | lorem ipsum |
-    Then the email address "foo@bar.co" should have received an email with the body containing
+    Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
       """
-      Brian Murphy shared simple-folder with you
+      %displayname% shared simple-folder with you
       """
     And the email address "foo@bar.co" should have received an email with the body containing
       """

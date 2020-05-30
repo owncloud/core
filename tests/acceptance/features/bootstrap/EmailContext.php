@@ -95,6 +95,7 @@ class EmailContext implements Context {
 	 * @throws \Exception
 	 */
 	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, $content, $user = null) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->assertThatEmailContains($address, $content, $user);
 	}
 
