@@ -371,7 +371,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^((?:\d)|no)?\s?dialog[s]?(?: mentioning user "([^"]*)")? should be displayed on the webUI$/
+	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed on the webUI$/
 	 *
 	 * @param int|string|null $count
 	 * @param string|null $user
@@ -389,7 +389,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			if ($count === "no") {
 				$count = 0;
 			} else {
-				$count = (int) $count;
+				$count = (int)$count;
 			}
 			$currentTime = \microtime(true);
 			$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
@@ -408,7 +408,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			);
 		}
 		if ($table !== null) {
-			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content']);
+			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content', 'user']);
 			$expectedDialogs = $table->getHash();
 			//we iterate first through the real dialogs because that way we can
 			//save time by calling getMessage() & getTitle() only once
@@ -416,10 +416,17 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$content = $dialog->getMessage();
 				$title = $dialog->getTitle();
 				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
-					$expectedDialogs[$dialogI]['content']
-						= $this->featureContext->substituteInLineCodes(
-							$expectedDialogs[$dialogI]['content'], $user
-						);
+					if ($user !== null) {
+						$expectedDialogs[$dialogI]['content']
+							= $this->featureContext->substituteInLineCodes(
+								$expectedDialogs[$dialogI]['content'], $user
+							);
+					} else {
+						$expectedDialogs[$dialogI]['content']
+							= $this->featureContext->substituteInLineCodes(
+								$expectedDialogs[$dialogI]['content'], $expectedDialogs[$dialogI]['user']
+							);
+					}
 					if ($content === $expectedDialogs[$dialogI]['content']
 						&& $title === $expectedDialogs[$dialogI]['title']
 					) {

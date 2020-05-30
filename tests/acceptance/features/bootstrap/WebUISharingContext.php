@@ -1152,7 +1152,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function sendShareNotificationByEmailUsingTheWebui($type, $receiver) {
 		if ($type === "user") {
-			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
+			$receiver = $this->featureContext->getActualUsername($receiver);
 		}
 		Assert::assertNotNull(
 			$this->sharingDialog, "Sharing Dialog is not open"

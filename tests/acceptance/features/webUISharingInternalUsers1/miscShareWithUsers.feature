@@ -246,9 +246,9 @@ Feature: misc scenarios on sharing with internal users
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email for user "Brian" using the webUI
-    Then 1 dialog mentioning user "Brian" should be displayed on the webUI
-      | title                       | content                                                     |
-      | Email notification not sent | Couldn't send mail to following recipient(s): %displayname% |
+    Then 1 dialog should be displayed on the webUI
+      | title                       | content                                                  | user  |
+      | Email notification not sent | Couldn't send mail to following recipient(s): %username% | Brian |
 
   @mailhog @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once

@@ -43,10 +43,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Carol" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
     And the user has reloaded the current page of the webUI
     Then dialogs should be displayed on the webUI
-      | title        | content                                                                                             |
-      | Remote share | Do you want to add the remote share /simple-folder from Alice@%remote_server_without_scheme%?       |
-      | Remote share | Do you want to add the remote share /simple-empty-folder from Brian@%remote_server_without_scheme%? |
-      | Remote share | Do you want to add the remote share /lorem.txt from Carol@%remote_server_without_scheme%?           |
+      | title        | content                                                                                                  | user  |
+      | Remote share | Do you want to add the remote share /simple-folder from %username%@%remote_server_without_scheme%?       | Alice |
+      | Remote share | Do you want to add the remote share /simple-empty-folder from %username%@%remote_server_without_scheme%? | Brian |
+      | Remote share | Do you want to add the remote share /lorem.txt from %username%@%remote_server_without_scheme%?           | Carol |
     When the user accepts the offered remote shares using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
     And the content of file "lorem (2).txt" for user "Alice" on server "LOCAL" should be "I am lorem.txt"
