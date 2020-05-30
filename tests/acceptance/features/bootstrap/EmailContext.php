@@ -123,6 +123,7 @@ class EmailContext implements Context {
 	 * @throws Exception
 	 */
 	public function theResetEmailSenderEmailAddressShouldBe($user, $senderAddress) {
+		$user = $this->featureContext->getActualUsername($user);
 		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
 		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
 		Assert::assertStringContainsString(
