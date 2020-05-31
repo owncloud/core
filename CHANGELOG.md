@@ -51,6 +51,7 @@ Summary
 * Change - Update doctrine/lexer (1.2.0 => 1.2.1): [#37448](https://github.com/owncloud/core/pull/37448)
 * Change - Update doctrine/cache (1.10.0 => 1.10.1): [#37458](https://github.com/owncloud/core/pull/37458)
 * Change - Update doctrine/instantiator (1.3.0 => 1.3.1): [#37464](https://github.com/owncloud/core/pull/37464)
+* Change - Update Symfony components to 4.4.9: [#37465](https://github.com/owncloud/core/pull/37465)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -366,6 +367,16 @@ Details
 * Change - Update doctrine/instantiator (1.3.0 => 1.3.1): [#37464](https://github.com/owncloud/core/pull/37464)
 
    https://github.com/owncloud/core/pull/37464
+
+* Change - Update Symfony components to 4.4.9: [#37465](https://github.com/owncloud/core/pull/37465)
+
+   The following Symfony components have been updated to version 4.4.9 - console -
+   event-dispatcher - process - routing - translation
+
+   Symfony/polyfill-php80 (v1.17.0) has been added.
+
+   https://github.com/owncloud/core/pull/37465
+   https://symfony.com/blog/symfony-4-4-9-released
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
