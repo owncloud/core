@@ -349,6 +349,8 @@ OC.L10N.register(
     "Please set your password" : "Ju lutemi, caktoni fjalëkalimin tuaj",
     "Personal" : "Personale",
     "Admin" : "Admin",
+    "Currently no settings are available in this category" : "Aktualisht s’ka rregullime të passhme në këtë kategori",
+    "The administrators can enable additional apps which add settings sections here." : "Përgjegjësi mund të aktivizojnë aplikacione shtese të cilat shtojnë rregullime këtu.",
     "Activation link was sent to an email address, if one was configured." : "Lidhja e aktivizimit u dërgua te një adresë email, në qe formësuar një e tillë.",
     "Settings" : "Rregullime",
     "Show enabled/disabled option" : "Shfaq mundësinë e aktivizuar/çaktivizuar",

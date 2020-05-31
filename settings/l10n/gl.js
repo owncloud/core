@@ -349,6 +349,8 @@ OC.L10N.register(
     "Please set your password" : "Estabeleza o seu contrasinal",
     "Personal" : "Persoal",
     "Admin" : "Administración",
+    "Currently no settings are available in this category" : "Actualmente non hai axustes dispoñíbeis nesta categoría",
+    "The administrators can enable additional apps which add settings sections here." : "Os administradores poden activar aplicacións adicionais que engaden seccións de configuración aquí.",
     "Activation link was sent to an email address, if one was configured." : "A ligazón de activación foi enviada ao enderezo de correo, se estaba configurado.",
     "Settings" : "Axustes",
     "Show enabled/disabled option" : "Amosar a opción activar/desactivar",
