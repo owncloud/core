@@ -289,7 +289,7 @@ Feature: misc scenarios on sharing with internal users
     Then a notification should be displayed on the webUI with the text "Email notification was sent!"
     And the email address of user "Brian" should have received an email from user "Alice" with the body containing
       """
-      just letting you know that %displayname% shared simple-folder with you.
+      just letting you know that %username% shared simple-folder with you.
       """
 
   @issue-35787

@@ -1153,6 +1153,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function sendShareNotificationByEmailUsingTheWebui($type, $receiver) {
 		if ($type === "user") {
 			$receiver = $this->featureContext->getActualUsername($receiver);
+			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
 		}
 		Assert::assertNotNull(
 			$this->sharingDialog, "Sharing Dialog is not open"
@@ -1494,6 +1495,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function fileFolderShouldBeMarkedAsSharedBy(
 		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
 	) {
+		$sharerName = $this->featureContext->getActualUsername($sharerName);
 		$sharerName = $this->featureContext->getDisplayNameForUser($sharerName);
 		//close any open sharing dialog
 		//if there is no dialog open and we try to close it
