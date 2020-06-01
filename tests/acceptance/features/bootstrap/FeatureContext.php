@@ -73,6 +73,17 @@ class FeatureContext extends BehatVariablesContext {
 	private $originalAdminPassword = '';
 
 	/**
+	 * An array of values of replacement values of user attributes.
+	 * These are only referenced when creating a user. After that, the
+	 * run-time values are maintained and referenced in the $createUsers array.
+	 *
+	 * Key is the username, value is an array of user attributes
+	 *
+	 * @var array|null
+	 */
+	private $userReplacements = null;
+
+	/**
 	 * @var string
 	 */
 	private $regularUserPassword = '';
@@ -394,10 +405,33 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return array|null
 	 */
 	public function usersToBeReplaced() {
-		if ($this->isTestingReplacingUsernames()) {
-			return \json_decode(\file_get_contents("./tests/acceptance/usernames.json"), true);
+		if (($this->userReplacements === null) && $this->isTestingReplacingUsernames()) {
+			$this->userReplacements = \json_decode(
+				\file_get_contents("./tests/acceptance/usernames.json"),
+				true
+			);
+			// Loop through the user replacements, and make entries for the lower
+			// and upper case forms. This allows for steps that specifically
+			// want to test that user names like "alice", "Alice" and "ALICE" all work.
+			// Such steps will make useful replacements for each form.
+			foreach ($this->userReplacements as $key => $value) {
+				$lowerKey = \strtolower($key);
+				if ($lowerKey !== $key) {
+					$this->userReplacements[$lowerKey] = $value;
+					$this->userReplacements[$lowerKey]['username'] = \strtolower(
+						$this->userReplacements[$lowerKey]['username']
+					);
+				}
+				$upperKey = \strtoupper($key);
+				if ($upperKey !== $key) {
+					$this->userReplacements[$upperKey] = $value;
+					$this->userReplacements[$upperKey]['username'] = \strtoupper(
+						$this->userReplacements[$upperKey]['username']
+					);
+				}
+			}
 		}
-		return null;
+		return $this->userReplacements;
 	}
 
 	/**
@@ -1710,7 +1744,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getPasswordForUser($userName) {
-		$usernames = $this->usersToBeReplaced();
 		$userName = $this->normalizeUsername($userName);
 		$username = $this->getActualUsername($userName);
 		if ($username === $this->getAdminUsername()) {
@@ -1720,42 +1753,38 @@ class FeatureContext extends BehatVariablesContext {
 		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
 			return (string) $this->createdRemoteUsers[$username]['password'];
 		}
+
+		// The user has not been created yet, see if there is a replacement
+		// defined for the user.
+		$usernames = $this->usersToBeReplaced();
 		if (isset($usernames)) {
 			if (isset($usernames[$userName])) {
 				return $usernames[$userName]['password'];
 			}
 		}
+
+		// Fall back to the default password used for the well-known users.
 		if ($username === 'regularuser') {
 			return (string) $this->regularUserPassword;
 		} elseif ($username === 'alice') {
 			return (string) $this->regularUserPassword;
-		} elseif ($username === 'user0') {
-			return (string) $this->regularUserPassword;
 		} elseif ($username === 'brian') {
-			return (string) $this->alt1UserPassword;
-		} elseif ($username === 'user1') {
 			return (string) $this->alt1UserPassword;
 		} elseif ($username === 'carol') {
 			return (string) $this->alt2UserPassword;
-		} elseif ($username === 'user2') {
-			return (string) $this->alt2UserPassword;
 		} elseif ($username === 'david') {
 			return (string) $this->alt3UserPassword;
-		} elseif ($username === 'user3') {
-			return (string) $this->alt3UserPassword;
 		} elseif ($username === 'emily') {
-			return (string) $this->alt4UserPassword;
-		} elseif ($username === 'user4') {
 			return (string) $this->alt4UserPassword;
 		} elseif ($username === 'usergrp') {
 			return (string) $this->regularUserPassword;
 		} elseif ($username === 'sharee1') {
 			return (string) $this->regularUserPassword;
-		} else {
-			// The user has not been created yet and is not one of the pre-known
-			// users. So let the caller have the default password.
-			return (string) $this->getActualPassword($this->regularUserPassword);
 		}
+
+		// The user has not been created yet and is not one of the pre-known
+		// users. So let the caller have the default password.
+		return (string) $this->getActualPassword($this->regularUserPassword);
 	}
 
 	/**
@@ -1771,54 +1800,53 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string|null
 	 */
 	public function getDisplayNameForUser($userName) {
-		$usernames = $this->usersToBeReplaced();
 		$userNameNormalized = $this->normalizeUsername($userName);
 		$username = $this->getActualUsername($userNameNormalized);
-		if (\array_key_exists($username, $this->createdUsers) && !isset($this->createdUsers[$username]['displayname'])) {
+		if (\array_key_exists($username, $this->createdUsers)) {
+			if (isset($this->createdUsers[$username]['displayname'])) {
+				return (string) $this->createdUsers[$username]['displayname'];
+			}
 			return (string) $userName;
-		} elseif (\array_key_exists($username, $this->createdUsers)) {
-			return (string) $this->createdUsers[$username]['displayname'];
-		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
-			return (string) $this->createdRemoteUsers[$username]['displayname'];
 		}
-		if (isset($usernames)) {
-			if (isset($usernames[$userNameNormalized])) {
-				return $usernames[$userNameNormalized]['displayname'];
-			} elseif (isset($usernames[$userName])) {
-				return $usernames[$userName]['displayname'];
+		if (\array_key_exists($username, $this->createdRemoteUsers)) {
+			if (isset($this->createdRemoteUsers[$username]['displayname'])) {
+				return (string) $this->createdRemoteUsers[$username]['displayname'];
+			}
+			return (string) $userName;
+		}
+
+		// The user has not been created yet, see if there is a replacement
+		// defined for the user.
+		$usernameReplacements = $this->usersToBeReplaced();
+		if (isset($usernameReplacements)) {
+			if (isset($usernameReplacements[$userNameNormalized])) {
+				return $usernameReplacements[$userNameNormalized]['displayname'];
+			} elseif (isset($usernameReplacements[$userName])) {
+				return $usernameReplacements[$userName]['displayname'];
 			}
 		}
+
+		// Fall back to the default display name used for the well-known users.
 		if ($username === 'regularuser') {
 			return 'Regular User';
 		} elseif ($username === 'alice') {
 			return 'Alice Hansen';
-		} elseif ($username === 'user0') {
-			return 'User Zero';
 		} elseif ($username === 'brian') {
 			return 'Brian Murphy';
-		} elseif ($username === 'user1') {
-			return 'User One';
 		} elseif ($username === 'carol') {
 			return 'Carol King';
-		} elseif ($username === 'user2') {
-			return 'User Two';
 		} elseif ($username === 'david') {
 			return 'David Lopez';
-		} elseif ($username === 'user3') {
-			return 'User Three';
 		} elseif ($username === 'emily') {
 			return 'Emily Wagner';
-		} elseif ($username === 'user4') {
-			return 'User Four';
 		} elseif ($username === 'usergrp') {
 			return 'User Grp';
 		} elseif ($username === 'sharee1') {
 			return 'Sharee One';
 		} elseif (\in_array($username, ["grp1", "***redacted***"])) {
 			return $username;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -1889,20 +1917,13 @@ class FeatureContext extends BehatVariablesContext {
 			}
 			$normalizedUsername = $this->normalizeUsername($functionalUsername);
 			if (isset($usernames[$normalizedUsername])) {
-				// if uppercased username is required
-				if ($normalizedUsername !== $functionalUsername
-					&& $functionalUsername === \strtoupper($functionalUsername)
-				) {
-					return \strtoupper($usernames[$normalizedUsername]['username']);
-				}
 				return $usernames[$normalizedUsername]['username'];
 			}
 		}
 		if ($functionalUsername === "%admin%") {
 			return (string) $this->getAdminUsername();
-		} else {
-			return $functionalUsername;
 		}
+		return $functionalUsername;
 	}
 
 	/**
