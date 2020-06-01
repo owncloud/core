@@ -388,7 +388,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			if ($count === "no") {
 				$count = 0;
 			} else {
-				$count = (int)$count;
+				$count = (int) $count;
 			}
 			$currentTime = \microtime(true);
 			$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
