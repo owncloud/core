@@ -17,7 +17,7 @@ So that I can extend my storage service
       | root                   | TestMnt            |
       | secure                 | false              |
       | user                   | %username%         |
-      | password               | %password%             |
+      | password               | %password%         |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
@@ -34,7 +34,7 @@ So that I can extend my storage service
       | root                   | TestMnt            |
       | secure                 | false              |
       | user                   | %username%         |
-      | password               | %password%             |
+      | password               | %password%         |
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
