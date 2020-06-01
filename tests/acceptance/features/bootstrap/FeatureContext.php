@@ -1874,11 +1874,14 @@ class FeatureContext extends BehatVariablesContext {
 	// TODO do similar for other usernames for e.g. %regularuser% or %test-user-1%
 
 	/**
-	 * @param string $functionalUsername
+	 * @param string|null $functionalUsername
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getActualUsername($functionalUsername) {
+		if ($functionalUsername === null) {
+			return null;
+		}
 		$usernames = $this->usersToBeReplaced();
 		if (isset($usernames)) {
 			if (isset($usernames[$functionalUsername])) {

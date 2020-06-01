@@ -500,16 +500,33 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
-	 * @Then the value of the item :xpath in the response about user :user should be :value
+	 * @Then the value of the item :xpath in the response should be :value
 	 *
 	 * @param string $xpath
-	 * @param string $user
 	 * @param string $expectedValue
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function assertValueOfItemInResponseIs($xpath, $user, $expectedValue) {
+	public function assertValueOfItemInResponseIs($xpath, $expectedValue) {
+		$this->assertValueOfItemInResponseAboutUserIs(
+			$xpath,
+			null,
+			$expectedValue
+		);
+	}
+
+	/**
+	 * @Then the value of the item :xpath in the response about user :user should be :value
+	 *
+	 * @param string $xpath
+	 * @param string|null $user
+	 * @param string $expectedValue
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertValueOfItemInResponseAboutUserIs($xpath, $user, $expectedValue) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
@@ -531,6 +548,23 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then the value of the item :xpath in the response should match :value
+	 *
+	 * @param string $xpath
+	 * @param string $pattern
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertValueOfItemInResponseRegExp($xpath, $pattern) {
+		$this->assertValueOfItemInResponseToUserRegExp(
+			$xpath,
+			null,
+			$pattern
+		);
+	}
+
+	/**
 	 * @Then the value of the item :xpath in the response to user :user should match :value
 	 *
 	 * @param string $xpath
@@ -540,7 +574,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function assertValueOfItemInResponseRegExp($xpath, $user, $pattern) {
+	public function assertValueOfItemInResponseToUserRegExp($xpath, $user, $pattern) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
