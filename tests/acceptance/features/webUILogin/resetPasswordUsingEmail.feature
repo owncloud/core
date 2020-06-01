@@ -26,7 +26,7 @@ Feature: reset the password using an email address
   @skipOnEncryption @smokeTest
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
-    And the user follows the password reset link from email address of the user "Alice"
+    And the user follows the password reset link from the email address of user "Alice"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with the same password using the webUI
     Then the user should be redirected to the login page

@@ -577,8 +577,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user follows the password reset link from email address of the user :user
-	 * @Given the user has followed the password reset link from email address of the user :user
+	 * @When the user follows the password reset link from the email address of user :user
+	 * @Given the user has followed the password reset link from the email address of user :user
 	 *
 	 * @param string $user
 	 *

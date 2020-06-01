@@ -27,7 +27,7 @@ Feature: reset the password
   @smokeTest
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
-    And the user follows the password reset link from email address of the user "Alice"
+    And the user follows the password reset link from the email address of user "Alice"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with the same password using the webUI
     Then the user should be redirected to the login page
@@ -41,7 +41,7 @@ Feature: reset the password
   @skipOnEncryption
   Scenario: check if the sender email address is valid
     When the user requests the password reset link using the webUI
-    And the user follows the password reset link from email address of the user "Alice"
+    And the user follows the password reset link from the email address of user "Alice"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with the same password using the webUI
     Then the user should be redirected to the login page
@@ -74,7 +74,7 @@ Feature: reset the password
   @skipOnEncryption
   Scenario: When new password and confirmation password are different does not reset user password
     When the user requests the password reset link using the webUI
-    And the user follows the password reset link from email address of the user "Alice"
+    And the user follows the password reset link from the email address of user "Alice"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with "foo" using the webUI
     Then the user should see a password mismatch message displayed on the webUI
