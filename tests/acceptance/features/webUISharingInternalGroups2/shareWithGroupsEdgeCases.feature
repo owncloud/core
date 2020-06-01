@@ -106,7 +106,7 @@ Feature: Sharing files and folders with internal groups
 	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice"
 	  | delete | yes |
 	  | share  | yes |
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -115,7 +115,7 @@ Feature: Sharing files and folders with internal groups
 	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | no |
 	  | share  | no |
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -137,7 +137,7 @@ Feature: Sharing files and folders with internal groups
 	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice"
 	  | delete | no |
 	  | share  | no |
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -146,7 +146,7 @@ Feature: Sharing files and folders with internal groups
 	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | yes |
 	  | share  | yes |
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -172,13 +172,13 @@ Feature: Sharing files and folders with internal groups
 	  | create  | no |
 	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | no |
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
 	  | share_with  | Alice          |
 	  | permissions | 17             |
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -200,7 +200,7 @@ Feature: Sharing files and folders with internal groups
 	Then the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | share | no |
 	And the expiration date input field should be "+230 days" for the group "Alice" in the share dialog
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -208,7 +208,7 @@ Feature: Sharing files and folders with internal groups
 	  | permissions | 15             |
 	  | expiration  | +230 days      |
 	And the expiration date input field should be empty for the user "Alice" in the share dialog
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -230,7 +230,7 @@ Feature: Sharing files and folders with internal groups
 	And the user changes expiration date for share of user "Alice" to "+5 days" in the share dialog
 	Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice"
 	  | share | no |
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -239,7 +239,7 @@ Feature: Sharing files and folders with internal groups
 	  | expiration  | +5 days        |
 	And the expiration date input field should be "+5 days" for the user "Alice" in the share dialog
 	And the expiration date input field should be empty for the group "Alice" in the share dialog
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -267,7 +267,7 @@ Feature: Sharing files and folders with internal groups
 	  | edit    | no |
 	  | create  | no |
 	And the expiration date input field should be "+5 days" for the user "Alice" in the share dialog
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | expiration  | +5 days        |
@@ -277,7 +277,7 @@ Feature: Sharing files and folders with internal groups
 	And the following permissions are seen for "simple-folder" in the sharing dialog for group "Alice"
 	  | delete | no |
 	And the expiration date input field should be "+7 days" for the group "Alice" in the share dialog
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | expiration  | +7 days        |
@@ -299,14 +299,14 @@ Feature: Sharing files and folders with internal groups
 	  | edit    | no |
 	  | create  | no |
 	And the user changes expiration date for share of group "grp1" to "+5 days" in the share dialog
-	Then the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	Then the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
 	  | share_with  | grp1           |
 	  | expiration  | +5 days        |
 	  | permissions | 17             |
-	And the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+	And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
 	  | share_type  | user           |
 	  | file_target | /simple-folder |
 	  | uid_owner   | Carol          |
@@ -333,14 +333,14 @@ Feature: Sharing files and folders with internal groups
 	  | share    | no |
 	  | delete   | no |
 	And the user changes expiration date for share of group "grp2" to "+7 days" in the share dialog
-	Then the information for user "Alice" about the received share of folder "simple-folder" shared with group should include
+	Then the information for user "Alice" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | expiration  | +5 days        |
 	  | uid_owner   | Carol          |
 	  | share_with  | grp1           |
 	  | permissions | 17             |
-	And the information for user "Brian" about the received share of folder "simple-folder" shared with group should include
+	And the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
 	  | share_type  | group          |
 	  | file_target | /simple-folder |
 	  | expiration  | +7 days        |

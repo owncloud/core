@@ -281,7 +281,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | edit    | no |
       | create  | no |
     And the user changes expiration date for share of user "Alice" to "+5 days" in the share dialog
-    Then the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+    Then the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |
       | file_target | /simple-folder |
       | expiration  | +5 days        |
@@ -292,7 +292,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share    | no |
       | delete   | no |
     And the user changes expiration date for share of user "Brian" to "+7 days" in the share dialog
-    Then the information for user "Brian" about the received share of folder "simple-folder" shared with user should include
+    Then the information for user "Brian" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |
       | file_target | /simple-folder |
       | expiration  | +7 days        |

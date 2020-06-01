@@ -325,13 +325,13 @@ Feature: misc scenarios on sharing with internal users
     And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | share    | no |
       | delete   | no |
-    Then the information for user "Alice" about the received share of folder "simple-folder" shared with user should include
+    Then the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |
       | file_target | /simple-folder |
       | uid_owner   | Carol          |
       | share_with  | Alice          |
       | permissions | 7              |
-    And the information for user "Brian" about the received share of folder "simple-folder" shared with user should include
+    And the information for user "Brian" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |
       | file_target | /simple-folder |
       | uid_owner   | Carol          |

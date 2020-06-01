@@ -1822,7 +1822,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the information for user "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" shared with (user|group) should include$/
+	 * @Then /^the information for user "((?:[^']*)|(?:[^"]*))" about the received share of (file|folder) "((?:[^']*)|(?:[^"]*))" shared with a (user|group) should include$/
 	 *
 	 * @param string $user
 	 * @param string $fileOrFolder
