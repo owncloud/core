@@ -608,11 +608,7 @@ trait Provisioning {
 			if (isset($row['displayname'])) {
 				$userAttribute['displayName'] = $row['displayname'];
 			} elseif ($setDefaultAttributes) {
-				if ($this->isTestingReplacingUsernames()) {
-					$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
-				} else {
-					$userAttribute['displayName'] = $this->getDisplayNameForUser($userAttribute['userid']);
-				}
+				$userAttribute['displayName'] = $this->getDisplayNameForUser($row['username']);
 				if ($userAttribute['displayName'] === null) {
 					$userAttribute['displayName'] = $this->getDisplayNameForUser('regularuser');
 				}
@@ -622,11 +618,7 @@ trait Provisioning {
 			if (isset($row['email'])) {
 				$userAttribute['email'] = $row['email'];
 			} elseif ($setDefaultAttributes) {
-				if ($this->isTestingReplacingUsernames()) {
-					$userAttribute['email'] = $this->getEmailAddressForUser($row['username']);
-				} else {
-					$userAttribute['email'] = $this->getEmailAddressForUser($userAttribute['userid']);
-				}
+				$userAttribute['email'] = $this->getEmailAddressForUser($row['username']);
 				if ($userAttribute['email'] === null) {
 					$userAttribute['email'] = $row['username'] . '@owncloud.org';
 				}
@@ -637,9 +629,6 @@ trait Provisioning {
 			if (isset($row['password'])) {
 				$userAttribute['password'] = $this->getActualPassword($row['password']);
 			} else {
-				if ($this->isTestingReplacingUsernames()) {
-					$userAttribute['password'] = $this->getPasswordForUser($row['username']);
-				}
 				$userAttribute['password'] = $this->getPasswordForUser($row['username']);
 			}
 			// Add request body to the bodies array. we will use that later to loop through created users.
@@ -3487,7 +3476,8 @@ trait Provisioning {
 		$usersSimplified = \array_map(
 			function ($user) {
 				return $this->getActualUsername($user);
-			}, $this->simplifyArray($users)
+			},
+			$this->simplifyArray($users)
 		);
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
 		Assert::assertEqualsCanonicalizing(
