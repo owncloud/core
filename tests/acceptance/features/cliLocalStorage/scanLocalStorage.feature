@@ -12,7 +12,7 @@ Feature: Scanning files on local storage
     And the administrator has scanned the filesystem for all users
     When the administrator creates file "hello1.txt" with content "<? php :)" in local storage using the testing API
     And user "Alice" requests "/remote.php/dav/files/%username%/local_storage" with "PROPFIND" using basic auth
-    Then the propfind result of user "user0" should not contain these entries:
+    Then the propfind result of user "Alice" should not contain these entries:
       | /local_storage/hello1.txt |
     When the administrator scans the filesystem for all users using the occ command
     And the administrator creates file "hello2.txt" with content "<? php :(" in local storage using the testing API

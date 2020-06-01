@@ -48,7 +48,7 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
-    And the value of the item "//d:response/d:href" in the response to user "user0" should match "/remote\.php\/<expected_href>/"
+    And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>/"
     Examples:
       | dav_version | file_name     | expected_href                        |
       | old         | /C++ file.cpp | webdav\/C\+\+%20file\.cpp            |

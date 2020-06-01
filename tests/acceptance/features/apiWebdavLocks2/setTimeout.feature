@@ -20,7 +20,7 @@ Feature: set timeouts of LOCKS
     When user "Alice" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "user0" should match "<result>"
+    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
     Examples:
       | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
@@ -45,15 +45,15 @@ Feature: set timeouts of LOCKS
     And user "Brian" gets the following properties of folder "PARENT (2)" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
+    Then the value of the item "//d:timeout" in the response to user "Brian" should match "<result>"
     When user "Brian" gets the following properties of folder "PARENT (2)/CHILD" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
+    Then the value of the item "//d:timeout" in the response to user "Brian" should match "<result>"
     When user "Brian" gets the following properties of folder "PARENT (2)/parent.txt" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "user0" should match "<result>"
+    Then the value of the item "//d:timeout" in the response to user "Brian" should match "<result>"
     Examples:
       | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
@@ -86,7 +86,7 @@ Feature: set timeouts of LOCKS
     When user "Alice" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "user0" should match "<result>"
+    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
     Examples:
       | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
