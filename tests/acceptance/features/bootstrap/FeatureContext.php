@@ -1744,8 +1744,8 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getPasswordForUser($userName) {
-		$userName = $this->normalizeUsername($userName);
-		$username = $this->getActualUsername($userName);
+		$userNameNormalized = $this->normalizeUsername($userName);
+		$username = $this->getActualUsername($userNameNormalized);
 		if ($username === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
 		} elseif (\array_key_exists($username, $this->createdUsers)) {
@@ -1756,10 +1756,10 @@ class FeatureContext extends BehatVariablesContext {
 
 		// The user has not been created yet, see if there is a replacement
 		// defined for the user.
-		$usernames = $this->usersToBeReplaced();
-		if (isset($usernames)) {
-			if (isset($usernames[$userName])) {
-				return $usernames[$userName]['password'];
+		$usernameReplacements = $this->usersToBeReplaced();
+		if (isset($usernameReplacements)) {
+			if (isset($usernameReplacements[$userNameNormalized])) {
+				return $usernameReplacements[$userNameNormalized]['password'];
 			}
 		}
 
