@@ -79,7 +79,7 @@ Feature: Share by public link
     %displayname% shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
-    And the email address "alice@example.org" of user "Alice" should have received an email containing the last shared public link
+    And the email address of user "Alice" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email with multiple addresses
     Given user "Alice" has created folder "/simple-folder"
