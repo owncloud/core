@@ -60,7 +60,7 @@
         "laminas/laminas-inputfilter": "^2.10",
         "laminas/laminas-servicemanager": "^3.4",
         "laminas/laminas-validator": "^2.13",
-        "composer/semver": "^2.0",
+        "composer/semver": "^3.0",
         "ext-json": "*",
         "sabre/vobject": "^4.3",
         "dg/composer-cleaner": "^2.1"
