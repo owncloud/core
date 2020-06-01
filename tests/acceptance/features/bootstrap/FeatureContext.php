@@ -1862,37 +1862,42 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string|null
 	 */
 	public function getEmailAddressForUser($userName) {
-		//		$userName = $this->getActualUsername($userName);
-		$userName = $this->normalizeUsername($userName);
-		if (\array_key_exists($userName, $this->createdUsers)) {
-			return (string) $this->createdUsers[$userName]['email'];
-		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
-			return (string) $this->createdRemoteUsers[$userName]['email'];
-		} elseif ($userName === 'regularuser') {
+		$userNameNormalized = $this->normalizeUsername($userName);
+		$username = $this->getActualUsername($userNameNormalized);
+		if (\array_key_exists($username, $this->createdUsers)) {
+			return (string) $this->createdUsers[$username]['email'];
+		}
+		if (\array_key_exists($username, $this->createdRemoteUsers)) {
+			return (string) $this->createdRemoteUsers[$username]['email'];
+		}
+
+		// The user has not been created yet, see if there is a replacement
+		// defined for the user.
+		$usernameReplacements = $this->usersToBeReplaced();
+		if (isset($usernameReplacements)) {
+			if (isset($usernameReplacements[$userNameNormalized])) {
+				return $usernameReplacements[$userNameNormalized]['email'];
+			} elseif (isset($usernameReplacements[$userName])) {
+				return $usernameReplacements[$userName]['email'];
+			}
+		}
+
+		// Fall back to the default display name used for the well-known users.
+		if ($username === 'regularuser') {
 			return 'regularuser@example.org';
-		} elseif ($userName === 'alice') {
+		} elseif ($username === 'alice') {
 			return 'alice@example.org';
-		} elseif ($userName === 'user0') {
-			return 'user0@example.org';
-		} elseif ($userName === 'brian') {
+		} elseif ($username === 'brian') {
 			return 'brian@example.org';
-		} elseif ($userName === 'user1') {
-			return 'user1@example.org';
-		} elseif ($userName === 'carol') {
+		} elseif ($username === 'carol') {
 			return 'carol@example.org';
-		} elseif ($userName === 'user2') {
-			return 'user2@example.org';
-		} elseif ($userName === 'david') {
+		} elseif ($username === 'david') {
 			return 'david@example.org';
-		} elseif ($userName === 'user3') {
-			return 'user3@example.org';
-		} elseif ($userName === 'emily') {
+		} elseif ($username === 'emily') {
 			return 'emily@example.org';
-		} elseif ($userName === 'user4') {
-			return 'user4@example.org';
-		} elseif ($userName === 'usergrp') {
+		} elseif ($username === 'usergrp') {
 			return 'usergrp@example.org';
-		} elseif ($userName === 'sharee1') {
+		} elseif ($username === 'sharee1') {
 			return 'sharee1@example.org';
 		} else {
 			return null;
