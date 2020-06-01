@@ -439,20 +439,16 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^the administrator should be able to see the email of these users in the User Management page:$/
 	 *
-	 * @param TableNode $table table of usernames and emails with a heading | username | and | email |
+	 * @param TableNode $table table of usernames with a heading | username |
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['username', 'email']);
+		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
-			if ($this->featureContext->isTestingReplacingUsernames()) {
-				$expectedEmail = $this->featureContext->getEmailAddressForUser($user);
-			} else {
-				$expectedEmail = $row['email'];
-			}
+			$expectedEmail = $this->featureContext->getEmailAddressForUser($user);
 			$userEmail = $this->usersPage->getEmailOfUser($user);
 			Assert::assertEquals(
 				$expectedEmail,
@@ -578,14 +574,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
 			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($user);
+			$expectedUserStorageLocation = $row["storage location"];
 			if ($this->featureContext->isTestingReplacingUsernames()) {
-				$expectedUserStorageLocation = $row["storage location"];
 				$expectedUserStorageLocationSplitted = \explode("/", $expectedUserStorageLocation);
 				$lastIndexOfArray = \count($expectedUserStorageLocationSplitted) - 1;
 				$expectedUserStorageLocationSplitted[$lastIndexOfArray] = $user;
 				$expectedUserStorageLocation = \implode("/", $expectedUserStorageLocationSplitted);
-			} else {
-				$expectedUserStorageLocation = $row["storage location"];
 			}
 			Assert::assertStringContainsString(
 				$expectedUserStorageLocation,

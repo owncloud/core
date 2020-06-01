@@ -15,9 +15,9 @@ Feature: add users
   Scenario: administrator should be able to see email of a user
     When the administrator enables the setting "Show email address" in the User Management page using the webUI
     Then the administrator should be able to see the email of these users in the User Management page:
-      | username | email             |
-      | Alice    | alice@example.org |
-      | Brian    | brian@example.org |
+      | username |
+      | Alice    |
+      | Brian    |
 
   Scenario: administrator should be able to see storage location of a user
     When the administrator enables the setting "Show storage location" in the User Management page using the webUI
