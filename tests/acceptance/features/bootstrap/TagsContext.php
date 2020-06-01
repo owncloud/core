@@ -1501,7 +1501,6 @@ class TagsContext implements Context {
 				$user = $this->featureContext->getAdminUsername();
 			} else {
 				$user = $this->featureContext->getCurrentUser();
-				$user = $this->featureContext->getActualUsername($user);
 			}
 		}
 		$this->sharedByHasNoTags($fileName, $user);
