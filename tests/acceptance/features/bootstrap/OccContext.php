@@ -1230,7 +1230,6 @@ class OccContext implements Context {
 	public function addRemoveUserOrGroupToOrFromMount(
 		$action, $userOrGroup, $userOrGroupName, $mountName
 	) {
-		$userOrGroupName = $this->featureContext->getActualUsername($userOrGroupName);
 		if ($action === "adds" || $action === "added") {
 			$action = "--add";
 		} else {
@@ -1238,6 +1237,7 @@ class OccContext implements Context {
 		}
 		if ($userOrGroup === "user") {
 			$action = "$action-user";
+			$userOrGroupName = $this->featureContext->getActualUsername($userOrGroupName);
 		} else {
 			$action = "$action-group";
 		}
