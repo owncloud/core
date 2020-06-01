@@ -2546,40 +2546,45 @@ class FeatureContext extends BehatVariablesContext {
 					"getCommentUrlRegExp"
 				],
 				"parameter" => []
-			],
-			[
-				"code" => "%username%",
-				"function" => [
-					$this,
-					"getActualUsername"
-				],
-				"parameter" => [$user]
-			],
-			[
-				"code" => "%displayname%",
-				"function" => [
-					$this,
-					"getDisplayNameForUser"
-				],
-				"parameter" => [$user]
-			],
-			[
-				"code" => "%password%",
-				"function" => [
-					$this,
-					"getPasswordForUser"
-				],
-				"parameter" => [$user]
-			],
-			[
-				"code" => "%emailaddress%",
-				"function" => [
-					$this,
-					"getEmailAddressForUser"
-				],
-				"parameter" => [$user]
 			]
 		];
+		if ($user !== null) {
+			\array_push(
+				$substitutions,
+				[
+					"code" => "%username%",
+					"function" => [
+						$this,
+						"getActualUsername"
+					],
+					"parameter" => [$user]
+				],
+				[
+					"code" => "%displayname%",
+					"function" => [
+						$this,
+						"getDisplayNameForUser"
+					],
+					"parameter" => [$user]
+				],
+				[
+					"code" => "%password%",
+					"function" => [
+						$this,
+						"getPasswordForUser"
+					],
+					"parameter" => [$user]
+				],
+				[
+					"code" => "%emailaddress%",
+					"function" => [
+						$this,
+						"getEmailAddressForUser"
+					],
+					"parameter" => [$user]
+				]
+			);
+		}
 
 		if (!empty($additionalSubstitutions)) {
 			$substitutions = \array_merge($substitutions, $additionalSubstitutions);
