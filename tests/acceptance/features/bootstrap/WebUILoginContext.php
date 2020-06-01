@@ -245,7 +245,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user :user logs in with email and invalid password :password using the webUI
+	 * @Given user :user logs in with email and invalid password :password using the webUI
 	 *
 	 * @param string $user
 	 * @param string $password
@@ -253,7 +253,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserLogsInWithEmailAndInvalidPasswordUsingTheWebui(
+	public function userLogsInWithEmailAndInvalidPasswordUsingTheWebui(
 		$user, $password
 	) {
 		$user = $this->featureContext->getActualUsername($user);

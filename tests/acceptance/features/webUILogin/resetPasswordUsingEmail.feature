@@ -9,7 +9,7 @@ Feature: reset the password using an email address
       | username |
       | Alice    |
     And the user has browsed to the login page
-    And the user "Alice" logs in with email and invalid password "%alt2%" using the webUI
+    And user "Alice" logs in with email and invalid password "%alt2%" using the webUI
 
   @smokeTest
   Scenario: send password reset email
