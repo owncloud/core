@@ -53,7 +53,7 @@ Feature: Creation of tags for the files and folders
     And the user browses directly to display the details of file "randomfile.txt" in folder "/"
     When the user adds a tag "tag1" to the file using the webUI
     And the user shares file "randomfile.txt" with user "Brian" using the webUI
-    And the user re-logs in with username "Brian" and password "%alt1%" using the webUI
+    And the user re-logs in with username "Brian" using the webUI
     And the user browses directly to display the details of file "randomfile.txt" in folder "/"
     And the user adds a tag "tag2" to the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "Alice"

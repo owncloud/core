@@ -65,7 +65,7 @@ Feature: Removal of already existing tags from files and folders
     Then file "coolnewfile.txt" should have the following tags for user "Brian"
       | name | type   |
       | tag1 | normal |
-    When the user re-logs in with username "Alice" and password "%regular%" using the webUI
+    When the user re-logs in with username "Alice" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder "/"
     And the user toggles a tag "tag1" on the file using the webUI
     Then file "coolnewfile.txt" should have no tags for user "Brian"
