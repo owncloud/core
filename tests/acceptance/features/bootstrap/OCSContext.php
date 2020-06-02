@@ -485,7 +485,7 @@ class OCSContext implements Context {
 	 */
 	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, $ofUser, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
-		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
@@ -519,7 +519,7 @@ class OCSContext implements Context {
 	 */
 	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $ofUser, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
-		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
@@ -552,7 +552,7 @@ class OCSContext implements Context {
 	 */
 	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
 		$asUser = $this->featureContext->getActualUsername($asUser);
-		$userRenamed = \strtolower($this->featureContext->getActualUsername($user));
+		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
