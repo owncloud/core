@@ -26,17 +26,14 @@
 class Google_Service_Dns_Resource_Changes extends Google_Service_Resource
 {
   /**
-   * Atomically update the ResourceRecordSet collection. (changes.create)
+   * (changes.create)
    *
-   * @param string $project Identifies the project addressed by this request.
-   * @param string $managedZone Identifies the managed zone addressed by this
-   * request. Can be the managed zone name or id.
+   * @param string $project
+   * @param string $managedZone
    * @param Google_Service_Dns_Change $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string clientOperationId For mutating operation requests only. An
-   * optional identifier specified by the client. Must be unique for operation
-   * resources in the Operations collection.
+   * @opt_param string clientOperationId
    * @return Google_Service_Dns_Change
    */
   public function create($project, $managedZone, Google_Service_Dns_Change $postBody, $optParams = array())
@@ -46,18 +43,14 @@ class Google_Service_Dns_Resource_Changes extends Google_Service_Resource
     return $this->call('create', array($params), "Google_Service_Dns_Change");
   }
   /**
-   * Fetch the representation of an existing Change. (changes.get)
+   * (changes.get)
    *
-   * @param string $project Identifies the project addressed by this request.
-   * @param string $managedZone Identifies the managed zone addressed by this
-   * request. Can be the managed zone name or id.
-   * @param string $changeId The identifier of the requested change, from a
-   * previous ResourceRecordSetsChangeResponse.
+   * @param string $project
+   * @param string $managedZone
+   * @param string $changeId
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string clientOperationId For mutating operation requests only. An
-   * optional identifier specified by the client. Must be unique for operation
-   * resources in the Operations collection.
+   * @opt_param string clientOperationId
    * @return Google_Service_Dns_Change
    */
   public function get($project, $managedZone, $changeId, $optParams = array())
@@ -67,22 +60,16 @@ class Google_Service_Dns_Resource_Changes extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Dns_Change");
   }
   /**
-   * Enumerate Changes to a ResourceRecordSet collection. (changes.listChanges)
+   * (changes.listChanges)
    *
-   * @param string $project Identifies the project addressed by this request.
-   * @param string $managedZone Identifies the managed zone addressed by this
-   * request. Can be the managed zone name or id.
+   * @param string $project
+   * @param string $managedZone
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Optional. Maximum number of results to be returned.
-   * If unspecified, the server will decide how many results to return.
-   * @opt_param string pageToken Optional. A tag returned by a previous list
-   * request that was truncated. Use this parameter to continue a previous list
-   * request.
-   * @opt_param string sortBy Sorting criterion. The only supported value is
-   * change sequence.
-   * @opt_param string sortOrder Sorting order direction: 'ascending' or
-   * 'descending'.
+   * @opt_param int maxResults
+   * @opt_param string pageToken
+   * @opt_param string sortBy
+   * @opt_param string sortOrder
    * @return Google_Service_Dns_ChangesListResponse
    */
   public function listChanges($project, $managedZone, $optParams = array())

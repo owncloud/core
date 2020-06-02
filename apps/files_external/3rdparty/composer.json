@@ -8,13 +8,12 @@
 		"classmap-authoritative": true
 	},
 	"require": {
-		"icewind/smb": "3.2.4",
+		"icewind/smb": "3.2.5",
 		"icewind/streams": "0.7.2",
-		"google/apiclient": "2.4.1",
+		"google/apiclient": "2.5.0",
 		"guzzlehttp/guzzle": "^5.3"
 	},
 	"autoload": {
 		"files": ["../lib/config.php"]
 	}
 }
-

@@ -78,7 +78,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservations 
    * (reservations.listProjectsLocationsReservations)
    *
    * @param string $parent Required. The parent resource name containing project
-   * and location, e.g.:   "projects/myproject/locations/US"
+   * and location, e.g.:   `projects/myproject/locations/US`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token value returned from a

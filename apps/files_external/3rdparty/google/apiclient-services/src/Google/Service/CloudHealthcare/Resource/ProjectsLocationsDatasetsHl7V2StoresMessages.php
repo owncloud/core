@@ -99,6 +99,12 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
    * @param string $parent Name of the HL7v2 store to retrieve messages from.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Limit on the number of messages to return in a single
+   * response. If zero the default page size of 100 is used.
+   * @opt_param string view Specifies the parts of the Message to return in the
+   * response. When unspecified, equivalent to BASIC. Setting this to anything
+   * other than BASIC with a `page_size` larger than the default can generate a
+   * large response, which impacts the performance of this method.
    * @opt_param string orderBy Orders messages returned by the specified order_by
    * clause. Syntax:
    * https://cloud.google.com/apis/design/design_patterns#sorting_order
@@ -128,12 +134,6 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
    * existence of a label. For example, `labels."priority":*`.
    * @opt_param string pageToken The next_page_token value returned from the
    * previous List request, if any.
-   * @opt_param int pageSize Limit on the number of messages to return in a single
-   * response. If zero the default page size of 100 is used.
-   * @opt_param string view Specifies the parts of the Message to return in the
-   * response. When unspecified, equivalent to BASIC. Setting this to anything
-   * other than BASIC with a `page_size` larger than the default can generate a
-   * large response, which impacts the performance of this method.
    * @return Google_Service_CloudHealthcare_ListMessagesResponse
    */
   public function listProjectsLocationsDatasetsHl7V2StoresMessages($parent, $optParams = array())

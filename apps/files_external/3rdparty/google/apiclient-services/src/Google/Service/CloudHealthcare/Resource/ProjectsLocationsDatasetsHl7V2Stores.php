@@ -44,8 +44,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
     return $this->call('create', array($params), "Google_Service_CloudHealthcare_Hl7V2Store");
   }
   /**
-   * Deletes the specified HL7v2 store and removes all messages that are contained
-   * within it. (hl7V2Stores.delete)
+   * Deletes the specified HL7v2 store and removes all messages that it contains.
+   * (hl7V2Stores.delete)
    *
    * @param string $name The resource name of the HL7v2 store to delete.
    * @param array $optParams Optional parameters.
@@ -107,14 +107,14 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
    * @param string $parent Name of the dataset.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Restricts stores returned to those matching a
-   * filter. Syntax:
-   * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
-   * Only filtering on labels is supported. For example, `labels.key=value`.
    * @opt_param string pageToken The next_page_token value returned from the
    * previous List request, if any.
    * @opt_param int pageSize Limit on the number of HL7v2 stores to return in a
    * single response. If zero the default page size of 100 is used.
+   * @opt_param string filter Restricts stores returned to those matching a
+   * filter. Syntax:
+   * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
+   * Only filtering on labels is supported. For example, `labels.key=value`.
    * @return Google_Service_CloudHealthcare_ListHl7V2StoresResponse
    */
   public function listProjectsLocationsDatasetsHl7V2Stores($parent, $optParams = array())

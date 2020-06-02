@@ -84,6 +84,44 @@ class Google_Service_DisplayVideo_Resource_AdvertisersCreatives extends Google_S
    * creatives for.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Allows filtering by creative properties.
+   *
+   * Supported syntax:
+   *
+   * * Filter expressions are made up of one or more restrictions. * Restriction
+   * for the same field must be combined by `OR`. * Restriction for different
+   * fields must be combined by `AND`. * Between `(` and `)` there can only be
+   * restrictions combined by `OR` for the same field. * A restriction has the
+   * form of `{field} {operator} {value}`. * The operator must be `EQUALS (=)` for
+   * the following fields:     - `entityStatus`     - `creativeType`.     -
+   * `dimensions`     - `minDuration`     - `maxDuration`     - `approvalStatus`
+   * - `exchangeReviewStatus`     - `dynamic` * The operator must be `HAS (:)` for
+   * the following fields:     - `lineItemIds` * For `entityStatus`,
+   * `minDuration`, `maxDuration`, and `dynamic` there may be at most one
+   * restriction. * For `dimensions`, the value is in the form of
+   * `"{width}x{height}"`. * For `exchangeReviewStatus`, the value is in the form
+   * of `{exchange}-{reviewStatus}`. * For `minDuration` and `maxDuration`, the
+   * value is in the form of `"{duration}s"`. Only seconds are supported with
+   * millisecond granularity. * There may be multiple `lineItemIds` restrictions
+   * in order to search against multiple possible line item IDs.
+   *
+   * Examples:
+   *
+   * * All native creatives: `creativeType="CREATIVE_TYPE_NATIVE"` * All active
+   * creatives with 300x400 or 50x100 dimensions:
+   * `entityStatus="ENTITY_STATUS_ACTIVE" AND (dimensions="300x400" OR
+   * dimensions="50x100")` * All dynamic creatives that are approved by AdX or
+   * AppNexus, with a minimum duration of 5 seconds and 200ms. `dynamic="true" AND
+   * minDuration="5.2s" AND (exchangeReviewStatus="EXCHANGE_GOOGLE_AD_MANAGER-
+   * REVIEW_STATUS_APPROVED" OR exchangeReviewStatus="EXCHANGE_APPNEXUS-
+   * REVIEW_STATUS_APPROVED")` * All video creatives that are associated with line
+   * item ID 1 or 2: creativeType="CREATIVE_TYPE_VIDEO" AND (lineItemIds:1 OR
+   * lineItemIds:2)
+   *
+   * The length of this field should be no more than 500 characters.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
    * are:
    *
@@ -97,40 +135,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersCreatives extends Google_S
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListCreatives` method. If not specified, the first page
    * of results will be returned.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
-   * @opt_param string filter Allows filtering by creative properties.
-   *
-   * Supported syntax:
-   *
-   * * Filter expressions are made up of one or more restrictions. * Restriction
-   * for the same field must be combined by `OR`. * Restriction for different
-   * fields must be combined by `AND`. * Between `(` and `)` there can only be
-   * restrictions combined by `OR` for the same field. * A restriction has the
-   * form of `{field} {operator} {value}`. * The operator must be `EQUALS (=)`. *
-   * Supported fields:     - `entityStatus`     - `creativeType`.     -
-   * `dimensions`     - `minDuration`     - `maxDuration`     - `approvalStatus`
-   * - `exchangeReviewStatus`     - `dynamic` * For `entityStatus`, `minDuration`,
-   * `maxDuration`, and `dynamic` there may be at most one restriction. * For
-   * `dimensions`, the value is in the form of `"{width}x{height}"`. * For
-   * `exchangeReviewStatus`, the value is in the form of
-   * `{exchange}-{reviewStatus}`. * For `minDuration` and `maxDuration`, the value
-   * is in the form of `"{duration}s"`. Only seconds are supported with
-   * millisecond granularity.
-   *
-   * Examples:
-   *
-   * * All native creatives: `creativeType="CREATIVE_TYPE_NATIVE"` * All active
-   * creatives with 300x400 or 50x100 dimensions:
-   * `entityStatus="ENTITY_STATUS_ACTIVE" AND (dimensions="300x400" OR
-   * dimensions="50x100")` * All dynamic creatives that are approved by AdX or
-   * AppNexus, with a minimum duration of 5 seconds and 200ms. `dynamic="true" AND
-   * minDuration="5.2s" AND (exchangeReviewStatus="EXCHANGE_GOOGLE_AD_MANAGER-
-   * REVIEW_STATUS_APPROVED" OR exchangeReviewStatus="EXCHANGE_APPNEXUS-
-   * REVIEW_STATUS_APPROVED")`
-   *
-   * The length of this field should be no more than 500 characters.
    * @return Google_Service_DisplayVideo_ListCreativesResponse
    */
   public function listAdvertisersCreatives($advertiserId, $optParams = array())

@@ -22,6 +22,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1SharedFlowRevision extends Google
   protected $configurationVersionDataType = '';
   public $contextInfo;
   public $createdAt;
+  public $description;
   public $displayName;
   public $entityMetaDataAsProperties;
   public $lastModifiedAt;
@@ -63,6 +64,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1SharedFlowRevision extends Google
   public function getCreatedAt()
   {
     return $this->createdAt;
+  }
+  public function setDescription($description)
+  {
+    $this->description = $description;
+  }
+  public function getDescription()
+  {
+    return $this->description;
   }
   public function setDisplayName($displayName)
   {

@@ -19,6 +19,8 @@ class Google_Service_YouTube_IngestionInfo extends Google_Model
 {
   public $backupIngestionAddress;
   public $ingestionAddress;
+  public $rtmpsBackupIngestionAddress;
+  public $rtmpsIngestionAddress;
   public $streamName;
 
   public function setBackupIngestionAddress($backupIngestionAddress)
@@ -36,6 +38,22 @@ class Google_Service_YouTube_IngestionInfo extends Google_Model
   public function getIngestionAddress()
   {
     return $this->ingestionAddress;
+  }
+  public function setRtmpsBackupIngestionAddress($rtmpsBackupIngestionAddress)
+  {
+    $this->rtmpsBackupIngestionAddress = $rtmpsBackupIngestionAddress;
+  }
+  public function getRtmpsBackupIngestionAddress()
+  {
+    return $this->rtmpsBackupIngestionAddress;
+  }
+  public function setRtmpsIngestionAddress($rtmpsIngestionAddress)
+  {
+    $this->rtmpsIngestionAddress = $rtmpsIngestionAddress;
+  }
+  public function getRtmpsIngestionAddress()
+  {
+    return $this->rtmpsIngestionAddress;
   }
   public function setStreamName($streamName)
   {

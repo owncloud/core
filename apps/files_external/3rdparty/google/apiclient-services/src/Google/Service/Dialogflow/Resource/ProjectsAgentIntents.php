@@ -67,13 +67,13 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentIntents extends Google_Ser
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string intentView Optional. The resource view to apply to the
-   * returned intent.
    * @opt_param string languageCode Optional. The language used to access
    * language-specific data. If not specified, the agent's default language is
    * used. For more information, see [Multilingual intent and entity
    * data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-
    * entity).
+   * @opt_param string intentView Optional. The resource view to apply to the
+   * returned intent.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent
    */
   public function create($parent, Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent $postBody, $optParams = array())
@@ -156,8 +156,6 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentIntents extends Google_Ser
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string intentView Optional. The resource view to apply to the
-   * returned intent.
    * @opt_param string languageCode Optional. The language used to access
    * language-specific data. If not specified, the agent's default language is
    * used. For more information, see [Multilingual intent and entity
@@ -165,6 +163,8 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentIntents extends Google_Ser
    * entity).
    * @opt_param string updateMask Optional. The mask to control which fields get
    * updated.
+   * @opt_param string intentView Optional. The resource view to apply to the
+   * returned intent.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent
    */
   public function patch($name, Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent $postBody, $optParams = array())

@@ -231,10 +231,6 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'gatewayListOptions.associationsGatewayId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'fieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -262,6 +258,10 @@ class Google_Service_CloudIot extends Google_Service
                   'repeated' => true,
                 ),
                 'gatewayListOptions.gatewayType' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'gatewayListOptions.associationsGatewayId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -407,20 +407,6 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'deviceIds' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'deviceNumIds' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'gatewayListOptions.associationsDeviceId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'gatewayListOptions.gatewayType' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -429,17 +415,31 @@ class Google_Service_CloudIot extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'fieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'fieldMask' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'deviceIds' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'gatewayListOptions.associationsDeviceId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'deviceNumIds' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
                 ),
               ),
             ),

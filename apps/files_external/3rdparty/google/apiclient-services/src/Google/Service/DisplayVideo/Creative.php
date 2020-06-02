@@ -48,6 +48,7 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
   public $iasCampaignMonitoring;
   public $integrationCode;
   public $jsTrackerUrl;
+  public $lineItemIds;
   public $mediaDuration;
   public $name;
   public $notes;
@@ -304,6 +305,14 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
   public function getJsTrackerUrl()
   {
     return $this->jsTrackerUrl;
+  }
+  public function setLineItemIds($lineItemIds)
+  {
+    $this->lineItemIds = $lineItemIds;
+  }
+  public function getLineItemIds()
+  {
+    return $this->lineItemIds;
   }
   public function setMediaDuration($mediaDuration)
   {
