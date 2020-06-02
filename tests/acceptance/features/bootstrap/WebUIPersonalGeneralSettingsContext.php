@@ -125,6 +125,20 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @When the user changes the password to the current password using the webUI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserChangesThePasswordToCurrentPasswordUsingTheWebUI() {
+		$username = $this->featureContext->getCurrentUser();
+		$currentPassword = \trim($this->featureContext->getUserPassword($username));
+		$this->personalGeneralSettingsPage->changePassword(
+			$currentPassword, $currentPassword, $this->getSession()
+		);
+	}
+
+	/**
 	 * @When the user changes the password to :newPassword entering the wrong current password :wrongPassword using the webUI
 	 * @Given the user has changed the password to :newPassword entering the wrong current password :wrongPassword using the webUI
 	 *
