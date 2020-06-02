@@ -22,7 +22,7 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
-    And the public adds the public link to "%remote_server%" as user "Brian" with password "%alt1%" using the webUI
+    And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
     And the user accepts the offered remote shares using the webUI
     Then folder "simple-folder" should be listed on the webUI
     When the user opens folder "simple-folder" using the webUI
@@ -42,7 +42,7 @@ Feature: Share by public link
       | permission | read-write |
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
-    And the public adds the public link to "%remote_server%" as user "Brian" with password "%alt1%" using the webUI
+    And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
     And the user accepts the offered remote shares using the webUI
     Then folder "simple-folder" should be listed on the webUI
     When the user opens folder "simple-folder" using the webUI

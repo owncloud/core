@@ -1000,18 +1000,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the public adds the public link to :server as user :username with password :password using the webUI
-	 * @Given the public has added the public link to :server as user :username with password :password using the webUI
+	 * @When the public adds the public link to :server as user :username using the webUI
+	 * @Given the public has added the public link to :server as user :username using the webUI
 	 *
 	 * @param string $server
 	 * @param string $username
-	 * @param string $password
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function thePublicAddsThePublicLinkToUsingTheWebUI(
-		$server, $username, $password
+		$server, $username
 	) {
 		if (!$this->publicLinkFilesPage->isOpen()) {
 			throw new Exception('Not on public link page!');
@@ -1020,6 +1019,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicLinkFilesPage->addToServer($server);
 		// addToServer takes us from the public link page to the login page
 		// of the remote server, waiting for us to login.
+		$actualUsername = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getUserPassword($actualUsername);
 		$this->webUIGeneralContext->loginAs($username, $password);
 	}
 
