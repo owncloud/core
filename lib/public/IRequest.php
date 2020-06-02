@@ -65,7 +65,7 @@ interface IRequest {
 	/**
 	 * @param string $name
 	 *
-	 * @return string
+	 * @return string|null
 	 * @since 6.0.0
 	 */
 	public function getHeader($name);
@@ -108,7 +108,7 @@ interface IRequest {
 	 * Shortcut for accessing an uploaded file through the $_FILES array
 	 *
 	 * @param string $key the key that will be taken from the $_FILES array
-	 * @return array the file in the $_FILES element
+	 * @return array|null the file in the $_FILES element
 	 * @since 6.0.0
 	 */
 	public function getUploadedFile($key);
@@ -117,7 +117,7 @@ interface IRequest {
 	 * Shortcut for getting env variables
 	 *
 	 * @param string $key the key that will be taken from the $_ENV array
-	 * @return array the value in the $_ENV element
+	 * @return array|null the value in the $_ENV element
 	 * @since 6.0.0
 	 */
 	public function getEnv($key);
@@ -126,7 +126,7 @@ interface IRequest {
 	 * Shortcut for getting cookie variables
 	 *
 	 * @param string $key the key that will be taken from the $_COOKIE array
-	 * @return string the value in the $_COOKIE element
+	 * @return string|null the value in the $_COOKIE element
 	 * @since 6.0.0
 	 */
 	public function getCookie($key);
