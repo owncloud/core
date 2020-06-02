@@ -46,17 +46,17 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsProducts extends Google_
    * @param string $accountId Account ID of the buyer.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The page token as returned from
-   * ListProductsResponse.
-   * @opt_param int pageSize Requested page size. The server may return fewer
-   * results than requested. If unspecified, the server will pick an appropriate
-   * default.
    * @opt_param string filter An optional PQL query used to query for products.
    * See https://developers.google.com/ad-manager/docs/pqlreference for
    * documentation about PQL and examples.
    *
    * Nested repeated fields, such as product.targetingCriterion.inclusions, cannot
    * be filtered.
+   * @opt_param string pageToken The page token as returned from
+   * ListProductsResponse.
+   * @opt_param int pageSize Requested page size. The server may return fewer
+   * results than requested. If unspecified, the server will pick an appropriate
+   * default.
    * @return Google_Service_AdExchangeBuyerII_ListProductsResponse
    */
   public function listAccountsProducts($accountId, $optParams = array())

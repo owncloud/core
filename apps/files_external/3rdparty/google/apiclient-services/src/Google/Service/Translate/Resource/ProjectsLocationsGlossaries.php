@@ -77,9 +77,6 @@ class Google_Service_Translate_Resource_ProjectsLocationsGlossaries extends Goog
    * all of the glossaries.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. Filter specifying constraints of a list
-   * operation. Filtering is not supported yet, and the parameter currently has no
-   * effect. If missing, no filtering is performed.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * the server should return. Typically, this is the value of
    * [ListGlossariesResponse.next_page_token] returned from the previous call to
@@ -88,6 +85,9 @@ class Google_Service_Translate_Resource_ProjectsLocationsGlossaries extends Goog
    * @opt_param int pageSize Optional. Requested page size. The server may return
    * fewer glossaries than requested. If unspecified, the server picks an
    * appropriate default.
+   * @opt_param string filter Optional. Filter specifying constraints of a list
+   * operation. Filtering is not supported yet, and the parameter currently has no
+   * effect. If missing, no filtering is performed.
    * @return Google_Service_Translate_ListGlossariesResponse
    */
   public function listProjectsLocationsGlossaries($parent, $optParams = array())

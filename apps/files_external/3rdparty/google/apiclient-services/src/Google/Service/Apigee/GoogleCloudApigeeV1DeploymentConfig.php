@@ -21,6 +21,8 @@ class Google_Service_Apigee_GoogleCloudApigeeV1DeploymentConfig extends Google_M
   public $basePath;
   public $location;
   public $name;
+  public $proxyUid;
+  public $uid;
 
   public function setAttributes($attributes)
   {
@@ -53,5 +55,21 @@ class Google_Service_Apigee_GoogleCloudApigeeV1DeploymentConfig extends Google_M
   public function getName()
   {
     return $this->name;
+  }
+  public function setProxyUid($proxyUid)
+  {
+    $this->proxyUid = $proxyUid;
+  }
+  public function getProxyUid()
+  {
+    return $this->proxyUid;
+  }
+  public function setUid($uid)
+  {
+    $this->uid = $uid;
+  }
+  public function getUid()
+  {
+    return $this->uid;
   }
 }

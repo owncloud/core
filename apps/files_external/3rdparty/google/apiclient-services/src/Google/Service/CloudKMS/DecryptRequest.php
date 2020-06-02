@@ -18,7 +18,9 @@
 class Google_Service_CloudKMS_DecryptRequest extends Google_Model
 {
   public $additionalAuthenticatedData;
+  public $additionalAuthenticatedDataCrc32c;
   public $ciphertext;
+  public $ciphertextCrc32c;
 
   public function setAdditionalAuthenticatedData($additionalAuthenticatedData)
   {
@@ -28,6 +30,14 @@ class Google_Service_CloudKMS_DecryptRequest extends Google_Model
   {
     return $this->additionalAuthenticatedData;
   }
+  public function setAdditionalAuthenticatedDataCrc32c($additionalAuthenticatedDataCrc32c)
+  {
+    $this->additionalAuthenticatedDataCrc32c = $additionalAuthenticatedDataCrc32c;
+  }
+  public function getAdditionalAuthenticatedDataCrc32c()
+  {
+    return $this->additionalAuthenticatedDataCrc32c;
+  }
   public function setCiphertext($ciphertext)
   {
     $this->ciphertext = $ciphertext;
@@ -35,5 +45,13 @@ class Google_Service_CloudKMS_DecryptRequest extends Google_Model
   public function getCiphertext()
   {
     return $this->ciphertext;
+  }
+  public function setCiphertextCrc32c($ciphertextCrc32c)
+  {
+    $this->ciphertextCrc32c = $ciphertextCrc32c;
+  }
+  public function getCiphertextCrc32c()
+  {
+    return $this->ciphertextCrc32c;
   }
 }

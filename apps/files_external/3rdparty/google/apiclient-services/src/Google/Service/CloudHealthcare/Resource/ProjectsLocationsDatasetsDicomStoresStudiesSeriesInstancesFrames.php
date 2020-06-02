@@ -27,8 +27,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
 {
   /**
    * RetrieveFrames returns instances associated with the given study, series, SOP
-   * Instance UID and frame numbers. See http://dicom.nema.org/medical/dicom/curre
-   * nt/output/html/part18.html#sect_10.4. (frames.retrieveFrames)
+   * Instance UID and frame numbers. See [RetrieveTransaction] (http://dicom.nema.
+   * org/medical/dicom/current/output/html/part18.html#sect_10.4}.
+   * (frames.retrieveFrames)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -48,8 +49,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * RetrieveRenderedFrames returns instances associated with the given study,
    * series, SOP Instance UID and frame numbers in an acceptable Rendered Media
-   * Type. See http://dicom.nema.org/medical/dicom/current/output/html/part18.html
-   * #sect_10.4. (frames.retrieveRendered)
+   * Type. See [RetrieveTransaction] (http://dicom.nema.org/medical/dicom/current/
+   * output/html/part18.html#sect_10.4). (frames.retrieveRendered)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}

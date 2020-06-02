@@ -115,8 +115,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesBackups extends Google_Se
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListBackupsResponse to the same `parent` and
    * with the same `filter`.
-   * @opt_param int pageSize Number of backups to be returned in the response. If
-   * 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string filter An expression that filters the list of returned
    * backups.
    *
@@ -146,6 +144,8 @@ class Google_Service_Spanner_Resource_ProjectsInstancesBackups extends Google_Se
    * 2018-03-28T14:50:00Z.   * `expire_time < \"2018-03-28T14:50:00Z\"`          -
    * The backup `expire_time` is before 2018-03-28T14:50:00Z.   * `size_bytes >
    * 10000000000` - The backup's size is greater than 10GB
+   * @opt_param int pageSize Number of backups to be returned in the response. If
+   * 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_Spanner_ListBackupsResponse
    */
   public function listProjectsInstancesBackups($parent, $optParams = array())

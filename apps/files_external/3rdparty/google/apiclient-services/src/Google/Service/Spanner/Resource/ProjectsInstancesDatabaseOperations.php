@@ -37,11 +37,11 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabaseOperations extend
    * Values are of the form `projects//instances/`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Number of operations to be returned in the response.
+   * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListDatabaseOperationsResponse to the same
    * `parent` and with the same `filter`.
-   * @opt_param int pageSize Number of operations to be returned in the response.
-   * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string filter An expression that filters the list of returned
    * operations.
    *

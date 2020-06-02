@@ -45,9 +45,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   }
   /**
    * RetrieveStudyMetadata returns instance associated with the given study
-   * presented as metadata with the bulk data removed. See http://dicom.nema.org/m
-   * edical/dicom/current/output/html/part18.html#sect_10.4.
-   * (studies.retrieveMetadata)
+   * presented as metadata with the bulk data removed. See [RetrieveTransaction] (
+   * http://dicom.nema.org/medical/dicom/current/output/html/part18.html#sect_10.4
+   * ). (studies.retrieveMetadata)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -64,9 +64,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
     return $this->call('retrieveMetadata', array($params), "Google_Service_CloudHealthcare_HttpBody");
   }
   /**
-   * RetrieveStudy returns all instances within the given study. See http://dicom.
-   * nema.org/medical/dicom/current/output/html/part18.html#sect_10.4.
-   * (studies.retrieveStudy)
+   * RetrieveStudy returns all instances within the given study. See
+   * [RetrieveTransaction] (http://dicom.nema.org/medical/dicom/current/output/htm
+   * l/part18.html#sect_10.4). (studies.retrieveStudy)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -83,9 +83,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
     return $this->call('retrieveStudy', array($params), "Google_Service_CloudHealthcare_HttpBody");
   }
   /**
-   * SearchForInstances returns a list of matching instances. See http://dicom.nem
-   * a.org/medical/dicom/current/output/html/part18.html#sect_10.6.
-   * (studies.searchForInstances)
+   * SearchForInstances returns a list of matching instances. See [Search
+   * Transaction] (http://dicom.nema.org/medical/dicom/current/output/html/part18.
+   * html#sect_10.6). (studies.searchForInstances)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -103,9 +103,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
     return $this->call('searchForInstances', array($params), "Google_Service_CloudHealthcare_HttpBody");
   }
   /**
-   * SearchForSeries returns a list of matching series. See http://dicom.nema.org/
-   * medical/dicom/current/output/html/part18.html#sect_10.6.
-   * (studies.searchForSeries)
+   * SearchForSeries returns a list of matching series. See [Search Transaction] (
+   * http://dicom.nema.org/medical/dicom/current/output/html/part18.html#sect_10.6
+   * ). (studies.searchForSeries)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -123,8 +123,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   }
   /**
    * StoreInstances stores DICOM instances associated with study instance unique
-   * identifiers (SUID). See http://dicom.nema.org/medical/dicom/current/output/ht
-   * ml/part18.html#sect_10.5. (studies.storeInstances)
+   * identifiers (SUID). See [Store Transaction] (http://dicom.nema.org/medical/di
+   * com/current/output/html/part18.html#sect_10.5). (studies.storeInstances)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}

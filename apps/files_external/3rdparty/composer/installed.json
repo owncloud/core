@@ -53,23 +53,23 @@
     },
     {
         "name": "google/apiclient",
-        "version": "v2.4.1",
-        "version_normalized": "2.4.1.0",
+        "version": "v2.5.0",
+        "version_normalized": "2.5.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-api-php-client.git",
-            "reference": "1fdfe942f9aaf3064e621834a5e3047fccb3a6da"
+            "reference": "9ab9cc07f66e2c7274ea2753f102ae24d1271410"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/1fdfe942f9aaf3064e621834a5e3047fccb3a6da",
-            "reference": "1fdfe942f9aaf3064e621834a5e3047fccb3a6da",
+            "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/9ab9cc07f66e2c7274ea2753f102ae24d1271410",
+            "reference": "9ab9cc07f66e2c7274ea2753f102ae24d1271410",
             "shasum": ""
         },
         "require": {
             "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0",
             "google/apiclient-services": "~0.13",
-            "google/auth": "^1.0",
+            "google/auth": "^1.9",
             "guzzlehttp/guzzle": "~5.3.1||~6.0",
             "guzzlehttp/psr7": "^1.2",
             "monolog/monolog": "^1.17|^2.0",
@@ -88,7 +88,7 @@
         "suggest": {
             "cache/filesystem-adapter": "For caching certs and tokens (using Google_Client::setCache)"
         },
-        "time": "2020-03-26T15:30:32+00:00",
+        "time": "2020-05-26T22:29:38+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -116,17 +116,17 @@
     },
     {
         "name": "google/apiclient-services",
-        "version": "v0.136",
-        "version_normalized": "0.136.0.0",
+        "version": "v0.138",
+        "version_normalized": "0.138.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-api-php-client-services.git",
-            "reference": "e6fcc181136d28f6efa4b41f3434c97819b520e6"
+            "reference": "9e7ea08fbd87e5926d14ef0674626e26843a5508"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/e6fcc181136d28f6efa4b41f3434c97819b520e6",
-            "reference": "e6fcc181136d28f6efa4b41f3434c97819b520e6",
+            "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/9e7ea08fbd87e5926d14ef0674626e26843a5508",
+            "reference": "9e7ea08fbd87e5926d14ef0674626e26843a5508",
             "shasum": ""
         },
         "require": {
@@ -135,7 +135,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8|^5"
         },
-        "time": "2020-05-16T00:25:19+00:00",
+        "time": "2020-05-31T00:25:32+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -444,17 +444,17 @@
     },
     {
         "name": "icewind/smb",
-        "version": "v3.2.4",
-        "version_normalized": "3.2.4.0",
+        "version": "v3.2.5",
+        "version_normalized": "3.2.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/icewind1991/SMB.git",
-            "reference": "999d6687ca9d4ac2600185c935b45206e47e604a"
+            "reference": "80921d69f5e47157c825f0bdac6c838fe0b901b2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/icewind1991/SMB/zipball/999d6687ca9d4ac2600185c935b45206e47e604a",
-            "reference": "999d6687ca9d4ac2600185c935b45206e47e604a",
+            "url": "https://api.github.com/repos/icewind1991/SMB/zipball/80921d69f5e47157c825f0bdac6c838fe0b901b2",
+            "reference": "80921d69f5e47157c825f0bdac6c838fe0b901b2",
             "shasum": ""
         },
         "require": {
@@ -465,7 +465,7 @@
             "friendsofphp/php-cs-fixer": "^2.13",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2020-05-11T14:12:35+00:00",
+        "time": "2020-05-27T13:56:04+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -530,21 +530,21 @@
     },
     {
         "name": "monolog/monolog",
-        "version": "2.0.2",
-        "version_normalized": "2.0.2.0",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8"
+            "reference": "38914429aac460e8e4616c8cb486ecb40ec90bb1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c861fcba2ca29404dc9e617eedd9eff4616986b8",
-            "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/38914429aac460e8e4616c8cb486ecb40ec90bb1",
+            "reference": "38914429aac460e8e4616c8cb486ecb40ec90bb1",
             "shasum": ""
         },
         "require": {
-            "php": "^7.2",
+            "php": ">=7.2",
             "psr/log": "^1.0.1"
         },
         "provide": {
@@ -555,11 +555,11 @@
             "doctrine/couchdb": "~1.0@dev",
             "elasticsearch/elasticsearch": "^6.0",
             "graylog2/gelf-php": "^1.4.2",
-            "jakub-onderka/php-parallel-lint": "^0.9",
             "php-amqplib/php-amqplib": "~2.4",
             "php-console/php-console": "^3.1.3",
+            "php-parallel-lint/php-parallel-lint": "^1.0",
             "phpspec/prophecy": "^1.6.1",
-            "phpunit/phpunit": "^8.3",
+            "phpunit/phpunit": "^8.5",
             "predis/predis": "^1.1",
             "rollbar/rollbar": "^1.3",
             "ruflin/elastica": ">=0.90 <3.0",
@@ -579,7 +579,7 @@
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2019-12-20T14:22:59+00:00",
+        "time": "2020-05-22T08:12:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

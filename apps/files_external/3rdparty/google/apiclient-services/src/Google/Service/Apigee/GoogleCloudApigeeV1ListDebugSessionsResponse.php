@@ -18,9 +18,18 @@
 class Google_Service_Apigee_GoogleCloudApigeeV1ListDebugSessionsResponse extends Google_Collection
 {
   protected $collection_key = 'sessions';
+  public $nextPageToken;
   protected $sessionsType = 'Google_Service_Apigee_GoogleCloudApigeeV1Session';
   protected $sessionsDataType = 'array';
 
+  public function setNextPageToken($nextPageToken)
+  {
+    $this->nextPageToken = $nextPageToken;
+  }
+  public function getNextPageToken()
+  {
+    return $this->nextPageToken;
+  }
   /**
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Session
    */

@@ -35,6 +35,8 @@ class Google_Service_Dns_ManagedZone extends Google_Collection
   protected $peeringConfigDataType = '';
   protected $privateVisibilityConfigType = 'Google_Service_Dns_ManagedZonePrivateVisibilityConfig';
   protected $privateVisibilityConfigDataType = '';
+  protected $reverseLookupConfigType = 'Google_Service_Dns_ManagedZoneReverseLookupConfig';
+  protected $reverseLookupConfigDataType = '';
   public $visibility;
 
   public function setCreationTime($creationTime)
@@ -164,6 +166,20 @@ class Google_Service_Dns_ManagedZone extends Google_Collection
   public function getPrivateVisibilityConfig()
   {
     return $this->privateVisibilityConfig;
+  }
+  /**
+   * @param Google_Service_Dns_ManagedZoneReverseLookupConfig
+   */
+  public function setReverseLookupConfig(Google_Service_Dns_ManagedZoneReverseLookupConfig $reverseLookupConfig)
+  {
+    $this->reverseLookupConfig = $reverseLookupConfig;
+  }
+  /**
+   * @return Google_Service_Dns_ManagedZoneReverseLookupConfig
+   */
+  public function getReverseLookupConfig()
+  {
+    return $this->reverseLookupConfig;
   }
   public function setVisibility($visibility)
   {

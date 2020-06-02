@@ -17,7 +17,8 @@
 
 class Google_Service_YouTube_CommentSnippet extends Google_Model
 {
-  public $authorChannelId;
+  protected $authorChannelIdType = 'Google_Service_YouTube_CommentSnippetAuthorChannelId';
+  protected $authorChannelIdDataType = '';
   public $authorChannelUrl;
   public $authorDisplayName;
   public $authorProfileImageUrl;
@@ -33,10 +34,16 @@ class Google_Service_YouTube_CommentSnippet extends Google_Model
   public $videoId;
   public $viewerRating;
 
-  public function setAuthorChannelId($authorChannelId)
+  /**
+   * @param Google_Service_YouTube_CommentSnippetAuthorChannelId
+   */
+  public function setAuthorChannelId(Google_Service_YouTube_CommentSnippetAuthorChannelId $authorChannelId)
   {
     $this->authorChannelId = $authorChannelId;
   }
+  /**
+   * @return Google_Service_YouTube_CommentSnippetAuthorChannelId
+   */
   public function getAuthorChannelId()
   {
     return $this->authorChannelId;

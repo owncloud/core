@@ -132,10 +132,6 @@ class Google_Service_Monitoring_Resource_ProjectsNotificationChannels extends Go
    * GetNotificationChannel operation.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter If provided, this field specifies the criteria that
-   * must be met by notification channels to be included in the response.For more
-   * details, see sorting and filtering
-   * (https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
    * @opt_param string orderBy A comma-separated list of fields by which to sort
    * the result. Supports the same set of fields as in filter. Entries can be
    * prefixed with a minus sign to sort in descending rather than ascending
@@ -147,6 +143,10 @@ class Google_Service_Monitoring_Resource_ProjectsNotificationChannels extends Go
    * @opt_param int pageSize The maximum number of results to return in a single
    * response. If not set to a positive number, a reasonable value will be chosen
    * by the service.
+   * @opt_param string filter If provided, this field specifies the criteria that
+   * must be met by notification channels to be included in the response.For more
+   * details, see sorting and filtering
+   * (https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
    * @return Google_Service_Monitoring_ListNotificationChannelsResponse
    */
   public function listProjectsNotificationChannels($name, $optParams = array())

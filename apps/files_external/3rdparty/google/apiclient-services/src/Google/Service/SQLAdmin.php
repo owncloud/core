@@ -865,11 +865,11 @@ class Google_Service_SQLAdmin extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'host' => array(
+                'name' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'name' => array(
+                'host' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -918,11 +918,11 @@ class Google_Service_SQLAdmin extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'host' => array(
+                'name' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'name' => array(
+                'host' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

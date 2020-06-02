@@ -51,6 +51,25 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
    * The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken If this field is not empty then it must contain
+   * the nextPageToken value returned by a previous call to this method. Using
+   * this field causes the method to return additional results from the previous
+   * method call.
+   * @opt_param string aggregation.perSeriesAligner An Aligner describes how to
+   * bring the data points in a single time series into temporal alignment. Except
+   * for ALIGN_NONE, all alignments cause all the data points in an
+   * alignment_period to be mathematically grouped together, resulting in a single
+   * data point for each alignment_period with end timestamp at the end of the
+   * period.Not all alignment operations may be applied to all time series. The
+   * valid choices depend on the metric_kind and value_type of the original time
+   * series. Alignment can change the metric_kind or the value_type of the time
+   * series.Time series data must be aligned in order to perform cross-time series
+   * reduction. If cross_series_reducer is specified, then per_series_aligner must
+   * be specified and not equal to ALIGN_NONE and alignment_period must be
+   * specified; otherwise, an error is returned.
+   * @opt_param string interval.startTime Optional. The beginning of the time
+   * interval. The default value for the start time is the end time. The start
+   * time must not be later than the end time.
    * @opt_param string view Required. Specifies which information is returned
    * about the time series.
    * @opt_param string aggregation.groupByFields The set of fields to preserve
@@ -99,25 +118,6 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
    * and can additionally specify metric labels and other information. For
    * example: metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
    * metric.labels.instance_name = "my-instance-name"
-   * @opt_param string pageToken If this field is not empty then it must contain
-   * the nextPageToken value returned by a previous call to this method. Using
-   * this field causes the method to return additional results from the previous
-   * method call.
-   * @opt_param string aggregation.perSeriesAligner An Aligner describes how to
-   * bring the data points in a single time series into temporal alignment. Except
-   * for ALIGN_NONE, all alignments cause all the data points in an
-   * alignment_period to be mathematically grouped together, resulting in a single
-   * data point for each alignment_period with end timestamp at the end of the
-   * period.Not all alignment operations may be applied to all time series. The
-   * valid choices depend on the metric_kind and value_type of the original time
-   * series. Alignment can change the metric_kind or the value_type of the time
-   * series.Time series data must be aligned in order to perform cross-time series
-   * reduction. If cross_series_reducer is specified, then per_series_aligner must
-   * be specified and not equal to ALIGN_NONE and alignment_period must be
-   * specified; otherwise, an error is returned.
-   * @opt_param string interval.startTime Optional. The beginning of the time
-   * interval. The default value for the start time is the end time. The start
-   * time must not be later than the end time.
    * @return Google_Service_Monitoring_ListTimeSeriesResponse
    */
   public function listProjectsTimeSeries($name, $optParams = array())
