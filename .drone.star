@@ -1304,7 +1304,9 @@ def acceptance():
 		'useHttps': True,
 		'extraSetup': [],
 		'extraServices': [],
-		'extraEnvironment': {},
+		'extraEnvironment': {
+			'REPLACE_USERNAMES': True,
+		},
 		'extraCommandsBeforeTestRun': [],
 		'extraApps': {},
 		'useBundledApp': False,
