@@ -150,7 +150,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given using server "LOCAL"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "simple-folder"
-    When the user shares folder "simple-folder" with remote user "Alice@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And user "Alice" from server "REMOTE" shares "/simple-folder (2)" with user "Brian" from server "LOCAL" using the sharing API
     And the user re-logs in as "Brian" using the webUI
@@ -162,7 +162,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given using server "LOCAL"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "simple-folder"
-    When the user shares folder "simple-folder" with remote user "Alice@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And user "Alice" from server "REMOTE" shares "/simple-folder (2)" with user "Brian" from server "LOCAL" using the sharing API
     And the user updates the last share using the sharing API with
@@ -179,7 +179,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given using server "LOCAL"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "simple-folder"
-    When the user shares folder "simple-folder" with remote user "Alice@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And user "Alice" from server "REMOTE" shares "/simple-folder (2)" with user "Brian" from server "LOCAL" using the sharing API
     And the user re-logs in as "Alice" using the webUI
@@ -197,7 +197,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: test sharing long file names with federation share
     When user "Alice" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
     And the user has reloaded the current page of the webUI
-    And the user shares file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with remote user "Alice@%remote_server_without_scheme%" using the webUI
+    And the user shares file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     #  And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And using server "REMOTE"
     Then user "Alice" should not have any received shares

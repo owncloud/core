@@ -2069,6 +2069,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private function assertContentOfRemoteAndLocalFileIsSameForUser(
 		$remoteFile, $localFile, $user, $shouldBeSame = true, $checkOnRemoteServer = false
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		if ($checkOnRemoteServer) {
 			$baseUrl = $this->featureContext->getRemoteBaseUrl();
 		} else {
@@ -2359,21 +2360,28 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(user|group|public link|federated user) ((?:'[^']*')|(?:"[^"]*")) should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
+	 * @Then /^(user|group|public link|federated user) ((?:'[^']*')|(?:"[^"]*")) ?(?:with displayname "([^"]*)")? should be listed as share receiver via ((?:'[^']*')|(?:"[^"]*")) on the webUI$/
 	 *
 	 * @param string $type user|group|public link|federated user
 	 * @param string $name
+	 * @param string|null $displayname
 	 * @param string $item
 	 *
 	 * @return void
 	 */
-	public function userGroupShouldBeListedAsShareReceiver($type, $name, $item) {
+	public function userGroupShouldBeListedAsShareReceiver($type, $name, $displayname = null, $item = "simple-folder") {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$name = $this->featureContext->substituteInLineCodes($name);
 		$name = \trim($name, $name[0]);
 		$item = \trim($item, $item[0]);
-
+		if ($type === "user") {
+			$name = $this->featureContext->getActualUsername($name);
+			$name = $this->featureContext->getDisplayNameForUser($name);
+		} elseif ($type === "federated user") {
+			$name = $this->featureContext->getActualUsername($name);
+			$name = $this->featureContext->substituteInLineCodes($displayname, $name);
+		}
 		$sharingDialog = $this->filesPage->getSharingDialog();
 		$shareTreeItem = $sharingDialog->getShareTreeItem($type, $name, $item);
 		Assert::assertTrue(

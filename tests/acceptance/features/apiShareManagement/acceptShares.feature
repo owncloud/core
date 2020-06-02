@@ -329,14 +329,14 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_NUMBER                   |
       | share_type             | user                       |
-      | uid_owner              | Alice                      |
-      | displayname_owner      | Alice Hansen               |
+      | uid_owner              | %username%                 |
+      | displayname_owner      | %displayname%              |
       | permissions            | share,read,update          |
-      | uid_file_owner         | Alice                      |
-      | displayname_file_owner | Alice Hansen               |
+      | uid_file_owner         | %username%                 |
+      | displayname_file_owner | %displayname%              |
       | state                  | 0                          |
       | path                   | /textfile0 (2).txt         |
       | item_type              | file                       |
@@ -347,8 +347,8 @@ Feature: accept/decline shares coming from internal users
       | file_source            | A_NUMBER                   |
       | file_parent            | A_NUMBER                   |
       | file_target            | /textfile0 (2).txt         |
-      | share_with             | Brian                      |
-      | share_with_displayname | Brian Murphy               |
+      | share_with             | %username%                 |
+      | share_with_displayname | %displayname%              |
       | mail_send              | 0                          |
     And user "Brian" should see the following elements
       | /FOLDER/                 |
@@ -371,14 +371,14 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_NUMBER                                      |
       | share_type             | user                                          |
-      | uid_owner              | Alice                                         |
-      | displayname_owner      | Alice Hansen                                  |
+      | uid_owner              | %username%                                    |
+      | displayname_owner      | %displayname%                                 |
       | permissions            | share,read,update                             |
-      | uid_file_owner         | Alice                                         |
-      | displayname_file_owner | Alice Hansen                                  |
+      | uid_file_owner         | %username%                                    |
+      | displayname_file_owner | %displayname%                                 |
       | state                  | 0                                             |
       | path                   | <top_folder>/<received_textfile_name>         |
       | item_type              | file                                          |
@@ -389,8 +389,8 @@ Feature: accept/decline shares coming from internal users
       | file_source            | A_NUMBER                                      |
       | file_parent            | A_NUMBER                                      |
       | file_target            | <top_folder>/<received_textfile_name>         |
-      | share_with             | Brian                                         |
-      | share_with_displayname | Brian Murphy                                  |
+      | share_with             | %username%                                    |
+      | share_with_displayname | %displayname%                                 |
       | mail_send              | 0                                             |
     And user "Brian" should see the following elements
       | /FOLDER/                               |

@@ -407,7 +407,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			);
 		}
 		if ($table !== null) {
-			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content']);
+			$this->featureContext->verifyTableNodeColumns($table, ['title', 'content'], ['user']);
 			$expectedDialogs = $table->getHash();
 			//we iterate first through the real dialogs because that way we can
 			//save time by calling getMessage() & getTitle() only once
@@ -415,10 +415,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$content = $dialog->getMessage();
 				$title = $dialog->getTitle();
 				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
-					$expectedDialogs[$dialogI]['content']
-						= $this->featureContext->substituteInLineCodes(
-							$expectedDialogs[$dialogI]['content']
-						);
+					if (isset($expectedDialogs[$dialogI]['user'])) {
+						$expectedDialogs[$dialogI]['content']
+							= $this->featureContext->substituteInLineCodes(
+								$expectedDialogs[$dialogI]['content'], $expectedDialogs[$dialogI]['user']
+							);
+					}
 					if ($content === $expectedDialogs[$dialogI]['content']
 						&& $title === $expectedDialogs[$dialogI]['title']
 					) {

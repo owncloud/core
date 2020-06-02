@@ -50,6 +50,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 */
 	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		$xmlPart = $responseXml->xpath("//d:response/d:href");
@@ -77,6 +78,7 @@ class FilesVersionsContext implements Context {
 	public function theVersionFolderOfFileShouldContainElements(
 		$path, $user, $count
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		Assert::assertNotNull($fileId, "file $path not found");
 		$this->theVersionFolderOfFileIdShouldContainElements($fileId, $user, $count);
@@ -115,6 +117,7 @@ class FilesVersionsContext implements Context {
 	public function theContentLengthOfFileForUserInVersionsFolderIs(
 		$path, $index, $user, $length
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder(
 			$user, "/meta/$fileId/v", 1, ['getcontentlength']

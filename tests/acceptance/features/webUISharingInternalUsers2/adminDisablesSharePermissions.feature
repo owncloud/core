@@ -16,8 +16,8 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And the administrator has browsed to the admin sharing settings page
     When the administrator disables permission delete for default user and group share using the webUI
     And the user re-logs in as "Brian" using the webUI
-    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
+    And the user shares folder "simple-folder" with user "Alice" using the webUI
+    Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice"
       | change | yes |
       | create | yes |
       | delete | no  |
@@ -27,7 +27,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     Then the option to rename file "lorem.txt" should be available on the webUI
     And the option to delete file "lorem.txt" should not be available on the webUI
     And the option to upload file should be available on the webUI
-    When the user shares file "lorem.txt" with user "Carol King" using the webUI
+    When the user shares file "lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
 
   @skipOnOcV10.3
@@ -42,8 +42,8 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And the administrator has browsed to the admin sharing settings page
     When the administrator disables permission change for default user and group share using the webUI
     And the user re-logs in as "Brian" using the webUI
-    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
+    And the user shares folder "simple-folder" with user "Alice" using the webUI
+    Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice"
       | change | no  |
       | create | yes |
       | delete | yes |
@@ -52,7 +52,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And the user opens folder "simple-folder" using the webUI
     Then the option to rename file "lorem.txt" should not be available on the webUI
     And the option to upload file should be available on the webUI
-    When the user shares file "lorem.txt" with user "Carol King" using the webUI
+    When the user shares file "lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
     And the option to delete file "lorem.txt" should be available on the webUI
 
@@ -68,7 +68,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     When the administrator disables permission create for default user and group share using the webUI
     And the administrator disables permission share for default user and group share using the webUI
     And the user re-logs in as "Brian" using the webUI
-    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
+    And the user shares folder "simple-folder" with user "Alice" using the webUI
     Then the following permissions are seen for "simple-folder" in the sharing dialog for user "Alice Hansen"
       | change | yes |
       | create | no  |
@@ -92,8 +92,8 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And the administrator has browsed to the admin sharing settings page
     When the administrator disables permission delete for default user and group share using the webUI
     And the user re-logs in as "Brian" using the webUI
-    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    And the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | delete | yes |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
@@ -115,13 +115,13 @@ Feature: Sharing files and folders with internal users where admin disables diff
     When the administrator disables permission delete for default user and group share using the webUI
     And the administrator disables permission share for default user and group share using the webUI
     And the user re-logs in as "Brian" using the webUI
-    And the user shares folder "simple-folder" with user "Alice Hansen" using the webUI
-    And the user sets the sharing permissions of user "Alice Hansen" for "simple-folder" using the webUI to
+    And the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
       | share | yes |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
     Then the option to rename file "lorem.txt" should be available on the webUI
     And the option to upload file should be available on the webUI
     And the option to delete file "lorem.txt" should not be available on the webUI
-    When the user shares file "lorem.txt" with user "Carol King" using the webUI
+    When the user shares file "lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist

@@ -100,6 +100,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI(
 		$username, $quota
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 
@@ -114,6 +115,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorSetsInvalidQuotaOfUserUsingTheWebUI(
 		$username, $quota
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->setQuotaOfUserTo(
 			$username, $quota, $this->getSession(), false
 		);
@@ -133,6 +135,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email = null, TableNode $groupsTable = null
 	) {
+		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
 		if ($groupsTable !== null) {
 			$groups = $groupsTable->getColumn(0);
@@ -332,6 +335,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminDisablesUserUsingTheWebui($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting("Show enabled/disabled option");
 		$this->usersPage->disableUser($username);
@@ -346,6 +350,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDisabledUserTriesToLogin($username, $password) {
+		$password = $this->featureContext->substituteInLineCodes($password, $username);
+		$username = $this->featureContext->getActualUsername($username);
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$password = $this->featureContext->getActualPassword($password);
 		/**
@@ -366,6 +372,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDeletesTheUser($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->deleteUser($username, true);
 		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
 	}
@@ -378,6 +385,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDoesNotDeleteTheUser($username) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->deleteUser($username, false);
 	}
 
@@ -391,6 +399,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theDeletedUserTriesToLogin($username, $password) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
+		$password = $this->featureContext->substituteInLineCodes($password, $username);
+		$username = $this->featureContext->getActualUsername($username);
 		$this->loginPage->loginAs($username, $password, 'LoginPage');
 	}
 
@@ -416,6 +426,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
+		$username = $this->featureContext->getActualUsername($username);
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
 		Assert::assertEquals(
 			$quota,
@@ -428,22 +439,25 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^the administrator should be able to see the email of these users in the User Management page:$/
 	 *
-	 * @param TableNode $table table of usernames and emails with a heading | username | and | email |
+	 * @param TableNode $table table of usernames with a heading | username |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['username', 'email']);
+		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$userEmail = $this->usersPage->getEmailOfUser($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$expectedEmail = $this->featureContext->getEmailAddressForUser($user);
+			$userEmail = $this->usersPage->getEmailOfUser($user);
 			Assert::assertEquals(
-				$row['email'],
+				$expectedEmail,
 				$userEmail,
 				__METHOD__
 				. " The email of user '"
-				. $row['username']
+				. $user
 				. "' is expected to be '"
-				. $row['email']
+				. $expectedEmail
 				. "', but got '$userEmail' instead."
 			);
 		}
@@ -455,17 +469,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'quota']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($user);
 			Assert::assertEquals(
 				true,
 				$visible,
 				__METHOD__
 				. " The quota of user '"
-				. $row['username']
+				. $user
 				. "' was expected to be visible to the administrator in the User Management page, but is not."
 			);
 		}
@@ -477,17 +493,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($user);
 			Assert::assertEquals(
 				false,
 				$visible,
 				__METHOD__
 				. " The quota of user '"
-				. $row['username']
+				. $user
 				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
 			);
 		}
@@ -499,17 +517,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames column with a heading | username |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($user);
 			Assert::assertEquals(
 				true,
 				$visible,
 				__METHOD__
 				. " The password of user '"
-				. $row['username']
+				. $user
 				. "' was expected to be visible to the administrator in the User Management page, but is not."
 			);
 		}
@@ -521,17 +541,19 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames column with a heading | username |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldNotBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
-			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($user);
 			Assert::assertEquals(
 				false,
 				$visible,
 				__METHOD__
 				. " The password of user '"
-				. $row['username']
+				. $user
 				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
 			);
 		}
@@ -543,21 +565,30 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames and storage locations with a heading | username | and | storage location |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeStorageLocationOfTheseUsers(
 		TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'storage location']);
 		foreach ($table as $row) {
-			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($user);
+			$expectedUserStorageLocation = $row["storage location"];
+			if ($this->featureContext->isTestingReplacingUsernames()) {
+				$expectedUserStorageLocationSplitted = \explode("/", $expectedUserStorageLocation);
+				$lastIndexOfArray = \count($expectedUserStorageLocationSplitted) - 1;
+				$expectedUserStorageLocationSplitted[$lastIndexOfArray] = $user;
+				$expectedUserStorageLocation = \implode("/", $expectedUserStorageLocationSplitted);
+			}
 			Assert::assertStringContainsString(
-				$row['storage location'],
+				$expectedUserStorageLocation,
 				$userStorageLocation,
 				__METHOD__
 				. "'"
-				. $row['storage location']
+				. $expectedUserStorageLocation
 				. "' is not contained in the storage location of '"
-				. $row['username']
+				. $user
 				. "'."
 			);
 		}
@@ -575,7 +606,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	) {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'last login']);
 		foreach ($table as $row) {
-			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$userLastLogin = $this->usersPage->getLastLoginOfUser($user);
 
 			Assert::assertStringContainsString(
 				$row['last login'],
@@ -584,7 +616,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 				. "'"
 				. $row['last login']
 				. "' is not contained in the last login of '"
-				. $row['username']
+				. $user
 				. "'."
 			);
 		}
@@ -677,6 +709,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui($user, $displayName) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->setDisplayNameofUserTo($this->getSession(), $user, $displayName);
 		$this->featureContext->rememberUserDisplayName($user, $displayName);
 	}
@@ -690,6 +723,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChangesThePasswordOfUserToUsingTheWebui($user, $password) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->changeUserPassword($this->getSession(), $user, $password);
 	}
 
@@ -702,6 +736,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function addsUserToGroupUsingTheWebui($user, $group) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group);
 	}
 
@@ -714,6 +749,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRemovesUserFromGroupUsingTheWebui($user, $group) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group, false);
 	}
 
@@ -727,6 +763,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui($username, $email) {
+		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting('Show email address');
 		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);

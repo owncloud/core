@@ -67,15 +67,21 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When user :user requests calendar :calendar using the new WebDAV API
+	 * @When user :user requests calendar :calendar of user :ofUser using the new WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $calendar
+	 * @param string $ofUser
 	 *
 	 * @return void
 	 */
-	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
+	public function userRequestsCalendarUsingTheAPI($user, $calendar, $ofUser) {
 		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
+		$normalizedUser = $this->featureContext->normalizeUsername($ofUser);
+		$calendar = $this->featureContext->substituteInLineCodes(
+			$calendar, $normalizedUser
+		);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$calendar";
 
@@ -88,15 +94,16 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When the administrator requests calendar :calendar using the new WebDAV API
+	 * @When the administrator requests calendar :calendar of user :ofUser using the new WebDAV API
 	 *
 	 * @param string $calendar
+	 * @param string $ofUser
 	 *
 	 * @return void
 	 */
-	public function theAdministratorRequestsCalendarUsingTheNewWebdavApi($calendar) {
+	public function theAdministratorRequestsCalendarUsingTheNewWebdavApi($calendar, $ofUser) {
 		$admin = $this->featureContext->getAdminUsername();
-		$this->userRequestsCalendarUsingTheAPI($admin, $calendar);
+		$this->userRequestsCalendarUsingTheAPI($admin, $calendar, $ofUser);
 	}
 
 	/**

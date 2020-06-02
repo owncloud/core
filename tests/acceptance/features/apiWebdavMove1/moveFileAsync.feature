@@ -12,8 +12,8 @@ Feature: move (rename) file
   Scenario Outline: Moving a file
     When user "Alice" moves file "/welcome.txt" asynchronously to "/FOLDER/<destination-file-name>" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
@@ -32,8 +32,8 @@ Feature: move (rename) file
   Scenario: Moving and overwriting a file
     When user "Alice" moves file "/welcome.txt" asynchronously to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
@@ -45,8 +45,8 @@ Feature: move (rename) file
   Scenario: Moving (renaming) a file to be only different case
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
@@ -58,8 +58,8 @@ Feature: move (rename) file
   Scenario: Moving (renaming) a file to a file with only different case to an existing file
     When user "Alice" moves file "/textfile1.txt" asynchronously to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
@@ -72,8 +72,8 @@ Feature: move (rename) file
   Scenario: Moving (renaming) a file to a file in a folder with only different case to an existing file
     When user "Alice" moves file "/textfile1.txt" asynchronously to "/PARENT/Parent.txt" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
@@ -244,7 +244,7 @@ Feature: move (rename) file
     And the MOVE dav requests are slowed down by 10 seconds
     When user "Alice" moves file "/welcome.txt" asynchronously to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
-    And the following headers should match these regular expressions
-      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/Alice\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the following headers should match these regular expressions for user "Alice"
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/%username%\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status | /^started$/ |

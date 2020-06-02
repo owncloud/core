@@ -256,6 +256,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function scanFileSystemForAUserUsingTheOccCommand($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->invokingTheCommand(
 			"files:scan $user"
 		);
@@ -263,11 +264,15 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $path
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function scanFileSystemPathUsingTheOccCommand($path) {
+	public function scanFileSystemPathUsingTheOccCommand($path, $user = null) {
+		$path = $this->featureContext->substituteInLineCodes(
+			$path, $user
+		);
 		$this->invokingTheCommand(
 			"files:scan --path='$path'"
 		);
@@ -371,6 +376,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function emptyTrashBinOfUserUsingOccCommand($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->invokingTheCommand(
 			"trashbin:cleanup $user"
 		);
@@ -533,6 +539,23 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorInvokesOccCommand($cmd) {
+		$this->invokingTheCommand($cmd);
+	}
+
+	/**
+	 * @When /^the administrator invokes occ command "([^"]*)" for user "([^"]*)"$/
+	 *
+	 * @param string $cmd
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorInvokesOccCommandForUser($cmd, $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$cmd = $this->featureContext->substituteInLineCodes(
+			$cmd, $user
+		);
 		$this->invokingTheCommand($cmd);
 	}
 
@@ -719,6 +742,36 @@ class OccContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lines = SetupHelper::findLines(
+			$commandOutput,
+			$text
+		);
+		Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
+	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*")) about user "([^"]*)"$/
+	 *
+	 * @param string $text
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandOutputContainsTheTextAboutUser($text, $user) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
+		$text = $this->featureContext->substituteInLineCodes(
+			$text, $user
+		);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
 			$commandOutput,
@@ -1045,15 +1098,17 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator scans the filesystem in path :path using the occ command
+	 * @When the administrator scans the filesystem in path :path of user :user using the occ command
 	 *
 	 * @param string $path
+	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path) {
-		$this->scanFileSystemPathUsingTheOccCommand($path);
+	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path, $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->scanFileSystemPathUsingTheOccCommand($path, $user);
 	}
 
 	/**
@@ -1182,6 +1237,7 @@ class OccContext implements Context {
 		}
 		if ($userOrGroup === "user") {
 			$action = "$action-user";
+			$userOrGroupName = $this->featureContext->getActualUsername($userOrGroupName);
 		} else {
 			$action = "$action-group";
 		}
@@ -1274,6 +1330,7 @@ class OccContext implements Context {
 	public function theAdminAddsRemovesAsTheApplicableUserForMountUsingTheOccCommand(
 		$action, $userOrGroup, $user, $mount
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
 			$action,
 			$userOrGroup,
@@ -1315,6 +1372,7 @@ class OccContext implements Context {
 	public function theAdminHasAddedRemovedTheApplicableUserForMountUsingTheOccCommand(
 		$action, $userOrGroup, $user, $mount
 	) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
 			$action,
 			$userOrGroup,
@@ -1681,6 +1739,7 @@ class OccContext implements Context {
 						$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
 						$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
 						foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
+							$expectedApplicableUserEntry = $this->featureContext->getActualUsername($expectedApplicableUserEntry);
 							Assert::assertContains(
 								$expectedApplicableUserEntry,
 								$listedApplicableUsers,
@@ -2245,6 +2304,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDeletesAllTheVersionsForUser($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteAllVersionsForUserUsingOccCommand($user);
 	}
 
@@ -2410,6 +2470,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasClearedTheVersionsForUser($user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteAllVersionsForUserUsingOccCommand($user);
 		Assert::assertSame(
 			"Delete versions of   $user",
@@ -2629,8 +2690,9 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator creates an external mount point with the following configuration using the occ command
+	 * @When the administrator creates an external mount point with the following configuration about user :user using the occ command
 	 *
+	 * @param string $user
 	 * @param TableNode $settings
 	 *
 	 * necessary attributes inside $settings table:
@@ -2649,7 +2711,8 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createExternalMountPointUsingTheOccCommand($settings) {
+	public function createExternalMountPointUsingTheOccCommand($user, $settings) {
+		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeRows(
 			$settings,
 			["host", "root", "storage_backend",
@@ -2657,7 +2720,12 @@ class OccContext implements Context {
 			"user", "password", "secure"]
 		);
 		$extMntSettings = $settings->getRowsHash();
-		$password = $this->featureContext->getActualPassword($extMntSettings['password']);
+		$extMntSettings['user'] = $this->featureContext->substituteInLineCodes(
+			$extMntSettings['user'], $userRenamed
+		);
+		$password = $this->featureContext->substituteInLineCodes(
+			$extMntSettings['password'], $user
+		);
 		$args = [
 			"files_external:create",
 			"-c host=" .
@@ -2678,14 +2746,15 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has created an external mount point with the following configuration using the occ command
+	 * @Given the administrator has created an external mount point with the following configuration about user :user using the occ command
 	 *
+	 * @param string $user
 	 * @param TableNode $settings
 	 *
 	 * @return void
 	 */
-	public function adminHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand(TableNode $settings) {
-		$this->createExternalMountPointUsingTheOccCommand($settings);
+	public function adminHasCreatedAnExternalMountPointWithFollowingConfigUsingTheOccCommand($user, TableNode $settings) {
+		$this->createExternalMountPointUsingTheOccCommand($user, $settings);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 

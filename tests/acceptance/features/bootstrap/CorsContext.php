@@ -47,6 +47,7 @@ class CorsContext implements Context {
 	 * @throws Exception
 	 */
 	public function addDomainToPrivateCORSLists($user, $domain) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->runOcc(
 			[
 				'user:setting',

@@ -135,10 +135,10 @@ class OCSContext implements Context {
 		}
 
 		if ($user !== 'UNAUTHORIZED_USER') {
-			$user = $this->featureContext->getActualUsername($user);
 			if ($password === null) {
 				$password = $this->featureContext->getPasswordForUser($user);
 			}
+			$user = $this->featureContext->getActualUsername($user);
 		} else {
 			$user = null;
 			$password = null;
@@ -473,18 +473,24 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method including body using password :password then the status codes should be as listed
+	 * @When user :user requests these endpoints with :method including body using password :password then the status codes about user :ofUser should be as listed
 	 *
 	 * @param string $user
 	 * @param string $method
 	 * @param string $password
+	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, $ofUser, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
@@ -501,17 +507,24 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method including body then the status codes should be as listed
+	 * @When user :user requests these endpoints with :method including body then the status codes about user :ofUser should be as listed
 	 *
 	 * @param string $user
 	 * @param string $method
+	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithBody($user, $method, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $ofUser, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
@@ -538,8 +551,13 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
+		$asUser = $this->featureContext->getActualUsername($asUser);
+		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
 		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $userRenamed
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$asUser,
 				$row['endpoint'],
@@ -595,6 +613,32 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theOCSStatusMessageShouldBe($statusMessage) {
+		Assert::assertEquals(
+			$statusMessage,
+			$this->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			),
+			'Unexpected OCS status message :"' . $this->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '" in response'
+		);
+	}
+
+	/**
+	 * Check the text in an OCS status message
+	 *
+	 * @Then /^the OCS status message about user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $statusMessage
+	 *
+	 * @return void
+	 */
+	public function theOCSStatusMessageAboutUserShouldBe($user, $statusMessage) {
+		$user = \strtolower($this->featureContext->getActualUsername($user));
+		$statusMessage = $this->featureContext->substituteInLineCodes(
+			$statusMessage, $user
+		);
 		Assert::assertEquals(
 			$statusMessage,
 			$this->getOCSResponseStatusMessage(

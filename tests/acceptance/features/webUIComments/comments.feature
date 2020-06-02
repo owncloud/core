@@ -31,7 +31,7 @@ Feature: Add, delete and edit comments in files and folders
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"
     And the user comments with content "<comment>" using the webUI
-    And the user shares file "new-lorem.txt" with user "Brian Murphy" using the webUI
+    And the user shares file "new-lorem.txt" with user "Brian" using the webUI
     And the user re-logs in as "Brian" using the webUI
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"
     Then the comment "<comment>" should be listed in the comments tab in details dialog

@@ -30,7 +30,7 @@ Feature: Change Login Password
     Then a password error message should be displayed on the webUI with the text "Wrong current password"
 
   Scenario: New password is same as current password
-    When the user changes the password to "%regular%" using the webUI
+    When the user changes the password to the current password using the webUI
     Then a password error message should be displayed on the webUI with the text "The new password cannot be the same as the previous one"
 
   Scenario Outline: Password change with invalid or no new password

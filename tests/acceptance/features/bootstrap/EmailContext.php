@@ -48,18 +48,17 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @Then the email address :address should have received an email with the body containing
-	 *
 	 * @param string $address
 	 * @param PyStringNode $content
+	 * @param string|null $sender
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function assertThatEmailContains($address, PyStringNode $content) {
+	public function assertThatEmailContains($address, PyStringNode $content, $sender = null) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		$expectedContent = $this->featureContext->substituteInLineCodes(
-			$expectedContent
+			$expectedContent, $sender
 		);
 		$emailBody = EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address);
 		Assert::assertStringContainsString(
@@ -71,14 +70,61 @@ class EmailContext implements Context {
 	}
 
 	/**
-	 * @Then the reset email to :receiverAddress should be from :senderAddress
+	 * @Then the email address of user :user should have received an email from user :sender with the body containing
 	 *
-	 * @param string $receiverAddress
+	 * @param string $user
+	 * @param string $sender
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserShouldHaveReceivedAnEmailFromUserWithBodyContaining($user, $sender, PyStringNode $content) {
+		$address = $this->featureContext->getEmailAddressForUser($user);
+		$this->assertThatEmailContains($address, $content, $sender);
+	}
+
+	/**
+	 * @Then /^the email address "(?P<address>[^"]*)" should have received an email ?(?:from user "(?P<user>[^"]*)")? with the body containing$/
+	 *
+	 * @param string $address
+	 * @param PyStringNode $content
+	 * @param string|null $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, $content, $user = null) {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->assertThatEmailContains($address, $content, $user);
+	}
+
+	/**
+	 * @Then the email address of user :user should have received an email with the body containing
+	 *
+	 * @param string $user
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserShouldHaveReceivedAnEmailWithBodyContaining($user, PyStringNode $content) {
+		$address = $this->featureContext->getEmailAddressForUser($user);
+		$this->assertThatEmailContains($address, $content);
+	}
+
+	/**
+	 * @Then the reset email to user :user should be from :senderAddress
+	 *
+	 * @param string $user receiver
 	 * @param string $senderAddress
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
+	public function theResetEmailSenderEmailAddressShouldBe($user, $senderAddress) {
+		$user = $this->featureContext->getActualUsername($user);
+		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
 		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
 		Assert::assertStringContainsString(
 			$senderAddress,

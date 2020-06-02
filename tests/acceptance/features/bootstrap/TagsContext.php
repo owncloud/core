@@ -244,6 +244,7 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function createTagWithName($user, $type, $name) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->createTag(
 			$user,
 			TagsHelper::validateTypeOfTag($type)[0],
@@ -707,9 +708,10 @@ class TagsContext implements Context {
 	private function sendProppatchToSystemtags(
 		$user, $tagDisplayName, $propertyName, $propertyValue
 	) {
+		$renamedUser = $this->featureContext->getActualUsername($user);
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		$response = WebDavHelper::proppatch(
-			$this->featureContext->getBaseUrl(), $user,
+			$this->featureContext->getBaseUrl(), $renamedUser,
 			$this->featureContext->getPasswordForUser($user),
 			"/systemtags/$tagID", $propertyName, $propertyValue,
 			"oc='http://owncloud.org/ns'",
@@ -1160,6 +1162,7 @@ class TagsContext implements Context {
 	public function addTagToFileFolderAsAdminOrUser(
 		$adminOrUser, $tagName, $fileName
 	) {
+		$adminOrUser = $this->featureContext->getActualUsername($adminOrUser);
 		if ($adminOrUser === 'administrator') {
 			$taggingUser = $this->featureContext->getAdminUsername();
 		} else {
@@ -1219,6 +1222,7 @@ class TagsContext implements Context {
 	public function addTagToFileFolder(
 		$taggingUser, $tagName, $fileName
 	) {
+		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
 		$this->tag($taggingUser, $tagName, $fileName);
 	}
 
@@ -1275,6 +1279,8 @@ class TagsContext implements Context {
 	public function addTagToResourceSharedByUser(
 		$taggingUser, $tagName, $fileName, $sharingUser
 	) {
+		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
+		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 		$this->tag(
 			$taggingUser,
 			$tagName,
@@ -1463,6 +1469,7 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function sharedByHasNoTags($fileName, $sharingUser) {
+		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 		$responseXml = $this->requestTagsForFile($sharingUser, $fileName);
 		$tagList = $responseXml->xpath("//d:prop");
 		// The array of tags has a single "empty" item at the start.
@@ -1636,6 +1643,7 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function searchForTagsOfFileWithReportUsingWebDAVApi($user, $tagNames) {
+		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumnsCount($tagNames, 1);
 		$tagNames = $tagNames->getRows();
 		$baseUrl = $this->featureContext->getBaseUrl();
@@ -1716,6 +1724,7 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function asUserFileShouldBeTaggedWithTagName($user, $shouldOrNot, $fileOrFolder, $path) {
+		$user = $this->featureContext->getActualUsername($user);
 		$expected = ($shouldOrNot === "");
 		$responseResourcesArray = $this->featureContext->findEntryFromReportResponse($user);
 		if ($expected) {

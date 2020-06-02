@@ -37,7 +37,7 @@ Feature: sharing
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | id                | A_NUMBER       |
       | item_type         | file           |
       | item_source       | A_NUMBER       |
@@ -48,9 +48,9 @@ Feature: sharing
       | stime             | A_NUMBER       |
       | storage           | A_NUMBER       |
       | mail_send         | 0              |
-      | uid_owner         | Alice          |
+      | uid_owner         | %username%     |
       | file_parent       | A_NUMBER       |
-      | displayname_owner | Alice Hansen   |
+      | displayname_owner | %displayname%  |
       | mimetype          | text/plain     |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -125,7 +125,7 @@ Feature: sharing
     And user "Brian" has shared folder "/folder1/folder2" with user "Carol" with permissions "all"
     When user "Brian" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "Brian" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Brian" sharing with user "Carol" should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -136,9 +136,9 @@ Feature: sharing
       | stime             | A_NUMBER             |
       | storage           | A_NUMBER             |
       | mail_send         | 0                    |
-      | uid_owner         | Brian                |
+      | uid_owner         | %username%           |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | Brian Murphy         |
+      | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/folder1/folder2" should not exist
     And as "Carol" folder "/folder2" should exist
@@ -155,7 +155,7 @@ Feature: sharing
     And user "Carol" has shared folder "/Carol-folder" with user "Brian" with permissions "all"
     When user "Brian" moves folder "/Alice-folder/folder2" to "/Carol-folder/folder2" using the WebDAV API
     And user "Carol" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Carol" sharing with user "Brian" should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -166,9 +166,9 @@ Feature: sharing
       | stime             | A_NUMBER             |
       | storage           | A_NUMBER             |
       | mail_send         | 0                    |
-      | uid_owner         | Carol                |
+      | uid_owner         | %username%           |
       | file_parent       | A_NUMBER             |
-      | displayname_owner | Carol King           |
+      | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
@@ -218,16 +218,16 @@ Feature: sharing
     Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
       | item_type         | file                |
       | item_source       | A_NUMBER            |
       | share_type        | group               |
       | file_target       | /textfile0.txt      |
       | permissions       | read, update, share |
       | mail_send         | 0                   |
-      | uid_owner         | Alice               |
+      | uid_owner         | %username%          |
       | file_parent       | A_NUMBER            |
-      | displayname_owner | Alice Hansen        |
+      | displayname_owner | %displayname%       |
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -268,7 +268,7 @@ Feature: sharing
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | permissions | read     |
       | expiration  | +30 days |
     Examples:
@@ -298,7 +298,7 @@ Feature: sharing
     And the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the fields of the last response to user "Alice" should include
       | permissions | read, share |
       | expiration  | +30 days    |
     Examples:

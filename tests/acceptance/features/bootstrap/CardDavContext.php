@@ -67,16 +67,21 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When user :user requests address book :addressBook using the new WebDAV API
+	 * @When user :user requests address book :addressBook of user :ofUser using the new WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $addressBook
+	 * @param string $ofUser
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userRequestsAddressBookUsingTheAPI($user, $addressBook) {
+	public function userRequestsAddressBookUsingTheAPI($user, $addressBook, $ofUser) {
 		$user = $this->featureContext->getActualUsername($user);
+		$normalizedUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$addressBook = $this->featureContext->substituteInLineCodes(
+			$addressBook, $normalizedUser
+		);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/addressbooks/users/$addressBook";
 
@@ -89,15 +94,16 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When the administrator requests address book :addressBook using the new WebDAV API
+	 * @When the administrator requests address book :addressBook of user :ofUser using the new WebDAV API
 	 *
 	 * @param string $addressBook
+	 * @param string $ofUser
 	 *
 	 * @return void
 	 */
-	public function theAdministratorRequestsAddressBookUsingTheNewWebdavApi($addressBook) {
+	public function theAdministratorRequestsAddressBookUsingTheNewWebdavApi($addressBook, $ofUser) {
 		$admin = $this->featureContext->getAdminUsername();
-		$this->userRequestsAddressBookUsingTheAPI($admin, $addressBook);
+		$this->userRequestsAddressBookUsingTheAPI($admin, $addressBook, $ofUser);
 	}
 
 	/**

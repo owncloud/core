@@ -14,14 +14,14 @@ Feature: sharing
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | share_with             | Brian             |
-      | share_with_displayname | Brian Murphy      |
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%        |
+      | share_with_displayname | %displayname%     |
       | file_target            | /textfile0.txt    |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
-      | uid_owner              | Alice             |
-      | displayname_owner      | Alice Hansen      |
+      | uid_owner              | %username%        |
+      | displayname_owner      | %displayname%     |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
@@ -38,14 +38,14 @@ Feature: sharing
     When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions <requested_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | share_with             | Brian                 |
-      | share_with_displayname | Brian Murphy          |
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%            |
+      | share_with_displayname | %displayname%         |
       | file_target            | /textfile0.txt        |
       | path                   | /textfile0.txt        |
       | permissions            | <granted_permissions> |
-      | uid_owner              | Alice                 |
-      | displayname_owner      | Alice Hansen          |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
       | item_type              | file                  |
       | mimetype               | text/plain            |
       | storage_id             | ANY_VALUE             |
@@ -116,14 +116,14 @@ Feature: sharing
     When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | share_with             | Brian                |
-      | share_with_displayname | Brian Murphy         |
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%           |
+      | share_with_displayname | %displayname%        |
       | file_target            | /FOLDER              |
       | path                   | /FOLDER              |
       | permissions            | all                  |
-      | uid_owner              | Alice                |
-      | displayname_owner      | Alice Hansen         |
+      | uid_owner              | %username%           |
+      | displayname_owner      | %displayname%        |
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
       | storage_id             | ANY_VALUE            |
@@ -140,14 +140,14 @@ Feature: sharing
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | grp1              |
       | share_with_displayname | grp1              |
       | file_target            | /textfile0.txt    |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
-      | uid_owner              | Alice             |
-      | displayname_owner      | Alice Hansen      |
+      | uid_owner              | %username%        |
+      | displayname_owner      | %displayname%     |
       | item_type              | file              |
       | mimetype               | text/plain        |
       | storage_id             | ANY_VALUE         |
@@ -165,14 +165,14 @@ Feature: sharing
     When user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | grp1                 |
       | share_with_displayname | grp1                 |
       | file_target            | /FOLDER              |
       | path                   | /FOLDER              |
       | permissions            | all                  |
-      | uid_owner              | Alice                |
-      | displayname_owner      | Alice Hansen         |
+      | uid_owner              | %username%           |
+      | displayname_owner      | %displayname%        |
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
       | storage_id             | ANY_VALUE            |
@@ -329,12 +329,12 @@ Feature: sharing
     When user "Alice" shares file "/randomfile.txt" with user "BRIAN" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | share_with  | BRIAN             |
+    And the fields of the last response to user "Alice" sharing with user "BRIAN" should include
+      | share_with  | %username%        |
       | file_target | /randomfile.txt   |
       | path        | /randomfile.txt   |
       | permissions | share,read,update |
-      | uid_owner   | Alice             |
+      | uid_owner   | %username%        |
     #And user "brian" should see the following elements
     #  | /randomfile.txt |
     #And the content of file "randomfile.txt" for user "brian" should be "Random data"
@@ -420,11 +420,11 @@ Feature: sharing
     When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with  | grp1           |
       | file_target | /textfile0.txt |
       | path        | /textfile0.txt |
-      | uid_owner   | Alice          |
+      | uid_owner   | %username%     |
     And as "Brian" file "/textfile0.txt" should exist
     And as "Carol" file "/textfile0.txt" should exist
     When the administrator deletes group "grp1" using the provisioning API

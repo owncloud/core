@@ -11,7 +11,7 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted folder "/PARENT"
     When the administrator empties the trashbin of user "Alice" using the occ command
     Then the command should have been successful
-    And the command output should contain the text 'Remove deleted files of   Alice'
+    And the command output should contain the text 'Remove deleted files of   %username%' about user "Alice"
     Then as "Alice" the file with original path "/textfile0.txt" should not exist in the trashbin
     And as "Alice" the file with original path "/textfile1.txt" should not exist in the trashbin
     And as "Alice" the folder with original path "/PARENT" should not exist in the trashbin
