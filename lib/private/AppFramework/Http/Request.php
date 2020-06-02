@@ -288,7 +288,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * This method returns null if the header did not exist.
 	 *
 	 * @param string $name
-	 * @return string
+	 * @return string|null
 	 */
 	public function getHeader($name) {
 		$name = \strtoupper(\str_replace(['-'], ['_'], $name));
@@ -350,7 +350,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Shortcut for accessing an uploaded file through the $_FILES array
 	 * @param string $key the key that will be taken from the $_FILES array
-	 * @return array the file in the $_FILES element
+	 * @return array|null the file in the $_FILES element
 	 */
 	public function getUploadedFile($key) {
 		return isset($this->files[$key]) ? $this->files[$key] : null;
@@ -359,7 +359,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Shortcut for getting env variables
 	 * @param string $key the key that will be taken from the $_ENV array
-	 * @return array the value in the $_ENV element
+	 * @return array|null the value in the $_ENV element
 	 */
 	public function getEnv($key) {
 		return isset($this->env[$key]) ? $this->env[$key] : null;
@@ -368,7 +368,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Shortcut for getting cookie variables
 	 * @param string $key the key that will be taken from the $_COOKIE array
-	 * @return string the value in the $_COOKIE element
+	 * @return string|null the value in the $_COOKIE element
 	 */
 	public function getCookie($key) {
 		return isset($this->cookies[$key]) ? $this->cookies[$key] : null;
