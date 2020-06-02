@@ -126,6 +126,9 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * Tests:     `projects/{project_id}/locations/global`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Page token from an earlier query, as returned in
+   * `next_page_token`.
+   * @opt_param string orderBy Field to use to sort the list.
    * @opt_param int pageSize Number of `ConnectivityTests` to return.
    * @opt_param string filter Lists the `ConnectivityTests` that match the filter
    * expression. A filter expression filters the resources listed in the response.
@@ -140,9 +143,6 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * - Filter by labels:   - Resources that have a key called `foo`
    * labels.foo:*   - Resources that have a key called `foo` whose value is `bar`
    * labels.foo = bar
-   * @opt_param string pageToken Page token from an earlier query, as returned in
-   * `next_page_token`.
-   * @opt_param string orderBy Field to use to sort the list.
    * @return Google_Service_NetworkManagement_ListConnectivityTestsResponse
    */
   public function listProjectsLocationsNetworkmanagementGlobalConnectivityTests($parent, $optParams = array())
@@ -167,7 +167,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * `ConnectivityTest` for for more details. (connectivityTests.patch)
    *
    * @param string $name Required. Unique name of the resource using the form:
-   * `projects/{project_id}/locations/global/connectivityTests/{test}`
+   * `projects/{project_id}/locations/global/connectivityTests/{test_id}`
    * @param Google_Service_NetworkManagement_ConnectivityTest $postBody
    * @param array $optParams Optional parameters.
    *

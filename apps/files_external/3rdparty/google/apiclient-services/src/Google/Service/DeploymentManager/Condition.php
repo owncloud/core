@@ -22,7 +22,6 @@ class Google_Service_DeploymentManager_Condition extends Google_Collection
   public $op;
   public $svc;
   public $sys;
-  public $value;
   public $values;
 
   public function setIam($iam)
@@ -56,14 +55,6 @@ class Google_Service_DeploymentManager_Condition extends Google_Collection
   public function getSys()
   {
     return $this->sys;
-  }
-  public function setValue($value)
-  {
-    $this->value = $value;
-  }
-  public function getValue()
-  {
-    return $this->value;
   }
   public function setValues($values)
   {

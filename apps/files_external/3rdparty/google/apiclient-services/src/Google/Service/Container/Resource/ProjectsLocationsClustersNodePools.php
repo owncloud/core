@@ -49,10 +49,6 @@ class Google_Service_Container_Resource_ProjectsLocationsClustersNodePools exten
    * `projects/locations/clusters/nodePools`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string clusterId Deprecated. The name of the cluster. This field
-   * has been deprecated and replaced by the name field.
-   * @opt_param string nodePoolId Deprecated. The name of the node pool to delete.
-   * This field has been deprecated and replaced by the name field.
    * @opt_param string projectId Deprecated. The Google Developers Console
    * [project ID or project
    * number](https://developers.google.com/console/help/new/#projectnumber). This
@@ -61,6 +57,10 @@ class Google_Service_Container_Resource_ProjectsLocationsClustersNodePools exten
    * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
    * cluster resides. This field has been deprecated and replaced by the name
    * field.
+   * @opt_param string clusterId Deprecated. The name of the cluster. This field
+   * has been deprecated and replaced by the name field.
+   * @opt_param string nodePoolId Deprecated. The name of the node pool to delete.
+   * This field has been deprecated and replaced by the name field.
    * @return Google_Service_Container_Operation
    */
   public function delete($name, $optParams = array())
@@ -106,8 +106,6 @@ class Google_Service_Container_Resource_ProjectsLocationsClustersNodePools exten
    * `projects/locations/clusters`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string clusterId Deprecated. The name of the cluster. This field
-   * has been deprecated and replaced by the parent field.
    * @opt_param string projectId Deprecated. The Google Developers Console
    * [project ID or project
    * number](https://developers.google.com/console/help/new/#projectnumber). This
@@ -116,6 +114,8 @@ class Google_Service_Container_Resource_ProjectsLocationsClustersNodePools exten
    * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
    * cluster resides. This field has been deprecated and replaced by the parent
    * field.
+   * @opt_param string clusterId Deprecated. The name of the cluster. This field
+   * has been deprecated and replaced by the parent field.
    * @return Google_Service_Container_ListNodePoolsResponse
    */
   public function listProjectsLocationsClustersNodePools($parent, $optParams = array())

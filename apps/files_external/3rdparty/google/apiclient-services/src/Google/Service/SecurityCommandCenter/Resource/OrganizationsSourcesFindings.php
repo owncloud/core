@@ -79,14 +79,10 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    * organizations/{organization_id}/sources/-
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string fieldMask Optional. A field mask to specify the Finding
-   * fields to be listed in the response. An empty field mask will list all
-   * fields.
-   * @opt_param string pageToken The value returned by the last
-   * `ListFindingsResponse`; indicates that this is a continuation of a prior
-   * `ListFindings` call, and that the system should return the next page of data.
-   * @opt_param int pageSize The maximum number of results to return in a single
-   * response. Default is 10, minimum is 1, maximum is 1000.
+   * @opt_param string readTime Time used as a reference point when filtering
+   * findings. The filter is limited to findings existing at the supplied time and
+   * their values are those at that specific time. Absence of this field will
+   * default to the API's version of NOW.
    * @opt_param string orderBy Expression that defines what fields and order to
    * use for sorting. The string value should follow SQL syntax: comma separated
    * list of fields. For example: "name,resource_properties.a_property". The
@@ -98,10 +94,6 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    *
    * The following fields are supported: name parent state category resource_name
    * event_time source_properties security_marks.marks
-   * @opt_param string readTime Time used as a reference point when filtering
-   * findings. The filter is limited to findings existing at the supplied time and
-   * their values are those at that specific time. Absence of this field will
-   * default to the API's version of NOW.
    * @opt_param string compareDuration When compare_duration is set, the
    * ListFindingsResult's "state_change" attribute is updated to indicate whether
    * the finding had its state changed, the finding's state remained unchanged, or
@@ -169,6 +161,14 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    *
    * Use a negated partial match on the empty string to filter based on a property
    * not existing: "-source_properties.my_property : \"\""
+   * @opt_param string pageToken The value returned by the last
+   * `ListFindingsResponse`; indicates that this is a continuation of a prior
+   * `ListFindings` call, and that the system should return the next page of data.
+   * @opt_param string fieldMask Optional. A field mask to specify the Finding
+   * fields to be listed in the response. An empty field mask will list all
+   * fields.
+   * @opt_param int pageSize The maximum number of results to return in a single
+   * response. Default is 10, minimum is 1, maximum is 1000.
    * @return Google_Service_SecurityCommandCenter_ListFindingsResponse
    */
   public function listOrganizationsSourcesFindings($parent, $optParams = array())

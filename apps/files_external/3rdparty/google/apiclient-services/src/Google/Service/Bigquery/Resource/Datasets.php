@@ -80,14 +80,14 @@ class Google_Service_Bigquery_Resource_Datasets extends Google_Service_Resource
    * @param string $projectId Project ID of the datasets to be listed
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Page token, returned by a previous call, to
+   * request the next page of results
    * @opt_param string maxResults The maximum number of results to return
    * @opt_param bool all Whether to list all datasets, including hidden ones
    * @opt_param string filter An expression for filtering the results of the
    * request by label. The syntax is "labels.[:]". Multiple filters can be ANDed
    * together by connecting with a space. Example: "labels.department:receiving
    * labels.active". See Filtering datasets using labels for details.
-   * @opt_param string pageToken Page token, returned by a previous call, to
-   * request the next page of results
    * @return Google_Service_Bigquery_DatasetList
    */
   public function listDatasets($projectId, $optParams = array())

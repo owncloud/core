@@ -17,17 +17,8 @@
 
 class Google_Service_YouTube_LiveBroadcastStatistics extends Google_Model
 {
-  public $concurrentViewers;
   public $totalChatCount;
 
-  public function setConcurrentViewers($concurrentViewers)
-  {
-    $this->concurrentViewers = $concurrentViewers;
-  }
-  public function getConcurrentViewers()
-  {
-    return $this->concurrentViewers;
-  }
   public function setTotalChatCount($totalChatCount)
   {
     $this->totalChatCount = $totalChatCount;

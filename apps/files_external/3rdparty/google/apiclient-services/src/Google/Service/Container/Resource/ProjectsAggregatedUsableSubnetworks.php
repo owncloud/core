@@ -33,6 +33,10 @@ class Google_Service_Container_Resource_ProjectsAggregatedUsableSubnetworks exte
    * Specified in the format `projects`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Filtering currently only supports equality on the
+   * networkProjectId and must be in the form: "networkProjectId=[PROJECTID]",
+   * where `networkProjectId` is the project which owns the listed subnetworks.
+   * This defaults to the parent project ID.
    * @opt_param string pageToken Specifies a page token to use. Set this to the
    * nextPageToken returned by previous list requests to get the next page of
    * results.
@@ -41,10 +45,6 @@ class Google_Service_Container_Resource_ProjectsAggregatedUsableSubnetworks exte
    * `next_page_token` is returned which can be used to get the next page of
    * results in subsequent requests. Acceptable values are 0 to 500, inclusive.
    * (Default: 500)
-   * @opt_param string filter Filtering currently only supports equality on the
-   * networkProjectId and must be in the form: "networkProjectId=[PROJECTID]",
-   * where `networkProjectId` is the project which owns the listed subnetworks.
-   * This defaults to the parent project ID.
    * @return Google_Service_Container_ListUsableSubnetworksResponse
    */
   public function listProjectsAggregatedUsableSubnetworks($parent, $optParams = array())

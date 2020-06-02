@@ -247,6 +247,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * @param string $name The name of the resource to retrieve.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int _count The maximum number of search results on a page.
+   * Defaults to 1000.
    * @opt_param string _since Only include resource versions that were created at
    * or after the given instant in time. The instant in time uses the format YYYY-
    * MM-DDThh:mm:ss.sss+zz:zz (for example 2015-02-07T13:28:17.239+02:00 or
@@ -267,8 +269,6 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * `link.relation` is "previous" or "next".
    *
    * Omit `_page_token` if no previous request has been made.
-   * @opt_param int _count The maximum number of search results on a page.
-   * Defaults to 1000.
    * @return Google_Service_CloudHealthcare_HttpBody
    */
   public function history($name, $optParams = array())

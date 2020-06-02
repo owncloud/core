@@ -125,16 +125,6 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueues extends Google_
    * `projects/PROJECT_ID/locations/LOCATION_ID`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter `filter` can be used to specify a subset of queues.
-   * Any Queue field can be used as a filter and several operators as supported.
-   * For example: `<=, <, >=, >, !=, =, :`. The filter syntax is the same as
-   * described in [Stackdriver's Advanced Logs
-   * Filters](https://cloud.google.com/logging/docs/view/advanced_filters).
-   *
-   * Sample filter "state: PAUSED".
-   *
-   * Note that using filters might cause fewer queues than the requested page_size
-   * to be returned.
    * @opt_param string pageToken A token identifying the page of results to
    * return.
    *
@@ -148,6 +138,16 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueues extends Google_
    * maximum. Fewer queues than requested might be returned, even if more queues
    * exist; use the next_page_token in the response to determine if more queues
    * exist.
+   * @opt_param string filter `filter` can be used to specify a subset of queues.
+   * Any Queue field can be used as a filter and several operators as supported.
+   * For example: `<=, <, >=, >, !=, =, :`. The filter syntax is the same as
+   * described in [Stackdriver's Advanced Logs
+   * Filters](https://cloud.google.com/logging/docs/view/advanced_filters).
+   *
+   * Sample filter "state: PAUSED".
+   *
+   * Note that using filters might cause fewer queues than the requested page_size
+   * to be returned.
    * @return Google_Service_CloudTasks_ListQueuesResponse
    */
   public function listProjectsLocationsQueues($parent, $optParams = array())

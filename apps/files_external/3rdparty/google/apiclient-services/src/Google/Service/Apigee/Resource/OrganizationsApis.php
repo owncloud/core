@@ -54,6 +54,8 @@ class Google_Service_Apigee_Resource_OrganizationsApis extends Google_Service_Re
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string name Name of the API proxy. Restrict the characters used
+   * to: A-Za-z0-9._-
    * @opt_param bool validate Ignored. All uploads are validated regardless of the
    * value of this field. Maintained for compatibility with Apigee Edge API.
    * @opt_param string action Action to perform when importing an API proxy
@@ -61,8 +63,6 @@ class Google_Service_Apigee_Resource_OrganizationsApis extends Google_Service_Re
    *
    * * `import` to import the API proxy configuration bundle. * `validate` to
    * validate the API proxy configuration bundle without    importing it.
-   * @opt_param string name Name of the API proxy. Restrict the characters used
-   * to: A-Za-z0-9._-
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProxyRevision
    */
   public function create($parent, Google_Service_Apigee_GoogleApiHttpBody $postBody, $optParams = array())
@@ -110,10 +110,10 @@ class Google_Service_Apigee_Resource_OrganizationsApis extends Google_Service_Re
    * format:   `organizations/{org}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeMetaData Flag that specifies whether to include API
-   * proxy metadata in the response.
    * @opt_param bool includeRevisions Flag that specifies whether to include a
    * list of revisions in the response.
+   * @opt_param bool includeMetaData Flag that specifies whether to include API
+   * proxy metadata in the response.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListApiProxiesResponse
    */
   public function listOrganizationsApis($parent, $optParams = array())

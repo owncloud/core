@@ -96,16 +96,16 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRings extends Google_
    * @opt_param string filter Optional. Only include resources that match the
    * filter in the response. For more information, see [Sorting and filtering list
    * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
-   * @opt_param string pageToken Optional. Optional pagination token, returned
-   * earlier via ListKeyRingsResponse.next_page_token.
-   * @opt_param string orderBy Optional. Specify how the results should be sorted.
-   * If not specified, the results will be sorted in the default order.  For more
-   * information, see [Sorting and filtering list
-   * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
    * @opt_param int pageSize Optional. Optional limit on the number of KeyRings to
    * include in the response.  Further KeyRings can subsequently be obtained by
    * including the ListKeyRingsResponse.next_page_token in a subsequent request.
    * If unspecified, the server will pick an appropriate default.
+   * @opt_param string orderBy Optional. Specify how the results should be sorted.
+   * If not specified, the results will be sorted in the default order.  For more
+   * information, see [Sorting and filtering list
+   * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+   * @opt_param string pageToken Optional. Optional pagination token, returned
+   * earlier via ListKeyRingsResponse.next_page_token.
    * @return Google_Service_CloudKMS_ListKeyRingsResponse
    */
   public function listProjectsLocationsKeyRings($parent, $optParams = array())

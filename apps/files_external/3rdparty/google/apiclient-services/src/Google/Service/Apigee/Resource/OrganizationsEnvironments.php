@@ -35,7 +35,7 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * @param array $optParams Optional parameters.
    *
    * @opt_param string name Optional. Name of the environment. Alternatively, the
-   * name may be specified in the request body in the environment_id field.
+   * name may be specified in the request body in the name field.
    * @return Google_Service_Apigee_GoogleLongrunningOperation
    */
   public function create($parent, Google_Service_Apigee_GoogleCloudApigeeV1Environment $postBody, $optParams = array())
@@ -238,11 +238,11 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
    * @param Google_Service_Apigee_GoogleCloudApigeeV1DebugMask $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Field debug mask to support partial updates.
    * @opt_param bool replaceRepeatedFields Boolean flag that specifies whether to
    * replace existing values in the debug mask when doing an update. Set to true
    * to replace existing values. The default behavior is to append the values
    * (false).
+   * @opt_param string updateMask Field debug mask to support partial updates.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1DebugMask
    */
   public function updateDebugmask($name, Google_Service_Apigee_GoogleCloudApigeeV1DebugMask $postBody, $optParams = array())

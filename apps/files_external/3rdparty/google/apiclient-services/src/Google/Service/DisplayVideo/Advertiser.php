@@ -32,6 +32,8 @@ class Google_Service_DisplayVideo_Advertiser extends Google_Model
   protected $integrationDetailsDataType = '';
   public $name;
   public $partnerId;
+  protected $servingConfigType = 'Google_Service_DisplayVideo_AdvertiserTargetingConfig';
+  protected $servingConfigDataType = '';
   public $updateTime;
 
   /**
@@ -143,6 +145,20 @@ class Google_Service_DisplayVideo_Advertiser extends Google_Model
   public function getPartnerId()
   {
     return $this->partnerId;
+  }
+  /**
+   * @param Google_Service_DisplayVideo_AdvertiserTargetingConfig
+   */
+  public function setServingConfig(Google_Service_DisplayVideo_AdvertiserTargetingConfig $servingConfig)
+  {
+    $this->servingConfig = $servingConfig;
+  }
+  /**
+   * @return Google_Service_DisplayVideo_AdvertiserTargetingConfig
+   */
+  public function getServingConfig()
+  {
+    return $this->servingConfig;
   }
   public function setUpdateTime($updateTime)
   {

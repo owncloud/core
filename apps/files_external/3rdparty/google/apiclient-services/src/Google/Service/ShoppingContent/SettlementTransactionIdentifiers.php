@@ -20,6 +20,7 @@ class Google_Service_ShoppingContent_SettlementTransactionIdentifiers extends Go
   protected $collection_key = 'shipmentIds';
   public $adjustmentId;
   public $merchantOrderId;
+  public $orderItemId;
   public $settlementEntryId;
   public $shipmentIds;
   public $transactionId;
@@ -39,6 +40,14 @@ class Google_Service_ShoppingContent_SettlementTransactionIdentifiers extends Go
   public function getMerchantOrderId()
   {
     return $this->merchantOrderId;
+  }
+  public function setOrderItemId($orderItemId)
+  {
+    $this->orderItemId = $orderItemId;
+  }
+  public function getOrderItemId()
+  {
+    return $this->orderItemId;
   }
   public function setSettlementEntryId($settlementEntryId)
   {
