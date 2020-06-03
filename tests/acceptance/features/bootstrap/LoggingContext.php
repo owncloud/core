@@ -82,7 +82,7 @@ class LoggingContext implements Context {
 				if ($comparingMode === 'matching') {
 					$expectedLogEntry[$attribute]
 						= $this->featureContext->substituteInLineCodes(
-							$expectedLogEntry[$attribute], ['preg_quote' => ['/']]
+							$expectedLogEntry[$attribute], null, ['preg_quote' => ['/']]
 						);
 				} else {
 					$expectedLogEntry[$attribute]
