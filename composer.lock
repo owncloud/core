@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "2afa5f0ded072c52e8a2954ddb42497e",
@@ -3552,21 +3552,21 @@
     "packages-dev": [
         {
             "name": "bamarni/composer-bin-plugin",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bamarni/composer-bin-plugin.git",
-                "reference": "46cb272590cc6b7f5947655063a7fd6ea097838b"
+                "reference": "9329fb0fbe29e0e1b2db8f4639a193e4f5406225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bamarni/composer-bin-plugin/zipball/46cb272590cc6b7f5947655063a7fd6ea097838b",
-                "reference": "46cb272590cc6b7f5947655063a7fd6ea097838b",
+                "url": "https://api.github.com/repos/bamarni/composer-bin-plugin/zipball/9329fb0fbe29e0e1b2db8f4639a193e4f5406225",
+                "reference": "9329fb0fbe29e0e1b2db8f4639a193e4f5406225",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0 || ^2.0",
-                "php": "^5.6 || ^7.0 || ^8.0"
+                "php": "^5.5.9 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "composer/composer": "^1.0 || ^2.0",
@@ -3594,7 +3594,7 @@
                 "isolation",
                 "tool"
             ],
-            "time": "2020-04-17T09:33:47+00:00"
+            "time": "2020-05-03T08:27:20+00:00"
         },
         {
             "name": "doctrine/instantiator",
