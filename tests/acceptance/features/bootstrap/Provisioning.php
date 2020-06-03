@@ -2307,7 +2307,7 @@ trait Provisioning {
 						if (!$skeletonDir) {
 							throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files');
 						}
-						if (!$revaRoot) {
+						if (!$revaRoot && OcisHelper::isTestingOnOcis()) {
 							throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files');
 						}
 						$dataDir = $revaRoot . "data/$user/files";
