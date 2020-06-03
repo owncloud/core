@@ -445,7 +445,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['username']);
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'email']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
 			$expectedEmail = $this->featureContext->getEmailAddressForUser($user);
