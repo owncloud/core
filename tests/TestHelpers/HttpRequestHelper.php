@@ -334,7 +334,16 @@ class HttpRequestHelper {
 	public static function getResponseXml($response) {
 		// rewind just to make sure we can re-parse it in case it was parsed already...
 		$response->getBody()->rewind();
-		return new SimpleXMLElement($response->getBody()->getContents());
+		$contents = $response->getBody()->getContents();
+		try {
+			return new SimpleXMLElement($contents);
+		} catch (\Exception $e) {
+			if ($contents === '') {
+				throw new \Exception("Received empty response where XML was expected");
+			}
+			$message = "Exception parsing response body: \"" . $contents . "\"";
+			throw new \Exception($message, 0, $e);
+		}
 	}
 
 	/**
