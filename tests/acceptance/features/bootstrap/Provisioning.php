@@ -743,7 +743,7 @@ trait Provisioning {
 			]
 		];
 		$configValue = $this->substituteInLineCodes(
-			$configValue, [], $substitutions
+			$configValue, null, [], $substitutions
 		);
 		$occResult = SetupHelper::runOcc(
 			['ldap:set-config', $configId, $configKey, $configValue]
