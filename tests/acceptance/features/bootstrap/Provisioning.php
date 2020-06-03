@@ -2303,13 +2303,18 @@ trait Provisioning {
 					);
 					if ($skeleton) {
 						$skeletonDir = \getenv("SKELETON_DIR");
-						if ($skeletonDir) {
-							$dataDir = \getenv("OCIS_REVA_DATA_ROOT") . "data/$user/files";
-							if (!\file_exists($dataDir)) {
-								\mkdir($dataDir, 0777, true);
-							}
-							OcisHelper::recurseCopy($skeletonDir, $dataDir);
+						$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
+						if (!$skeletonDir) {
+							throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files');
 						}
+						if (!$revaRoot && OcisHelper::isTestingOnOcis()) {
+							throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files');
+						}
+						$dataDir = $revaRoot . "data/$user/files";
+						if (!\file_exists($dataDir)) {
+							\mkdir($dataDir, 0777, true);
+						}
+						OcisHelper::recurseCopy($skeletonDir, $dataDir);
 					}
 				} catch (LdapException $exception) {
 					throw new Exception(
