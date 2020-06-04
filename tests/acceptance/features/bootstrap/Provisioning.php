@@ -2301,14 +2301,16 @@ trait Provisioning {
 						$initialize,
 						$settings
 					);
-					if ($skeleton) {
+					// If the user should have skeleton files, and we are testing on OCIS
+					// then do some work to "manually" put the skeleton files in place.
+					if ($skeleton && OcisHelper::isTestingOnOcis()) {
 						$skeletonDir = \getenv("SKELETON_DIR");
 						$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
 						if (!$skeletonDir) {
-							throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files');
+							throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
 						}
-						if (!$revaRoot && OcisHelper::isTestingOnOcis()) {
-							throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files');
+						if (!$revaRoot) {
+							throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
 						}
 						$dataDir = $revaRoot . "data/$user/files";
 						if (!\file_exists($dataDir)) {
