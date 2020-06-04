@@ -21,6 +21,7 @@ namespace OC\License;
 
 use OC\License\BasicLicense;
 use OCP\IConfig;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 /**
  * Fetch the licenses being used.
@@ -31,26 +32,43 @@ use OCP\IConfig;
 class LicenseFetcher {
 	/** @var IConfig */
 	private $config;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
-	public function __construct(IConfig $config) {
+	public function __construct(IConfig $config, ITimeFactory $timeFactory) {
 		$this->config = $config;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
 	 * Get the license used by ownCloud
+	 * License in the DB will be prioritized as long as it's valid and not expired,
+	 * otherwise, we'll fallback to the one in the system configuration.
+	 * We won't check validity of the license in the system configuration, so we could
+	 * return invalid or expired licenses present there.
+	 * If the DB license is invalid or expired and the one in the system configuration
+	 * is missing, we'll return the DB one even though it's invalid
 	 * @return ILicense|null the license object or null if no license is found
 	 */
 	public function getOwncloudLicense(): ?ILicense {
-		$licenseKey = $this->config->getSystemValue('license-key', null);
-		if ($licenseKey === null) {
-			// check in the appconfig to see if it's there (for compatibility)
-			$licenseKey = $this->config->getAppValue('enterprise_key', 'license-key', null);
-			if ($licenseKey === null) {
-				return null;
+		$license = null;
+		$licenseKey = $this->config->getAppValue('enterprise_key', 'license-key', null);
+		if ($licenseKey !== null) {
+			$license = new BasicLicense($licenseKey);
+			if ($license->isValid() && $license->getExpirationTime() >= $this->timeFactory->getTime()) {
+				return $license;
 			}
 		}
 
-		return new BasicLicense($licenseKey);  // only BasicLicense is available at the moment
+		// license missing or expired / invalid
+		// check config.php
+		$licenseKey = $this->config->getSystemValue('license-key', null);
+		if ($licenseKey !== null) {
+			// license status doesn't matter in this case
+			$license = new BasicLicense($licenseKey);
+		}
+
+		return $license;
 	}
 
 	/**
@@ -58,11 +76,6 @@ class LicenseFetcher {
 	 * @param string $licenseString the license string
 	 */
 	public function setOwncloudLicense(string $licenseString) {
-		$isReadOnlyConfig = $this->config->getSystemValue('config_is_read_only', false);
-		if ($isReadOnlyConfig) {
-			$this->config->setAppValue('enterprise_key', 'license-key', $licenseString);
-		} else {
-			$this->config->setSystemValue('license-key', $licenseString);
-		}
+		$this->config->setAppValue('enterprise_key', 'license-key', $licenseString);
 	}
 }
