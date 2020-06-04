@@ -41,8 +41,6 @@ Feature: download file
       | new         |
 
   @smokeTest
-  @skipOnOcis
-  @issue-ocis-reva-66
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API
