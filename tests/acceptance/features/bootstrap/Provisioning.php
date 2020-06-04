@@ -300,11 +300,17 @@ trait Provisioning {
 	 */
 	public function theGroupShouldExist($groupname) {
 		if (\array_key_exists($groupname, $this->createdGroups)) {
-			return $this->createdGroups[$groupname]['shouldExist'];
+			if (\array_key_exists('shouldExist', $this->createdGroups[$groupname])) {
+				return $this->createdGroups[$groupname]['shouldExist'];
+			}
+			return false;
 		}
 
 		if (\array_key_exists($groupname, $this->createdRemoteGroups)) {
-			return $this->createdRemoteGroups[$groupname]['shouldExist'];
+			if (\array_key_exists('shouldExist', $this->createdRemoteGroups[$groupname])) {
+				return $this->createdRemoteGroups[$groupname]['shouldExist'];
+			}
+			return false;
 		}
 
 		throw new Exception(
@@ -489,10 +495,10 @@ trait Provisioning {
 				if (isset($item["objectclass"])) {
 					if (\in_array("posixGroup", $item["objectclass"])) {
 						\array_push($this->ldapCreatedGroups, $item["cn"][0]);
-						\array_push($this->createdGroups, $item["cn"][0]);
+						$this->addGroupToCreatedGroupsList($item["cn"][0]);
 					} elseif (\in_array("inetOrgPerson", $item["objectclass"])) {
 						\array_push($this->ldapCreatedUsers, $item["uid"][0]);
-						\array_push($this->createdUsers, $item["uid"][0]);
+						$this->addUserToCreatedUsersList($item["uid"][0], $item["userpassword"][0]);
 					}
 				}
 				$this->ldap->add($item['dn'], $item);
