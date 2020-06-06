@@ -29,4 +29,4 @@ OC.L10N.register(
     "Upload too large" : "يۈكلەندىغىنى بەك چوڭ",
     "Text file" : "تېكىست ھۆججەت"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n != 1);");

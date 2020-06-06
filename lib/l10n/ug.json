@@ -17,5 +17,5 @@
     "Settings" : "تەڭشەكلەر",
     "Users" : "ئىشلەتكۈچىلەر",
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى"
-},"pluralForm" :"nplurals=1; plural=0;"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

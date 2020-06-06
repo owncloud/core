@@ -4,4 +4,4 @@ OC.L10N.register(
     "Personal" : "شەخسىي",
     "Contacts" : "ئالاقەداشلار"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n != 1);");

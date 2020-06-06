@@ -6,4 +6,4 @@ OC.L10N.register(
     "Size" : "چوڭلۇقى",
     "Modified" : "ئۆزگەرتكەن"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n != 1);");

@@ -8,4 +8,4 @@ OC.L10N.register(
     "Name" : "ئاتى",
     "Deleted" : "ئۆچۈرۈلدى"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n != 1);");

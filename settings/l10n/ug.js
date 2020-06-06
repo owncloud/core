@@ -53,4 +53,4 @@ OC.L10N.register(
     "set new password" : "يېڭى ئىم تەڭشە",
     "Default" : "كۆڭۈلدىكى"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n != 1);");

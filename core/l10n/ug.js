@@ -70,4 +70,4 @@ OC.L10N.register(
     "Search" : "ئىزدە",
     "New password" : "يېڭى ئىم"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n != 1);");
