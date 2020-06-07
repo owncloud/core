@@ -179,10 +179,11 @@
 	position: fixed;
 	top: 45px;
 	left: 10px;
-	width: 265px;
+	width: auto;
+	max-width: 265px;
 	max-height: 85%;
 	margin-top: 0;
-	padding-bottom: 10px;
+	padding: 6px;
 	background-color: rgba(0, 0, 0, .97);
 	box-shadow: 0 1px 10px rgba(50, 50, 50, .7);
 	border-radius: 3px;
@@ -227,7 +228,13 @@
 	height: 80px;
 	display: inline-block;
 	text-align: center;
-	padding: 20px 0;
+	padding: 13px 0;
+}
+#navigation a:hover {
+	background: rgb(51, 47, 46, 0.7);
+	border-radius: 3px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
 #navigation a span {
 	display: inline-block;
@@ -394,26 +401,32 @@
 	border-top-right-radius: 0;
 	box-sizing: border-box;
 }
-	#expanddiv a {
-		display: block;
-		height: 40px;
-		color: #fff;
-		padding: 4px 12px 0;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-		opacity: .7;
-		box-sizing: border-box;
-	}
-	#expanddiv a img {
-		margin-bottom: -3px;
-		margin-right: 6px;
-	}
-	#expanddiv a:hover,
-	#expanddiv a:focus,
-	#expanddiv a:active,
-	#expanddiv a.active {
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-		opacity: 1;
-	}
+#expanddiv a {
+	display: block;
+	height: 40px;
+	color: #fff;
+	padding: 4px 12px 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	opacity: .7;
+	box-sizing: border-box;
+}
+#expanddiv a img {
+	margin-bottom: -3px;
+	margin-right: 6px;
+}
+#expanddiv a:hover,
+#expanddiv a:focus,
+#expanddiv a:active,
+#expanddiv a.active {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+#expanddiv a:hover {
+	background: rgb(51, 47, 46, 0.7);
+	border-radius: 3px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
 
 /* do not show display name when profile picture is present */
 #header .avatardiv.avatardiv-shown + #expandDisplayName {

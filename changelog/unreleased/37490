@@ -1,0 +1,8 @@
+Enhancement: Change the behavior of the header menus
+
+- Dynamically adjusting the width of the left menu
+- Changed the centering of the icons
+- Automatic wrap to a second line after the third entry
+- Hover effect in the left and right menu
+
+https://github.com/owncloud/core/pull/37490
