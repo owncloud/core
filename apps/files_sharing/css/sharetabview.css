@@ -45,10 +45,11 @@
 }
 
 #shareWithList li {
-	padding-top   : 5px;
-	padding-bottom: 5px;
-	font-weight   : bold;
-	white-space   : normal;
+	padding: 5px;
+	font-weight: bold;
+	white-space: normal;
+	background: #f8f8f8;
+	border-bottom: 1px solid #aaa;
 }
 
 #shareWithList .unshare img {
@@ -62,13 +63,18 @@
 }
 
 #shareWithList .username {
-	padding-right : 8px;
-	white-space   : nowrap;
-	text-overflow : ellipsis;
-	max-width     : 254px;
-	display       : inline-block;
-	overflow      : hidden;
+	padding-right: 10px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 155px;
+	display: inline-block;
+	overflow: hidden;
 	vertical-align: middle;
+}
+@media all and (max-width: 1280px) {
+	#shareWithList .username {
+		max-width: 110px;
+	}
 }
 
 #shareWithList li label {
@@ -76,7 +82,7 @@
 }
 
 #shareWithList .expiration {
-	max-width: 190px;
+	max-width: 175px;
 	text-align: left;
 	margin: 0 0 0 5px;
 }

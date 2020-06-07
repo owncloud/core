@@ -258,7 +258,7 @@ button, .button,
 	background-color: rgba(240,240,240,.9);
 	font-weight: 600;
 	color: #555;
-	border: 1px solid rgba(240,240,240,.9);
+	border: 1px solid rgba(221,221,221,.9);
 	cursor: pointer;
 }
 select, .button.multiselect {
