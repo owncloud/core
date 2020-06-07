@@ -347,6 +347,8 @@
     "Please set your password" : "Пожалуйста, установите ваш пароль",
     "Personal" : "Личное",
     "Admin" : "Администрирование",
+    "Currently no settings are available in this category" : "В этой категории сейчас нет доступных настроек",
+    "The administrators can enable additional apps which add settings sections here." : "Администраторы могут включать дополнительные приложения, которые добавляют сюда настройки.",
     "Activation link was sent to an email address, if one was configured." : "Ссылка активации была отправлена на адрес почты, если он был настроен.",
     "Settings" : "Настройки",
     "Show enabled/disabled option" : "Показать параметр включено/выключено",
