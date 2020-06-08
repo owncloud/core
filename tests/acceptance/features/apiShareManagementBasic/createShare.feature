@@ -78,9 +78,9 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @skipOnOcV10 @issue-ocis-reva-250
+  @skipOnOcV10 @issue-ocis-reva-243
   # after fixing the issue, enable for ocis
-  Scenario Outline: more tests to demonstrate different ocis-reva issue 250 behaviours
+  Scenario Outline: more tests to demonstrate different ocis-reva issue 243 behaviours
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/home"
