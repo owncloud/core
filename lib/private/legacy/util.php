@@ -1340,6 +1340,7 @@ class OC_Util {
 		}
 		// Zend Opcache
 		if (\function_exists('accelerator_reset')) {
+			/* @phpstan-ignore-next-line */
 			accelerator_reset();
 		}
 		// Opcache (PHP >= 5.5)

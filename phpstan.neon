@@ -1,16 +1,6 @@
 parameters:
-  bootstrap: %currentWorkingDirectory%/lib/base.php
-  autoload_directories:
-    - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
-    - %currentWorkingDirectory%/apps/dav/appinfo/Migrations
-    - %currentWorkingDirectory%/apps/federatedfilesharing/appinfo/Migrations
-    - %currentWorkingDirectory%/apps/files_external/appinfo/Migrations
-    - %currentWorkingDirectory%/apps/files_external/lib
-    - %currentWorkingDirectory%/apps/files_external/3rdparty
-    - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
-    - %currentWorkingDirectory%/apps/files_trashbin/appinfo/Migrations
-    - %currentWorkingDirectory%/core/Migrations
-    - %currentWorkingDirectory%/tests/lib/Util/User
+  bootstrapFiles:
+    - %currentWorkingDirectory%/lib/base.php
   excludes_analyse:
     - %currentWorkingDirectory%/core/templates/*
     - %currentWorkingDirectory%/core/routes.php
@@ -22,6 +12,13 @@ parameters:
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
     - %currentWorkingDirectory%/apps/*/composer/*
     - %currentWorkingDirectory%/apps/*/3rdparty/*
+    - %currentWorkingDirectory%/apps/files_external/ajax/oauth2.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/DAV.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/Google.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/SMB.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/SMB_OC.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/Google.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/SMB.php
     - %currentWorkingDirectory%/apps/files_external/3rdparty/aws-sdk-php/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Namespaced/FooBar.php
     - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
     - %currentWorkingDirectory%/settings/templates/*
@@ -32,7 +29,7 @@ parameters:
   ignoreErrors:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'
-    - '#Undefined variable: \$baseuri#'
+    - '#Instantiated class Test\\Util\\User\\Dummy not found.#'
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#Unsafe usage of new static().#'
     - '#Cannot instantiate interface OCP\\Files\\ObjectStore\\IObjectStore.#'
