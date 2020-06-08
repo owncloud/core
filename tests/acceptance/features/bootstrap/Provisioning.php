@@ -46,6 +46,11 @@ trait Provisioning {
 	private $createdUsers = [];
 
 	/**
+	 * @var string
+	 */
+	private $ou = "TestGroups";
+
+	/**
 	 * list of users that were created on the remote server during test runs
 	 * key is the lowercase username, value is an array of user attributes
 	 *
@@ -696,8 +701,8 @@ trait Provisioning {
 	 * @throws LdapException
 	 */
 	public function createLdapGroup($group) {
-		$ou = "TestGroups";
-		$newDN = 'cn=' . $group . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$baseDN = $this->getLdapBaseDN();
+		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
 		$entry = [];
 		$entry['cn'] = $group;
 		$entry['objectclass'][] = 'posixGroup';
@@ -3224,6 +3229,14 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function groupExists($group) {
+		$baseDN = $this->getLdapBaseDN();
+		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
+		if ($this->isTestingWithLdap()) {
+			if ($this->ldap->getEntry($newDN) !== null) {
+				return true;
+			}
+			return false;
+		}
 		$group = \rawurlencode($group);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
 		$this->response = HttpRequestHelper::get(
