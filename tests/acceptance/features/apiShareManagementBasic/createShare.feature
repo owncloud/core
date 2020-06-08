@@ -7,7 +7,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  @skipOnOcis @issue-ocis-reva-11
+  @skipOnOcis @issue-ocis-reva-11 @issue-ocis-reva-243
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -179,7 +179,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnOcis @issue-ocis-reva-34
+  @smokeTest @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-243
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -207,7 +207,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34
+  @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-243
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -224,7 +224,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-21
+  @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -254,7 +254,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-14
+  @skipOnOcis @issue-ocis-reva-14 @issue-ocis-reva-243
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -268,7 +268,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-21
+  @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -284,7 +284,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-14
+  @skipOnOcis @issue-ocis-reva-14 @issue-ocis-reva-243
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -299,7 +299,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-21
+  @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -436,7 +436,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-21 @skipOnFilesClassifier @issue-files-classifier-291
+  @skipOnOcis @issue-ocis-reva-21 @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-reva-243
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -459,7 +459,7 @@ Feature: sharing
       | /common/sub/textfile0.txt |
       | /textfile0.txt            |
 
-  @skipOnOcis @issue-enterprise-3896
+  @skipOnOcis @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -474,7 +474,7 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And as "Brian" folder "userOneFolder" should not exist
 
-  @skipOnOcis @issue-enterprise-3896
+  @skipOnOcis @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -489,7 +489,7 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And as "Alice" folder "userOneFolder" should not exist
 
-  @skipOnOcis @issue-enterprise-3896
+  @skipOnOcis @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |
