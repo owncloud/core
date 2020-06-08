@@ -66,15 +66,10 @@
 	padding-right: 10px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	max-width: 155px;
+	max-width: 256px;
 	display: inline-block;
 	overflow: hidden;
 	vertical-align: middle;
-}
-@media all and (max-width: 1280px) {
-	#shareWithList .username {
-		max-width: 110px;
-	}
 }
 
 #shareWithList li label {
