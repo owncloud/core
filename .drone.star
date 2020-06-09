@@ -73,16 +73,21 @@ config = {
 			],
 			'coverage': True
 		},
-		'external-owncloud-webdav': {
+		'external-owncloud-webdav' : {
 			'phpVersions': [
 				'7.2',
+				'7.4',
 			],
 			'databases': [
-				'sqlite'
+				'sqlite',
+			],
+			'externalTypes': [
+				'external-owncloud',
 			],
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2'],
-		}
+			'coverage': True
+		},
 	},
 
 	'acceptance': {
@@ -1116,6 +1121,9 @@ def phptests(testType):
 
 	default = {
 		'federatedServerVersions': [''],
+		'federatedServerNeeded': False,
+		'federatedPhpVersion': '7.2',
+		'useHttps': True,
 		'phpVersions': ['7.2', '7.3', '7.4'],
 		'databases': [
 			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mariadb:10.4', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
@@ -1168,7 +1176,7 @@ def phptests(testType):
 					keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 					filesExternalType = externalType if externalType != 'none' else ''
 					externalNameString = '-' + externalType if externalType != 'none' else ''
-					name = '%s%s-php%s-%s%s' % (testType, keyString, phpVersion, db.replace(":", ""), externalNameString)
+
 					maxLength = 50
 					nameLength = len(name)
 					if nameLength > maxLength:
@@ -1194,96 +1202,111 @@ def phptests(testType):
 					for app, command in params['extraApps'].items():
 						extraAppsDict[app] = command
 
-					result = {
-						'kind': 'pipeline',
-						'type': 'docker',
-						'name': name,
-						'workspace' : {
-							'base': '/drone',
-							'path': 'src'
-						},
-						'steps':
-							cacheRestore() +
-							composerInstall(phpVersion) +
-							vendorbinInstall(phpVersion) +
-							yarnInstall(phpVersion) +
-							installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded'], params['proxyNeeded']) +
-							(
-								installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
-								owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
-							) +
-							installExtraApps(phpVersion, extraAppsDict) +
-							setupScality(phpVersion, needScality) +
-							params['extraSetup'] +
-							fixPermissions(phpVersion, False) +
-							owncloudLog('server', 'src') +
-						[
-							{
-								'name': '%s-tests' % testType,
-								'image': 'owncloudci/php:%s' % phpVersion,
-								'pull': 'always',
-								'environment': {
-									'COVERAGE': params['coverage'],
-									'DB_TYPE': getDbName(db),
-									'FILES_EXTERNAL_TYPE': filesExternalType,
-									'PRIMARY_OBJECTSTORE': primaryObjectstore
+
+					for federatedServerVersion in params['federatedServerVersions']:
+						for phpVersion in params['phpVersions']:
+
+							dbString = db.replace(':', '')
+
+							if (params['useHttps']):
+									protocol = 'https'
+							else:
+								protocol = 'http'
+
+							federationDbSuffix = '-federated'
+
+							federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
+							name = '%s%s-php%s-%s%s%s' % (testType, keyString, phpVersion, db.replace(":", ""), externalNameString, federatedServerVersionString)
+
+							result = {
+								'kind': 'pipeline',
+								'type': 'docker',
+								'name': name,
+								'workspace' : {
+									'base': '/drone',
+									'path': 'src'
 								},
-								'commands': params['extraCommandsBeforeTestRun'] + [
-									command
-								]
-							}
-						],
-						'services':
-							databaseService(db) +
-							cephService(params['cephS3']) +
-							scalityService(needScality) +
-							webdavService(externalType == 'webdav') +
-							sambaService(externalType == 'samba') +
-							sftpService(externalType == 'sftp') +
-							params['extraServices'],
-						'depends_on': [],
-						'trigger': {
-							'ref': [
-								'refs/pull/**',
-								'refs/tags/**'
-							]
-						}
-					}
-
-					if params['coverage']:
-						result['steps'].append({
-							'name': 'coverage-upload',
-							'image': 'plugins/codecov:latest',
-							'pull': 'always',
-							'environment': {
-								'CODECOV_TOKEN': {
-									'from_secret': 'codecov_token'
+								'steps':
+									cacheRestore() +
+									composerInstall(phpVersion) +
+									vendorbinInstall(phpVersion) +
+									yarnInstall(phpVersion) +
+									installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded']) +
+									(
+										installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
+										owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
+									) +
+									installExtraApps(phpVersion, extraAppsDict) +
+									setupScality(phpVersion, needScality) +
+									params['extraSetup'] +
+									fixPermissions(phpVersion, False) +
+									owncloudLog('server', 'src') +
+								[
+									{
+										'name': '%s-tests' % testType,
+										'image': 'owncloudci/php:%s' % phpVersion,
+										'pull': 'always',
+										'environment': {
+											'COVERAGE': params['coverage'],
+											'DB_TYPE': getDbName(db),
+											'FILES_EXTERNAL_TYPE': filesExternalType,
+											'PRIMARY_OBJECTSTORE': primaryObjectstore
+										},
+										'commands': params['extraCommandsBeforeTestRun'] + [
+											command
+										]
+									}
+								],
+								'services':
+									databaseService(db) +
+									cephService(params['cephS3']) +
+									scalityService(needScality) +
+									webdavService(externalType == 'webdav') +
+									sambaService(externalType == 'samba') +
+									sftpService(externalType == 'sftp') +
+									params['extraServices'],
+								'depends_on': [],
+								'trigger': {
+									'ref': [
+										'refs/pull/**',
+										'refs/tags/**'
+									]
 								}
-							},
-							'settings': {
-								'files': [
-									'*.xml'
-								],
-								'flags': [
-									'phpunit'
-								],
-								'paths': [
-									'tests/output/coverage',
-								],
-							},
-							'when': {
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
 							}
-						})
 
-					for branch in config['branches']:
-						result['trigger']['ref'].append('refs/heads/%s' % branch)
+							if params['coverage']:
+								result['steps'].append({
+									'name': 'coverage-upload',
+									'image': 'plugins/codecov:latest',
+									'pull': 'always',
+									'environment': {
+										'CODECOV_TOKEN': {
+											'from_secret': 'codecov_token'
+										}
+									},
+									'settings': {
+										'files': [
+											'*.xml'
+										],
+										'flags': [
+											'phpunit'
+										],
+										'paths': [
+											'tests/output/coverage',
+										],
+									},
+									'when': {
+										'instance': [
+											'drone.owncloud.services',
+											'drone.owncloud.com'
+										],
+									}
+								})
 
-					pipelines.append(result)
+							for branch in config['branches']:
+								result['trigger']['ref'].append('refs/heads/%s' % branch)
 
+							pipelines.append(result)
 	if errorFound:
 		return False
 
