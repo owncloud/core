@@ -4,28 +4,16 @@ parameters:
   excludes_analyse:
     - %currentWorkingDirectory%/core/templates/*
     - %currentWorkingDirectory%/core/routes.php
-    - %currentWorkingDirectory%/core/register_command.php
     - %currentWorkingDirectory%/core/ajax/update.php
-    - %currentWorkingDirectory%/core/ajax/share.php
     - %currentWorkingDirectory%/apps/*/tests*
-    - %currentWorkingDirectory%/apps/*/templates/*
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
     - %currentWorkingDirectory%/apps/*/composer/*
     - %currentWorkingDirectory%/apps/*/3rdparty/*
     - %currentWorkingDirectory%/apps/files_external/ajax/oauth2.php
-    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/DAV.php
-    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/Google.php
-    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/SMB.php
-    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Backend/SMB_OC.php
     - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/Google.php
     - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/SMB.php
-    - %currentWorkingDirectory%/apps/files_external/3rdparty/aws-sdk-php/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Namespaced/FooBar.php
-    - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
     - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/settings/routes.php
-    # specific app excludes
-    # eventually move into app directories and use neon includes for better separation
-    - %currentWorkingDirectory%/apps/dav/bin
   ignoreErrors:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'
