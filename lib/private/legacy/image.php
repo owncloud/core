@@ -87,7 +87,6 @@ class OC_Image implements \OCP\IImage {
 		}
 
 		if (\OC_Util::fileInfoLoaded()) {
-			/* @phpstan-ignore-next-line */
 			$this->fileInfo = new finfo(FILEINFO_MIME_TYPE);
 		}
 
