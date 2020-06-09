@@ -78,19 +78,16 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @skipOnOcis
-  @issue-ocis-reva-64
-  #OCIS returns an empty response when sharing with a file inside the /home folder
-  #in that case the sharing step fails completely
-  #after fixing the issue, enable for ocis
-  Scenario Outline: more tests to demonstrate different ocis-reva issue 64 behaviours
+  @skipOnOcV10 @issue-ocis-reva-243
+  # after fixing the issue, enable for ocis
+  Scenario Outline: more tests to demonstrate different ocis-reva issue 243 behaviours
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/home"
     And user "Alice" has uploaded file with content "Random data" to "/home/randomfile.txt"
     When user "Alice" shares file "/home/randomfile.txt" with user "Brian" using the sharing API
     And the HTTP status code should be "<http_status_code>"
-    And as "Brian" file "randomfile.txt" should exist
+    And as "Brian" file "randomfile.txt" should not exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
