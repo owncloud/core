@@ -39,7 +39,7 @@
 }
 #uploadprogresswrapper > input[type='button'] {
 	height: 36px;
-	margin-left: 3px;
+	margin: 0 0 0 3px;
 }
 #uploadprogressbar {
 	position:relative;
@@ -64,7 +64,7 @@
 	font-weight: normal;
 }
 #uploadprogressbar .label.inner {
-    color:white; 
+    color:white;
     position: absolute;
     display: block;
     width: 200px;
