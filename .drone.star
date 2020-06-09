@@ -73,6 +73,16 @@ config = {
 			],
 			'coverage': True
 		},
+		'external-owncloud-webdav': {
+			'phpVersions': [
+				'7.2',
+			],
+			'databases': [
+				'sqlite'
+			],
+			'federatedServerNeeded': True,
+			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2'],
+		}
 	},
 
 	'acceptance': {
@@ -1105,6 +1115,7 @@ def phptests(testType):
 	errorFound = False
 
 	default = {
+		'federatedServerVersions': [''],
 		'phpVersions': ['7.2', '7.3', '7.4'],
 		'databases': [
 			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mariadb:10.4', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
@@ -1196,7 +1207,11 @@ def phptests(testType):
 							composerInstall(phpVersion) +
 							vendorbinInstall(phpVersion) +
 							yarnInstall(phpVersion) +
-							installServer(phpVersion, db, params['logLevel']) +
+							installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded'], params['proxyNeeded']) +
+							(
+								installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
+								owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
+							) +
 							installExtraApps(phpVersion, extraAppsDict) +
 							setupScality(phpVersion, needScality) +
 							params['extraSetup'] +
