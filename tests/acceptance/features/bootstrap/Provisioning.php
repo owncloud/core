@@ -817,11 +817,14 @@ trait Provisioning {
 	 *
 	 * @param boolean $initialize
 	 * @param array $usersAttributes
+	 * @param boolean $skeleton
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function usersHaveBeenCreated($initialize, $usersAttributes) {
+	public function usersHaveBeenCreated(
+		$initialize, $usersAttributes, $skeleton = true
+	) {
 		$requests = [];
 		$client = HttpRequestHelper::createClient(
 			$this->getAdminUsername(),
@@ -883,6 +886,29 @@ trait Provisioning {
 				$this->getAdminUsername(),
 				$this->getAdminPassword()
 			);
+		}
+
+		// If the user should have skeleton files, and we are testing on OCIS
+		// then do some work to "manually" put the skeleton files in place.
+		// When testing on ownCloud 10 the user is already getting whatever
+		// skeleton dir is defined in the server-under-test.
+		if ($skeleton && OcisHelper::isTestingOnOcis()) {
+			$skeletonDir = \getenv("SKELETON_DIR");
+			$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
+			if (!$skeletonDir) {
+				throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
+			}
+			if (!$revaRoot) {
+				throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
+			}
+			foreach ($usersAttributes as $userAttributes) {
+				$user = $userAttributes['userid'];
+				$dataDir = $revaRoot . "data/$user/files";
+				if (!\file_exists($dataDir)) {
+					\mkdir($dataDir, 0777, true);
+				}
+				OcisHelper::recurseCopy($skeletonDir, $dataDir);
+			}
 		}
 
 		if ($initialize) {
@@ -2310,25 +2336,9 @@ trait Provisioning {
 				try {
 					$this->usersHaveBeenCreated(
 						$initialize,
-						$settings
+						$settings,
+						$skeleton
 					);
-					// If the user should have skeleton files, and we are testing on OCIS
-					// then do some work to "manually" put the skeleton files in place.
-					if ($skeleton && OcisHelper::isTestingOnOcis()) {
-						$skeletonDir = \getenv("SKELETON_DIR");
-						$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
-						if (!$skeletonDir) {
-							throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
-						}
-						if (!$revaRoot) {
-							throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
-						}
-						$dataDir = $revaRoot . "data/$user/files";
-						if (!\file_exists($dataDir)) {
-							\mkdir($dataDir, 0777, true);
-						}
-						OcisHelper::recurseCopy($skeletonDir, $dataDir);
-					}
 				} catch (LdapException $exception) {
 					throw new Exception(
 						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"
