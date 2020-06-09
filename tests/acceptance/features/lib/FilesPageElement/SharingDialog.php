@@ -50,7 +50,7 @@ class SharingDialog extends OwncloudPage {
 	private $suffixToIdentifyUsers = " User";
 	private $suffixToIdentifyRemoteUsers = " Federated";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
-	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
+	private $sharedWithAndByRegEx = "Shared with you(?: and the group (.*))? by (.*)$";
 	private $permissionsFieldByUserNameWithExtraInfo = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li[@data-share-with='%s']";
 	private $permissionsFieldByUserName = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li";
 	private $permissionsFieldByGroupName = "//*[@id='shareWithList']//span[contains(text(), '%s (group)')]/parent::li";
