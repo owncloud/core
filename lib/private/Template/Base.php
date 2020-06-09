@@ -135,7 +135,7 @@ class Base {
 	/**
 	 * Assign variables
 	 * @param string $key key
-	 * @param array|bool|integer|string $value value
+	 * @param mixed $value value
 	 * @return bool
 	 *
 	 * This function assigns a variable. It can be accessed via $_[$key] in
