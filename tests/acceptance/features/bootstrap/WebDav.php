@@ -1421,6 +1421,26 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^user "([^"]*)" should not see the following elements if the upper and lower case username are different/
+	 *
+	 * @param string $user
+	 * @param TableNode $elements
+	 *
+	 * @return void
+	 * @throws InvalidArgumentException
+	 *
+	 */
+	public function userShouldNotSeeTheElementsIfUpperAndLowerCaseUsernameDifferent($user, $elements) {
+		$effectiveUser = $this->getActualUsername($user);
+		if (\strtoupper($effectiveUser) === \strtolower($effectiveUser)) {
+			$expectedToBeListed = true;
+		} else {
+			$expectedToBeListed = false;
+		}
+		$this->checkElementList($user, $elements, $expectedToBeListed);
+	}
+
+	/**
 	 * asserts that a the user can or cannot see a list of files/folders by propfind
 	 *
 	 * @param string $user
