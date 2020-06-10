@@ -28,8 +28,10 @@
 namespace OC\Security;
 
 use OC\Files\Filesystem;
+use OC\Files\View;
 use OCP\ICertificateManager;
 use OCP\IConfig;
+use OCP\IUserManager;
 
 /**
  * Manage trusted certificates for users
@@ -50,15 +52,19 @@ class CertificateManager implements ICertificateManager {
 	 */
 	protected $config;
 
+	/** @var IUserManager */
+	protected $userManager;
+
 	/**
 	 * @param string $uid
 	 * @param \OC\Files\View $view relative to data/
 	 * @param IConfig $config
 	 */
-	public function __construct($uid, \OC\Files\View $view, IConfig $config) {
+	public function __construct($uid, View $view, IConfig $config, IUserManager $userManager) {
 		$this->uid = $uid;
 		$this->view = $view;
 		$this->config = $config;
+		$this->userManager = $userManager;
 	}
 
 	/**
@@ -203,7 +209,7 @@ class CertificateManager implements ICertificateManager {
 		}
 		if ($this->needsRebundling($uid)) {
 			if ($uid === null) {
-				$manager = new CertificateManager(null, $this->view, $this->config);
+				$manager = new CertificateManager(null, $this->view, $this->config, $this->userManager);
 				$manager->createCertificateBundle();
 			} else {
 				$this->createCertificateBundle();
@@ -220,7 +226,30 @@ class CertificateManager implements ICertificateManager {
 		if ($uid === '') {
 			$uid = $this->uid;
 		}
-		$path = $uid === null ? '/files_external/' : '/' . $uid . '/files_external/';
+
+		if ($uid !== null) {
+			$userObj = $this->userManager->get($uid);
+			if ($userObj !== null) {
+				$homeDir = $userObj->getHome();
+				$dataDir = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
+				if (\strncmp($homeDir, $dataDir, \strlen($dataDir)) === 0) {
+					$relativeHomeDir = \trim(\substr($homeDir, \strlen($dataDir)), '/');
+					$path = "/{$relativeHomeDir}/files_external/";
+				} else {
+					// FIXME: What to do here? Returned path is expected to start with "/"
+					// so returning an absolute path won't work because they'll be used
+					// as relative path from the server root
+					// Fallback to previous behaviour for now
+					$path = "/{$uid}/files_external/";
+				}
+			} else {
+				// FIXME: This might be wrong, need to change the interface to throw exception otherwise
+				// fallback to the previous behaviour for now
+				$path = "/{$uid}/files_external/";
+			}
+		} else {
+			$path = '/files_external/';
+		}
 
 		return $path;
 	}
