@@ -13,6 +13,11 @@ class Version20200610110817 implements ISimpleMigration {
 	 * @param IOutput $out
 	 */
 	public function run(IOutput $out) {
+		if (!\OC::$server->getSystemConfig()->getValue('installed', false)) {
+			// Do nothing if ownCloud isn't installed yet (initial installation)
+			return;
+		}
+
 		$appManager = \OC::$server->getAppManager();
 		if ($appManager->isInstalled('enterprise_key')) {
 			$appManager->disableApp('enterprise_key');
