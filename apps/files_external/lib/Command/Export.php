@@ -52,6 +52,7 @@ class Export extends ListCommand {
 		$listInput->setOption('output', 'json_pretty');
 		$listInput->setOption('show-password', true);
 		$listInput->setOption('full', true);
+		$listInput->setOption('importable-format', true);
 		$listCommand->execute($listInput, $output);
 	}
 }

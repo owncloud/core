@@ -101,6 +101,11 @@ class ListCommand extends Base {
 				's',
 				InputOption::VALUE_NONE,
 				'Show only a reduced mount info'
+			)->addOption(
+				'importable-format',
+				'i',
+				InputOption::VALUE_NONE,
+				'Provide output values in a format compatible with files_external:import'
 			);
 		parent::configure();
 	}
@@ -129,7 +134,9 @@ class ListCommand extends Base {
 	 */
 	public function listMounts($userId, array $mounts, InputInterface $input, OutputInterface $output) {
 		$outputType = $input->getOption('output');
+		$outputIsJson = ($outputType === self::OUTPUT_FORMAT_JSON) || ($outputType === self::OUTPUT_FORMAT_JSON_PRETTY);
 		$shortView = $input->getOption('short');
+		$importableView = $input->getOption('importable-format');
 
 		// check if there are any mounts present
 		if (\count($mounts) === 0) {
@@ -191,7 +198,7 @@ class ListCommand extends Base {
 		$countInvalid = 0;
 		// In case adding array elements, add them only after the first two (Mount ID / Mount Point)
 		// and before the last one entry (Type). Necessary for option -s
-		$rows = \array_map(function (IStorageConfig $config) use ($shortView, $userId, $defaultMountOptions, $full, $showMountOptions, &$countInvalid) {
+		$rows = \array_map(function (IStorageConfig $config) use ($outputIsJson, $shortView, $importableView, $userId, $defaultMountOptions, $full, $showMountOptions, &$countInvalid) {
 			if ($config->getBackend() instanceof InvalidBackend || $config->getAuthMechanism() instanceof InvalidAuth) {
 				$countInvalid++;
 			}
@@ -239,22 +246,38 @@ class ListCommand extends Base {
 					$config->getMountPoint()
 				];
 			} else {
+				$configValue = $configString;
+				if ($importableView) {
+					$storageValue = $config->getBackend()->getStorageClass();
+					$authValue = $config->getAuthMechanism()->getIdentifier();
+					if ($outputIsJson) {
+						$configValue = $storageConfig;
+					}
+				} else {
+					$storageValue = $config->getBackend()->getText();
+					$authValue = $config->getAuthMechanism()->getText();
+				}
 				$values = [
 					$config->getId(),
 					$config->getMountPoint(),
-					$config->getBackend()->getText(),
-					$config->getAuthMechanism()->getText(),
-					$configString,
+					$storageValue,
+					$authValue,
+					$configValue,
 					$optionsString
 				];
 			}
 
-			// output independent on option shortview
+			// output independent of option shortview
 			if (!$userId || $userId === self::ALL) {
-				$applicableUsers = \implode(', ', $config->getApplicableUsers());
-				$applicableGroups = \implode(', ', $config->getApplicableGroups());
-				if ($applicableUsers === '' && $applicableGroups === '') {
-					$applicableUsers = 'All';
+				if ($importableView && $outputIsJson) {
+					$applicableUsers = $config->getApplicableUsers();
+					$applicableGroups = $config->getApplicableGroups();
+				} else {
+					$applicableUsers = \implode(', ', $config->getApplicableUsers());
+					$applicableGroups = \implode(', ', $config->getApplicableGroups());
+					if ($applicableUsers === '' && $applicableGroups === '') {
+						$applicableUsers = 'All';
+					}
 				}
 				$values[] = $applicableUsers;
 				$values[] = $applicableGroups;
@@ -274,7 +297,7 @@ class ListCommand extends Base {
 			return $values;
 		}, $mounts);
 
-		if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
+		if ($outputIsJson) {
 			$keys = \array_map(function ($header) {
 				return \strtolower(\str_replace(' ', '_', $header));
 			}, $headers);
