@@ -3239,9 +3239,9 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function groupExists($group) {
-		$baseDN = $this->getLdapBaseDN();
-		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
 		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcis()) {
+			$baseDN = $this->getLdapBaseDN();
+			$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
 			if ($this->ldap->getEntry($newDN) !== null) {
 				return true;
 			}
