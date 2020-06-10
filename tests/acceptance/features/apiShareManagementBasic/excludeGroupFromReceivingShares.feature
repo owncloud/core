@@ -65,6 +65,7 @@ Feature: Exclude groups from receiving shares
       | 1               | 200              |
       | 2               | 403              |
 
+  @issue-ocis-reva-243
   Scenario Outline: user cannot reshare a received share with a group that is excluded from receiving shares but can share with other groups
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has shared file "textfile0.txt" with user "Alice"
@@ -89,6 +90,7 @@ Feature: Exclude groups from receiving shares
       | 1               | 200              |
       | 2               | 403              |
 
+  @issue-ocis-reva-243
   Scenario Outline: sharing with a user that is part of a group that is excluded from receiving shares still works
     Given using OCS API version "<ocs_api_version>"
     When the administrator adds group "grp1" to the exclude groups from receiving shares list using the occ command
@@ -123,6 +125,7 @@ Feature: Exclude groups from receiving shares
       | 1               | 100             |
       | 2               | 200             |
 
+  @issue-ocis-reva-243
   Scenario Outline: a user that is part of a group that is excluded from receiving shares still can initiate shares
     Given using OCS API version "<ocs_api_version>"
     When the administrator adds group "grp1" to the exclude groups from receiving shares list using the occ command

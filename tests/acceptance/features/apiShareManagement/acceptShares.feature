@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-41
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-41 @issue-ocis-reva-243
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept

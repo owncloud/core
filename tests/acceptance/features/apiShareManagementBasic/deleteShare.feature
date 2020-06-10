@@ -1,6 +1,7 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
 Feature: sharing
 
+  @issue-ocis-reva-249
   Scenario Outline: Delete all group shares
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -20,7 +21,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @issue-ocis-reva-249
   Scenario Outline: delete a share
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
