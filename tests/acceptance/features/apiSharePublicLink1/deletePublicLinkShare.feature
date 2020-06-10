@@ -2,18 +2,18 @@
 Feature: delete a public link share
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @issue-product-60
   Scenario Outline: Deleting a public link of a file
     Given using OCS API version "<ocs_api_version>"
-    Given user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
+    And user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
     And user "Alice" has created a public link share with settings
       | path | test-file.txt |
       | name | sharedlink    |
     When user "Alice" deletes public link share named "sharedlink" in file "test-file.txt" using the sharing API
     Then the HTTP status code should be "200"
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -22,7 +22,7 @@ Feature: delete a public link share
   @issue-product-60
   Scenario Outline: Deleting a public link after renaming a file
     Given using OCS API version "<ocs_api_version>"
-    Given user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
+    And user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
     And user "Alice" has created a public link share with settings
       | path | test-file.txt |
       | name | sharedlink    |
