@@ -3241,7 +3241,7 @@ trait Provisioning {
 	public function groupExists($group) {
 		$baseDN = $this->getLdapBaseDN();
 		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
-		if ($this->isTestingWithLdap()) {
+		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcis()) {
 			if ($this->ldap->getEntry($newDN) !== null) {
 				return true;
 			}
