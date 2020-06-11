@@ -1,0 +1,7 @@
+Bugfix: Correct files_external:export output so it can be imported
+
+The output of files_external:export was not suitable to be used as input to
+files_external:import. This has been corrected.
+
+https://github.com/owncloud/core/issues/37054
+https://github.com/owncloud/core/pull/37513

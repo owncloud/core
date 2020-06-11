@@ -1720,12 +1720,29 @@ class OccContext implements Context {
 						);
 					}
 					if (isset($expectedStorageEntry['Configuration'])) {
-						Assert::assertStringStartsWith(
-							$expectedStorageEntry['Configuration'],
-							$listedStorageEntry->configuration,
-							"Configuration column does not start with the expected value for storage "
-							. $expectedStorageEntry['MountPoint']
-						);
+						if ($expectedStorageEntry['Configuration'] === '') {
+							Assert::assertEquals(
+								'',
+								$listedStorageEntry->configuration,
+								'Configuration column should be empty but is '
+								. $listedStorageEntry->configuration
+							);
+						} else {
+							if (\is_string($listedStorageEntry->configuration)) {
+								Assert::assertStringStartsWith(
+									$expectedStorageEntry['Configuration'],
+									$listedStorageEntry->configuration,
+									"Configuration column does not start with the expected value for storage "
+									. $expectedStorageEntry['Configuration']
+								);
+							} else {
+								$item = \strtok($expectedStorageEntry['Configuration'], ':');
+								Assert::assertTrue(
+									\property_exists($listedStorageEntry->configuration, $item),
+									"$item was not found in the Configuration column"
+								);
+							}
+						}
 					}
 					if (isset($expectedStorageEntry['Options'])) {
 						Assert::assertEquals(
@@ -1736,32 +1753,65 @@ class OccContext implements Context {
 						);
 					}
 					if (isset($expectedStorageEntry['ApplicableUsers'])) {
-						$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
-						$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
-						foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
-							$expectedApplicableUserEntry = $this->featureContext->getActualUsername($expectedApplicableUserEntry);
-							Assert::assertContains(
-								$expectedApplicableUserEntry,
+						if (\is_string($listedStorageEntry->applicable_users)) {
+							if ($listedStorageEntry->applicable_users === '') {
+								$listedApplicableUsers = [];
+							} else {
+								$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
+							}
+						} else {
+							$listedApplicableUsers = $listedStorageEntry->applicable_users;
+						}
+						if ($expectedStorageEntry['ApplicableUsers'] === '') {
+							Assert::assertEquals(
+								[],
 								$listedApplicableUsers,
-								__METHOD__
-								. " '$expectedApplicableUserEntry' is not listed in '"
-								. \implode(', ', $listedApplicableUsers)
-								. "'"
+								"ApplicableUsers was expected to be an empty array but was not empty"
 							);
+						} else {
+							$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
+							foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
+								$expectedApplicableUserEntry = $this->featureContext->getActualUsername($expectedApplicableUserEntry);
+								Assert::assertContains(
+									$expectedApplicableUserEntry,
+									$listedApplicableUsers,
+									__METHOD__
+									. " '$expectedApplicableUserEntry' is not listed in '"
+									. \implode(', ', $listedApplicableUsers)
+									. "'"
+								);
+							}
 						}
 					}
 					if (isset($expectedStorageEntry['ApplicableGroups'])) {
-						$listedApplicableGroups = \explode(', ', $listedStorageEntry->applicable_groups);
-						$expectedApplicableGroups = \explode(', ', $expectedStorageEntry['ApplicableGroups']);
-						foreach ($expectedApplicableGroups as $expectedApplicableGroupEntry) {
-							Assert::assertContains(
-								$expectedApplicableGroupEntry,
+						if (\is_string($listedStorageEntry->applicable_groups)) {
+							if ($listedStorageEntry->applicable_groups === '') {
+								$listedApplicableGroups = [];
+							} else {
+								$listedApplicableGroups = \explode(', ', $listedStorageEntry->applicable_groups);
+							}
+						} else {
+							$listedApplicableGroups = $listedStorageEntry->applicable_groups;
+						}
+						if ($expectedStorageEntry['ApplicableGroups'] === '') {
+							Assert::assertEquals(
+								[],
 								$listedApplicableGroups,
-								__METHOD__
-								. " '$expectedApplicableGroupEntry' is not listed in '"
-								. \implode(', ', $listedApplicableGroups)
-								. "'"
+								"ApplicableGroups was expected to be an empty array but was not empty"
 							);
+							Assert::assertEquals([], $listedApplicableGroups);
+						} else {
+							$expectedApplicableGroups = \explode(', ', $expectedStorageEntry['ApplicableGroups']);
+							foreach ($expectedApplicableGroups as $expectedApplicableGroupEntry) {
+								Assert::assertContains(
+									$expectedApplicableGroupEntry,
+									$listedApplicableGroups,
+									__METHOD__
+									. " '$expectedApplicableGroupEntry' is not listed in '"
+									. \implode(', ', $listedApplicableGroups)
+									. "'"
+								);
+							}
 						}
 					}
 					if (isset($expectedStorageEntry['Type'])) {
@@ -1965,37 +2015,35 @@ class OccContext implements Context {
 	 *
 	 * @param string $folder
 	 *
-	 * @return integer
+	 * @return integer|boolean
 	 * @throws Exception
 	 */
 	public function administratorDeletesFolder($folder) {
-		$createdLocalStorage = [];
-		$this->listLocalStorageMount();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		foreach ($commandOutput as $i) {
-			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
-		}
-		foreach ($createdLocalStorage as $key => $value) {
-			if ($value === $folder) {
-				$mount_id = $key;
-			}
-		}
-		if (!isset($mount_id)) {
-			throw  new Exception("Id not found for folder to be deleted");
-		}
-		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
-		return (int) $mount_id;
+		return $this->deleteLocalStorageFolderUsingTheOccCommand($folder);
 	}
 
 	/**
-	 * @When the administrator has deleted local storage :folder using the occ command
+	 * @Given the administrator has deleted local storage :folder using the occ command
 	 *
 	 * @param string $folder
 	 *
-	 * @return integer
+	 * @return integer|boolean
 	 * @throws Exception
 	 */
-	public function administratorHasDeletedFolder($folder) {
+	public function administratorHasDeletedLocalStorageFolderUsingTheOccCommand($folder) {
+		$mount_id = $this->deleteLocalStorageFolderUsingTheOccCommand($folder);
+		$this->theCommandShouldHaveBeenSuccessful();
+		return $mount_id;
+	}
+
+	/**
+	 * @param string $folder
+	 * @param bool $mustExist
+	 *
+	 * @return integer|boolean
+	 * @throws Exception
+	 */
+	public function deleteLocalStorageFolderUsingTheOccCommand($folder, $mustExist = true) {
 		$createdLocalStorage = [];
 		$this->listLocalStorageMount();
 		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
@@ -2008,10 +2056,12 @@ class OccContext implements Context {
 			}
 		}
 		if (!isset($mount_id)) {
-			throw  new Exception("Id not found for folder to be deleted");
+			if ($mustExist) {
+				throw  new Exception("Id not found for folder to be deleted");
+			}
+			return false;
 		}
 		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
-		$this->theCommandShouldHaveBeenSuccessful();
 		return (int) $mount_id;
 	}
 
@@ -2820,6 +2870,24 @@ class OccContext implements Context {
 				$this->disableDAVTechPreview();
 			}
 		}
+	}
+
+	/**
+	 * This will run after EVERY scenario.
+	 * Some local_storage tests import storage from an export file. In that case
+	 * we have not explicitly created the storage, and so we do not explicitly
+	 * know to delete it. So delete the local storage that is known to be used
+	 * in tests.
+	 *
+	 * @AfterScenario @local_storage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function removeLocalStorageIfExists() {
+		$this->deleteLocalStorageFolderUsingTheOccCommand('local_storage', false);
+		$this->deleteLocalStorageFolderUsingTheOccCommand('local_storage2', false);
+		$this->deleteLocalStorageFolderUsingTheOccCommand('local_storage3', false);
 	}
 
 	/**
