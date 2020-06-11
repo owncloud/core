@@ -214,8 +214,11 @@ class Response {
 	}
 
 	/**
-	 * By default renders no output
-	 * @return null
+	 * Return a string to be used in the body of an HTTP response.
+	 * By default returns null and so renders no output.
+	 * Can be overridden to provide the desired response body content.
+	 *
+	 * @return string|null
 	 * @since 6.0.0
 	 */
 	public function render() {
