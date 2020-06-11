@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Correct files_external:export output so it can be imported: [#37054](https://github.com/owncloud/core/issues/37054)
 * Bugfix - Add force option to delete user even if the user doesn't exist: [#37103](https://github.com/owncloud/core/pull/37103)
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
 * Bugfix - Ensure ETag changes if a change is detected in a folder: [#37218](https://github.com/owncloud/core/pull/37218)
@@ -60,6 +61,14 @@ Summary
 
 Details
 -------
+
+* Bugfix - Correct files_external:export output so it can be imported: [#37054](https://github.com/owncloud/core/issues/37054)
+
+   The output of files_external:export was not suitable to be used as input to
+   files_external:import. This has been corrected.
+
+   https://github.com/owncloud/core/issues/37054
+   https://github.com/owncloud/core/pull/37513
 
 * Bugfix - Add force option to delete user even if the user doesn't exist: [#37103](https://github.com/owncloud/core/pull/37103)
 
