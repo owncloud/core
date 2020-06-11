@@ -144,7 +144,6 @@ Feature: Search
       | oc:size               |
       | oc:owner-id           |
       | oc:owner-display-name |
-      | oc:size               |
     Then the HTTP status code should be "207"
     And file "/upload.txt" in the search result of user "Alice" should contain these properties:
       | name                                       | value                                                                                             |
@@ -172,7 +171,6 @@ Feature: Search
       | oc:size               |
       | oc:owner-id           |
       | oc:owner-display-name |
-      | oc:size               |
     Then the HTTP status code should be "207"
     And folder "/upload folder" in the search result of user "Alice" should contain these properties:
       | name                                       | value                                                                                             |
