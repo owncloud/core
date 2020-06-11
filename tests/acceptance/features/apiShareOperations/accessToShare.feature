@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -34,7 +34,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
   Scenario Outline: Sharee can't see the share that is filtered out
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -48,7 +48,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
   Scenario Outline: Sharee can see the group share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
