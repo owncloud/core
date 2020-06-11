@@ -17,6 +17,10 @@ Feature: favorite
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
     Then as user "Alice" folder "/FOLDER" should be favorited
+    When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
+      | propertyName |
+      | oc:favorite  |
+    Then the single response should contain a property "oc:favorite" with value "1"
     Examples:
       | dav_version |
       | old         |
@@ -27,6 +31,10 @@ Feature: favorite
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
     And user "Alice" unfavorites element "/FOLDER" using the WebDAV API
     Then as user "Alice" folder "/FOLDER" should not be favorited
+    When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
+      | propertyName |
+      | oc:favorite  |
+    Then the single response should contain a property "oc:favorite" with value "0"
     Examples:
       | dav_version |
       | old         |
@@ -37,6 +45,10 @@ Feature: favorite
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
     Then as user "Alice" file "/textfile0.txt" should be favorited
+    When user "Alice" gets the following properties of file "/textfile0.txt" using the WebDAV API
+      | propertyName |
+      | oc:favorite  |
+    Then the single response should contain a property "oc:favorite" with value "1"
     Examples:
       | dav_version |
       | old         |
@@ -48,6 +60,10 @@ Feature: favorite
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
     And user "Alice" unfavorites element "/textfile0.txt" using the WebDAV API
     Then as user "Alice" file "/textfile0.txt" should not be favorited
+    When user "Alice" gets the following properties of file "/textfile0.txt" using the WebDAV API
+      | propertyName |
+      | oc:favorite  |
+    Then the single response should contain a property "oc:favorite" with value "0"
     Examples:
       | dav_version |
       | old         |

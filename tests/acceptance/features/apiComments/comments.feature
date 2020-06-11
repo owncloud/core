@@ -21,6 +21,20 @@ Feature: Comments
     And the single response should contain a property "oc:comments-unread" with value "0"
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
+  Scenario: Getting info on comments for a folder using the endpoint
+    And user "Alice" has commented with content "My first comment" on folder "/PARENT"
+    And user "Alice" should have the following comments on folder "/PARENT"
+      | user  | comment          |
+      | Alice | My first comment |
+    When user "Alice" gets the following properties of folder "/PARENT" using the WebDAV API
+      | propertyName       |
+      | oc:comments-href   |
+      | oc:comments-count  |
+      | oc:comments-unread |
+    Then the single response should contain a property "oc:comments-count" with value "1"
+    And the single response should contain a property "oc:comments-unread" with value "0"
+    And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
+
   Scenario: Getting more info about comments using REPORT method
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "myFileToComment.txt"

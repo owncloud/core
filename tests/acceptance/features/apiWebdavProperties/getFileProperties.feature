@@ -330,3 +330,159 @@ Feature: get file properties
       | /TestFolder/test2.txt | testprop1    | CCCCC                  |
       | /TestFolder/test2.txt | testprop2    | DDDDD                  |
       | /TestFolder/          | status       | HTTP/1.1 404 Not Found |
+
+  Scenario Outline: Propfind the last modified date of a folder using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName      |
+      | d:getlastmodified |
+    Then the single response should contain a property "d:getlastmodified" with value like "/^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$/"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the content type of a folder using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName      |
+      | d:getcontenttype  |
+    Then the single response should contain a property "d:getcontenttype" with value ""
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the content type of a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName      |
+      | d:getcontenttype  |
+    Then the single response should contain a property "d:getcontenttype" with value "text/plain"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the etag of a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName      |
+      | d:getetag  |
+    Then the single response should contain a property "d:getetag" with value like '%\"[a-z0-9]{32}\"%'
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the resource type of a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName      |
+      | d:resourcetype    |
+    Then the single response should contain a property "d:resourcetype" with value ""
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the size of a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName |
+      | oc:size      |
+    Then the single response should contain a property "oc:size" with value "16"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the size of a folder using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName |
+      | oc:size      |
+    Then the single response should contain a property "oc:size" with value "0"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the file id of a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName |
+      | oc:fileid    |
+    Then the single response should contain a property "oc:fileid" with value like '/[0-9]{10}/'
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the file id of a folder using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName |
+      | oc:fileid    |
+    Then the single response should contain a property "oc:fileid" with value like '/[0-9]{10}/'
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the owner display name of a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName          |
+      | oc:owner-display-name |
+    Then the single response should contain a property "oc:owner-display-name" with value "Alice Hansen"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the owner display name of a folder using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName          |
+      | oc:owner-display-name |
+    Then the single response should contain a property "oc:owner-display-name" with value "Alice Hansen"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the permissions on a file using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
+    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+      | propertyName     |
+      | oc:permissions   |
+    Then the single response should contain a property "oc:permissions" with value "RDNVW"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Propfind the permissions on a folder using webdav api
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/test"
+    When user "Alice" gets the following properties of folder "/test" using the WebDAV API
+      | propertyName    |
+      | oc:permissions  |
+    Then the single response should contain a property "oc:permissions" with value "RDNVCK"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
