@@ -26,6 +26,7 @@ Summary
 * Bugfix - Allow clearing a user email address or display name: [#37424](https://github.com/owncloud/core/issues/37424)
 * Bugfix - Allow clearing a user email address with the Provisioning API: [#37424](https://github.com/owncloud/core/issues/37424)
 * Bugfix - Logging of extra fields when logger does not have a writeExtra method: [#37453](https://github.com/owncloud/core/issues/37453)
+* Bugfix - Align the cancel button on public uploads: [#37504](https://github.com/owncloud/core/pull/37504)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -58,6 +59,7 @@ Summary
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
+* Enhancement - Change the behavior of the header menus: [#37490](https://github.com/owncloud/core/pull/37490)
 
 Details
 -------
@@ -221,6 +223,13 @@ Details
 
    https://github.com/owncloud/core/issues/37453
    https://github.com/owncloud/core/pull/37454
+
+* Bugfix - Align the cancel button on public uploads: [#37504](https://github.com/owncloud/core/pull/37504)
+
+   The cancel button on the public upload progress bar was not aligned. The alignment has been
+   corrected.
+
+   https://github.com/owncloud/core/pull/37504
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
@@ -425,6 +434,13 @@ Details
    storages. This boost will be particularly noticeable for SMB connections
 
    https://github.com/owncloud/core/pull/37451
+
+* Enhancement - Change the behavior of the header menus: [#37490](https://github.com/owncloud/core/pull/37490)
+
+   - Dynamically adjusting the width of the left menu - Changed the centering of the icons -
+   Automatic wrap to a second line after the third entry - Hover effect in the left and right menu
+
+   https://github.com/owncloud/core/pull/37490
 
 Changelog for ownCloud Core [10.4.1] (2020-03-30)
 =======================================
