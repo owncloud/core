@@ -44,7 +44,13 @@ class OcisHelper {
 	 * @return void
 	 */
 	public static function deleteRevaUserData($user = "") {
-		self::recurseRmdir(self::getOcisRevaDataRoot() . "/data/" . $user);
+		$deleteCmd = \getenv("DELETE_USER_DATA_CMD");
+		if ($deleteCmd !== false) {
+			$deleteCmd = \sprintf($deleteCmd, $user);
+			\exec($deleteCmd);
+		} else {
+			self::recurseRmdir(self::getOcisRevaDataRoot() . "/data/" . $user);
+		}
 	}
 
 	/**
