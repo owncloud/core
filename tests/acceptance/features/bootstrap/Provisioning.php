@@ -895,19 +895,25 @@ trait Provisioning {
 		if ($skeleton && OcisHelper::isTestingOnOcis()) {
 			$skeletonDir = \getenv("SKELETON_DIR");
 			$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
-			if (!$skeletonDir) {
-				throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
+			$copySkeletonCmd = \getenv("COPY_SKELETON_CMD");
+			if (!$skeletonDir && !$copySkeletonCmd) {
+				throw new Exception('Missing SKELETON_DIR or COPY_SKELETON_CMD environment variable, cannot copy skeleton files for OCIS');
 			}
-			if (!$revaRoot) {
-				throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
+			if (!$revaRoot && !$copySkeletonCmd) {
+				throw new Exception('Missing OCIS_REVA_DATA_ROOT or COPY_SKELETON_CMD environment variable, cannot copy skeleton files for OCIS');
 			}
 			foreach ($usersAttributes as $userAttributes) {
 				$user = $userAttributes['userid'];
-				$dataDir = $revaRoot . "data/$user/files";
-				if (!\file_exists($dataDir)) {
-					\mkdir($dataDir, 0777, true);
+				if ($revaRoot) {
+					$dataDir = $revaRoot . "data/$user/files";
+					if (!\file_exists($dataDir)) {
+						\mkdir($dataDir, 0777, true);
+					}
+					OcisHelper::recurseCopy($skeletonDir, $dataDir);
+				} elseif ($copySkeletonCmd) {
+					$copySkeletonCmd = \sprintf($copySkeletonCmd, $user);
+					\exec($copySkeletonCmd);
 				}
-				OcisHelper::recurseCopy($skeletonDir, $dataDir);
 			}
 		}
 
