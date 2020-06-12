@@ -475,8 +475,8 @@ class View {
 			$size = $this->filesize($path);
 			while (!\feof($handle)) {
 				echo \fread($handle, $chunkSize);
-				$this->checkConnectionStatus();
 				\flush();
+				$this->checkConnectionStatus();
 			}
 			return $size;
 		}
@@ -505,8 +505,8 @@ class View {
 						$len = $chunkSize;
 					}
 					echo \fread($handle, $len);
-					$this->checkConnectionStatus();
 					\flush();
+					$this->checkConnectionStatus();
 				}
 				return \ftell($handle) - $from;
 			}
