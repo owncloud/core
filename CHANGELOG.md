@@ -17,6 +17,7 @@ Summary
 * Bugfix - Hide add to your OC at the public page when it's not allowed: [#37232](https://github.com/owncloud/core/pull/37232)
 * Bugfix - Send max number of steps as integer in RepairUnmergedShares: [#37241](https://github.com/owncloud/core/issues/37241)
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
+* Bugfix - Earlier detection of connection status: [#37291](https://github.com/owncloud/core/pull/37291)
 * Bugfix - Rewrite code to fix some notices under PHP 7.4: [#37311](https://github.com/owncloud/core/pull/37311)
 * Bugfix - Properly store complex Webdav properties: [#37314](https://github.com/owncloud/core/pull/37314)
 * Bugfix - Cannot share with user name that has only numbers in the UI: [#37324](https://github.com/owncloud/core/issues/37324)
@@ -55,6 +56,7 @@ Summary
 * Change - Update doctrine/instantiator (1.3.0 => 1.3.1): [#37464](https://github.com/owncloud/core/pull/37464)
 * Change - Update Symfony components to 4.4.9: [#37465](https://github.com/owncloud/core/pull/37465)
 * Change - Update nikic/php-parser (4.4.0 => 4.5.0): [#37480](https://github.com/owncloud/core/pull/37480)
+* Change - Share sheet improvements (internal sharing): [#3979](https://github.com/owncloud/enterprise/issues/3979)
 * Change - Update opis/closure (3.5.3 => 3.5.4): [#37492](https://github.com/owncloud/core/pull/37492)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
@@ -142,6 +144,13 @@ Details
 * Bugfix - Remove console logging of un-escaped data: [#37256](https://github.com/owncloud/core/pull/37256)
 
    https://github.com/owncloud/core/pull/37256
+
+* Bugfix - Earlier detection of connection status: [#37291](https://github.com/owncloud/core/pull/37291)
+
+   On public video streaming the connection is detected to reduce server load #37219 To optimize
+   this the connection status is queried after flush()
+
+   https://github.com/owncloud/core/pull/37291
 
 * Bugfix - Rewrite code to fix some notices under PHP 7.4: [#37311](https://github.com/owncloud/core/pull/37311)
 
@@ -401,6 +410,16 @@ Details
 * Change - Update nikic/php-parser (4.4.0 => 4.5.0): [#37480](https://github.com/owncloud/core/pull/37480)
 
    https://github.com/owncloud/core/pull/37480
+
+* Change - Share sheet improvements (internal sharing): [#3979](https://github.com/owncloud/enterprise/issues/3979)
+
+   Share Sheet for internal shares was cleaned up a bit.
+
+   - Alignment of the icons has changed - Spacing between the icons has been increased - Background
+   color and dividing line for the individual shares
+
+   https://github.com/owncloud/enterprise/issues/3979
+   https://github.com/owncloud/core/pull/37491
 
 * Change - Update opis/closure (3.5.3 => 3.5.4): [#37492](https://github.com/owncloud/core/pull/37492)
 
