@@ -1,0 +1,10 @@
+Change: Share sheet improvements (internal sharing)
+
+Share Sheet for internal shares was cleaned up a bit.
+
+- Alignment of the icons has changed
+- Spacing between the icons has been increased
+- Background color and dividing line for the individual shares
+
+https://github.com/owncloud/enterprise/issues/3979
+https://github.com/owncloud/core/pull/37491

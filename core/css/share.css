@@ -102,7 +102,7 @@
 	white-space: normal;
 }
 #shareWithList .shareOption {
-	white-space: nowrap;
+	white-space: inherit;
 	display: none;
 }
 
@@ -150,7 +150,7 @@ a.unshare {
 	float: right;
 	opacity: 0.5;
 	padding: 10px;
-	margin-top: -5px;
+	margin-top: -1px;
 	margin-right: -10px;
 }
 
@@ -159,8 +159,8 @@ a.time {
 	float: right;
 	opacity: 0.5;
 	padding: 10px;
-	margin-top: -5px;
-	margin-right: -10px;
+	margin-top: 0px;
+	margin-right: -5px;
 }
 
 a.toggleShareDetails {
@@ -168,8 +168,8 @@ a.toggleShareDetails {
 	float: right;
 	opacity: 0.5;
 	padding: 10px;
-	margin-top: -5px;
-	margin-right: -10px;
+	margin-top: 0px;
+	margin-right: -5px;
 }
 
 #link {
