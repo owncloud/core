@@ -665,7 +665,7 @@ trait Provisioning {
 		// Of these, only + has to be escaped.
 		$userId = \str_replace('+', '\+', $setting["userid"]);
 		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
-		$uidNumber = \count($this->ldapCreatedUsers) + 1;
+		$uidNumber = 30000 + \count($this->ldapCreatedUsers) + 1;
 		$entry = [];
 		$entry['cn'] = $userId;
 		$entry['sn'] = $userId;
