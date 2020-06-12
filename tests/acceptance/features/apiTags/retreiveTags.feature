@@ -15,6 +15,10 @@ Feature: tags
       | name       | type   |
       | MyFirstTag | normal |
     And the HTTP status when user "Brian" requests tags for file "/myFileToTag.txt" owned by user "Alice" should be "404"
+    When user "Alice" gets the following properties of file "/myFileToTag.txt" using the WebDAV API
+      | propertyName      |
+      | oc:tags           |
+    Then the single response should contain a property "oc:tags" with value ""
 
   @files_sharing-app-required
   Scenario: Static tags should be available while accessing the file if it is assigned to file
