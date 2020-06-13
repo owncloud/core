@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "All files" : "सभी फाइल्स",
     "Close" : "बंद करें ",
+    "Download" : "डाउनलोड",
     "Delete" : "हटाना",
     "Files" : "फाइलें ",
     "Details" : "विवरण ",
