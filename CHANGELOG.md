@@ -24,6 +24,7 @@ Summary
 * Bugfix - Fix error messages: [#37338](https://github.com/owncloud/core/issues/37338)
 * Bugfix - Allow unlimited access to PUT body if content length is 0: [#37394](https://github.com/owncloud/core/pull/37394)
 * Bugfix - Adjust user:sync --uid to use user backend iterator: [#37398](https://github.com/owncloud/core/pull/37398)
+* Bugfix - Log failed twofactor authentication: [#37401](https://github.com/owncloud/core/pull/37401)
 * Bugfix - Allow clearing a user email address or display name: [#37424](https://github.com/owncloud/core/issues/37424)
 * Bugfix - Allow clearing a user email address with the Provisioning API: [#37424](https://github.com/owncloud/core/issues/37424)
 * Bugfix - Logging of extra fields when logger does not have a writeExtra method: [#37453](https://github.com/owncloud/core/issues/37453)
@@ -200,6 +201,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/3981
    https://github.com/owncloud/core/pull/37398
+
+* Bugfix - Log failed twofactor authentication: [#37401](https://github.com/owncloud/core/pull/37401)
+
+   When user entered bad twofactor authentication (i.e. code) there was no message in
+   application log. This change will log this failed authentication.
+
+   https://github.com/owncloud/core/pull/37401
 
 * Bugfix - Allow clearing a user email address or display name: [#37424](https://github.com/owncloud/core/issues/37424)
 
