@@ -406,7 +406,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis
+  @skipOnOcis @issue-ocis-reva-57
   Scenario Outline: Propfind the size of a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
