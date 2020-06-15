@@ -42,6 +42,12 @@ class ManagerTest extends TestCase {
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
+	/** @var \OCP\IRequest | \PHPUnit\Framework\MockObject\MockObject */
+	private $request;
+
+	/** @var \OCP\ILogger | \PHPUnit\Framework\MockObject\MockObject */
+	private $logger;
+
 	/** @var \OCP\Authentication\TwoFactorAuth\IProvider|\PHPUnit\Framework\MockObject\MockObject */
 	private $fakeProvider;
 
@@ -54,9 +60,11 @@ class ManagerTest extends TestCase {
 			->getMock();
 		$this->session = $this->createMock('\OCP\ISession');
 		$this->config = $this->createMock('\OCP\IConfig');
+		$this->request = $this->createMock('\OCP\IRequest');
+		$this->logger = $this->createMock('\OCP\ILogger');
 
 		$this->manager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
-			->setConstructorArgs([$this->appManager, $this->session, $this->config])
+			->setConstructorArgs([$this->appManager, $this->session, $this->config, $this->request, $this->logger])
 			->setMethods(['loadTwoFactorApp']) // Do not actually load the apps
 			->getMock();
 

@@ -29,6 +29,8 @@ use OC_App;
 use OCP\AppFramework\QueryException;
 use OCP\Authentication\TwoFactorAuth\IProvider;
 use OCP\IConfig;
+use OCP\IRequest;
+use OCP\ILogger;
 use OCP\ISession;
 use OCP\IUser;
 
@@ -44,15 +46,25 @@ class Manager {
 	/** @var IConfig */
 	private $config;
 
+	/** @var IRequest */
+	private $request;
+
+	/** @var ILogger */
+	private $logger;
+
 	/**
 	 * @param AppManager $appManager
 	 * @param ISession $session
 	 * @param IConfig $config
+	 * @param IRequest $request
+	 * @param ILogger $logger
 	 */
-	public function __construct(AppManager $appManager, ISession $session, IConfig $config) {
+	public function __construct(AppManager $appManager, ISession $session, IConfig $config, IRequest $request, ILogger $logger) {
 		$this->appManager = $appManager;
 		$this->session = $session;
 		$this->config = $config;
+		$this->request = $request;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -157,6 +169,9 @@ class Manager {
 		$result = $provider->verifyChallenge($user, $challenge);
 		if ($result) {
 			$this->session->remove(self::SESSION_UID_KEY);
+		} else {
+			$this->logger->warning("Two factor verify failed: '{$user->getUserName()}' (Remote IP: '{$this->request->getRemoteAddress()}')",
+				['app' => 'core']);
 		}
 		return $result;
 	}

@@ -1,0 +1,6 @@
+Bugfix: Log failed twofactor authentication
+
+When user entered bad twofactor authentication (i.e. code) there was no message
+in application log. This change will log this failed authentication.
+
+https://github.com/owncloud/core/pull/37401
