@@ -373,7 +373,7 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName      |
       | d:getetag  |
-    Then the single response should contain a property "d:getetag" with value like '%\"[a-z0-9]{1,32}\"%'
+    Then the single response should contain a property "d:getetag" with value like '%\"[a-z0-9:]{1,32}\"%'
     Examples:
       | dav_version |
       | old         |
