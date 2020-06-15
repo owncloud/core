@@ -150,7 +150,7 @@ Feature: Search
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
       | {http://owncloud.org/ns}permissions        | ^(RDNVW\|RMDNVW)$                                                                                 |
       | {DAV:}getlastmodified                      | ^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$ |
-      | {DAV:}getetag                              | ^\"[a-f0-9]{1,32}\"$                                                                              |
+      | {DAV:}getetag                              | ^\"[a-f0-9:]{1,32}\"$                                                                              |
       | {DAV:}getcontenttype                       | text\/plain                                                                                       |
       | {http://owncloud.org/ns}size               | 15                                                                                                |
       | {http://owncloud.org/ns}owner-id           | %username%                                                                                             |
@@ -177,7 +177,7 @@ Feature: Search
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
       | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVCK)$                                                                               |
       | {DAV:}getlastmodified                      | ^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$ |
-      | {DAV:}getetag                              | ^\"[a-f0-9]{1,32}\"$                                                                              |
+      | {DAV:}getetag                              | ^\"[a-f0-9:]{1,32}\"$                                                                              |
       | {http://owncloud.org/ns}size               | 0                                                                                                 |
       | {http://owncloud.org/ns}owner-id           | %username%                                                                                             |
       | {http://owncloud.org/ns}owner-display-name | %displayname%                                                                                        |
