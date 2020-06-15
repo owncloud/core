@@ -7,7 +7,7 @@ Feature: sharing
       | Alice    |
       | Brian    |
 
-  @smokeTest
+  @skipOnOcis @smokeTest @issue-ocis-reva-262
   Scenario Outline: getting all shares of a user using that user
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -158,7 +158,7 @@ Feature: sharing
     But user "Carol" should not see the following elements
       | /PARENT%20(2)/           |
       | /PARENT%20(2)/parent.txt |
-    
+
   @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: getting all the shares inside the folder
     Given using OCS API version "<ocs_api_version>"
