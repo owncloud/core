@@ -1,5 +1,5 @@
 @api @TestAlsoOnExternalUserBackend
-Feature: get file info using MKCOL
+Feature: create folder using MKCOL
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
