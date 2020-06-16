@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
+@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -7,20 +7,20 @@ Feature: sharing
       | Alice    |
       | Brian    |
 
-  @smokeTest
+  @skipOnOcis @smokeTest @issue-ocis-reva-262
   Scenario Outline: getting all shares of a user using that user
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has moved file "/textfile0.txt" to "/file_to_share.txt"
-    And user "Alice" has shared file "file_to_share.txt" with user "Brian"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Alice" gets all shares shared by him using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And file "file_to_share.txt" should be included in the response
+    And file "textfile0.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-65
   Scenario Outline: getting all shares of a user using another user
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -53,7 +53,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @skipOnOcis @smokeTest @issue-ocis-reva-243 @issue-ocis-reva-21
   Scenario Outline: getting all shares of a file with reshares
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and skeleton files:
@@ -73,7 +73,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @skipOnOcis @smokeTest @issue-ocis-reva-243 @issue-ocis-reva-194
   Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -92,7 +92,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @skipOnOcis @smokeTest @issue-ocis-reva-249
   Scenario Outline: getting share info of a share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has moved file "/textfile0.txt" to "/file_to_share.txt"
@@ -123,6 +123,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Get a share with a user that didn't receive the share
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and skeleton files
@@ -135,7 +136,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcis @issue-ocis-reva-194
   Scenario: Share of folder to a group, remove user from that group
     Given using OCS API version "1"
     And user "Carol" has been created with default attributes and skeleton files
@@ -158,6 +159,7 @@ Feature: sharing
       | /PARENT%20(2)/           |
       | /PARENT%20(2)/parent.txt |
 
+  @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: getting all the shares inside the folder
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
