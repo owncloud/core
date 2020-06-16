@@ -6,7 +6,7 @@ Feature: move (rename) folder
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-ocis-reva-211 @skipOnOcis
   Scenario Outline: Renaming a folder to a backslash should return an error
