@@ -530,7 +530,7 @@ class FederatedShareProvider implements IShareProvider {
 			$this->revokeShare($share, false);
 		}
 
-		// send revoke notification to the other user, if initiator and owner are not the same user
+		// send revoke notification to the other user
 		if ($this->shouldNotifyRemote($share)) {
 			$remoteId = $this->getRemoteId($share);
 			if ($isOwner) {
@@ -553,7 +553,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * @throws \OC\HintException
 	 */
 	protected function revokeShare($share, $isOwner) {
-		// also send a unShare request to the initiator, if this is a different user than the owner
+		// also send a unShare request to the initiator
 		if ($this->shouldNotifyRemote($share)) {
 			if ($isOwner) {
 				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());

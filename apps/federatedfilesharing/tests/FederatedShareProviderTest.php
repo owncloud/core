@@ -536,8 +536,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 
 	public function datatTestUpdate() {
 		return [
-			// IRL it is not possible to get both true and false from userManager->userExists on the same uid
-			// so this cases are skipped
+			// IRL it is not possible to get both true and false from userManager->userExists for the same uid
+			// so these cases are skipped
 			['owner', 'owner', true, true, false], // no update: owner is the same with sharer
 			['owner', 'sharer', true, true, false],  // no update: both owner and sharer are local
 			['owner@remote', 'sharer', false, true, true],  // update: owner differs with sharer and owner is remote
