@@ -1627,7 +1627,7 @@ def ldapService(ldapNeeded):
 	if ldapNeeded:
 		return [{
 			'name': 'ldap',
-			'image': 'osixia/openldap',
+			'image': 'osixia/openldap:1.3.0',
 			'pull': 'always',
 			'environment': {
 				'LDAP_DOMAIN': 'owncloud.com',
