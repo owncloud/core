@@ -22,6 +22,8 @@
 
 namespace TestHelpers;
 
+use PHPUnit\Framework\Assert;
+
 /**
  * Class OcisHelper
  *
@@ -39,12 +41,19 @@ class OcisHelper {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public static function getDeleteUserDataCommand() {
+		return (\getenv("DELETE_USER_DATA_CMD"));
+	}
+
+	/**
 	 * @param string $user
 	 *
 	 * @return void
 	 */
 	public static function deleteRevaUserData($user = "") {
-		$deleteCmd = \getenv("DELETE_USER_DATA_CMD");
+		$deleteCmd = self::getDeleteUserDataCommand();
 		if ($deleteCmd !== false) {
 			$deleteCmd = \sprintf($deleteCmd, $user);
 			\exec($deleteCmd);
@@ -72,6 +81,61 @@ class OcisHelper {
 					self::recurseCopy($source . '/' . $file, $destination . '/' . $file);
 				} else {
 					\copy($source . '/' . $file, $destination . '/' . $file);
+				}
+			}
+		}
+		\closedir($dir);
+	}
+
+	/**
+	 * Helper for Recursive Upload of file/folder
+	 *
+	 * @param string $baseUrl
+	 * @param string $source
+	 * @param string $userId
+	 * @param string $password
+	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function recurseUpload($baseUrl, $source, $userId, $password, $destination = '') {
+		if ($destination !== '') {
+			$response = WebDavHelper::makeDavRequest(
+				$baseUrl,
+				$userId,
+				$password,
+				"MKCOL",
+				$destination,
+				[]
+			);
+			if ($response->getStatusCode() !== 201) {
+				throw new \Exception("Could not create folder destination" . $response->getBody()->getContents());
+			}
+		}
+
+		$dir = \opendir($source);
+		while (($file = \readdir($dir)) !== false) {
+			if (($file != '.') && ($file != '..')) {
+				if (\is_dir($source . '/' . $file)) {
+					self::recurseUpload(
+						$baseUrl,
+						$source . '/' . $file,
+						$userId,
+						$password,
+						$destination . '/' . $file
+					);
+				} else {
+					$response = UploadHelper::upload(
+						$baseUrl,
+						$userId,
+						$password,
+						$source . '/' . $file,
+						$destination . '/' . $file
+					);
+					if ($response->getStatusCode() !== 201) {
+						throw new \Exception("Could not upload skeleton file" . $response->getBody()->getContents());
+					}
 				}
 			}
 		}
