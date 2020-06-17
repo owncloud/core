@@ -16,7 +16,8 @@ Feature: favorite
   Scenario Outline: Favorite a folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
-    Then as user "Alice" folder "/FOLDER" should be favorited
+    Then the HTTP status code should be "207"
+    And as user "Alice" folder "/FOLDER" should be favorited
     When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
       | propertyName |
       | oc:favorite  |
@@ -30,7 +31,8 @@ Feature: favorite
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
     And user "Alice" unfavorites element "/FOLDER" using the WebDAV API
-    Then as user "Alice" folder "/FOLDER" should not be favorited
+    Then the HTTP status code should be "207"
+    And as user "Alice" folder "/FOLDER" should not be favorited
     When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
       | propertyName |
       | oc:favorite  |
@@ -44,7 +46,8 @@ Feature: favorite
   Scenario Outline: Favorite a file
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
-    Then as user "Alice" file "/textfile0.txt" should be favorited
+    Then the HTTP status code should be "207"
+    And as user "Alice" file "/textfile0.txt" should be favorited
     When user "Alice" gets the following properties of file "/textfile0.txt" using the WebDAV API
       | propertyName |
       | oc:favorite  |
@@ -59,7 +62,8 @@ Feature: favorite
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
     And user "Alice" unfavorites element "/textfile0.txt" using the WebDAV API
-    Then as user "Alice" file "/textfile0.txt" should not be favorited
+    Then the HTTP status code should be "207"
+    And as user "Alice" file "/textfile0.txt" should not be favorited
     When user "Alice" gets the following properties of file "/textfile0.txt" using the WebDAV API
       | propertyName |
       | oc:favorite  |
@@ -76,7 +80,8 @@ Feature: favorite
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
     And user "Alice" favorites element "/textfile0.txt" using the WebDAV API
     And user "Alice" favorites element "/textfile1.txt" using the WebDAV API
-    Then user "Alice" in folder "/" should have favorited the following elements
+    Then the HTTP status code should be "207"
+    And user "Alice" in folder "/" should have favorited the following elements
       | /FOLDER        |
       | /textfile0.txt |
       | /textfile1.txt |
@@ -96,7 +101,8 @@ Feature: favorite
     And user "Alice" favorites element "/subfolder/textfile1.txt" using the WebDAV API
     And user "Alice" favorites element "/subfolder/textfile2.txt" using the WebDAV API
     And user "Alice" unfavorites element "/subfolder/textfile1.txt" using the WebDAV API
-    Then user "Alice" in folder "/subfolder" should have favorited the following elements
+    Then the HTTP status code should be "207"
+    And user "Alice" in folder "/subfolder" should have favorited the following elements
       | /subfolder/textfile0.txt |
       | /subfolder/textfile2.txt |
     And user "Alice" in folder "/subfolder" should not have favorited the following elements
@@ -183,7 +189,8 @@ Feature: favorite
     And user "Alice" has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And user "Alice" has shared file "/favoriteFile.txt" with user "Brian"
     When user "Alice" favorites element "/favoriteFile.txt" using the WebDAV API
-    Then as user "Brian" file "/favoriteFile.txt" should not be favorited
+    Then the HTTP status code should be "207"
+    And as user "Brian" file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -197,7 +204,8 @@ Feature: favorite
     And user "Alice" has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And user "Alice" has shared file "/favoriteFile.txt" with user "Brian"
     When user "Brian" favorites element "/favoriteFile.txt" using the WebDAV API
-    Then as user "Alice" file "/favoriteFile.txt" should not be favorited
+    Then the HTTP status code should be "207"
+    And as user "Alice" file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -208,7 +216,8 @@ Feature: favorite
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/PARENT/parent.txt" using the WebDAV API
     And user "Alice" favorites element "/PARENT" using the WebDAV API
-    Then user "Alice" in folder "/" should have favorited the following elements
+    Then the HTTP status code should be "207"
+    And user "Alice" in folder "/" should have favorited the following elements
       | /PARENT            |
       | /PARENT/parent.txt |
     Examples:
