@@ -29,6 +29,7 @@ Summary
 * Bugfix - Allow clearing a user email address with the Provisioning API: [#37424](https://github.com/owncloud/core/issues/37424)
 * Bugfix - Logging of extra fields when logger does not have a writeExtra method: [#37453](https://github.com/owncloud/core/issues/37453)
 * Bugfix - Align the cancel button on public uploads: [#37504](https://github.com/owncloud/core/pull/37504)
+* Bugfix - Do not notify remote if both owner and sharer are local users: [#37534](https://github.com/owncloud/core/pull/37534)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -248,6 +249,15 @@ Details
    corrected.
 
    https://github.com/owncloud/core/pull/37504
+
+* Bugfix - Do not notify remote if both owner and sharer are local users: [#37534](https://github.com/owncloud/core/pull/37534)
+
+   We tried notify remote for all federated shares. When a local share was reshared as a federated
+   share it caused attempts to notify a local user via federated API. Under these conditions
+   permission update caused 'Invalid Federated Cloud ID' error in Web UI. And the sharer was not
+   able to delete the share at his end.
+
+   https://github.com/owncloud/core/pull/37534
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
