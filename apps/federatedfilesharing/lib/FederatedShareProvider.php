@@ -381,12 +381,26 @@ class FederatedShareProvider implements IShareProvider {
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->execute();
 
-		// send the updated permission to the owner/initiator, if they are not the same
-		if ($share->getShareOwner() !== $share->getSharedBy()) {
+		// send the updated permission to the owner/initiator
+		if ($this->shouldNotifyRemote($share)) {
 			$this->sendPermissionUpdate($share);
 		}
 
 		return $share;
+	}
+
+	/**
+	 * User based check
+	 *
+	 * @param IShare $share
+	 * @return bool
+	 */
+	protected function shouldNotifyRemote($share) {
+		// We notify owner/initiator, if they are not the same user and ANY of them is NOT a local user
+		// they could be both local e.g. if recipient of local share shared it via federation
+		$isRemoteUserInvolved =  $this->userManager->userExists($share->getShareOwner()) == false
+			|| $this->userManager->userExists($share->getSharedBy()) == false;
+		return $isRemoteUserInvolved && $share->getShareOwner() !== $share->getSharedBy();
 	}
 
 	/**
@@ -516,8 +530,8 @@ class FederatedShareProvider implements IShareProvider {
 			$this->revokeShare($share, false);
 		}
 
-		// send revoke notification to the other user, if initiator and owner are not the same user
-		if ($share->getShareOwner() !== $share->getSharedBy()) {
+		// send revoke notification to the other user
+		if ($this->shouldNotifyRemote($share)) {
 			$remoteId = $this->getRemoteId($share);
 			if ($isOwner) {
 				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
@@ -539,8 +553,8 @@ class FederatedShareProvider implements IShareProvider {
 	 * @throws \OC\HintException
 	 */
 	protected function revokeShare($share, $isOwner) {
-		// also send a unShare request to the initiator, if this is a different user than the owner
-		if ($share->getShareOwner() !== $share->getSharedBy()) {
+		// also send a unShare request to the initiator
+		if ($this->shouldNotifyRemote($share)) {
 			if ($isOwner) {
 				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
 			} else {

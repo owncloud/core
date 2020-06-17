@@ -1,0 +1,8 @@
+Bugfix: Do not notify remote if both owner and sharer are local users
+
+We tried notify remote for all federated shares. When a local share was reshared
+as a federated share it caused attempts to notify a local user via federated API.
+Under these conditions permission update caused 'Invalid Federated Cloud ID' error
+in Web UI. And the sharer was not able to delete the share at his end.
+
+https://github.com/owncloud/core/pull/37534
