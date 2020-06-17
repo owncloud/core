@@ -54,6 +54,14 @@
 		'				{{/unless}}' +
 		'			</label>' +
 		'			{{/if}}' +
+		'			{{#if isRemoteShare}}' +
+		'			<label for="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}">{{expirationLabel}}: ' +
+		'				<input type="text" id="expiration-{{name}}-{{cid}}-{{shareWith}}-{{shareType}}" value="{{expirationDate}}" class="expiration expiration-remote" placeholder="{{expirationDatePlaceholder}}" />' +
+		'				{{#unless isDefaultExpireDateRemoteEnforced}}' +
+		'				<button class="removeExpiration">Remove</button>' +
+		'				{{/unless}}' +
+		'			</label>' +
+		'			{{/if}}' +
 		'		</div>' +
 		'		<div class="coreShareOptions">' +
 		'			{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
@@ -220,6 +228,7 @@
 				expirationDatePlaceholder: t('core', 'Choose an expiration date'),
 				isDefaultExpireDateUserEnforced: this.configModel.isDefaultExpireDateUserEnforced(),
 				isDefaultExpireDateGroupEnforced: this.configModel.isDefaultExpireDateGroupEnforced(),
+				isDefaultExpireDateRemoteEnforced: this.configModel.isDefaultExpireDateRemoteEnforced(),
 				expirationDate: this.model.getExpirationDate(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
@@ -312,6 +321,13 @@
 				self._setDatepicker(this, {
 					maxDate  : self.configModel.getDefaultExpireDateGroup(),
 					enforced : self.configModel.isDefaultExpireDateGroupEnforced()
+				});
+			});
+
+			this.$el.find('.expiration-remote:not(.hasDatepicker)').each(function(){
+				self._setDatepicker(this, {
+					maxDate  : self.configModel.getDefaultExpireDateRemote(),
+					enforced : self.configModel.isDefaultExpireDateRemoteEnforced()
 				});
 			});
 

@@ -120,6 +120,10 @@ class FileSharing implements ISettings {
 		$template->assign('shareExpireAfterNDaysGroupShare', $this->config->getAppValue('core', 'shareapi_expire_after_n_days_group_share', '7'));
 		$template->assign('shareEnforceExpireDateGroupShare', $this->config->getAppValue('core', 'shareapi_enforce_expire_date_group_share', 'no'));
 
+		$template->assign('shareDefaultExpireDateSetRemoteShare', $this->config->getAppValue('core', 'shareapi_default_expire_date_remote_share', 'no'));
+		$template->assign('shareExpireAfterNDaysRemoteShare', $this->config->getAppValue('core', 'shareapi_expire_after_n_days_remote_share', '7'));
+		$template->assign('shareEnforceExpireDateRemoteShare', $this->config->getAppValue('core', 'shareapi_enforce_expire_date_remote_share', 'no'));
+
 		$template->assign('autoAcceptShare', $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes'));
 
 		$permList = [

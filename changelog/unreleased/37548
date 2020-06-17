@@ -1,0 +1,18 @@
+Enhancement: Add support for date expiration on remote shares
+
+An expiration date can be set now for shares originating in your server.
+This feature behaves the same as the expiration for user, group and link shares.
+
+The expiration is controlled in the source server (server A). The target server
+(server B) won't know about the expiration. Once the share expires, the target server
+(server B) won't be able to access to those shares and it will remove them automatically
+
+This feature won't work for shares that are grabbed from a public link:
+if source server (server A) shares a file / folder via link, and an user from the
+target server (server B) add that link to his ownCloud; in this case, this "remote
+share expiration" won't apply.
+
+In addition, the same that happens with user, group and link shares, the share recipient
+won't have control over the expiration date. 
+
+https://github.com/owncloud/core/pull/37548
