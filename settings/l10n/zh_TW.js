@@ -1,6 +1,8 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "當前密碼錯誤",
+    "The new password cannot be the same as the previous one" : "新密碼不能與上一個密碼重複.",
     "No user supplied" : "未提供使用者",
     "Authentication error" : "認證錯誤",
     "Wrong admin recovery password. Please check the password and try again." : "錯誤的管理者還原密碼",
@@ -243,6 +245,7 @@ OC.L10N.register(
     "New password" : "新密碼",
     "Change password" : "變更密碼",
     "Help translate" : "幫助翻譯",
+    "You are using %s of %s (%s %%)" : "你 使用的記憶體%s可用空間為%s(%s%%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "由 {communityopen}ownCloud 社群{linkclose} 開發，{githubopen}原始碼{linkclose}使用 {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} 授權釋出",
     "Name" : "名稱",
     "Username" : "使用者名稱",
