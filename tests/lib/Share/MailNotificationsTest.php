@@ -24,6 +24,8 @@ namespace Test\Share;
 use OC\Mail\Message;
 use OC\Share\MailNotifications;
 use OCP\Defaults;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -66,6 +68,8 @@ class MailNotificationsTest extends TestCase {
 	private $eventDispatcher;
 	/** @var \OCP\Activity\IManager | MockObject */
 	private $activityManager;
+	/** @var IRootFolder | MockObject */
+	private $rootFolder;
 	/** @var MailNotifications */
 	private $mailNotifications;
 
@@ -80,6 +84,7 @@ class MailNotificationsTest extends TestCase {
 		$this->defaults = $this->createMock(Defaults::class);
 		$this->user = $this->createMock(IUser::class);
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
+		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->activityManager = \OC::$server->getActivityManager();
 		$this->eventDispatcher = new EventDispatcher();
 
@@ -113,7 +118,8 @@ class MailNotificationsTest extends TestCase {
 			$this->defaults,
 			$this->urlGenerator,
 			$this->eventDispatcher,
-			$this->activityManager
+			$this->activityManager,
+			$this->rootFolder
 		);
 	}
 
@@ -127,6 +133,12 @@ class MailNotificationsTest extends TestCase {
 		$node = $this->createMock(Node::class);
 		$node->method('getPath')->willReturn('/testuser/' . $filename);
 		$node->method('getName')->willReturn($filename);
+
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([$node]);
+		$userFolder->method('getRelativePath')->willReturn($filename);
+		$this->rootFolder->method('getUserFolder')
+			->with('testuser')->willReturn($userFolder);
 
 		$share = $this->createMock(IShare::class);
 		$share->method('getExpirationDate')->willReturn($expirationDate);
@@ -627,8 +639,6 @@ class MailNotificationsTest extends TestCase {
 		$this->assertSame([], $result);
 	}
 
-	/**
-	 */
 	public function testSendLinkShareMailIfObeysConfig() {
 		$this->expectException(\OCP\Share\Exceptions\GenericShareException::class);
 
@@ -643,11 +653,9 @@ class MailNotificationsTest extends TestCase {
 		);
 	}
 
-	/**
-	 */
 	public function testSendInternalShareMailIfObeysConfig() {
 		$this->expectException(\OCP\Share\Exceptions\GenericShareException::class);
-
+		$recipient = $this->createMock(IUser::class);
 		$this->config
 			->method('getAppValue')
 			->with('core', 'shareapi_allow_mail_notification', 'no')
@@ -656,7 +664,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			'3',
 			'file',
-			['test@user']
+			[$recipient]
 		);
 	}
 }

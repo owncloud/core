@@ -279,8 +279,11 @@ class MailNotifications {
 		$failedRecipients =  $this->sendLinkShareMailFromBody($recipients, $subject, $htmlBody, $textBody, $from, $replyTo);
 		if (empty($failedRecipients)) {
 			$event = $this->activityManager->generateEvent();
+			// it can be a re-share, get actual share file node
 			$userFolder = $this->rootFolder->getUserFolder($sender->getUID());
-			$path = $userFolder->getRelativePath($shareNode->getPath());
+			$shareFileNodes = $userFolder->getById($shareNode->getId(), true);
+			$shareFileNode = $shareFileNodes[0] ?? null;
+			$path = $userFolder->getRelativePath($shareFileNode->getPath());
 			$event->setApp(\OCA\Files_Sharing\Activity::FILES_SHARING_APP)
 				->setType(\OCA\Files_Sharing\Activity::TYPE_SHARED)
 				->setAuthor($currentUser)
