@@ -10,11 +10,12 @@ Feature: sharing
   @skipOnOcis @smokeTest @issue-ocis-reva-262
   Scenario Outline: getting all shares of a user using that user
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Alice" has moved file "/textfile0.txt" to "/file_to_share.txt"
+    And user "Alice" has shared file "file_to_share.txt" with user "Brian"
     When user "Alice" gets all shares shared by him using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And file "textfile0.txt" should be included in the response
+    And file "file_to_share.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
