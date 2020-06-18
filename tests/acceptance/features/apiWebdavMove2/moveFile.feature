@@ -302,9 +302,28 @@ Feature: move (rename) file
     And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | renamed_file  |
-      | #oc ab?cd=ef# |
       | *a@b#c$e%f&g* |
       | 1 2 3##.##    |
+
+  @skipOnOcis-OC-Storage @skipOnOcV10 @issue-ocis-reva-211
+  #after fixing the issues merge this Scenario into the one above
+  Scenario Outline: renaming to a file with special characters
+    When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/<renamed_file>" for user "Alice" should be ""
+    Examples:
+      | renamed_file  |
+      | #oc ab?cd=ef# |
+
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
+  #after fixing the issues merge this Scenario into the one above
+  Scenario Outline: renaming to a file with special characters
+    When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
+    Examples:
+      | renamed_file  |
+      | #oc ab?cd=ef# |
 
   Scenario Outline: renaming file with dots in the path
     Given using <dav_version> DAV path
