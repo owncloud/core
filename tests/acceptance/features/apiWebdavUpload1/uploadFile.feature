@@ -97,3 +97,14 @@ Feature: upload file
       | new         | /upload.1     | abc.txt     |
       | new         | /upload...1.. | abc...txt.. |
       | new         | /...          | ...         |
+
+  Scenario Outline: upload file with mtime
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
+    Then as "Alice" file "file.txt" should exist
+    And the HTTP status code should be "201"
+    And as "Alice" the mtime of the file "file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

@@ -2014,6 +2014,23 @@ trait WebDav {
 	}
 
 	/**
+	 * @param $user
+	 * @param $destination
+	 * @param $mtime
+	 *
+	 * @return void
+	 */
+	public function uploadFileWithMtime(
+		$user, $destination, $mtime
+	) {
+		$user = $this->getActualUsername($user);
+
+		$this->response = $this->makeDavRequest(
+			$user, "PUT", $destination, ["X-OC-Mtime" => $mtime]
+		);
+	}
+
+	/**
 	 * @When the administrator uploads file with content :content to :destination using the WebDAV API
 	 *
 	 * @param string $content
@@ -2056,6 +2073,48 @@ trait WebDav {
 		$user, $content, $destination
 	) {
 		return $this->uploadFileWithContent($user, $content, $destination);
+	}
+
+	/**
+	 * @When user :user uploads file to :destination with mtime :mtime using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $mtime API uses mtime as time in millisecond since epoch
+	 * 						Human readable format is taken as input and then converted into milliseconds
+	 *
+	 * @return void
+	 */
+	public function userUploadsFileWithContentToWithMtimeUsingTheWebdavApi(
+		$user, $destination, $mtime
+	) {
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
+		return $this->uploadFileWithMtime($user, $destination, $mtime);
+	}
+
+	/**
+	 * @Then as :user the mtime of the file :resource should be :mtime
+	 *
+	 * @param string $user
+	 * @param string $resource
+	 * @param string $mtime
+	 *
+	 * @return void
+	 */
+	public function theMtimeOfTheFileShouldBe(
+		$user, $resource, $mtime
+	) {
+		$user = $this->getActualUsername($user);
+		$password = $this->getPasswordForUser($user);
+		$this->response = WebDavHelper::propfind(
+			$this->getBaseUrl(), $user, $password, $resource, ["getlastmodified"]
+		);
+		$reponseXmlObject = HttpRequestHelper::getResponseXml($this->response);
+		$xmlpart = $reponseXmlObject->xpath("//d:getlastmodified");
+		Assert::assertEquals(
+			$mtime, $xmlpart[0]->__toString()
+		);
 	}
 
 	/**
