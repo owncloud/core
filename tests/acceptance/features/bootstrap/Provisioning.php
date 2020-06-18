@@ -898,16 +898,26 @@ trait Provisioning {
 			if (!$skeletonDir) {
 				throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
 			}
-			if (!$revaRoot) {
-				throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
-			}
-			foreach ($usersAttributes as $userAttributes) {
-				$user = $userAttributes['userid'];
-				$dataDir = $revaRoot . "data/$user/files";
-				if (!\file_exists($dataDir)) {
-					\mkdir($dataDir, 0777, true);
+			if (!$revaRoot && OcisHelper::getDeleteUserDataCommand() !== false) {
+				foreach ($usersAttributes as $userAttributes) {
+					OcisHelper::recurseUpload(
+						$this->getBaseUrl(),
+						$skeletonDir,
+						$userAttributes['userid'],
+						$userAttributes['password']
+					);
 				}
-				OcisHelper::recurseCopy($skeletonDir, $dataDir);
+			} elseif (!$revaRoot) {
+				throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
+			} else {
+				foreach ($usersAttributes as $userAttributes) {
+					$user = $userAttributes['userid'];
+					$dataDir = $revaRoot . "data/$user/files";
+					if (!\file_exists($dataDir)) {
+						\mkdir($dataDir, 0777, true);
+					}
+					OcisHelper::recurseCopy($skeletonDir, $dataDir);
+				}
 			}
 		}
 
