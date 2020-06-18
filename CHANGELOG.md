@@ -62,6 +62,7 @@ Summary
 * Change - Update opis/closure (3.5.3 => 3.5.4): [#37492](https://github.com/owncloud/core/pull/37492)
 * Change - Update Symfony components to 4.4.10: [#37522](https://github.com/owncloud/core/pull/37522)
 * Change - Update egulias/email-validator (2.1.17 => 2.1.18): [#37544](https://github.com/owncloud/core/pull/37544)
+* Change - Update opis/closure (3.5.4 => 3.5.5): [#37547](https://github.com/owncloud/core/pull/37547)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -456,6 +457,10 @@ Details
 * Change - Update egulias/email-validator (2.1.17 => 2.1.18): [#37544](https://github.com/owncloud/core/pull/37544)
 
    https://github.com/owncloud/core/pull/37544
+
+* Change - Update opis/closure (3.5.4 => 3.5.5): [#37547](https://github.com/owncloud/core/pull/37547)
+
+   https://github.com/owncloud/core/pull/37547
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
