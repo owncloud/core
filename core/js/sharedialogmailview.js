@@ -153,7 +153,7 @@
 					$formSendIndicator.addClass('hidden');
 					deferred.resolve();
 				}).fail(function(error) {
-					OC.dialogs.info(error.message, t('core', 'An error occured while sending email'));
+					OC.dialogs.info(error.message, t('core', 'An error occurred while sending email'));
 					$formSendIndicator.addClass('hidden');
 					$formItems.prop('disabled', false);
 					deferred.reject();
