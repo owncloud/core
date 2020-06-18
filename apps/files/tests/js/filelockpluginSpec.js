@@ -16,6 +16,9 @@ describe('OCA.Files.LockPlugin tests', function() {
 	var currentUserStub;
 
 	beforeEach(function() {
+		oc_appconfig = oc_appconfig || {};
+		oc_appconfig.files = oc_appconfig.files || {};
+		oc_appconfig.files.enable_lock_file_action = true;
 		var $content = $('<div id="content"></div>');
 		$('#testArea').append($content);
 		// dummy file list
@@ -134,8 +137,8 @@ describe('OCA.Files.LockPlugin tests', function() {
 			requestDeferred = new $.Deferred();
 			requestStub = sinon.stub(dav.Client.prototype, 'propFind').returns(requestDeferred.promise());
 		});
-		afterEach(function() { 
-			requestStub.restore(); 
+		afterEach(function() {
+			requestStub.restore();
 		});
 
 		function makeLockXml(owner) {
@@ -186,7 +189,7 @@ describe('OCA.Files.LockPlugin tests', function() {
 
 			return xml;
 		}
-		
+
 		it('parses lock information from response XML to JSON', function(done) {
 			var xml = dav.Client.prototype.parseMultiStatus(makeLockXml('lock owner'));
 			var promise = fileList.reload();

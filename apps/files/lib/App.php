@@ -44,13 +44,17 @@ class App {
 	}
 
 	public static function extendJsConfig($array) {
-		$maxChunkSize = (int)(\OC::$server->getConfig()->getAppValue('files', 'max_chunk_size', (10 * 1024 * 1024)));
-		$uploadStallTimeout = (int)(\OC::$server->getConfig()->getAppValue('files', 'upload_stall_timeout', 60)); // in seconds
-		$uploadStallRetries = (int)(\OC::$server->getConfig()->getAppValue('files', 'upload_stall_retries', 100));
+		$config = \OC::$server->getConfig();
+		$maxChunkSize = (int)($config->getAppValue('files', 'max_chunk_size', (10 * 1024 * 1024)));
+		$uploadStallTimeout = (int)($config->getAppValue('files', 'upload_stall_timeout', 60)); // in seconds
+		$uploadStallRetries = (int)($config->getAppValue('files', 'upload_stall_retries', 100));
+		$enableLockFileAction = (boolean)($config->getAppValue('files', 'enable_lock_file_action', false));
+
 		$array['array']['oc_appconfig']['files'] = [
 			'max_chunk_size' => $maxChunkSize,
 			'upload_stall_timeout' => $uploadStallTimeout,
-			'upload_stall_retries' => $uploadStallRetries
+			'upload_stall_retries' => $uploadStallRetries,
+			'enable_lock_file_action' => $enableLockFileAction
 		];
 	}
 }
