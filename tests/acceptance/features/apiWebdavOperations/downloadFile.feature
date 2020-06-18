@@ -84,14 +84,12 @@ Feature: download file
       | old         |
       | new         |
 
-  @issue-ocis-reva-67
   Scenario: Get the size of a file
     Given user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
     When user "Alice" gets the size of file "test-file.txt" using the WebDAV API
     Then the HTTP status code should be "207"
     And the size of the file should be "19"
 
-  @issue-ocis-296 @skipOnOcis
   Scenario Outline: Get the content-length response header of a pdf file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/simple.pdf" to "/simple.pdf"
@@ -104,21 +102,6 @@ Feature: download file
       | old         |
       | new         |
 
-  @issue-ocis-296 @skipOnOcV10
-  #after fixing the issues delete this Scenario and use the one above
-  Scenario Outline: Get the content-length response header of a pdf file
-    Given using <dav_version> DAV path
-    And user "Alice" has uploaded file "filesForUpload/simple.pdf" to "/simple.pdf"
-    When user "Alice" downloads file "/simple.pdf" using the WebDAV API
-    Then the following headers should not be set
-      | header             |
-      | Content-Length     |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-  @issue-ocis-296 @skipOnOcis
   Scenario Outline: Get the content-length response header of an image file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/testavatar.png" to "/testavatar.png"
@@ -126,20 +109,6 @@ Feature: download file
     Then the following headers should be set
       | header             | value  |
       | Content-Length     | 35323  |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-  @issue-ocis-296 @skipOnOcV10
-  #after fixing the issues delete this Scenario and use the one above
-  Scenario Outline: Get the content-length response header of an image file
-    Given using <dav_version> DAV path
-    And user "Alice" has uploaded file "filesForUpload/testavatar.png" to "/testavatar.png"
-    When user "Alice" downloads file "/testavatar.png" using the WebDAV API
-    Then the following headers should not be set
-      | header             |
-      | Content-Length     |
     Examples:
       | dav_version |
       | old         |
