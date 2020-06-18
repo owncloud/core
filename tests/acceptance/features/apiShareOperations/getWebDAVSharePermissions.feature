@@ -29,7 +29,7 @@ Feature: sharing
     When user "Alice" gets the following properties of file "/tmp.txt" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value ""
+    Then the single response should contain a property "ocs:share-permissions" with value "5"
     Examples:
       | dav-path |
       | old      |
