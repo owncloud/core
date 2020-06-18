@@ -55,6 +55,7 @@ Summary
 * Change - Update opis/closure (3.5.2 => 3.5.3): [#37443](https://github.com/owncloud/core/pull/37443)
 * Change - Update doctrine/lexer (1.2.0 => 1.2.1): [#37448](https://github.com/owncloud/core/pull/37448)
 * Change - Update doctrine/cache (1.10.0 => 1.10.1): [#37458](https://github.com/owncloud/core/pull/37458)
+* Change - Add file action to lock a file: [#37460](https://github.com/owncloud/core/pull/37460)
 * Change - Update doctrine/instantiator (1.3.0 => 1.3.1): [#37464](https://github.com/owncloud/core/pull/37464)
 * Change - Update Symfony components to 4.4.9: [#37465](https://github.com/owncloud/core/pull/37465)
 * Change - Update nikic/php-parser (4.4.0 => 4.5.0): [#37480](https://github.com/owncloud/core/pull/37480)
@@ -413,6 +414,10 @@ Details
 * Change - Update doctrine/cache (1.10.0 => 1.10.1): [#37458](https://github.com/owncloud/core/pull/37458)
 
    https://github.com/owncloud/core/pull/37458
+
+* Change - Add file action to lock a file: [#37460](https://github.com/owncloud/core/pull/37460)
+
+   https://github.com/owncloud/core/pull/37460
 
 * Change - Update doctrine/instantiator (1.3.0 => 1.3.1): [#37464](https://github.com/owncloud/core/pull/37464)
 
