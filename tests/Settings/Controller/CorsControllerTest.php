@@ -25,11 +25,13 @@ use OC\Settings\Controller\CorsController;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 /**
@@ -53,6 +55,9 @@ class CorsControllerTest extends TestCase {
 	/** @var IConfig */
 	private $config;
 
+	/** @var IL10N | MockObject */
+	private $l10n;
+
 	/** @var IUser */
 	private $userSession;
 
@@ -74,14 +79,41 @@ class CorsControllerTest extends TestCase {
 		$this->config->method('setUserValue')->willReturn(true);
 		$this->config->method('deleteUserValue')->willReturn(true);
 
+		$this->l10n = $this->createMock(IL10N::class);
+
 		$this->corsController = new CorsController(
 			'core',
 			$this->request,
 			$this->userSession,
 			$this->logger,
 			$this->urlGenerator,
-			$this->config
+			$this->config,
+			$this->l10n
 		);
+	}
+
+	public function testAddDomainWithNoProto() {
+		// Since this domain is invalid,
+		// the success message that the domain is white-listed, wouldn't be triggered
+		$this->logger
+			->expects($this->never())
+			->method('debug');
+
+		$this->config
+			->expects($this->never())
+			->method("setUserValue");
+
+		$this->l10n->method('t')
+			->willReturnCallback(function ($a) {
+				return $a;
+			});
+
+		$response = $this->corsController->addDomain("non-valid domain");
+
+		$responseData = $response->getData();
+
+		$this->assertArrayHasKey('message', $responseData);
+		$this->assertEquals("Protocol is missing in '%s'", $responseData['message']);
 	}
 
 	public function testAddInvalidDomain() {
@@ -95,16 +127,17 @@ class CorsControllerTest extends TestCase {
 			->expects($this->never())
 			->method("setUserValue");
 
-		$response = $this->corsController->addDomain("non-valid domain");
+		$this->l10n->method('t')
+			->willReturnCallback(function ($a) {
+				return $a;
+			});
 
-		$expectedResponse = new RedirectResponse(
-			$this->urlGenerator->linkToRouteAbsolute(
-				'settings.SettingsPage.getPersonal',
-				['sectionid' => 'security']
-			) . '#cors'
-		);
+		$response = $this->corsController->addDomain("http://non-valid domain");
 
-		$this->assertEquals($response, $expectedResponse);
+		$responseData = $response->getData();
+
+		$this->assertArrayHasKey('message', $responseData);
+		$this->assertEquals("'%s' is not a valid domain", $responseData['message']);
 	}
 
 	public function testAddValidDomain() {
@@ -120,12 +153,7 @@ class CorsControllerTest extends TestCase {
 
 		$response = $this->corsController->addDomain("http://www.test1.com");
 
-		$expectedResponse = new RedirectResponse(
-			$this->urlGenerator->linkToRouteAbsolute(
-				'settings.SettingsPage.getPersonal',
-				['sectionid' => 'security']
-			) . '#cors'
-		);
+		$expectedResponse = new JSONResponse(['domains' => ['http://www.test.com', 'http://www.test1.com']]);
 
 		$this->assertEquals($response, $expectedResponse);
 	}
@@ -139,35 +167,21 @@ class CorsControllerTest extends TestCase {
 
 		// The argument for removing domain is the ID of the white-listed domain
 		// and not the domain itself
-		$response = $this->corsController->removeDomain(100);
+		$response = $this->corsController->removeDomain('non-existing.domain');
 
-		$expectedResponse = new RedirectResponse(
-			$this->urlGenerator->linkToRouteAbsolute(
-				'settings.SettingsPage.getPersonal',
-				['sectionid' => 'security']
-			) . '#cors'
-		);
+		$expectedResponse = new JSONResponse(['domains' => ['http://www.test.com']]);
 
 		$this->assertEquals($response, $expectedResponse);
 	}
 
 	public function testRemoveValidDomain() {
-		// Since this domain-ID is valid,
-		// the error message that invalid domain ID passed, would never be triggered
 		$this->config
 			->expects($this->once())
 			->method("deleteUserValue");
 
-		// The argument for removing domain is the ID of the white-listed domain
-		// and not the domain itself
-		$response = $this->corsController->removeDomain(0);
+		$response = $this->corsController->removeDomain('http://www.test.com');
 
-		$expectedResponse = new RedirectResponse(
-			$this->urlGenerator->linkToRouteAbsolute(
-				'settings.SettingsPage.getPersonal',
-				['sectionid' => 'security']
-			) . '#cors'
-		);
+		$expectedResponse = new JSONResponse(['domains' => []]);
 
 		$this->assertEquals($response, $expectedResponse);
 	}

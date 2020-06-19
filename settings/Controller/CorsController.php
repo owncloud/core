@@ -21,6 +21,7 @@ namespace OC\Settings\Controller;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -49,6 +50,9 @@ class CorsController extends Controller {
 	/** @var string  */
 	private $AppName;
 
+	/** @var IL10N */
+	private $l10n;
+
 	/**
 	 * CorsController constructor.
 	 *
@@ -63,7 +67,8 @@ class CorsController extends Controller {
 								IUserSession $userSession,
 								ILogger $logger,
 								IURLGenerator $urlGenerator,
-								IConfig $config) {
+								IConfig $config,
+								IL10N $l10n) {
 		parent::__construct($AppName, $request);
 
 		$this->AppName = $AppName;
@@ -71,19 +76,7 @@ class CorsController extends Controller {
 		$this->userId = $userSession->getUser()->getUID();
 		$this->logger = $logger;
 		$this->urlGenerator = $urlGenerator;
-	}
-
-	/**
-	 * Returns a redirect response
-	 * @return RedirectResponse
-	 */
-	private function getRedirectResponse() {
-		return new RedirectResponse(
-			$this->urlGenerator->linkToRouteAbsolute(
-				'settings.SettingsPage.getPersonal',
-				['sectionid' => 'security']
-			) . '#cors'
-		);
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -107,28 +100,37 @@ class CorsController extends Controller {
 	 * @NoSubadminRequired
 	 *
 	 * @param string $domain The domain to whitelist
-	 * @return RedirectResponse Redirection to the settings page.
+	 * @return JSONResponse
 	 */
 	public function addDomain($domain) {
-		if (!isset($domain) || !self::isValidUrl($domain)) {
-			return $this->getRedirectResponse();
+		if ($this->isValidUrl($domain)) {
+			$userId = $this->userId;
+			$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+			$domains = \array_filter($domains);
+			\array_push($domains, $domain);
+
+			// In case same domain is added
+			$domains = \array_unique($domains);
+
+			// Store as comma separated string
+			$domainsString = \json_encode($domains);
+
+			$this->config->setUserValue($userId, 'core', 'domains', $domainsString);
+			$this->logger->debug("The domain {$domain} has been white-listed.", ['app' => $this->appName]);
+			return new JSONResponse([ 'domains' => $domains]);
+		} else {
+			$cleanDomain = \strip_tags($domain);
+
+			if (
+				\strpos($domain, 'http://') !== 0
+				&& \strpos($domain, 'https://') !== 0
+			) {
+				$errorMsg = $this->l10n->t("Protocol is missing in '%s'", [$cleanDomain]);
+			} else {
+				$errorMsg = $this->l10n->t("'%s' is not a valid domain", [$cleanDomain]);
+			}
+			return new JSONResponse([ 'message' => $errorMsg ]);
 		}
-
-		$userId = $this->userId;
-		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
-		$domains = \array_filter($domains);
-		\array_push($domains, $domain);
-
-		// In case same domain is added
-		$domains = \array_unique($domains);
-
-		// Store as comma separated string
-		$domainsString = \json_encode($domains);
-
-		$this->config->setUserValue($userId, 'core', 'domains', $domainsString);
-		$this->logger->debug("The domain {$domain} has been white-listed.", ['app' => $this->appName]);
-
-		return $this->getRedirectResponse();
 	}
 
 	/**
@@ -138,21 +140,21 @@ class CorsController extends Controller {
 	 * @NoSubadminRequired
 	 *
 	 * @param string $domain Domain to remove
-	 * @return RedirectResponse Redirection to the settings page.
+	 * @return JSONResponse Redirection to the settings page.
 	 */
-	public function removeDomain($id) {
+	public function removeDomain($domain) {
 		$userId = $this->userId;
+		$decodedDomain = \urldecode($domain);
 		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
-		if (isset($domains[$id])) {
-			unset($domains[$id]);
+		if (($key = \array_search($decodedDomain, $domains)) !== false) {
+			unset($domains[$key]);
 			if (\count($domains)) {
 				$this->config->setUserValue($userId, 'core', 'domains', \json_encode($domains));
 			} else {
 				$this->config->deleteUserValue($userId, 'core', 'domains');
 			}
 		}
-
-		return $this->getRedirectResponse();
+		return new JSONResponse([ 'domains' => $domains ]);
 	}
 
 	/**
@@ -160,7 +162,7 @@ class CorsController extends Controller {
 	 * @param  string  $url URL to check
 	 * @return boolean      whether URL is valid
 	 */
-	private static function isValidUrl($url) {
+	private function isValidUrl($url) {
 		return (\filter_var($url, FILTER_VALIDATE_URL) !== false);
 	}
 }
