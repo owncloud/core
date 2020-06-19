@@ -176,10 +176,9 @@
 	align-items: center;
 	min-height : 50px;
 	position   : relative;
-}
-
-.link-entry:not(:last-child) {
-	border-bottom: 1px solid #eee;
+	padding    : 0 5px 0 5px;
+	background : #f8f8f8;
+	border-bottom: 1px solid #aaa;
 }
 
 .link-entry .socialShareContainer {
@@ -210,7 +209,7 @@
 }
 
 .link-entry--icon-button {
-	margin-left       : 5px;
+	margin-left       : 10px;
 	opacity           : 0.333;
 	-webkit-transition: opacity 0.25s;
 	-moz-transition   : opacity 0.25s;

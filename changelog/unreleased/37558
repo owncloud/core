@@ -1,0 +1,10 @@
+Change: Share sheet improvements (external sharing)
+
+Share Sheet for external shares was cleaned up a bit.
+
+- Color of the separator line has the same color
+- The padding of the icons has been enlarged
+- A background color was inserted
+- The padding of the content was increased on the left and right
+
+https://github.com/owncloud/core/pull/37558
