@@ -44,6 +44,7 @@ abstract class Archive {
 		switch ($mime) {
 			case 'application/zip':
 				return new ZIP($path);
+			case 'application/gzip':
 			case 'application/x-gzip':
 				return new TAR($path);
 			case 'application/x-bzip2':
