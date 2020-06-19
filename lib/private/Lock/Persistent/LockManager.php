@@ -54,7 +54,6 @@ class LockManager {
 			throw new \InvalidArgumentException('No token provided in $lockInfo');
 		}
 
-		// default to 30 minutes if nothing is specified
 		$timeout = $this->config->getAppValue('core', 'lock_timeout_default', self::LOCK_TIMEOUT_DEFAULT);
 		if (isset($lockInfo['timeout'])) {
 			// set the requested timeout
