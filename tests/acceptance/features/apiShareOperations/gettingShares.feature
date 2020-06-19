@@ -127,7 +127,7 @@ Feature: sharing
   @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: Get a share with a user that didn't receive the share
     Given using OCS API version "<ocs_api_version>"
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Carol" gets the info of the last share using the sharing API
     Then the OCS status code should be "404"

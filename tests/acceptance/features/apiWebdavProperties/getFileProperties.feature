@@ -6,7 +6,7 @@ Feature: get file properties
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Do a PROPFIND of various file names
@@ -152,7 +152,7 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has created a share with settings
       | path        | test  |
@@ -212,7 +212,7 @@ Feature: get file properties
   @skipOnOcis @issue-ocis-reva-11
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Alice" has created folder "/test"
     And user "Alice" has created a share with settings

@@ -116,7 +116,7 @@ Feature: favorite
   @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"
@@ -185,7 +185,7 @@ Feature: favorite
   @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And user "Alice" has shared file "/favoriteFile.txt" with user "Brian"
     When user "Alice" favorites element "/favoriteFile.txt" using the WebDAV API
@@ -200,7 +200,7 @@ Feature: favorite
   @skipOnOcis @issue-ocis-reva-21
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And user "Alice" has shared file "/favoriteFile.txt" with user "Brian"
     When user "Brian" favorites element "/favoriteFile.txt" using the WebDAV API
