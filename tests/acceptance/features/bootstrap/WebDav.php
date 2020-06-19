@@ -2080,8 +2080,7 @@ trait WebDav {
 	 *
 	 * @param string $user
 	 * @param string $destination
-	 * @param string $mtime API uses mtime as time in millisecond since epoch
-	 * 						Human readable format is taken as input and then converted into milliseconds
+	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
 	 *
 	 * @return void
 	 */
