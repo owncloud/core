@@ -85,6 +85,7 @@ config = {
 				'apiComments',
 				'apiFavorites',
 				'apiMain',
+				'apiProvisioning',
 				'apiProvisioning-v1',
 				'apiProvisioning-v2',
 				'apiProvisioningGroups-v1',

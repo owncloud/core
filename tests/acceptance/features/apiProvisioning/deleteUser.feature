@@ -5,13 +5,13 @@ Feature: delete users
   So that I can remove user from ownCloud
 
   Background:
-    Given using OCS API version "1"
+    Given using the OCS API version defined externally
 
   @smokeTest
   Scenario: Delete a user
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator deletes user "brand-new-user" using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "100" for OCS API version 1 or "200" for OCS API version 2
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
@@ -21,7 +21,7 @@ Feature: delete users
       | username   | email   |
       | <username> | <email> |
     When the administrator deletes user "<username>" using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "100" for OCS API version 1 or "200" for OCS API version 2
     And the HTTP status code should be "200"
     And user "<username>" should not exist
     Examples:
@@ -32,7 +32,7 @@ Feature: delete users
   Scenario: Delete a user, and specify the user name in different case
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator deletes user "Brand-New-User" using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "100" for OCS API version 1 or "200" for OCS API version 2
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
@@ -46,10 +46,11 @@ Feature: delete users
     And user "brand-new-user" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" deletes user "brand-new-user" using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "100" for OCS API version 1 or "200" for OCS API version 2
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
+  @issue-31276
   Scenario: normal user tries to delete a user
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -57,5 +58,6 @@ Feature: delete users
       | Brian    |
     When user "Alice" deletes user "Brian" using the provisioning API
     Then the OCS status code should be "997"
+    #Then the OCS status code should be "997" for OCS API version 1 or "401" for OCS API version 2
     And the HTTP status code should be "401"
     And user "Brian" should exist

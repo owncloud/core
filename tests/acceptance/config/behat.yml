@@ -105,6 +105,16 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
+    apiProvisioning:
+      paths:
+        - '%paths.base%/../features/apiProvisioning'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - OccUsersGroupsContext:
+        - AuthContext:
+
     apiProvisioning-v1:
       paths:
         - '%paths.base%/../features/apiProvisioning-v1'

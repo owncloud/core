@@ -693,6 +693,8 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function userRequestsURLWithUsingAppPassword($url, $method) {
+		$url = $this->featureContext->substituteInLineCodes($url);
+		\var_dump($url);
 		$this->sendRequest($url, $method, 'token ' . $this->appToken);
 	}
 

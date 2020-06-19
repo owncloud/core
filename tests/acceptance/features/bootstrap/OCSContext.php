@@ -621,6 +621,24 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @Then /^the OCS status code should be "([^"]*)" for OCS API version 1 or "([^"]*)" for OCS API version 2$/
+	 *
+	 * @param int|string $statusCode1
+	 * @param int|string $statusCode2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theOCSStatusCodeShouldBeForV1OrV2($statusCode1, $statusCode2) {
+		if ($this->featureContext->getOcsApiVersion() === 1) {
+			$statusCode = $statusCode1;
+		} else {
+			$statusCode = $statusCode2;
+		}
+		$this->theOCSStatusCodeShouldBe($statusCode);
+	}
+
+	/**
 	 * Check the text in an OCS status message
 	 *
 	 * @Then /^the OCS status message should be "([^"]*)"$/

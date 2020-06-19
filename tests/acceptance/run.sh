@@ -344,6 +344,11 @@ function env_alt_home_clear {
 function run_behat_tests() {
 	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
 
+  if [ -n "${OCS_API_VERSION}" ]
+  then
+	  echo "OCS API version ${OCS_API_VERSION} is set externally."
+  fi
+
 	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}

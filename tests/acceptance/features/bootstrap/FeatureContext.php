@@ -732,11 +732,14 @@ class FeatureContext extends BehatVariablesContext {
 	 * returns the OCS path
 	 * the path is without a slash at the end and without a slash at the beginning
 	 *
-	 * @param string $ocsApiVersion
+	 * @param string|null $ocsApiVersion
 	 *
 	 * @return string
 	 */
-	public function getOCSPath($ocsApiVersion) {
+	public function getOCSPath($ocsApiVersion = null) {
+		if ($ocsApiVersion === null) {
+			$ocsApiVersion = $this->getOcsApiVersion();
+		}
 		return \ltrim($this->getBasePath() . "/ocs/v{$ocsApiVersion}.php", "/");
 	}
 
@@ -929,6 +932,25 @@ class FeatureContext extends BehatVariablesContext {
 		$this->guzzleClientHeaders = \array_merge(
 			$this->guzzleClientHeaders, $guzzleClientHeaders
 		);
+	}
+
+	/**
+	 * @Given using the OCS API version defined externally
+	 *
+	 * @return void
+	 */
+	public function usingOcsApiVersionDefinedExternally() {
+		$externalOcsApiVersion = \getenv('OCS_API_VERSION');
+		if ($externalOcsApiVersion === false) {
+			$externalOcsApiVersion = 1;
+		}
+		$externalOcsApiVersion = (int) $externalOcsApiVersion;
+		if (($externalOcsApiVersion !== 1) && ($externalOcsApiVersion !== 2)) {
+			throw new \InvalidArgumentException(
+				"OCS_API_VERSION must be set to 1 or 2, but is $externalOcsApiVersion"
+			);
+		}
+		$this->ocsApiVersion = $externalOcsApiVersion;
 	}
 
 	/**
@@ -1306,6 +1328,23 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function thenTheHTTPStatusCodeShouldBe($statusCode) {
+		$this->theHTTPStatusCodeShouldBe($statusCode, "");
+	}
+
+	/**
+	 * @Then /^the HTTP status code should be "([^"]*)" for OCS API version 1 or "([^"]*)" for OCS API version 2$/
+	 *
+	 * @param int|string $statusCode1
+	 * @param int|string $statusCode2
+	 *
+	 * @return void
+	 */
+	public function thenTheHTTPStatusCodeShouldBeForV1OrV2($statusCode1, $statusCode2) {
+		if ($this->getOcsApiVersion() === 1) {
+			$statusCode = $statusCode1;
+		} else {
+			$statusCode = $statusCode2;
+		}
 		$this->theHTTPStatusCodeShouldBe($statusCode, "");
 	}
 
@@ -2514,6 +2553,14 @@ class FeatureContext extends BehatVariablesContext {
 				"function" => [
 					$this,
 					"getDAVPathIncludingBasePath"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%ocs_path%",
+				"function" => [
+					$this,
+					"getOCSPath"
 				],
 				"parameter" => []
 			],

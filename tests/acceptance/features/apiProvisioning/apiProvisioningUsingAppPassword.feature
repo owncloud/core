@@ -5,7 +5,7 @@ Feature: access user provisioning API using app password
   So that I can make a client app or script for provisioning users/groups that can use an app password instead of my real password.
 
   Background:
-    Given using OCS API version "2"
+    Given using the OCS API version defined externally
 
   @smokeTest
   Scenario: admin deletes the user
@@ -14,7 +14,7 @@ Feature: access user provisioning API using app password
     And a new client token for the administrator has been generated
     And a new browser session for the administrator has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users/brand-new-user" with "DELETE" using the generated app password
+    When the user requests "/%ocs_path%/cloud/users/brand-new-user" with "DELETE" using the generated app password
     Then the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
@@ -29,7 +29,7 @@ Feature: access user provisioning API using app password
     And a new client token for "brand-new-user" has been generated
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users" with "GET" using the generated app password
+    When the user requests "/%ocs_path%/cloud/users" with "GET" using the generated app password
     Then the users returned by the API should be
       | another-new-user |
     And the HTTP status code should be "200"
@@ -42,7 +42,7 @@ Feature: access user provisioning API using app password
     And a new client token for "brand-new-user" has been generated
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users/brand-new-user" with "GET" using the generated app password
+    When the user requests "/%ocs_path%/cloud/users/brand-new-user" with "GET" using the generated app password
     Then the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
 
@@ -58,7 +58,7 @@ Feature: access user provisioning API using app password
     And a new client token for "brand-new-user" has been generated
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users" with "GET" using the generated app password
+    When the user requests "/%ocs_path%/cloud/users" with "GET" using the generated app password
     Then the users returned by the API should not include "another-new-user"
     And the HTTP status code should be "200"
 
@@ -70,6 +70,7 @@ Feature: access user provisioning API using app password
     And a new client token for "brand-new-user" has been generated
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "/ocs/v2.php/cloud/users/another-new-user" with "GET" using the generated app password
-    Then the HTTP status code should be "401"
+    When the user requests "/%ocs_path%/cloud/users/another-new-user" with "GET" using the generated app password
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
     And the API should not return any data

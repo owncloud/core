@@ -5,14 +5,14 @@ Feature: create a subadmin
   So that I can give administrative privilege of a group to a user
 
   Background:
-    Given using OCS API version "2"
+    Given using the OCS API version defined externally
 
   @smokeTest
   Scenario: admin creates a subadmin
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "brand-new-group" has been created
     When the administrator makes user "brand-new-user" a subadmin of group "brand-new-group" using the provisioning API
-    Then the OCS status code should be "200"
+    Then the OCS status code should be "100" for OCS API version 1 or "200" for OCS API version 2
     And the HTTP status code should be "200"
     And user "brand-new-user" should be a subadmin of group "brand-new-group"
 
@@ -20,16 +20,17 @@ Feature: create a subadmin
     Given user "nonexistentuser" has been deleted
     And group "brand-new-group" has been created
     When the administrator makes user "nonexistentuser" a subadmin of group "brand-new-group" using the provisioning API
-    Then the OCS status code should be "400"
-    And the HTTP status code should be "400"
+    Then the OCS status code should be "101" for OCS API version 1 or "400" for OCS API version 2
+    And the HTTP status code should be "200" for OCS API version 1 or "400" for OCS API version 2
     And user "nonexistentuser" should not be a subadmin of group "brand-new-group"
 
   Scenario: admin tries to create a subadmin using a group which does not exist
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "not-group" has been deleted
     When the administrator makes user "brand-new-user" a subadmin of group "not-group" using the provisioning API
-    Then the OCS status code should be "400"
-    And the HTTP status code should be "400"
+    Then the OCS status code should be "102" for OCS API version 1 or "400" for OCS API version 2
+    And the HTTP status code should be "200" for OCS API version 1 or "400" for OCS API version 2
+    And the API should not return any data
 
   @issue-31276
   Scenario: subadmin of a group tries to make another user subadmin of their group
@@ -42,6 +43,6 @@ Feature: create a subadmin
     And user "brand-new-user" has been added to group "brand-new-group"
     When user "subadmin" makes user "brand-new-user" a subadmin of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    #Then the OCS status code should be "997" for OCS API version 1 or "400" for OCS API version 2
     And the HTTP status code should be "401"
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
