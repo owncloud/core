@@ -6,24 +6,25 @@ Feature: set timeouts of LOCKS
 
   Scenario Outline: do not set timeout on folder and check the default timeout
     Given using <dav-path> DAV path
-    #And the administrator sets parameter "lock_timeout_default" of app "core" to "<default-timeout>"
-    #And the administrator sets parameter "lock_timeout_max" of app "core" to "<max-timeout>"
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
     And parameter "lock_timeout_max" of app "core" has been set to "<max-timeout>"
-    When user "user0" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
       | lockscope | exclusive |
-    And user "user0" gets the following properties of folder "PARENT" using the WebDAV API
+    And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
-    When user "user0" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
+    When user "Alice" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
-    When user "user0" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
+    When user "Alice" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     # consider a drift of 5 seconds between setting the lock and retrieving it
     Examples:
-      | dav-path | default-timeout | max-timeout | result                    |
+      | dav-path | default-timeout | max-timeout | result                     |
       | old      | 120             | 3600        | /Second-(120\|11[5-9])$/   |
       | old      | 99999           | 3600        | /Second-(3600\|359[5-9])$/ |
       | new      | 120             | 3600        | /Second-(120\|11[5-9])$/   |
@@ -63,16 +64,19 @@ Feature: set timeouts of LOCKS
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
     And parameter "lock_timeout_max" of app "core" has been set to "<max-timeout>"
-    When user "user0" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
-    And user "user0" gets the following properties of folder "PARENT" using the WebDAV API
+    And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
-    When user "user0" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
+    When user "Alice" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
-    When user "user0" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
+    When user "Alice" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
+      | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
