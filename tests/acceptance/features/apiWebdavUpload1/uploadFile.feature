@@ -98,7 +98,7 @@ Feature: upload file
       | new         | /upload...1.. | abc...txt.. |
       | new         | /...          | ...         |
 
-  @skipOnOcis
+  @skipOnOcis @issue-ocis-reva-174
   Scenario Outline: upload file with mtime
     Given using <dav_version> DAV path
     When user "Alice" uploads file to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
@@ -110,7 +110,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @skipOnOcis
+  @skipOnOcis @issue-ocis-reva-174
   Scenario Outline: upload a file with mtime in a folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "testFolder"
@@ -123,7 +123,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @skipOnOcis
+  @skipOnOcis @issue-ocis-reva-174
   Scenario Outline: moving a file does not changes its mtime
     Given using <dav_version> DAV path
     And user "Alice" has created folder "testFolder"
