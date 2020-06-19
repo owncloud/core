@@ -59,7 +59,13 @@ class LockManager {
 			// set the requested timeout
 			$timeout = $lockInfo['timeout'];
 		}
+
 		$maxTimeout = $this->config->getAppValue('core', 'lock_timeout_max', self::LOCK_TIMEOUT_MAX);
+		if ($maxTimeout < 0) {
+			// if the max timeout is set to negative, use the default maximum (1 day)
+			$maxTimeout = self::LOCK_TIMEOUT_MAX;
+		}
+
 		if ($timeout < 0 || $timeout > $maxTimeout) {
 			// ensure the timeout isn't greater than the one configured as maximum
 			$timeout = $maxTimeout;
