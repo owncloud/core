@@ -281,7 +281,7 @@ class Installer {
 
 		//detect the archive type
 		$mime = \OC::$server->getMimeTypeDetector()->detect($path);
-		if ($mime !=='application/zip' && $mime !== 'application/x-gzip' && $mime !== 'application/x-bzip2') {
+		if ($mime !=='application/zip' && $mime !== 'application/x-gzip' && $mime !== 'application/gzip' && $mime !== 'application/x-bzip2') {
 			throw new \Exception($l->t("Archives of type %s are not supported", [$mime]));
 		}
 
