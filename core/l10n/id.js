@@ -184,7 +184,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Bagikan ke Diaspora. Buka dalam sebuah tingkap baru.",
     "Share to Google+. Opens in a new window." : "Bagikan ke Google+. Buka dalam sebuah tingkap baru.",
     "Share via email. Opens your mail client." : "Bagikan melalui surel. Buka dalam klien surat anda.",
-    "An error occured while sending email" : "Kesalahan terjadi saat mengirim surel",
     "Email link to person" : "Emailkan tautan ini ke orang",
     "Send copy to self" : "Kirimkan copy ke diri sendiri",
     "Send link via email" : "Kirimkan tautan melalui surel",

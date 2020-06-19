@@ -190,7 +190,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "แชร์ไปยัง Diaspora เปิดในหน้าต่างใหม่",
     "Share to Google+. Opens in a new window." : "แชร์ไปยัง Google+ เปิดในหน้าต่างใหม่",
     "Share via email. Opens your mail client." : "แชร์ผ่านอีเมล เปิดไคลเอ็นต์อีเมลของคุณ",
-    "An error occured while sending email" : "เกิดข้อผิดพลาดขณะส่งอีเมล",
     "Email link to person" : "ส่งลิงก์ให้ทางอีเมล",
     "Send copy to self" : "ส่งสำเนาให้กับตัวเอง",
     "Send link via email" : "ส่งลิงก์ผ่านทางอีเมล",

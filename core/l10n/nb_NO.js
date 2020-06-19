@@ -182,7 +182,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Del på Diaspora. Åpner et nytt vindu.",
     "Share to Google+. Opens in a new window." : "Del på Google+. Åpner et nytt vindu.",
     "Share via email. Opens your mail client." : "Del via e-post. Åpner epost-klienten din.",
-    "An error occured while sending email" : "Det oppstod en feil ved sending av epost",
     "Email link to person" : "Email lenke til person",
     "Send copy to self" : "Send kopi til deg selv",
     "Send link via email" : "Send link i e-post",

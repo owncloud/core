@@ -172,7 +172,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Jaa Diasporaan. Avautuu uuteen ikkunaan.",
     "Share to Google+. Opens in a new window." : "Jaa Google+:aan. Avautuu uuteen ikkunaan.",
     "Share via email. Opens your mail client." : "Jaa sähköpostitse. Avautuu sähköpostisovellukseen.",
-    "An error occured while sending email" : "Tapahtui virhe lähetettäessä sähköpostia",
     "Email link to person" : "Lähetä linkki sähköpostitse",
     "Send copy to self" : "Lähetä kopio itsellesi",
     "Send link via email" : "Lähetä linkki sähköpostitse",

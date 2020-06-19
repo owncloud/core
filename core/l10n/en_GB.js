@@ -185,7 +185,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Share to Diaspora. Opens in a new window.",
     "Share to Google+. Opens in a new window." : "Share to Google+. Opens in a new window.",
     "Share via email. Opens your mail client." : "Share via email. Opens your mail client.",
-    "An error occured while sending email" : "An error occured while sending email",
     "Email link to person" : "Email link to person",
     "Send copy to self" : "Send copy to self",
     "Send link via email" : "Send link via email",

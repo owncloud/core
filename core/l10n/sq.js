@@ -193,7 +193,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Ndajeni me të tjerët në Diaspora. Hapet në një dritare të re.",
     "Share to Google+. Opens in a new window." : "Ndajeni me të tjerët në Google+. Hapet në një dritare të re.",
     "Share via email. Opens your mail client." : "Ndajeni me të tjerët me email. Hap klientin tuaj për email-e.",
-    "An error occured while sending email" : "Ndodhi një gabim gjatë dërgimit të email-it",
     "Email link to person" : "Dërgoja personit lidhjen me email",
     "Send copy to self" : "Dërgojini vetes një kopje",
     "Send link via email" : "Dërgojeni lidhjen me email",

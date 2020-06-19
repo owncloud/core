@@ -182,7 +182,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Сподели на Diaspora. Се отвара нов прозорец.",
     "Share to Google+. Opens in a new window." : "Сподели на Google+. Се отвара нов прозорец.",
     "Share via email. Opens your mail client." : "Сподели Email. Се отвара вашиот Email клиент.",
-    "An error occured while sending email" : "Се појави грешка при испраќање Email",
     "Email link to person" : "Прати врска по е-пошта на личност",
     "Send copy to self" : "Испрати копија до тебе",
     "Send link via email" : "Испрати линк на Email",

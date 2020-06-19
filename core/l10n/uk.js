@@ -163,7 +163,6 @@ OC.L10N.register(
     "Save" : "Зберегти",
     "Remove password" : "Видалити пароль",
     "Share via email. Opens your mail client." : "Обмін через email. Відкриє ваш поштовий клієнт.",
-    "An error occured while sending email" : "Виникла помилка при відсиланні листа",
     "Email link to person" : "Надіслати посилання електронною поштою",
     "Send copy to self" : "Відіслати копію собі",
     "Send link via email" : "Надіслати посилання електронною поштою",

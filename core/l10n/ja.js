@@ -189,7 +189,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Diasporaで共有（新しいウインドウで開きます）",
     "Share to Google+. Opens in a new window." : "Google+で共有（新しいウインドウで開きます）",
     "Share via email. Opens your mail client." : "電子メールで共有（メールクライアントを開きます）",
-    "An error occured while sending email" : "メール送信中にエラーが発生しました",
     "Email link to person" : "共有相手のメールアドレス",
     "Send copy to self" : "コピーを自分自身に送信",
     "Send link via email" : "メールでリンクを送信",
