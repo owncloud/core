@@ -71,6 +71,8 @@ OC.L10N.register(
     "New" : "Novo",
     "Unknown user" : "Usuario descoñecido",
     "Lock status" : "Estado do bloqueo",
+    "Lock file" : "Bloquear o ficheiro",
+    "Failed to lock." : "Produciuse un fallo ao bloquear.",
     "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Prema para ver máis detalles.",
     "\"{name}\" is an invalid file name." : "«{name}» é un nome incorrecto de ficheiro.",
     "File name cannot be empty." : "O nome de ficheiro non pode estar baleiro",

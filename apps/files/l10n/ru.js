@@ -71,6 +71,8 @@ OC.L10N.register(
     "New" : "Новый",
     "Unknown user" : "Неизвестный пользователь",
     "Lock status" : "Состояние блокировки",
+    "Lock file" : "Блокировать файл",
+    "Failed to lock." : "Не удалось заблокировать.",
     "This resource is locked. Click to see more details." : "Ресурс заблокирован. Нажмите, чтобы посмотреть подробности.",
     "\"{name}\" is an invalid file name." : "\"{name}\" это неправильное имя файла.",
     "File name cannot be empty." : "Имя файла не может быть пустым.",
