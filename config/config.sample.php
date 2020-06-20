@@ -237,6 +237,14 @@ $CONFIG = [
 'token_auth_enforced' => false,
 
 /**
+ * Enforce strict login check with user backend
+ * If enabled, strict login check for password in user backend will be enforced,
+ * meaning only the login name typed by the user would  be validated. With this
+ * configuration enabled, e.g. an additional check for email will not be performed.
+ */
+'strict_login_enforced' => false,
+
+/**
  * Define additional login buttons on the logon screen
  * Provides the ability to create additional login buttons on the logon screen, for e.g., SSO integration
  *  'login.alternatives' => [

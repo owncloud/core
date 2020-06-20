@@ -1,0 +1,9 @@
+Security: Add new system config to enforce strict login check with user backend
+
+Adds new system config to enforce strict login check for password
+in user backend, meaning only login name typed by user would be validated.
+With this configuration enabled, e.g. additional check for email will
+not be performed.
+
+https://github.com/owncloud/core/pull/37569
+https://github.com/owncloud/user_ldap/pull/581
