@@ -733,6 +733,11 @@ trait Sharing {
 	 * @return void
 	 */
 	public function shouldNotBeAbleToCreatePublicLinkShare($sharer, $filepath) {
+		$this->asFileOrFolderShouldExist(
+			$this->getActualUsername($sharer),
+			"entry",
+			$filepath
+		);
 		$this->createAPublicShare($sharer, $filepath);
 		Assert::assertEquals(
 			404,
@@ -1434,6 +1439,11 @@ trait Sharing {
 	 */
 	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null) {
 		$sharee = $this->getActualUsername($sharee);
+		$this->asFileOrFolderShouldExist(
+			$this->getActualUsername($sharer),
+			"entry",
+			$filepath
+		);
 		$this->createShare(
 			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
@@ -1460,6 +1470,7 @@ trait Sharing {
 		$sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null
 	) {
 		$sharee = $this->getActualUsername($sharee);
+		$this->asFileOrFolderShouldExist($sharer, "entry", $filepath);
 		$this->createShare(
 			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
@@ -2333,6 +2344,7 @@ trait Sharing {
 	 */
 	public function checkPublicSharesAreEmpty($user, $path) {
 		$user = $this->getActualUsername($user);
+		$this->asFileOrFolderShouldExist($user, "entry", $path);
 		$dataResponded = $this->getShares($user, $path);
 		//It shouldn't have public shares
 		Assert::assertEquals(
