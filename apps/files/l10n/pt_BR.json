@@ -69,6 +69,8 @@
     "New" : "Novo",
     "Unknown user" : "Usuário desconhecido",
     "Lock status" : "Status de bloqueio",
+    "Lock file" : "Bloquear arquivo",
+    "Failed to lock." : "Falha ao bloquear.",
     "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Clique para ver mais detalhes.",
     "\"{name}\" is an invalid file name." : "\"{name}\" é um nome de arquivo inválido.",
     "File name cannot be empty." : "O nome do arquivo não pode estar vazio.",

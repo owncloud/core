@@ -71,6 +71,8 @@ OC.L10N.register(
     "New" : "ใหม่",
     "Unknown user" : "ไม่รู้จักผู้ใช้",
     "Lock status" : "ล็อคสถานะ",
+    "Lock file" : "ล็อคไฟล์",
+    "Failed to lock." : "ล็อคไม่สำเร็จ",
     "This resource is locked. Click to see more details." : "ข้อมูลนี้ถูกล็อคคลิกเพื่อดูรายละเอียดเพิ่มเติม",
     "\"{name}\" is an invalid file name." : "\"{name}\" เป็นชื่อไฟล์ที่ไม่ถูกต้อง",
     "File name cannot be empty." : "ชื่อไฟล์ไม่สามารถเว้นว่างได้",
