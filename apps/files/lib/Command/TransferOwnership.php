@@ -28,9 +28,11 @@ use OC\Encryption\Manager;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OC\Share20\ProviderFactory;
+use OC\User\NoUserException;
 use OCP\Files\FileInfo;
 use OCP\Files\IRootFolder;
 use OCP\Files\Mount\IMountManager;
+use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
@@ -40,6 +42,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class TransferOwnership extends Command {
 
@@ -121,6 +124,12 @@ class TransferOwnership extends Command {
 				null,
 				InputOption::VALUE_REQUIRED,
 				'selectively provide the path to transfer. For example --path="folder_name"'
+			)
+			->addOption(
+				'accept-skipped-shares',
+				's',
+				InputOption::VALUE_NONE,
+				'always confirm to continue in case of skipped shares.'
 			);
 	}
 
@@ -181,7 +190,22 @@ class TransferOwnership extends Command {
 		}
 
 		// collect all the shares
-		$this->collectUsersShares($output);
+		$hasSkipped = $this->collectUsersShares($input, $output);
+
+		if ($hasSkipped && !$input->getOption('accept-skipped-shares')) {
+			// ask (if possible) how to handle missing accounts. Disable the accounts by default.
+			$helper = $this->getHelper('question');
+			$question = new ChoiceQuestion(
+				'There are user shares that cannot be transferred. Do you want to continue with the transfer and skip these shares?',
+				['yes', 'no'],
+				0
+			);
+			$continue = $helper->ask($input, $output, $question);
+			if ($continue == 'no') {
+				$output->writeln("<comment>Execution terminated</comment>");
+				return 1;
+			}
+		}
 
 		// transfer the files
 		$this->transfer($output);
@@ -260,11 +284,14 @@ class TransferOwnership extends Command {
 	}
 
 	/**
+	 * @param InputInterface $input
 	 * @param OutputInterface $output
+	 * @return boolean if there were some skipped shares
 	 */
-	private function collectUsersShares(OutputInterface $output) {
+	private function collectUsersShares(InputInterface $input, OutputInterface $output) {
 		$output->writeln("Collecting all share information for files and folder of $this->sourceUser ...");
 
+		$skipped = 0;
 		$progress = new ProgressBar($output, \count($this->shares));
 		foreach ([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
 			$offset = 0;
@@ -279,22 +306,35 @@ class TransferOwnership extends Command {
 					/**
 					 * filter only shares within the source folder
 					 */
-					$sharePage = \array_filter($sharePage, function (IShare $share) use ($inputPathWithEndingSlash) {
+					$filteredShares = [];
+					foreach ($sharePage as $share) {
 						/**
 						 * trim sharePath, because `/` character trimmed with ltrim in inputPath
 						 */
-						$trimmedSharePath = \ltrim($share->getNode()->getPath(), '/');
-						return $trimmedSharePath === $this->inputPath || (\strpos($trimmedSharePath, $inputPathWithEndingSlash) === 0);
-					});
+						try {
+							$trimmedSharePath = \ltrim($share->getNode()->getPath(), '/');
+							if ($trimmedSharePath === $this->inputPath || (\strpos($trimmedSharePath, $inputPathWithEndingSlash) === 0)) {
+								$filteredShares[] = $share;
+							}
+						} catch (NotFoundException | NoUserException $e) {
+							$skipped++;
+							$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
+							$progress->advance(1);
+						}
+					}
+				} else {
+					$filteredShares = $sharePage;
 				}
-				$progress->advance(\count($sharePage));
-				$this->shares = \array_merge($this->shares, $sharePage);
+				$progress->advance(\count($filteredShares));
+				$this->shares = \array_merge($this->shares, $filteredShares);
 				$offset += 50;
 			}
 		}
 
 		$progress->finish();
 		$output->writeln('');
+
+		return $skipped > 0;
 	}
 
 	/**
@@ -359,7 +399,7 @@ class TransferOwnership extends Command {
 					}
 				}
 				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
-			} catch (\OCP\Files\NotFoundException $e) {
+			} catch (NotFoundException | NoUserException $e) {
 				$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
 			} catch (\Exception $e) {
 				$output->writeln('<error>Could not restore share with id ' . $share->getId() . ':' . $e->getTraceAsString() . '</error>');
