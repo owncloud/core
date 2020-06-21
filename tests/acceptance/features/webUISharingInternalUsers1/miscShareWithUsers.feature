@@ -102,11 +102,12 @@ Feature: misc scenarios on sharing with internal users
       | Alice    |
       | Carol    |
     And user "Brian" has been created with default attributes and skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     And user "Alice" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
     And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share file "testimage.jpg" with user "Carol" using the sharing API
+    Then user "Alice" should not be able to share file "somefile.txt" with user "Carol" using the sharing API
 
   Scenario: user tries to share a folder from a group which is blacklisted from sharing
     Given these users have been created with default attributes and without skeleton files:
@@ -115,11 +116,12 @@ Feature: misc scenarios on sharing with internal users
       | Carol    |
     And user "Brian" has been created with default attributes and skeleton files
     And group "grp1" has been created
+    And user "Alice" has created folder "new-folder"
     And user "Alice" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
     And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
-    Then user "Alice" should not be able to share folder "simple-folder" with user "Carol" using the sharing API
+    Then user "Alice" should not be able to share folder "new-folder" with user "Carol" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
     Given these users have been created with default attributes and skeleton files:
