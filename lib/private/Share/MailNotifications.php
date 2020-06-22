@@ -30,7 +30,9 @@
 
 namespace OC\Share;
 
+use OCP\Files\IRootFolder;
 use OCP\Files\Node;
+use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -71,6 +73,8 @@ class MailNotifications {
 	private $eventDispatcher;
 	/** @var \OCP\Activity\IManager */
 	private $activityManager;
+	/** @var IRootFolder */
+	private $rootFolder;
 
 	/**
 	 * @param IManager $shareManager
@@ -92,7 +96,8 @@ class MailNotifications {
 		Defaults $defaults,
 		IURLGenerator $urlGenerator,
 		EventDispatcher $eventDispatcher,
-		\OCP\Activity\IManager $activityManager
+		\OCP\Activity\IManager $activityManager,
+		IRootFolder $rootFolder
 	) {
 		$this->shareManager = $shareManager;
 		$this->l = $l10n;
@@ -103,6 +108,7 @@ class MailNotifications {
 		$this->urlGenerator = $urlGenerator;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->activityManager = $activityManager;
+		$this->rootFolder = $rootFolder;
 	}
 
 	/**
@@ -213,6 +219,7 @@ class MailNotifications {
 	 * @param string $link the share link
 	 * @param string $personalNote sender note
 	 * @throws GenericShareException
+	 * @throws NotFoundException
 	 * @return string[] $result of failed recipients
 	 */
 	public function sendLinkShareMail($sender, $recipients, $link, $personalNote = null) {
@@ -272,7 +279,11 @@ class MailNotifications {
 		$failedRecipients =  $this->sendLinkShareMailFromBody($recipients, $subject, $htmlBody, $textBody, $from, $replyTo);
 		if (empty($failedRecipients)) {
 			$event = $this->activityManager->generateEvent();
-			$path = $shareNode->getPath();
+			// it can be a re-share, get actual share file node
+			$userFolder = $this->rootFolder->getUserFolder($sender->getUID());
+			$shareFileNodes = $userFolder->getById($shareNode->getId(), true);
+			$shareFileNode = $shareFileNodes[0] ?? null;
+			$path = $userFolder->getRelativePath($shareFileNode->getPath());
 			$event->setApp(\OCA\Files_Sharing\Activity::FILES_SHARING_APP)
 				->setType(\OCA\Files_Sharing\Activity::TYPE_SHARED)
 				->setAuthor($currentUser)

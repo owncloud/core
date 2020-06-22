@@ -25,6 +25,7 @@ use OC\OCS\Result;
 use OC\Share\MailNotifications;
 use OCP\AppFramework\OCSController;
 use OCP\Files\IRootFolder;
+use OCP\Files\NotFoundException;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -88,7 +89,7 @@ class NotificationController extends OCSController {
 					$link,
 					$personalNote
 				);
-			} catch (GenericShareException $e) {
+			} catch (GenericShareException | NotFoundException $e) {
 				$code = $e->getCode() === 0 ? 403 : $e->getCode();
 				return new Result(null, $code, $e->getHint());
 			}
