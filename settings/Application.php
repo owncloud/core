@@ -185,7 +185,8 @@ class Application extends App {
 				$c->query('UserSession'),
 				$c->query('Logger'),
 				$c->query('URLGenerator'),
-				$c->query('Config')
+				$c->query('Config'),
+				$c->query('L10N')
 			);
 		});
 
