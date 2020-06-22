@@ -31,6 +31,7 @@ Summary
 * Bugfix - Align the cancel button on public uploads: [#37504](https://github.com/owncloud/core/pull/37504)
 * Bugfix - Do not notify remote if both owner and sharer are local users: [#37534](https://github.com/owncloud/core/pull/37534)
 * Bugfix - Use relative path in shared_with_email activity: [#37555](https://github.com/owncloud/core/pull/37555)
+* Bugfix - Show error message at Settings Personal CORS: [#37560](https://github.com/owncloud/core/pull/37560)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -271,6 +272,13 @@ Details
    path has changed with the relative path of the sender user folder.
 
    https://github.com/owncloud/core/pull/37555
+
+* Bugfix - Show error message at Settings Personal CORS: [#37560](https://github.com/owncloud/core/pull/37560)
+
+   Skipping a protocol at Settings Personal CORS silently refused to add the domain. Proper error
+   message added.
+
+   https://github.com/owncloud/core/pull/37560
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
