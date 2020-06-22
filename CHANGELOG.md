@@ -30,6 +30,7 @@ Summary
 * Bugfix - Logging of extra fields when logger does not have a writeExtra method: [#37453](https://github.com/owncloud/core/issues/37453)
 * Bugfix - Align the cancel button on public uploads: [#37504](https://github.com/owncloud/core/pull/37504)
 * Bugfix - Do not notify remote if both owner and sharer are local users: [#37534](https://github.com/owncloud/core/pull/37534)
+* Bugfix - Use relative path in shared_with_email activity: [#37555](https://github.com/owncloud/core/pull/37555)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -262,6 +263,13 @@ Details
    able to delete the share at his end.
 
    https://github.com/owncloud/core/pull/37534
+
+* Bugfix - Use relative path in shared_with_email activity: [#37555](https://github.com/owncloud/core/pull/37555)
+
+   "shared_with_email" activity email was including the complete path of the shared node. This
+   path has changed with the relative path of the sender user folder.
+
+   https://github.com/owncloud/core/pull/37555
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
