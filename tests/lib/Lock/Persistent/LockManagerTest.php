@@ -179,26 +179,62 @@ class LockManagerTest extends TestCase {
 	public function lockTimeoutProvider() {
 		return [
 			// default value
-			[null, 1800],
+			[null, LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_MAX, 1800],
 			// given value
-			[10, 10],
+			[10, LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_MAX, 10],
 			// given value higher than default
-			[2000, 2000],
+			[2000, LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_MAX, 2000],
 			// max value 1 day
-			[2*60*60*24, 60*60*24],
+			[2*60*60*24, LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_MAX, 60*60*24],
 			// max value 1 day, not infinite
-			[-1, 60*60*24],
+			[-1, LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_MAX, 60*60*24],
+
+			// with a negative default value (shouldn't happen)
+			// default value
+			[null, -1, LockManager::LOCK_TIMEOUT_MAX, 60*60*24],
+			// given value
+			[10, -1, LockManager::LOCK_TIMEOUT_MAX, 10],
+			// given value higher than default
+			[2000, -1, LockManager::LOCK_TIMEOUT_MAX, 2000],
+			// max value 1 day
+			[2*60*60*24, -1, LockManager::LOCK_TIMEOUT_MAX, 60*60*24],
+			// max value 1 day, not infinite
+			[-1, -1, LockManager::LOCK_TIMEOUT_MAX, 60*60*24],
+
+			// with a negative max value (shouldn't happen) should be a max of 1 day
+			// default value
+			[null, LockManager::LOCK_TIMEOUT_DEFAULT, -1, 1800],
+			// given value
+			[10, LockManager::LOCK_TIMEOUT_DEFAULT, -1, 10],
+			// given value higher than default
+			[2000, LockManager::LOCK_TIMEOUT_DEFAULT, -1, 2000],
+			// max value 1 day
+			[2*60*60*24, LockManager::LOCK_TIMEOUT_DEFAULT, -1, 60*60*24],
+			// max value 1 day, not infinite
+			[-1, LockManager::LOCK_TIMEOUT_DEFAULT, -1, 60*60*24],
+
+			// with a negative default value and also negative maximum (shouldn't happen)
+			// default value
+			[null, -1, -1, 60*60*24],
+			// given value
+			[10, -1, -1, 10],
+			// given value higher than default
+			[2000, -1, -1, 2000],
+			// max value 1 day
+			[2*60*60*24, -1, -1, 60*60*24],
+			// max value 1 day, not infinite
+			[-1, -1, -1, 60*60*24],
 		];
 	}
 
 	/**
 	 * @dataProvider lockTimeoutProvider
 	 */
-	public function testLockTimeout($givenTimeout, $expectedTimeout) {
+	public function testLockTimeout($givenTimeout, $default, $max, $expectedTimeout) {
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
-				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
-				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, $default],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, $max],
 			]));
 
 		$this->lockMapper->method('getLocksByPath')->willReturn([]);
