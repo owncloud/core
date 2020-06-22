@@ -85,7 +85,6 @@ config = {
 				'apiComments',
 				'apiFavorites',
 				'apiMain',
-				'apiProvisioning',
 				'apiProvisioning-v1',
 				'apiProvisioning-v2',
 				'apiProvisioningGroups-v1',
@@ -117,6 +116,22 @@ config = {
 				'apiWebdavUpload1',
 				'apiWebdavUpload2',
 			],
+		},
+		'apiWithOcsApiV1': {
+			'suites': {
+				'apiProvisioning': 'apiProvOcsApiV1',
+			},
+			'extraEnvironment': {
+				'OCS_API_VERSION': '1',
+			}
+		},
+		'apiWithOcsApiV2': {
+			'suites': {
+				'apiProvisioning': 'apiProvOcsApiV2',
+			},
+			'extraEnvironment': {
+				'OCS_API_VERSION': '2',
+			}
 		},
 		'apiNotifications': {
 			'suites': [
