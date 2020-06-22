@@ -12,6 +12,7 @@ OC.MimeTypeList={
     "application/epub+zip": "text",
     "application/font-sfnt": "image",
     "application/font-woff": "image",
+    "application/gzip": "package/x-generic",
     "application/illustrator": "image",
     "application/javascript": "text/code",
     "application/json": "text/code",
