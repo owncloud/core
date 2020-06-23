@@ -8,6 +8,7 @@ Feature: create folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-269
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
     When user "Alice" creates folder "<folder_name>" using the WebDAV API
@@ -70,7 +71,7 @@ Feature: create folder
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-168
+  @skipOnOcis @issue-ocis-reva-168 @skipOnOcis-EOS-Storage @issue-ocis-reva-269
   Scenario Outline: try to create a folder that already exists
     Given using <dav_version> DAV path
     And user "Alice" has created folder "my-data"

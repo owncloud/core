@@ -24,6 +24,7 @@ Feature: upload file
       | new         | /strängé file.txt |
       | new         | /नेपाली.txt       |
 
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
@@ -41,6 +42,18 @@ Feature: upload file
       | new         | " ?fi=le&%#2 . txt" |
       | new         | " # %ab ab?=ed "    |
 
+  @skipOnOcV10 @skipOnOcis-OC-Storage @issue-ocis-reva-265
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: upload a file and check download content
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
+    Then the content of file <file_name> for user "Alice" should be ""
+    Examples:
+      | dav_version | file_name           |
+      | old         | "file ?2.txt"       |
+      | new         | "file ?2.txt"       |
+
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
