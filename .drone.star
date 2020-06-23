@@ -125,7 +125,8 @@ config = {
 		},
 		'apiFederation': {
 			'suites': [
-				'apiFederation',
+				'apiFederation1',
+				'apiFederation2',
 			],
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']

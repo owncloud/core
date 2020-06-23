@@ -85,9 +85,19 @@ default:
         - FavoritesContext:
         - WebDavPropertiesContext:
 
-    apiFederation:
+    apiFederation1:
       paths:
-        - '%paths.base%/../features/apiFederation'
+        - '%paths.base%/../features/apiFederation1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiFederation2:
+      paths:
+        - '%paths.base%/../features/apiFederation2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
