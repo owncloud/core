@@ -370,9 +370,19 @@ default:
         - WebDavPropertiesContext:
         - OccContext:
 
-    apiWebdavProperties:
+    apiWebdavProperties1:
       paths:
-        - '%paths.base%/../features/apiWebdavProperties'
+        - '%paths.base%/../features/apiWebdavProperties1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiWebdavProperties2:
+      paths:
+        - '%paths.base%/../features/apiWebdavProperties2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
