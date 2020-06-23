@@ -99,6 +99,7 @@ config = {
 				'apiSharePublicLink2',
 				'apiShareReshare1',
 				'apiShareReshare2',
+				'apiShareReshare3',
 				'apiShareUpdate',
 				'apiTags',
 				'apiTranslation',
