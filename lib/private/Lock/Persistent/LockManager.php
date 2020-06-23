@@ -22,22 +22,28 @@ namespace OC\Lock\Persistent;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IUserSession;
 use OCP\Lock\Persistent\ILock;
+use OCP\IConfig;
 
 class LockManager {
-
+	const LOCK_TIMEOUT_DEFAULT = 30 * 60;  // default 30 minutes
+	const LOCK_TIMEOUT_MAX = 24 * 60 * 60;  // max 1 day
 	/** @var LockMapper */
 	private $lockMapper;
 	/** @var IUserSession */
 	private $userSession;
 	/** @var ITimeFactory */
 	private $timeFactory;
+	/** @var IConfig */
+	private $config;
 
 	public function __construct(LockMapper $lockMapper,
 								IUserSession $userSession,
-								ITimeFactory $timeFactory) {
+								ITimeFactory $timeFactory,
+								IConfig $config) {
 		$this->lockMapper = $lockMapper;
 		$this->userSession = $userSession;
 		$this->timeFactory = $timeFactory;
+		$this->config = $config;
 	}
 
 	public function lock($storageId, $internalPath, $fileId, array $lockInfo) {
@@ -48,15 +54,23 @@ class LockManager {
 			throw new \InvalidArgumentException('No token provided in $lockInfo');
 		}
 
-		// default to 30 minutes if nothing is specified
-		$timeout = 30*60;
+		$timeout = $this->config->getAppValue('core', 'lock_timeout_default', self::LOCK_TIMEOUT_DEFAULT);
 		if (isset($lockInfo['timeout'])) {
+			// set the requested timeout
 			$timeout = $lockInfo['timeout'];
-			// max one day, not infinie
-			if ($timeout < 0 || $timeout > 60*60*24) {
-				$timeout = 60*60*24;
-			}
 		}
+
+		$maxTimeout = $this->config->getAppValue('core', 'lock_timeout_max', self::LOCK_TIMEOUT_MAX);
+		if ($maxTimeout < 0) {
+			// if the max timeout is set to negative, use the default maximum (1 day)
+			$maxTimeout = self::LOCK_TIMEOUT_MAX;
+		}
+
+		if ($timeout < 0 || $timeout > $maxTimeout) {
+			// ensure the timeout isn't greater than the one configured as maximum
+			$timeout = $maxTimeout;
+		}
+
 		$owner = isset($lockInfo['owner']) ? $lockInfo['owner'] : null;
 		if ($owner === null && $this->userSession->isLoggedIn()) {
 			$user = $this->userSession->getUser();
