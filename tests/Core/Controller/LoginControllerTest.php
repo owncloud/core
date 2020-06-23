@@ -424,10 +424,27 @@ class LoginControllerTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));
 	}
 
-	public function testLoginWithInvalidCredentials() {
+	public function dataLoginWithInvalidCredentials() {
+		return [
+			[false, 1],
+			[true, 0],
+		];
+	}
+
+	/**
+	 * @dataProvider dataLoginWithInvalidCredentials
+	 * @param $strictLoginCheck
+	 * @param $expectedGetByEmailCalls
+	 */
+	public function testLoginWithInvalidCredentials($strictLoginCheck, $expectedGetByEmailCalls) {
 		$user = 'unknown';
 		$password = 'secret';
 		$loginPageUrl = 'some url';
+
+		$this->config->expects($this->exactly(1))
+			->method('getSystemValue')
+			->with('strict_login_enforced', false)
+			->willReturn($strictLoginCheck);
 
 		$this->userSession->expects($this->once())
 			->method('login')
@@ -439,7 +456,8 @@ class LoginControllerTest extends TestCase {
 
 		$this->userSession->expects($this->never())
 			->method('createSessionToken');
-		$this->userManager->expects($this->any())->method('getByEmail')->willReturn([]);
+		$this->userManager->expects($this->exactly($expectedGetByEmailCalls))
+			->method('getByEmail')->willReturn([]);
 
 		$expected = new RedirectResponse($loginPageUrl);
 		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, '/foo'));

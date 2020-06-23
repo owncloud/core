@@ -439,7 +439,19 @@ class SessionTest extends TestCase {
 		$userSession->logClientIn('john', 'doe', $request);
 	}
 
-	public function testLogClientInUnexist() {
+	public function dataLogClientInUnexist() {
+		return [
+			[false, 2],
+			[true, 0],
+		];
+	}
+
+	/**
+	 * @dataProvider dataLogClientInUnexist
+	 * @param $strictLoginCheck
+	 * @param $expectedGetByEmailCalls
+	 */
+	public function testLogClientInUnexist($strictLoginCheck, $expectedGetByEmailCalls) {
 		$manager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -457,11 +469,19 @@ class SessionTest extends TestCase {
 			->method('getToken')
 			->with('doe')
 			->will($this->throwException(new InvalidTokenException()));
-		$this->config->expects($this->once())
+		$this->config->expects($this->at(0))
 			->method('getSystemValue')
 			->with('token_auth_enforced', false)
 			->will($this->returnValue(false));
-		$manager->expects($this->any())
+		$this->config->expects($this->at(1))
+			->method('getSystemValue')
+			->with('strict_login_enforced', false)
+			->willReturn($strictLoginCheck);
+		$this->config->expects($this->at(2))
+			->method('getSystemValue')
+			->with('strict_login_enforced', false)
+			->willReturn($strictLoginCheck);
+		$manager->expects($this->exactly($expectedGetByEmailCalls))
 			->method('getByEmail')
 			->willReturn([]);
 

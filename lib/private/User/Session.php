@@ -360,6 +360,10 @@ class Session implements IUserSession, Emitter {
 			throw new PasswordLoginForbiddenException();
 		}
 		if (!$this->login($user, $password)) {
+			if ($this->config->getSystemValue('strict_login_enforced', false) === true) {
+				return false;
+			}
+
 			$users = $this->manager->getByEmail($user);
 			if (\count($users) === 1) {
 				return $this->login($users[0]->getUID(), $password);
@@ -397,6 +401,9 @@ class Session implements IUserSession, Emitter {
 		);
 		$user = $this->manager->get($username);
 		if ($user === null) {
+			if ($this->config->getSystemValue('strict_login_enforced', false) === true) {
+				return false;
+			}
 			$users = $this->manager->getByEmail($username);
 			if (empty($users)) {
 				return false;
