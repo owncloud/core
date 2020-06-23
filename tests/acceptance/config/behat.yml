@@ -85,9 +85,19 @@ default:
         - FavoritesContext:
         - WebDavPropertiesContext:
 
-    apiFederation:
+    apiFederation1:
       paths:
-        - '%paths.base%/../features/apiFederation'
+        - '%paths.base%/../features/apiFederation1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiFederation2:
+      paths:
+        - '%paths.base%/../features/apiFederation2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -246,6 +256,18 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
+    apiShareReshare3:
+      paths:
+        - '%paths.base%/../features/apiShareReshare3'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
     apiShareUpdate:
       paths:
         - '%paths.base%/../features/apiShareUpdate'
@@ -360,9 +382,19 @@ default:
         - WebDavPropertiesContext:
         - OccContext:
 
-    apiWebdavProperties:
+    apiWebdavProperties1:
       paths:
-        - '%paths.base%/../features/apiWebdavProperties'
+        - '%paths.base%/../features/apiWebdavProperties1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiWebdavProperties2:
+      paths:
+        - '%paths.base%/../features/apiWebdavProperties2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params

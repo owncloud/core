@@ -99,6 +99,7 @@ config = {
 				'apiSharePublicLink2',
 				'apiShareReshare1',
 				'apiShareReshare2',
+				'apiShareReshare3',
 				'apiShareUpdate',
 				'apiTags',
 				'apiTranslation',
@@ -110,7 +111,8 @@ config = {
 				'apiWebdavMove2',
 				'apiWebdavOperations',
 				'apiWebdavPreviews',
-				'apiWebdavProperties',
+				'apiWebdavProperties1',
+				'apiWebdavProperties2',
 				'apiWebdavUpload1',
 				'apiWebdavUpload2',
 			],
@@ -125,7 +127,8 @@ config = {
 		},
 		'apiFederation': {
 			'suites': [
-				'apiFederation',
+				'apiFederation1',
+				'apiFederation2',
 			],
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
