@@ -174,7 +174,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:message" in the response about user "Alice" should be "File not found: parent.txt in '%username%'"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
-  @skipOnOcV10 @issue-ocis-thumbnails-191
+  @skipOnOcV10 @issue-ocis-thumbnails-191 @skipOnOcis-EOS-Storage @issue-ocis-reva-308
   #after fixing all issues delete this Scenario and use the one above
   Scenario: download previews of other users files
     Given user "Brian" has been created with default attributes and without skeleton files

@@ -172,7 +172,7 @@ Feature: sharing
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
 
-  @skipOnOcV10
+  @skipOnOcV10 @skipOnOcis-EOS-Storage @issue-ocis-reva-249
   Scenario: cannot get information of a specific share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -206,6 +206,36 @@ Feature: sharing
     # And as "Carol" folder "/Carol-folder/folder2" should exist
     #
     # But this happens on OCIS:
+    And as "Alice" folder "/Alice-folder/folder2" should exist
+    And as "Carol" folder "/Carol-folder/folder2" should not exist
+
+  @skipOnOcV10 @skipOnOcis-OC-Storage @issue-ocis-reva-249
+  #same as previous Scenario but without displayname_owner because EOS does not report it
+  Scenario: cannot get information of a specific share
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "/Alice-folder"
+    And user "Alice" has created folder "/Alice-folder/folder2"
+    And user "Carol" has created folder "/Carol-folder"
+    And user "Alice" has shared folder "/Alice-folder" with user "Brian" with permissions "all"
+    And user "Carol" has shared folder "/Carol-folder" with user "Brian" with permissions "all"
+    When user "Brian" moves folder "/Alice-folder/folder2" to "/Carol-folder/folder2" using the WebDAV API
+    And user "Carol" gets the info of the last share using the sharing API
+    Then the fields of the last response to user "Carol" sharing with user "Brian" should include
+      | id                | A_STRING             |
+      | item_type         | folder               |
+      | item_source       | A_STRING             |
+      | share_type        | user                 |
+      | file_source       | A_STRING             |
+      | file_target       | /Carol-folder        |
+      | permissions       | all                  |
+      | stime             | A_NUMBER             |
+      | storage           | A_STRING             |
+      | mail_send         | 0                    |
+      | uid_owner         | %username%           |
+      | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Alice-folder/folder2" should exist
     And as "Carol" folder "/Carol-folder/folder2" should not exist
 

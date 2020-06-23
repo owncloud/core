@@ -1,4 +1,4 @@
-@api @files_versions-app-required
+@api @files_versions-app-required @skipOnOcis-EOS-Storage @issue-ocis-reva-275
 
 Feature: dav-versions
 

@@ -32,6 +32,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-301 @issue-ocis-reva-302
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -50,6 +51,42 @@ Feature: sharing
       | mimetype               | text/plain            |
       | storage_id             | ANY_VALUE             |
       | share_type             | user                  |
+    Examples:
+      | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
+      # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
+      | 1               | 31                    | 19                  | 100             |
+      | 2               | 31                    | 19                  | 200             |
+      # Ask for read, share (17), create and delete. You get share plus read
+      | 1               | 29                    | 17                  | 100             |
+      | 2               | 29                    | 17                  | 200             |
+      # Ask for read, update, create, delete. You get read plus update.
+      | 1               | 15                    | 3                   | 100             |
+      | 2               | 15                    | 3                   | 200             |
+      # Ask for just update. You get exactly update (you do not get read or anything else)
+      | 1               | 2                     | 2                   | 100             |
+      | 2               | 2                     | 2                   | 200             |
+
+  @skipOnOcis-OC-Storage @skipOnOcV10 @issue-ocis-reva-301 @issue-ocis-reva-302
+  #after fixing all the issues delete this scenario and use the one above
+  Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions <requested_permissions> using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with        | %username%               |
+      | file_target       | /textfile0.txt           |
+      | path              | /textfile0.txt           |
+      | permissions       | <granted_permissions>    |
+      | uid_owner         | %username%               |
+      | displayname_owner |                          |
+      | item_type         | file                     |
+      | mimetype          | application/octet-stream |
+      | storage_id        | ANY_VALUE                |
+      | share_type        | user                     |
+    And the fields of the last response should not include
+      | share_with_displayname | %displayname% |
     Examples:
       | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
       # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
@@ -86,12 +123,12 @@ Feature: sharing
     And user "Alice" has created folder "/home"
     And user "Alice" has uploaded file with content "Random data" to "/home/randomfile.txt"
     When user "Alice" shares file "/home/randomfile.txt" with user "Brian" using the sharing API
-    And the HTTP status code should be "<http_status_code>"
+    And the HTTP status code should be "<http_status_code_ocs>" or "<http_status_code_eos>"
     And as "Brian" file "randomfile.txt" should not exist
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 200              |
+      | ocs_api_version | http_status_code_ocs | http_status_code_eos |
+      | 1               | 200                | 500                |
+      | 2               | 200                | 500                |
 
   Scenario Outline: Creating a share of a folder with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
@@ -106,6 +143,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-301
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -125,6 +163,33 @@ Feature: sharing
       | mimetype               | httpd/unix-directory |
       | storage_id             | ANY_VALUE            |
       | share_type             | user                 |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @skipOnOcis-OC-Storage @skipOnOcV10 @issue-ocis-reva-301 @issue-ocis-reva-302
+  #after fixing all the issues delete this scenario and use the one above
+  Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
+    When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%           |
+      | file_target            | /FOLDER              |
+      | path                   | /FOLDER              |
+      | permissions            | all                  |
+      | uid_owner              | %username%           |
+      | displayname_owner      |                      |
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | storage_id             | ANY_VALUE            |
+      | share_type             | user                 |
+    And the fields of the last response should not include
+      | share_with_displayname | %displayname% |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -284,7 +349,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-14 @issue-ocis-reva-243
+  @skipOnOcis @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -299,7 +364,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
+  @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243 @issue-ocis-reva-12
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -317,7 +382,7 @@ Feature: sharing
       | 2               | 200             |
 
   @issue-35484
-  @skipOnOcis @issue-ocis-reva-11
+  @skipOnOcis @skipOnOcis-OC-Storage @issue-ocis-reva-11
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -459,7 +524,7 @@ Feature: sharing
       | /common/sub/textfile0.txt |
       | /textfile0.txt            |
 
-  @skipOnOcis @issue-enterprise-3896 @issue-ocis-reva-243
+  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -474,7 +539,7 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And as "Brian" folder "userOneFolder" should not exist
 
-  @skipOnOcis @issue-enterprise-3896 @issue-ocis-reva-243
+  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -489,7 +554,7 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And as "Alice" folder "userOneFolder" should not exist
 
-  @skipOnOcis @issue-enterprise-3896 @issue-ocis-reva-243
+  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |
