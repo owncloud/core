@@ -152,7 +152,8 @@ class LoginControllerTest extends TestCase {
 			'resetPasswordLink' => null,
 			'alt_login' => [],
 			'rememberLoginAllowed' => false,
-			'rememberLoginState' => 0
+			'rememberLoginState' => 0,
+			'strictLoginEnforced' => false
 		];
 
 		$this->licenseManager->method('getLicenseMessageFor')
@@ -247,7 +248,8 @@ class LoginControllerTest extends TestCase {
 			'resetPasswordLink' => null,
 			'alt_login' => [],
 			'rememberLoginAllowed' => false,
-			'rememberLoginState' => 0
+			'rememberLoginState' => 0,
+			'strictLoginEnforced' => false
 		];
 
 		if ($shouldShowMessage) {
@@ -304,6 +306,7 @@ class LoginControllerTest extends TestCase {
 				'rememberLoginAllowed' => \OC_Util::rememberLoginAllowed(),
 				'rememberLoginState' => 0,
 				'resetPasswordLink' => null,
+				'strictLoginEnforced' => false
 			],
 			'guest'
 		);
@@ -338,11 +341,12 @@ class LoginControllerTest extends TestCase {
 			->method('isLoggedIn')
 			->willReturn(false);
 		$this->config
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
 			->willReturnMap([
 				['lost_password_link', false],
-				['login.alternatives', '', '']
+				['login.alternatives', '', ''],
+				['strict_login_enforced', false],
 			]);
 		$user = $this->createMock(IUser::class);
 		$user
@@ -371,7 +375,8 @@ class LoginControllerTest extends TestCase {
 				'alt_login' => [],
 				'rememberLoginAllowed' => \OC_Util::rememberLoginAllowed(),
 				'rememberLoginState' => 0,
-				'resetPasswordLink' => false
+				'resetPasswordLink' => false,
+				'strictLoginEnforced' => false
 			],
 			'guest'
 		);
@@ -384,11 +389,12 @@ class LoginControllerTest extends TestCase {
 			->method('isLoggedIn')
 			->willReturn(false);
 		$this->config
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
 			->willReturnMap([
 				['lost_password_link', false],
-				['login.alternatives', '', '']
+				['login.alternatives', '', ''],
+				['strict_login_enforced', false],
 			]);
 		$user = $this->createMock(IUser::class);
 		$user
@@ -417,7 +423,8 @@ class LoginControllerTest extends TestCase {
 				'alt_login' => [],
 				'rememberLoginAllowed' => \OC_Util::rememberLoginAllowed(),
 				'rememberLoginState' => 0,
-				'resetPasswordLink' => false
+				'resetPasswordLink' => false,
+				'strictLoginEnforced' => false
 			],
 			'guest'
 		);
