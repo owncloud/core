@@ -3,3 +3,6 @@ contact_links:
   - name: Ask question
     url: https://central.owncloud.org/
     about: Please ask and answer questions here.
+  - name: Report security issue
+    url: https://owncloud.org/security/
+    about: For reporting potential security issues.
