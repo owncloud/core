@@ -21,7 +21,7 @@ Feature: users cannot move (rename) a folder to a blacklisted name
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcV10
+  @issue-ocis-reva-211 @skipOnOcV10 @skipOnOcis-EOS-Storage @issue-ocis-reva-269
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Renaming a folder to a name that is banned by default is allowed
     Given using <dav_version> DAV path
