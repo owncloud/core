@@ -4,6 +4,7 @@ Feature: set timeouts of LOCKS
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: do not set timeout on folder and check the default timeout
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
@@ -60,6 +61,7 @@ Feature: set timeouts of LOCKS
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
 
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: set timeout over the maximum on folder
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
