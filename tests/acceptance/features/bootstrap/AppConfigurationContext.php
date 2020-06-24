@@ -51,12 +51,7 @@ class AppConfigurationContext implements Context {
 	public function adminSetsServerParameterToUsingAPI(
 		$parameter, $app, $value
 	) {
-		$user = $this->featureContext->getCurrentUser();
-		$this->featureContext->setCurrentUser($this->featureContext->getAdminUsername());
-
 		$this->modifyAppConfig($app, $parameter, $value);
-
-		$this->featureContext->setCurrentUser($user);
 	}
 
 	/**
