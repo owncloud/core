@@ -41,7 +41,7 @@ Feature: get file properties
       | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3f2\.txt    |
       | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt    |
 
-  @skipOnOcV10 @issue-ocis-reva-214
+  @skipOnOcV10 @issue-ocis-reva-214 @issue-ocis-reva-265 @skipOnOcis-EOS-Storage
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
@@ -59,6 +59,17 @@ Feature: get file properties
       | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt  |
       | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3F2\.txt  |
       | new         | /file &2.txt  | dav\/files\/%username%\/file%20&2\.txt    |
+
+  @skipOnOcis-OC-Storage @issue-ocis-reva-265  @skipOnOcV10
+  #after fixing the issues merge this Scenario into the one above
+  Scenario Outline: upload a file to content
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
+    Then the HTTP status code should be "500"
+    Examples:
+      | dav_version | file_name     |
+      | old         | /file ?2.txt  |
+      | new         | /file ?2.txt  |
 
   @skipOnOcis @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
@@ -87,7 +98,7 @@ Feature: get file properties
       | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3f2\.txt                                     |
       | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20%262\.txt                                     |
 
-  @skipOnOcV10 @issue-ocis-reva-214
+  @skipOnOcV10 @issue-ocis-reva-214 @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
@@ -115,6 +126,7 @@ Feature: get file properties
       | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3F2\.txt                                     |
       | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20&2\.txt                                       |
 
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
