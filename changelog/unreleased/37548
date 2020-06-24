@@ -9,10 +9,10 @@ The expiration is controlled in the source server (server A). The target server
 
 This feature won't work for shares that are grabbed from a public link:
 if source server (server A) shares a file / folder via link, and an user from the
-target server (server B) add that link to his ownCloud; in this case, this "remote
+target server (server B) adds that link to his ownCloud; in this case, this "remote
 share expiration" won't apply.
 
-In addition, the same that happens with user, group and link shares, the share recipient
+In addition, the same as happens with user, group and link shares, the share recipient
 won't have control over the expiration date. 
 
 https://github.com/owncloud/core/pull/37548

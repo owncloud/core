@@ -130,6 +130,16 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Then the default expiration date checkbox for remote shares should be enabled on the webUI
+	 *
+	 * @return void
+	 */
+	public function setDefaultExpirationDateForRemoteCheckboxSharesShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForRemoteShareElement();
+		$this->assertCheckBoxIsChecked($checkboxElement);
+	}
+
+	/**
 	 * @Then the enforce maximum expiration date checkbox for user shares should be enabled on the webUI
 	 *
 	 * @return void
@@ -146,6 +156,16 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function enforceMaximumExpirationDateForGroupSharesCheckboxShouldBeEnabled() {
 		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateGroupShareElement();
+		$this->assertCheckBoxIsChecked($checkboxElement);
+	}
+
+	/**
+	 * @Then the enforce maximum expiration date checkbox for remote shares should be enabled on the webUI
+	 *
+	 * @return void
+	 */
+	public function enforceMaximumExpirationDateForRemoteSharesCheckboxShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateRemoteShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
 
@@ -181,6 +201,24 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 			$expirationDays,
 			__METHOD__
 			. " The expiration date for group shares was expected to be set to '$days' days, "
+			. "but was actually set to '$expirationDays' days"
+		);
+	}
+
+	/**
+	 * @Then the expiration date for remote shares should set to :days days on the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function expirationDateForRemoteSharesShouldBeSetToXDays($days) {
+		$expirationDays = $this->adminSharingSettingsPage->getRemoteShareExpirationDays();
+		Assert::assertEquals(
+			$days,
+			$expirationDays,
+			__METHOD__
+			. " The expiration date for remote shares was expected to be set to '$days' days, "
 			. "but was actually set to '$expirationDays' days"
 		);
 	}
@@ -360,6 +398,17 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator enforces maximum expiration date for remote shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function administratorEnforcesMaximumExpirationDateForRemoteShares() {
+		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForRemoteShares(
+			$this->getSession()
+		);
+	}
+
+	/**
 	 * @When the administrator updates the user share expiration date to :days days using the webUI
 	 *
 	 * @param int $days
@@ -382,12 +431,34 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator updates the remote share expiration date to :days days using the webUI
+	 *
+	 * @param int $days
+	 *
+	 * @return void
+	 */
+	public function administratorUpdatesRemoteShareExpirationTo($days) {
+		$this->adminSharingSettingsPage->setExpirationDaysForRemoteShare($days, $this->getSession());
+	}
+
+	/**
 	 * @When the administrator enables default expiration date for group shares using the webUI
 	 *
 	 * @return void
 	 */
 	public function theAdministratorEnablesDefaultExpirationDateForGroupShares() {
 		$this->adminSharingSettingsPage->enableDefaultExpirationDateForGroupShares(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the administrator enables default expiration date for remote shares using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesDefaultExpirationDateForRemoteShares() {
+		$this->adminSharingSettingsPage->enableDefaultExpirationDateForRemoteShares(
 			$this->getSession()
 		);
 	}

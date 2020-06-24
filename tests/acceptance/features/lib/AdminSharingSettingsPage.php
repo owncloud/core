@@ -88,12 +88,17 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $defaultExpirationDateForUserCheckboxId = 'shareapiDefaultExpireDateUserShare';
 	protected $defaultExpirationDateForGroupCheckboxXpath = '//label[@for="shareapiDefaultExpireDateGroupShare"]';
 	protected $defaultExpirationDateForGroupCheckboxId = 'shareapiDefaultExpireDateGroupShare';
+	protected $defaultExpirationDateForRemoteCheckboxXpath = '//label[@for="shareapiDefaultExpireDateRemoteShare"]';
+	protected $defaultExpirationDateForRemoteCheckboxId = 'shareapiDefaultExpireDateRemoteShare';
 	protected $userShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysUserShare"]';
 	protected $groupShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysGroupShare"]';
+	protected $remoteShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysRemoteShare"]';
 	protected $enforceExpirationDateUserShareCheckboxXpath = '//span[@id="setDefaultExpireDateUserShare"]//label[contains(text(),"expiration date")]';
 	protected $enforceExpirationDateUserShareCheckboxId = 'shareapiEnforceExpireDateUserShare';
 	protected $enforceExpirationDateGroupShareCheckboxXpath = '//span[@id="setDefaultExpireDateGroupShare"]//label[contains(text(),"expiration date")]';
 	protected $enforceExpirationDateGroupShareCheckboxId = 'shareapiEnforceExpireDateGroupShare';
+	protected $enforceExpirationDateRemoteShareCheckboxXpath = '//span[@id="setDefaultExpireDateRemoteShare"]//label[contains(text(),"expiration date")]';
+	protected $enforceExpirationDateRemoteShareCheckboxId = 'shareapiEnforceExpireDateRemoteShare';
 
 	/**
 	 * toggle the Share API
@@ -370,6 +375,13 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	/**
 	 * @return NodeElement|null
 	 */
+	public function getDefaultExpirationForRemoteShareElement() {
+		return $this->findById($this->defaultExpirationDateForRemoteCheckboxId);
+	}
+
+	/**
+	 * @return NodeElement|null
+	 */
 	public function getEnforceExpireDateUserShareElement() {
 		return $this->findById($this->enforceExpirationDateUserShareCheckboxId);
 	}
@@ -379,6 +391,13 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 */
 	public function getEnforceExpireDateGroupShareElement() {
 		return $this->findById($this->enforceExpirationDateGroupShareCheckboxId);
+	}
+
+	/**
+	 * @return NodeElement|null
+	 */
+	public function getEnforceExpireDateRemoteShareElement() {
+		return $this->findById($this->enforceExpirationDateRemoteShareCheckboxId);
 	}
 
 	/**
@@ -403,6 +422,19 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			$expirationDay,
 			__METHOD__ .
 			" could not find group share expiration day field"
+		);
+		return $expirationDay->getValue($expirationDay);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRemoteShareExpirationDays() {
+		$expirationDay = $this->find("xpath", $this->remoteShareExpirationDateFieldXpath);
+		$this->assertElementNotNull(
+			$expirationDay,
+			__METHOD__ .
+			" could not find remote share expiration day field"
 		);
 		return $expirationDay->getValue($expirationDay);
 	}
@@ -456,6 +488,22 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
+	 * enforce mamixum expiration date for remote share
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enforceMaximumExpirationDateForRemoteShares(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->enforceExpirationDateRemoteShareCheckboxXpath,
+			$this->enforceExpirationDateRemoteShareCheckboxId
+		);
+	}
+
+	/**
 	 *
 	 * @return NodeElement|NULL
 	 * @throws ElementNotFoundException
@@ -481,6 +529,21 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			$expirationDateField,
 			__METHOD__ .
 			" xpath $this->groupShareExpirationDateFieldXpath could not find set-group-share-expiration-field"
+		);
+		return $expirationDateField;
+	}
+
+	/**
+	 *
+	 * @return NodeElement|NULL
+	 * @throws ElementNotFoundException
+	 */
+	private function findRemoteShareExpirationField() {
+		$expirationDateField = $this->find("xpath", $this->remoteShareExpirationDateFieldXpath);
+		$this->assertElementNotNull(
+			$expirationDateField,
+			__METHOD__ .
+			" xpath $this->remoteShareExpirationDateFieldXpath could not find set-remote-share-expiration-field"
 		);
 		return $expirationDateField;
 	}
@@ -518,6 +581,22 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
+	 * set expiration date for remote share
+	 *
+	 * @param int $date
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function setExpirationDaysForRemoteShare(
+		$date, Session $session
+	) {
+		$expirationDateField = $this->findRemoteShareExpirationField();
+		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
 	 * enable default expiration date for group share
 	 *
 	 * @param Session $session
@@ -530,6 +609,22 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			"enables",
 			$this->defaultExpirationDateForGroupCheckboxXpath,
 			$this->defaultExpirationDateForGroupCheckboxId
+		);
+	}
+
+	/**
+	 * enable default expiration date for remote share
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enableDefaultExpirationDateForRemoteShares(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->defaultExpirationDateForRemoteCheckboxXpath,
+			$this->defaultExpirationDateForRemoteCheckboxId
 		);
 	}
 

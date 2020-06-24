@@ -104,3 +104,145 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens the share dialog for file "textfile.txt"
     Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
     And user "Brian" with displayname "%displayname%" should be listed as share receiver via "sub-folder" on the webUI
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is disabled for federation sharing, sharer checks the expiration date of a federation share
+    Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "no"
+    And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    When the user opens the share dialog for file "lorem.txt"
+    Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the expiration date input field should be empty for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type  | federated  |
+      | path        | /lorem.txt  |
+      | expiration  |            |
+      | uid_owner   | Alice      |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is enabled for federation sharing, sharer checks the expiration date of a federation share
+    Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    When the user opens the share dialog for file "lorem.txt"
+    Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the expiration date input field should be "+7 days" for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type | federated  |
+      | path       | /lorem.txt |
+      | expiration | +7 days    |
+      | uid_owner  | Alice      |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario Outline: expiration date is enforced for federation sharing, user shares file
+    Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "<num_days>"
+    And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    When the user opens the share dialog for file "lorem.txt"
+    Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the expiration date input field should be "<days>" for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type  | federated  |
+      | path        | /lorem.txt |
+      | expiration  | <days>     |
+      | uid_owner   | Alice      |
+    Examples:
+      | num_days | days     |
+      | 3        | +3 days  |
+      | 0        | today    |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is enforced for federation sharing, user shares and tries to change expiration date more than allowed
+    Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "3"
+    And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    When the user opens the share dialog for file "lorem.txt"
+    And the user changes expiration date for share of federated user "Alice" with displayname "%username%@%remote_server% (federated)" to "+4 days" in the share dialog
+#    Cannot set expiration date more than 3 days in the future
+    Then the expiration date input field should be "+3 days" for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type | federated  |
+      | path       | /lorem.txt |
+      | expiration | +3 days    |
+      | uid_owner  | Alice      |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is enforced for federated sharing, user receives a share with expiration date and reshares with expiration date less than the original with a local user
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And using server "REMOTE"
+    And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "15"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
+    And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
+    And using server "LOCAL"
+    And the user has reloaded the current page of the webUI
+    When the user shares file "lorem (2).txt" with user "Brian" using the webUI without closing the share dialog
+    And the user changes expiration date for share of user "Brian" to "+10 days" in the share dialog
+    Then the expiration date input field should be "+ 10 days" for the user "Brian" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type  | user           |
+      | share_with  | Brian          |
+      | path        | /lorem (2).txt |
+      | expiration  | +10 days       |
+      | uid_owner   | Alice          |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is enforced for federated sharing, user receives a share with expiration date and reshares with expiration date less than the original with another federated user
+    Given using server "REMOTE"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "5"
+    And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
+    And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
+    And using server "LOCAL"
+    And the user has reloaded the current page of the webUI
+    When the user shares file "lorem (2).txt" with federated user "Brian" with displayname "%username%@%remote_server_without_scheme%" using the webUI without closing the share dialog
+    And the user changes expiration date for share of federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" to "+4 days" in the share dialog
+    Then the expiration date input field should be "+ 4 days" for the federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type  | federated      |
+      | path        | /lorem (2).txt |
+      | expiration  | +4 days        |
+      | uid_owner   | Alice          |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is enforced for federated remote sharer, local receiver reshares received file with another local user
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And using server "REMOTE"
+    And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "3"
+    And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
+    And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
+    And using server "LOCAL"
+    And the user has reloaded the current page of the webUI
+    When the user shares file "lorem (2).txt" with user "Brian" using the webUI without closing the share dialog
+    Then the expiration date input field should be empty for the user "Brian" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type  | user           |
+      | share_with  | Brian          |
+      | path        | /lorem (2).txt |
+      | expiration  |                |
+      | uid_owner   | Alice          |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: expiration date is enforced for federated remote sharer, local receiver reshares received file with another federated user
+    Given using server "REMOTE"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "5"
+    And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
+    And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
+    And using server "LOCAL"
+    And the user has reloaded the current page of the webUI
+    When the user shares file "lorem (2).txt" with federated user "Brian" with displayname "%username%@%remote_server_without_scheme%" using the webUI without closing the share dialog
+    Then the expiration date input field should be empty for the federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" in the share dialog
+    And the information of the last share of user "Alice" should include
+      | share_type  | federated      |
+      | path        | /lorem (2).txt |
+      | expiration  |                |
+      | uid_owner   | Alice          |
