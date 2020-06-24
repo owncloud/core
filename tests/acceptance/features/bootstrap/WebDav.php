@@ -2077,6 +2077,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user uploads file to :destination with mtime :mtime using the WebDAV API
+	 * @Given user :user has uploaded a file to :destination with mtime :mtime using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -2106,13 +2107,31 @@ trait WebDav {
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
-		$this->response = WebDavHelper::propfind(
-			$this->getBaseUrl(), $user, $password, $resource, ["getlastmodified"]
-		);
-		$reponseXmlObject = HttpRequestHelper::getResponseXml($this->response);
-		$xmlpart = $reponseXmlObject->xpath("//d:getlastmodified");
+		$baseUrl = $this->getBaseUrl();
 		Assert::assertEquals(
-			$mtime, $xmlpart[0]->__toString()
+			$mtime,
+			\TestHelpers\WebDavHelper::getMtimeOfResource($user, $password, $baseUrl, $resource)
+		);
+	}
+
+	/**
+	 * @Then as :user the mtime of the file :resource should not be :mtime
+	 *
+	 * @param string $user
+	 * @param string $resource
+	 * @param string $mtime
+	 *
+	 * @return void
+	 */
+	public function theMtimeOfTheFileShouldNotBe(
+		$user, $resource, $mtime
+	) {
+		$user = $this->getActualUsername($user);
+		$password = $this->getPasswordForUser($user);
+		$baseUrl = $this->getBaseUrl();
+		Assert::assertNotEquals(
+			$mtime,
+			\TestHelpers\WebDavHelper::getMtimeOfResource($user, $password, $baseUrl, $resource)
 		);
 	}
 
