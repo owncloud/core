@@ -198,6 +198,8 @@ class LoginController extends Controller {
 			}
 		}
 
+		$parameters['strictLoginEnforced'] = $this->config->getSystemValue('strict_login_enforced', false);
+
 		return new TemplateResponse(
 			$this->appName, 'login', $parameters, 'guest'
 		);
