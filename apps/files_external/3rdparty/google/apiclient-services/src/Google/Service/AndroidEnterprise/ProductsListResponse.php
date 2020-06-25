@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_ProductsListResponse extends Google_Collection
 {
   protected $collection_key = 'product';
-  public $kind;
   protected $pageInfoType = 'Google_Service_AndroidEnterprise_PageInfo';
   protected $pageInfoDataType = '';
   protected $productType = 'Google_Service_AndroidEnterprise_Product';
@@ -26,14 +25,6 @@ class Google_Service_AndroidEnterprise_ProductsListResponse extends Google_Colle
   protected $tokenPaginationType = 'Google_Service_AndroidEnterprise_TokenPagination';
   protected $tokenPaginationDataType = '';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   /**
    * @param Google_Service_AndroidEnterprise_PageInfo
    */

@@ -20,7 +20,6 @@ class Google_Service_AndroidEnterprise_EnterprisesListResponse extends Google_Co
   protected $collection_key = 'enterprise';
   protected $enterpriseType = 'Google_Service_AndroidEnterprise_Enterprise';
   protected $enterpriseDataType = 'array';
-  public $kind;
 
   /**
    * @param Google_Service_AndroidEnterprise_Enterprise
@@ -35,13 +34,5 @@ class Google_Service_AndroidEnterprise_EnterprisesListResponse extends Google_Co
   public function getEnterprise()
   {
     return $this->enterprise;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
 }

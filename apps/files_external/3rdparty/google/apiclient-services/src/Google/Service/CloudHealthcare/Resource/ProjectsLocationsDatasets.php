@@ -137,10 +137,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
    * listed. For example, `projects/{project_id}/locations/{location_id}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous List request, if any.
    * @opt_param int pageSize The maximum number of items to return. Capped to 100
    * if not specified. May not be larger than 1000.
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous List request, if any.
    * @return Google_Service_CloudHealthcare_ListDatasetsResponse
    */
   public function listProjectsLocationsDatasets($parent, $optParams = array())
@@ -152,7 +152,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
   /**
    * Updates dataset metadata. (datasets.patch)
    *
-   * @param string $name Output only. Resource name of the dataset, of the form
+   * @param string $name Resource name of the dataset, of the form
    * `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}`.
    * @param Google_Service_CloudHealthcare_Dataset $postBody
    * @param array $optParams Optional parameters.

@@ -248,6 +248,38 @@ class Google_Service_ShoppingContent_Resource_Orders extends Google_Service_Reso
     return $this->call('list', array($params), "Google_Service_ShoppingContent_OrdersListResponse");
   }
   /**
+   * Issues a partial or total refund for items and shipment. (orders.refunditem)
+   *
+   * @param string $merchantId The ID of the account that manages the order. This
+   * cannot be a multi-client account.
+   * @param string $orderId The ID of the order to refund.
+   * @param Google_Service_ShoppingContent_OrdersRefundItemRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ShoppingContent_OrdersRefundItemResponse
+   */
+  public function refunditem($merchantId, $orderId, Google_Service_ShoppingContent_OrdersRefundItemRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'orderId' => $orderId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('refunditem', array($params), "Google_Service_ShoppingContent_OrdersRefundItemResponse");
+  }
+  /**
+   * Issues a partial or total refund for an order. (orders.refundorder)
+   *
+   * @param string $merchantId The ID of the account that manages the order. This
+   * cannot be a multi-client account.
+   * @param string $orderId The ID of the order to refund.
+   * @param Google_Service_ShoppingContent_OrdersRefundOrderRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ShoppingContent_OrdersRefundOrderResponse
+   */
+  public function refundorder($merchantId, $orderId, Google_Service_ShoppingContent_OrdersRefundOrderRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'orderId' => $orderId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('refundorder', array($params), "Google_Service_ShoppingContent_OrdersRefundOrderResponse");
+  }
+  /**
    * Rejects return on an line item. (orders.rejectreturnlineitem)
    *
    * @param string $merchantId The ID of the account that manages the order. This
@@ -265,7 +297,12 @@ class Google_Service_ShoppingContent_Resource_Orders extends Google_Service_Reso
   }
   /**
    * Returns and refunds a line item. Note that this method can only be called on
-   * fully shipped orders. (orders.returnrefundlineitem)
+   * fully shipped orders. Please also note that the Orderreturns API is the
+   * preferred way to handle returns after you receive a return from a customer.
+   * You can use Orderreturns.list or Orderreturns.get to search for the return,
+   * and then use Orderreturns.processreturn to issue the refund. If the return
+   * cannot be found, then we recommend using this API to issue a refund.
+   * (orders.returnrefundlineitem)
    *
    * @param string $merchantId The ID of the account that manages the order. This
    * cannot be a multi-client account.

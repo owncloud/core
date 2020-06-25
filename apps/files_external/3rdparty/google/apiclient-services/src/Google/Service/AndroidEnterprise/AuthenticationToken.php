@@ -17,17 +17,8 @@
 
 class Google_Service_AndroidEnterprise_AuthenticationToken extends Google_Model
 {
-  public $kind;
   public $token;
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   public function setToken($token)
   {
     $this->token = $token;

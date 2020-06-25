@@ -33,11 +33,11 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsRevisions extends Google
    * @param array $optParams Optional parameters.
    *
    * @opt_param string apiVersion Cloud Run currently ignores this parameter.
-   * @opt_param string kind Cloud Run currently ignores this parameter.
    * @opt_param string propagationPolicy Specifies the propagation policy of
    * delete. Cloud Run currently ignores this setting, and deletes in the
    * background. Please see kubernetes.io/docs/concepts/workloads/controllers
    * /garbage-collection/ for more information.
+   * @opt_param string kind Cloud Run currently ignores this parameter.
    * @return Google_Service_CloudRun_Status
    */
   public function delete($name, $optParams = array())
@@ -68,8 +68,6 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsRevisions extends Google
    * project ID or number.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool watch Flag that indicates that the client expects to watch
-   * this resource as well. Not currently used by Cloud Run.
    * @opt_param string labelSelector Allows to filter resources based on a label.
    * Supported operations are =, !=, exists, in, and notIn.
    * @opt_param string resourceVersion The baseline resource version from which
@@ -80,6 +78,8 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsRevisions extends Google
    * 'metadata.name%3Dlorem'. Not currently used by Cloud Run.
    * @opt_param string continue Optional encoded string to continue paging.
    * @opt_param int limit The maximum number of records that should be returned.
+   * @opt_param bool watch Flag that indicates that the client expects to watch
+   * this resource as well. Not currently used by Cloud Run.
    * @return Google_Service_CloudRun_ListRevisionsResponse
    */
   public function listProjectsLocationsRevisions($parent, $optParams = array())

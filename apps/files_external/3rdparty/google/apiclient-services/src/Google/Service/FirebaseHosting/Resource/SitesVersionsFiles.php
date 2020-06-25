@@ -35,10 +35,10 @@ class Google_Service_FirebaseHosting_Resource_SitesVersionsFiles extends Google_
    *
    * @opt_param string status The type of files in the version that should be
    * listed.
+   * @opt_param int pageSize The page size to return. Defaults to 1000.
    * @opt_param string pageToken The next_page_token from a previous request, if
    * provided. This will be the encoded version of a
    * firebase.hosting.proto.metadata.ListFilesPageToken.
-   * @opt_param int pageSize The page size to return. Defaults to 1000.
    * @return Google_Service_FirebaseHosting_ListVersionFilesResponse
    */
   public function listSitesVersionsFiles($parent, $optParams = array())

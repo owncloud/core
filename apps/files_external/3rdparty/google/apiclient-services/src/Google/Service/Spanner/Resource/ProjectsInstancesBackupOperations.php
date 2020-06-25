@@ -70,8 +70,8 @@ class Google_Service_Spanner_Resource_ProjectsInstancesBackupOperations extends 
    *   * `done:true` - The operation is complete.   * `metadata.database:prod` -
    * The database the backup was taken from has      a name containing the string
    * "prod".   * `(metadata.@type=type.googleapis.com/google.spanner.admin.databas
-   * e.v1.CreateBackupMetadata) AND`      `(metadata.name:howl) AND`
-   * `(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND`
+   * e.v1.CreateBackupMetadata) AND` \     `(metadata.name:howl) AND` \
+   * `(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND` \
    * `(error:*)` - Returns operations where:     * The operation's metadata type
    * is CreateBackupMetadata.     * The backup name contains the string "howl".
    * * The operation started before 2018-03-28T14:50:00Z.     * The operation

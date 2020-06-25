@@ -20,7 +20,6 @@ class Google_Service_AndroidEnterprise_EntitlementsListResponse extends Google_C
   protected $collection_key = 'entitlement';
   protected $entitlementType = 'Google_Service_AndroidEnterprise_Entitlement';
   protected $entitlementDataType = 'array';
-  public $kind;
 
   /**
    * @param Google_Service_AndroidEnterprise_Entitlement
@@ -35,13 +34,5 @@ class Google_Service_AndroidEnterprise_EntitlementsListResponse extends Google_C
   public function getEntitlement()
   {
     return $this->entitlement;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
 }

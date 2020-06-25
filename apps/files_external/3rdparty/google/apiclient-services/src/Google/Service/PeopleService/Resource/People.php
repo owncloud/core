@@ -96,9 +96,6 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * [`people.connections.list`](/people/api/rest/v1/people.connections/list).
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string requestMask.includeField Required. Comma-separated list of
-   * person fields to be included in the response. Each path should start with
-   * `person.`: for example, `person.names` or `person.photos`.
    * @opt_param string personFields Required. A field mask to restrict which
    * fields on the person are returned. Multiple fields can be specified by
    * separating them with commas. Valid values are:
@@ -108,6 +105,9 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * memberships * metadata * names * nicknames * occupations * organizations *
    * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
    * * userDefined
+   * @opt_param string requestMask.includeField Required. Comma-separated list of
+   * person fields to be included in the response. Each path should start with
+   * `person.`: for example, `person.names` or `person.photos`.
    * @return Google_Service_PeopleService_Person
    */
   public function get($resourceName, $optParams = array())
@@ -125,6 +125,15 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string personFields Required. A field mask to restrict which
+   * fields on each person are returned. Multiple fields can be specified by
+   * separating them with commas. Valid values are:
+   *
+   * * addresses * ageRanges * biographies * birthdays * coverPhotos *
+   * emailAddresses * events * genders * imClients * interests * locales *
+   * memberships * metadata * names * nicknames * occupations * organizations *
+   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
+   * * userDefined
    * @opt_param string resourceNames Required. The resource names of the people to
    * provide information about.
    *
@@ -138,15 +147,6 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * @opt_param string requestMask.includeField Required. Comma-separated list of
    * person fields to be included in the response. Each path should start with
    * `person.`: for example, `person.names` or `person.photos`.
-   * @opt_param string personFields Required. A field mask to restrict which
-   * fields on each person are returned. Multiple fields can be specified by
-   * separating them with commas. Valid values are:
-   *
-   * * addresses * ageRanges * biographies * birthdays * coverPhotos *
-   * emailAddresses * events * genders * imClients * interests * locales *
-   * memberships * metadata * names * nicknames * occupations * organizations *
-   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
-   * * userDefined
    * @return Google_Service_PeopleService_GetPeopleResponse
    */
   public function getBatchGet($optParams = array())

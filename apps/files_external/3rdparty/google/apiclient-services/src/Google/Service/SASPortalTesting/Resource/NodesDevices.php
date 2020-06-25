@@ -103,11 +103,11 @@ class Google_Service_SASPortalTesting_Resource_NodesDevices extends Google_Servi
    * @opt_param string filter The filter expression. The filter should have one of
    * the following formats: "sn=123454" or "display_name=MyDevice". sn corresponds
    * to serial_number of the device. The filter is case insensitive.
-   * @opt_param string pageToken A pagination token returned from a previous call
-   * to ListDevices that indicates where this listing should continue from.
    * @opt_param int pageSize The maximum number of devices to return in the
    * response. If empty or zero, all devices will be listed. Must be in the range
    * [0, 1000].
+   * @opt_param string pageToken A pagination token returned from a previous call
+   * to ListDevices that indicates where this listing should continue from.
    * @return Google_Service_SASPortalTesting_SasPortalListDevicesResponse
    */
   public function listNodesDevices($parent, $optParams = array())

@@ -18,18 +18,9 @@
 class Google_Service_AndroidEnterprise_StoreLayoutPagesListResponse extends Google_Collection
 {
   protected $collection_key = 'page';
-  public $kind;
   protected $pageType = 'Google_Service_AndroidEnterprise_StorePage';
   protected $pageDataType = 'array';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   /**
    * @param Google_Service_AndroidEnterprise_StorePage
    */

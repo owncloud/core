@@ -18,19 +18,10 @@
 class Google_Service_AndroidEnterprise_ProductPermissions extends Google_Collection
 {
   protected $collection_key = 'permission';
-  public $kind;
   protected $permissionType = 'Google_Service_AndroidEnterprise_ProductPermission';
   protected $permissionDataType = 'array';
   public $productId;
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   /**
    * @param Google_Service_AndroidEnterprise_ProductPermission
    */

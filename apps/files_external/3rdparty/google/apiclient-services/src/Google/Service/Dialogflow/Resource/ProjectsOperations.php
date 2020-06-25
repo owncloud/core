@@ -76,8 +76,8 @@ class Google_Service_Dialogflow_Resource_ProjectsOperations extends Google_Servi
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter The standard list filter.
    * @opt_param string pageToken The standard list page token.
+   * @opt_param string filter The standard list filter.
    * @opt_param int pageSize The standard list page size.
    * @return Google_Service_Dialogflow_GoogleLongrunningListOperationsResponse
    */

@@ -32,6 +32,7 @@ class Google_Service_PeopleService_Name extends Google_Model
   public $phoneticHonorificPrefix;
   public $phoneticHonorificSuffix;
   public $phoneticMiddleName;
+  public $unstructuredName;
 
   public function setDisplayName($displayName)
   {
@@ -150,5 +151,13 @@ class Google_Service_PeopleService_Name extends Google_Model
   public function getPhoneticMiddleName()
   {
     return $this->phoneticMiddleName;
+  }
+  public function setUnstructuredName($unstructuredName)
+  {
+    $this->unstructuredName = $unstructuredName;
+  }
+  public function getUnstructuredName()
+  {
+    return $this->unstructuredName;
   }
 }
