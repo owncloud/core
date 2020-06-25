@@ -262,6 +262,34 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When user :user logs in with their email address using the webUI
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userLogsInWithTheirEmailAddressUsingTheWebui($user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$email = $this->featureContext->getEmailAddressForUser($user);
+		$password = $this->featureContext->getPasswordForUser($user);
+		$this->loginPage->loginAs($email, $password, 'LoginPage');
+	}
+
+	/**
+	 * @Given user :user has logged in with their email address using the webUI
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasLoggedInWithTheirEmailAddressUsingTheWebui($user) {
+		$this->userLogsInWithTheirEmailAddressUsingTheWebui($user);
+		$this->webUILoginShouldHaveBeenSuccessful();
+	}
+
+	/**
 	 * @Given user :user logs in with email and invalid password :password using the webUI
 	 *
 	 * @param string $user
@@ -448,6 +476,40 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			$page
 		);
 		$this->webUILoginShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @Then the username field on the login page should have placeholder text :expectedPlaceholderText
+	 *
+	 * @param string $expectedPlaceholderText
+	 *
+	 * @return void
+	 */
+	public function usernameFieldOnLoginPageShouldHavePlaceholderText(string $expectedPlaceholderText) {
+		$actualPlaceholderText = $this->loginPage->getUserPlaceholderText();
+		Assert::assertEquals(
+			$expectedPlaceholderText,
+			$actualPlaceholderText,
+			__METHOD__
+			. " The username placeholder text was expected to be '$expectedPlaceholderText', but got '$actualPlaceholderText' instead."
+		);
+	}
+
+	/**
+	 * @Then the password field on the login page should have placeholder text :expectedPlaceholderText
+	 *
+	 * @param string $expectedPlaceholderText
+	 *
+	 * @return void
+	 */
+	public function passwordFieldOnLoginPageShouldHavePlaceholderText(string $expectedPlaceholderText) {
+		$actualPlaceholderText = $this->loginPage->getPasswordPlaceholderText();
+		Assert::assertEquals(
+			$expectedPlaceholderText,
+			$actualPlaceholderText,
+			__METHOD__
+			. " The password placeholder text was expected to be '$expectedPlaceholderText', but got '$actualPlaceholderText' instead."
+		);
 	}
 
 	/**
