@@ -1,0 +1,7 @@
+Security: patch htmlPrefilter
+
+We implemented the recommended workaround for htmlPrefilter.
+See https://github.com/advisories/GHSA-gxr4-xjj5-5px2
+
+https://github.com/owncloud/core/issues/37598
+https://github.com/owncloud/core/pull/37596

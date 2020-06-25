@@ -1687,6 +1687,15 @@ function initCore() {
  */
 $.fn.globalEval = function(){};
 
+/**
+ * Make htmlPrefilter an identity function in jQuery 2.1.4.
+ *
+ * @see https://github.com/advisories/GHSA-gxr4-xjj5-5px2
+ */
+$.fn.htmlPrefilter = function(html) {
+	return html;
+};
+
 $(document).ready(initCore);
 
 /**
