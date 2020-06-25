@@ -196,6 +196,16 @@ class Google_Service_Pubsub extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'detach' => array(
+              'path' => 'v1/{+subscription}:detach',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'subscription' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'get' => array(
               'path' => 'v1/{+subscription}',
               'httpMethod' => 'GET',

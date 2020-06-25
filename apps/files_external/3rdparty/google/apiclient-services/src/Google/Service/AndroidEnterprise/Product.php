@@ -32,7 +32,6 @@ class Google_Service_AndroidEnterprise_Product extends Google_Collection
   public $distributionChannel;
   public $features;
   public $iconUrl;
-  public $kind;
   public $lastUpdatedTimestampMillis;
   public $minAndroidSdkVersion;
   protected $permissionsType = 'Google_Service_AndroidEnterprise_ProductPermission';
@@ -155,14 +154,6 @@ class Google_Service_AndroidEnterprise_Product extends Google_Collection
   public function getIconUrl()
   {
     return $this->iconUrl;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setLastUpdatedTimestampMillis($lastUpdatedTimestampMillis)
   {

@@ -21,7 +21,6 @@ class Google_Service_AndroidEnterprise_User extends Google_Model
   public $accountType;
   public $displayName;
   public $id;
-  public $kind;
   public $managementType;
   public $primaryEmail;
 
@@ -56,14 +55,6 @@ class Google_Service_AndroidEnterprise_User extends Google_Model
   public function getId()
   {
     return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setManagementType($managementType)
   {

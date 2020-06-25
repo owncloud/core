@@ -17,18 +17,9 @@
 
 class Google_Service_AndroidEnterprise_Entitlement extends Google_Model
 {
-  public $kind;
   public $productId;
   public $reason;
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   public function setProductId($productId)
   {
     $this->productId = $productId;

@@ -21,7 +21,6 @@ class Google_Service_AndroidEnterprise_Enterprise extends Google_Collection
   protected $administratorType = 'Google_Service_AndroidEnterprise_Administrator';
   protected $administratorDataType = 'array';
   public $id;
-  public $kind;
   public $name;
   public $primaryDomain;
 
@@ -46,14 +45,6 @@ class Google_Service_AndroidEnterprise_Enterprise extends Google_Collection
   public function getId()
   {
     return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setName($name)
   {

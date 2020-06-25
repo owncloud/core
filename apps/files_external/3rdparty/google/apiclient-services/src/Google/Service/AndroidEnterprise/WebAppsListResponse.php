@@ -18,18 +18,9 @@
 class Google_Service_AndroidEnterprise_WebAppsListResponse extends Google_Collection
 {
   protected $collection_key = 'webApp';
-  public $kind;
   protected $webAppType = 'Google_Service_AndroidEnterprise_WebApp';
   protected $webAppDataType = 'array';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   /**
    * @param Google_Service_AndroidEnterprise_WebApp
    */

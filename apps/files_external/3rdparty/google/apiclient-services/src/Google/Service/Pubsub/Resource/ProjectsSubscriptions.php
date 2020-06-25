@@ -96,6 +96,23 @@ class Google_Service_Pubsub_Resource_ProjectsSubscriptions extends Google_Servic
     return $this->call('delete', array($params), "Google_Service_Pubsub_PubsubEmpty");
   }
   /**
+   * Detaches a subscription from this topic. All messages retained in the
+   * subscription are dropped. Subsequent `Pull` and `StreamingPull` requests will
+   * return FAILED_PRECONDITION. If the subscription is a push subscription,
+   * pushes to the endpoint will stop. (subscriptions.detach)
+   *
+   * @param string $subscription Required. The subscription to detach. Format is
+   * `projects/{project}/subscriptions/{subscription}`.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Pubsub_DetachSubscriptionResponse
+   */
+  public function detach($subscription, $optParams = array())
+  {
+    $params = array('subscription' => $subscription);
+    $params = array_merge($params, $optParams);
+    return $this->call('detach', array($params), "Google_Service_Pubsub_DetachSubscriptionResponse");
+  }
+  /**
    * Gets the configuration details of a subscription. (subscriptions.get)
    *
    * @param string $subscription Required. The name of the subscription to get.

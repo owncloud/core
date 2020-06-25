@@ -24,6 +24,8 @@ class Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorMana
   public $maintenancePolicyNames;
   protected $maintenanceSchedulesType = 'Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule';
   protected $maintenanceSchedulesDataType = 'map';
+  protected $maintenanceSettingsType = 'Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings';
+  protected $maintenanceSettingsDataType = '';
   public $name;
   public $producerMetadata;
   protected $provisionedResourcesType = 'Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource';
@@ -81,6 +83,20 @@ class Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorMana
   public function getMaintenanceSchedules()
   {
     return $this->maintenanceSchedules;
+  }
+  /**
+   * @param Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings
+   */
+  public function setMaintenanceSettings(Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings $maintenanceSettings)
+  {
+    $this->maintenanceSettings = $maintenanceSettings;
+  }
+  /**
+   * @return Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings
+   */
+  public function getMaintenanceSettings()
+  {
+    return $this->maintenanceSettings;
   }
   public function setName($name)
   {

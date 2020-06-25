@@ -20,6 +20,7 @@ class Google_Service_ShoppingContent_OrderLineItemShippingDetails extends Google
   public $deliverByDate;
   protected $methodType = 'Google_Service_ShoppingContent_OrderLineItemShippingDetailsMethod';
   protected $methodDataType = '';
+  public $pickupPromiseInMinutes;
   public $shipByDate;
   public $type;
 
@@ -44,6 +45,14 @@ class Google_Service_ShoppingContent_OrderLineItemShippingDetails extends Google
   public function getMethod()
   {
     return $this->method;
+  }
+  public function setPickupPromiseInMinutes($pickupPromiseInMinutes)
+  {
+    $this->pickupPromiseInMinutes = $pickupPromiseInMinutes;
+  }
+  public function getPickupPromiseInMinutes()
+  {
+    return $this->pickupPromiseInMinutes;
   }
   public function setShipByDate($shipByDate)
   {

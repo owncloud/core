@@ -47,10 +47,10 @@ class Google_Service_CloudFilestore_Resource_ProjectsLocations extends Google_Se
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The standard list page size.
-   * @opt_param string filter The standard list filter.
    * @opt_param bool includeUnrevealedLocations If true, the returned list will
    * include locations which are not yet revealed.
    * @opt_param string pageToken The standard list page token.
+   * @opt_param string filter The standard list filter.
    * @return Google_Service_CloudFilestore_ListLocationsResponse
    */
   public function listProjectsLocations($name, $optParams = array())

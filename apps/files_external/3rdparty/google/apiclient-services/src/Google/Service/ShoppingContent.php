@@ -1145,6 +1145,36 @@ class Google_Service_ShoppingContent extends Google_Service
                   'repeated' => true,
                 ),
               ),
+            ),'refunditem' => array(
+              'path' => '{merchantId}/orders/{orderId}/refunditem',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'orderId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'refundorder' => array(
+              'path' => '{merchantId}/orders/{orderId}/refundorder',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'orderId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'rejectreturnlineitem' => array(
               'path' => '{merchantId}/orders/{orderId}/rejectReturnLineItem',
               'httpMethod' => 'POST',

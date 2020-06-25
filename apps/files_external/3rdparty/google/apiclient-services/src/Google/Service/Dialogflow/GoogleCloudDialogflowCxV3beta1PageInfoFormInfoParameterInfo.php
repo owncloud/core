@@ -15,13 +15,10 @@
  * the License.
  */
 
-class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfoParameterInfo extends Google_Collection
+class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfoParameterInfo extends Google_Model
 {
-  protected $collection_key = 'prompt';
   public $displayName;
   public $justCollected;
-  protected $promptType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage';
-  protected $promptDataType = 'array';
   public $required;
   public $state;
   public $value;
@@ -41,20 +38,6 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfoPa
   public function getJustCollected()
   {
     return $this->justCollected;
-  }
-  /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage
-   */
-  public function setPrompt($prompt)
-  {
-    $this->prompt = $prompt;
-  }
-  /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage
-   */
-  public function getPrompt()
-  {
-    return $this->prompt;
   }
   public function setRequired($required)
   {

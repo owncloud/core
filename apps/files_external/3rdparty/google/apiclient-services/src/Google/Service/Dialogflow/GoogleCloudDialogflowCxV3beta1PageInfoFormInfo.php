@@ -20,7 +20,6 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfo e
   protected $collection_key = 'parameterInfo';
   protected $parameterInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfoParameterInfo';
   protected $parameterInfoDataType = 'array';
-  public $state;
 
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfoParameterInfo
@@ -35,13 +34,5 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfo e
   public function getParameterInfo()
   {
     return $this->parameterInfo;
-  }
-  public function setState($state)
-  {
-    $this->state = $state;
-  }
-  public function getState()
-  {
-    return $this->state;
   }
 }

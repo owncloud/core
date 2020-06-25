@@ -35,6 +35,7 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
    * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
@@ -42,7 +43,6 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    * the year and month.
    * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
-   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @return Google_Service_CloudSearch_GetCustomerIndexStatsResponse
    */
   public function getIndex($optParams = array())
@@ -59,7 +59,6 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
    * @opt_param int toDate.month Month of date. Must be from 1 to 12.
@@ -67,6 +66,7 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
+   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @return Google_Service_CloudSearch_GetCustomerQueryStatsResponse
    */
   public function getQuery($optParams = array())
@@ -84,7 +84,6 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
    * @opt_param int toDate.month Month of date. Must be from 1 to 12.
@@ -92,6 +91,7 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
+   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @return Google_Service_CloudSearch_GetCustomerSessionStatsResponse
    */
   public function getSession($optParams = array())
@@ -108,14 +108,14 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
+   * the year and month.
    * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
    * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
-   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
-   * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
-   * the year and month.
    * @return Google_Service_CloudSearch_GetCustomerUserStatsResponse
    */
   public function getUser($optParams = array())

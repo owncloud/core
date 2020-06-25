@@ -25,4 +25,17 @@
  */
 class Google_Service_SASPortalTesting_Resource_Nodes extends Google_Service_Resource
 {
+  /**
+   * Returns a requested node. (nodes.get)
+   *
+   * @param string $name Required. The name of the node.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_SASPortalTesting_SasPortalNode
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_SASPortalTesting_SasPortalNode");
+  }
 }
