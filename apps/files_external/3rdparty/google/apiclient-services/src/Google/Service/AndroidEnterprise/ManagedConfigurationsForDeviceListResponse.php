@@ -18,18 +18,9 @@
 class Google_Service_AndroidEnterprise_ManagedConfigurationsForDeviceListResponse extends Google_Collection
 {
   protected $collection_key = 'managedConfigurationForDevice';
-  public $kind;
   protected $managedConfigurationForDeviceType = 'Google_Service_AndroidEnterprise_ManagedConfiguration';
   protected $managedConfigurationForDeviceDataType = 'array';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   /**
    * @param Google_Service_AndroidEnterprise_ManagedConfiguration
    */

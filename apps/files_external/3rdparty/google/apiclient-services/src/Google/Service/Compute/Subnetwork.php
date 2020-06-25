@@ -25,12 +25,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   public $gatewayAddress;
   public $id;
   public $ipCidrRange;
+  public $ipv6CidrRange;
   public $kind;
   protected $logConfigType = 'Google_Service_Compute_SubnetworkLogConfig';
   protected $logConfigDataType = '';
   public $name;
   public $network;
   public $privateIpGoogleAccess;
+  public $privateIpv6GoogleAccess;
   public $purpose;
   public $region;
   public $role;
@@ -95,6 +97,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   {
     return $this->ipCidrRange;
   }
+  public function setIpv6CidrRange($ipv6CidrRange)
+  {
+    $this->ipv6CidrRange = $ipv6CidrRange;
+  }
+  public function getIpv6CidrRange()
+  {
+    return $this->ipv6CidrRange;
+  }
   public function setKind($kind)
   {
     $this->kind = $kind;
@@ -140,6 +150,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   public function getPrivateIpGoogleAccess()
   {
     return $this->privateIpGoogleAccess;
+  }
+  public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
+  {
+    $this->privateIpv6GoogleAccess = $privateIpv6GoogleAccess;
+  }
+  public function getPrivateIpv6GoogleAccess()
+  {
+    return $this->privateIpv6GoogleAccess;
   }
   public function setPurpose($purpose)
   {

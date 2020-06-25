@@ -31,13 +31,13 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    *
    * @param string $name Required. Name of the recommendation.
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation
    */
   public function get($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation");
+    return $this->call('get', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation");
   }
   /**
    * Lists recommendations for a Cloud project. Requires the recommender.*.list
@@ -54,6 +54,9 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * https://cloud.google.com/about/locations/
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Filter expression to restrict the recommendations
+   * returned. Supported filter fields: state_info.state Eg:
+   * `state_info.state:"DISMISSED" or state_info.state:"FAILED"
    * @opt_param string pageToken Optional. If present, retrieves the next batch of
    * results from the preceding call to this method. `page_token` must be the
    * value of `next_page_token` from the previous response. The values of other
@@ -61,16 +64,13 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * @opt_param int pageSize Optional. The maximum number of results to return
    * from this request.  Non-positive values are ignored. If not specified, the
    * server will determine the number of results to return.
-   * @opt_param string filter Filter expression to restrict the recommendations
-   * returned. Supported filter fields: state_info.state Eg:
-   * `state_info.state:"DISMISSED" or state_info.state:"FAILED"
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1beta1ListRecommendationsResponse
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1ListRecommendationsResponse
    */
   public function listProjectsLocationsRecommendersRecommendations($parent, $optParams = array())
   {
     $params = array('parent' => $parent);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1beta1ListRecommendationsResponse");
+    return $this->call('list', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1ListRecommendationsResponse");
   }
   /**
    * Marks the Recommendation State as Claimed. Users can use this method to
@@ -78,22 +78,22 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * recommendation themselves. This stops the recommendation content from being
    * updated. Associated insights are frozen and placed in the ACCEPTED state.
    *
-   * MarkRecommendationClaimed can be applied to recommendations in CLAIMED or
-   * ACTIVE state.
+   * MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
+   * SUCCEEDED, FAILED, or ACTIVE state.
    *
    * Requires the recommender.*.update IAM permission for the specified
    * recommender. (recommendations.markClaimed)
    *
    * @param string $name Required. Name of the recommendation.
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1beta1MarkRecommendationClaimedRequest $postBody
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationClaimedRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation
    */
-  public function markClaimed($name, Google_Service_Recommender_GoogleCloudRecommenderV1beta1MarkRecommendationClaimedRequest $postBody, $optParams = array())
+  public function markClaimed($name, Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationClaimedRequest $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('markClaimed', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation");
+    return $this->call('markClaimed', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation");
   }
   /**
    * Marks the Recommendation State as Failed. Users can use this method to
@@ -109,15 +109,15 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * recommender. (recommendations.markFailed)
    *
    * @param string $name Required. Name of the recommendation.
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1beta1MarkRecommendationFailedRequest $postBody
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationFailedRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation
    */
-  public function markFailed($name, Google_Service_Recommender_GoogleCloudRecommenderV1beta1MarkRecommendationFailedRequest $postBody, $optParams = array())
+  public function markFailed($name, Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationFailedRequest $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('markFailed', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation");
+    return $this->call('markFailed', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation");
   }
   /**
    * Marks the Recommendation State as Succeeded. Users can use this method to
@@ -133,14 +133,14 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * recommender. (recommendations.markSucceeded)
    *
    * @param string $name Required. Name of the recommendation.
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1beta1MarkRecommendationSucceededRequest $postBody
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationSucceededRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation
    */
-  public function markSucceeded($name, Google_Service_Recommender_GoogleCloudRecommenderV1beta1MarkRecommendationSucceededRequest $postBody, $optParams = array())
+  public function markSucceeded($name, Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationSucceededRequest $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('markSucceeded', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1beta1Recommendation");
+    return $this->call('markSucceeded', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation");
   }
 }

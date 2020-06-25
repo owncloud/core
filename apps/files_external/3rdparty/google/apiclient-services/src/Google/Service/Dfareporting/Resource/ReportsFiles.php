@@ -44,8 +44,8 @@ class Google_Service_Dfareporting_Resource_ReportsFiles extends Google_Service_R
   /**
    * Lists files for a report. (files.listReportsFiles)
    *
-   * @param string $profileId The DFA user profile ID.
-   * @param string $reportId The ID of the report.
+   * @param string $profileId The DFA profile ID.
+   * @param string $reportId The ID of the parent report.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int maxResults Maximum number of results to return.

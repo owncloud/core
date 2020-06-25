@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -12,6 +12,7 @@
 namespace Monolog\Handler;
 
 use Monolog\Formatter\LineFormatter;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Logger;
 
 /**
@@ -34,11 +35,11 @@ class RedisHandler extends AbstractProcessingHandler
     /**
      * @param \Predis\Client|\Redis $redis   The redis instance
      * @param string                $key     The key name to push records to
-     * @param int                   $level   The minimum logging level at which this handler will be triggered
+     * @param string|int            $level   The minimum logging level at which this handler will be triggered
      * @param bool                  $bubble  Whether the messages that are handled can bubble up the stack or not
-     * @param int                   $capSize Number of entries to limit list size to
+     * @param int                   $capSize Number of entries to limit list size to, 0 = unlimited
      */
-    public function __construct($redis, $key, $level = Logger::DEBUG, $bubble = true, $capSize = false)
+    public function __construct($redis, string $key, $level = Logger::DEBUG, bool $bubble = true, int $capSize = 0)
     {
         if (!(($redis instanceof \Predis\Client) || ($redis instanceof \Redis))) {
             throw new \InvalidArgumentException('Predis\Client or Redis instance required');
@@ -54,7 +55,7 @@ class RedisHandler extends AbstractProcessingHandler
     /**
      * {@inheritDoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         if ($this->capSize) {
             $this->writeCapped($record);
@@ -66,11 +67,8 @@ class RedisHandler extends AbstractProcessingHandler
     /**
      * Write and cap the collection
      * Writes the record to the redis list and caps its
-     *
-     * @param  array $record associative record array
-     * @return void
      */
-    protected function writeCapped(array $record)
+    protected function writeCapped(array $record): void
     {
         if ($this->redisClient instanceof \Redis) {
             $mode = defined('\Redis::MULTI') ? \Redis::MULTI : 1;
@@ -91,7 +89,7 @@ class RedisHandler extends AbstractProcessingHandler
     /**
      * {@inheritDoc}
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new LineFormatter();
     }

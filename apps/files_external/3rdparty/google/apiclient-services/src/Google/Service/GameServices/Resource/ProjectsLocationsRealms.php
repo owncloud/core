@@ -26,14 +26,14 @@
 class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Google_Service_Resource
 {
   /**
-   * Creates a new Realm in a given project and Location. (realms.create)
+   * Creates a new realm in a given project and location. (realms.create)
    *
    * @param string $parent Required. The parent resource name. Uses the form:
    * `projects/{project}/locations/{location}`.
    * @param Google_Service_GameServices_Realm $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string realmId Required. The ID of the Realm resource to be
+   * @opt_param string realmId Required. The ID of the realm resource to be
    * created.
    * @return Google_Service_GameServices_Operation
    */
@@ -44,9 +44,9 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Googl
     return $this->call('create', array($params), "Google_Service_GameServices_Operation");
   }
   /**
-   * Deletes a single Realm. (realms.delete)
+   * Deletes a single realm. (realms.delete)
    *
-   * @param string $name Required. The name of the Realm to delete. Uses the form:
+   * @param string $name Required. The name of the realm to delete. Uses the form:
    * `projects/{project}/locations/{location}/realms/{realm}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_Operation
@@ -58,9 +58,9 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Googl
     return $this->call('delete', array($params), "Google_Service_GameServices_Operation");
   }
   /**
-   * Gets details of a single Realm. (realms.get)
+   * Gets details of a single realm. (realms.get)
    *
-   * @param string $name Required. The name of the Realm to retrieve. Uses the
+   * @param string $name Required. The name of the realm to retrieve. Uses the
    * form: `projects/{project}/locations/{location}/realms/{realm}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_Realm
@@ -72,13 +72,14 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Googl
     return $this->call('get', array($params), "Google_Service_GameServices_Realm");
   }
   /**
-   * Lists Realms in a given project and Location.
+   * Lists realms in a given project and location.
    * (realms.listProjectsLocationsRealms)
    *
    * @param string $parent Required. The parent resource name. Uses the form:
    * `projects/{project}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. The filter to apply to list results.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous List request, if any.
    * @opt_param string orderBy Optional. Specifies the ordering of results
@@ -87,8 +88,7 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Googl
    * @opt_param int pageSize Optional. The maximum number of items to return.  If
    * unspecified, server will pick an appropriate default. Server may return fewer
    * items than requested. A caller should only rely on response's next_page_token
-   * to determine if there are more Realms left to be queried.
-   * @opt_param string filter Optional. The filter to apply to list results.
+   * to determine if there are more realms left to be queried.
    * @return Google_Service_GameServices_ListRealmsResponse
    */
   public function listProjectsLocationsRealms($parent, $optParams = array())
@@ -98,9 +98,9 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Googl
     return $this->call('list', array($params), "Google_Service_GameServices_ListRealmsResponse");
   }
   /**
-   * Patches a single Realm. (realms.patch)
+   * Patches a single realm. (realms.patch)
    *
-   * @param string $name The resource name of the Realm. Uses the form:
+   * @param string $name The resource name of the realm. Uses the form:
    * `projects/{project}/locations/{location}/realms/{realm}`. For example,
    * `projects/my-project/locations/{location}/realms/my-realm`.
    * @param Google_Service_GameServices_Realm $postBody
@@ -120,21 +120,21 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealms extends Googl
     return $this->call('patch', array($params), "Google_Service_GameServices_Operation");
   }
   /**
-   * Previews patches to a single Realm. (realms.previewUpdate)
+   * Previews patches to a single realm. (realms.previewUpdate)
    *
-   * @param string $name The resource name of the Realm. Uses the form:
+   * @param string $name The resource name of the realm. Uses the form:
    * `projects/{project}/locations/{location}/realms/{realm}`. For example,
    * `projects/my-project/locations/{location}/realms/my-realm`.
    * @param Google_Service_GameServices_Realm $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string previewTime Optional. The target timestamp to compute the
+   * preview.
    * @opt_param string updateMask Required. The update mask applies to the
    * resource. For the `FieldMask` definition, see
    *
    * https: //developers.google.com/protocol-buffers //
    * /docs/reference/google.protobuf#fieldmask
-   * @opt_param string previewTime Optional. The target timestamp to compute the
-   * preview.
    * @return Google_Service_GameServices_PreviewRealmUpdateResponse
    */
   public function previewUpdate($name, Google_Service_GameServices_Realm $postBody, $optParams = array())

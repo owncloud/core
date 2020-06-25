@@ -99,11 +99,9 @@ class Google_Service_DLP_Resource_ProjectsInspectTemplates extends Google_Servic
    * `update_time`: corresponds to time the template was last updated. - `name`:
    * corresponds to template's name. - `display_name`: corresponds to template's
    * display name.
+   * @opt_param string locationId Deprecated. This field has no effect.
    * @opt_param int pageSize Size of the page, can be limited by server. If zero
    * server returns a page of max size 100.
-   * @opt_param string locationId The geographic location where inspection
-   * templates will be retrieved from. Use `-` for all locations. Reserved for
-   * future extensions.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListInspectTemplatesResponse
    */
   public function listProjectsInspectTemplates($parent, $optParams = array())

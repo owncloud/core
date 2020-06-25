@@ -23,6 +23,7 @@ class Google_Service_SQLAdmin_ExportContext extends Google_Collection
   public $databases;
   public $fileType;
   public $kind;
+  public $offload;
   protected $sqlExportOptionsType = 'Google_Service_SQLAdmin_ExportContextSqlExportOptions';
   protected $sqlExportOptionsDataType = '';
   public $uri;
@@ -64,6 +65,14 @@ class Google_Service_SQLAdmin_ExportContext extends Google_Collection
   public function getKind()
   {
     return $this->kind;
+  }
+  public function setOffload($offload)
+  {
+    $this->offload = $offload;
+  }
+  public function getOffload()
+  {
+    return $this->offload;
   }
   /**
    * @param Google_Service_SQLAdmin_ExportContextSqlExportOptions

@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_AdministratorWebTokenSpec extends Google_Collection
 {
   protected $collection_key = 'permission';
-  public $kind;
   protected $managedConfigurationsType = 'Google_Service_AndroidEnterprise_AdministratorWebTokenSpecManagedConfigurations';
   protected $managedConfigurationsDataType = '';
   public $parent;
@@ -32,14 +31,6 @@ class Google_Service_AndroidEnterprise_AdministratorWebTokenSpec extends Google_
   protected $webAppsType = 'Google_Service_AndroidEnterprise_AdministratorWebTokenSpecWebApps';
   protected $webAppsDataType = '';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   /**
    * @param Google_Service_AndroidEnterprise_AdministratorWebTokenSpecManagedConfigurations
    */

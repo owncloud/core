@@ -60,24 +60,6 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
     return $this->call('generateAuthenticationToken', array($params), "Google_Service_AndroidEnterprise_AuthenticationToken");
   }
   /**
-   * Generates a token (activation code) to allow this user to configure their
-   * managed account in the Android Setup Wizard. Revokes any previously generated
-   * token.
-   *
-   * This call only works with Google managed accounts. (users.generateToken)
-   *
-   * @param string $enterpriseId The ID of the enterprise.
-   * @param string $userId The ID of the user.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_AndroidEnterprise_UserToken
-   */
-  public function generateToken($enterpriseId, $userId, $optParams = array())
-  {
-    $params = array('enterpriseId' => $enterpriseId, 'userId' => $userId);
-    $params = array_merge($params, $optParams);
-    return $this->call('generateToken', array($params), "Google_Service_AndroidEnterprise_UserToken");
-  }
-  /**
    * Retrieves a user's details. (users.get)
    *
    * @param string $enterpriseId The ID of the enterprise.
@@ -127,12 +109,13 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
   }
   /**
    * Looks up a user by primary email address. This is only supported for Google-
-   * managed users. Lookup of the id is not needed for EMM-managed users because
+   * managed users.  Lookup of the id is not needed for EMM-managed users because
    * the id is already returned in the result of the Users.insert call.
    * (users.listUsers)
    *
    * @param string $enterpriseId The ID of the enterprise.
-   * @param string $email The exact primary email address of the user to look up.
+   * @param string $email Required. The exact primary email address of the user to
+   * look up.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidEnterprise_UsersListResponse
    */
@@ -158,20 +141,6 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
     $params = array('enterpriseId' => $enterpriseId, 'userId' => $userId);
     $params = array_merge($params, $optParams);
     return $this->call('revokeDeviceAccess', array($params));
-  }
-  /**
-   * Revokes a previously generated token (activation code) for the user.
-   * (users.revokeToken)
-   *
-   * @param string $enterpriseId The ID of the enterprise.
-   * @param string $userId The ID of the user.
-   * @param array $optParams Optional parameters.
-   */
-  public function revokeToken($enterpriseId, $userId, $optParams = array())
-  {
-    $params = array('enterpriseId' => $enterpriseId, 'userId' => $userId);
-    $params = array_merge($params, $optParams);
-    return $this->call('revokeToken', array($params));
   }
   /**
    * Modifies the set of products that a user is entitled to access (referred to

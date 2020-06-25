@@ -19,6 +19,7 @@ class Google_Service_CloudBuild_BuildOptions extends Google_Collection
 {
   protected $collection_key = 'volumes';
   public $diskSizeGb;
+  public $dynamicSubstitutions;
   public $env;
   public $logStreamingOption;
   public $logging;
@@ -38,6 +39,14 @@ class Google_Service_CloudBuild_BuildOptions extends Google_Collection
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
+  }
+  public function setDynamicSubstitutions($dynamicSubstitutions)
+  {
+    $this->dynamicSubstitutions = $dynamicSubstitutions;
+  }
+  public function getDynamicSubstitutions()
+  {
+    return $this->dynamicSubstitutions;
   }
   public function setEnv($env)
   {

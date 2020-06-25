@@ -42,12 +42,12 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account whose website is claimed.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool overwrite Only available to selected merchants. When set to
-   * True, this flag removes any existing claim on the requested website by
+   * `True`, this flag removes any existing claim on the requested website by
    * another account and replaces it with a claim from this account.
    * @return Google_Service_ShoppingContent_AccountsClaimWebsiteResponse
    */
@@ -94,7 +94,7 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ShoppingContent_Account
@@ -126,7 +126,7 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account that should be linked.
    * @param Google_Service_ShoppingContent_AccountsLinkRequest $postBody
    * @param array $optParams Optional parameters.
@@ -163,7 +163,7 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to list links.
    * @param array $optParams Optional parameters.
    *
@@ -183,7 +183,7 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account.
    * @param Google_Service_ShoppingContent_Account $postBody
    * @param array $optParams Optional parameters.

@@ -26,8 +26,8 @@
 class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudiesTrials extends Google_Service_Resource
 {
   /**
-   * Adds a measurement of the objective metrics to a Trial. This measurement is
-   * assumed to have been taken before the Trial is complete.
+   * Adds a measurement of the objective metrics to a trial. This measurement is
+   * assumed to have been taken before the trial is complete.
    * (trials.addMeasurement)
    *
    * @param string $name Required. The trial name.
@@ -42,7 +42,9 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('addMeasurement', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial");
   }
   /**
-   * Checks whether a trial should stop or not. (trials.checkEarlyStoppingState)
+   * Checks  whether a trial should stop or not. Returns a long-running operation.
+   * When the operation is successful, it will contain a
+   * CheckTrialEarlyStoppingStateResponse. (trials.checkEarlyStoppingState)
    *
    * @param string $name Required. The trial name.
    * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1CheckTrialEarlyStoppingStateRequest $postBody
@@ -56,9 +58,9 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('checkEarlyStoppingState', array($params), "Google_Service_CloudMachineLearningEngine_GoogleLongrunningOperation");
   }
   /**
-   * Marks a Trial as complete. (trials.complete)
+   * Marks a trial as complete. (trials.complete)
    *
-   * @param string $name Required. The trial name.
+   * @param string $name Required. The trial name.metat
    * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1CompleteTrialRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial
@@ -70,7 +72,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('complete', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial");
   }
   /**
-   * Adds a user provided trial to a Study. (trials.create)
+   * Adds a user provided trial to a study. (trials.create)
    *
    * @param string $parent Required. The name of the study that the trial belongs
    * to.
@@ -85,7 +87,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('create', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial");
   }
   /**
-   * Deletes a Trial. (trials.delete)
+   * Deletes a trial. (trials.delete)
    *
    * @param string $name Required. The trial name.
    * @param array $optParams Optional parameters.
@@ -98,7 +100,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('delete', array($params), "Google_Service_CloudMachineLearningEngine_GoogleProtobufEmpty");
   }
   /**
-   * Gets a Trial. (trials.get)
+   * Gets a trial. (trials.get)
    *
    * @param string $name Required. The trial name.
    * @param array $optParams Optional parameters.
@@ -111,7 +113,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('get', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial");
   }
   /**
-   * Lists the trials associated with a Study.
+   * Lists the trials associated with a study.
    * (trials.listProjectsLocationsStudiesTrials)
    *
    * @param string $parent Required. The name of the study that the trial belongs
@@ -140,8 +142,10 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('stop', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial");
   }
   /**
-   * Returns a long-running operation associated with the generation of trial
-   * suggestions. (trials.suggest)
+   * Adds one or more trials to a study, with parameter values suggested by AI
+   * Platform Optimizer. Returns a long-running operation associated with the
+   * generation of trial suggestions. When this long-running operation succeeds,
+   * it will contain a SuggestTrialsResponse. (trials.suggest)
    *
    * @param string $parent Required. The name of the study that the trial belongs
    * to.

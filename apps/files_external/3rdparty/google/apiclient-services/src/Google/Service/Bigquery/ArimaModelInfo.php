@@ -15,14 +15,18 @@
  * the License.
  */
 
-class Google_Service_Bigquery_ArimaModelInfo extends Google_Model
+class Google_Service_Bigquery_ArimaModelInfo extends Google_Collection
 {
+  protected $collection_key = 'seasonalPeriods';
   protected $arimaCoefficientsType = 'Google_Service_Bigquery_ArimaCoefficients';
   protected $arimaCoefficientsDataType = '';
   protected $arimaFittingMetricsType = 'Google_Service_Bigquery_ArimaFittingMetrics';
   protected $arimaFittingMetricsDataType = '';
+  public $hasDrift;
   protected $nonSeasonalOrderType = 'Google_Service_Bigquery_ArimaOrder';
   protected $nonSeasonalOrderDataType = '';
+  public $seasonalPeriods;
+  public $timeSeriesId;
 
   /**
    * @param Google_Service_Bigquery_ArimaCoefficients
@@ -52,6 +56,14 @@ class Google_Service_Bigquery_ArimaModelInfo extends Google_Model
   {
     return $this->arimaFittingMetrics;
   }
+  public function setHasDrift($hasDrift)
+  {
+    $this->hasDrift = $hasDrift;
+  }
+  public function getHasDrift()
+  {
+    return $this->hasDrift;
+  }
   /**
    * @param Google_Service_Bigquery_ArimaOrder
    */
@@ -65,5 +77,21 @@ class Google_Service_Bigquery_ArimaModelInfo extends Google_Model
   public function getNonSeasonalOrder()
   {
     return $this->nonSeasonalOrder;
+  }
+  public function setSeasonalPeriods($seasonalPeriods)
+  {
+    $this->seasonalPeriods = $seasonalPeriods;
+  }
+  public function getSeasonalPeriods()
+  {
+    return $this->seasonalPeriods;
+  }
+  public function setTimeSeriesId($timeSeriesId)
+  {
+    $this->timeSeriesId = $timeSeriesId;
+  }
+  public function getTimeSeriesId()
+  {
+    return $this->timeSeriesId;
   }
 }

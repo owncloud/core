@@ -31,6 +31,7 @@ class Google_Service_Dataflow_Resource_ProjectsJobs extends Google_Service_Resou
    * @param string $projectId The project which owns the jobs.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter The kind of filter to use.
    * @opt_param string location The [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
    * contains this job.
@@ -41,7 +42,6 @@ class Google_Service_Dataflow_Resource_ProjectsJobs extends Google_Service_Resou
    * max_responses and an unspecified server-defined limit.
    * @opt_param string view Level of information requested in response. Default is
    * `JOB_VIEW_SUMMARY`.
-   * @opt_param string filter The kind of filter to use.
    * @return Google_Service_Dataflow_ListJobsResponse
    */
   public function aggregated($projectId, $optParams = array())
@@ -90,10 +90,10 @@ class Google_Service_Dataflow_Resource_ProjectsJobs extends Google_Service_Resou
    * @param string $jobId The job ID.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string view The level of information requested in response.
    * @opt_param string location The [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
    * contains this job.
-   * @opt_param string view The level of information requested in response.
    * @return Google_Service_Dataflow_Job
    */
   public function get($projectId, $jobId, $optParams = array())
@@ -142,8 +142,6 @@ class Google_Service_Dataflow_Resource_ProjectsJobs extends Google_Service_Resou
    * @param string $projectId The project which owns the jobs.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view Level of information requested in response. Default is
-   * `JOB_VIEW_SUMMARY`.
    * @opt_param string filter The kind of filter to use.
    * @opt_param string location The [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
@@ -153,6 +151,8 @@ class Google_Service_Dataflow_Resource_ProjectsJobs extends Google_Service_Resou
    * @opt_param int pageSize If there are many jobs, limit response to at most
    * this many. The actual number of jobs returned will be the lesser of
    * max_responses and an unspecified server-defined limit.
+   * @opt_param string view Level of information requested in response. Default is
+   * `JOB_VIEW_SUMMARY`.
    * @return Google_Service_Dataflow_ListJobsResponse
    */
   public function listProjectsJobs($projectId, $optParams = array())

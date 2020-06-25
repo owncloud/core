@@ -35,9 +35,11 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentConfig extends Google_
   protected $resourceReferencesDataType = 'array';
   protected $resourcesType = 'Google_Service_Apigee_GoogleCloudApigeeV1ResourceConfig';
   protected $resourcesDataType = 'array';
+  public $revisionId;
   public $sequenceNumber;
   protected $targetsType = 'Google_Service_Apigee_GoogleCloudApigeeV1TargetServerConfig';
   protected $targetsDataType = 'array';
+  public $uid;
 
   public function setCreateTime($createTime)
   {
@@ -163,6 +165,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentConfig extends Google_
   {
     return $this->resources;
   }
+  public function setRevisionId($revisionId)
+  {
+    $this->revisionId = $revisionId;
+  }
+  public function getRevisionId()
+  {
+    return $this->revisionId;
+  }
   public function setSequenceNumber($sequenceNumber)
   {
     $this->sequenceNumber = $sequenceNumber;
@@ -184,5 +194,13 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentConfig extends Google_
   public function getTargets()
   {
     return $this->targets;
+  }
+  public function setUid($uid)
+  {
+    $this->uid = $uid;
+  }
+  public function getUid()
+  {
+    return $this->uid;
   }
 }

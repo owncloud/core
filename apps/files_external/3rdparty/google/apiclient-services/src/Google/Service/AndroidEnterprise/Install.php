@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_Install extends Google_Model
 {
   public $installState;
-  public $kind;
   public $productId;
   public $versionCode;
 
@@ -29,14 +28,6 @@ class Google_Service_AndroidEnterprise_Install extends Google_Model
   public function getInstallState()
   {
     return $this->installState;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setProductId($productId)
   {

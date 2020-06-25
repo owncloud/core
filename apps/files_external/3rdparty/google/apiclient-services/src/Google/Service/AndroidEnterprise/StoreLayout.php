@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_StoreLayout extends Google_Model
 {
   public $homepageId;
-  public $kind;
   public $storeLayoutType;
 
   public function setHomepageId($homepageId)
@@ -28,14 +27,6 @@ class Google_Service_AndroidEnterprise_StoreLayout extends Google_Model
   public function getHomepageId()
   {
     return $this->homepageId;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setStoreLayoutType($storeLayoutType)
   {

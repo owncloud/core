@@ -29,7 +29,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservations 
    * Creates a new reservation resource. (reservations.create)
    *
    * @param string $parent Required. Project, location. E.g.,
-   * projects/myproject/locations/US
+   * `projects/myproject/locations/US`
    * @param Google_Service_BigQueryReservation_Reservation $postBody
    * @param array $optParams Optional parameters.
    *
@@ -49,7 +49,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservations 
    * reservation has assignments. (reservations.delete)
    *
    * @param string $name Required. Resource name of the reservation to retrieve.
-   * E.g.,    projects/myproject/locations/US/reservations/team1-prod
+   * E.g.,    `projects/myproject/locations/US/reservations/team1-prod`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_BigqueryreservationEmpty
    */
@@ -63,7 +63,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservations 
    * Returns information about the reservation. (reservations.get)
    *
    * @param string $name Required. Resource name of the reservation to retrieve.
-   * E.g.,    projects/myproject/locations/US/reservations/team1-prod
+   * E.g.,    `projects/myproject/locations/US/reservations/team1-prod`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_Reservation
    */
@@ -78,12 +78,12 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservations 
    * (reservations.listProjectsLocationsReservations)
    *
    * @param string $parent Required. The parent resource name containing project
-   * and location, e.g.:   "projects/myproject/locations/US"
+   * and location, e.g.:   `projects/myproject/locations/US`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return.
+   * @opt_param int pageSize The maximum number of items to return per page.
    * @return Google_Service_BigQueryReservation_ListReservationsResponse
    */
   public function listProjectsLocationsReservations($parent, $optParams = array())
@@ -96,7 +96,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservations 
    * Updates an existing reservation resource. (reservations.patch)
    *
    * @param string $name The resource name of the reservation, e.g.,
-   * "projects/locations/reservations/team1-prod".
+   * `projects/locations/reservations/team1-prod`.
    * @param Google_Service_BigQueryReservation_Reservation $postBody
    * @param array $optParams Optional parameters.
    *

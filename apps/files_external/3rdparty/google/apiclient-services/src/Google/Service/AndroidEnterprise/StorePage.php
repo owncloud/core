@@ -19,7 +19,6 @@ class Google_Service_AndroidEnterprise_StorePage extends Google_Collection
 {
   protected $collection_key = 'name';
   public $id;
-  public $kind;
   public $link;
   protected $nameType = 'Google_Service_AndroidEnterprise_LocalizedText';
   protected $nameDataType = 'array';
@@ -31,14 +30,6 @@ class Google_Service_AndroidEnterprise_StorePage extends Google_Collection
   public function getId()
   {
     return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setLink($link)
   {

@@ -176,6 +176,8 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersApps extends Google_
    * `organizations/{org}/developers/{developer_email}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool shallowExpand Optional. Specifies whether to expand the
+   * results in shallow mode. Set to `true` to expand the results in shallow mode.
    * @opt_param string startKey **Note**: Must be used in conjunction with the
    * `count` parameter.
    *
@@ -190,8 +192,6 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersApps extends Google_
    * @opt_param bool expand Optional. Specifies whether to expand the results. Set
    * to `true` to expand the results. This query parameter is not valid if you use
    * the `count` or `startKey` query parameters.
-   * @opt_param bool shallowExpand Optional. Specifies whether to expand the
-   * results in shallow mode. Set to `true` to expand the results in shallow mode.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListDeveloperAppsResponse
    */
   public function listOrganizationsDevelopersApps($parent, $optParams = array())

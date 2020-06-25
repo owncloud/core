@@ -18,8 +18,7 @@
 class Google_Service_CloudRun_TCPSocketAction extends Google_Model
 {
   public $host;
-  protected $portType = 'Google_Service_CloudRun_IntOrString';
-  protected $portDataType = '';
+  public $port;
 
   public function setHost($host)
   {
@@ -29,16 +28,10 @@ class Google_Service_CloudRun_TCPSocketAction extends Google_Model
   {
     return $this->host;
   }
-  /**
-   * @param Google_Service_CloudRun_IntOrString
-   */
-  public function setPort(Google_Service_CloudRun_IntOrString $port)
+  public function setPort($port)
   {
     $this->port = $port;
   }
-  /**
-   * @return Google_Service_CloudRun_IntOrString
-   */
   public function getPort()
   {
     return $this->port;

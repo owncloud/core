@@ -108,8 +108,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsOperations extends Google_
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter The standard list filter.
    * @opt_param string pageToken The standard list page token.
+   * @opt_param string filter The standard list filter.
    * @opt_param int pageSize The standard list page size.
    * @return Google_Service_Dataproc_ListOperationsResponse
    */
@@ -121,8 +121,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsOperations extends Google_
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-   * PERMISSION_DENIED (operations.setIamPolicy)
+   * existing policy.Can return NOT_FOUND, INVALID_ARGUMENT, and PERMISSION_DENIED
+   * errors. (operations.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

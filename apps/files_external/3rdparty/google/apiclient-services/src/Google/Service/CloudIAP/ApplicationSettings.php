@@ -19,6 +19,7 @@ class Google_Service_CloudIAP_ApplicationSettings extends Google_Model
 {
   protected $accessDeniedPageSettingsType = 'Google_Service_CloudIAP_AccessDeniedPageSettings';
   protected $accessDeniedPageSettingsDataType = '';
+  public $cookieDomain;
   protected $csmSettingsType = 'Google_Service_CloudIAP_CsmSettings';
   protected $csmSettingsDataType = '';
 
@@ -35,6 +36,14 @@ class Google_Service_CloudIAP_ApplicationSettings extends Google_Model
   public function getAccessDeniedPageSettings()
   {
     return $this->accessDeniedPageSettings;
+  }
+  public function setCookieDomain($cookieDomain)
+  {
+    $this->cookieDomain = $cookieDomain;
+  }
+  public function getCookieDomain()
+  {
+    return $this->cookieDomain;
   }
   /**
    * @param Google_Service_CloudIAP_CsmSettings

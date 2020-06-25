@@ -74,15 +74,18 @@ class UserRefreshCredentials extends CredentialsLoader implements GetQuotaProjec
         }
         if (!array_key_exists('client_id', $jsonKey)) {
             throw new \InvalidArgumentException(
-                'json key is missing the client_id field');
+                'json key is missing the client_id field'
+            );
         }
         if (!array_key_exists('client_secret', $jsonKey)) {
             throw new \InvalidArgumentException(
-                'json key is missing the client_secret field');
+                'json key is missing the client_secret field'
+            );
         }
         if (!array_key_exists('refresh_token', $jsonKey)) {
             throw new \InvalidArgumentException(
-                'json key is missing the refresh_token field');
+                'json key is missing the refresh_token field'
+            );
         }
         $this->auth = new OAuth2([
             'clientId' => $jsonKey['client_id'],
@@ -109,7 +112,8 @@ class UserRefreshCredentials extends CredentialsLoader implements GetQuotaProjec
                 . 'To disable this warning, set '
                 . self::SUPPRESS_CLOUD_SDK_CREDS_WARNING_ENV
                 . ' environment variable to "true".',
-                E_USER_WARNING);
+                E_USER_WARNING
+            );
         }
     }
 

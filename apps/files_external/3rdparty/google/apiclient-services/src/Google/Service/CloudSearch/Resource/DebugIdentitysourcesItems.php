@@ -35,6 +35,7 @@ class Google_Service_CloudSearch_Resource_DebugIdentitysourcesItems extends Goog
    * format: identitysources/{source_id}}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string userResourceName
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
    * @opt_param int pageSize Maximum number of items to fetch in a request.
@@ -42,7 +43,6 @@ class Google_Service_CloudSearch_Resource_DebugIdentitysourcesItems extends Goog
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
    * help with debugging, set this field. Otherwise, ignore this field.
    * @opt_param string groupResourceName
-   * @opt_param string userResourceName
    * @return Google_Service_CloudSearch_ListItemNamesForUnmappedIdentityResponse
    */
   public function listForunmappedidentity($parent, $optParams = array())

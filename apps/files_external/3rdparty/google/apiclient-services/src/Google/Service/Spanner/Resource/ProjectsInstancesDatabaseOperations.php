@@ -40,8 +40,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabaseOperations extend
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListDatabaseOperationsResponse to the same
    * `parent` and with the same `filter`.
-   * @opt_param int pageSize Number of operations to be returned in the response.
-   * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string filter An expression that filters the list of returned
    * operations.
    *
@@ -67,16 +65,18 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabaseOperations extend
    * Here are a few examples:
    *
    *   * `done:true` - The operation is complete.   * `(metadata.@type=type.google
-   * apis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata) AND`
-   * `(metadata.source_type:BACKUP) AND`
-   * `(metadata.backup_info.backup:backup_howl) AND`
-   * `(metadata.name:restored_howl) AND`      `(metadata.progress.start_time <
-   * \"2018-03-28T14:50:00Z\") AND`      `(error:*)` - Return operations where:
+   * apis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata) AND` \
+   * `(metadata.source_type:BACKUP) AND` \
+   * `(metadata.backup_info.backup:backup_howl) AND` \
+   * `(metadata.name:restored_howl) AND` \     `(metadata.progress.start_time <
+   * \"2018-03-28T14:50:00Z\") AND` \     `(error:*)` - Return operations where:
    * * The operation's metadata type is RestoreDatabaseMetadata.     * The
    * database is restored from a backup.     * The backup name contains
    * "backup_howl".     * The restored database's name contains "restored_howl".
    * * The operation started before 2018-03-28T14:50:00Z.     * The operation
    * resulted in an error.
+   * @opt_param int pageSize Number of operations to be returned in the response.
+   * If 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_Spanner_ListDatabaseOperationsResponse
    */
   public function listProjectsInstancesDatabaseOperations($parent, $optParams = array())

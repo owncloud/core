@@ -90,7 +90,7 @@ class AppIdentityCredentials extends CredentialsLoader implements
      * SERVER_SOFTWARE environment variable (prod) or the APPENGINE_RUNTIME
      * environment variable (dev).
      *
-     * @return true if this an App Engine Instance, false otherwise
+     * @return bool true if this an App Engine Instance, false otherwise
      */
     public static function onAppEngine()
     {
@@ -115,7 +115,6 @@ class AppIdentityCredentials extends CredentialsLoader implements
      * the GuzzleHttp\ClientInterface instance passed in will not be used.
      *
      * @param callable $httpHandler callback which delivers psr7 request
-     *
      * @return array A set of auth related metadata, containing the following
      *     keys:
      *         - access_token (string)

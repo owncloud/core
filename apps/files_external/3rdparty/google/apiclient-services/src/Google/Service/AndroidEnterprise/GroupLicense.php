@@ -19,7 +19,6 @@ class Google_Service_AndroidEnterprise_GroupLicense extends Google_Model
 {
   public $acquisitionKind;
   public $approval;
-  public $kind;
   public $numProvisioned;
   public $numPurchased;
   public $permissions;
@@ -40,14 +39,6 @@ class Google_Service_AndroidEnterprise_GroupLicense extends Google_Model
   public function getApproval()
   {
     return $this->approval;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setNumProvisioned($numProvisioned)
   {

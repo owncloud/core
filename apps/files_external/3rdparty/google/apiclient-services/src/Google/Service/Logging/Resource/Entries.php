@@ -28,7 +28,8 @@ class Google_Service_Logging_Resource_Entries extends Google_Service_Resource
   /**
    * Lists log entries. Use this method to retrieve log entries that originated
    * from a project/folder/organization/billing account. For ways to export log
-   * entries, see Exporting Logs. (entries.listEntries)
+   * entries, see Exporting Logs (https://cloud.google.com/logging/docs/export).
+   * (entries.listEntries)
    *
    * @param Google_Service_Logging_ListLogEntriesRequest $postBody
    * @param array $optParams Optional parameters.

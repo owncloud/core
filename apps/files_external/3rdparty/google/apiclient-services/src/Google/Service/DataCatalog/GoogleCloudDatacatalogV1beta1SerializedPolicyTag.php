@@ -22,6 +22,7 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTa
   protected $childPolicyTagsDataType = 'array';
   public $description;
   public $displayName;
+  public $policyTag;
 
   /**
    * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag
@@ -52,5 +53,13 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTa
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  public function setPolicyTag($policyTag)
+  {
+    $this->policyTag = $policyTag;
+  }
+  public function getPolicyTag()
+  {
+    return $this->policyTag;
   }
 }

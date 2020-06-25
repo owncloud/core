@@ -15,11 +15,28 @@
  * the License.
  */
 
-class Google_Service_DeploymentManager_LogConfigCounterOptions extends Google_Model
+class Google_Service_DeploymentManager_LogConfigCounterOptions extends Google_Collection
 {
+  protected $collection_key = 'customFields';
+  protected $customFieldsType = 'Google_Service_DeploymentManager_LogConfigCounterOptionsCustomField';
+  protected $customFieldsDataType = 'array';
   public $field;
   public $metric;
 
+  /**
+   * @param Google_Service_DeploymentManager_LogConfigCounterOptionsCustomField
+   */
+  public function setCustomFields($customFields)
+  {
+    $this->customFields = $customFields;
+  }
+  /**
+   * @return Google_Service_DeploymentManager_LogConfigCounterOptionsCustomField
+   */
+  public function getCustomFields()
+  {
+    return $this->customFields;
+  }
   public function setField($field)
   {
     $this->field = $field;

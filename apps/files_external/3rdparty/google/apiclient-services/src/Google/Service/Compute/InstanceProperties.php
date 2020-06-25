@@ -31,6 +31,7 @@ class Google_Service_Compute_InstanceProperties extends Google_Collection
   public $minCpuPlatform;
   protected $networkInterfacesType = 'Google_Service_Compute_NetworkInterface';
   protected $networkInterfacesDataType = 'array';
+  public $privateIpv6GoogleAccess;
   protected $reservationAffinityType = 'Google_Service_Compute_ReservationAffinity';
   protected $reservationAffinityDataType = '';
   public $resourcePolicies;
@@ -138,6 +139,14 @@ class Google_Service_Compute_InstanceProperties extends Google_Collection
   public function getNetworkInterfaces()
   {
     return $this->networkInterfaces;
+  }
+  public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
+  {
+    $this->privateIpv6GoogleAccess = $privateIpv6GoogleAccess;
+  }
+  public function getPrivateIpv6GoogleAccess()
+  {
+    return $this->privateIpv6GoogleAccess;
   }
   /**
    * @param Google_Service_Compute_ReservationAffinity

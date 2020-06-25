@@ -19,10 +19,13 @@ class Google_Service_Monitoring_HttpCheck extends Google_Model
 {
   protected $authInfoType = 'Google_Service_Monitoring_BasicAuthentication';
   protected $authInfoDataType = '';
+  public $body;
+  public $contentType;
   public $headers;
   public $maskHeaders;
   public $path;
   public $port;
+  public $requestMethod;
   public $useSsl;
   public $validateSsl;
 
@@ -39,6 +42,22 @@ class Google_Service_Monitoring_HttpCheck extends Google_Model
   public function getAuthInfo()
   {
     return $this->authInfo;
+  }
+  public function setBody($body)
+  {
+    $this->body = $body;
+  }
+  public function getBody()
+  {
+    return $this->body;
+  }
+  public function setContentType($contentType)
+  {
+    $this->contentType = $contentType;
+  }
+  public function getContentType()
+  {
+    return $this->contentType;
   }
   public function setHeaders($headers)
   {
@@ -71,6 +90,14 @@ class Google_Service_Monitoring_HttpCheck extends Google_Model
   public function getPort()
   {
     return $this->port;
+  }
+  public function setRequestMethod($requestMethod)
+  {
+    $this->requestMethod = $requestMethod;
+  }
+  public function getRequestMethod()
+  {
+    return $this->requestMethod;
   }
   public function setUseSsl($useSsl)
   {

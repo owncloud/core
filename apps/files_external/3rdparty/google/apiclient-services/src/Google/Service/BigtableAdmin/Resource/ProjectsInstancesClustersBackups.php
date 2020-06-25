@@ -26,9 +26,8 @@
 class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClustersBackups extends Google_Service_Resource
 {
   /**
-   * Gets the access control policy for a Table or Backup resource. Returns an
-   * empty policy if the resource exists but does not have a policy set.
-   * (backups.getIamPolicy)
+   * Gets the access control policy for a Table resource. Returns an empty policy
+   * if the resource exists but does not have a policy set. (backups.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * requested. See the operation documentation for the appropriate value for this
@@ -44,8 +43,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClustersBackups ext
     return $this->call('getIamPolicy', array($params), "Google_Service_BigtableAdmin_Policy");
   }
   /**
-   * Sets the access control policy on a Table or Backup resource. Replaces any
-   * existing policy. (backups.setIamPolicy)
+   * Sets the access control policy on a Table resource. Replaces any existing
+   * policy. (backups.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

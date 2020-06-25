@@ -26,14 +26,12 @@
 class Google_Service_Dns_Resource_Projects extends Google_Service_Resource
 {
   /**
-   * Fetch the representation of an existing Project. (projects.get)
+   * (projects.get)
    *
-   * @param string $project Identifies the project addressed by this request.
+   * @param string $project
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string clientOperationId For mutating operation requests only. An
-   * optional identifier specified by the client. Must be unique for operation
-   * resources in the Operations collection.
+   * @opt_param string clientOperationId
    * @return Google_Service_Dns_Project
    */
   public function get($project, $optParams = array())

@@ -151,7 +151,7 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The standard List page size.
+   * @opt_param string pageToken Optional. The standard List page token.
    * @opt_param string filter Optional. A filter constraining the clusters to
    * list. Filters are case-sensitive and have the following syntax:field = value
    * AND field = value ...where field is one of status.state, clusterName, or
@@ -163,7 +163,7 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * Only the logical AND operator is supported; space-separated items are treated
    * as having an implicit AND operator.Example filter:status.state = ACTIVE AND
    * clusterName = mycluster AND labels.env = staging AND labels.starred = *
-   * @opt_param string pageToken Optional. The standard List page token.
+   * @opt_param int pageSize Optional. The standard List page size.
    * @return Google_Service_Dataproc_ListClustersResponse
    */
   public function listProjectsRegionsClusters($projectId, $region, $optParams = array())
@@ -185,6 +185,14 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * @param Google_Service_Dataproc_Cluster $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string requestId Optional. A unique id used to identify the
+   * request. If the server receives two UpdateClusterRequest requests with the
+   * same id, then the second request will be ignored and the first
+   * google.longrunning.Operation created and stored in the backend is returned.It
+   * is recommended to always set this value to a UUID
+   * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
+   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
+   * (-). The maximum length is 40 characters.
    * @opt_param string gracefulDecommissionTimeout Optional. Timeout for graceful
    * YARN decomissioning. Graceful decommissioning allows removing nodes from the
    * cluster without interrupting jobs in progress. Timeout specifies how long to
@@ -194,14 +202,6 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * representation of Duration (https://developers.google.com/protocol-
    * buffers/docs/proto3#json)).Only supported on Dataproc image versions 1.2 and
    * higher.
-   * @opt_param string requestId Optional. A unique id used to identify the
-   * request. If the server receives two UpdateClusterRequest requests with the
-   * same id, then the second request will be ignored and the first
-   * google.longrunning.Operation created and stored in the backend is returned.It
-   * is recommended to always set this value to a UUID
-   * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
-   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
-   * (-). The maximum length is 40 characters.
    * @opt_param string updateMask Required. Specifies the path, relative to
    * Cluster, of the field to update. For example, to change the number of workers
    * in a cluster to 5, the update_mask parameter would be specified as
@@ -227,8 +227,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-   * PERMISSION_DENIED (clusters.setIamPolicy)
+   * existing policy.Can return NOT_FOUND, INVALID_ARGUMENT, and PERMISSION_DENIED
+   * errors. (clusters.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

@@ -73,21 +73,4 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsFlowhooks extends 
     $params = array_merge($params, $optParams);
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1FlowHook");
   }
-  /**
-   * Lists the flow hooks attached to an environment. This API always returns:
-   * `["PreProxyFlowHook", "PostProxyFlowHook", "PreTargetFlowHook",
-   * "PostTargetFlowHook"]` (flowhooks.listOrganizationsEnvironmentsFlowhooks)
-   *
-   * @param string $parent Required. Name of the environment for which to display
-   * flow hooks in the following format:
-   * `organizations/{org}/environments/{env}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsEnvironmentsFlowhooks($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
 }

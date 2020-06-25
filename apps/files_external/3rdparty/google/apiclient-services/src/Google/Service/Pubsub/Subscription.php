@@ -22,6 +22,7 @@ class Google_Service_Pubsub_Subscription extends Google_Model
   protected $deadLetterPolicyDataType = '';
   protected $expirationPolicyType = 'Google_Service_Pubsub_ExpirationPolicy';
   protected $expirationPolicyDataType = '';
+  public $filter;
   public $labels;
   public $messageRetentionDuration;
   public $name;
@@ -65,6 +66,14 @@ class Google_Service_Pubsub_Subscription extends Google_Model
   public function getExpirationPolicy()
   {
     return $this->expirationPolicy;
+  }
+  public function setFilter($filter)
+  {
+    $this->filter = $filter;
+  }
+  public function getFilter()
+  {
+    return $this->filter;
   }
   public function setLabels($labels)
   {

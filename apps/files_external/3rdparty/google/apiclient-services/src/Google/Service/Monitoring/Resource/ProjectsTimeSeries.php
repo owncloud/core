@@ -51,26 +51,6 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
    * The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string orderBy Unsupported: must be left blank. The points in each
-   * time series are currently returned in reverse time order (most recent to
-   * oldest).
-   * @opt_param string aggregation.crossSeriesReducer The reduction operation to
-   * be used to combine time series into a single time series, where the value of
-   * each data point in the resulting series is a function of all the already
-   * aligned values in the input time series.Not all reducer operations can be
-   * applied to all time series. The valid choices depend on the metric_kind and
-   * the value_type of the original time series. Reduction can yield a time series
-   * with a different metric_kind or value_type than the input time series.Time
-   * series data must first be aligned (see per_series_aligner) in order to
-   * perform cross-time series reduction. If cross_series_reducer is specified,
-   * then per_series_aligner must be specified, and must not be ALIGN_NONE. An
-   * alignment_period must also be specified; otherwise, an error is returned.
-   * @opt_param string filter Required. A monitoring filter
-   * (https://cloud.google.com/monitoring/api/v3/filters) that specifies which
-   * time series should be returned. The filter must specify a single metric type,
-   * and can additionally specify metric labels and other information. For
-   * example: metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
-   * metric.labels.instance_name = "my-instance-name"
    * @opt_param string pageToken If this field is not empty then it must contain
    * the nextPageToken value returned by a previous call to this method. Using
    * this field causes the method to return additional results from the previous
@@ -118,6 +98,26 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
    * effective page_size is 100,000 results. If view is set to FULL, this is the
    * maximum number of Points returned. If view is set to HEADERS, this is the
    * maximum number of TimeSeries returned.
+   * @opt_param string orderBy Unsupported: must be left blank. The points in each
+   * time series are currently returned in reverse time order (most recent to
+   * oldest).
+   * @opt_param string aggregation.crossSeriesReducer The reduction operation to
+   * be used to combine time series into a single time series, where the value of
+   * each data point in the resulting series is a function of all the already
+   * aligned values in the input time series.Not all reducer operations can be
+   * applied to all time series. The valid choices depend on the metric_kind and
+   * the value_type of the original time series. Reduction can yield a time series
+   * with a different metric_kind or value_type than the input time series.Time
+   * series data must first be aligned (see per_series_aligner) in order to
+   * perform cross-time series reduction. If cross_series_reducer is specified,
+   * then per_series_aligner must be specified, and must not be ALIGN_NONE. An
+   * alignment_period must also be specified; otherwise, an error is returned.
+   * @opt_param string filter Required. A monitoring filter
+   * (https://cloud.google.com/monitoring/api/v3/filters) that specifies which
+   * time series should be returned. The filter must specify a single metric type,
+   * and can additionally specify metric labels and other information. For
+   * example: metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
+   * metric.labels.instance_name = "my-instance-name"
    * @return Google_Service_Monitoring_ListTimeSeriesResponse
    */
   public function listProjectsTimeSeries($name, $optParams = array())
@@ -127,8 +127,8 @@ class Google_Service_Monitoring_Resource_ProjectsTimeSeries extends Google_Servi
     return $this->call('list', array($params), "Google_Service_Monitoring_ListTimeSeriesResponse");
   }
   /**
-   * Queries time series using the time series query language. This method does
-   * not require a Workspace. (timeSeries.query)
+   * Queries time series using Monitoring Query Language. This method does not
+   * require a Workspace. (timeSeries.query)
    *
    * @param string $name Required. The project on which to execute the request.
    * The format is: projects/[PROJECT_ID_OR_NUMBER]

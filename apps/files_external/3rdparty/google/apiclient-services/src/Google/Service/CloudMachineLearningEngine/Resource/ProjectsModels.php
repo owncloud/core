@@ -92,6 +92,10 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsModels extends 
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_CloudMachineLearningEngine_GoogleIamV1Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -113,6 +117,8 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsModels extends 
    * be listed.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Specifies the subset of models to
+   * retrieve.
    * @opt_param string pageToken Optional. A page token to request the next page
    * of results.
    *
@@ -123,8 +129,6 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsModels extends 
    * response message will contain a valid value in the `next_page_token` field.
    *
    * The default value is 20, and the maximum page size is 100.
-   * @opt_param string filter Optional. Specifies the subset of models to
-   * retrieve.
    * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListModelsResponse
    */
   public function listProjectsModels($parent, $optParams = array())
@@ -166,7 +170,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsModels extends 
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (models.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -185,7 +189,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsModels extends 
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may
