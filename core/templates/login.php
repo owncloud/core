@@ -48,11 +48,11 @@ script('core', [
 	?> shake<?php
 } ?>">
 			<input type="text" name="user" id="user"
-				placeholder="<?php p($l->t('Username or email')); ?>"
+				placeholder="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				value="<?php p($_['loginName']); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
-			<label for="user" class="infield"><?php p($l->t('Username or email')); ?></label>
+			<label for="user" class="infield"><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
 		</p>
 
 		<p class="groupbottom<?php if (!empty($_['invalidpassword'])) {
