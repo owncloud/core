@@ -126,6 +126,36 @@ class LoginPage extends OwncloudPage {
 
 	/**
 	 *
+	 * @return string
+	 */
+	public function getUserPlaceholderText() {
+		$userInputField = $this->findById($this->userInputId);
+		$this->assertElementNotNull(
+			$userInputField,
+			__METHOD__ .
+			" id $this->userInputId could not find user input field"
+		);
+		$placeholderText = $userInputField->getAttribute('placeholder');
+		return $placeholderText;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getPasswordPlaceholderText() {
+		$passwordInputField = $this->findById($this->passwordInputId);
+		$this->assertElementNotNull(
+			$passwordInputField,
+			__METHOD__ .
+			" id $this->passwordInputId could not find password input field"
+		);
+		$placeholderText = $passwordInputField->getAttribute('placeholder');
+		return $placeholderText;
+	}
+
+	/**
+	 *
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 *
