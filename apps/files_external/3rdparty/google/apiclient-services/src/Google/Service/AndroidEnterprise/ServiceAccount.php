@@ -19,7 +19,6 @@ class Google_Service_AndroidEnterprise_ServiceAccount extends Google_Model
 {
   protected $keyType = 'Google_Service_AndroidEnterprise_ServiceAccountKey';
   protected $keyDataType = '';
-  public $kind;
   public $name;
 
   /**
@@ -35,14 +34,6 @@ class Google_Service_AndroidEnterprise_ServiceAccount extends Google_Model
   public function getKey()
   {
     return $this->key;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setName($name)
   {

@@ -28,7 +28,8 @@ class Google_Service_AndroidEnterprise_Resource_Devices extends Google_Service_R
   /**
    * Uploads a report containing any changes in app states on the device since the
    * last report was generated. You can call this method up to 3 times every 24
-   * hours for a given device. (devices.forceReportUpload)
+   * hours for a given device. If you exceed the quota, then the Google Play EMM
+   * API returns HTTP 429 Too Many Requests. (devices.forceReportUpload)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -122,7 +123,7 @@ class Google_Service_AndroidEnterprise_Resource_Devices extends Google_Service_R
    * not set, all modifiable fields will be modified.
    *
    * When set in a query parameter, this field should be specified as
-   * updateMask=,,...
+   * updateMask=field1,field2,...
    * @return Google_Service_AndroidEnterprise_Device
    */
   public function update($enterpriseId, $userId, $deviceId, Google_Service_AndroidEnterprise_Device $postBody, $optParams = array())

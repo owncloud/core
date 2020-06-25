@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_EnterpriseAccount extends Google_Model
 {
   public $accountEmail;
-  public $kind;
 
   public function setAccountEmail($accountEmail)
   {
@@ -27,13 +26,5 @@ class Google_Service_AndroidEnterprise_EnterpriseAccount extends Google_Model
   public function getAccountEmail()
   {
     return $this->accountEmail;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
 }

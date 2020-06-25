@@ -19,7 +19,6 @@ class Google_Service_AndroidEnterprise_ServiceAccountKey extends Google_Model
 {
   public $data;
   public $id;
-  public $kind;
   public $publicData;
   public $type;
 
@@ -38,14 +37,6 @@ class Google_Service_AndroidEnterprise_ServiceAccountKey extends Google_Model
   public function getId()
   {
     return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setPublicData($publicData)
   {

@@ -33,10 +33,10 @@ class Google_Service_FirebaseHosting_Resource_ProjectsSitesVersions extends Goog
    * @param Google_Service_FirebaseHosting_Version $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sizeBytes The self-reported size of the version. This value
-   * is used for a pre-emptive quota check for legacy version uploads.
    * @opt_param string versionId A unique id for the new version. This is only
    * specified for legacy version creations.
+   * @opt_param string sizeBytes The self-reported size of the version. This value
+   * is used for a pre-emptive quota check for legacy version uploads.
    * @return Google_Service_FirebaseHosting_Version
    */
   public function create($parent, Google_Service_FirebaseHosting_Version $postBody, $optParams = array())
@@ -67,15 +67,15 @@ class Google_Service_FirebaseHosting_Resource_ProjectsSitesVersions extends Goog
    * format: sites/site-name
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token from a previous request, if
-   * provided.
-   * @opt_param int pageSize The maximum number of versions to return. The service
-   * may return fewer than this value. If unspecified, at most 25 versions will be
-   * returned. The maximum value is 100; values above 100 will be coerced to 100
    * @opt_param string filter The filter string used to return a subset of
    * versions in the response. Currently supported fields for filtering are: name,
    * status, and create_time. Filter processing will be implemented in accordance
    * with go/filtering.
+   * @opt_param int pageSize The maximum number of versions to return. The service
+   * may return fewer than this value. If unspecified, at most 25 versions will be
+   * returned. The maximum value is 100; values above 100 will be coerced to 100
+   * @opt_param string pageToken The next_page_token from a previous request, if
+   * provided.
    * @return Google_Service_FirebaseHosting_ListVersionsResponse
    */
   public function listProjectsSitesVersions($parent, $optParams = array())

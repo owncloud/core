@@ -167,12 +167,12 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * @param string $parent Name of the dataset.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The next_page_token value returned from the
+   * previous List request, if any.
    * @opt_param string filter Restricts stores returned to those matching a
    * filter. Syntax:
    * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
    * Only filtering on labels is supported. For example, `labels.key=value`.
-   * @opt_param string pageToken The next_page_token value returned from the
-   * previous List request, if any.
    * @opt_param int pageSize Limit on the number of DICOM stores to return in a
    * single response. If zero the default page size of 100 is used.
    * @return Google_Service_CloudHealthcare_ListDicomStoresResponse
@@ -186,9 +186,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * Updates the specified DICOM store. (dicomStores.patch)
    *
-   * @param string $name Output only. Resource name of the DICOM store, of the
-   * form `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/dic
-   * omStores/{dicom_store_id}`.
+   * @param string $name Resource name of the DICOM store, of the form `projects/{
+   * project_id}/locations/{location_id}/datasets/{dataset_id}/dicomStores/{dicom_
+   * store_id}`.
    * @param Google_Service_CloudHealthcare_DicomStore $postBody
    * @param array $optParams Optional parameters.
    *

@@ -18,20 +18,11 @@
 class Google_Service_AndroidEnterprise_ProductSet extends Google_Collection
 {
   protected $collection_key = 'productVisibility';
-  public $kind;
   public $productId;
   public $productSetBehavior;
   protected $productVisibilityType = 'Google_Service_AndroidEnterprise_ProductVisibility';
   protected $productVisibilityDataType = 'array';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   public function setProductId($productId)
   {
     $this->productId = $productId;

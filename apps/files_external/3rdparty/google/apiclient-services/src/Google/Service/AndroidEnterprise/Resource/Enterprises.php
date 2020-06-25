@@ -48,10 +48,10 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string completionToken The Completion token initially returned by
-   * GenerateSignupUrl.
    * @opt_param string enterpriseToken The Enterprise token appended to the
    * Callback URL.
+   * @opt_param string completionToken The Completion token initially returned by
+   * GenerateSignupUrl.
    * @return Google_Service_AndroidEnterprise_Enterprise
    */
   public function completeSignup($optParams = array())
@@ -80,8 +80,8 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
   /**
    * Enrolls an enterprise with the calling EMM. (enterprises.enroll)
    *
-   * @param string $token The token provided by the enterprise to register the
-   * EMM.
+   * @param string $token Required. The token provided by the enterprise to
+   * register the EMM.
    * @param Google_Service_AndroidEnterprise_Enterprise $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidEnterprise_Enterprise
@@ -131,16 +131,13 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
    * to the enterprise by calling setAccount. The service account is unique to
    * this enterprise and EMM, and will be deleted if the enterprise is unbound.
    * The credentials contain private key data and are not stored server-side.
-   *
    * This method can only be called after calling Enterprises.Enroll or
    * Enterprises.CompleteSignup, and before Enterprises.SetAccount; at other times
-   * it will return an error.
-   *
-   * Subsequent calls after the first will generate a new, unique set of
-   * credentials, and invalidate the previously generated credentials.
-   *
-   * Once the service account is bound to the enterprise, it can be managed using
-   * the serviceAccountKeys resource. (enterprises.getServiceAccount)
+   * it will return an error.   Subsequent calls after the first will generate a
+   * new, unique set of credentials, and invalidate the previously generated
+   * credentials.   Once the service account is bound to the enterprise, it can be
+   * managed using the serviceAccountKeys resource.
+   * (enterprises.getServiceAccount)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param array $optParams Optional parameters.
@@ -172,13 +169,13 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
   }
   /**
    * Looks up an enterprise by domain name. This is only supported for enterprises
-   * created via the Google-initiated creation flow. Lookup of the id is not
+   * created via the Google-initiated creation flow.  Lookup of the id is not
    * needed for enterprises created via the EMM-initiated flow since the EMM
    * learns the enterprise ID in the callback specified in the
    * Enterprises.generateSignupUrl call. (enterprises.listEnterprises)
    *
-   * @param string $domain The exact primary domain name of the enterprise to look
-   * up.
+   * @param string $domain Required. The exact primary domain name of the
+   * enterprise to look up.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidEnterprise_EnterprisesListResponse
    */
@@ -191,15 +188,21 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
   /**
    * Pulls and returns a notification set for the enterprises associated with the
    * service account authenticated for the request. The notification set may be
-   * empty if no notification are pending. A notification set returned needs to be
-   * acknowledged within 20 seconds by calling
-   * Enterprises.AcknowledgeNotificationSet, unless the notification set is empty.
+   * empty if no notification are pending.
+   *
+   * A notification set returned needs to be acknowledged within 20 seconds by
+   * calling Enterprises.AcknowledgeNotificationSet, unless the notification set
+   * is empty.
+   *
    * Notifications that are not acknowledged within the 20 seconds will eventually
    * be included again in the response to another PullNotificationSet request, and
    * those that are never acknowledged will ultimately be deleted according to the
-   * Google Cloud Platform Pub/Sub system policy. Multiple requests might be
-   * performed concurrently to retrieve notifications, in which case the pending
-   * notifications (if any) will be split among each caller, if any are pending.
+   * Google Cloud Platform Pub/Sub system policy.
+   *
+   * Multiple requests might be performed concurrently to retrieve notifications,
+   * in which case the pending notifications (if any) will be split among each
+   * caller, if any are pending.
+   *
    * If no notifications are present, an empty notification list is returned.
    * Subsequent requests may return more notifications once they become available.
    * (enterprises.pullNotificationSet)
@@ -207,12 +210,15 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
    * @param array $optParams Optional parameters.
    *
    * @opt_param string requestMode The request mode for pulling notifications.
+   *
    * Specifying waitForNotifications will cause the request to block and wait
    * until one or more notifications are present, or return an empty notification
-   * list if no notifications are present after some time. Speciying
-   * returnImmediately will cause the request to immediately return the pending
-   * notifications, or an empty list if no notifications are present. If omitted,
-   * defaults to waitForNotifications.
+   * list if no notifications are present after some time.
+   *
+   * Speciying returnImmediately will cause the request to immediately return the
+   * pending notifications, or an empty list if no notifications are present.
+   *
+   * If omitted, defaults to waitForNotifications.
    * @return Google_Service_AndroidEnterprise_NotificationSet
    */
   public function pullNotificationSet($optParams = array())
@@ -255,10 +261,12 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
    * Sets the store layout for the enterprise. By default, storeLayoutType is set
    * to "basic" and the basic store layout is enabled. The basic layout only
    * contains apps approved by the admin, and that have been added to the
-   * available product set for a user (using the  setAvailableProductSet call).
-   * Apps on the page are sorted in order of their product ID value. If you create
-   * a custom store layout (by setting storeLayoutType = "custom" and setting a
-   * homepage), the basic store layout is disabled. (enterprises.setStoreLayout)
+   * available product set for a user (using the
+   *
+   * setAvailableProductSet call). Apps on the page are sorted in order of their
+   * product ID value. If you create a custom store layout (by setting
+   * storeLayoutType = "custom" and setting a homepage), the basic store layout is
+   * disabled. (enterprises.setStoreLayout)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param Google_Service_AndroidEnterprise_StoreLayout $postBody

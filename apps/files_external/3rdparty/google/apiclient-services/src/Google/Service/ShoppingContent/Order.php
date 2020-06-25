@@ -19,6 +19,8 @@ class Google_Service_ShoppingContent_Order extends Google_Collection
 {
   protected $collection_key = 'shipments';
   public $acknowledged;
+  protected $annotationsType = 'Google_Service_ShoppingContent_OrderOrderAnnotation';
+  protected $annotationsDataType = 'array';
   protected $billingAddressType = 'Google_Service_ShoppingContent_OrderAddress';
   protected $billingAddressDataType = '';
   protected $customerType = 'Google_Service_ShoppingContent_OrderCustomer';
@@ -59,6 +61,20 @@ class Google_Service_ShoppingContent_Order extends Google_Collection
   public function getAcknowledged()
   {
     return $this->acknowledged;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_OrderOrderAnnotation
+   */
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_OrderOrderAnnotation
+   */
+  public function getAnnotations()
+  {
+    return $this->annotations;
   }
   /**
    * @param Google_Service_ShoppingContent_OrderAddress

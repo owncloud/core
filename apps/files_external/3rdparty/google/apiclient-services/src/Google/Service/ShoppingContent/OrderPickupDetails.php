@@ -23,6 +23,7 @@ class Google_Service_ShoppingContent_OrderPickupDetails extends Google_Collectio
   protected $collectorsType = 'Google_Service_ShoppingContent_OrderPickupDetailsCollector';
   protected $collectorsDataType = 'array';
   public $locationId;
+  public $pickupType;
 
   /**
    * @param Google_Service_ShoppingContent_OrderAddress
@@ -59,5 +60,13 @@ class Google_Service_ShoppingContent_OrderPickupDetails extends Google_Collectio
   public function getLocationId()
   {
     return $this->locationId;
+  }
+  public function setPickupType($pickupType)
+  {
+    $this->pickupType = $pickupType;
+  }
+  public function getPickupType()
+  {
+    return $this->pickupType;
   }
 }

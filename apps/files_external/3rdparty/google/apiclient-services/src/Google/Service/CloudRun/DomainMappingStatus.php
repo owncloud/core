@@ -24,6 +24,7 @@ class Google_Service_CloudRun_DomainMappingStatus extends Google_Collection
   public $observedGeneration;
   protected $resourceRecordsType = 'Google_Service_CloudRun_ResourceRecord';
   protected $resourceRecordsDataType = 'array';
+  public $url;
 
   /**
    * @param Google_Service_CloudRun_GoogleCloudRunV1Condition
@@ -68,5 +69,13 @@ class Google_Service_CloudRun_DomainMappingStatus extends Google_Collection
   public function getResourceRecords()
   {
     return $this->resourceRecords;
+  }
+  public function setUrl($url)
+  {
+    $this->url = $url;
+  }
+  public function getUrl()
+  {
+    return $this->url;
   }
 }

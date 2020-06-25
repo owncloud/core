@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_DeviceState extends Google_Model
 {
   public $accountState;
-  public $kind;
 
   public function setAccountState($accountState)
   {
@@ -27,13 +26,5 @@ class Google_Service_AndroidEnterprise_DeviceState extends Google_Model
   public function getAccountState()
   {
     return $this->accountState;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
 }

@@ -19,7 +19,6 @@ class Google_Service_AndroidEnterprise_StoreCluster extends Google_Collection
 {
   protected $collection_key = 'productId';
   public $id;
-  public $kind;
   protected $nameType = 'Google_Service_AndroidEnterprise_LocalizedText';
   protected $nameDataType = 'array';
   public $orderInPage;
@@ -32,14 +31,6 @@ class Google_Service_AndroidEnterprise_StoreCluster extends Google_Collection
   public function getId()
   {
     return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   /**
    * @param Google_Service_AndroidEnterprise_LocalizedText

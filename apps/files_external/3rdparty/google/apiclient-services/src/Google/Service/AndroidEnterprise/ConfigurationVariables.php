@@ -18,19 +18,10 @@
 class Google_Service_AndroidEnterprise_ConfigurationVariables extends Google_Collection
 {
   protected $collection_key = 'variableSet';
-  public $kind;
   public $mcmId;
   protected $variableSetType = 'Google_Service_AndroidEnterprise_VariableSet';
   protected $variableSetDataType = 'array';
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   public function setMcmId($mcmId)
   {
     $this->mcmId = $mcmId;

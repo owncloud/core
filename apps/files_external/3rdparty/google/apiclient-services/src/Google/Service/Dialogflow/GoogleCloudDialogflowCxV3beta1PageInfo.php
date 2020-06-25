@@ -20,7 +20,6 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfo extends G
   public $currentPage;
   protected $formInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfoFormInfo';
   protected $formInfoDataType = '';
-  public $nextPage;
 
   public function setCurrentPage($currentPage)
   {
@@ -43,13 +42,5 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfo extends G
   public function getFormInfo()
   {
     return $this->formInfo;
-  }
-  public function setNextPage($nextPage)
-  {
-    $this->nextPage = $nextPage;
-  }
-  public function getNextPage()
-  {
-    return $this->nextPage;
   }
 }
