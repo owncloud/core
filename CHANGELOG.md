@@ -9,6 +9,7 @@ Summary
 -------
 
 * Security - Add new system config to enforce strict login check with user backend: [#37569](https://github.com/owncloud/core/pull/37569)
+* Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
 * Bugfix - Correct files_external:export output so it can be imported: [#37054](https://github.com/owncloud/core/issues/37054)
 * Bugfix - Add force option to delete user even if the user doesn't exist: [#37103](https://github.com/owncloud/core/pull/37103)
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
@@ -85,6 +86,14 @@ Details
 
    https://github.com/owncloud/core/pull/37569
    https://github.com/owncloud/user_ldap/pull/581
+
+* Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
+
+   We implemented the recommended workaround for htmlPrefilter. See
+   https://github.com/advisories/GHSA-gxr4-xjj5-5px2
+
+   https://github.com/owncloud/core/issues/37598
+   https://github.com/owncloud/core/pull/37596
 
 * Bugfix - Correct files_external:export output so it can be imported: [#37054](https://github.com/owncloud/core/issues/37054)
 
