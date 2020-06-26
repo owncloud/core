@@ -63,13 +63,13 @@ script('core', [
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				autocomplete="off" autocapitalize="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
+			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Login')); ?>" value="" disabled="disabled"/>
 		</p>
 
 		<?php if (!empty($_['csrf_error'])) {
 		?>
 		<p class="warning">
-			<?php p($l->t('You took too long to login, please try again now')); ?>
+			<?php p($l->t('You took too long to log in, please try again now')); ?>
 		</p>
 		<?php
 	} ?>
