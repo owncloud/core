@@ -314,6 +314,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Hafðu samband við kerfisstjóra.",
     "An internal error occurred." : "Innri villa kom upp.",
     "Please try again or contact your administrator." : "Reyndu aftur eða hafðu samband við kerfisstjóra.",
+    "Login" : "Innskráning",
     "Username or email" : "Notandanafn eða tölvupóstur",
     "Log in" : "Skrá inn",
     "You took too long to login, please try again now" : "Þú varst of lengi að skrá þig inn, reyndu núna aftur",

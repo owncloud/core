@@ -273,6 +273,7 @@ OC.L10N.register(
     "Server side authentication failed!" : "伺服器端認證失敗！",
     "Please contact your administrator." : "請聯絡系統管理員",
     "Please try again or contact your administrator." : "請重試或聯絡系統管理員",
+    "Login" : "登入",
     "Username or email" : "使用者名稱或電子郵件",
     "Log in" : "登入",
     "Wrong password. Reset it?" : "密碼錯誤，重設密碼？",

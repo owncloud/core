@@ -206,6 +206,7 @@ OC.L10N.register(
     "Server side authentication failed!" : "Аутентификација на серверу није успела!",
     "Please contact your administrator." : "Контактирајте вашег администратора.",
     "Please try again or contact your administrator." : "Покушајте поново или контактирајте вашег администратора.",
+    "Login" : "Пријава",
     "Log in" : "Пријава",
     "Alternative Logins" : "Алтернативне пријаве",
     "Use the following link to reset your password: {link}" : "Употребите следећу везу да ресетујете своју лозинку: {link}",

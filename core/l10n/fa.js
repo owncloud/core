@@ -287,6 +287,7 @@ OC.L10N.register(
     "Please contact your administrator." : "لطفا با مدیر وب‌سایت تماس بگیرید.",
     "An internal error occurred." : "یک خطای داخلی روی داد.",
     "Please try again or contact your administrator." : "لطفا مجددا تلاش کنید یا با مدیر سیستم تماس بگیرید.",
+    "Login" : "ورود",
     "Username or email" : "نام کاربری و پست الکترونیکی",
     "Log in" : "ورود",
     "Wrong password. Reset it?" : "رمز عبور نادرست. بازگردانی آن؟",

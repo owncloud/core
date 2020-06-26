@@ -316,6 +316,7 @@ OC.L10N.register(
     "Please contact your administrator." : "الرجاء الاتصال بالمسؤول.",
     "An internal error occurred." : "حدث خطأ داخلي.",
     "Please try again or contact your administrator." : "يُرجى المحاولة مرة أخرى أو الاتصال بالمسؤول.",
+    "Login" : "تسجيل الدخول",
     "Username or email" : "اسم المستخدم أو البريد الإلكتروني",
     "Log in" : "تسجيل الدخول",
     "You took too long to login, please try again now" : "تستغرق وقتًا كبيرًا في تسجيل الدخول، يُرجى إعادة المحاولة الآن",

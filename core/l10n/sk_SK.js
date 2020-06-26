@@ -267,6 +267,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Kontaktujte prosím vášho administrátora.",
     "An internal error occurred." : "Došlo k vnútornej chybe.",
     "Please try again or contact your administrator." : "Skúste to znovu, alebo sa obráťte na vášho administrátora.",
+    "Login" : "Prihlásenie",
     "Username or email" : "Používateľské meno alebo emailová adresa",
     "Log in" : "Prihlásiť sa",
     "Wrong password. Reset it?" : "Chybné heslo. Chcete ho obnoviť?",

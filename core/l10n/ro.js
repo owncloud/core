@@ -225,6 +225,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Contactează-ți administratorul.",
     "An internal error occurred." : "A apărut o eroare internă.",
     "Please try again or contact your administrator." : "Încearcă din nou sau contactează-ți administratorul.",
+    "Login" : "Autentificare",
     "Username or email" : "Nume de utilizator sau adresă email",
     "Log in" : "Autentificare",
     "Wrong password. Reset it?" : "Parolă greșită. O resetezi?",

@@ -248,6 +248,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Contactatz vòstre administrator.",
     "An internal error occurred." : "Una error intèrna s'es produita.",
     "Please try again or contact your administrator." : "Reensajatz o contactatz vòstre administrator.",
+    "Login" : "Identificant",
     "Username or email" : "Nom d'utilizaire o e-mail",
     "Log in" : "Connexion",
     "Wrong password. Reset it?" : "Senhal incorrècte. Reïnicializar ?",

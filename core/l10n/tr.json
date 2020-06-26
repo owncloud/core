@@ -315,6 +315,7 @@
     "Please contact your administrator." : "Lütfen sistem yöneticiniz ile iletişime geçin.",
     "An internal error occurred." : "Dahili bir hata oluştu.",
     "Please try again or contact your administrator." : "Lütfen yeniden deneyin veya yöneticinizle iletişim kurun.",
+    "Login" : "Oturum Aç",
     "Username or email" : "Kullanıcı adı veya e-posta",
     "Log in" : "Giriş yap",
     "You took too long to login, please try again now" : "Giriş yapmanız çok uzun sürdü, lütfen şimdi tekrar deneyiniz.",

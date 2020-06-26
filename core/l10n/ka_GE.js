@@ -95,6 +95,7 @@ OC.L10N.register(
     "Finish setup" : "კონფიგურაციის დასრულება",
     "Log out" : "გამოსვლა",
     "Search" : "ძებნა",
+    "Login" : "ლოგინი",
     "Log in" : "შესვლა",
     "Alternative Logins" : "ალტერნატიული Login–ი",
     "Use the following link to reset your password: {link}" : "გამოიყენე შემდეგი ლინკი პაროლის შესაცვლელად: {link}",

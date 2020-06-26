@@ -68,6 +68,7 @@ OC.L10N.register(
     "Finish setup" : "تەڭشەك تامام",
     "Log out" : "تىزىمدىن چىق",
     "Search" : "ئىزدە",
+    "Login" : "تىزىمغا كىرىڭ",
     "New password" : "يېڭى ئىم"
 },
 "nplurals=2; plural=(n != 1);");
