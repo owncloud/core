@@ -270,6 +270,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Palun kontakteeru oma süsteemihalduriga.",
     "An internal error occurred." : "Tekkis sisemine tõrge",
     "Please try again or contact your administrator." : "Palun proovi uuesti või võta ühendust oma administraatoriga.",
+    "Login" : "Logi sisse",
     "Username or email" : "Kasutajanimi või e-posti aadress",
     "Log in" : "Logi sisse",
     "Wrong password. Reset it?" : "Vale parool. Kas vajad parooli taastamist?",

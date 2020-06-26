@@ -87,6 +87,7 @@ OC.L10N.register(
     "Finish setup" : "அமைப்பை முடிக்க",
     "Log out" : "விடுபதிகை செய்க",
     "Search" : "தேடுதல்",
+    "Login" : "புகுபதிகை",
     "Log in" : "புகுபதிகை",
     "Use the following link to reset your password: {link}" : "உங்கள் கடவுச்சொல்லை மீளமைக்க பின்வரும் இணைப்பை பயன்படுத்தவும் : {இணைப்பு}",
     "New password" : "புதிய கடவுச்சொல்",

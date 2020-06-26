@@ -40,6 +40,7 @@ OC.L10N.register(
     "Help" : "ਮਦਦ",
     "Imprint" : "ਛਾਪ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
-    "Search" : "ਖੋਜ"
+    "Search" : "ਖੋਜ",
+    "Login" : "ਲਾਗਇਨ"
 },
 "nplurals=2; plural=(n != 1);");

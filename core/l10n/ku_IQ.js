@@ -27,6 +27,7 @@ OC.L10N.register(
     "Finish setup" : "كۆتایی هات ده‌ستكاریه‌كان",
     "Log out" : "چوونەدەرەوە",
     "Search" : "بگەڕێ",
+    "Login" : "چوونەژوورەوە",
     "New password" : "وشەی نهێنی نوێ",
     "Reset password" : "دووباره‌ كردنه‌وه‌ی وشه‌ی نهێنی"
 },

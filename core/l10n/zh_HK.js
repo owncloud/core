@@ -98,6 +98,7 @@ OC.L10N.register(
     "Please contact your administrator." : "請聯絡您的管理員",
     "An internal error occurred." : "產生內部錯誤",
     "Please try again or contact your administrator." : "請重試或聯絡您的管理員",
+    "Login" : "登入",
     "Username or email" : "用戶名或電郵地址",
     "Log in" : "登入",
     "Wrong password. Reset it?" : "密碼錯誤. 需要重設密碼?",

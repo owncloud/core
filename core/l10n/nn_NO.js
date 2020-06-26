@@ -287,6 +287,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Ver venleg kontakt din administrator.",
     "An internal error occurred." : "Ein intern feil oppstod!",
     "Please try again or contact your administrator." : "Ver venleg prøv på ny enn kontakt din administrator.",
+    "Login" : "Logg inn",
     "Username or email" : "Brukarnamn eller epost!",
     "Log in" : "Logg inn",
     "Wrong password. Reset it?" : "Feil passord, nullstilt passord?",

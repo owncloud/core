@@ -91,6 +91,7 @@ OC.L10N.register(
     "Finish setup" : "Gorffen sefydlu",
     "Log out" : "Allgofnodi",
     "Search" : "Chwilio",
+    "Login" : "Mewngofnodi",
     "Log in" : "Mewngofnodi",
     "Alternative Logins" : "Mewngofnodiadau Amgen",
     "Use the following link to reset your password: {link}" : "Defnyddiwch y ddolen hon i ailosod eich cyfrinair: {link}",

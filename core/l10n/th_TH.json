@@ -324,6 +324,7 @@
     "Please contact your administrator." : "กรุณาติดต่อผู้ดูแลระบบ",
     "An internal error occurred." : "มีข้อผิดพลาดภายในเกิดขึ้น",
     "Please try again or contact your administrator." : "โปรดลองอีกครั้งหรือติดต่อผู้ดูแลระบบ",
+    "Login" : "เข้าสู่ระบบ",
     "Username or email" : "ชื่อผู้ใช้หรืออีเมล",
     "Log in" : "เข้าสู่ระบบ",
     "You took too long to login, please try again now" : "คุณใช้เวลาลงชื่อเข้าใช้นานเกินไป โปรดลองอีกครั้ง",

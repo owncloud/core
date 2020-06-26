@@ -322,6 +322,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Contatta il tuo amministratore di sistema.",
     "An internal error occurred." : "Si è verificato un errore interno.",
     "Please try again or contact your administrator." : "Prova ancora o contatta il tuo amministratore.",
+    "Login" : "Accesso",
     "Username or email" : "Nome utente o email",
     "Log in" : "Accedi",
     "You took too long to login, please try again now" : "Hai impiegato troppo tempo per accedere, riprova adesso",
