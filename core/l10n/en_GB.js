@@ -317,6 +317,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Please contact your administrator.",
     "An internal error occurred." : "An internal error occurred.",
     "Please try again or contact your administrator." : "Please try again or contact your administrator.",
+    "Login" : "Login",
     "Username or email" : "Username or email",
     "Log in" : "Log in",
     "You took too long to login, please try again now" : "You took too long to login, please try again now",

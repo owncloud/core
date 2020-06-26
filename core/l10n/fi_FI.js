@@ -294,6 +294,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Ota yhteys ylläpitäjään.",
     "An internal error occurred." : "Tapahtui sisäinen virhe",
     "Please try again or contact your administrator." : "Yritä uudestaan tai ota yhteys ylläpitäjään.",
+    "Login" : "Kirjaudu",
     "Username or email" : "Käyttäjätunnus tai sähköpostiosoite",
     "Log in" : "Kirjaudu sisään",
     "You took too long to login, please try again now" : "Kirjautumisessa kesti liian kauan. Yritä uudelleen nyt",

@@ -286,6 +286,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Kontakt venligst din administrator",
     "An internal error occurred." : "Der opstod en intern fejl.",
     "Please try again or contact your administrator." : "Kontakt venligst din administrator.",
+    "Login" : "Login",
     "Username or email" : "Brugernavn eller email",
     "Log in" : "Log ind",
     "Wrong password. Reset it?" : "Forkert kodeord. Skal det nulstilles?",

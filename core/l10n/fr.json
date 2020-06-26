@@ -310,6 +310,7 @@
     "Please contact your administrator." : "Veuillez contacter votre administrateur.",
     "An internal error occurred." : "Une erreur interne est survenue.",
     "Please try again or contact your administrator." : "Veuillez réessayer ou contacter votre administrateur.",
+    "Login" : "Identifiant",
     "Username or email" : "Nom d'utilisateur ou e-mail",
     "Log in" : "Se connecter",
     "You took too long to login, please try again now" : "Vous avez mis trop longtemps pour vous connecter, veuillez réessayer maintenant",

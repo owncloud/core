@@ -316,6 +316,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Παρακαλούμε επικοινωνήστε με τον διαχειριστή.",
     "An internal error occurred." : "Παρουσιάστηκε εσωτερικό σφάλμα.",
     "Please try again or contact your administrator." : "Παρακαλούμε δοκιμάστε ξανά ή επικοινωνήστε με τον διαχειριστή σας.",
+    "Login" : "Σύνδεση",
     "Username or email" : "Όνομα χρήστη ή ηλεκτρονική διεύθυνση",
     "Log in" : "Είσοδος",
     "You took too long to login, please try again now" : "Σας πήρε πολύ χρόνο για να συνδεθείτε, δοκιμάστε ξανά τώρα",

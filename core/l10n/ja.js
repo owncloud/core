@@ -319,6 +319,7 @@ OC.L10N.register(
     "Please contact your administrator." : "管理者に問い合わせてください。",
     "An internal error occurred." : "内部エラーが発生しました。",
     "Please try again or contact your administrator." : "もう一度試してみるか、管理者に問い合わせてください。",
+    "Login" : "ログイン",
     "Username or email" : "ユーザー名またはメールアドレス",
     "Log in" : "ログイン",
     "You took too long to login, please try again now" : "ログインに時間がかかりすぎました。もう一度やり直してください。",

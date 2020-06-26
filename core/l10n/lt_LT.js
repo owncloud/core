@@ -217,6 +217,7 @@ OC.L10N.register(
     "Search" : "Ieškoti",
     "Server side authentication failed!" : "Autentikacija serveryje nepavyko!",
     "Please contact your administrator." : "Kreipkitės į savo sistemos administratorių.",
+    "Login" : "Prisijungti",
     "Username or email" : "Vartotojas arba el. paštas",
     "Log in" : "Prisijungti",
     "Wrong password. Reset it?" : "Blogas slaptažodis. Pakeisti?",

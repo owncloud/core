@@ -233,6 +233,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Kontak u stelseladministrateur.",
     "An internal error occurred." : "’n Interne fout het voorgekom.",
     "Please try again or contact your administrator." : "Probeer weer of kontak u stelseladministrateur.",
+    "Login" : "Teken Aan",
     "Username or email" : "Gebruikersnaam of e-pos",
     "Log in" : "Teken aan",
     "Wrong password. Reset it?" : "Verkeerde wagwoord. Herstel dit?",

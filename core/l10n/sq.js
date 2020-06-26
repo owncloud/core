@@ -326,6 +326,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "An internal error occurred." : "Ndodhi një gabim i brendshëm.",
     "Please try again or contact your administrator." : "Ju lutemi, riprovoni ose lidhuni me përgjegjësin tuaj.",
+    "Login" : "Hyrje",
     "Username or email" : "Emër përdoruesi ose email",
     "Log in" : "Hyni",
     "You took too long to login, please try again now" : "U vonuat shumë me hyrjen, ju lutemi, riprovoni tani",

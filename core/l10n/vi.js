@@ -152,6 +152,7 @@ OC.L10N.register(
     "Search" : "Tìm kiếm",
     "Server side authentication failed!" : "Xác thực phía máy chủ không thành công!",
     "Please contact your administrator." : "Vui lòng liên hệ với quản trị viên.",
+    "Login" : "Đăng nhập",
     "Log in" : "Đăng nhập",
     "Alternative Logins" : "Đăng nhập khác",
     "Use the following link to reset your password: {link}" : "Dùng đường dẫn sau để khôi phục lại mật khẩu : {link}",

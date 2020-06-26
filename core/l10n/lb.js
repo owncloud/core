@@ -221,6 +221,7 @@ OC.L10N.register(
     "Please contact your administrator." : "W.e.g. kontaktéier däin Administrateur.",
     "An internal error occurred." : "Et ass en interne Feeler opgetrueden.",
     "Please try again or contact your administrator." : "W.e.g. versich et nach emol oder kontaktéier däin Administrateur.",
+    "Login" : "Login",
     "Username or email" : "Benotzernumm oder Email",
     "Log in" : "Umellen",
     "Wrong password. Reset it?" : "Falscht Passwuert. Wëlls de et zeréck setzen?",

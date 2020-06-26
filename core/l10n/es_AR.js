@@ -162,6 +162,7 @@ OC.L10N.register(
     "Search" : "Buscar",
     "Server side authentication failed!" : "¡Falló la autenticación del servidor!",
     "Please contact your administrator." : "Por favor, contacte a su administrador.",
+    "Login" : "Ingresar",
     "Log in" : "Iniciar sesión",
     "Alternative Logins" : "Nombre alternativos de usuarios",
     "Use the following link to reset your password: {link}" : "Usá este enlace para restablecer tu contraseña: {link}",

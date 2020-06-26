@@ -111,6 +111,7 @@ OC.L10N.register(
     "Finishing …" : "সম্পন্ন হচ্ছে....",
     "Log out" : "প্রস্থান",
     "Search" : "অনুসন্ধান",
+    "Login" : "প্রবেশ",
     "Log in" : "প্রবেশ",
     "Alternative Logins" : "বিকল্প লগইন",
     "Use the following link to reset your password: {link}" : "আপনার কূটশব্দটি পূনঃনির্ধারণ  করার জন্য নিম্নোক্ত লিংকটি ব্যবহার করুনঃ {link}",

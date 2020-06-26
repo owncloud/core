@@ -134,6 +134,7 @@ OC.L10N.register(
     "Log out" : "ಈ ಆವೃತ್ತಿ ಇಂದ ನಿರ್ಗಮಿಸಿ",
     "Search" : "﻿ಹುಡುಕು",
     "Please contact your administrator." : "ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಲು ಕೋರಲಾಗಿದೆ.",
+    "Login" : "ಖಾತೆ ಪ್ರವೇಶಿಸು",
     "Use the following link to reset your password: {link}" : "ನಿಮ್ಮ ಗುಪ್ತಪದ ಮರುಹೊಂದಿಸಲು ಕೆಳಗಿನ ಅಂತ್ರಜಾಲ ಕೊಂಡಿಯನ್ನು ಬಳಸಿ : {link}",
     "New password" : "﻿ಹೊಸ ಗುಪ್ತಪದ",
     "New Password" : "ಹೊಸ ಗುಪ್ತಪದ",

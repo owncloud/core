@@ -172,6 +172,7 @@ OC.L10N.register(
     "Search" : "pretraži",
     "Server side authentication failed!" : "Autentikacija na strani poslužitelja nije uspjela!",
     "Please contact your administrator." : "Molimo kontaktirajte svog administratora.",
+    "Login" : "Prijava",
     "Log in" : "Prijavite se",
     "Alternative Logins" : "Alternativne prijave",
     "Use the following link to reset your password: {link}" : "Za resetiranje svoje lozinke koristite sljedeću vezu: {link}",
