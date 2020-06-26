@@ -583,19 +583,22 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
-		if ($message === "") {
-			$message = "OCS status code is not the expected value";
-		}
-
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
 		if (\is_array($statusCode)) {
+			if ($message === "") {
+				$message = "OCS status code is not any of the expected values " . \implode(",", $statusCode) . " got " . $responseStatusCode;
+			}
 			Assert::assertContainsEquals(
 				$responseStatusCode, $statusCode,
 				$message
 			);
 		} else {
+			if ($message === "") {
+				$message = "OCS status code is not the expected value " . $statusCode . " got " . $responseStatusCode;
+			}
+
 			Assert::assertEquals(
 				$statusCode, $responseStatusCode,
 				$message
