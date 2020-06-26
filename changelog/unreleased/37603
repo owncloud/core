@@ -1,0 +1,6 @@
+Change: Adjust wording on login page
+
+The use of "login" vs "log in" has been adjusted.
+
+https://github.com/owncloud/core/issues/37603
+https://github.com/owncloud/core/pull/37604
