@@ -288,7 +288,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Vänligen försök igen eller kontakta din administratör.",
     "Login" : "Logga in",
     "Username or email" : "Användarnamn eller e-post",
-    "Log in" : "Logga in",
     "Wrong password. Reset it?" : "Fel lösenord. Vill du återställa?",
     "Wrong password." : "Fel lösenord.",
     "Stay logged in" : "Fortsätt vara inloggad.",

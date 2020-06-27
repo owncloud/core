@@ -300,8 +300,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "다시 시도하거나 관리자에게 연락하십시오.",
     "Login" : "로그인",
     "Username or email" : "사용자 이름 또는 이메일",
-    "Log in" : "로그인",
-    "You took too long to login, please try again now" : "로그인이 너무 오래 걸렸습니다. 다시 시도하십시오",
     "Wrong password. Reset it?" : "암호가 잘못되었습니다. 다시 설정하시겠습니까?",
     "Wrong password." : "암호가 잘못되었습니다.",
     "You are trying to access a private link. Please log in first." : "비공개 링크에 접근을 시도하셨습니다. 먼저 로그인해 주십시오.",

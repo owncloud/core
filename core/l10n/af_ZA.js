@@ -235,7 +235,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Probeer weer of kontak u stelseladministrateur.",
     "Login" : "Teken Aan",
     "Username or email" : "Gebruikersnaam of e-pos",
-    "Log in" : "Teken aan",
     "Wrong password. Reset it?" : "Verkeerde wagwoord. Herstel dit?",
     "Wrong password." : "Verkeerde wagwoord.",
     "Stay logged in" : "Bly aangeteken",

@@ -264,7 +264,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Por favor, inténtalo de nueves o ponte en contactu col alministrador.",
     "Login" : "Entamar sesión",
     "Username or email" : "Nome d'usuariu o email",
-    "Log in" : "Aniciar sesión",
     "Wrong password. Reset it?" : "Contraseña incorreuta. ¿Reafitala?",
     "Wrong password." : "Contraseña incorreuta.",
     "Stay logged in" : "Permanecer conectáu",

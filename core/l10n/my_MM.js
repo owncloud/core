@@ -35,7 +35,6 @@ OC.L10N.register(
     "Database password" : "Database စကားဝှက်",
     "Database name" : "Database အမည်",
     "Finish setup" : "တပ်ဆင်ခြင်းပြီးပါပြီ။",
-    "Log in" : "ဝင်ရောက်ရန်",
     "New password" : "စကားဝှက်အသစ်"
 },
 "nplurals=1; plural=0;");

@@ -291,7 +291,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Poskusite znova ali pa stopite v stik s skrbnikom sistema.",
     "Login" : "Prijava",
     "Username or email" : "Uporabniško ime ali elektronski naslov",
-    "Log in" : "Prijava",
     "Wrong password. Reset it?" : "Napačno geslo. Ali ga želite ponastaviti?",
     "Wrong password." : "Napačno geslo!",
     "You are trying to access a private link. Please log in first." : "Poskušate odpreti zasebno povezavo. Pred nadaljevanjem se je treba prijaviti.",

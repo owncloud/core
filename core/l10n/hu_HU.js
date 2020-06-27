@@ -311,8 +311,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Kérjük, próbálja meg újra, vagy vegye fel a kapcsolatot a rendszergazdával.",
     "Login" : "Login",
     "Username or email" : "Felhasználói név vagy e-mail cím",
-    "Log in" : "Bejelentkezés",
-    "You took too long to login, please try again now" : "Túl sokáig tartott belépni, próbáld újra",
     "Wrong password. Reset it?" : "Hibás jelszó. Visszaállítja?",
     "Wrong password." : "Hibás jelszó.",
     "You are trying to access a private link. Please log in first." : "Egy privát hivatkozáshoz próbál hozzáférni. Kérjük, elsőként jelentkezzen be.",

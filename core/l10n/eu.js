@@ -243,7 +243,6 @@ OC.L10N.register(
     "Server side authentication failed!" : "Zerbitzari aldeko autentifikazioak huts egin du!",
     "Please contact your administrator." : "Mesedez jarri harremetan zure administradorearekin.",
     "Login" : "Saio hasiera",
-    "Log in" : "Hasi saioa",
     "Alternative Logins" : "Beste erabiltzaile izenak",
     "Use the following link to reset your password: {link}" : "Eribili hurrengo lotura zure pasahitza berrezartzeko: {link}",
     "New password" : "Pasahitz berria",

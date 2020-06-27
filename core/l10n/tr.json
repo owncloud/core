@@ -317,8 +317,6 @@
     "Please try again or contact your administrator." : "Lütfen yeniden deneyin veya yöneticinizle iletişim kurun.",
     "Login" : "Oturum Aç",
     "Username or email" : "Kullanıcı adı veya e-posta",
-    "Log in" : "Giriş yap",
-    "You took too long to login, please try again now" : "Giriş yapmanız çok uzun sürdü, lütfen şimdi tekrar deneyiniz.",
     "Wrong password. Reset it?" : "Hatalı parola. Sıfırlansın mı?",
     "Wrong password." : "Hatalı parola.",
     "You are trying to access a private link. Please log in first." : "Özel bir bağlantıya erişmeye çalışıyorsunuz. Lütfen önce oturum açın.",

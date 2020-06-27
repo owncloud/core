@@ -89,7 +89,6 @@ OC.L10N.register(
     "Log out" : "නික්මීම",
     "Search" : "සොයන්න",
     "Login" : "ප්‍රවිශ්ටය",
-    "Log in" : "ප්‍රවේශවන්න",
     "New password" : "නව මුරපදය",
     "Reset password" : "මුරපදය ප්‍රත්‍යාරම්භ කරන්න"
 },

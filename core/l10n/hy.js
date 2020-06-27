@@ -131,7 +131,6 @@ OC.L10N.register(
     "Log out" : "Դուրս գալ",
     "Search" : "Փնտրել",
     "Username or email" : "Օգտանուն կամ էլ. հասցե",
-    "Log in" : "Մուտք գործել",
     "Wrong password." : "Սխալ գաղտնաբառ։",
     "Stay logged in" : "Մնալ մուտք գործած",
     "Alternative Logins" : "Այլընտրանքային մուտքեր",

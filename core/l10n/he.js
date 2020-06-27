@@ -327,8 +327,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "יש לנסות שוב ליצור קשר עם המנהל שלך.",
     "Login" : "התחברות",
     "Username or email" : "שם משתמש או דואר אלקטרוני",
-    "Log in" : "כניסה",
-    "You took too long to login, please try again now" : "לקח לך יותר מדי זמן להיכנס, נא לנסות שוב עכשיו",
     "Wrong password. Reset it?" : "סיסמא שגוייה. האם לאפס אותה?",
     "Wrong password." : "סיסמא שגוייה.",
     "You are trying to access a private link. Please log in first." : "הנך מנסה לגשת לקישור פרטי. יש להתחבר תחילה.",

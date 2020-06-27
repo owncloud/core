@@ -98,7 +98,6 @@ OC.L10N.register(
     "Finishing …" : "تکمیل ...",
     "Log out" : "لاگ آؤٹ",
     "Search" : "تلاش",
-    "Log in" : "لاگ ان",
     "Alternative Logins" : "متبادل لاگ ان ",
     "Use the following link to reset your password: {link}" : "اپنا پاسورڈ ری سیٹ کرنے کے لیے اس لنک پر کلک کریں۔  {link}",
     "New password" : "نیا پاسورڈ",

@@ -76,7 +76,6 @@ OC.L10N.register(
     "Log out" : "Log keluar",
     "Search" : "Cari",
     "Login" : "Log masuk",
-    "Log in" : "Log masuk",
     "Use the following link to reset your password: {link}" : "Guna pautan berikut untuk menetapkan semula kata laluan anda: {link}",
     "New password" : "Kata laluan baru",
     "Reset password" : "Penetapan semula kata laluan"

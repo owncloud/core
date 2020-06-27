@@ -326,8 +326,6 @@
     "Please try again or contact your administrator." : "โปรดลองอีกครั้งหรือติดต่อผู้ดูแลระบบ",
     "Login" : "เข้าสู่ระบบ",
     "Username or email" : "ชื่อผู้ใช้หรืออีเมล",
-    "Log in" : "เข้าสู่ระบบ",
-    "You took too long to login, please try again now" : "คุณใช้เวลาลงชื่อเข้าใช้นานเกินไป โปรดลองอีกครั้ง",
     "Wrong password. Reset it?" : "รหัสผ่านผิด รีเซ็ตรหัสผ่าน?",
     "Wrong password." : "รหัสผ่านผิดพลาด",
     "You are trying to access a private link. Please log in first." : "คุณกำลังพยายามเข้าถึงลิงก์ส่วนตัว โปรดเข้าสู่ระบบก่อน",

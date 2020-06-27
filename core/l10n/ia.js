@@ -262,7 +262,6 @@ OC.L10N.register(
     "An internal error occurred." : "Un error interne ha occurrite.",
     "Please try again or contact your administrator." : "Per favor reproba o contacta tu administrator.",
     "Username or email" : "Nomine de usator o adresse de e-mail",
-    "Log in" : "Aperir session",
     "Wrong password. Reset it?" : "Mal contrasigno. Reinitialisar?",
     "Wrong password." : "Mal contrasigno.",
     "Stay logged in" : "Mantener session aperte",

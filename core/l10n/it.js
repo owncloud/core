@@ -324,8 +324,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Prova ancora o contatta il tuo amministratore.",
     "Login" : "Accesso",
     "Username or email" : "Nome utente o email",
-    "Log in" : "Accedi",
-    "You took too long to login, please try again now" : "Hai impiegato troppo tempo per accedere, riprova adesso",
     "Wrong password. Reset it?" : "Password errata. Vuoi reimpostarla?",
     "Wrong password." : "Password errata.",
     "You are trying to access a private link. Please log in first." : "Stai tentando di accedere a un collegamento privato. Prima devi accedere.",

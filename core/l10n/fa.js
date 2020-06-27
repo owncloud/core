@@ -289,7 +289,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "لطفا مجددا تلاش کنید یا با مدیر سیستم تماس بگیرید.",
     "Login" : "ورود",
     "Username or email" : "نام کاربری و پست الکترونیکی",
-    "Log in" : "ورود",
     "Wrong password. Reset it?" : "رمز عبور نادرست. بازگردانی آن؟",
     "Wrong password." : "رمز عبور نادرست.",
     "You are trying to access a private link. Please log in first." : "شما در تلاش برای دسترسی به یک پیوند خصوصی هستید. لطفا ابتدا وارد شوید.",

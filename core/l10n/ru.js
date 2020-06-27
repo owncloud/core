@@ -328,8 +328,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Пожалуйста попробуйте ещё раз или свяжитесь с вашим администратором",
     "Login" : "Логин",
     "Username or email" : "Имя пользователя / email",
-    "Log in" : "Войти",
-    "You took too long to login, please try again now" : "Ваш вход занял слишком много времени, пожалуйста попробуйте ещё раз сейчас",
     "Wrong password. Reset it?" : "Неправильный пароль. Сбросить его?",
     "Wrong password." : "Неправильный пароль.",
     "You are trying to access a private link. Please log in first." : "Вы пытаетесь получить доступ по личной ссылке. Пожалуйста, сначала войдите.",

@@ -312,8 +312,6 @@
     "Please try again or contact your administrator." : "Veuillez réessayer ou contacter votre administrateur.",
     "Login" : "Identifiant",
     "Username or email" : "Nom d'utilisateur ou e-mail",
-    "Log in" : "Se connecter",
-    "You took too long to login, please try again now" : "Vous avez mis trop longtemps pour vous connecter, veuillez réessayer maintenant",
     "Wrong password. Reset it?" : "Mot de passe incorrect. Réinitialiser ?",
     "Wrong password." : "Mot de passe incorrect.",
     "You are trying to access a private link. Please log in first." : "Vous essayez d'accéder à un lien privé. Veuillez d'abord vous connecter.",

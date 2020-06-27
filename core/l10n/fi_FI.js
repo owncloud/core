@@ -296,8 +296,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Yritä uudestaan tai ota yhteys ylläpitäjään.",
     "Login" : "Kirjaudu",
     "Username or email" : "Käyttäjätunnus tai sähköpostiosoite",
-    "Log in" : "Kirjaudu sisään",
-    "You took too long to login, please try again now" : "Kirjautumisessa kesti liian kauan. Yritä uudelleen nyt",
     "Wrong password. Reset it?" : "Väärä salasana. Haluatko palauttaa salasanan?",
     "Wrong password." : "Väärä salasana.",
     "You are trying to access a private link. Please log in first." : "Yrität käyttää yksityistä linkkiä. Kirjaudu sisään ensin.",

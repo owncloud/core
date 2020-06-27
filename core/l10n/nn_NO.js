@@ -289,7 +289,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Ver venleg prøv på ny enn kontakt din administrator.",
     "Login" : "Logg inn",
     "Username or email" : "Brukarnamn eller epost!",
-    "Log in" : "Logg inn",
     "Wrong password. Reset it?" : "Feil passord, nullstilt passord?",
     "Wrong password." : "Feil passord.",
     "You are trying to access a private link. Please log in first." : "Ver venleg å logge inn for å få tilgang til privat lenke.",

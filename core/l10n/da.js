@@ -288,7 +288,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Kontakt venligst din administrator.",
     "Login" : "Login",
     "Username or email" : "Brugernavn eller email",
-    "Log in" : "Log ind",
     "Wrong password. Reset it?" : "Forkert kodeord. Skal det nulstilles?",
     "Wrong password." : "Forkert kodeord.",
     "Stay logged in" : "Forbliv logget ind",

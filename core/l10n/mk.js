@@ -312,8 +312,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Пробајте повторно или контактирате го администраторот.",
     "Login" : "Login",
     "Username or email" : "Корисничко име или Email",
-    "Log in" : "Најава",
-    "You took too long to login, please try again now" : "Најавувањето трае премногу долго, обидете се повторно.",
     "Wrong password. Reset it?" : "Погрешна лозинка. Да ја ресетирам?",
     "Wrong password." : "Погрешна лозинка.",
     "You are trying to access a private link. Please log in first." : "Се обидувате да пристапите до приватен линк. Најавете се во системот.",

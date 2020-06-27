@@ -293,7 +293,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Por favor, tente de novo ou contacte o seu administrador.",
     "Login" : "Iniciar Sessão",
     "Username or email" : "Nome de utilizador ou correio eletrónico",
-    "Log in" : "Iniciar Sessão",
     "Wrong password. Reset it?" : "Palavra-passe errada. Redefini-la?",
     "Wrong password." : "Palavra-passe errada.",
     "Stay logged in" : "Manter sessão iniciada",

@@ -46,7 +46,6 @@ OC.L10N.register(
     "Database name" : "डेटाबेस का नाम",
     "Finish setup" : "सेटअप समाप्त करे",
     "Log out" : "लोग  आउट",
-    "Log in" : "लॉग इन",
     "Use the following link to reset your password: {link}" : "आगे दिये गये लिंक का उपयोग पासवर्ड बदलने के लिये किजीये: {link}",
     "New password" : "नया पासवर्ड"
 },

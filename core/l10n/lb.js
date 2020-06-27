@@ -223,7 +223,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "W.e.g. versich et nach emol oder kontaktéier däin Administrateur.",
     "Login" : "Login",
     "Username or email" : "Benotzernumm oder Email",
-    "Log in" : "Umellen",
     "Wrong password. Reset it?" : "Falscht Passwuert. Wëlls de et zeréck setzen?",
     "Wrong password." : "Falscht Passwuert.",
     "Stay logged in" : "Bleif ageloggt.",

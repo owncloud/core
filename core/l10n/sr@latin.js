@@ -168,7 +168,6 @@ OC.L10N.register(
     "Search" : "Traži",
     "Server side authentication failed!" : "Provera identiteta na stani servera nije uspela!",
     "Please contact your administrator." : "Molimo Vas da kontaktirate Vašeg administratora.",
-    "Log in" : "Prijavi se",
     "Alternative Logins" : "Alternativne prijave",
     "Use the following link to reset your password: {link}" : "Koristite sledeći link za reset lozinke: {link}",
     "New password" : "Nova lozinka",

@@ -287,7 +287,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Будь ласка, спробуйте ще раз або зверніться до адміністратора.",
     "Login" : "Логін",
     "Username or email" : "Ім’я користувача або електронна пошта",
-    "Log in" : "Увійти",
     "Wrong password. Reset it?" : "Невірний пароль. Скинути його?",
     "Wrong password." : "Невірний пароль.",
     "Stay logged in" : "Залишатись в системі",

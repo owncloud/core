@@ -272,7 +272,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Palun proovi uuesti või võta ühendust oma administraatoriga.",
     "Login" : "Logi sisse",
     "Username or email" : "Kasutajanimi või e-posti aadress",
-    "Log in" : "Logi sisse",
     "Wrong password. Reset it?" : "Vale parool. Kas vajad parooli taastamist?",
     "Wrong password." : "Vale parool.",
     "Stay logged in" : "Püsi sisselogituna",

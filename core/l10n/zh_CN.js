@@ -318,8 +318,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "请重试或联系管理员。",
     "Login" : "登录",
     "Username or email" : "用户名或邮箱",
-    "Log in" : "登录",
-    "You took too long to login, please try again now" : "你的登录花费时间过长，请重试一次。",
     "Wrong password. Reset it?" : "密码错误。要重置么？",
     "Wrong password." : "密码错误",
     "You are trying to access a private link. Please log in first." : "您在尝试访问私有链接，请先登录。",

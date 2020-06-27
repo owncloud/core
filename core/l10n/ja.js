@@ -321,8 +321,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "もう一度試してみるか、管理者に問い合わせてください。",
     "Login" : "ログイン",
     "Username or email" : "ユーザー名またはメールアドレス",
-    "Log in" : "ログイン",
-    "You took too long to login, please try again now" : "ログインに時間がかかりすぎました。もう一度やり直してください。",
     "Wrong password. Reset it?" : "パスワードが間違っています。リセットしますか？",
     "Wrong password." : "パスワードが間違っています。",
     "You are trying to access a private link. Please log in first." : "プライベートリンクにアクセスしようとしています。先にログインしてください。",

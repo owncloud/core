@@ -315,8 +315,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Spróbuj ponownie lub skontaktuj się z administratorem.",
     "Login" : "Login",
     "Username or email" : "Nazwa użytkownika lub adres e-mail",
-    "Log in" : "Zaloguj",
-    "You took too long to login, please try again now" : "Twoje logowanie trwało zbyt długo, spróbuj ponownie teraz",
     "Wrong password. Reset it?" : "Niepoprawne hasło? Zresetuj je!",
     "Wrong password." : "Złe hasło",
     "You are trying to access a private link. Please log in first." : "Próbujesz dostępu do prywatnego linku. Proszę się najpierw zalogować.",

@@ -311,7 +311,6 @@ OC.L10N.register(
     "Please contact your administrator." : "Silahkan hubungi administrator anda.",
     "Please try again or contact your administrator." : "Mohon coba lagi atau hubungi administrator Anda.",
     "Login" : "Masuk",
-    "Log in" : "Masuk",
     "Wrong password. Reset it?" : "Sandi salah. Atur ulang?",
     "Stay logged in" : "Tetap masuk",
     "Alternative Logins" : "Cara Alternatif untuk Masuk",

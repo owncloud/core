@@ -250,7 +250,6 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Reensajatz o contactatz vòstre administrator.",
     "Login" : "Identificant",
     "Username or email" : "Nom d'utilizaire o e-mail",
-    "Log in" : "Connexion",
     "Wrong password. Reset it?" : "Senhal incorrècte. Reïnicializar ?",
     "Wrong password." : "Senhal incorrècte.",
     "Stay logged in" : "Demorar connectat",

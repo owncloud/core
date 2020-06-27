@@ -167,7 +167,6 @@
     "Server side authentication failed!" : "La autenticación a fallado en el servidor.",
     "Please contact your administrator." : "Por favor, contacte con el administrador.",
     "Login" : "Iniciar sesión",
-    "Log in" : "Entrar",
     "Wrong password." : "Contraseña incorrecta.",
     "Alternative Logins" : "Accesos Alternativos",
     "Use the following link to reset your password: {link}" : "Utilice el siguiente enlace para restablecer su contraseña: {link}",

@@ -219,7 +219,6 @@ OC.L10N.register(
     "Please contact your administrator." : "Kreipkitės į savo sistemos administratorių.",
     "Login" : "Prisijungti",
     "Username or email" : "Vartotojas arba el. paštas",
-    "Log in" : "Prisijungti",
     "Wrong password. Reset it?" : "Blogas slaptažodis. Pakeisti?",
     "Wrong password." : "Neteisingas slaptažodis.",
     "Alternative Logins" : "Alternatyvūs prisijungimai",
