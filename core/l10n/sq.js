@@ -328,6 +328,7 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Ju lutemi, riprovoni ose lidhuni me përgjegjësin tuaj.",
     "Login" : "Hyrje",
     "Username or email" : "Emër përdoruesi ose email",
+    "You took too long to log in, please try again now" : "E zgjatët shumë hyrjen, ju lutemi, riprovoni tani",
     "Wrong password. Reset it?" : "Fjalëkalim i gabuar. Të ricaktohet?",
     "Wrong password." : "Fjalëkalim i gabuar.",
     "You are trying to access a private link. Please log in first." : "Po provoni të hapni një lidhje private. Ju lutemi, më parë bëni hyrjen.",
