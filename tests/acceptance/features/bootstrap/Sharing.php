@@ -2363,13 +2363,13 @@ trait Sharing {
 	 * @param string $path to share
 	 * @param string $name of share
 	 *
-	 * @return int|null
+	 * @return string|null
 	 */
 	public function getPublicShareIDByName($user, $path, $name) {
 		$dataResponded = $this->getShares($user, $path);
 		foreach ($dataResponded as $elementResponded) {
 			if ((string) $elementResponded->name[0] === $name) {
-				return (int) $elementResponded->id[0];
+				return (string) $elementResponded->id[0];
 			}
 		}
 		return null;
