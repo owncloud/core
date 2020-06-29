@@ -629,7 +629,6 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-278
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "long file" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
@@ -730,7 +729,7 @@ Feature: create a public link share
     Then the value of the item "//s:message" in the response should be ""
     And the HTTP status code should be "404"
 
-  @skipOnOcV10.3 @skipOnOcis @issue-ocis-reva-278
+  @skipOnOcV10.3
   Scenario: Get the size of a file shared by public link
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
