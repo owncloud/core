@@ -19,7 +19,7 @@ Feature: create folders
       | folder-!@#$%^&* ! |
       | नेपालि            |
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Create a folder inside another folder
     When the user creates a folder with the name "top-folder" using the webUI
     And the user opens folder "top-folder" using the webUI

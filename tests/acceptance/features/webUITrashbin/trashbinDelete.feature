@@ -15,7 +15,7 @@ Feature: files and folders can be deleted from the trashbin
       | simple-folder |
     And the user has browsed to the trashbin page
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Delete files and check that they are gone
     When the user deletes file "lorem.txt" using the webUI
     And the user opens folder "simple-folder" using the webUI

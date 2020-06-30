@@ -86,7 +86,7 @@ Feature: checksums
     When user "Alice" downloads file "/myChecksumFile.txt" using the WebDAV API
     Then the header checksum should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8"
 
-  @local_storage
+  @local_storage @skipOnOcis
   Scenario Outline: Downloading a file from local storage has correct checksum
     Given using <dav_version> DAV path
     # Create the file directly in local storage, bypassing ownCloud
@@ -291,7 +291,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @local_storage @skipOnEncryptionType:user-keys @encryption-issue-42
+  @local_storage @skipOnOcis @skipOnEncryptionType:user-keys @encryption-issue-42
   Scenario Outline: Uploaded file to external storage should have the same checksum when downloaded
     Given using <dav_version> DAV path
     And file "/local_storage/chksumtst.txt" has been deleted for user "Alice"
@@ -304,7 +304,6 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-
 
   ## Validation Plugin or Old Endpoint Specific
   @skipOnOcis @issue-ocis-reva-17

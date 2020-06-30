@@ -9,7 +9,7 @@ Feature: Restore deleted files/folders
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Restore files
     When the user deletes file "data.zip" using the webUI
     Then file "data.zip" should be listed in the trashbin on the webUI
@@ -26,7 +26,7 @@ Feature: Restore deleted files/folders
     When the user browses to the files page
     Then folder "folder with space" should be listed on the webUI
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Select some trashbin files and restore them in a batch
     Given the following files have been deleted
       | name          |
