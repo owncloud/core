@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:

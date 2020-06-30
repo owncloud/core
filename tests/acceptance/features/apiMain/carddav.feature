@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis
+@api @skipOnOcis
 Feature: carddav
 
   Background:

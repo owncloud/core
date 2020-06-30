@@ -7,7 +7,6 @@ Feature: disable sharing
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: Users tries to share via WebUI when Sharing is disabled
     Given user "Alice" has created folder "simple-folder"

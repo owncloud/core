@@ -1,4 +1,4 @@
-@api @federation-app-required @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis
+@api @federation-app-required @files_sharing-app-required @skipOnOcis
 Feature: federated
 
   Background:
@@ -408,7 +408,6 @@ Feature: federated
     And using server "LOCAL"
     When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-
 
   Scenario Outline: share of a folder to a remote user who already has a folder with the same name
     Given using server "REMOTE"

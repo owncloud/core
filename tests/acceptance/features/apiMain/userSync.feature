@@ -18,7 +18,6 @@ Feature: Users sync
       | 1               | 100             |
       | 2               | 200             |
 
-  @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user which does not exist
     Given using OCS API version "<ocs-api-version>"
     When the administrator tries to sync user "nonexistentuser" using the OCS API
@@ -30,7 +29,6 @@ Feature: Users sync
       | 1               | 200              |
       | 2               | 404              |
 
-  @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user as another user which does not exist
     Given using OCS API version "<ocs-api-version>"
     When user "nonexistentuser" tries to sync user "Brian" using the OCS API
@@ -42,7 +40,7 @@ Feature: Users sync
       | 1               |
       | 2               |
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario Outline: Trying to sync a user by non admin user
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" tries to sync user "Brian" using the OCS API
@@ -54,7 +52,6 @@ Feature: Users sync
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
-  @TestAlsoOnExternalUserBackend
   Scenario Outline: Trying to sync a user by admin using an incorrect password
     Given using OCS API version "<ocs-api-version>"
     When the administrator tries to sync user "Brian" using password "invalid" and the OCS API

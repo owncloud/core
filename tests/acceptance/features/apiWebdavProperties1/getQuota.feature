@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-101
+@api @skipOnOcis @issue-ocis-reva-101
 Feature: get quota
   As a user
   I want to be able to find out my available storage quota

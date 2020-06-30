@@ -20,7 +20,6 @@ Feature: login users
     Then the username field on the login page should have placeholder text "Login"
     And the password field on the login page should have placeholder text "Password"
 
-  @TestAlsoOnExternalUserBackend
   Scenario: simple user login
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -28,7 +27,7 @@ Feature: login users
     When user "Alice" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @TestAlsoOnExternalUserBackend @skipOnOcV10.3 @skipOnOcV10.4
+  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario: simple user login should work when strict_login_enforced is set
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -37,12 +36,12 @@ Feature: login users
     When user "Alice" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario: admin login
     When the administrator logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario: admin login with invalid password
     Given the user has browsed to the login page
     When the administrator tries to login with an invalid password "%regular%" using the webUI
