@@ -21,7 +21,6 @@ Feature: restrict Sharing
     And user "Brian" has created folder "simple-folder"
     And user "Brian" has logged in using the webUI
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: Restrict users to only share with users in their groups
     Given the setting "Restrict users to only share with users in their groups" in the section "Sharing" has been enabled
@@ -31,7 +30,6 @@ Feature: restrict Sharing
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: Restrict users to only share with groups they are member of
     Given the setting "Restrict users to only share with groups they are member of" in the section "Sharing" has been enabled
@@ -41,7 +39,6 @@ Feature: restrict Sharing
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
   Scenario: Do not restrict users to only share with groups they are member of
     Given user "David" has been created with default attributes and without skeleton files
     And user "David" has been added to group "grp2"
@@ -52,7 +49,6 @@ Feature: restrict Sharing
     And the user re-logs in as "David" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: Forbid sharing with groups
     Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled

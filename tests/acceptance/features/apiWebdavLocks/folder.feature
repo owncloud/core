@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-172
+@api @skipOnOcV10.0 @skipOnOcis @issue-ocis-reva-172
 Feature: lock folders
 
   Background:

@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @TestAlsoOnExternalUserBackend
+@webUI @insulated @disablePreviews
 Feature: login users
   As a user
   I want to be able to log into my account using my email address

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @issue-ocis-reva-243
+@api @files_sharing-app-required @issue-ocis-reva-243
 Feature: cannot share resources with invalid permissions
 
   Background:

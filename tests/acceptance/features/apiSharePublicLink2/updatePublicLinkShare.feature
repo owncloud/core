@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @public_link_share-feature-required @skipOnOcis @issue-ocis-reva-252
+@api @files_sharing-app-required @public_link_share-feature-required @skipOnOcis @issue-ocis-reva-252
 Feature: update a public link share
 
   Background:

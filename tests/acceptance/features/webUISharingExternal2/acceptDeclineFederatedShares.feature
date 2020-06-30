@@ -1,4 +1,4 @@
-@webUI @federation-app-required @insulated @disablePreviews @TestAlsoOnExternalUserBackend @files_sharing-app-required
+@webUI @federation-app-required @insulated @disablePreviews @files_sharing-app-required
 Feature: Federation Sharing - sharing with users on other cloud storages
   As a user
   I want to share files with any users on other cloud storages
@@ -19,7 +19,6 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
-
 
   Scenario: declining a federation share on the webUI
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"

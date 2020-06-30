@@ -16,7 +16,6 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: share a folder with an internal group
     Given user "Carol" has logged in using the webUI
@@ -33,7 +32,7 @@ Feature: Sharing files and folders with internal groups
     And file "testimage.jpg" should be listed on the webUI
     And file "testimage.jpg" should be marked as shared with "grp1" by "Carol" on the webUI
 
-  @TestAlsoOnExternalUserBackend @skipOnFIREFOX
+  @skipOnFIREFOX
   Scenario: share a file with an internal group a member overwrites and unshares the file
     Given user "Carol" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
@@ -54,7 +53,6 @@ Feature: Sharing files and folders with internal groups
     When the user re-logs in as "Carol" using the webUI
     Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
-  @TestAlsoOnExternalUserBackend
   Scenario: share a folder with an internal group and a member uploads, overwrites and deletes files
     Given user "Carol" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
@@ -85,7 +83,6 @@ Feature: Sharing files and folders with internal groups
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
     And file "data.zip" should not be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: share a folder with an internal group and a member unshares the folder
     Given user "Carol" has logged in using the webUI

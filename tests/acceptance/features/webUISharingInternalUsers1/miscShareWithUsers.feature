@@ -1,7 +1,7 @@
 @webUI @insulated @disablePreviews @files_sharing-app-required
 Feature: misc scenarios on sharing with internal users
 
-  @TestAlsoOnExternalUserBackend @skipOnFIREFOX
+  @skipOnFIREFOX
   Scenario: share a file with another internal user who overwrites and unshares the file
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and skeleton files
@@ -21,7 +21,6 @@ Feature: misc scenarios on sharing with internal users
     When the user re-logs in as "Brian" using the webUI
     Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
-  @TestAlsoOnExternalUserBackend
   Scenario: share a folder with another internal user who uploads, overwrites and deletes files
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and skeleton files
@@ -50,7 +49,6 @@ Feature: misc scenarios on sharing with internal users
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
     But file "data.zip" should not be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
   Scenario: share a folder with another internal user who unshares the folder
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and skeleton files
@@ -68,7 +66,7 @@ Feature: misc scenarios on sharing with internal users
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 
-  @skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend @skipOnOcV10.3
+  @skipOnMICROSOFTEDGE @skipOnOcV10.3
   Scenario: share a folder with another internal user and prohibit deleting
     Given these users have been created with default attributes and skeleton files:
       | username |
