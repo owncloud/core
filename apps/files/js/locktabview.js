@@ -16,7 +16,7 @@
 		'<div class="lock-entry" data-index="{{index}}">' +
 		'<div style="display: inline;">{{displayText}}</div>' +
 		// TODO: no inline css
-		'<a href="#" class="unlock" style="float: right" title="{{unlockLabel}}">' +
+		'<a href="#" class="unlock has-tooltip" style="float: right" title="{{unlockLabel}}">' +
 		'<span class="icon icon-lock-open" style="display: block" /></a>' +
 		'</div>' +
 		'{{else}}' +
@@ -41,7 +41,8 @@
 				index: index,
 				displayText: t('files', '{owner} has locked this resource via {path}', {owner: lock.owner, path: path}),
 				locktoken: lock.locktoken,
-				lockroot: lock.lockroot
+				lockroot: lock.lockroot,
+				unlockLabel: t('files', 'Unlock')
 			};
 		});
 	}
@@ -107,6 +108,7 @@
 					emptyResultLabel: t('files', 'Resource is not locked'),
 					locks: formatLocks(this.model.get('activeLocks'))
 				}));
+				this.$el.find('.has-tooltip').tooltip();
 			},
 
 			/**
