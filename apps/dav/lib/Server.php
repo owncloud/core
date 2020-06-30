@@ -57,6 +57,7 @@ use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\DAV\ViewOnlyPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\FileLocksBackend;
+use OCA\DAV\Files\MultiGetPlugin;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
 use OCA\DAV\Files\Sharing\PublicLinkEventsPlugin;
@@ -303,6 +304,8 @@ class Server {
 						OC::$server->getGroupManager(),
 						$userFolder
 					));
+
+					$this->server->addPlugin(new MultiGetPlugin($userSession));
 				}
 				$this->server->addPlugin(
 					new FilesSearchReportPlugin(

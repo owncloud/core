@@ -1,0 +1,5 @@
+Enhancement: Files Multi-Get support 
+
+Files and folders can be downloaded as an archive which is created right away and it's content is streamed to the client
+
+https://github.com/owncloud/core/pull/37615
