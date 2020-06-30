@@ -1,4 +1,4 @@
-@cli @skipOnLDAP
+@cli @skipOnLDAP @skipOnOcis
 Feature: delete groups
   As an admin
   I want to be able to delete groups

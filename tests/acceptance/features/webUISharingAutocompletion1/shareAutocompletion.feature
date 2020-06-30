@@ -26,7 +26,7 @@ Feature: Autocompletion of share-with names
       | other         |
     And the administrator has added system config key "user_ldap.enable_medial_search" with value "true" and type "boolean"
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: autocompletion of regular existing users
     Given user "autocomplete-test-user" has logged in using the webUI
     And the user has browsed to the files page
@@ -36,7 +36,7 @@ Feature: Autocompletion of share-with names
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "Four" should not be listed in the autocomplete list on the webUI
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: autocompletion of regular existing groups
     Given user "autocomplete-test-user" has logged in using the webUI
     And the user has browsed to the files page

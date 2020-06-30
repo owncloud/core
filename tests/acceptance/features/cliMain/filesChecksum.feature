@@ -1,4 +1,4 @@
-@cli @local_storage @TestAlsoOnExternalUserBackend
+@cli @local_storage @TestAlsoOnExternalUserBackend @skipOnOcis
 Feature: files checksum command
 
   @skipOnEncryptionType:user-keys @issue-encryption-182

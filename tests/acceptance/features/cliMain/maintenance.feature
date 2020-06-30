@@ -1,4 +1,4 @@
-@cli @local_storage @TestAlsoOnExternalUserBackend
+@cli @local_storage @TestAlsoOnExternalUserBackend @skipOnOcis
 Feature: Maintenance command
 
   As an admin

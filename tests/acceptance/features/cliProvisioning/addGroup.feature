@@ -1,4 +1,4 @@
-@cli @skipOnLDAP
+@cli @skipOnLDAP @skipOnOcis
 Feature: add group
   As an admin
   I want to be able to add groups

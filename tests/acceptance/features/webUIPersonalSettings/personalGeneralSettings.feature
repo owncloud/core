@@ -9,7 +9,7 @@ Feature: personal general settings
     And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: change language
     When the user changes the language to "Русский" using the webUI
     Then the user should be redirected to a webUI page with the title "Настройки - %productname%"

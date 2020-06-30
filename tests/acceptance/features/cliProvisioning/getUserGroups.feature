@@ -1,4 +1,4 @@
-@cli @skipOnLDAP
+@cli @skipOnLDAP @skipOnOcis
 Feature: get user groups
   As an admin
   I want to be able to get group membership information

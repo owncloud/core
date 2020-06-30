@@ -9,7 +9,7 @@ Feature: Change Login Password
     And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Change password
     When the user changes the password to "%alt3%" using the webUI
     And the user re-logs in with username "Alice" and password "%alt3%" using the webUI
