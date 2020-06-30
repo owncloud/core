@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: users cannot upload a file to a blacklisted name
   As an administrator
   I want to be able to prevent users from uploading files to specified file names

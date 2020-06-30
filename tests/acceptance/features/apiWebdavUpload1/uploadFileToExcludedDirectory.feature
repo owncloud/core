@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: users cannot upload a file to or into an excluded directory
   As an administrator
   I want to be able to exclude directories (folders) from being processed. Any attempt to upload a file to one of those names should be refused.

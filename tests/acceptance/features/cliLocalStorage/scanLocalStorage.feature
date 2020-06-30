@@ -1,4 +1,4 @@
-@cli @local_storage @TestAlsoOnExternalUserBackend
+@cli @local_storage @skipOnOcis
 Feature: Scanning files on local storage
   As an admin
   I want to be able to control the scanning of local storage for changes

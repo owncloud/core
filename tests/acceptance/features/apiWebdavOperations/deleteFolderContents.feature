@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: delete folder contents
   As a user
   I want to be able to delete all files and folders in a folder

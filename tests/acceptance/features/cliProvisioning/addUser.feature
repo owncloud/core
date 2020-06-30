@@ -1,4 +1,4 @@
-@cli @skipOnLDAP
+@cli @skipOnLDAP @skipOnOcis
 Feature: add a user using the using the occ command
 
   As an administrator

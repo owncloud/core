@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -338,7 +338,7 @@ Feature: sharing
     And user "brian" should not see the following elements if the upper and lower case username are different
       | /randomfile.txt |
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcis
   Scenario: creating a new share with user of a group when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -381,7 +381,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnOcis
   Scenario Outline: share with a group and then add a user to that group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -402,7 +402,7 @@ Feature: sharing
       | 1               |
       | 2               |
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcis
   # deleting an LDAP group is not relevant or possible using the provisioning API
   Scenario Outline: shares shared to deleted group should not be available
     Given using OCS API version "<ocs_api_version>"

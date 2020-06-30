@@ -1,4 +1,4 @@
-@api @local_storage @TestAlsoOnExternalUserBackend
+@api @local_storage @skipOnOcis
 Feature: external-storage
 
   Background:

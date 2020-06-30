@@ -1,4 +1,4 @@
-@api @files_versions-app-required @TestAlsoOnExternalUserBackend
+@api @files_versions-app-required
 
 Feature: dav-versions
 

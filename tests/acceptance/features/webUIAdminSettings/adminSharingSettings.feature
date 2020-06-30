@@ -4,7 +4,7 @@ Feature: admin sharing settings
   I want to be able to manage sharing settings on the ownCloud server
   So that I can enable, disable, allow or restrict different sharing behaviour
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario: disable share API
     Given the administrator has browsed to the admin sharing settings page
     When the administrator disables the share API using the webUI
@@ -34,7 +34,6 @@ Feature: admin sharing settings
     Given the administrator has browsed to the admin sharing settings page
     When the administrator enables enforce password protection for read-only links using the webUI
     Then the "public@@@password@@@enforced_for@@@read_only" capability of files sharing app should be "1"
-
 
   Scenario: enable enforce password protection for read and write links
     Given the administrator has browsed to the admin sharing settings page
@@ -67,13 +66,12 @@ Feature: admin sharing settings
     When the administrator enables restrict users to only share with their group members using the webUI
     Then the "share_with_group_members_only" capability of files sharing app should be "1"
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario: enable share API
     Given parameter "shareapi_enabled" of app "core" has been set to "no"
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables the share API using the webUI
     Then the "api_enabled" capability of files sharing app should be "1"
-
 
   Scenario: enable public sharing
     Given parameter "shareapi_allow_links" of app "core" has been set to "no"

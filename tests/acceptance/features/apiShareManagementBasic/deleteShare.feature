@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
+@api @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
 Feature: sharing
 
   @issue-ocis-reva-249

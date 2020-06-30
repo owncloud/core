@@ -7,7 +7,7 @@ Feature: rename files
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario Outline: Rename a file using special characters
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI
@@ -53,7 +53,7 @@ Feature: rename files
       | "'single'quotes.txt"                    | "single-quotes.txt"                   |
       | "?quot=OC&OC2 #OC%  3   "               | "sin#gle-qu&%%%%otes=.txt "           |
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Rename a file using special characters and check its existence after page reload
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: copy file
   As a user
   I want to be able to copy files

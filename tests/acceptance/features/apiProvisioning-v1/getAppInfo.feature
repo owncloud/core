@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required
+@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis
 Feature: get app info
   As an admin
   I want to be able to get app info

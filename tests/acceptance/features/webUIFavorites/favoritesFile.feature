@@ -5,7 +5,7 @@ Feature: Mark file as favorite
   I would like to mark any file/folder as favorite
   So that I can find my favorite file/folder easily
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: mark a file as favorite and list it in favorites page
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/data.zip" to "/data.zip"

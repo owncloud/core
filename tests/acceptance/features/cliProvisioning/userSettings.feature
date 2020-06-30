@@ -1,4 +1,4 @@
-@cli @skipOnLDAP
+@cli @skipOnLDAP @skipOnOcis
 Feature: user settings
   As an admin
   I want to be able set user settings

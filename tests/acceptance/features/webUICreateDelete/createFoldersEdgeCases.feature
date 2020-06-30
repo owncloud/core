@@ -37,7 +37,7 @@ Feature: create folder
       | "?&%0"    |
       | "^#2929@" |
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario Outline: Create a sub-folder inside an existing folder with problematic name
     Given user "Alice" has created folder <folder>
     And the user has reloaded the current page of the webUI

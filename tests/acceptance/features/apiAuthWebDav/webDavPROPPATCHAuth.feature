@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: PROPPATCH file/folder
 
   Background:

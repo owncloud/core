@@ -8,7 +8,7 @@ Feature: browse directly to details tab
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Alice" has logged in using the webUI
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario Outline: Browse directly to the sharing details of a file
     When the user browses directly to display the "sharing" details of file "<file>" in folder "<folder>"
     Then the thumbnail should be visible in the details panel

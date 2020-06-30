@@ -10,7 +10,7 @@ Feature: Search
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @smokeTest @TestAlsoOnExternalUserBackend
+  @smokeTest
   Scenario: Simple search
     When the user searches for "lorem" using the webUI
     Then file "lorem.txt" should be listed on the webUI

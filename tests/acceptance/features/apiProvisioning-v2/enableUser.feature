@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required
+@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis
 Feature: enable user
   As an admin
   I want to be able to enable a user

@@ -11,7 +11,7 @@ Feature: deleting files and folders
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Delete files & folders one by one and check its existence after page reload
     When the user deletes the following elements using the webUI
       | name                                  |
@@ -61,7 +61,7 @@ Feature: deleting files and folders
       | question?       |
       | &and#hash       |
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once
     When the user batch deletes these files using the webUI

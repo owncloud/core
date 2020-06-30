@@ -4,7 +4,6 @@ Feature: Sharing files and folders with internal users
   I want to share files and folders with other users
   So that those users can access the files and folders
 
-  @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: share a file & folder with another internal user
     Given these users have been created with default attributes and skeleton files:
