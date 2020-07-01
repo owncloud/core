@@ -34,6 +34,7 @@ Summary
 * Bugfix - Do not notify remote if both owner and sharer are local users: [#37534](https://github.com/owncloud/core/pull/37534)
 * Bugfix - Use relative path in shared_with_email activity: [#37555](https://github.com/owncloud/core/pull/37555)
 * Bugfix - Show error message at Settings Personal CORS: [#37560](https://github.com/owncloud/core/pull/37560)
+* Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -299,6 +300,15 @@ Details
    message added.
 
    https://github.com/owncloud/core/pull/37560
+
+* Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
+
+   Adds exception handling while collecting shares in files:transfer-ownership.
+   Additionally, new option "accept-skipped-shares" has been added to automatically confirm
+   to skip shares that cannot be transferred.
+
+   https://github.com/owncloud/enterprise/issues/4023
+   https://github.com/owncloud/core/pull/37568
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
