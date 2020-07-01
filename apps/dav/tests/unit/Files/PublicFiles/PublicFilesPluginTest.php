@@ -23,7 +23,10 @@ namespace OCA\DAV\Tests\Unit\Files\PublicFiles;
 
 use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
 use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
+use OCA\DAV\Files\PublicFiles\SharedFolder;
+use OCP\Files\NotFoundException;
 use OCP\Share\IShare;
+use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\Xml\Property\GetLastModified;
@@ -72,5 +75,22 @@ class PublicFilesPluginTest extends TestCase {
 			['getNodeType', 'file', PublicFilesPlugin::PUBLIC_LINK_ITEM_TYPE],
 			['getShareTime', new GetLastModified(123456), PublicFilesPlugin::PUBLIC_LINK_SHARE_DATETIME, 123456],
 		];
+	}
+
+	public function testHandleBeforeCreateFile() {
+		$this->expectException(NotFound::class);
+
+		$share = $this->createMock(IShare::class);
+		$share->expects(self::once())
+			->method('getNode')
+			->willThrowException(new NotFoundException());
+
+		$parent = $this->createMock(SharedFolder::class);
+		$parent->expects(self::once())
+			->method('getShare')
+			->willReturn($share);
+
+		$plugin = new PublicFilesPlugin();
+		$plugin->handleBeforeCreateFile(null, null, $parent, true);
 	}
 }

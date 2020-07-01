@@ -26,6 +26,7 @@ use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use Sabre\DAV\Exception\InsufficientStorage;
+use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
@@ -180,7 +181,7 @@ class PublicFilesPlugin extends ServerPlugin {
 	 * @param bool $modified modified
 	 * @return bool
 	 * @throws InsufficientStorage
-	 * @throws NotFoundException
+	 * @throws NotFound
 	 */
 	public function handleBeforeCreateFile($uri, $data, $parent, $modified) {
 		$share = null;
@@ -193,7 +194,11 @@ class PublicFilesPlugin extends ServerPlugin {
 		if ($share === null) {
 			return;
 		}
-		$node = $share->getNode();
+		try {
+			$node = $share->getNode();
+		} catch (NotFoundException $e) {
+			throw new NotFound();
+		}
 		if (!$node instanceof Folder) {
 			return;
 		}
