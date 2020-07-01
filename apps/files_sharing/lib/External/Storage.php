@@ -88,6 +88,31 @@ class Storage extends DAV implements ISharedStorage {
 		]);
 	}
 
+	/**
+	 * @param string $webDavEndpoint
+	 * @return bool
+	 */
+	protected function isOcmWebDavEndpoint($webDavEndpoint) {
+		// OCM 1.0 endpoint is absolute, OC legacy is relative. Let's check which one we have
+		return \preg_match('#https?://#', $webDavEndpoint) === 1;
+	}
+
+	protected function parseOcmUrl($webDavEndpoint) {
+		// proto is anything before ://
+		// host starts just after a proto and ends before the first slash
+		// root starts from the first slash until the end and could be empty
+		\preg_match_all(
+			'#^(?<proto>https?)://(?<host>[^/]*)(?<root>.*)$#',
+			$webDavEndpoint,
+			$matches
+		);
+		return [
+			'secure' => $matches['proto'][0] === 'https',
+			'host' =>  $matches['host'][0],
+			'root' => isset($matches['root'][0]) ? $matches['root'][0] : '/',
+		];
+	}
+
 	protected function init() {
 		if ($this->ready) {
 			return;
@@ -96,8 +121,16 @@ class Storage extends DAV implements ISharedStorage {
 			$this->memcacheFactory,
 			\OC::$server->getHTTPClientService()
 		);
+		$webDavEndpoint = $discoveryManager->getWebDavEndpoint($this->remote);
+		if ($this->isOcmWebDavEndpoint($webDavEndpoint)) {
+			$ocmParams = $this->parseOcmUrl($webDavEndpoint);
+			$this->secure = $ocmParams['secure'];
+			$this->host = $ocmParams['host'];
+			$this->root = $ocmParams['root'];
+		} else {
+			$this->root = \rtrim($this->root, '/') . $webDavEndpoint;
+		}
 
-		$this->root = \rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		if (!$this->root || $this->root[0] !== '/') {
 			$this->root = '/' . $this->root;
 		}
@@ -299,7 +332,7 @@ class Storage extends DAV implements ISharedStorage {
 		}
 		return ($this->getPermissions($path) & \OCP\Constants::PERMISSION_SHARE);
 	}
-	
+
 	public function getPermissions($path) {
 		$response = $this->propfind($path);
 		if (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
