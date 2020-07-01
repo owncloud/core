@@ -132,7 +132,7 @@ class HookManager {
 				try {
 					$this->calDav->createCalendar($principal, 'personal', [
 						'{DAV:}displayname' => $this->l10n->t('Personal'),
-						'{http://apple.com/ns/ical/}calendar-color' => '#1d2d44']);
+						'{http://apple.com/ns/ical/}calendar-color' => '#1B223D']);
 				} catch (\Exception $ex) {
 					\OC::$server->getLogger()->logException($ex);
 				}
