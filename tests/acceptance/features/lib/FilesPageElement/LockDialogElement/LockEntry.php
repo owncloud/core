@@ -44,7 +44,7 @@ class LockEntry extends OwncloudPage {
 	protected $lockElement;
 	protected $lockDescriptionXpath = "/div";
 	protected $lockingUserExtractPattern = "/^(.*)\shas locked/";
-	protected $unlockButtonXpath = "/a[@class='unlock']";
+	protected $unlockButtonXpath = "/a[@class='unlock has-tooltip']";
 
 	/**
 	 * sets the NodeElement for the current entry
