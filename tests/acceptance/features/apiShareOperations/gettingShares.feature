@@ -102,20 +102,20 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id                     | A_NUMBER           |
+      | id                     | A_STRING			|
       | item_type              | file               |
-      | item_source            | A_NUMBER           |
+      | item_source            | A_STRING           |
       | share_type             | user               |
       | share_with             | %username%         |
-      | file_source            | A_NUMBER           |
+      | file_source            | A_STRING           |
       | file_target            | /file_to_share.txt |
       | path                   | /file_to_share.txt |
       | permissions            | share,read,update  |
       | stime                  | A_NUMBER           |
-      | storage                | A_NUMBER           |
+      | storage                | A_STRING           |
       | mail_send              | 0                  |
       | uid_owner              | %username%         |
-      | file_parent            | A_NUMBER           |
+      | file_parent            | A_STRING           |
       | share_with_displayname | %displayname%      |
       | displayname_owner      | %displayname%      |
       | mimetype               | text/plain         |

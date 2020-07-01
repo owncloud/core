@@ -790,7 +790,7 @@ trait Sharing {
 	public function updateLastShareWithSettings($user, $body) {
 		$user = $this->getActualUsername($user);
 
-		$share_id = (string) $this->lastShareData->data[0]->id;
+		$share_id = $this->lastShareData->data[0]->id;
 
 		$this->verifyTableNodeRows(
 			$body,
@@ -929,7 +929,7 @@ trait Sharing {
 		if (($contentExpected === "ANY_VALUE")
 			|| (($contentExpected === "A_TOKEN") && (\strlen($value) === 15))
 			|| (($contentExpected === "A_NUMBER") && \is_numeric($value))
-			|| (($contentExpected === "A_STRING") && \is_string($value))
+			|| (($contentExpected === "A_STRING") && \is_string($value) && $value !== "")
 			|| (($contentExpected === "AN_URL") && $this->isAPublicLinkUrl($value))
 			|| (($field === 'remote') && (\rtrim($value, "/") === $contentExpected))
 			|| ($contentExpected === $value)
@@ -1583,7 +1583,7 @@ trait Sharing {
 	public function getLastShareIdOf($user) {
 		$user = $this->getActualUsername($user);
 		if (isset($this->lastShareData->data[0]->id)) {
-			return (int) $this->lastShareData->data[0]->id;
+			return $this->lastShareData->data[0]->id;
 		}
 
 		$this->getListOfShares($user);
@@ -2369,7 +2369,7 @@ trait Sharing {
 		$dataResponded = $this->getShares($user, $path);
 		foreach ($dataResponded as $elementResponded) {
 			if ((string) $elementResponded->name[0] === $name) {
-				return (string) $elementResponded->id[0];
+				return $elementResponded->id[0];
 			}
 		}
 		return null;
