@@ -13,7 +13,7 @@
 
 	var TEMPLATE_LOCK_STATUS_ACTION =
 		'<a class="action action-lock-status permanent" title="{{message}}" href="#">' +
-		'<span class="icon icon-lock-open" />' +
+		'<span class="icon icon-lock-closed" />' +
 		'</a>';
 
 	/**
@@ -158,7 +158,7 @@
 					displayName: t('files', 'Lock file'),
 					permissions: OC.PERMISSION_UPDATE,
 					type: OCA.Files.FileActions.TYPE_DROPDOWN,
-					iconClass: 'icon-lock-open',
+					iconClass: 'icon-lock-closed',
 					actionHandler: function (filename, context) {
 						const file = context.fileInfoModel.getFullPath();
 						context.fileInfoModel._filesClient.lock(file).then(function (result, response) {
