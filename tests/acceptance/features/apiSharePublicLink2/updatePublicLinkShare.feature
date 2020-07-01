@@ -16,20 +16,20 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id                | A_NUMBER             |
+      | id                | A_STRING             |
       | item_type         | folder               |
-      | item_source       | A_NUMBER             |
+      | item_source       | A_STRING             |
       | share_type        | public_link          |
-      | file_source       | A_NUMBER             |
+      | file_source       | A_STRING             |
       | file_target       | /FOLDER              |
       | permissions       | read                 |
       | stime             | A_NUMBER             |
       | expiration        | +3 days              |
       | token             | A_TOKEN              |
-      | storage           | A_NUMBER             |
+      | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_NUMBER             |
+      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -65,20 +65,20 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id                | A_NUMBER             |
+      | id                | A_STRING             |
       | item_type         | folder               |
-      | item_source       | A_NUMBER             |
+      | item_source       | A_STRING             |
       | share_type        | public_link          |
-      | file_source       | A_NUMBER             |
+      | file_source       | A_STRING             |
       | file_target       | /FOLDER              |
       | permissions       | read                 |
       | stime             | A_NUMBER             |
       | expiration        | +3 days              |
       | token             | A_TOKEN              |
-      | storage           | A_NUMBER             |
+      | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_NUMBER             |
+      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -97,19 +97,19 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id                | A_NUMBER             |
+      | id                | A_STRING             |
       | item_type         | folder               |
-      | item_source       | A_NUMBER             |
+      | item_source       | A_STRING             |
       | share_type        | public_link          |
-      | file_source       | A_NUMBER             |
+      | file_source       | A_STRING             |
       | file_target       | /FOLDER              |
       | permissions       | read                 |
       | stime             | A_NUMBER             |
       | token             | A_TOKEN              |
-      | storage           | A_NUMBER             |
+      | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_NUMBER             |
+      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -128,19 +128,19 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id                | A_NUMBER                  |
+      | id                | A_STRING                  |
       | item_type         | folder                    |
-      | item_source       | A_NUMBER                  |
+      | item_source       | A_STRING                  |
       | share_type        | public_link               |
-      | file_source       | A_NUMBER                  |
+      | file_source       | A_STRING                  |
       | file_target       | /FOLDER                   |
       | permissions       | read,update,create,delete |
       | stime             | A_NUMBER                  |
       | token             | A_TOKEN                   |
-      | storage           | A_NUMBER                  |
+      | storage           | A_STRING                  |
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
-      | file_parent       | A_NUMBER                  |
+      | file_parent       | A_STRING                  |
       | displayname_owner | %displayname%             |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |
@@ -159,19 +159,19 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id                | A_NUMBER             |
+      | id                | A_STRING             |
       | item_type         | folder               |
-      | item_source       | A_NUMBER             |
+      | item_source       | A_STRING             |
       | share_type        | public_link          |
-      | file_source       | A_NUMBER             |
+      | file_source       | A_STRING             |
       | file_target       | /FOLDER              |
       | permissions       | read,update,create   |
       | stime             | A_NUMBER             |
       | token             | A_TOKEN              |
-      | storage           | A_NUMBER             |
+      | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_NUMBER             |
+      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -190,19 +190,19 @@ Feature: update a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id                | A_NUMBER                  |
+      | id                | A_STRING                  |
       | item_type         | folder                    |
-      | item_source       | A_NUMBER                  |
+      | item_source       | A_STRING                  |
       | share_type        | public_link               |
-      | file_source       | A_NUMBER                  |
+      | file_source       | A_STRING                  |
       | file_target       | /FOLDER                   |
       | permissions       | read,update,create,delete |
       | stime             | A_NUMBER                  |
       | token             | A_TOKEN                   |
-      | storage           | A_NUMBER                  |
+      | storage           | A_STRING                  |
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
-      | file_parent       | A_NUMBER                  |
+      | file_parent       | A_STRING                  |
       | displayname_owner | %displayname%             |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |

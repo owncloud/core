@@ -356,7 +356,7 @@ Feature: create a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id          | A_NUMBER    |
+      | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
@@ -375,7 +375,7 @@ Feature: create a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id          | A_NUMBER    |
+      | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
@@ -393,7 +393,7 @@ Feature: create a public link share
       | path        | /afolder    |
       | permissions | read,create |
     # And the fields of the last response to user "Alice" should include
-    #  | id          | A_NUMBER    |
+    #  | id          | A_STRING    |
     #  | share_type  | public_link |
     #  | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
@@ -417,7 +417,7 @@ Feature: create a public link share
       | path        | /afolder |
       | permissions | create   |
     # And the fields of the last response to user "Alice" should include
-    #  | id          | A_NUMBER    |
+    #  | id          | A_STRING    |
     #  | share_type  | public_link |
     #  | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
@@ -443,7 +443,7 @@ Feature: create a public link share
     When user "Alice" tries to update the last share using the sharing API with
       | permissions | read,create |
     # And the fields of the last response to user "Alice" should include
-    #  | id          | A_NUMBER    |
+    #  | id          | A_STRING    |
     #  | share_type  | public_link |
     #  | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
@@ -469,7 +469,7 @@ Feature: create a public link share
     When user "Alice" tries to update the last share using the sharing API with
       | permissions | <permission> |
     # And the fields of the last response to user "Alice" should include
-    #  | id          | A_NUMBER    |
+    #  | id          | A_STRING    |
     #  | share_type  | public_link |
     #  | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
@@ -503,7 +503,7 @@ Feature: create a public link share
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | id          | A_NUMBER    |
+      | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"

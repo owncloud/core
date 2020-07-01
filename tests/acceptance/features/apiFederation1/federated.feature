@@ -14,18 +14,18 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" sharing with user "Alice" should include
-      | id                     | A_NUMBER          |
+      | id                     | A_STRING          |
       | item_type              | file              |
-      | item_source            | A_NUMBER          |
+      | item_source            | A_STRING          |
       | share_type             | federated         |
-      | file_source            | A_NUMBER          |
+      | file_source            | A_STRING          |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | stime                  | A_NUMBER          |
-      | storage                | A_NUMBER          |
+      | storage                | A_STRING          |
       | mail_send              | 0                 |
       | uid_owner              | %username%        |
-      | file_parent            | A_NUMBER          |
+      | file_parent            | A_STRING          |
       | displayname_owner      | %displayname%     |
       | share_with             | %username%@REMOTE |
       | share_with_displayname | %username%@REMOTE |
@@ -41,18 +41,18 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id                     | A_NUMBER          |
+      | id                     | A_STRING          |
       | item_type              | file              |
-      | item_source            | A_NUMBER          |
+      | item_source            | A_STRING          |
       | share_type             | federated         |
-      | file_source            | A_NUMBER          |
+      | file_source            | A_STRING          |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | stime                  | A_NUMBER          |
-      | storage                | A_NUMBER          |
+      | storage                | A_STRING          |
       | mail_send              | 0                 |
       | uid_owner              | %username%        |
-      | file_parent            | A_NUMBER          |
+      | file_parent            | A_STRING          |
       | displayname_owner      | %displayname%     |
       | share_with             | %username%@LOCAL  |
       | share_with_displayname | %username%@LOCAL  |
@@ -68,9 +68,9 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER                                   |
+      | id          | A_STRING                                   |
       | remote      | REMOTE                                     |
-      | remote_id   | A_NUMBER                                   |
+      | remote_id   | A_STRING                                   |
       | share_token | A_TOKEN                                    |
       | name        | /textfile0.txt                             |
       | owner       | Alice                                      |
@@ -90,9 +90,9 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER                 |
+      | id          | A_STRING                 |
       | remote      | REMOTE                   |
-      | remote_id   | A_NUMBER                 |
+      | remote_id   | A_STRING                 |
       | share_token | A_TOKEN                  |
       | name        | /textfile0.txt           |
       | owner       | Alice                    |
@@ -114,9 +114,9 @@ Feature: federated
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs-status>"
     And the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER                                   |
+      | id          | A_STRING                                   |
       | remote      | REMOTE                                     |
-      | remote_id   | A_NUMBER                                   |
+      | remote_id   | A_STRING                                   |
       | share_token | A_TOKEN                                    |
       | name        | /textfile0.txt                             |
       | owner       | Alice                                      |
@@ -173,18 +173,18 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" sharing with user "Carol" should include
-      | id                     | A_NUMBER           |
+      | id                     | A_STRING           |
       | item_type              | file               |
-      | item_source            | A_NUMBER           |
+      | item_source            | A_STRING           |
       | share_type             | user               |
-      | file_source            | A_NUMBER           |
+      | file_source            | A_STRING           |
       | path                   | /textfile0 (2).txt |
       | permissions            | share,read,update  |
       | stime                  | A_NUMBER           |
-      | storage                | A_NUMBER           |
+      | storage                | A_STRING           |
       | mail_send              | 0                  |
       | uid_owner              | %username%         |
-      | file_parent            | A_NUMBER           |
+      | file_parent            | A_STRING           |
       | displayname_owner      | %displayname%      |
       | share_with             | %username%         |
       | share_with_displayname | %displayname%      |
@@ -307,9 +307,9 @@ Feature: federated
       | /textfile0%20(2).txt |
     When user "Brian" gets the list of federated cloud shares using the sharing API
     Then the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER                 |
+      | id          | A_STRING                 |
       | remote      | REMOTE                   |
-      | remote_id   | A_NUMBER                 |
+      | remote_id   | A_STRING                 |
       | share_token | A_TOKEN                  |
       | name        | /textfile0.txt           |
       | owner       | Alice                    |
@@ -353,9 +353,9 @@ Feature: federated
       | /textfile0%20(2).txt |
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
     Then the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER                                   |
+      | id          | A_STRING                                   |
       | remote      | REMOTE                                     |
-      | remote_id   | A_NUMBER                                   |
+      | remote_id   | A_STRING                                   |
       | share_token | A_TOKEN                                    |
       | name        | /textfile0.txt                             |
       | owner       | Alice                                      |
@@ -423,7 +423,7 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER       |
+      | id          | A_STRING       |
       | remote      | REMOTE         |
       | name        | /zzzfolder     |
       | owner       | Alice          |
@@ -450,9 +450,9 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" should include
-      | id          | A_NUMBER                 |
+      | id          | A_STRING                 |
       | remote      | REMOTE                   |
-      | remote_id   | A_NUMBER                 |
+      | remote_id   | A_STRING                 |
       | share_token | A_TOKEN                  |
       | name        | /randomfile.txt          |
       | owner       | Alice                    |
