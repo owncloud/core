@@ -25,7 +25,6 @@ Feature: federated
       | storage                | A_STRING          |
       | mail_send              | 0                 |
       | uid_owner              | %username%        |
-      | file_parent            | A_STRING          |
       | displayname_owner      | %displayname%     |
       | share_with             | %username%@REMOTE |
       | share_with_displayname | %username%@REMOTE |
@@ -52,7 +51,6 @@ Feature: federated
       | storage                | A_STRING          |
       | mail_send              | 0                 |
       | uid_owner              | %username%        |
-      | file_parent            | A_STRING          |
       | displayname_owner      | %displayname%     |
       | share_with             | %username%@LOCAL  |
       | share_with_displayname | %username%@LOCAL  |
@@ -184,7 +182,6 @@ Feature: federated
       | storage                | A_STRING           |
       | mail_send              | 0                  |
       | uid_owner              | %username%         |
-      | file_parent            | A_STRING           |
       | displayname_owner      | %displayname%      |
       | share_with             | %username%         |
       | share_with_displayname | %displayname%      |

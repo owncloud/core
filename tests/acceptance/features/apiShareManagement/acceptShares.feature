@@ -345,7 +345,6 @@ Feature: accept/decline shares coming from internal users
       | storage                | A_STRING                   |
       | item_source            | A_STRING                   |
       | file_source            | A_STRING                   |
-      | file_parent            | A_STRING                   |
       | file_target            | /textfile0 (2).txt         |
       | share_with             | %username%                 |
       | share_with_displayname | %displayname%              |
@@ -387,7 +386,6 @@ Feature: accept/decline shares coming from internal users
       | storage                | A_STRING                                      |
       | item_source            | A_STRING                                      |
       | file_source            | A_STRING                                      |
-      | file_parent            | A_STRING                                      |
       | file_target            | <top_folder>/<received_textfile_name>         |
       | share_with             | %username%                                    |
       | share_with_displayname | %displayname%                                 |

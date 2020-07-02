@@ -115,7 +115,6 @@ Feature: sharing
       | storage                | A_STRING           |
       | mail_send              | 0                  |
       | uid_owner              | %username%         |
-      | file_parent            | A_STRING           |
       | share_with_displayname | %displayname%      |
       | displayname_owner      | %displayname%      |
       | mimetype               | text/plain         |

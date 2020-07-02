@@ -49,7 +49,6 @@ Feature: sharing
       | storage           | A_STRING       |
       | mail_send         | 0              |
       | uid_owner         | %username%     |
-      | file_parent       | A_STRING       |
       | displayname_owner | %displayname%  |
       | mimetype          | text/plain     |
     Examples:
@@ -138,7 +137,6 @@ Feature: sharing
       | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | %username%           |
-      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/folder1/folder2" should not exist
@@ -169,7 +167,6 @@ Feature: sharing
       | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | %username%           |
-      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Alice-folder/folder2" should not exist
@@ -265,7 +262,6 @@ Feature: sharing
       | permissions       | read, update, share |
       | mail_send         | 0                   |
       | uid_owner         | %username%          |
-      | file_parent       | A_STRING            |
       | displayname_owner | %displayname%       |
     Examples:
       | ocs_api_version | http_status_code |
