@@ -31,6 +31,7 @@ Feature: Unlock locked files and folders
     And the user browses to the files page
     Then folder "simple-folder" should not be marked as locked on the webUI
 
+  @skipOnLDAP
   Scenario Outline: deleting the only remaining lock of a file/folder
     Given user "brand-new-user" has locked file "lorem.txt" setting following properties
       | lockscope | <lockscope> |
@@ -49,6 +50,7 @@ Feature: Unlock locked files and folders
       | exclusive |
       | shared    |
 
+  @skipOnLDAP
   Scenario Outline: deleting the only remaining lock of a file/folder and reloading the page
     Given user "brand-new-user" has locked file "lorem.txt" setting following properties
       | lockscope | exclusive |
@@ -68,6 +70,7 @@ Feature: Unlock locked files and folders
       | exclusive |
       | shared    |
 
+  @skipOnLDAP
   Scenario Outline: deleting the only remaining lock of a folder by deleting it from a file in folder
     Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | <lockscope> |
@@ -87,6 +90,7 @@ Feature: Unlock locked files and folders
       | exclusive |
       | shared    |
 
+  @skipOnLDAP
   Scenario Outline: deleting the only remaining lock of a folder by deleting it from a file in folder and reloading the page
     Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | <lockscope> |
@@ -106,7 +110,7 @@ Feature: Unlock locked files and folders
       | exclusive |
       | shared    |
 
-  @skipOnFIREFOX @files_sharing-app-required
+  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP
   Scenario: deleting the first one of multiple shared locks on the webUI
     Given these users have been created with skeleton files:
       | username  |
@@ -145,7 +149,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
-  @skipOnFIREFOX @files_sharing-app-required
+  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP
   Scenario: deleting the second one of multiple shared locks on the webUI
     Given these users have been created with skeleton files:
       | username  |
@@ -184,7 +188,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
-  @skipOnFIREFOX @files_sharing-app-required
+  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP
   Scenario: deleting the last one of multiple shared locks on the webUI
     Given these users have been created with skeleton files:
       | username  |
@@ -223,7 +227,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnLDAP
   Scenario Outline: deleting a lock that was created by an other user
     Given these users have been created with skeleton files:
       | username  |

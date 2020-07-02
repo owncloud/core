@@ -31,6 +31,7 @@ Feature: Add group
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
+  @skipOnLDAP
   Scenario Outline: adding a user to a group using mixes of upper and lower case in group names
     Given user "Alice" has been created with default attributes and without skeleton files
     And group "<group_id1>" has been created
@@ -59,6 +60,7 @@ Feature: Add group
       | "⛷"       |
       | "⛹"       |
 
+  @skipOnLDAP
   Scenario: adding multiple users to a group
     Given these users have been created without skeleton files:
       | username |

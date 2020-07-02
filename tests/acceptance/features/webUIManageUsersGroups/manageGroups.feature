@@ -186,6 +186,7 @@ Feature: manage groups
       | do-not-delete2 |
       | a\slash        |
 
+  @skipOnLDAP
   Scenario Outline: group names are case-sensitive, the correct group is deleted
     Given group "<group_id1>" has been created
     And group "<group_id2>" has been created

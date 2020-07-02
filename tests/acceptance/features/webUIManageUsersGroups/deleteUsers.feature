@@ -12,6 +12,7 @@ Feature: delete users
     And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
+  @skipOnLDAP
   Scenario: use the webUI to delete a simple user
     When the administrator deletes user "Alice" using the webUI and confirms the deletion using the webUI
     And the deleted user "Alice" tries to login using the password "%password%" using the webUI
