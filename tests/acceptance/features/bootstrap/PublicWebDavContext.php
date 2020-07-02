@@ -881,6 +881,87 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @When the public uploads file :fileName to the last shared folder with mtime :mtime using the :davVersion public WebDAV API
+	 *
+	 * @param String $fileName
+	 * @param String $mtime
+	 * @param String $davVersion
+	 *
+	 * @return void
+	 */
+	public function thePublicUploadsFileToLastSharedFolderWithMtimeUsingTheWebdavApi(
+		$fileName,
+		$mtime,
+		$davVersion="old"
+	) {
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
+
+		$this->publicUploadContent(
+			$fileName,
+			'',
+			'test',
+			false,
+			["X-OC-Mtime" => $mtime],
+			$davVersion
+		);
+	}
+
+	/**
+	 * @Then the mtime of file :fileName in the last shared public link using the WebDAV API should be :mtime
+	 *
+	 * @param string $fileName
+	 * @param string $mtime
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theMtimeOfFileInTheLastSharedPublicLinkUsingTheWebdavApiShouldBe(
+		$fileName,
+		$mtime
+	) {
+		$tokenArray = $this->featureContext->getLastShareData()->data->token;
+		$token = (string)$tokenArray[0];
+		$baseUrl = $this->featureContext->getBaseUrl();
+		if (\TestHelpers\OcisHelper::isTestingOnOcis()) {
+			$mtime = \explode(" ", $mtime);
+			\array_pop($mtime);
+			$mtime = \implode(" ", $mtime);
+			Assert::assertContains(
+				$mtime,
+				\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
+			);
+		} else {
+			Assert::assertEquals(
+				$mtime,
+				\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
+			);
+		}
+	}
+
+	/**
+	 * @Then the mtime of file :fileName in the last shared public link using the WebDAV API should not be :mtime
+	 *
+	 * @param string $fileName
+	 * @param string $mtime
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theMtimeOfFileInTheLastSharedPublicLinkUsingTheWebdavApiShouldNotBe(
+		$fileName,
+		$mtime
+	) {
+		$tokenArray = $this->featureContext->getLastShareData()->data->token;
+		$token = (string)$tokenArray[0];
+		$baseUrl = $this->featureContext->getBaseUrl();
+		Assert::assertNotEquals(
+			$mtime,
+			\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
+		);
+	}
+
+	/**
 	 * Uploads a file through the public WebDAV API and sets the response in FeatureContext
 	 *
 	 * @param string $filename

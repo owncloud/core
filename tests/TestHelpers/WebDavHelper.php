@@ -493,4 +493,61 @@ class WebDavHelper {
 			($davPathVersion === $chunkingVersion)
 		);
 	}
+
+	/**
+	 * get Mtime of File in a public link share
+	 *
+	 * @param string $baseUrl
+	 * @param string $fileName
+	 * @param string $token
+	 * @param int $davVersionToUse
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getMtimeOfFileinPublicLinkShare(
+		$baseUrl,
+		$fileName,
+		$token,
+		$davVersionToUse=2
+	) {
+		$response = self::propfind(
+			$baseUrl,
+			null,
+			null,
+			"/public-files/{$token}/{$fileName}",
+			['d:getlastmodified'],
+			1,
+			null,
+			$davVersionToUse
+		);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$xmlPart = $responseXmlObject->xpath("//d:getlastmodified");
+
+		return $xmlPart[0]->__toString();
+	}
+
+	/**
+	 * get Mtime of a resource
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @param string $baseUrl
+	 * @param string $resource
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getMtimeOfResource($user,
+		$password,
+		$baseUrl,
+		$resource
+	) {
+		$response = self::propfind(
+			$baseUrl, $user, $password, $resource, ["getlastmodified"]
+		);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$xmlpart = $responseXmlObject->xpath("//d:getlastmodified");
+		return $xmlpart[0]->__toString();
+	}
 }
