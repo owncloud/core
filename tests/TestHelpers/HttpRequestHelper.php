@@ -88,11 +88,13 @@ class HttpRequestHelper {
 			$headers,
 			$body
 		);
-
+		self::debugRequest($request);
 		try {
 			$response = $client->send($request);
+			self::debugResponse($response);
 		} catch (GuzzleException $ex) {
 			$response = $ex->getResponse();
+			self::debugResponse($response);
 
 			//if the response was null for some reason do not return it but re-throw
 			if ($response === null) {
@@ -100,6 +102,40 @@ class HttpRequestHelper {
 			}
 		}
 		return $response;
+	}
+
+	private static function debugRequest($request) {
+		print("### REQUEST: " . $request->getMethod() . " " . $request->getUri() . "\n");
+		$headers = $request->getHeaders();
+		if ($headers) {
+			print("Headers: " . "\n");
+			foreach ($headers as $header => $value) {
+				if (is_array($value)) {
+					print($header . ": " . implode(', ', $value) . "\n");
+				} else {
+					print($header . ": " . $value . "\n");
+				}
+			}
+		}
+		print("Body: ");
+		var_dump($request->getBody()->getContents());
+		print("\n### END REQUEST\n");
+
+	}
+
+	private static function debugResponse($response) {
+		print("### RESPONSE\n");
+		print("Status: " . $response->getStatusCode() . "\n");
+		foreach ($response->getHeaders() as $header => $value) {
+			if (is_array($value)) {
+				print($header . ": " . implode(', ', $value) . "\n");
+			} else {
+				print($header . ": " . $value . "\n");
+			}
+		}
+		print("Body: ");
+		var_dump($response->getBody()->getContents());
+		print("\n### END RESPONSE\n");
 	}
 
 	/**
