@@ -71,4 +71,25 @@ class CloudController extends OCSController {
 		];
 		return ['data' => $data];
 	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 *
+	 * @return array
+	 * @throws \OCP\PreConditionNotMetException
+	 */
+	public function getSigningKey(): array {
+		$userId = \OC_User::getUser();
+		$signingKey = \OC::$server->getConfig()->getUserValue($userId, 'core', 'signing-key', null);
+		if ($signingKey === null) {
+			$signingKey = \OC::$server->getSecureRandom()->generate(64);
+			\OC::$server->getConfig()->setUserValue($userId, 'core', 'signing-key', $signingKey, null);
+		}
+		return ['data' => [
+			'user' => $userId,
+			'signing-key' => $signingKey
+		]];
+	}
 }

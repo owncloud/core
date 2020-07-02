@@ -119,7 +119,8 @@ class Server {
 			OC::$server->getUserSession(),
 			OC::$server->getRequest(),
 			OC::$server->getTwoFactorAuthManager(),
-			OC::$server->getAccountModuleManager()
+			OC::$server->getAccountModuleManager(),
+			\OC::$server->getConfig()
 		);
 
 		// Set URL explicitly due to reverse-proxy situations

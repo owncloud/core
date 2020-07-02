@@ -33,6 +33,7 @@ use OC\Authentication\AccountModule\Manager as AccountModuleManager;
 use OC\User\LoginException;
 use OC\User\Session;
 use OCA\DAV\Connector\Sabre\Auth;
+use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
@@ -61,6 +62,10 @@ class AuthTest extends TestCase {
 	private $twoFactorManager;
 	/** @var AccountModuleManager | MockObject */
 	private $accountModuleManager;
+	/**
+	 * @var IConfig|MockObject
+	 */
+	private $config;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -69,12 +74,14 @@ class AuthTest extends TestCase {
 		$this->request = $this->createMock(IRequest::class);
 		$this->twoFactorManager = $this->createMock(Manager::class);
 		$this->accountModuleManager = $this->createMock(AccountModuleManager::class);
+		$this->config = $this->createMock(IConfig::class);
 		$this->auth = new Auth(
 			$this->session,
 			$this->userSession,
 			$this->request,
 			$this->twoFactorManager,
-			$this->accountModuleManager
+			$this->accountModuleManager,
+			$this->config
 		);
 	}
 

@@ -62,7 +62,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\App\Enable(\OC::$server->getAppManager()));
 	$application->add(new OC\Core\Command\App\GetPath());
 	$application->add(new OC\Core\Command\App\ListApps(\OC::$server->getAppManager()));
-	
+
 	$application->add(new OC\Core\Command\TwoFactorAuth\Enable(
 		\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager()
 	));
@@ -177,6 +177,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Security\ImportCertificate(\OC::$server->getCertificateManager(null)));
 	$application->add(new OC\Core\Command\Security\RemoveCertificate(\OC::$server->getCertificateManager(null)));
 	$application->add(new OC\Core\Command\Security\ListRoutes(\OC::$server->getRouter()));
+	$application->add(new OC\Core\Command\Security\CreateSignKey(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getSecureRandom()));
 	$application->add(new OC\Core\Command\System\Cron(\OC::$server->getJobList(), \OC::$server->getConfig(), \OC::$server->getLogger(), \OC::$server->getTempManager()));
 } else {
 	$application->add(new OC\Core\Command\Maintenance\Install(\OC::$server->getConfig()));
