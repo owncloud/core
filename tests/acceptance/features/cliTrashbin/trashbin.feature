@@ -1,4 +1,4 @@
-@cli @TestAlsoOnExternalUserBackend @files_trashbin-app-required
+@cli @files_trashbin-app-required @skipOnOcis
 Feature: files and folders can be deleted from the trashbin
   As an admin
   I want to delete files and folders from the trashbin

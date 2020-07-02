@@ -13,7 +13,7 @@ Feature: move files
     When the user renames file "data.zip" to "simple-folder/data.zip" using the webUI
     Then near file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: move a file into a folder
     When the user moves file "data.zip" into folder "simple-empty-folder" using the webUI
     Then file "data.zip" should not be listed on the webUI
@@ -42,7 +42,7 @@ Feature: move files
       | Could not move "strängé filename (duplicate #2 &).txt", target exists |
     And file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Move multiple files at once
     When the user batch moves these files into folder "simple-empty-folder" using the webUI
       | name        |

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: get file properties
   As a user
   I want to be able to get meta-information about files

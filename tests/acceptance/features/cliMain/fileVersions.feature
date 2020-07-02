@@ -1,5 +1,4 @@
-@cli @TestAlsoOnExternalUserBackend
-
+@cli @skipOnOcis
 Feature: check file versions
 
   Scenario: user clears the versions of a file

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -38,18 +38,18 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with group "grp1" should include
-      | id                | A_NUMBER       |
+      | id                | A_STRING       |
       | item_type         | file           |
-      | item_source       | A_NUMBER       |
+      | item_source       | A_STRING       |
       | share_type        | group          |
-      | file_source       | A_NUMBER       |
+      | file_source       | A_STRING       |
       | file_target       | /textfile0.txt |
       | permissions       | read           |
       | stime             | A_NUMBER       |
-      | storage           | A_NUMBER       |
+      | storage           | A_STRING       |
       | mail_send         | 0              |
       | uid_owner         | %username%     |
-      | file_parent       | A_NUMBER       |
+      | file_parent       | A_STRING       |
       | displayname_owner | %displayname%  |
       | mimetype          | text/plain     |
     Examples:
@@ -127,18 +127,18 @@ Feature: sharing
     When user "Brian" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "Brian" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Brian" sharing with user "Carol" should include
-      | id                | A_NUMBER             |
+      | id                | A_STRING             |
       | item_type         | folder               |
-      | item_source       | A_NUMBER             |
+      | item_source       | A_STRING             |
       | share_type        | user                 |
-      | file_source       | A_NUMBER             |
+      | file_source       | A_STRING             |
       | file_target       | /folder2             |
       | permissions       | all                  |
       | stime             | A_NUMBER             |
-      | storage           | A_NUMBER             |
+      | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | %username%           |
-      | file_parent       | A_NUMBER             |
+      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/folder1/folder2" should not exist
@@ -158,18 +158,18 @@ Feature: sharing
     When user "Brian" moves folder "/Alice-folder/folder2" to "/Carol-folder/folder2" using the WebDAV API
     And user "Carol" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Carol" sharing with user "Brian" should include
-      | id                | A_NUMBER             |
+      | id                | A_STRING             |
       | item_type         | folder               |
-      | item_source       | A_NUMBER             |
+      | item_source       | A_STRING             |
       | share_type        | user                 |
-      | file_source       | A_NUMBER             |
+      | file_source       | A_STRING             |
       | file_target       | /Carol-folder        |
       | permissions       | all                  |
       | stime             | A_NUMBER             |
-      | storage           | A_NUMBER             |
+      | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | %username%           |
-      | file_parent       | A_NUMBER             |
+      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Alice-folder/folder2" should not exist
@@ -188,7 +188,29 @@ Feature: sharing
     And user "Carol" has shared folder "/Carol-folder" with user "Brian" with permissions "all"
     When user "Brian" moves folder "/Alice-folder/folder2" to "/Carol-folder/folder2" using the WebDAV API
     And user "Carol" gets the info of the last share using the sharing API
-    Then the OCS status message should be "Only GET, POST and PUT are allowed"
+    # Note: in the following fields, file_parent has been removed because OCIS does not report that
+    Then the fields of the last response to user "Carol" sharing with user "Brian" should include
+      | id                | A_STRING             |
+      | item_type         | folder               |
+      | item_source       | A_STRING             |
+      | share_type        | user                 |
+      | file_source       | A_STRING             |
+      | file_target       | /Carol-folder        |
+      | permissions       | all                  |
+      | stime             | A_NUMBER             |
+      | storage           | A_STRING             |
+      | mail_send         | 0                    |
+      | uid_owner         | %username%           |
+      | displayname_owner | %displayname%        |
+      | mimetype          | httpd/unix-directory |
+    # Really folder2 should be gone from Alice-folder and be found in Carol-folder
+    # like in these 2 suggested steps:
+    # And as "Alice" folder "/Alice-folder/folder2" should not exist
+    # And as "Carol" folder "/Carol-folder/folder2" should exist
+    #
+    # But this happens on OCIS:
+    And as "Alice" folder "/Alice-folder/folder2" should exist
+    And as "Carol" folder "/Carol-folder/folder2" should not exist
 
   @skipOnOcis @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: Increasing permissions is allowed for owner
@@ -237,13 +259,13 @@ Feature: sharing
     When user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Alice" sharing with group "grp1" should include
       | item_type         | file                |
-      | item_source       | A_NUMBER            |
+      | item_source       | A_STRING            |
       | share_type        | group               |
       | file_target       | /textfile0.txt      |
       | permissions       | read, update, share |
       | mail_send         | 0                   |
       | uid_owner         | %username%          |
-      | file_parent       | A_NUMBER            |
+      | file_parent       | A_STRING            |
       | displayname_owner | %displayname%       |
     Examples:
       | ocs_api_version | http_status_code |

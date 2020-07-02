@@ -9,7 +9,7 @@ Feature: Change own full name on the personal settings page
     And user "Alice" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
-  @smokeTest
+  @smokeTest @skipOnLDAP
   Scenario: Change full name
     When the user changes the full name to "my#very&weird?नेपालि%name" using the webUI
     And the user reloads the current page of the webUI

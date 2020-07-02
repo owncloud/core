@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @skipOnOcis @issue-ocis-reva-101
+@api @skipOnOcis @issue-ocis-reva-101
 Feature: quota
 
   Background:

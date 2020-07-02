@@ -1,4 +1,4 @@
-@cli
+@cli @skipOnOcis
 Feature: security certificates
   As an admin
   I want to be able to manage the ownCloud security certificates

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @issue-ocis-reva-47
+@api @files_sharing-app-required @issue-ocis-reva-47
 Feature: sharing
 
   Background:

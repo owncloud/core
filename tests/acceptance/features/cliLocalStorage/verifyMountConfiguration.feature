@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @local_storage
+@cli @local_storage @skipOnLDAP @skipOnOcis
 Feature: verify mount configuration using occ command
   As an admin
   I want to verify mount configuration for created local storage

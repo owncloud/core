@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @local_storage
+@cli @local_storage @skipOnLDAP @skipOnOcis
 Feature: manage options for a mount using occ command
   As an admin
   I want to add options for a local storage mount

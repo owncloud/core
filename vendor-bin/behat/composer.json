@@ -1,6 +1,6 @@
 {
     "require": {
-        "behat/behat": "^3.6",
+        "behat/behat": "^3.7",
         "behat/mink": "1.7.1",
         "behat/mink-extension": "^2.3",
         "behat/mink-goutte-driver": "^1.2",
@@ -12,6 +12,6 @@
         "sabre/xml": "^2.2",
         "guzzlehttp/guzzle": "^6.5",
         "phpunit/phpunit": "^8.5",
-        "zendframework/zend-ldap": "^2.10"
+        "laminas/laminas-ldap": "^2.10"
     }
 }

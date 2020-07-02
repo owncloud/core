@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api
 Feature: Other tests related to api
 
   @skipOnOcis @issue-ocis-reva-100

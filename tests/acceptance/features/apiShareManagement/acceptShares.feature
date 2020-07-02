@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-41 @issue-ocis-reva-243
+@api @files_sharing-app-required @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-41 @issue-ocis-reva-243
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept
@@ -330,7 +330,7 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id                     | A_NUMBER                   |
+      | id                     | A_STRING                   |
       | share_type             | user                       |
       | uid_owner              | %username%                 |
       | displayname_owner      | %displayname%              |
@@ -342,10 +342,10 @@ Feature: accept/decline shares coming from internal users
       | item_type              | file                       |
       | mimetype               | text/plain                 |
       | storage_id             | shared::/textfile0 (2).txt |
-      | storage                | A_NUMBER                   |
-      | item_source            | A_NUMBER                   |
-      | file_source            | A_NUMBER                   |
-      | file_parent            | A_NUMBER                   |
+      | storage                | A_STRING                   |
+      | item_source            | A_STRING                   |
+      | file_source            | A_STRING                   |
+      | file_parent            | A_STRING                   |
       | file_target            | /textfile0 (2).txt         |
       | share_with             | %username%                 |
       | share_with_displayname | %displayname%              |
@@ -372,7 +372,7 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id                     | A_NUMBER                                      |
+      | id                     | A_STRING                                      |
       | share_type             | user                                          |
       | uid_owner              | %username%                                    |
       | displayname_owner      | %displayname%                                 |
@@ -384,10 +384,10 @@ Feature: accept/decline shares coming from internal users
       | item_type              | file                                          |
       | mimetype               | text/plain                                    |
       | storage_id             | shared::<top_folder>/<received_textfile_name> |
-      | storage                | A_NUMBER                                      |
-      | item_source            | A_NUMBER                                      |
-      | file_source            | A_NUMBER                                      |
-      | file_parent            | A_NUMBER                                      |
+      | storage                | A_STRING                                      |
+      | item_source            | A_STRING                                      |
+      | file_source            | A_STRING                                      |
+      | file_parent            | A_STRING                                      |
       | file_target            | <top_folder>/<received_textfile_name>         |
       | share_with             | %username%                                    |
       | share_with_displayname | %displayname%                                 |

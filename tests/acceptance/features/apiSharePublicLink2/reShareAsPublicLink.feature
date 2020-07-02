@@ -1,5 +1,5 @@
-@api @TestAlsoOnExternalUserBackend @files_sharing-app-required @public_link_share-feature-required @skipOnOcis @issue-ocis-reva-49
-@issue-ocis-reva-233 @issue-ocis-reva-243
+@api @files_sharing-app-required @public_link_share-feature-required @skipOnOcis @issue-ocis-reva-49 @issue-ocis-reva-282
+@issue-ocis-reva-233 @issue-ocis-reva-243 @issue-ocis-reva-289
 Feature: reshare as public link
   As a user
   I want to create public link shares from files/folders shared with me
