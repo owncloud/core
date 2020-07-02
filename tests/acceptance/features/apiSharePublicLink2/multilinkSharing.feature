@@ -1,4 +1,4 @@
-@api @public_link_share-feature-required @files_sharing-app-required @skipOnOcis @issue-ocis-reva-49 @issue-ocis-reva-288 @issue-ocis-reva-252
+@api @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-49 @issue-ocis-reva-288 @issue-ocis-reva-252
 Feature: multilinksharing
 
   Background:
@@ -176,7 +176,8 @@ Feature: multilinksharing
       | path           | permissions | name        |
       | /textfile0.txt | 1           | sharedlink1 |
       | /textfile0.txt | 1           | sharedlink2 |
-
+	
+  @skipOnOcis @issue-ocis-reva-335
   Scenario: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
     And user "Alice" has created a public link share with settings
