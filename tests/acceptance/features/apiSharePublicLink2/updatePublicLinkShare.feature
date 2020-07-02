@@ -29,7 +29,6 @@ Feature: update a public link share
       | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -78,7 +77,6 @@ Feature: update a public link share
       | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -109,7 +107,6 @@ Feature: update a public link share
       | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -140,7 +137,6 @@ Feature: update a public link share
       | storage           | A_STRING                  |
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
-      | file_parent       | A_STRING                  |
       | displayname_owner | %displayname%             |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |
@@ -171,7 +167,6 @@ Feature: update a public link share
       | storage           | A_STRING             |
       | mail_send         | 0                    |
       | uid_owner         | Alice                |
-      | file_parent       | A_STRING             |
       | displayname_owner | %displayname%        |
       | url               | AN_URL               |
       | mimetype          | httpd/unix-directory |
@@ -202,7 +197,6 @@ Feature: update a public link share
       | storage           | A_STRING                  |
       | mail_send         | 0                         |
       | uid_owner         | Alice                     |
-      | file_parent       | A_STRING                  |
       | displayname_owner | %displayname%             |
       | url               | AN_URL                    |
       | mimetype          | httpd/unix-directory      |

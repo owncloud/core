@@ -55,6 +55,8 @@ trait Sharing {
 	private $localLastShareTime = null;
 
 	/**
+	 * Defines the fields that can be provided in a share request.
+	 *
 	 * @var array
 	 */
 	private $shareFields = [
@@ -63,13 +65,19 @@ trait Sharing {
 	];
 
 	/**
-	 * @var array
+	 * Defines the fields that are known and can be tested in a share response.
+	 * Note that ownCloud10 also provides file_parent in responses.
+	 * file_parent is not provided by OCIS/reva.
+	 * There are no known clients that use file_parent.
+	 * The acceptance tests do not test for file_parent.
+	 *
+	 * @var array fields that are possible in a share response
 	 */
 	private $shareResponseFields = [
 		'id', 'share_type', 'uid_owner', 'displayname_owner', 'stime', 'parent',
 		'expiration', 'token', 'uid_file_owner', 'displayname_file_owner', 'path',
 		'item_type', 'mimetype', 'storage_id', 'storage', 'item_source',
-		'file_source', 'file_parent', 'file_target', 'name', 'url', 'mail_send',
+		'file_source', 'file_target', 'name', 'url', 'mail_send',
 		'attributes', 'permissions', 'share_with', 'share_with_displayname', 'share_with_additional_info'
 	];
 
