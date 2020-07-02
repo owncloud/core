@@ -47,7 +47,7 @@ Feature: upload to a public link share
       | old      |
       | new      |
 
-  @issue-36055 @skipOnOcV10 @skipOnOcis @issue-ocis-reva-290
+  @skipOnOcis @issue-ocis-reva-290
   Scenario Outline: Uploading file to a public upload-only share using new public API that was deleted does not work
     Given using <dav-path> DAV path
     And user "Alice" has created a public link share with settings
@@ -61,7 +61,7 @@ Feature: upload to a public link share
       | old      |
       | new      |
 
-  @issue-36055
+  @skipOnOcV10 @issue-ocis-reva-290
   #After fixing the issue delete this Scenario and use the commented-out step in the above scenario
   Scenario: Uploading file to a public upload-only share that was deleted does not work
     Given the administrator has enabled DAV tech_preview
