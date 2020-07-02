@@ -84,6 +84,7 @@ OC.L10N.register(
     "Your storage is almost full ({usedSpacePercent}%)" : "O seu espazo de almacenamento está case cheo ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["coincidente con «{filter}»","coincidentes con «{filter}»"],
     "{owner} has locked this resource via {path}" : "{owner} bloqueou este recurso mediante {path}",
+    "Unlock" : "Desbloquear",
     "Could not unlock, please contact the lock owner {owner}" : "Non se puido desbloquear, contacte co propietario do bloqueo {owner}",
     "Unlock failed with status {status}" : "Produciuse un fallo no desbloqueo co estado {status}",
     "Locks" : "Bloqueos",

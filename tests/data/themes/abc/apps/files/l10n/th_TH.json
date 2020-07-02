@@ -82,6 +82,7 @@
     "Your storage is almost full ({usedSpacePercent}%)" : "พื้นที่จัดเก็บข้อมูลของคุณใกล้เต็มแล้ว \nใช้พื้นที่ไปแล้ว: ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["ตรงกับ '{filter}'"],
     "{owner} has locked this resource via {path}" : "พาท {path} ถูก {owner} ล็อคข้อมูลอยู่",
+    "Unlock" : "ปลดล็อค",
     "Could not unlock, please contact the lock owner {owner}" : "ไม่สามารถปลดล็อกได้โปรดติดต่อ {owner}",
     "Unlock failed with status {status}" : "ปลดล็อคล้มเหลวรหัสสถานะคือ {status}",
     "Locks" : "ล็อค",

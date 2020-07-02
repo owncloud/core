@@ -82,6 +82,7 @@ OC.L10N.register(
     "Your storage is almost full ({usedSpacePercent}%)" : "שטח האחסון שלך כמעט מלא ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["מתאים ל- '{filter}'","מתאים ל- '{filter}'","מתאים ל- '{filter}'","מתאים ל- '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} נעל את המשאב באמצעות {path}",
+    "Unlock" : "פתיחת נעילה",
     "Could not unlock, please contact the lock owner {owner}" : "לא ניתן להסיר את הנעילה, יש לפנות למי שנעל {owner}",
     "Unlock failed with status {status}" : "ביטול הנעילה נכשל עם סטטוס {status}",
     "Locks" : "נעילות",

@@ -82,6 +82,7 @@
     "Your storage is almost full ({usedSpacePercent}%)" : "Ваше хранилище почти заполнено ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["соответствует '{filter}'","соответствуют '{filter}'","соответствуют '{filter}'","соответствуют '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} заблокировал(а) данный ресурс через {path}",
+    "Unlock" : "Разблокировать",
     "Could not unlock, please contact the lock owner {owner}" : "Не удалось разблокировать, пожалуйста свяжитесь с владельцем блокировки {owner}",
     "Unlock failed with status {status}" : "Разблокировать не удалось, статус {status}",
     "Locks" : "Блокировки",

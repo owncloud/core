@@ -84,6 +84,7 @@ OC.L10N.register(
     "Your storage is almost full ({usedSpacePercent}%)" : "Depozita juaj është thuajse plot ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["ka përputhje me '{filter}'","ka përputhje me '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} e ka kyçur këtë burim përmes {path}",
+    "Unlock" : "Shkyçe",
     "Could not unlock, please contact the lock owner {owner}" : "S’u shkyç dot, ju lutemi, lidhuni me të zotin e kyçjes {owner}",
     "Unlock failed with status {status}" : "Shkyçja dështoi, me gjendjen {status}",
     "Locks" : "Kyçje",

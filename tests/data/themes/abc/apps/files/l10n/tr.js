@@ -82,6 +82,7 @@ OC.L10N.register(
     "Your storage is almost full ({usedSpacePercent}%)" : "Depolama alanınız neredeyse dolu (%{usedSpacePercent})",
     "_matches '{filter}'_::_match '{filter}'_" : ["'{filter}' ile eşleşiyor","'{filter}' ile eşleşiyor"],
     "{owner} has locked this resource via {path}" : "{owner} bu kaynağı {path} yoluyla kilitledi",
+    "Unlock" : "Kilidi aç",
     "Could not unlock, please contact the lock owner {owner}" : "Kilidi kaldırılamadı, lütfen kilit sahibiyle iletişime geçin {owner}",
     "Unlock failed with status {status}" : "Kilitleme {status} durumu ile başarısız oldu",
     "Locks" : "Kilitler",

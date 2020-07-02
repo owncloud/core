@@ -82,6 +82,7 @@
     "Your storage is almost full ({usedSpacePercent}%)" : "Seu armazenamento está quase cheio ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["coincide com '{filter}'","coincide com '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} bloqueou este recurso via {path}",
+    "Unlock" : "Desbloquear",
     "Could not unlock, please contact the lock owner {owner}" : "Não foi possível desbloquear, entre em contato com o proprietário do bloqueio {owner}",
     "Unlock failed with status {status}" : "Desbloqueio falhou com o status {status}",
     "Locks" : "Bloqueios",

@@ -56,6 +56,7 @@ OC.L10N.register(
     "Your storage is full, files can not be updated or synced anymore!" : "Sinu andmemaht on täis! Faile ei uuendata ega sünkroniseerita!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Sinu {owner} andmemaht on peaaegu täis ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Su andmemaht on peaaegu täis ({usedSpacePercent}%)",
+    "Unlock" : "Ava",
     "Locks" : "Lukud",
     "Resource is not locked" : "Ressurss pole lukustatud",
     "Path" : "Asukoht",

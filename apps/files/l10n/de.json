@@ -82,6 +82,7 @@
     "Your storage is almost full ({usedSpacePercent}%)" : "Dein Speicher ist fast voll ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["stimmt mit '{filter}' überein","stimmen mit '{filter}' überein"],
     "{owner} has locked this resource via {path}" : "{owner} hat diese Ressource via {path} gesperrt",
+    "Unlock" : "Entsperren",
     "Could not unlock, please contact the lock owner {owner}" : "Kann nicht freigeben, bitte kontaktieren Sie den Besitzer {owner} der Sperre",
     "Unlock failed with status {status}" : "Entsperren mit dem Status {status} fehlgeschlagen",
     "Locks" : "Sperrt",

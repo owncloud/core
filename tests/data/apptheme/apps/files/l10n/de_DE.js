@@ -84,6 +84,7 @@ OC.L10N.register(
     "Your storage is almost full ({usedSpacePercent}%)" : "Ihr Speicher ist fast voll ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["stimmt mit '{filter}' überein","stimmen mit '{filter}' überein"],
     "{owner} has locked this resource via {path}" : "{owner} hat diese Ressource via {path} gesperrt",
+    "Unlock" : "Entsperren",
     "Could not unlock, please contact the lock owner {owner}" : "Entsperren fehlgeschlagen, bitte kontaktieren Sie den Eigentümer der Sperre, {owner}",
     "Unlock failed with status {status}" : "Entsperren fehlgeschlagen mit Status {status}",
     "Locks" : "Sperren",
