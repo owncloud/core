@@ -214,6 +214,7 @@ Feature: Sharing files and folders with internal groups
     And file "lorem (2).txt" should be marked as shared with "grp1" by "Alice" on the webUI
     And the content of file "lorem (2).txt" for user "Carol" should be "some content"
 
+  @skipOnLDAP
   Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names
     Given user "some-user" has been created with default attributes and without skeleton files
     And group "<group_id1>" has been created
@@ -239,6 +240,7 @@ Feature: Sharing files and folders with internal groups
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
+  @skipOnLDAP
   Scenario Outline: group names are case-sensitive, sharing with groups in different case group name fail, if they don't exist
     Given group "<group_id1>" has been created
     And user "Brian" has created folder "/simple-folder"
@@ -299,6 +301,7 @@ Feature: Sharing files and folders with internal groups
     Then folder "test" should be listed on the webUI
     And folder "test (2)" should be listed on the webUI
 
+  @skipOnLDAP
   Scenario: shares shared to deleted group should not be available
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has logged in using the webUI

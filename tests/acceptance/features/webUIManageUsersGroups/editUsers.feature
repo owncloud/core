@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @skipOnLDAP
 Feature: edit users
   As an admin
   I want to edit users
