@@ -27,6 +27,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use SimpleXMLElement;
+use DateTime;
 
 /**
  * Helper to make WebDav Requests
@@ -548,6 +549,7 @@ class WebDavHelper {
 		);
 		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
 		$xmlpart = $responseXmlObject->xpath("//d:getlastmodified");
-		return $xmlpart[0]->__toString();
+		$mtime = new DateTime($xmlpart[0]->__toString());
+		return $mtime->format('U');
 	}
 }
