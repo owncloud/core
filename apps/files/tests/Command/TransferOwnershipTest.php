@@ -23,14 +23,20 @@ namespace OCA\Files\Tests\Command;
 
 use OC\Encryption\Manager;
 use OC\Share20\ProviderFactory;
+use OC\User\NoUserException;
 use OCA\Files\Command\TransferOwnership;
+use OCP\Files\Folder;
 use OCP\Files\Mount\IMountManager;
 use OCP\Files\IRootFolder;
+use OCP\Files\NotFoundException;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share;
+use OCP\Share\IShare;
 use OCP\Share\IManager;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 use Test\Traits\UserTrait;
@@ -243,5 +249,83 @@ class TransferOwnershipTest extends TestCase {
 		$targetShares = $this->shareManager->getSharesBy($this->unloggedUser->getUID(), Share::SHARE_TYPE_USER);
 		$this->assertCount(0, $sourceShares);
 		$this->assertCount(4, $targetShares);
+	}
+
+	public function transferSpecificFolderSharesExceptionProvider() {
+		$notFoundException = new NotFoundException();
+		$noUserException = new NoUserException();
+		return [
+			[
+				$notFoundException,
+				['yes'],
+				[],
+				['There are user shares that cannot be transferred. Do you want to continue with the transfer and skip these shares?']
+			],
+			[
+				$noUserException,
+				['yes'],
+				[],
+				['There are user shares that cannot be transferred. Do you want to continue with the transfer and skip these shares?']
+			],
+			[
+				$noUserException,
+				['no'],
+				[],
+				['There are user shares that cannot be transferred. Do you want to continue with the transfer and skip these shares?', 'Execution terminated']
+			],
+			[
+				$noUserException,
+				[],
+				['--accept-skipped-shares' => ' '],
+				[]
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider transferSpecificFolderSharesExceptionProvider
+	 *
+	 * @param NotFoundException|NoUserException $exception
+	 * @param string[] $inputs
+	 * @param string[] $inputOptions
+	 * @param string[] $expectedOutputs
+	 */
+	public function testTransferSpecificFolderSharesException($exception, $inputs, $inputOptions, $expectedOutputs) {
+		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
+
+		$shareNode = $this->createMock(Folder::class);
+		$shareNode->method('getPath')->willReturn('/source-user/files/transfer');
+		$share = $this->createMock(IShare::class);
+		$share->method('getId')->willReturn(1);
+		$share->method('getNode')->willThrowException($exception);
+
+		$shareManager = $this->createMock(IManager::class);
+		$shareManager->expects($this->at(0))->method('getSharesBy')->with('source-user', 1, null, true, 50, 0)->willReturn([$share]);
+
+		$command = new TransferOwnership(
+			$this->userManager,
+			$shareManager,
+			$this->mountManager,
+			$this->rootFolder,
+			$this->encryptionManager,
+			$this->providerFactory
+		);
+		$command->setHelperSet(new HelperSet([new QuestionHelper()]));
+		$commandTester = new CommandTester($command);
+		$commandTester->setInputs($inputs);
+
+		$input = [
+			'source-user' => $this->sourceUser->getUID(),
+			'destination-user' => $this->targetUser->getUID(),
+			'--path' => 'transfer'
+		];
+		$input = \array_merge($input, $inputOptions);
+		$commandTester->execute($input);
+		$output = $commandTester->getDisplay();
+
+		$this->assertStringContainsString('Share with id 1 points at deleted file, skipping', $output);
+		foreach ($expectedOutputs as $expectedOutput) {
+			$this->assertStringContainsString($expectedOutput, $output);
+		}
 	}
 }
