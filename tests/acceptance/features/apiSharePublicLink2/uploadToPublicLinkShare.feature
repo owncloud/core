@@ -47,7 +47,7 @@ Feature: upload to a public link share
       | old      |
       | new      |
 
-  @skipOnOcis @issue-ocis-reva-290
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcis @issue-ocis-reva-290
   Scenario Outline: Uploading file to a public upload-only share using new public API that was deleted does not work
     Given using <dav-path> DAV path
     And user "Alice" has created a public link share with settings
