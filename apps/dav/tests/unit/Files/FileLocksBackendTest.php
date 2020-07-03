@@ -28,6 +28,8 @@ use OCP\Files\FileInfo;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Files\Storage\IStorage;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IUser;
+use OCP\IUserSession;
 use OCP\Lock\Persistent\ILock;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IFile;
@@ -54,6 +56,10 @@ class FileLocksBackendTest extends TestCase {
 	private $tree;
 	/** @var IPersistentLockingStorage | IStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $storageOfFileToBeLocked;
+	/**
+	 * @var IUserSession|\PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $userSession;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -62,6 +68,11 @@ class FileLocksBackendTest extends TestCase {
 
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
+
+		$user = $this->createMock(IUser::class);
+		$user->method('getDisplayName')->willReturn('Alice Wonderland');
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->userSession->method('getUser')->willReturn($user);
 
 		$this->tree = $this->createMock(Tree::class);
 		$this->tree->method('getNodeForPath')->willReturnCallback(function ($uri) {
@@ -156,7 +167,7 @@ class FileLocksBackendTest extends TestCase {
 			return $this->createMock(File::class);
 		});
 
-		$this->plugin = new FileLocksBackend($this->tree, false, $timeFactory);
+		$this->plugin = new FileLocksBackend($this->tree, false, $timeFactory, $this->userSession);
 	}
 
 	public function testGetLocks() {
@@ -259,7 +270,7 @@ class FileLocksBackendTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
 
-		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, true);
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, $this->userSession, true);
 
 		// "/public/share" is a public share
 		// "/public" has the locks
@@ -339,7 +350,7 @@ class FileLocksBackendTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
 
-		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, true);
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, $this->userSession, true);
 		$this->plugin->lock('file-to-be-locked.txt', $lockInfo);
 	}
 
@@ -362,7 +373,7 @@ class FileLocksBackendTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
 
-		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, true);
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, $this->userSession, true);
 		$this->plugin->unlock('file-to-be-locked.txt', $lockInfo);
 	}
 
