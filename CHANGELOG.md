@@ -480,6 +480,7 @@ Details
 * Change - Add file action to lock a file: [#37460](https://github.com/owncloud/core/pull/37460)
 
    https://github.com/owncloud/core/pull/37460
+   https://github.com/owncloud/core/pull/37647
 
 * Change - Update doctrine/instantiator (1.3.0 => 1.3.1): [#37464](https://github.com/owncloud/core/pull/37464)
 
