@@ -141,7 +141,7 @@ trait WebDav {
 		if ($eTag === null) {
 			$eTag = $this->getEtagFromResponseXmlObject();
 		}
-		if (\preg_match("/^\"[a-f0-9:]{1,32}\"$/", $eTag)
+		if (\preg_match("/^\"[a-f0-9:\.]{1,32}\"$/", $eTag)
 		) {
 			return true;
 		} else {

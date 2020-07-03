@@ -42,7 +42,7 @@ Feature: sharing
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Brian"
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     Examples:
       | dav-path |
       | old      |
@@ -61,7 +61,7 @@ Feature: sharing
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Brian"
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     Examples:
       | dav-path |
       | old      |
@@ -110,7 +110,7 @@ Feature: sharing
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the following headers should match these regular expressions for user "Brian"
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     Examples:
       | dav-path |
       | old      |
