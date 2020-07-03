@@ -192,6 +192,7 @@ class FileLocksBackend implements BackendInterface {
 
 		// in case the timeout has not been accepted, adjust in lock info
 		$lockInfo->timeout = $lock->getTimeout();
+		$lockInfo->owner = $lock->getOwner();
 
 		return !empty($lock);
 	}
