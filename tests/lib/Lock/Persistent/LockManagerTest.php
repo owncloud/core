@@ -76,10 +76,10 @@ class LockManagerTest extends TestCase {
 		$this->expectExceptionMessage('No token provided in $lockInfo');
 
 		$this->config->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, 120],
 				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, 150],
-			]));
+			]);
 
 		$this->manager->lock(6, '/foo/bar', 123, []);
 	}
@@ -91,20 +91,20 @@ class LockManagerTest extends TestCase {
 		$this->expectExceptionMessage('Invalid file id');
 
 		$this->config->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, 120],
 				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, 150],
-			]));
+			]);
 
 		$this->manager->lock(6, '/foo/bar', -1, []);
 	}
 
 	public function testLockInsert() {
 		$this->config->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
 				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
-			]));
+			]);
 
 		$this->lockMapper->method('getLocksByPath')->willReturn([]);
 		$this->lockMapper->expects($this->once())
@@ -129,14 +129,15 @@ class LockManagerTest extends TestCase {
 		]);
 
 		$this->assertNotNull($lock);
+		$this->assertEquals('Alice (alice@example.net)', $lock->getOwner());
 	}
 
 	public function testLockUpdate() {
 		$this->config->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
 				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
-			]));
+			]);
 
 		$this->lockMapper->expects($this->once())
 			->method('getLocksByPath')
@@ -232,10 +233,10 @@ class LockManagerTest extends TestCase {
 	 */
 	public function testLockTimeout($givenTimeout, $default, $max, $expectedTimeout) {
 		$this->config->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, $default],
 				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, $max],
-			]));
+			]);
 
 		$this->lockMapper->method('getLocksByPath')->willReturn([]);
 		$lockInfo = [
