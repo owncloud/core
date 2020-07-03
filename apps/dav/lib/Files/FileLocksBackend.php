@@ -23,6 +23,7 @@ namespace OCA\DAV\Files;
 
 use OCA\DAV\Connector\Sabre\Node;
 use OCP\Files\Storage\IPersistentLockingStorage;
+use OCP\IUserSession;
 use OCP\Lock\Persistent\ILock;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Locks;
@@ -42,12 +43,17 @@ class FileLocksBackend implements BackendInterface {
 	private $timeFactory;
 	/** @var bool */
 	private $isPublicEndpoint;
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
 
-	public function __construct($tree, $useV1, $timeFactory, $isPublicEndpoint = false) {
+	public function __construct($tree, $useV1, $timeFactory, IUserSession $userSession, $isPublicEndpoint = false) {
 		$this->tree = $tree;
 		$this->useV1 = $useV1;
 		$this->timeFactory = $timeFactory;
 		$this->isPublicEndpoint = $isPublicEndpoint;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -178,6 +184,10 @@ class FileLocksBackend implements BackendInterface {
 		$storage = $node->getFileInfo()->getStorage();
 		if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
 			return false;
+		}
+		if ($lockInfo->owner === null) {
+			$user = $this->userSession->getUser();
+			$lockInfo->owner = $user->getDisplayName();
 		}
 
 		/** @var IPersistentLockingStorage $storage */

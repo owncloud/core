@@ -158,8 +158,8 @@ class Server {
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 		$this->server->addPlugin(new LockPlugin());
 
-		$fileLocksBackend = new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory());
-		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) {
+		$fileLocksBackend = new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory(), OC::$server->getUserSession());
+		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, static function ($uri) {
 			if (\strpos($uri, "public-files/") === 0) {
 				return true;
 			}
