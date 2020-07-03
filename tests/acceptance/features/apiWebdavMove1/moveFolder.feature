@@ -83,6 +83,21 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+  Scenario Outline: Move a folder into an other one
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/testshare"
+    And user "Alice" has created folder "/an-other-folder"
+    When user "Alice" moves folder "/testshare" to "/an-other-folder/testshare" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And user "Alice" should not see the following elements
+      | /testshare/ |
+    And user "Alice" should see the following elements
+      | /an-other-folder/testshare/ |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   Scenario Outline: Move a folder into a not existing one
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
