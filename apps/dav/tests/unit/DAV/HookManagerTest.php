@@ -77,7 +77,7 @@ class HookManagerTest extends TestCase {
 			'personal',
 			[
 				'{DAV:}displayname' => $this->l10n->t('Personal'),
-				'{http://apple.com/ns/ical/}calendar-color' => '#1d2d44'
+				'{http://apple.com/ns/ical/}calendar-color' => '#1B223D'
 			]);
 
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $card */
@@ -159,7 +159,7 @@ class HookManagerTest extends TestCase {
 			'personal',
 			[
 				'{DAV:}displayname' => $this->l10n->t('Personal'),
-				'{http://apple.com/ns/ical/}calendar-color' => '#1d2d44',
+				'{http://apple.com/ns/ical/}calendar-color' => '#1B223D',
 			]);
 
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $card */
