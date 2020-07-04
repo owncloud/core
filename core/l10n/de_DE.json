@@ -326,6 +326,7 @@
     "Please try again or contact your administrator." : "Bitte versuchen Sie es noch einmal oder kontaktieren Sie Ihren Administrator.",
     "Login" : "Anmelden",
     "Username or email" : "Benutzername oder E-Mail",
+    "You took too long to log in, please try again now" : "Sie haben zu lange zum Einloggen gebraucht, bitte versuchen Sie es erneut",
     "Wrong password. Reset it?" : "Falsches Passwort. Soll es zurückgesetzt werden?",
     "Wrong password." : "Falsches Passwort.",
     "You are trying to access a private link. Please log in first." : "Sie versuchen auf einen privaten Link zuzugreifen. Bitte erst anmelden.",
