@@ -73,6 +73,7 @@ Summary
 * Change - Share sheet improvements (external sharing): [#37558](https://github.com/owncloud/core/pull/37558)
 * Change - Update symfony/polyfill (1.17.0 => 1.17.1): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
+* Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -554,6 +555,13 @@ Details
 
    https://github.com/owncloud/core/issues/37603
    https://github.com/owncloud/core/pull/37604
+
+* Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
+
+   CI color was changed system wide and a new background image for the login screen was added. This
+   will adapt ownCloud to the new style guide.
+
+   https://github.com/owncloud/core/pull/37650
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
