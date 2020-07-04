@@ -110,31 +110,30 @@ class HttpRequestHelper {
 		if ($headers) {
 			print("Headers: " . "\n");
 			foreach ($headers as $header => $value) {
-				if (is_array($value)) {
-					print($header . ": " . implode(', ', $value) . "\n");
+				if (\is_array($value)) {
+					print($header . ": " . \implode(', ', $value) . "\n");
 				} else {
 					print($header . ": " . $value . "\n");
 				}
 			}
 		}
 		print("Body: ");
-		var_dump($request->getBody()->getContents());
+		\var_dump($request->getBody()->getContents());
 		print("\n### END REQUEST\n");
-
 	}
 
 	private static function debugResponse($response) {
 		print("### RESPONSE\n");
 		print("Status: " . $response->getStatusCode() . "\n");
 		foreach ($response->getHeaders() as $header => $value) {
-			if (is_array($value)) {
-				print($header . ": " . implode(', ', $value) . "\n");
+			if (\is_array($value)) {
+				print($header . ": " . \implode(', ', $value) . "\n");
 			} else {
 				print($header . ": " . $value . "\n");
 			}
 		}
 		print("Body: ");
-		var_dump($response->getBody()->getContents());
+		\var_dump($response->getBody()->getContents());
 		print("\n### END RESPONSE\n");
 	}
 
