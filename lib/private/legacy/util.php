@@ -473,10 +473,22 @@ class OC_Util {
 	 */
 	public static function getEditionString() {
 		$licenseManager = \OC::$server->getLicenseManager();
-		$licenseState = $licenseManager->getLicenseStateFor('core');
+		// TODO: Need to open method in the licenseManager to expose the license type
+		$licenseMessage = $licenseManager->getLicenseMessageFor('core');
+		$licenseState = $licenseMessage['license_state'];
+		$licenseType = $licenseMessage['type'];
 		if ($licenseState !== ILicenseManager::LICENSE_STATE_MISSING &&
 			$licenseState !== ILicenseManager::LICENSE_STATE_INVALID
 		) {
+			// if it's a expired demo key, we need to return community
+			if ($licenseState === ILicenseManager::LICENSE_STATE_EXPIRED && $licenseType !== 0) {
+				/**
+				 * TODO: licenseType === 0 is documented as "normal" license in the
+				 * ILicenseManager::getLicenseMessageFor method
+				 * This needs to be properly exposed as constant by the ILicenseManager
+				 */
+				return OC_Util::EDITION_COMMUNITY;
+			}
 			return OC_Util::EDITION_ENTERPRISE;
 		} else {
 			return OC_Util::EDITION_COMMUNITY;
