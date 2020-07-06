@@ -13,7 +13,7 @@ Feature: upload file
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
     Then the following headers should match these regular expressions for user "Alice"
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And the content of file "<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | file_name         |
@@ -24,7 +24,6 @@ Feature: upload file
       | new         | /strängé file.txt |
       | new         | /नेपाली.txt       |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
@@ -33,11 +32,20 @@ Feature: upload file
       | dav_version | file_name           |
       | old         | "C++ file.cpp"      |
       | old         | "file #2.txt"       |
+      | new         | "C++ file.cpp"      |
+      | new         | "file #2.txt"       |
+
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
+  #after fixing all issues delete this Scenario and merge with the one above
+  Scenario Outline: upload a file and check download content
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
+    Then the content of file <file_name> for user "Alice" should be "uploaded content"
+    Examples:
+      | dav_version | file_name           |
       | old         | "file ?2.txt"       |
       | old         | " ?fi=le&%#2 . txt" |
       | old         | " # %ab ab?=ed "    |
-      | new         | "C++ file.cpp"      |
-      | new         | "file #2.txt"       |
       | new         | "file ?2.txt"       |
       | new         | " ?fi=le&%#2 . txt" |
       | new         | " # %ab ab?=ed "    |
@@ -53,7 +61,6 @@ Feature: upload file
       | old         | "file ?2.txt"       |
       | new         | "file ?2.txt"       |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
@@ -66,13 +73,23 @@ Feature: upload file
       | old         | /C++ folder                      | C++ file.cpp                  |
       | old         | /नेपाली                          | नेपाली                        |
       | old         | /folder #2.txt                   | file #2.txt                   |
-      | old         | /folder ?2.txt                   | file ?2.txt                   |
-      | old         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
       | new         | /upload                          | abc.txt                       |
       | new         | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
       | new         | /C++ folder                      | C++ file.cpp                  |
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
+
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
+    #after fixing all issues delete this Scenario and merge with the one above
+  Scenario Outline: upload a file into a folder and check download content
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "<folder_name>"
+    When user "Alice" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
+    Then the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
+    Examples:
+      | dav_version | folder_name                      | file_name                     |
+      | old         | /folder ?2.txt                   | file ?2.txt                   |
+      | old         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
       | new         | /folder ?2.txt                   | file ?2.txt                   |
       | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
 

@@ -39,7 +39,7 @@ Feature: get file info using PROPFIND
       | /remote.php/dav/files/%username%/PARENT            | 404       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
       | /remote.php/dav/files/%username%/PARENT/parent.txt | 404       | <?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><d:getetag /></d:prop></d:propfind> |
 
-  @skipOnOcV10 @issue-ocis-reva-9
+  @skipOnOcV10 @issue-ocis-reva-9 @skipOnOcis-EOS-Storage @issue-ocis-reva-303
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send PROPFIND requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "PROPFIND" including body then the status codes about user "Alice" should be as listed

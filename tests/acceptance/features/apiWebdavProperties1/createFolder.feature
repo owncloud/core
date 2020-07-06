@@ -71,7 +71,7 @@ Feature: create folder
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-168 @skipOnOcis-EOS-Storage @issue-ocis-reva-269
+  @skipOnOcis @issue-ocis-reva-168
   Scenario Outline: try to create a folder that already exists
     Given using <dav_version> DAV path
     And user "Alice" has created folder "my-data"
@@ -85,7 +85,7 @@ Feature: create folder
       | old         |
       | new         |
 
-  @skipOnOcV10 @issue-ocis-reva-168
+  @skipOnOcV10 @issue-ocis-reva-168 @skipOnOcis-EOS-Storage
   #after fixing all issues delete this Scenario and use the one above
   Scenario Outline: try to create a folder that already exists
     Given using <dav_version> DAV path

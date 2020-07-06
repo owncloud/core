@@ -1,4 +1,5 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-49
+@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-49 @skipOnOcis-EOS-Storage @issue-ocis-reva-315 @issue-ocis-reva-316
+
 Feature: upload to a public link share
 
   Background:
@@ -14,7 +15,7 @@ Feature: upload to a public link share
     And the public uploads file "test.txt" with content "test2" with auto-rename mode using the old public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
 
@@ -29,7 +30,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
 
@@ -97,7 +98,7 @@ Feature: upload to a public link share
     When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
     Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
     And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
   Scenario: Uploading to a public upload-only share with new public API
     Given the administrator has enabled DAV tech_preview
@@ -107,7 +108,7 @@ Feature: upload to a public link share
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
     Then the content of file "/FOLDER/test-new.txt" for user "Alice" should be "test-new"
     And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
   @skipOnOcis
   Scenario: Uploading to a public upload-only share with password with old public API
@@ -270,7 +271,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     When the public uploads file "test.txt" with content "test2" using the old public WebDAV API
     # Uncomment these once the issue is fixed
     # Then the HTTP status code should be "201"
@@ -288,7 +289,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:]{1,32}"$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"

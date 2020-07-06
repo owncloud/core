@@ -607,6 +607,20 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @Then /^the OCS status code should be "([^"]*)" or "([^"]*)"$/
+	 *
+	 * @param int|string $statusCode1
+	 * @param int|string $statusCode2
+	 *
+	 * @return void
+	 */
+	public function theOcsStatusCodeShouldBeOr($statusCode1, $statusCode2) {
+		$this->theOCSStatusCodeShouldBe(
+			[$statusCode1, $statusCode2]
+		);
+	}
+
+	/**
 	 * Check the text in an OCS status message
 	 *
 	 * @Then /^the OCS status message should be "([^"]*)"$/
