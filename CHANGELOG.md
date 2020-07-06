@@ -74,6 +74,7 @@ Summary
 * Change - Update symfony/polyfill (1.17.0 => 1.17.1): [#37385](https://github.com/owncloud/core/pull/37385)
 * Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
 * Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
+* Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -562,6 +563,10 @@ Details
    will adapt ownCloud to the new style guide.
 
    https://github.com/owncloud/core/pull/37650
+
+* Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
+
+   https://github.com/owncloud/core/pull/37651
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
