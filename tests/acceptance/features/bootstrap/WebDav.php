@@ -2108,6 +2108,8 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
 		$baseUrl = $this->getBaseUrl();
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
 		Assert::assertEquals(
 			$mtime,
 			\TestHelpers\WebDavHelper::getMtimeOfResource($user, $password, $baseUrl, $resource)
@@ -2129,6 +2131,8 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
 		$baseUrl = $this->getBaseUrl();
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
 		Assert::assertNotEquals(
 			$mtime,
 			\TestHelpers\WebDavHelper::getMtimeOfResource($user, $password, $baseUrl, $resource)
