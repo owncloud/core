@@ -2158,6 +2158,35 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user uploads a file with content :content and mtime :mtime to :destination using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $mtime
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userUploadsAFileWithContentAndMtimeTo(
+		$user,
+		$content,
+		$mtime,
+		$destination
+	) {
+		$user = $this->getActualUsername($user);
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
+		$this->makeDavRequest(
+			$user,
+			"PUT",
+			$destination,
+			["X-OC-Mtime" => $mtime],
+			$content
+		);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the WebDAV API
 	 *
 	 * @param string $user

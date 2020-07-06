@@ -166,3 +166,16 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  @issue-ocis-reva-174
+  Scenario Outline: overwriting a file changes its mtime
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "first time upload content" to "file.txt"
+    When user "Alice" uploads a file with content "Overwrite file" and mtime "Thu, 08 Aug 2019 04:18:13 GMT" to "file.txt" using the WebDAV API
+    Then as "Alice" file "file.txt" should exist
+    And as "Alice" the mtime of the file "file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
+    And the content of file "file.txt" for user "Alice" should be "Overwrite file"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
