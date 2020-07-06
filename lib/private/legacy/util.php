@@ -473,7 +473,10 @@ class OC_Util {
 	 */
 	public static function getEditionString() {
 		$licenseManager = \OC::$server->getLicenseManager();
-		if ($licenseManager->getLicenseStateFor('core') !== ILicenseManager::LICENSE_STATE_MISSING) {
+		$licenseState = $licenseManager->getLicenseStateFor('core');
+		if ($licenseState !== ILicenseManager::LICENSE_STATE_MISSING &&
+			$licenseState !== ILicenseManager::LICENSE_STATE_INVALID
+		) {
 			return OC_Util::EDITION_ENTERPRISE;
 		} else {
 			return OC_Util::EDITION_COMMUNITY;

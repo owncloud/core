@@ -22,12 +22,23 @@ namespace OCP\License;
 /**
  * @since 10.5.0
  * Holds operations for managing the ownCloud license
+ *
+ * License states are expected to go through the following states:
+ * valid -> about to expire -> expired
+ * This means that "valid" and "about to expire" states must be considered
+ * as "good" states. Error states are "expired", "invalid" (if the license string
+ * can't be parsed or contains errors) and "missing" (if no license is found)
  */
 interface ILicenseManager {
+	/** The license is valid and hasn't expired yet */
 	const LICENSE_STATE_VALID = 0;
+	/** No license found */
 	const LICENSE_STATE_MISSING = 1;
+	/** The license is invalid or broken. Couldn't parse the license properly */
 	const LICENSE_STATE_INVALID = 2;
+	/** The license is "valid" (not broken, can be parsed) but has expired */
 	const LICENSE_STATE_EXPIRED = 3;
+	/** The license is valid and it's close to its expiration date */
 	const LICENSE_STATE_ABOUT_TO_EXPIRE = 4;
 
 	const THRESHOLD_ABOUT_TO_EXPIRE = 60;  // 60 days
