@@ -75,6 +75,7 @@ Summary
 * Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
 * Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
 * Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
+* Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -567,6 +568,13 @@ Details
 * Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
 
    https://github.com/owncloud/core/pull/37651
+
+* Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
+
+   The following Symfony components have been updated to version 1.1.9: -
+   event-dispatcher-contracts - service-contracts - event-dispatcher-contracts
+
+   https://github.com/owncloud/core/pull/37658
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
