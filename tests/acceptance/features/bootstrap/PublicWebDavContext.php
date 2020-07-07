@@ -307,21 +307,15 @@ class PublicWebDavContext implements Context {
 	 *                        should include the subfolder
 	 *                        if owncloud runs in a subfolder
 	 *                        e.g. http://localhost:8080/owncloud-core
-	 * @param string $user
-	 * @param string $password
 	 * @param string $source
 	 * @param string $destination
-	 * @param array $headers
 	 *
 	 * @return void
 	 */
 	public function publiclyCopyingFile(
 		$baseUrl,
-		$user,
-		$password,
 		$source,
-		$destination,
-		$headers = []
+		$destination
 	) {
 		$fullSourceUrl = $baseUrl . $source;
 		$fullDestUrl = WebDavHelper::sanitizeUrl(
@@ -329,28 +323,24 @@ class PublicWebDavContext implements Context {
 		);
 
 		$headers["Destination"] = $fullDestUrl;
-
 		$response = HttpRequestHelper::sendRequest(
-			$fullSourceUrl, "COPY", $user, $password, $headers, null, null, null,
+			$fullSourceUrl, "COPY", null, null, $headers, null, null, null,
 			false, 0, null
 		);
 		$this->featureContext->setResponse($response);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" copies (?:file|folder) "([^"]*)" to "([^"]*)" using the (old|new) public WebDAV API$/
+	 * @When /^the public copies (?:file|folder) "([^"]*)" to "([^"]*)" using the (old|new) public WebDAV API$/
 	 *
-	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
 	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
-	public function thePublicCopiesFileUsingTheWebDAVApi($user, $source, $destination, $publicWebDAVAPIVersion) {
-		$username = $this->featureContext->getActualUsername($user);
-		$password = $this->featureContext->getUserPassword($username);
-		$token = $this->featureContext->getLastShareToken();
+	public function thePublicCopiesFileUsingTheWebDAVApi($source, $destination, $publicWebDAVAPIVersion) {
+		$token = $this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token, 0, "public-files-$publicWebDAVAPIVersion"
 		);
@@ -358,8 +348,6 @@ class PublicWebDavContext implements Context {
 
 		$this->publiclyCopyingFile(
 			$baseUrl,
-			$username,
-			$password,
 			$source,
 			$destination
 		);
