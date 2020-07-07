@@ -2003,11 +2003,17 @@ trait Sharing {
 	public function checkFields($user, $body) {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$bodyRows = $body->getRowsHash();
+		$userRelatedFieldNames = [
+			"owner",
+			"user",
+			"uid_owner",
+			"uid_file_owner",
+			"share_with",
+			"displayname_file_owner",
+			"displayname_owner"
+		];
 		foreach ($bodyRows as $field => $value) {
-			if (\in_array($field, ["owner", "user", "uid_owner", "uid_file_owner", "share_with"])) {
-				$value = $this->getActualUsername($value);
-			}
-			if (\in_array($field, ["displayname_file_owner", "displayname_owner"])) {
+			if (\in_array($field, $userRelatedFieldNames)) {
 				$value = $this->substituteInLineCodes($value, $user);
 			}
 			$value = $this->replaceValuesFromTable($field, $value);
