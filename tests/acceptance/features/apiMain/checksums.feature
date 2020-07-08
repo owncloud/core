@@ -60,7 +60,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-98 @issue-ocis-reva-21
+  @skipOnOcis @issue-ocis-reva-98
   Scenario: Downloading a file with checksum should return the checksum in the download header
     Given using old DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
