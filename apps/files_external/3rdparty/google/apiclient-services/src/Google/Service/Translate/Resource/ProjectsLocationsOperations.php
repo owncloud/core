@@ -94,9 +94,9 @@ class Google_Service_Translate_Resource_ProjectsLocationsOperations extends Goog
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter The standard list filter.
    * @opt_param string pageToken The standard list page token.
    * @opt_param int pageSize The standard list page size.
-   * @opt_param string filter The standard list filter.
    * @return Google_Service_Translate_ListOperationsResponse
    */
   public function listProjectsLocationsOperations($name, $optParams = array())

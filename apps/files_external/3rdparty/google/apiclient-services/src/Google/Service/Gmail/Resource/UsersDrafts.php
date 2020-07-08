@@ -81,12 +81,12 @@ class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
    *
    * @opt_param bool includeSpamTrash Include drafts from SPAM and TRASH in the
    * results.
+   * @opt_param string maxResults Maximum number of drafts to return.
    * @opt_param string pageToken Page token to retrieve a specific page of results
    * in the list.
    * @opt_param string q Only return draft messages matching the specified query.
    * Supports the same query format as the Gmail search box. For example,
    * "from:someuser@example.com rfc822msgid: is:unread".
-   * @opt_param string maxResults Maximum number of drafts to return.
    * @return Google_Service_Gmail_ListDraftsResponse
    */
   public function listUsersDrafts($userId, $optParams = array())

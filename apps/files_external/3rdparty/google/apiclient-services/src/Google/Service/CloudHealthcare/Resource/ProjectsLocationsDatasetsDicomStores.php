@@ -49,9 +49,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * occur, error is set. The LRO result may still be successful if de-
    * identification fails for some DICOM instances. The output DICOM store will
    * not contain these failed resources. Failed resource totals are tracked in
-   * Operation.metadata. Error details are also logged to Stackdriver (see
-   * [Viewing logs](/healthcare/docs/how-tos/stackdriver-logging)).
-   * (dicomStores.deidentify)
+   * Operation.metadata. Error details are also logged to Cloud Logging (see
+   * [Viewing logs](/healthcare/docs/how-tos/logging)). (dicomStores.deidentify)
    *
    * @param string $sourceStore Source DICOM store resource name. For example, `pr
    * ojects/{project_id}/locations/{location_id}/datasets/{dataset_id}/dicomStores
@@ -82,9 +81,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   }
   /**
    * Exports data to the specified destination by copying it from the DICOM store.
-   * Errors are also logged to Stackdriver Logging. For more information, see
-   * [Viewing logs](/healthcare/docs/how-tos/stackdriver-logging). The metadata
-   * field type is OperationMetadata. (dicomStores.export)
+   * Errors are also logged to Cloud Logging. For more information, see [Viewing
+   * logs](/healthcare/docs/how-tos/logging). The metadata field type is
+   * OperationMetadata. (dicomStores.export)
    *
    * @param string $name The DICOM store resource name from which to export the
    * data. For example, `projects/{project_id}/locations/{location_id}/datasets/{d
@@ -130,6 +129,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_CloudHealthcare_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -140,9 +143,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   }
   /**
    * Imports data into the DICOM store by copying it from the specified source.
-   * Errors are logged to Stackdriver Logging. For more information, see [Viewing
-   * logs](/healthcare/docs/how-tos/stackdriver-logging). The metadata field type
-   * is OperationMetadata. (dicomStores.import)
+   * Errors are logged to Cloud Logging. For more information, see [Viewing
+   * logs](/healthcare/docs/how-tos/logging). The metadata field type is
+   * OperationMetadata. (dicomStores.import)
    *
    * @param string $name The name of the DICOM store resource into which the data
    * is imported. For example, `projects/{project_id}/locations/{location_id}/data
@@ -164,12 +167,12 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * @param string $parent Name of the dataset.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The next_page_token value returned from the
+   * previous List request, if any.
    * @opt_param string filter Restricts stores returned to those matching a
    * filter. Syntax:
    * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
    * Only filtering on labels is supported. For example, `labels.key=value`.
-   * @opt_param string pageToken The next_page_token value returned from the
-   * previous List request, if any.
    * @opt_param int pageSize Limit on the number of DICOM stores to return in a
    * single response. If zero the default page size of 100 is used.
    * @return Google_Service_CloudHealthcare_ListDicomStoresResponse
@@ -183,9 +186,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * Updates the specified DICOM store. (dicomStores.patch)
    *
-   * @param string $name Output only. Resource name of the DICOM store, of the
-   * form `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/dic
-   * omStores/{dicom_store_id}`.
+   * @param string $name Resource name of the DICOM store, of the form `projects/{
+   * project_id}/locations/{location_id}/datasets/{dataset_id}/dicomStores/{dicom_
+   * store_id}`.
    * @param Google_Service_CloudHealthcare_DicomStore $postBody
    * @param array $optParams Optional parameters.
    *
@@ -201,9 +204,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
     return $this->call('patch', array($params), "Google_Service_CloudHealthcare_DicomStore");
   }
   /**
-   * SearchForInstances returns a list of matching instances. See http://dicom.nem
-   * a.org/medical/dicom/current/output/html/part18.html#sect_10.6.
-   * (dicomStores.searchForInstances)
+   * SearchForInstances returns a list of matching instances. See [Search
+   * Transaction] (http://dicom.nema.org/medical/dicom/current/output/html/part18.
+   * html#sect_10.6). (dicomStores.searchForInstances)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -221,9 +224,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
     return $this->call('searchForInstances', array($params), "Google_Service_CloudHealthcare_HttpBody");
   }
   /**
-   * SearchForSeries returns a list of matching series. See http://dicom.nema.org/
-   * medical/dicom/current/output/html/part18.html#sect_10.6.
-   * (dicomStores.searchForSeries)
+   * SearchForSeries returns a list of matching series. See [Search Transaction] (
+   * http://dicom.nema.org/medical/dicom/current/output/html/part18.html#sect_10.6
+   * ). (dicomStores.searchForSeries)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -240,9 +243,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
     return $this->call('searchForSeries', array($params), "Google_Service_CloudHealthcare_HttpBody");
   }
   /**
-   * SearchForStudies returns a list of matching studies. See http://dicom.nema.or
-   * g/medical/dicom/current/output/html/part18.html#sect_10.6.
-   * (dicomStores.searchForStudies)
+   * SearchForStudies returns a list of matching studies. See [Search Transaction]
+   * (http://dicom.nema.org/medical/dicom/current/output/html/part18.html#sect_10.
+   * 6). (dicomStores.searchForStudies)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -262,7 +265,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (dicomStores.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -280,8 +283,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   }
   /**
    * StoreInstances stores DICOM instances associated with study instance unique
-   * identifiers (SUID). See http://dicom.nema.org/medical/dicom/current/output/ht
-   * ml/part18.html#sect_10.5. (dicomStores.storeInstances)
+   * identifiers (SUID). See [Store Transaction] (http://dicom.nema.org/medical/di
+   * com/current/output/html/part18.html#sect_10.5). (dicomStores.storeInstances)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -301,7 +304,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

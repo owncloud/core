@@ -20,7 +20,6 @@ class Google_Service_AndroidEnterprise_StoreLayoutClustersListResponse extends G
   protected $collection_key = 'cluster';
   protected $clusterType = 'Google_Service_AndroidEnterprise_StoreCluster';
   protected $clusterDataType = 'array';
-  public $kind;
 
   /**
    * @param Google_Service_AndroidEnterprise_StoreCluster
@@ -35,13 +34,5 @@ class Google_Service_AndroidEnterprise_StoreLayoutClustersListResponse extends G
   public function getCluster()
   {
     return $this->cluster;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
 }

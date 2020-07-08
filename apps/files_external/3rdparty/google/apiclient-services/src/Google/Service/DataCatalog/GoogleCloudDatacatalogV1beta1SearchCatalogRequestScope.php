@@ -17,10 +17,11 @@
 
 class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogRequestScope extends Google_Collection
 {
-  protected $collection_key = 'includeProjectIds';
+  protected $collection_key = 'restrictedLocations';
   public $includeGcpPublicDatasets;
   public $includeOrgIds;
   public $includeProjectIds;
+  public $restrictedLocations;
 
   public function setIncludeGcpPublicDatasets($includeGcpPublicDatasets)
   {
@@ -45,5 +46,13 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogReque
   public function getIncludeProjectIds()
   {
     return $this->includeProjectIds;
+  }
+  public function setRestrictedLocations($restrictedLocations)
+  {
+    $this->restrictedLocations = $restrictedLocations;
+  }
+  public function getRestrictedLocations()
+  {
+    return $this->restrictedLocations;
   }
 }

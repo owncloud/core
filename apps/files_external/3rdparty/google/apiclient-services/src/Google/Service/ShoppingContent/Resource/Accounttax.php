@@ -44,7 +44,7 @@ class Google_Service_ShoppingContent_Resource_Accounttax extends Google_Service_
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to get/update
    * account tax settings.
    * @param array $optParams Optional parameters.
@@ -80,7 +80,7 @@ class Google_Service_ShoppingContent_Resource_Accounttax extends Google_Service_
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
-   * account and accountId must be the ID of a sub-account of this account.
+   * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to get/update
    * account tax settings.
    * @param Google_Service_ShoppingContent_AccountTax $postBody

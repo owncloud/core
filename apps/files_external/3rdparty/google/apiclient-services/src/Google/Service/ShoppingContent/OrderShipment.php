@@ -24,6 +24,8 @@ class Google_Service_ShoppingContent_OrderShipment extends Google_Collection
   public $id;
   protected $lineItemsType = 'Google_Service_ShoppingContent_OrderShipmentLineItemShipment';
   protected $lineItemsDataType = 'array';
+  protected $scheduledDeliveryDetailsType = 'Google_Service_ShoppingContent_OrderShipmentScheduledDeliveryDetails';
+  protected $scheduledDeliveryDetailsDataType = '';
   public $shipmentGroupId;
   public $status;
   public $trackingId;
@@ -73,6 +75,20 @@ class Google_Service_ShoppingContent_OrderShipment extends Google_Collection
   public function getLineItems()
   {
     return $this->lineItems;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_OrderShipmentScheduledDeliveryDetails
+   */
+  public function setScheduledDeliveryDetails(Google_Service_ShoppingContent_OrderShipmentScheduledDeliveryDetails $scheduledDeliveryDetails)
+  {
+    $this->scheduledDeliveryDetails = $scheduledDeliveryDetails;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_OrderShipmentScheduledDeliveryDetails
+   */
+  public function getScheduledDeliveryDetails()
+  {
+    return $this->scheduledDeliveryDetails;
   }
   public function setShipmentGroupId($shipmentGroupId)
   {

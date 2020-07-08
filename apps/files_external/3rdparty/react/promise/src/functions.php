@@ -2,6 +2,20 @@
 
 namespace React\Promise;
 
+/**
+ * Creates a promise for the supplied `$promiseOrValue`.
+ *
+ * If `$promiseOrValue` is a value, it will be the resolution value of the
+ * returned promise.
+ *
+ * If `$promiseOrValue` is a thenable (any object that provides a `then()` method),
+ * a trusted promise that follows the state of the thenable is returned.
+ *
+ * If `$promiseOrValue` is a promise, it will be returned as is.
+ *
+ * @param mixed $promiseOrValue
+ * @return PromiseInterface
+ */
 function resolve($promiseOrValue = null)
 {
     if ($promiseOrValue instanceof ExtendedPromiseInterface) {
@@ -25,6 +39,22 @@ function resolve($promiseOrValue = null)
     return new FulfilledPromise($promiseOrValue);
 }
 
+/**
+ * Creates a rejected promise for the supplied `$promiseOrValue`.
+ *
+ * If `$promiseOrValue` is a value, it will be the rejection value of the
+ * returned promise.
+ *
+ * If `$promiseOrValue` is a promise, its completion value will be the rejected
+ * value of the returned promise.
+ *
+ * This can be useful in situations where you need to reject a promise without
+ * throwing an exception. For example, it allows you to propagate a rejection with
+ * the value of another promise.
+ *
+ * @param mixed $promiseOrValue
+ * @return PromiseInterface
+ */
 function reject($promiseOrValue = null)
 {
     if ($promiseOrValue instanceof PromiseInterface) {
@@ -36,6 +66,15 @@ function reject($promiseOrValue = null)
     return new RejectedPromise($promiseOrValue);
 }
 
+/**
+ * Returns a promise that will resolve only once all the items in
+ * `$promisesOrValues` have resolved. The resolution value of the returned promise
+ * will be an array containing the resolution values of each of the items in
+ * `$promisesOrValues`.
+ *
+ * @param array $promisesOrValues
+ * @return PromiseInterface
+ */
 function all($promisesOrValues)
 {
     return map($promisesOrValues, function ($val) {
@@ -43,6 +82,16 @@ function all($promisesOrValues)
     });
 }
 
+/**
+ * Initiates a competitive race that allows one winner. Returns a promise which is
+ * resolved in the same way the first settled promise resolves.
+ *
+ * The returned promise will become **infinitely pending** if  `$promisesOrValues`
+ * contains 0 items.
+ *
+ * @param array $promisesOrValues
+ * @return PromiseInterface
+ */
 function race($promisesOrValues)
 {
     $cancellationQueue = new CancellationQueue();
@@ -66,6 +115,20 @@ function race($promisesOrValues)
     }, $cancellationQueue);
 }
 
+/**
+ * Returns a promise that will resolve when any one of the items in
+ * `$promisesOrValues` resolves. The resolution value of the returned promise
+ * will be the resolution value of the triggering item.
+ *
+ * The returned promise will only reject if *all* items in `$promisesOrValues` are
+ * rejected. The rejection value will be an array of all rejection reasons.
+ *
+ * The returned promise will also reject with a `React\Promise\Exception\LengthException`
+ * if `$promisesOrValues` contains 0 items.
+ *
+ * @param array $promisesOrValues
+ * @return PromiseInterface
+ */
 function any($promisesOrValues)
 {
     return some($promisesOrValues, 1)
@@ -74,6 +137,24 @@ function any($promisesOrValues)
         });
 }
 
+/**
+ * Returns a promise that will resolve when `$howMany` of the supplied items in
+ * `$promisesOrValues` resolve. The resolution value of the returned promise
+ * will be an array of length `$howMany` containing the resolution values of the
+ * triggering items.
+ *
+ * The returned promise will reject if it becomes impossible for `$howMany` items
+ * to resolve (that is, when `(count($promisesOrValues) - $howMany) + 1` items
+ * reject). The rejection value will be an array of
+ * `(count($promisesOrValues) - $howMany) + 1` rejection reasons.
+ *
+ * The returned promise will also reject with a `React\Promise\Exception\LengthException`
+ * if `$promisesOrValues` contains less items than `$howMany`.
+ *
+ * @param array $promisesOrValues
+ * @param int $howMany
+ * @return PromiseInterface
+ */
 function some($promisesOrValues, $howMany)
 {
     $cancellationQueue = new CancellationQueue();
@@ -140,6 +221,17 @@ function some($promisesOrValues, $howMany)
     }, $cancellationQueue);
 }
 
+/**
+ * Traditional map function, similar to `array_map()`, but allows input to contain
+ * promises and/or values, and `$mapFunc` may return either a value or a promise.
+ *
+ * The map function receives each item as argument, where item is a fully resolved
+ * value of a promise or value in `$promisesOrValues`.
+ *
+ * @param array $promisesOrValues
+ * @param callable $mapFunc
+ * @return PromiseInterface
+ */
 function map($promisesOrValues, callable $mapFunc)
 {
     $cancellationQueue = new CancellationQueue();
@@ -178,6 +270,17 @@ function map($promisesOrValues, callable $mapFunc)
     }, $cancellationQueue);
 }
 
+/**
+ * Traditional reduce function, similar to `array_reduce()`, but input may contain
+ * promises and/or values, and `$reduceFunc` may return either a value or a
+ * promise, *and* `$initialValue` may be a promise or a value for the starting
+ * value.
+ *
+ * @param array $promisesOrValues
+ * @param callable $reduceFunc
+ * @param mixed $initialValue
+ * @return PromiseInterface
+ */
 function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null)
 {
     $cancellationQueue = new CancellationQueue();
@@ -215,7 +318,9 @@ function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null)
     }, $cancellationQueue);
 }
 
-// Internal functions
+/**
+ * @internal
+ */
 function _checkTypehint(callable $callback, $object)
 {
     if (!\is_object($object)) {

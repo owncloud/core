@@ -15,11 +15,21 @@
  * the License.
  */
 
-class Google_Service_AndroidPublisher_InAppProductListing extends Google_Model
+class Google_Service_AndroidPublisher_InAppProductListing extends Google_Collection
 {
+  protected $collection_key = 'benefits';
+  public $benefits;
   public $description;
   public $title;
 
+  public function setBenefits($benefits)
+  {
+    $this->benefits = $benefits;
+  }
+  public function getBenefits()
+  {
+    return $this->benefits;
+  }
   public function setDescription($description)
   {
     $this->description = $description;

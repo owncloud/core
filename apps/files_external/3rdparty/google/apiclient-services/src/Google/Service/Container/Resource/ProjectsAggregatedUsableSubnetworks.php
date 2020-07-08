@@ -30,7 +30,7 @@ class Google_Service_Container_Resource_ProjectsAggregatedUsableSubnetworks exte
    * (usableSubnetworks.listProjectsAggregatedUsableSubnetworks)
    *
    * @param string $parent The parent project where subnetworks are usable.
-   * Specified in the format 'projects'.
+   * Specified in the format `projects`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Filtering currently only supports equality on the

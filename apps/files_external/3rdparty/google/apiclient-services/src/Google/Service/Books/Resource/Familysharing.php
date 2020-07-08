@@ -46,15 +46,16 @@ class Google_Service_Books_Resource_Familysharing extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string docId The docid to share.
    * @opt_param string source String to identify the originator of this request.
    * @opt_param string volumeId The volume to share.
+   * @opt_param string docId The docid to share.
+   * @return Google_Service_Books_BooksEmpty
    */
   public function share($optParams = array())
   {
     $params = array();
     $params = array_merge($params, $optParams);
-    return $this->call('share', array($params));
+    return $this->call('share', array($params), "Google_Service_Books_BooksEmpty");
   }
   /**
    * Initiates revoking content that has already been shared with the user's
@@ -62,14 +63,15 @@ class Google_Service_Books_Resource_Familysharing extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string docId The docid to unshare.
    * @opt_param string source String to identify the originator of this request.
    * @opt_param string volumeId The volume to unshare.
+   * @opt_param string docId The docid to unshare.
+   * @return Google_Service_Books_BooksEmpty
    */
   public function unshare($optParams = array())
   {
     $params = array();
     $params = array_merge($params, $optParams);
-    return $this->call('unshare', array($params));
+    return $this->call('unshare', array($params), "Google_Service_Books_BooksEmpty");
   }
 }

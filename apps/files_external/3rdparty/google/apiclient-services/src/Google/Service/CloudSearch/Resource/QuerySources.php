@@ -36,8 +36,6 @@ class Google_Service_CloudSearch_Resource_QuerySources extends Google_Service_Re
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string requestOptions.searchApplicationId Id of the application
-   * created using SearchApplicationsService.
    * @opt_param string requestOptions.timeZone Current user's time zone id, such
    * as "America/Los_Angeles" or "Australia/Sydney". These IDs are defined by
    * [Unicode Common Locale Data Repository (CLDR)](http://cldr.unicode.org/)
@@ -63,6 +61,9 @@ class Google_Service_CloudSearch_Resource_QuerySources extends Google_Service_Re
    *
    * The suggest API does not use this parameter. Instead, suggest autocompletes
    * only based on characters in the query.
+   * @opt_param string requestOptions.searchApplicationId The ID generated when
+   * you create a search application using the [admin
+   * console](https://support.google.com/a/answer/9043922).
    * @return Google_Service_CloudSearch_ListQuerySourcesResponse
    */
   public function listQuerySources($optParams = array())

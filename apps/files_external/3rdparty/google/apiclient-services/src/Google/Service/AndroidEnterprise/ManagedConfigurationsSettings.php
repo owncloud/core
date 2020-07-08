@@ -17,19 +17,10 @@
 
 class Google_Service_AndroidEnterprise_ManagedConfigurationsSettings extends Google_Model
 {
-  public $kind;
   public $lastUpdatedTimestampMillis;
   public $mcmId;
   public $name;
 
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
   public function setLastUpdatedTimestampMillis($lastUpdatedTimestampMillis)
   {
     $this->lastUpdatedTimestampMillis = $lastUpdatedTimestampMillis;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -35,13 +35,12 @@ class FlowdockHandler extends SocketHandler
     protected $apiToken;
 
     /**
-     * @param string   $apiToken
-     * @param bool|int $level    The minimum logging level at which this handler will be triggered
-     * @param bool     $bubble   Whether the messages that are handled can bubble up the stack or not
+     * @param string|int $level  The minimum logging level at which this handler will be triggered
+     * @param bool       $bubble Whether the messages that are handled can bubble up the stack or not
      *
      * @throws MissingExtensionException if OpenSSL is missing
      */
-    public function __construct($apiToken, $level = Logger::DEBUG, $bubble = true)
+    public function __construct(string $apiToken, $level = Logger::DEBUG, bool $bubble = true)
     {
         if (!extension_loaded('openssl')) {
             throw new MissingExtensionException('The OpenSSL PHP extension is required to use the FlowdockHandler');
@@ -54,7 +53,7 @@ class FlowdockHandler extends SocketHandler
     /**
      * {@inheritdoc}
      */
-    public function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         if (!$formatter instanceof FlowdockFormatter) {
             throw new \InvalidArgumentException('The FlowdockHandler requires an instance of Monolog\Formatter\FlowdockFormatter to function correctly');
@@ -65,10 +64,8 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * Gets the default formatter.
-     *
-     * @return FormatterInterface
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         throw new \InvalidArgumentException('The FlowdockHandler must be configured (via setFormatter) with an instance of Monolog\Formatter\FlowdockFormatter to function correctly');
     }
@@ -78,7 +75,7 @@ class FlowdockHandler extends SocketHandler
      *
      * @param array $record
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         parent::write($record);
 
@@ -87,11 +84,8 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * {@inheritdoc}
-     *
-     * @param  array  $record
-     * @return string
      */
-    protected function generateDataStream($record)
+    protected function generateDataStream(array $record): string
     {
         $content = $this->buildContent($record);
 
@@ -100,22 +94,16 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * Builds the body of API call
-     *
-     * @param  array  $record
-     * @return string
      */
-    private function buildContent($record)
+    private function buildContent(array $record): string
     {
         return Utils::jsonEncode($record['formatted']['flowdock']);
     }
 
     /**
      * Builds the header of the API Call
-     *
-     * @param  string $content
-     * @return string
      */
-    private function buildHeader($content)
+    private function buildHeader(string $content): string
     {
         $header = "POST /v1/messages/team_inbox/" . $this->apiToken . " HTTP/1.1\r\n";
         $header .= "Host: api.flowdock.com\r\n";

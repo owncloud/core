@@ -33,13 +33,13 @@ class Google_Service_SystemsManagement_Resource_ProjectsPatchJobsInstanceDetails
    * of `projects/patchJobs`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter A filter expression that filters results listed in
-   * the response. This field supports filtering results by instance zone, name,
-   * state, or `failure_reason`.
    * @opt_param string pageToken A pagination token returned from a previous call
    * that indicates where this listing should continue from.
    * @opt_param int pageSize The maximum number of instance details records to
    * return.  Default is 100.
+   * @opt_param string filter A filter expression that filters results listed in
+   * the response. This field supports filtering results by instance zone, name,
+   * state, or `failure_reason`.
    * @return Google_Service_SystemsManagement_ListPatchJobInstanceDetailsResponse
    */
   public function listProjectsPatchJobsInstanceDetails($parent, $optParams = array())

@@ -21,8 +21,6 @@ class Google_Service_Monitoring_Condition extends Google_Model
   protected $conditionAbsentDataType = '';
   protected $conditionThresholdType = 'Google_Service_Monitoring_MetricThreshold';
   protected $conditionThresholdDataType = '';
-  protected $conditionTimeSeriesQueryLanguageType = 'Google_Service_Monitoring_TimeSeriesQueryLanguageCondition';
-  protected $conditionTimeSeriesQueryLanguageDataType = '';
   public $displayName;
   public $name;
 
@@ -53,20 +51,6 @@ class Google_Service_Monitoring_Condition extends Google_Model
   public function getConditionThreshold()
   {
     return $this->conditionThreshold;
-  }
-  /**
-   * @param Google_Service_Monitoring_TimeSeriesQueryLanguageCondition
-   */
-  public function setConditionTimeSeriesQueryLanguage(Google_Service_Monitoring_TimeSeriesQueryLanguageCondition $conditionTimeSeriesQueryLanguage)
-  {
-    $this->conditionTimeSeriesQueryLanguage = $conditionTimeSeriesQueryLanguage;
-  }
-  /**
-   * @return Google_Service_Monitoring_TimeSeriesQueryLanguageCondition
-   */
-  public function getConditionTimeSeriesQueryLanguage()
-  {
-    return $this->conditionTimeSeriesQueryLanguage;
   }
   public function setDisplayName($displayName)
   {

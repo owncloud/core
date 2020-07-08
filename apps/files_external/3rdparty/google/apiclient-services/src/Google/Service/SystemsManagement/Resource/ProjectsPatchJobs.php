@@ -77,12 +77,12 @@ class Google_Service_SystemsManagement_Resource_ProjectsPatchJobs extends Google
    * @param string $parent Required. In the form of `projects`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter If provided, this field specifies the criteria that
-   * must be met by patch jobs to be included in the response. Currently,
-   * filtering is only available on the patch_deployment field.
    * @opt_param string pageToken A pagination token returned from a previous call
    * that indicates where this listing should continue from.
    * @opt_param int pageSize The maximum number of instance status to return.
+   * @opt_param string filter If provided, this field specifies the criteria that
+   * must be met by patch jobs to be included in the response. Currently,
+   * filtering is only available on the patch_deployment field.
    * @return Google_Service_SystemsManagement_ListPatchJobsResponse
    */
   public function listProjectsPatchJobs($parent, $optParams = array())

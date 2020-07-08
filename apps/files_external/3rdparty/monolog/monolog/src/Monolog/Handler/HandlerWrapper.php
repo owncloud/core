@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -31,17 +31,13 @@ use Monolog\Formatter\FormatterInterface;
  *
  * @author Alexey Karapetov <alexey@karapetov.com>
  */
-class HandlerWrapper implements HandlerInterface, ResettableInterface
+class HandlerWrapper implements HandlerInterface, ProcessableHandlerInterface, FormattableHandlerInterface, ResettableInterface
 {
     /**
      * @var HandlerInterface
      */
     protected $handler;
 
-    /**
-     * HandlerWrapper constructor.
-     * @param HandlerInterface $handler
-     */
     public function __construct(HandlerInterface $handler)
     {
         $this->handler = $handler;
@@ -50,7 +46,7 @@ class HandlerWrapper implements HandlerInterface, ResettableInterface
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return $this->handler->isHandling($record);
     }
@@ -58,7 +54,7 @@ class HandlerWrapper implements HandlerInterface, ResettableInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         return $this->handler->handle($record);
     }
@@ -66,45 +62,67 @@ class HandlerWrapper implements HandlerInterface, ResettableInterface
     /**
      * {@inheritdoc}
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
-        return $this->handler->handleBatch($records);
+        $this->handler->handleBatch($records);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function pushProcessor($callback)
+    public function close(): void
     {
-        $this->handler->pushProcessor($callback);
-
-        return $this;
+        $this->handler->close();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function popProcessor()
+    public function pushProcessor(callable $callback): HandlerInterface
     {
-        return $this->handler->popProcessor();
+        if ($this->handler instanceof ProcessableHandlerInterface) {
+            $this->handler->pushProcessor($callback);
+
+            return $this;
+        }
+
+        throw new \LogicException('The wrapped handler does not implement ' . ProcessableHandlerInterface::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setFormatter(FormatterInterface $formatter)
+    public function popProcessor(): callable
     {
-        $this->handler->setFormatter($formatter);
+        if ($this->handler instanceof ProcessableHandlerInterface) {
+            return $this->handler->popProcessor();
+        }
 
-        return $this;
+        throw new \LogicException('The wrapped handler does not implement ' . ProcessableHandlerInterface::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFormatter()
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
-        return $this->handler->getFormatter();
+        if ($this->handler instanceof FormattableHandlerInterface) {
+            $this->handler->setFormatter($formatter);
+        }
+
+        throw new \LogicException('The wrapped handler does not implement ' . FormattableHandlerInterface::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormatter(): FormatterInterface
+    {
+        if ($this->handler instanceof FormattableHandlerInterface) {
+            return $this->handler->getFormatter();
+        }
+
+        throw new \LogicException('The wrapped handler does not implement ' . FormattableHandlerInterface::class);
     }
 
     public function reset()

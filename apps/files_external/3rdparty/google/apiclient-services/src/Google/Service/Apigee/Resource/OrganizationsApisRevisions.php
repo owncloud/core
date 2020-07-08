@@ -72,21 +72,6 @@ class Google_Service_Apigee_Resource_OrganizationsApisRevisions extends Google_S
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleApiHttpBody");
   }
   /**
-   * Lists all revisions for an API proxy.
-   * (revisions.listOrganizationsApisRevisions)
-   *
-   * @param string $parent Required. Name of the API proxy in the following
-   * format:   `organizations/{org}/apis/{api}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsApisRevisions($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
-  /**
    * Updates an existing API proxy revision by uploading the API proxy
    * configuration bundle as a zip file from your local machine.
    *

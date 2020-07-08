@@ -115,11 +115,11 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
    * ACTIVE or NON_ACTIVE. Only the logical AND operator is supported; space-
    * separated items are treated as having an implicit AND operator.Example
    * filter:status.state = ACTIVE AND labels.env = staging AND labels.starred = *
+   * @opt_param string pageToken Optional. The page token, returned by a previous
+   * call, to request the next page of results.
    * @opt_param string jobStateMatcher Optional. Specifies enumerated categories
    * of jobs to list. (default = match ALL jobs).If filter is provided,
    * jobStateMatcher will be ignored.
-   * @opt_param string pageToken Optional. The page token, returned by a previous
-   * call, to request the next page of results.
    * @opt_param int pageSize Optional. The number of results to return in each
    * response.
    * @opt_param string clusterName Optional. If set, the returned jobs list
@@ -158,8 +158,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-   * PERMISSION_DENIED (jobs.setIamPolicy)
+   * existing policy.Can return NOT_FOUND, INVALID_ARGUMENT, and PERMISSION_DENIED
+   * errors. (jobs.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

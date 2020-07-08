@@ -23,6 +23,8 @@ class Google_Service_ToolResults_AndroidTest extends Google_Model
   protected $androidInstrumentationTestDataType = '';
   protected $androidRoboTestType = 'Google_Service_ToolResults_AndroidRoboTest';
   protected $androidRoboTestDataType = '';
+  protected $androidTestLoopType = 'Google_Service_ToolResults_AndroidTestLoop';
+  protected $androidTestLoopDataType = '';
   protected $testTimeoutType = 'Google_Service_ToolResults_Duration';
   protected $testTimeoutDataType = '';
 
@@ -67,6 +69,20 @@ class Google_Service_ToolResults_AndroidTest extends Google_Model
   public function getAndroidRoboTest()
   {
     return $this->androidRoboTest;
+  }
+  /**
+   * @param Google_Service_ToolResults_AndroidTestLoop
+   */
+  public function setAndroidTestLoop(Google_Service_ToolResults_AndroidTestLoop $androidTestLoop)
+  {
+    $this->androidTestLoop = $androidTestLoop;
+  }
+  /**
+   * @return Google_Service_ToolResults_AndroidTestLoop
+   */
+  public function getAndroidTestLoop()
+  {
+    return $this->androidTestLoop;
   }
   /**
    * @param Google_Service_ToolResults_Duration

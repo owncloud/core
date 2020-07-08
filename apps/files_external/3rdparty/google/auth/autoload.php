@@ -23,7 +23,7 @@ function oauth2client_php_autoload($className)
     }
     if (count($classPath) > 3) {
         // Maximum class file path depth in this project is 3.
-    $classPath = array_slice($classPath, 0, 3);
+        $classPath = array_slice($classPath, 0, 3);
     }
     $filePath = dirname(__FILE__) . '/src/' . implode('/', $classPath) . '.php';
     if (file_exists($filePath)) {

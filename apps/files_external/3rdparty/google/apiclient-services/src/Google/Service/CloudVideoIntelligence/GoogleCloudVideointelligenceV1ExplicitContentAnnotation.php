@@ -20,6 +20,7 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Explic
   protected $collection_key = 'frames';
   protected $framesType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ExplicitContentFrame';
   protected $framesDataType = 'array';
+  public $version;
 
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ExplicitContentFrame
@@ -34,5 +35,13 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Explic
   public function getFrames()
   {
     return $this->frames;
+  }
+  public function setVersion($version)
+  {
+    $this->version = $version;
+  }
+  public function getVersion()
+  {
+    return $this->version;
   }
 }

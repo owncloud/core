@@ -26,8 +26,10 @@
 class Google_Service_CloudMachineLearningEngine_Resource_Projects extends Google_Service_Resource
 {
   /**
-   * Performs explanation on the data in the request. AI Platform implements a
-   * custom `explain` verb on top of an HTTP POST method. (projects.explain)
+   * Performs explanation on the data in the request.
+   *
+   * {% dynamic include "/ai-platform/includes/___explain-request" %}
+   * (projects.explain)
    *
    * @param string $name Required. The resource name of a model or a version.
    *

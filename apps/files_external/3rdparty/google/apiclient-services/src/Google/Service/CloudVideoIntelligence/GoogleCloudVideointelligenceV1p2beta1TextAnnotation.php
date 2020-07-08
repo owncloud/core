@@ -21,6 +21,7 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p2beta
   protected $segmentsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p2beta1TextSegment';
   protected $segmentsDataType = 'array';
   public $text;
+  public $version;
 
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p2beta1TextSegment
@@ -43,5 +44,13 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p2beta
   public function getText()
   {
     return $this->text;
+  }
+  public function setVersion($version)
+  {
+    $this->version = $version;
+  }
+  public function getVersion()
+  {
+    return $this->version;
   }
 }

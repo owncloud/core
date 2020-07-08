@@ -18,8 +18,7 @@
 class Google_Service_Books_GeolayerdataGeo extends Google_Collection
 {
   protected $collection_key = 'boundary';
-  protected $boundaryType = 'Google_Service_Books_GeolayerdataGeoBoundary';
-  protected $boundaryDataType = 'array';
+  public $boundary;
   public $cachePolicy;
   public $countryCode;
   public $latitude;
@@ -29,16 +28,10 @@ class Google_Service_Books_GeolayerdataGeo extends Google_Collection
   protected $viewportDataType = '';
   public $zoom;
 
-  /**
-   * @param Google_Service_Books_GeolayerdataGeoBoundary
-   */
   public function setBoundary($boundary)
   {
     $this->boundary = $boundary;
   }
-  /**
-   * @return Google_Service_Books_GeolayerdataGeoBoundary
-   */
   public function getBoundary()
   {
     return $this->boundary;

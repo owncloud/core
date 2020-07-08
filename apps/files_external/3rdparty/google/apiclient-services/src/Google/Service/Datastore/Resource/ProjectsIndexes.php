@@ -93,11 +93,11 @@ class Google_Service_Datastore_Resource_ProjectsIndexes extends Google_Service_R
    * @param string $projectId Project ID against which to make the request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
    * @opt_param int pageSize The maximum number of items to return.  If zero, then
    * all results will be returned.
-   * @opt_param string filter
    * @return Google_Service_Datastore_GoogleDatastoreAdminV1ListIndexesResponse
    */
   public function listProjectsIndexes($projectId, $optParams = array())

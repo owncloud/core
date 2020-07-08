@@ -1,3 +1,10 @@
+## 1.9.0 (5/14/2020)
+
+* [feat] Add quotaProject param for extensible client options support (#277)
+* [feat] Add signingKeyId param for jwt signing (#270)
+* [docs] Misc documentation improvements (#268, #278, #273)
+* [chore] Switch from Travis to Github Actions (#273)
+
 ## 1.8.0 (3/26/2020)
 
 * [feat] Add option to throw exception in AccessToken::verify(). (#265)

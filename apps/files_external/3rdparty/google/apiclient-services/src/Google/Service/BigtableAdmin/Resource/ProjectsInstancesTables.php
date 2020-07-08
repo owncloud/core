@@ -131,9 +131,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
     return $this->call('get', array($params), "Google_Service_BigtableAdmin_Table");
   }
   /**
-   * Gets the access control policy for a Table or Backup resource. Returns an
-   * empty policy if the resource exists but does not have a policy set.
-   * (tables.getIamPolicy)
+   * Gets the access control policy for a Table resource. Returns an empty policy
+   * if the resource exists but does not have a policy set. (tables.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * requested. See the operation documentation for the appropriate value for this
@@ -157,6 +156,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
    * `projects/{project}/instances/{instance}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string view The view to be applied to the returned tables' fields.
+   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
    * @opt_param string pageToken The value of `next_page_token` returned by a
    * previous call.
    * @opt_param int pageSize Maximum number of results per page.
@@ -168,8 +169,6 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
    * Following the first request, subsequent paginated calls are not required to
    * pass a page_size. If a page_size is set in subsequent calls, it must match
    * the page_size given in the first request.
-   * @opt_param string view The view to be applied to the returned tables' fields.
-   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
    * @return Google_Service_BigtableAdmin_ListTablesResponse
    */
   public function listProjectsInstancesTables($parent, $optParams = array())
@@ -198,8 +197,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
     return $this->call('modifyColumnFamilies', array($params), "Google_Service_BigtableAdmin_Table");
   }
   /**
-   * Sets the access control policy on a Table or Backup resource. Replaces any
-   * existing policy. (tables.setIamPolicy)
+   * Sets the access control policy on a Table resource. Replaces any existing
+   * policy. (tables.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

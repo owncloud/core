@@ -11,6 +11,7 @@ namespace Test;
 use OC_Util;
 use OCP\Files\Folder;
 use OCP\App\IAppManager;
+use OCP\License\ILicenseManager;
 
 /**
  * @group DB
@@ -31,12 +32,42 @@ class UtilTest extends \Test\TestCase {
 		$this->assertIsString($version);
 	}
 
+	public function getEditionStringProvider() {
+		return [
+			[ILicenseManager::LICENSE_STATE_VALID, -1, OC_Util::EDITION_ENTERPRISE],
+			[ILicenseManager::LICENSE_STATE_VALID, 0, OC_Util::EDITION_ENTERPRISE],
+			[ILicenseManager::LICENSE_STATE_VALID, 1, OC_Util::EDITION_ENTERPRISE],
+			[ILicenseManager::LICENSE_STATE_MISSING, -1, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_MISSING, 0, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_MISSING, 1, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_INVALID, -1, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_INVALID, 0, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_INVALID, 1, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_EXPIRED, -1, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_EXPIRED, 0, OC_Util::EDITION_ENTERPRISE],
+			[ILicenseManager::LICENSE_STATE_EXPIRED, 1, OC_Util::EDITION_COMMUNITY],
+			[ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE, -1, OC_Util::EDITION_ENTERPRISE],
+			[ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE, 0, OC_Util::EDITION_ENTERPRISE],
+			[ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE, 1, OC_Util::EDITION_ENTERPRISE],
+		];
+	}
 	/**
-	* code identical used in firstrunwizard: tests/lib/utiltest.php
-	*/
-	public function testGetEditionString() {
-		$edition = \OC_Util::getEditionString();
-		$this->assertIsString($edition);
+	 * @dataProvider getEditionStringProvider
+	 */
+	public function testGetEditionString($licenseState, $licenseType, $expectedResult) {
+		$licenseManagerMock = $this->createMock(ILicenseManager::class);
+		$licenseManagerMock->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => $licenseState,
+				'type' => $licenseType,
+				// the rest of the keys aren't needed
+			]);
+		try {
+			$this->overwriteService(ILicenseManager::class, $licenseManagerMock);
+			$this->assertSame($expectedResult, \OC_Util::getEditionString());
+		} finally {
+			$this->restoreService(ILicenseManager::class);
+		}
 	}
 
 	public function testFormatDate() {

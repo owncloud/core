@@ -218,8 +218,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    *
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListSessionsResponse.
-   * @opt_param int pageSize Number of sessions to be returned in the response. If
-   * 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string filter An expression for filtering the results of the
    * request. Filter rules are case insensitive. The fields eligible for filtering
    * are:
@@ -231,6 +229,8 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    *   * `labels.env:*` --> The session has the label "env".   * `labels.env:dev`
    * --> The session has the label "env" and the value of
    * the label contains the string "dev".
+   * @opt_param int pageSize Number of sessions to be returned in the response. If
+   * 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_Spanner_ListSessionsResponse
    */
   public function listProjectsInstancesDatabasesSessions($database, $optParams = array())

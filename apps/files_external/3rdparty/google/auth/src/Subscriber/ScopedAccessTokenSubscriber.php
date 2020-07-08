@@ -78,7 +78,8 @@ class ScopedAccessTokenSubscriber implements SubscriberInterface
         $this->tokenFunc = $tokenFunc;
         if (!(is_string($scopes) || is_array($scopes))) {
             throw new \InvalidArgumentException(
-                'wants scope should be string or array');
+                'wants scope should be string or array'
+            );
         }
         $this->scopes = $scopes;
 
@@ -102,28 +103,30 @@ class ScopedAccessTokenSubscriber implements SubscriberInterface
     /**
      * Updates the request with an Authorization header when auth is 'scoped'.
      *
-     *   E.g this could be used to authenticate using the AppEngine
-     *   AppIdentityService.
+     * E.g this could be used to authenticate using the AppEngine AppIdentityService.
      *
-     *   use google\appengine\api\app_identity\AppIdentityService;
-     *   use Google\Auth\Subscriber\ScopedAccessTokenSubscriber;
-     *   use GuzzleHttp\Client;
+     * Example:
+     * ```
+     * use google\appengine\api\app_identity\AppIdentityService;
+     * use Google\Auth\Subscriber\ScopedAccessTokenSubscriber;
+     * use GuzzleHttp\Client;
      *
-     *   $scope = 'https://www.googleapis.com/auth/taskqueue'
-     *   $subscriber = new ScopedAccessToken(
-     *       'AppIdentityService::getAccessToken',
-     *       $scope,
-     *       ['prefix' => 'Google\Auth\ScopedAccessToken::'],
-     *       $cache = new Memcache()
-     *   );
+     * $scope = 'https://www.googleapis.com/auth/taskqueue'
+     * $subscriber = new ScopedAccessToken(
+     *     'AppIdentityService::getAccessToken',
+     *     $scope,
+     *     ['prefix' => 'Google\Auth\ScopedAccessToken::'],
+     *     $cache = new Memcache()
+     * );
      *
-     *   $client = new Client([
-     *       'base_url' => 'https://www.googleapis.com/taskqueue/v1beta2/projects/',
-     *       'defaults' => ['auth' => 'scoped']
-     *   ]);
-     *   $client->getEmitter()->attach($subscriber);
+     * $client = new Client([
+     *     'base_url' => 'https://www.googleapis.com/taskqueue/v1beta2/projects/',
+     *     'defaults' => ['auth' => 'scoped']
+     * ]);
+     * $client->getEmitter()->attach($subscriber);
      *
-     *   $res = $client->get('myproject/taskqueues/myqueue');
+     * $res = $client->get('myproject/taskqueues/myqueue');
+     * ```
      *
      * @param BeforeEvent $event
      */

@@ -17,44 +17,44 @@
 
 class Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfo extends Google_Model
 {
-  public $cancellationTimestampUs;
-  protected $currentReleaseInfoType = 'Google_Service_Books_BooksSubscriptionReleaseInfo';
+  public $cancelTime;
+  protected $currentReleaseInfoType = 'Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoCurrentReleaseInfo';
   protected $currentReleaseInfoDataType = '';
-  protected $nextReleaseInfoType = 'Google_Service_Books_BooksSubscriptionReleaseInfo';
+  protected $nextReleaseInfoType = 'Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo';
   protected $nextReleaseInfoDataType = '';
   public $seriesSubscriptionType;
 
-  public function setCancellationTimestampUs($cancellationTimestampUs)
+  public function setCancelTime($cancelTime)
   {
-    $this->cancellationTimestampUs = $cancellationTimestampUs;
+    $this->cancelTime = $cancelTime;
   }
-  public function getCancellationTimestampUs()
+  public function getCancelTime()
   {
-    return $this->cancellationTimestampUs;
+    return $this->cancelTime;
   }
   /**
-   * @param Google_Service_Books_BooksSubscriptionReleaseInfo
+   * @param Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoCurrentReleaseInfo
    */
-  public function setCurrentReleaseInfo(Google_Service_Books_BooksSubscriptionReleaseInfo $currentReleaseInfo)
+  public function setCurrentReleaseInfo(Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoCurrentReleaseInfo $currentReleaseInfo)
   {
     $this->currentReleaseInfo = $currentReleaseInfo;
   }
   /**
-   * @return Google_Service_Books_BooksSubscriptionReleaseInfo
+   * @return Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoCurrentReleaseInfo
    */
   public function getCurrentReleaseInfo()
   {
     return $this->currentReleaseInfo;
   }
   /**
-   * @param Google_Service_Books_BooksSubscriptionReleaseInfo
+   * @param Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo
    */
-  public function setNextReleaseInfo(Google_Service_Books_BooksSubscriptionReleaseInfo $nextReleaseInfo)
+  public function setNextReleaseInfo(Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo $nextReleaseInfo)
   {
     $this->nextReleaseInfo = $nextReleaseInfo;
   }
   /**
-   * @return Google_Service_Books_BooksSubscriptionReleaseInfo
+   * @return Google_Service_Books_SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo
    */
   public function getNextReleaseInfo()
   {

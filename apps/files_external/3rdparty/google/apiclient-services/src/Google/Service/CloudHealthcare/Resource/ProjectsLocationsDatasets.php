@@ -54,9 +54,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
    * The LRO result may still be successful if de-identification fails for some
    * DICOM instances. The new de-identified dataset will not contain these failed
    * resources. Failed resource totals are tracked in Operation.metadata. Error
-   * details are also logged to Stackdriver Logging. For more information, see
-   * [Viewing logs](/healthcare/docs/how-tos/stackdriver-logging).
-   * (datasets.deidentify)
+   * details are also logged to Cloud Logging. For more information, see [Viewing
+   * logs](/healthcare/docs/how-tos/logging). (datasets.deidentify)
    *
    * @param string $sourceDataset Source dataset resource name. For example,
    * `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}`.
@@ -118,6 +117,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_CloudHealthcare_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -134,10 +137,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
    * listed. For example, `projects/{project_id}/locations/{location_id}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous List request, if any.
    * @opt_param int pageSize The maximum number of items to return. Capped to 100
    * if not specified. May not be larger than 1000.
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous List request, if any.
    * @return Google_Service_CloudHealthcare_ListDatasetsResponse
    */
   public function listProjectsLocationsDatasets($parent, $optParams = array())
@@ -149,7 +152,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
   /**
    * Updates dataset metadata. (datasets.patch)
    *
-   * @param string $name Output only. Resource name of the dataset, of the form
+   * @param string $name Resource name of the dataset, of the form
    * `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}`.
    * @param Google_Service_CloudHealthcare_Dataset $postBody
    * @param array $optParams Optional parameters.
@@ -169,7 +172,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (datasets.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -188,7 +191,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

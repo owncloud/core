@@ -17,9 +17,18 @@
 
 class Google_Service_Dns_PolicyAlternativeNameServerConfigTargetNameServer extends Google_Model
 {
+  public $forwardingPath;
   public $ipv4Address;
   public $kind;
 
+  public function setForwardingPath($forwardingPath)
+  {
+    $this->forwardingPath = $forwardingPath;
+  }
+  public function getForwardingPath()
+  {
+    return $this->forwardingPath;
+  }
   public function setIpv4Address($ipv4Address)
   {
     $this->ipv4Address = $ipv4Address;

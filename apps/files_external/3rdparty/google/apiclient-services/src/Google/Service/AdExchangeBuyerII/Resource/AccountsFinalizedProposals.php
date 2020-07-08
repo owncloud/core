@@ -34,6 +34,8 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsFinalizedProposals exten
    * @param string $accountId Account ID of the buyer.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filterSyntax Syntax the filter is written in. Current
+   * implementation defaults to PQL but in the future it will be LIST_FILTER.
    * @opt_param string filter An optional PQL filter query used to query for
    * proposals.
    *
@@ -44,8 +46,6 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsFinalizedProposals exten
    * @opt_param int pageSize Requested page size. The server may return fewer
    * results than requested. If unspecified, the server will pick an appropriate
    * default.
-   * @opt_param string filterSyntax Syntax the filter is written in. Current
-   * implementation defaults to PQL but in the future it will be LIST_FILTER.
    * @return Google_Service_AdExchangeBuyerII_ListProposalsResponse
    */
   public function listAccountsFinalizedProposals($accountId, $optParams = array())

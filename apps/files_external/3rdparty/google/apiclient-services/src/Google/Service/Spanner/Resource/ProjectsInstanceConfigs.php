@@ -49,11 +49,11 @@ class Google_Service_Spanner_Resource_ProjectsInstanceConfigs extends Google_Ser
    * `projects/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken If non-empty, `page_token` should contain a
-   * next_page_token from a previous ListInstanceConfigsResponse.
    * @opt_param int pageSize Number of instance configurations to be returned in
    * the response. If 0 or less, defaults to the server's maximum allowed page
    * size.
+   * @opt_param string pageToken If non-empty, `page_token` should contain a
+   * next_page_token from a previous ListInstanceConfigsResponse.
    * @return Google_Service_Spanner_ListInstanceConfigsResponse
    */
   public function listProjectsInstanceConfigs($parent, $optParams = array())

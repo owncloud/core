@@ -18,6 +18,7 @@
 namespace Google\Auth\Credentials;
 
 use Google\Auth\CredentialsLoader;
+use Google\Auth\GetQuotaProjectInterface;
 use Google\Auth\HttpHandler\HttpClientCache;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
 use Google\Auth\Iam;
@@ -55,9 +56,12 @@ use InvalidArgumentException;
  */
 class GCECredentials extends CredentialsLoader implements
     SignBlobInterface,
-    ProjectIdProviderInterface
+    ProjectIdProviderInterface,
+    GetQuotaProjectInterface
 {
+    // phpcs:disable
     const cacheKey = 'GOOGLE_AUTH_PHP_GCE';
+    // phpcs:enable
 
     /**
      * The metadata IP address on appengine instances.
@@ -150,18 +154,26 @@ class GCECredentials extends CredentialsLoader implements
     private $targetAudience;
 
     /**
+     * @var string|null
+     */
+    private $quotaProject;
+
+    /**
      * @param Iam $iam [optional] An IAM instance.
      * @param string|array $scope [optional] the scope of the access request,
      *        expressed either as an array or as a space-delimited string.
      * @param string $targetAudience [optional] The audience for the ID token.
+     * @param string $quotaProject [optional] Specifies a project to bill for access
+     *   charges associated with the request.
      */
-    public function __construct(Iam $iam = null, $scope = null, $targetAudience = null)
+    public function __construct(Iam $iam = null, $scope = null, $targetAudience = null, $quotaProject = null)
     {
         $this->iam = $iam;
 
         if ($scope && $targetAudience) {
             throw new InvalidArgumentException(
-                'Scope and targetAudience cannot both be supplied');
+                'Scope and targetAudience cannot both be supplied'
+            );
         }
 
         $tokenUri = self::getTokenUri();
@@ -174,7 +186,8 @@ class GCECredentials extends CredentialsLoader implements
 
             $tokenUri = $tokenUri . '?scopes='. $scope;
         } elseif ($targetAudience) {
-            $tokenUri = sprintf('http://%s/computeMetadata/%s?audience=%s',
+            $tokenUri = sprintf(
+                'http://%s/computeMetadata/%s?audience=%s',
                 self::METADATA_IP,
                 self::ID_TOKEN_URI_PATH,
                 $targetAudience
@@ -183,6 +196,7 @@ class GCECredentials extends CredentialsLoader implements
         }
 
         $this->tokenUri = $tokenUri;
+        $this->quotaProject = $quotaProject;
     }
 
     /**
@@ -225,7 +239,7 @@ class GCECredentials extends CredentialsLoader implements
      * Determines if this an App Engine Flexible instance, by accessing the
      * GAE_INSTANCE environment variable.
      *
-     * @return true if this an App Engine Flexible Instance, false otherwise
+     * @return bool true if this an App Engine Flexible Instance, false otherwise
      */
     public static function onAppEngineFlexible()
     {
@@ -455,5 +469,15 @@ class GCECredentials extends CredentialsLoader implements
         );
 
         return (string) $resp->getBody();
+    }
+
+    /**
+     * Get the quota project used for this API request
+     *
+     * @return string|null
+     */
+    public function getQuotaProject()
+    {
+        return $this->quotaProject;
     }
 }

@@ -23,15 +23,11 @@ class Google_Service_GamesManagement_Player extends Google_Model
   public $displayName;
   protected $experienceInfoType = 'Google_Service_GamesManagement_GamesPlayerExperienceInfoResource';
   protected $experienceInfoDataType = '';
-  public $friendStatus;
   public $kind;
-  protected $lastPlayedWithType = 'Google_Service_GamesManagement_GamesPlayedResource';
-  protected $lastPlayedWithDataType = '';
   protected $nameType = 'Google_Service_GamesManagement_PlayerName';
   protected $nameDataType = '';
   public $originalPlayerId;
   public $playerId;
-  public $playerStattus;
   protected $profileSettingsType = 'Google_Service_GamesManagement_ProfileSettings';
   protected $profileSettingsDataType = '';
   public $title;
@@ -82,14 +78,6 @@ class Google_Service_GamesManagement_Player extends Google_Model
   {
     return $this->experienceInfo;
   }
-  public function setFriendStatus($friendStatus)
-  {
-    $this->friendStatus = $friendStatus;
-  }
-  public function getFriendStatus()
-  {
-    return $this->friendStatus;
-  }
   public function setKind($kind)
   {
     $this->kind = $kind;
@@ -97,20 +85,6 @@ class Google_Service_GamesManagement_Player extends Google_Model
   public function getKind()
   {
     return $this->kind;
-  }
-  /**
-   * @param Google_Service_GamesManagement_GamesPlayedResource
-   */
-  public function setLastPlayedWith(Google_Service_GamesManagement_GamesPlayedResource $lastPlayedWith)
-  {
-    $this->lastPlayedWith = $lastPlayedWith;
-  }
-  /**
-   * @return Google_Service_GamesManagement_GamesPlayedResource
-   */
-  public function getLastPlayedWith()
-  {
-    return $this->lastPlayedWith;
   }
   /**
    * @param Google_Service_GamesManagement_PlayerName
@@ -141,14 +115,6 @@ class Google_Service_GamesManagement_Player extends Google_Model
   public function getPlayerId()
   {
     return $this->playerId;
-  }
-  public function setPlayerStattus($playerStattus)
-  {
-    $this->playerStattus = $playerStattus;
-  }
-  public function getPlayerStattus()
-  {
-    return $this->playerStattus;
   }
   /**
    * @param Google_Service_GamesManagement_ProfileSettings

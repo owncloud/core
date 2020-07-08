@@ -35,11 +35,11 @@ class Google_Service_Fitness_Resource_UsersDataSourcesDataPointChanges extends G
    * created the dataset.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int limit If specified, no more than this many data point changes
-   * will be included in the response.
    * @opt_param string pageToken The continuation token, which is used to page
    * through large result sets. To get the next page of results, set this
    * parameter to the value of nextPageToken from the previous response.
+   * @opt_param int limit If specified, no more than this many data point changes
+   * will be included in the response.
    * @return Google_Service_Fitness_ListDataPointChangesResponse
    */
   public function listUsersDataSourcesDataPointChanges($userId, $dataSourceId, $optParams = array())

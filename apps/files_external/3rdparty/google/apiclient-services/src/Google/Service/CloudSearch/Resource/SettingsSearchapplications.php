@@ -68,7 +68,7 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
    * (searchapplications.get)
    *
    * @param string $name Name of the search application. Format:
-   * applications/{application_id}.
+   * searchapplications/{application_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to

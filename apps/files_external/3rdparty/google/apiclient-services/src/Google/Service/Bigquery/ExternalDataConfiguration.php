@@ -22,11 +22,11 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   protected $bigtableOptionsType = 'Google_Service_Bigquery_BigtableOptions';
   protected $bigtableOptionsDataType = '';
   public $compression;
+  public $connectionId;
   protected $csvOptionsType = 'Google_Service_Bigquery_CsvOptions';
   protected $csvOptionsDataType = '';
   protected $googleSheetsOptionsType = 'Google_Service_Bigquery_GoogleSheetsOptions';
   protected $googleSheetsOptionsDataType = '';
-  public $hivePartitioningMode;
   protected $hivePartitioningOptionsType = 'Google_Service_Bigquery_HivePartitioningOptions';
   protected $hivePartitioningOptionsDataType = '';
   public $ignoreUnknownValues;
@@ -66,6 +66,14 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   {
     return $this->compression;
   }
+  public function setConnectionId($connectionId)
+  {
+    $this->connectionId = $connectionId;
+  }
+  public function getConnectionId()
+  {
+    return $this->connectionId;
+  }
   /**
    * @param Google_Service_Bigquery_CsvOptions
    */
@@ -93,14 +101,6 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   public function getGoogleSheetsOptions()
   {
     return $this->googleSheetsOptions;
-  }
-  public function setHivePartitioningMode($hivePartitioningMode)
-  {
-    $this->hivePartitioningMode = $hivePartitioningMode;
-  }
-  public function getHivePartitioningMode()
-  {
-    return $this->hivePartitioningMode;
   }
   /**
    * @param Google_Service_Bigquery_HivePartitioningOptions

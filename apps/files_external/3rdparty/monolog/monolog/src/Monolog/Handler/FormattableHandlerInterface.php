@@ -16,8 +16,6 @@ use Monolog\Formatter\FormatterInterface;
 /**
  * Interface to describe loggers that have a formatter
  *
- * This interface is present in monolog 1.x to ease forward compatibility.
- *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 interface FormattableHandlerInterface

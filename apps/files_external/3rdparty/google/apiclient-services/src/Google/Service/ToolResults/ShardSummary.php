@@ -15,11 +15,28 @@
  * the License.
  */
 
-class Google_Service_ToolResults_ShardSummary extends Google_Model
+class Google_Service_ToolResults_ShardSummary extends Google_Collection
 {
+  protected $collection_key = 'runs';
+  protected $runsType = 'Google_Service_ToolResults_StepSummary';
+  protected $runsDataType = 'array';
   protected $shardResultType = 'Google_Service_ToolResults_MergedResult';
   protected $shardResultDataType = '';
 
+  /**
+   * @param Google_Service_ToolResults_StepSummary
+   */
+  public function setRuns($runs)
+  {
+    $this->runs = $runs;
+  }
+  /**
+   * @return Google_Service_ToolResults_StepSummary
+   */
+  public function getRuns()
+  {
+    return $this->runs;
+  }
   /**
    * @param Google_Service_ToolResults_MergedResult
    */

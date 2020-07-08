@@ -26,7 +26,7 @@
 class Google_Service_Pubsub_Resource_ProjectsTopicsSubscriptions extends Google_Service_Resource
 {
   /**
-   * Lists the names of the subscriptions on this topic.
+   * Lists the names of the attached subscriptions on this topic.
    * (subscriptions.listProjectsTopicsSubscriptions)
    *
    * @param string $topic Required. The name of the topic that subscriptions are

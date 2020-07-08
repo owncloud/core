@@ -63,22 +63,6 @@ class Google_Service_Apigee_Resource_OrganizationsSharedflowsRevisions extends G
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleApiHttpBody");
   }
   /**
-   * Lists all revisions for a shared flow.
-   * (revisions.listOrganizationsSharedflowsRevisions)
-   *
-   * @param string $parent Required. The name of the parent API proxy under which
-   * to get API proxy revisions. Must be of the form:
-   * `organizations/{organization_id}/sharedflows/{shared_flow_id}`
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_ListResponse
-   */
-  public function listOrganizationsSharedflowsRevisions($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Apigee_ListResponse");
-  }
-  /**
    * Updates a shared flow revision. This operation is only allowed on revisions
    * which have never been deployed. After deployment a revision becomes
    * immutable, even if it becomes undeployed.

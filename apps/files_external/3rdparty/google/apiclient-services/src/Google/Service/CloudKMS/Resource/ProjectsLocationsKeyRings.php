@@ -74,6 +74,10 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRings extends Google_
    * Requests for policies with any conditional bindings must specify version 3.
    * Policies without any conditional bindings may specify any valid value or
    * leave the field unset.
+   *
+   * To learn which resources support conditions in their IAM policies, see the
+   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * policies).
    * @return Google_Service_CloudKMS_Policy
    */
   public function getIamPolicy($resource, $optParams = array())
@@ -92,16 +96,16 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRings extends Google_
    * @opt_param string filter Optional. Only include resources that match the
    * filter in the response. For more information, see [Sorting and filtering list
    * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
-   * @opt_param string pageToken Optional. Optional pagination token, returned
-   * earlier via ListKeyRingsResponse.next_page_token.
-   * @opt_param string orderBy Optional. Specify how the results should be sorted.
-   * If not specified, the results will be sorted in the default order.  For more
-   * information, see [Sorting and filtering list
-   * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
    * @opt_param int pageSize Optional. Optional limit on the number of KeyRings to
    * include in the response.  Further KeyRings can subsequently be obtained by
    * including the ListKeyRingsResponse.next_page_token in a subsequent request.
    * If unspecified, the server will pick an appropriate default.
+   * @opt_param string orderBy Optional. Specify how the results should be sorted.
+   * If not specified, the results will be sorted in the default order.  For more
+   * information, see [Sorting and filtering list
+   * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+   * @opt_param string pageToken Optional. Optional pagination token, returned
+   * earlier via ListKeyRingsResponse.next_page_token.
    * @return Google_Service_CloudKMS_ListKeyRingsResponse
    */
   public function listProjectsLocationsKeyRings($parent, $optParams = array())
@@ -114,7 +118,7 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRings extends Google_
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.
    *
-   * Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED
+   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
    * (keyRings.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -133,7 +137,7 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRings extends Google_
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * NOT_FOUND error.
+   * `NOT_FOUND` error.
    *
    * Note: This operation is designed to be used for building permission-aware UIs
    * and command-line tools, not for authorization checking. This operation may

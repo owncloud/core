@@ -28,10 +28,8 @@ class Google_Service_AndroidEnterprise_Resource_Products extends Google_Service_
   /**
    * Approves the specified product and the relevant app permissions, if any. The
    * maximum number of products that you can approve per enterprise customer is
-   * 1,000.
-   *
-   * To learn how to use managed Google Play to design and create a store layout
-   * to display approved products to your users, see Store Layout Design.
+   * 1,000. To learn how to use managed Google Play to design and create a store
+   * layout to display approved products to your users, see Store Layout Design.
    * (products.approve)
    *
    * @param string $enterpriseId The ID of the enterprise.
@@ -49,7 +47,6 @@ class Google_Service_AndroidEnterprise_Resource_Products extends Google_Service_
    * Generates a URL that can be rendered in an iframe to display the permissions
    * (if any) of a product. An enterprise admin must view these permissions and
    * accept them on behalf of their organization in order to approve that product.
-   *
    * Admins should accept the displayed permissions by interacting with a separate
    * UI element in the EMM console, which in turn should trigger the use of this
    * URL as the approvalUrlInfo.approvalUrl property in a Products.approve call to
@@ -133,23 +130,20 @@ class Google_Service_AndroidEnterprise_Resource_Products extends Google_Service_
    * @param string $enterpriseId The ID of the enterprise.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool approved Specifies whether to search among all products
-   * (false) or among only products that have been approved (true). Only "true" is
-   * supported, and should be specified.
+   * @opt_param string token Defines the token of the page to return, usually
+   * taken from TokenPagination. This can only be used if token paging is enabled.
    * @opt_param string language The BCP47 tag for the user's preferred language
    * (e.g. "en-US", "de"). Results are returned in the language best matching the
    * preferred language.
-   * @opt_param string maxResults Specifies the maximum number of products that
-   * can be returned per request. If not specified, uses a default value of 100,
-   * which is also the maximum retrievable within a single response.
+   * @opt_param bool approved Specifies whether to search among all products
+   * (false) or among only products that have been approved (true). Only "true" is
+   * supported, and should be specified.
    * @opt_param string query The search query as typed in the Google Play store
    * search box. If omitted, all approved apps will be returned (using the
    * pagination parameters), including apps that are not available in the store
    * (e.g. unpublished apps).
-   * @opt_param string token A pagination token is contained in a request's
-   * response when there are more products. The token can be used in a subsequent
-   * request to obtain more products, and so forth. This parameter cannot be used
-   * in the initial request.
+   * @opt_param string maxResults Defines how many results the list operation
+   * should return. The default number depends on the resource collection.
    * @return Google_Service_AndroidEnterprise_ProductsListResponse
    */
   public function listProducts($enterpriseId, $optParams = array())

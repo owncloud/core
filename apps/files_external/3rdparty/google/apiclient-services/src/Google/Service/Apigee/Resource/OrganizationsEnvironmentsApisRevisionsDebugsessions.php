@@ -65,6 +65,21 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisionsDebug
     return $this->call('deleteData', array($params), "Google_Service_Apigee_GoogleProtobufEmpty");
   }
   /**
+   * Retrieves a debug session. (debugsessions.get)
+   *
+   * @param string $name Required. The name of the debug session to retrieve. Must
+   * be of the form:  `organizations/{organization}/environments/{environment}/api
+   * s/{api}/revisions/{revision}/debugsessions/{session}`.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1DebugSession
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1DebugSession");
+  }
+  /**
    * Lists debug sessions that are currently active in the given API Proxy
    * revision.
    * (debugsessions.listOrganizationsEnvironmentsApisRevisionsDebugsessions)
@@ -73,6 +88,11 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisionsDebug
    * for which to list debug sessions. Must be of the form:  `organizations/{organ
    * ization}/environments/{environment}/apis/{api}/revisions/{revision}`.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize Maximum number of debug sessions to return. The page
+   * size defaults to 25.
+   * @opt_param string pageToken Page token, returned from a previous
+   * ListDebugSessions call, that you can use to retrieve the next page.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListDebugSessionsResponse
    */
   public function listOrganizationsEnvironmentsApisRevisionsDebugsessions($parent, $optParams = array())

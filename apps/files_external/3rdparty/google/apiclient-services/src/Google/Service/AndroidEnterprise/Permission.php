@@ -18,7 +18,6 @@
 class Google_Service_AndroidEnterprise_Permission extends Google_Model
 {
   public $description;
-  public $kind;
   public $name;
   public $permissionId;
 
@@ -29,14 +28,6 @@ class Google_Service_AndroidEnterprise_Permission extends Google_Model
   public function getDescription()
   {
     return $this->description;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
   }
   public function setName($name)
   {

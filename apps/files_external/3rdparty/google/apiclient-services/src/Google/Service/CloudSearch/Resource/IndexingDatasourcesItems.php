@@ -237,7 +237,7 @@ class Google_Service_CloudSearch_Resource_IndexingDatasourcesItems extends Googl
    * used is the one whitelisted in the corresponding data source. (items.upload)
    *
    * @param string $name Name of the Item to start a resumable upload. Format:
-   * datasources/{source_id}/items/{item_id}.
+   * datasources/{source_id}/items/{item_id}. The maximum length is 1536 bytes.
    * @param Google_Service_CloudSearch_StartUploadItemRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudSearch_UploadItemRef
