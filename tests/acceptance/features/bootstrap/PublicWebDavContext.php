@@ -719,6 +719,37 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $path
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPasswordAndEOL(
+		$path, $publicWebDAVAPIVersion, $password, $content
+	) {
+		if ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+			$path, $password, $publicWebDAVAPIVersion
+		);
+
+		$this->featureContext->downloadedContentShouldBePlusEndOfLine($content);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)"$/
 	 *
 	 * @param string $path
