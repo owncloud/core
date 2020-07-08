@@ -324,6 +324,8 @@ Feature: Restore deleted files/folders
       | new      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
       | old      | strängé नेपाली file     |
       | new      | strängé नेपाली file     |
+      | old      | sample,1.txt            |
+      | new      | sample,1.txt            |
 
   Scenario Outline: A file deleted from a multi level sub-folder can be restored to the original folder
     Given using <dav-path> DAV path

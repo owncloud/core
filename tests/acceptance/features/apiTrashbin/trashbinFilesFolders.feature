@@ -276,3 +276,14 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      | 123      |
       | new      | -123     |
       | new      | 0.0      |
+
+  Scenario Outline: deleting a file with comma in the filename moves it to trashbin
+    Given using <dav-path> DAV path
+    And user "Alice" has uploaded file with content "file with comma in filename" to "sample,1.txt"
+    When user "Alice" deletes file "sample,1.txt" using the WebDAV API
+    Then as "Alice" file "sample,1.txt" should exist in the trashbin
+    But as "Alice" file "sample,1.txt" should not exist
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |

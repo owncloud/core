@@ -13,16 +13,23 @@ Feature: deleting files and folders
 
   @smokeTest @skipOnLDAP
   Scenario: Delete files & folders one by one and check its existence after page reload
+    Given user "Alice" has uploaded file with content "file with comma" to "s,a,m,p,l,e.txt"
+    And user "Alice" has created folder "folder,with,comma"
+    And the user has browsed to the files page
     When the user deletes the following elements using the webUI
       | name                                  |
       | simple-folder                         |
       | lorem.txt                             |
       | strängé नेपाली folder                 |
       | strängé filename (duplicate #2 &).txt |
+      | s,a,m,p,l,e.txt                       |
+      | folder,with,comma                     |
     Then as "Alice" folder "simple-folder" should not exist
     And as "Alice" file "lorem.txt" should not exist
     And as "Alice" folder "strängé नेपाली folder" should not exist
     And as "Alice" file "strängé filename (duplicate #2 &).txt" should not exist
+    And as "Alice" file "s,a,m,p,l,e.txt" should not exist
+    And as "Alice" folder "folder,with,comma " should not exist
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 

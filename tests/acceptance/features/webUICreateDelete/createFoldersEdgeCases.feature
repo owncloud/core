@@ -21,6 +21,7 @@ Feature: create folder
       | "'somequotes2'"          |
       | "^#29][29@({"            |
       | "+-{$(882)"              |
+      | "s,a,m,p,l,e-folder"|
 
   Scenario Outline: Create a sub-folder inside a folder with problematic name
 	# First try and create a folder with problematic name
@@ -33,9 +34,10 @@ Feature: create folder
     When the user reloads the current page of the webUI
     Then folder "sub-folder" should be listed on the webUI
     Examples:
-      | folder    |
-      | "?&%0"    |
-      | "^#2929@" |
+      | folder             |
+      | "?&%0"             |
+      | "^#2929@"            |
+      | "s,a,m,p,l,e-folder" |
 
   @smokeTest @skipOnLDAP
   Scenario Outline: Create a sub-folder inside an existing folder with problematic name
@@ -51,3 +53,4 @@ Feature: create folder
       | "0"                     |
       | "'single'quotes"        |
       | "strängé नेपाली folder" |
+      | "s,a,m,p,l,e-folder"    |

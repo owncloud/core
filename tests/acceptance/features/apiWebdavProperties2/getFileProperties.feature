@@ -22,6 +22,8 @@ Feature: get file properties
       | new         | /upload.txt       |
       | new         | /strängé file.txt |
       | new         | /नेपाली.txt       |
+      | old         | s,a,m,p,l,e.txt   |
+      | new         | s,a,m,p,l,e.txt   |
 
   @skipOnOcis @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various file names

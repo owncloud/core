@@ -54,3 +54,18 @@ Feature: delete file
       | new         | /...          | ...         |
       | new         | /..upload     | abc         |
       | new         | /..upload     | ..abc       |
+
+  Scenario Outline: delete a file with comma in the filename
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "file with comma in filename" to <filename>
+    When user "Alice" deletes file <filename> using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" file <filename> should not exist
+    Examples:
+      | dav_version | filename       |
+      | old         | "sample,1.txt" |
+      | old         | ",,,.txt"      |
+      | old         | ",,,.,"        |
+      | new         | "sample,1.txt" |
+      | new         | ",,,.txt"      |
+      | new         | ",,,.,"        |
