@@ -17,6 +17,7 @@ Summary
 * Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
 * Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
 * Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
+* Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
 
 Details
 -------
@@ -83,6 +84,10 @@ Details
 * Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
 
    https://github.com/owncloud/core/pull/37665
+
+* Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
+
+   https://github.com/owncloud/core/pull/37670
 
 Changelog for ownCloud Core [10.5.0] (2020-06-23)
 =======================================
