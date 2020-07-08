@@ -3,13 +3,98 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.4.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.5.0...master
+
+Summary
+-------
+
+* Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
+* Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
+* Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
+* Change - Update icewind/smb from 3.2.3 to 3.2.4 and files_external dependencies: [#37415](https://github.com/owncloud/core/pull/37415)
+* Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
+* Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
+* Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
+* Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
+* Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
+
+Details
+-------
+
+* Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
+
+   We implemented the recommended workaround for htmlPrefilter. See
+   https://github.com/advisories/GHSA-gxr4-xjj5-5px2
+
+   https://github.com/owncloud/core/issues/37598
+   https://github.com/owncloud/core/pull/37596
+
+* Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
+
+   Adds exception handling while collecting shares in files:transfer-ownership.
+   Additionally, new option "accept-skipped-shares" has been added to automatically confirm
+   to skip shares that cannot be transferred.
+
+   https://github.com/owncloud/enterprise/issues/4023
+   https://github.com/owncloud/core/pull/37568
+
+* Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
+
+   Public files WebDAV API has been fixed to return HTTP status code 404 for upload attempt to
+   non-existing public folders.
+
+   https://github.com/owncloud/core/issues/36055
+   https://github.com/owncloud/core/pull/37625
+
+* Change - Update icewind/smb from 3.2.3 to 3.2.4 and files_external dependencies: [#37415](https://github.com/owncloud/core/pull/37415)
+
+   This change updates the 3rd-party dependencies of files_external: - Remove
+   guzzlehttp/promises (v1.3.1) - Update icewind/smb (v3.2.3 => v3.2.4) - Update
+   google/apiclient-services (v0.130 => v0.136) - Update react/promise (v2.7.1 => v2.8.0) -
+   Update google/auth (v1.8.0 => v1.9.0) - Update monolog/monolog (1.25.3 => 2.0.2)
+
+   https://github.com/owncloud/core/pull/37415
+
+* Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
+
+   The use of "login" vs "log in" has been adjusted.
+
+   https://github.com/owncloud/core/issues/37603
+   https://github.com/owncloud/core/pull/37604
+
+* Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
+
+   CI color was changed system wide and a new background image for the login screen was added. This
+   will adapt ownCloud to the new style guide.
+
+   https://github.com/owncloud/core/pull/37650
+
+* Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
+
+   https://github.com/owncloud/core/pull/37651
+
+* Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
+
+   The following Symfony components have been updated to version 1.1.9: -
+   event-dispatcher-contracts - service-contracts - event-dispatcher-contracts
+
+   https://github.com/owncloud/core/pull/37658
+
+* Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
+
+   https://github.com/owncloud/core/pull/37665
+
+Changelog for ownCloud Core [10.5.0] (2020-06-23)
+=======================================
+The following sections list the changes in ownCloud core 10.5.0 relevant to
+ownCloud admins and users.
+
+[10.5.0]: https://github.com/owncloud/core/compare/v10.4.1...v10.5.0
 
 Summary
 -------
 
 * Security - Add new system config to enforce strict login check with user backend: [#37569](https://github.com/owncloud/core/pull/37569)
-* Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
 * Bugfix - Correct files_external:export output so it can be imported: [#37054](https://github.com/owncloud/core/issues/37054)
 * Bugfix - Add force option to delete user even if the user doesn't exist: [#37103](https://github.com/owncloud/core/pull/37103)
 * Bugfix - List data for pending federated share via OCS API correctly: [#34636](https://github.com/owncloud/core/issues/34636)
@@ -34,8 +119,6 @@ Summary
 * Bugfix - Do not notify remote if both owner and sharer are local users: [#37534](https://github.com/owncloud/core/pull/37534)
 * Bugfix - Use relative path in shared_with_email activity: [#37555](https://github.com/owncloud/core/pull/37555)
 * Bugfix - Show error message at Settings Personal CORS: [#37560](https://github.com/owncloud/core/pull/37560)
-* Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
-* Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 * Change - Support PHP 7.4: [#36509](https://github.com/owncloud/core/issues/36509)
 * Change - Drop PHP 7.1 support across the platform: [#36510](https://github.com/owncloud/core/issues/36510)
@@ -72,11 +155,6 @@ Summary
 * Change - Update opis/closure (3.5.4 => 3.5.5): [#37547](https://github.com/owncloud/core/pull/37547)
 * Change - Share sheet improvements (external sharing): [#37558](https://github.com/owncloud/core/pull/37558)
 * Change - Update symfony/polyfill (1.17.0 => 1.17.1): [#37385](https://github.com/owncloud/core/pull/37385)
-* Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
-* Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
-* Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
-* Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
-* Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -93,14 +171,6 @@ Details
 
    https://github.com/owncloud/core/pull/37569
    https://github.com/owncloud/user_ldap/pull/581
-
-* Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
-
-   We implemented the recommended workaround for htmlPrefilter. See
-   https://github.com/advisories/GHSA-gxr4-xjj5-5px2
-
-   https://github.com/owncloud/core/issues/37598
-   https://github.com/owncloud/core/pull/37596
 
 * Bugfix - Correct files_external:export output so it can be imported: [#37054](https://github.com/owncloud/core/issues/37054)
 
@@ -305,23 +375,6 @@ Details
    message added.
 
    https://github.com/owncloud/core/pull/37560
-
-* Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
-
-   Adds exception handling while collecting shares in files:transfer-ownership.
-   Additionally, new option "accept-skipped-shares" has been added to automatically confirm
-   to skip shares that cannot be transferred.
-
-   https://github.com/owncloud/enterprise/issues/4023
-   https://github.com/owncloud/core/pull/37568
-
-* Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
-
-   Public files WebDAV API has been fixed to return HTTP status code 404 for upload attempt to
-   non-existing public folders.
-
-   https://github.com/owncloud/core/issues/36055
-   https://github.com/owncloud/core/pull/37625
 
 * Change - Disallow various special usernames: [#32547](https://github.com/owncloud/core/issues/32547)
 
@@ -551,35 +604,6 @@ Details
    symfony/polyfill-mbstring symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/37385
-
-* Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
-
-   The use of "login" vs "log in" has been adjusted.
-
-   https://github.com/owncloud/core/issues/37603
-   https://github.com/owncloud/core/pull/37604
-
-* Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
-
-   CI color was changed system wide and a new background image for the login screen was added. This
-   will adapt ownCloud to the new style guide.
-
-   https://github.com/owncloud/core/pull/37650
-
-* Change - Update nikic/php-parser (4.5.0 => 4.6.0): [#37651](https://github.com/owncloud/core/pull/37651)
-
-   https://github.com/owncloud/core/pull/37651
-
-* Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
-
-   The following Symfony components have been updated to version 1.1.9: -
-   event-dispatcher-contracts - service-contracts - event-dispatcher-contracts
-
-   https://github.com/owncloud/core/pull/37658
-
-* Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
-
-   https://github.com/owncloud/core/pull/37665
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
