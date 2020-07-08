@@ -95,7 +95,7 @@
     "Set an admin password." : "Setze Administrator Passwort",
     "Can't create or write into the data directory %s" : "Das Datenverzeichnis %s kann nicht erstellt oder es kann darin nicht geschrieben werden.",
     "Can't create or write into the apps-external directory %s" : "Das \"apps-extern\"-Verzeichnis %s kann nicht erstellt oder es kann darin nicht geschrieben werden.",
-    "Can't update %s - it is a directory" : "%s kann nicht upgedated werden da es ein Ordner ist",
+    "Can't update %s - it is a directory" : "%s ist ein Ordner und kann deshalb nicht aktualisiert werden. ",
     "Can't update %s" : "%s kann nicht aktualisiert werden",
     "Invalid Federated Cloud ID" : "Ungültige Federated-Cloud-ID",
     "Internal mail notification for shared files is not allowed" : "Interne E-Mail Benachrichtigung für geteilte Dateien ist nicht erlaubt",
