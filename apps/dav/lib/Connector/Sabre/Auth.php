@@ -29,15 +29,16 @@
  */
 namespace OCA\DAV\Connector\Sabre;
 
-use Exception;
 use OC\AppFramework\Http\Request;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\TwoFactorAuth\Manager;
 use OC\Authentication\AccountModule\Manager as AccountModuleManager;
+use OC\Security\SignedUrl\Verifier;
 use OC\User\LoginException;
 use OC\User\Session;
 use OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden;
 use OCP\Authentication\Exceptions\AccountCheckException;
+use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
@@ -47,7 +48,7 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class Auth extends AbstractBasic {
-	const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
+	public const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
 
 	/** @var ISession */
 	private $session;
@@ -55,12 +56,14 @@ class Auth extends AbstractBasic {
 	private $userSession;
 	/** @var IRequest */
 	private $request;
-	/** @var string */
-	private $currentUser;
 	/** @var Manager */
 	private $twoFactorManager;
 	/** @var AccountModuleManager */
 	private $accountModuleManager;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
 	/**
 	 * @param ISession $session
@@ -68,6 +71,7 @@ class Auth extends AbstractBasic {
 	 * @param IRequest $request
 	 * @param Manager $twoFactorManager
 	 * @param AccountModuleManager $accountModuleManager
+	 * @param IConfig $config
 	 * @param string $principalPrefix
 	 */
 	public function __construct(ISession $session,
@@ -75,6 +79,7 @@ class Auth extends AbstractBasic {
 								IRequest $request,
 								Manager $twoFactorManager,
 								AccountModuleManager $accountModuleManager,
+								IConfig $config,
 								$principalPrefix = 'principals/users/') {
 		$this->session = $session;
 		$this->userSession = $userSession;
@@ -86,6 +91,7 @@ class Auth extends AbstractBasic {
 		// setup realm
 		$defaults = new \OC_Defaults();
 		$this->realm = $defaults->getName();
+		$this->config = $config;
 	}
 
 	/**
@@ -158,7 +164,7 @@ class Auth extends AbstractBasic {
 			throw new NotAuthenticated($e->getMessage(), $e->getCode(), $e);
 		} catch (NotAuthenticated $e) {
 			throw $e;
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$class = \get_class($e);
 			$msg = $e->getMessage();
 			throw new ServiceUnavailable("$class: $msg");
@@ -205,6 +211,7 @@ class Auth extends AbstractBasic {
 	 * @return array
 	 * @throws NotAuthenticated
 	 * @throws ServiceUnavailable
+	 * @throws LoginException
 	 */
 	private function auth(RequestInterface $request, ResponseInterface $response) {
 		$forcedLogout = false;
@@ -230,7 +237,6 @@ class Auth extends AbstractBasic {
 				$this->checkAccountModule($user);
 				$uid = $user->getUID();
 				\OC_Util::setupFS($uid);
-				$this->currentUser = $uid;
 				$this->session->close();
 				return [true, $this->principalPrefix . $uid];
 			}
@@ -246,6 +252,29 @@ class Auth extends AbstractBasic {
 			$startPos = \strrpos($data[1], '/') + 1;
 			$data[1] = \substr_replace($data[1], $user->getUID(), $startPos);
 		}
+
+		// signed url handling
+		$verifier = new Verifier($request, $this->config);
+		if ($verifier->isSignedRequest()) {
+			if (!$verifier->signedRequestIsValid()) {
+				return [false, 'Invalid url signature'];
+			}
+			// TODO: setup session ???
+			$urlCredential = $verifier->getUrlCredential();
+			$user = \OC::$server->getUserManager()->get($urlCredential);
+			if ($user === null) {
+				$message = \OC::$server->getL10N('dav')->t('User unknown');
+				throw new LoginException($message);
+			}
+			if (!$user->isEnabled()) {
+				$message = \OC::$server->getL10N('dav')->t('User disabled');
+				throw new LoginException($message);
+			}
+			$this->userSession->setUser($user);
+			\OC_Util::setupFS($urlCredential);
+			$this->session->close();
+			return [true, $this->principalPrefix . $urlCredential];
+		}
 		return $data;
 	}
 
@@ -253,7 +282,7 @@ class Auth extends AbstractBasic {
 	 * @param $user
 	 * @throws ServiceUnavailable
 	 */
-	private function checkAccountModule($user) {
+	private function checkAccountModule($user): void {
 		if ($user === null) {
 			throw new \UnexpectedValueException('No user in session');
 		}
@@ -264,7 +293,7 @@ class Auth extends AbstractBasic {
 		}
 	}
 
-	public function challenge(RequestInterface $request, ResponseInterface $response) {
+	public function challenge(RequestInterface $request, ResponseInterface $response): void {
 		$schema = 'Basic';
 		// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
 		if (\in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')), true)) {

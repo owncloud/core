@@ -59,6 +59,7 @@ $application->registerRoutes($this, [
 	'ocs' => [
 		['root' => '/cloud', 'name' => 'Cloud#getCapabilities', 'url' => '/capabilities', 'verb' => 'GET'],
 		['root' => '/cloud', 'name' => 'Cloud#getCurrentUser', 'url' => '/user', 'verb' => 'GET'],
+		['root' => '/cloud', 'name' => 'Cloud#getSigningKey', 'url' => '/user/signing-key', 'verb' => 'GET'],
 		['root' => '/cloud', 'name' => 'Roles#getRoles', 'url' => '/roles', 'verb' => 'GET'],
 		['root' => '/cloud', 'name' => 'UserSync#syncUser', 'url' => '/user-sync/{userId}', 'verb' => 'POST'],
 	]
