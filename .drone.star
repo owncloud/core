@@ -89,7 +89,6 @@ config = {
 				'apiProvisioning-v2',
 				'apiProvisioningGroups-v1',
 				'apiProvisioningGroups-v2',
-				'apiShareCreateSpecial1',
 				'apiShareCreateSpecial2',
 				'apiSharees',
 				'apiShareManagement',
@@ -120,6 +119,7 @@ config = {
 		'apiWithOcsApiV1': {
 			'suites': {
 				'apiProvisioning': 'apiProvOcsApiV1',
+				'apiShareCreateSpecial1': 'apiShCrSp1OcsApiV1',
 			},
 			'extraEnvironment': {
 				'OCS_API_VERSION': '1',
@@ -128,6 +128,7 @@ config = {
 		'apiWithOcsApiV2': {
 			'suites': {
 				'apiProvisioning': 'apiProvOcsApiV2',
+				'apiShareCreateSpecial1': 'apiShCrSp1OcsApiV2',
 			},
 			'extraEnvironment': {
 				'OCS_API_VERSION': '2',

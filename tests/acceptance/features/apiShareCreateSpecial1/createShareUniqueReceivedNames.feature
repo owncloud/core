@@ -2,7 +2,7 @@
 Feature: resources shared with the same name are received with unique names
 
   Background:
-    Given using OCS API version "1"
+    Given using the OCS API version defined externally
     And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
