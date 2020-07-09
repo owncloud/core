@@ -3060,6 +3060,9 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws \Exception
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope) {
+		if (OcisHelper::isTestingOnOcis()) {
+			return;
+		}
 		$fullUrl = \getenv('TEST_SERVER_URL');
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
