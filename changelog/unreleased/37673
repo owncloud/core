@@ -1,0 +1,6 @@
+Enhancement: Add capability for the favorite files feature
+
+The server is now exposing a new capability to advertise that the server supports the favorite files feature.
+
+https://github.com/owncloud/core/pull/37673
+https://github.com/owncloud/ocis-reva/issues/354
