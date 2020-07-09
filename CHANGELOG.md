@@ -18,6 +18,7 @@ Summary
 * Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
 * Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
 * Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
+* Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
 -------
@@ -88,6 +89,14 @@ Details
 * Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
 
    https://github.com/owncloud/core/pull/37670
+
+* Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
+
+   The server is now exposing a new capability to advertise that the server supports the favorite
+   files feature.
+
+   https://github.com/owncloud/ocis-reva/issues/354
+   https://github.com/owncloud/core/pull/37673
 
 Changelog for ownCloud Core [10.5.0] (2020-06-23)
 =======================================
