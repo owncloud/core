@@ -47,5 +47,6 @@ class CapabilitiesTest extends TestCase {
 		$this->assertArrayHasKey('files', $result);
 		$this->assertArrayHasKey('privateLinksDetailsParam', $result['files']);
 		$this->assertTrue($result['files']['privateLinksDetailsParam']);
+		$this->assertTrue($result['files']['favorites']);
 	}
 }
