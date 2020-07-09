@@ -1263,8 +1263,15 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return bool
 	 */
 	public function isAPublicLinkUrl($url) {
+		if (\substr($url, 0, 4) !== "http") {
+			return false;
+		}
 		$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
-		return \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+		if (OcisHelper::isTestingOnOcis()) {
+			return \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+		} else {
+			return \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+		}
 	}
 
 	/**
