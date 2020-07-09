@@ -1,7 +1,7 @@
-@api @files_sharing-app-required @skipOnOcis @issue-ocis-reva-21 @issue-ocis-reva-243
+@api @files_sharing-app-required @toFixOnOCIS @issue-ocis-reva-243
 Feature: sharing
 
-  @issue-ocis-reva-249
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194
   Scenario Outline: Delete all group shares
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -21,7 +21,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-249
+  @smokeTest @skipOnOcis @toFixOnOCIS @issue-ocis-reva-356
   Scenario Outline: delete a share
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
@@ -36,13 +36,27 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcV10 @smokeTest @toFixOnOCIS @issue-ocis-reva-356
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario Outline: delete a share
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    When user "Alice" deletes the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
   Scenario: orphaned shares
     Given using OCS API version "1"
     And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
-    And a new browser session for "Alice" has been started
     And user "Alice" has created folder "/common"
     And user "Alice" has created folder "/common/sub"
     And user "Alice" has shared folder "/common/sub" with user "Brian"
@@ -50,7 +64,7 @@ Feature: sharing
     Then the HTTP status code should be "204"
     And as "Brian" folder "/sub" should not exist
 
-  @smokeTest @files_trashbin-app-required
+  @smokeTest @files_trashbin-app-required @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -65,7 +79,7 @@ Feature: sharing
     And as "Alice" file "/shared_file.txt" should exist in the trashbin
     And as "Brian" file "/shared_file.txt" should exist in the trashbin
 
-  @files_trashbin-app-required
+  @files_trashbin-app-required @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -83,7 +97,7 @@ Feature: sharing
     And as "Brian" folder "/sub" should exist in the trashbin
     And as "Brian" file "/sub/shared_file.txt" should exist in the trashbin
 
-  @smokeTest
+  @smokeTest @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194
   Scenario: unshare from self
     And group "grp1" has been created
     And these users have been created with default attributes and without skeleton files:
@@ -101,6 +115,7 @@ Feature: sharing
     And the etag of element "/" of user "Brian" should have changed
     And the etag of element "/PARENT" of user "Carol" should not have changed
 
+  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -112,6 +127,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "Brian" file "/shared/shared_file.txt" should exist
 
+  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -123,6 +139,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/shared_file.txt" should exist
 
+  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
     And these users have been created with default attributes and without skeleton files:
@@ -136,6 +153,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/textfile.txt" should exist
 
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194
   Scenario Outline: A Group share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -160,6 +178,7 @@ Feature: sharing
       | /PARENT            | 1               | 200              | PARENT         |
       | /PARENT            | 2               | 404              | PARENT         |
 
+  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243 @issue-ocis-reva-364
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has been created with default attributes and skeleton files

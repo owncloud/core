@@ -112,7 +112,7 @@ Feature: sharing
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
 
-  @skipOnFilesClassifier @issue-files-classifier-291 @skipOnOcis @issue-ocis-reva-249 @issue-ocis-reva-243
+  @skipOnFilesClassifier @issue-files-classifier-291 @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: Share ownership change after moving a shared file outside of an outer share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -142,7 +142,7 @@ Feature: sharing
     And as "Alice" folder "/folder1/folder2" should not exist
     And as "Carol" folder "/folder2" should exist
 
-  @skipOnOcis @issue-ocis-reva-243 @issue-ocis-reva-249
+  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
   Scenario: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -172,8 +172,8 @@ Feature: sharing
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
 
-  @skipOnOcV10 @skipOnOcis-EOS-Storage @issue-ocis-reva-249
-  Scenario: cannot get information of a specific share
+  @skipOnOcV10 @skipOnOcis-EOS-Storage @toFixOnOCIS @issue-ocis-reva-243
+  Scenario: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -209,9 +209,9 @@ Feature: sharing
     And as "Alice" folder "/Alice-folder/folder2" should exist
     And as "Carol" folder "/Carol-folder/folder2" should not exist
 
-  @skipOnOcV10 @skipOnOcis-OC-Storage @issue-ocis-reva-249
+  @skipOnOcV10 @skipOnOcis-OC-Storage @toFixOnOCIS @issue-ocis-reva-243
   #same as previous Scenario but without displayname_owner because EOS does not report it
-  Scenario: cannot get information of a specific share
+  Scenario: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -369,7 +369,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcis @issue-ocis-reva-194 @issue-ocis-reva-243 @issue-ocis-reva-249
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: Editing share permission of existing share is forbidden when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -394,7 +394,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @skipOnOcis @issue-ocis-reva-194 @issue-ocis-reva-243 @issue-ocis-reva-249
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: Deleting group share is allowed when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -410,7 +410,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-243 @issue-ocis-reva-249
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: user can update the role in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -438,7 +438,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-37217 @skipOnOcis @issue-ocis-reva-243 @issue-ocis-reva-249
+  @issue-37217 @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: user cannot concurrently update the role and date in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
