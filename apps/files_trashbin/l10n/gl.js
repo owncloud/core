@@ -6,7 +6,7 @@ OC.L10N.register(
     "Deleted files" : "Ficheiros eliminados",
     "Restore" : "Restabelecer",
     "Delete" : "Eliminar",
-    "Delete permanently" : "Eliminar permanentemente",
+    "Delete permanently" : "Eliminar de xeito permanente",
     "Error" : "Erro",
     "This operation is forbidden" : "Esta operación está prohibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "Este directorio non está dispoñíbel, comprobe os rexistros ou póñase en contacto co administrador",

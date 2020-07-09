@@ -8,7 +8,7 @@ OC.L10N.register(
     "Edit comment" : "แก้ไขความคิดเห็น",
     "[Deleted user]" : "[ผู้ใช้ถูกลบไปแล้ว]",
     "Comments" : "ความคิดเห็น",
-    "No other comments available" : "ยังไม่มีความคิดเห็นอื่นๆ",
+    "No other comments available" : "ยังไม่มีความคิดเห็นใดๆ",
     "More comments..." : "ความคิดเห็นอื่นๆ ...",
     "Save" : "บันทึก",
     "Allowed characters {count} of {max}" : "อนุญาตให้ใช้ {count} จากทั้งหมด {max} ตัวอักษร",
