@@ -1110,7 +1110,17 @@ def phptests(testType):
 	default = {
 		'phpVersions': ['7.2', '7.3', '7.4'],
 		'databases': [
-			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mariadb:10.4', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
+			'sqlite',
+			'mariadb:10.2',
+			'mariadb:10.3',
+			'mariadb:10.4',
+			'mariadb:10.5',
+			'mysql:5.5',
+			'mysql:5.7',
+			'mysql:8.0',
+			'postgres:9.4',
+			'postgres:10.3',
+			'oracle'
 		],
 		'coverage': True,
 		'includeKeyInMatrixName': False,
