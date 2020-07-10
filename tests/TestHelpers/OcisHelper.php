@@ -43,6 +43,13 @@ class OcisHelper {
 	/**
 	 * @return bool
 	 */
+	public static function isTestingOnReva() {
+		return (\getenv("TEST_REVA") === "true");
+	}
+
+	/**
+	 * @return bool
+	 */
 	public static function getDeleteUserDataCommand() {
 		return (\getenv("DELETE_USER_DATA_CMD"));
 	}
