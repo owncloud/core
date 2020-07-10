@@ -87,10 +87,11 @@ Feature: create folder using MKCOL
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"
-    When the user "Alice" requests these endpoints with "MKCOL" using the basic auth and generated app password then the status codes about user "Alice" should be as listed
-      | endpoint                                       | http-code |
-      | /remote.php/webdav/newCol                      | 201       |
-      | /remote.php/dav/files/%username%/newCol1       | 201       |
-      | /remote.php/dav/files/%username%/PARENT/newCol | 201       |
-      | /remote.php/webdav/COL                         | 201       |
-      | /remote.php/dav/files/%username%/FOLDER/newCol | 201       |
+    When the user "Alice" requests these endpoints with "MKCOL" using the basic auth and generated app password about user "Alice"
+      | endpoint                                       |
+      | /remote.php/webdav/newCol                      |
+      | /remote.php/dav/files/%username%/newCol1       |
+      | /remote.php/dav/files/%username%/PARENT/newCol |
+      | /remote.php/webdav/COL                         |
+      | /remote.php/dav/files/%username%/FOLDER/newCol |
+    Then the HTTP status code of responses on all endpoints should be "201"

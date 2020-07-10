@@ -86,10 +86,11 @@ Feature: delete file/folder
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"
-    When the user "Alice" requests these endpoints with "DELETE" using the basic auth and generated app password then the status codes about user "Alice" should be as listed
-      | endpoint                                           | http-code | body          |
-      | /remote.php/webdav/textfile0.txt                   | 204       | doesnotmatter |
-      | /remote.php/dav/files/%username%/textfile1.txt     | 204       | doesnotmatter |
-      | /remote.php/dav/files/%username%/PARENT/parent.txt | 204       | doesnotmatter |
-      | /remote.php/webdav/PARENT                          | 204       | doesnotmatter |
-      | /remote.php/dav/files/%username%/FOLDER            | 204       | doesnotmatter |
+    When the user "Alice" requests these endpoints with "DELETE" using the basic auth and generated app password about user "Alice"
+      | endpoint                                           |
+      | /remote.php/webdav/textfile0.txt                   |
+      | /remote.php/dav/files/%username%/textfile1.txt     |
+      | /remote.php/dav/files/%username%/PARENT/parent.txt |
+      | /remote.php/webdav/PARENT                          |
+      | /remote.php/dav/files/%username%/FOLDER            |
+    Then the HTTP status code of responses on all endpoints should be "204"

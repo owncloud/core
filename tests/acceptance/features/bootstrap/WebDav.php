@@ -1771,6 +1771,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the HTTP status code of responses on all endpoints should be :statusCode
+	 *
+	 * @param $statusCode
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBe($statusCode) {
+		$duplicateRemovedStatusCodes = \array_unique($this->lastStatusCodesArray);
+		if (\count($duplicateRemovedStatusCodes) === 1) {
+			Assert::assertSame(
+				\intval($statusCode),
+				$duplicateRemovedStatusCodes[0],
+				'Responses did not return expected status code'
+			);
+		} else {
+			throw new \Exception('Expected same but found different status codes of last requested responses');
+		}
+	}
+
+	/**
 	 * @Then /^the HTTP reason phrase of all upload responses should be "([^"]*)"$/
 	 *
 	 * @param string $reasonPhrase

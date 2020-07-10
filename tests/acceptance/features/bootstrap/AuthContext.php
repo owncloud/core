@@ -170,26 +170,26 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When a user requests these endpoints with :method and no authentication then the status codes about user :user should be as listed
+	 * @When a user sends :method request on these endpoints with no authentication about user :user
 	 *
-	 * @param string $method
-	 * @param string $user
-	 * @param TableNode $table
+	 * @param string $method http request method
+	 * @param string $ofUser resource owner
+	 * @param TableNode $table endpoints table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithNoAuthThenStatusCodeAboutUser($method, $user, TableNode $table) {
-		$user = \strtolower($this->featureContext->getActualUsername($user));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
+	public function userRequestsEndpointsWithNoAuth($method, $ofUser, TableNode $table) {
+		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $user
+				$row['endpoint'], $ofUser
 			);
-			$body = $row['body'] ?? null;
-			$this->sendRequest($row['endpoint'], $method, null, false, $body);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->sendRequest($row['endpoint'], $method);
+			$this->featureContext->pushToLastStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 
@@ -228,29 +228,56 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When the user :user requests these endpoints with :method using the basic auth and generated app password then the status codes about user :ofUser should be as listed
-	 *
-	 * @param string $user
-	 * @param string $method
-	 * @param string $ofUser
-	 * @param TableNode $table
+	 * @When the user :user sends :method request on these endpoints to get property :property using the basic auth and generated app password about user :ofUser
+	 * @param string $user requesting user
+	 * @param string $method http method
+	 * @param string $property property to get
+	 * @param string $ofUser owner
+	 * @param TableNode $table endpoints table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, $ofUser, TableNode $table) {
+	public function requestEndpointWithBasicAuthAndGeneratedPassword(
+		$user, $method, $property, $ofUser, TableNode $table
+	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['body', 'ocs-code']);
+		$body = $this->getBodyForOCSRequest($method, $property);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
 			);
-			$body = $row['body'] ?? null;
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->userRequestsURLWithUsingBasicAuth(
+				$user,
+				$row['endpoint'],
+				$method,
+				$this->appToken,
+				$body
+			);
+			$this->featureContext->pushToLastStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
+	}
+
+	/**
+	 * @param string $method http request method
+	 * @param string $property property in form d:getetag
+	 * if property is `doesnotmatter` body is also set `doesnotmatter`
+	 *
+	 * @return string
+	 */
+	public function getBodyForOCSRequest($method, $property) {
+		$body = null;
+		if ($method === 'PROPFIND') {
+			$body = '<?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><'. $property . '/></d:prop></d:propfind>';
+		} else if ($method === 'LOCK') {
+			$body = "<?xml version='1.0' encoding='UTF-8'?><d:lockinfo xmlns:d='DAV:'> <d:lockscope><". $property. " /></d:lockscope></d:lockinfo>";
+		}
+		if ($property === 'doesnotmatter') $body = 'doesnotmatter';
+		return $body;
 	}
 
 	/**
@@ -381,25 +408,26 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When the user requests these endpoints with :method using the generated app password then the status codes about user :user should be as listed
+	 * @When the user sends :method request on these endpoints using the generated app password about user :user
 	 *
-	 * @param string $method
-	 * @param string $user
-	 * @param TableNode $table
+	 * @param string $method http method
+	 * @param string $ofUser resource owner
+	 * @param TableNode $table endpoints table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsUsingTheGeneratedAppPasswordThenStatusCodeAboutUser($method, $user, TableNode $table) {
-		$user = \strtolower($this->featureContext->getActualUsername($user));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+	public function userRequestsEndpointsUsingTheGeneratedAppPasswordThenStatusCodeAboutUser($method, $ofUser, $table) {
+		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $user
+				$row['endpoint'], $ofUser
 			);
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 

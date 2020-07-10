@@ -275,6 +275,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string stderr of last command
 	 */
 	private $lastStdErr;
+	/**
+	 * @var array status codes of responses
+	 */
+	private $lastStatusCodesArray = [];
 	/*
 	 * @var Ldap
 	 */
@@ -1000,6 +1004,10 @@ class FeatureContext extends BehatVariablesContext {
 		$this->response = $response;
 		//after a new response reset the response xml
 		$this->responseXml = [];
+	}
+
+	public function pushToLastStatusCodesArray($statusCode) {
+		array_push($this->lastStatusCodesArray, $statusCode);
 	}
 
 	/**
