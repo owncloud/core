@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Cumpleaños de los contautos",
+    "User disabled" : "Usuariu desactiváu",
     "Personal" : "Personal",
     "Contacts" : "Contautos",
     "Technical details" : "Detalles teúnicos",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Afmælisdagar tengiliðar",
+    "User disabled" : "Notandi óvirkur",
     "Personal" : "Einka",
     "Contacts" : "Tengiliðir",
     "Technical details" : "Tæknilegar upplýsingar",

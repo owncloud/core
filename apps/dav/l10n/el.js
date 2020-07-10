@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Γενέθλια επαφής",
+    "User disabled" : "Ο χρήστης απενεργοποιήθηκε",
     "Personal" : "Προσωπικά",
     "Contacts" : "Επαφές",
     "Technical details" : "Τεχνικές λεπτομέρειες",
