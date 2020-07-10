@@ -299,33 +299,33 @@ Feature: sharing
     And the OCS status message should be "OK"
     And the HTTP status code should be "200"
     Then the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id                         | A_STRING      |
-      | share_type                 | user          |
-      | uid_owner                  | %username%    |
-      | displayname_owner          | %displayname% |
-      | permissions                | all           |
-      | stime                      | A_NUMBER      |
-      | parent                     |               |
-      | expiration                 |               |
-      | token                      |               |
-      | uid_file_owner             | %username%    |
-      | displayname_file_owner     | %displayname% |
-      | additional_info_owner      |               |
-      | additional_info_file_owner |               |
-      | state                      | 0             |
-      | item_source                |               |
-      | path                       |               |
-      | item_type                  |               |
-      | mimetype                   |               |
-      | storage_id                 |               |
-      | storage                    | 0             |
-      | file_source                |               |
-      | file_target                |               |
-      | share_with                 | %username%    |
-      | share_with_displayname     | %displayname% |
-      | share_with_additional_info |               |
-      | mail_send                  | 0             |
-      | name                       |               |
+      | id                         | A_STRING             |
+      | share_type                 | user                 |
+      | uid_owner                  | %username%           |
+      | displayname_owner          | %displayname%        |
+      | permissions                | all                  |
+      | stime                      | A_NUMBER             |
+      | parent                     |                      |
+      | expiration                 |                      |
+      | token                      |                      |
+      | uid_file_owner             | %username%           |
+      | displayname_file_owner     | %displayname%        |
+      | additional_info_owner      |                      |
+      | additional_info_file_owner |                      |
+      | state                      | 0                    |
+      | item_type                  | folder               |
+      | item_source                | A_STRING             |
+      | path                       | /Alice-folder        |
+      | mimetype                   | httpd/unix-directory |
+      | storage_id                 | A_STRING             |
+      | storage                    | 0                    |
+      | file_source                | A_STRING             |
+      | file_target                | /Alice-folder        |
+      | share_with                 | %username%           |
+      | share_with_displayname     | %displayname%        |
+      | share_with_additional_info |                      |
+      | mail_send                  | 0                    |
+      | name                       |                      |
     And the fields of the last response should not include
       | attributes |  |
 #      | token      |  |
