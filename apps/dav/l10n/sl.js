@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Rojstni dan stika",
+    "User disabled" : "Uporabnik je onemogočen",
     "Personal" : "Osebno",
     "Contacts" : "Stiki",
     "Technical details" : "Tehnične podrobnosti",
