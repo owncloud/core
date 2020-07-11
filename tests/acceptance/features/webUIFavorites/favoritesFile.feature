@@ -10,12 +10,16 @@ Feature: Mark file as favorite
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/data.zip" to "/data.zip"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "Alice" has uploaded file with content "file with comma" to "s,a,m,p,l,e.txt"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user marks file "data.zip" as favorite using the webUI
+    And the user marks file "s,a,m,p,l,e.txt" as favorite using the webUI
     Then file "data.zip" should be marked as favorite on the webUI
+    And file "s,a,m,p,l,e.txt" should be marked as favorite on the webUI
     When the user reloads the current page of the webUI
     Then file "data.zip" should be marked as favorite on the webUI
+    And file "s,a,m,p,l,e.txt" should be marked as favorite on the webUI
     And file "data.zip" should be listed in the favorites page on the webUI
     And file "lorem.txt" should not be listed in the favorites page on the webUI
 

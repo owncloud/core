@@ -19,6 +19,7 @@ Feature: Search
     And user "Alice" has uploaded file with content "does-not-matter" to "/फनी näme/upload.txt"
     And user "Alice" has uploaded file with content "does-not-matter" to "/फनी näme/a-image.png"
     And user "Alice" has uploaded file with content "does-not-matter" to "/upload😀 😁/upload😀 😁.txt"
+    And user "Alice" has uploaded file with content "file with comma in filename" to "/upload😀 😁/upload,1.txt"
 
   @smokeTest
   Scenario Outline: search for entry by pattern
@@ -33,6 +34,7 @@ Feature: Search
       | /फनी näme/upload.txt          |
       | /upload😀 😁                  |
       | /upload😀 😁/upload😀 😁.txt  |
+      | /upload😀 😁/upload,1.txt     |
     But the search result of user "Alice" should not contain these entries:
       | /a-image.png |
     Examples:
@@ -93,6 +95,7 @@ Feature: Search
       | /फनी näme/upload.txt          |
       | /upload😀 😁                  |
       | /upload😀 😁/upload😀 😁.txt  |
+      | /upload😀 😁/upload,1.txt     |
     Examples:
       | dav_version |
       | old         |
@@ -110,6 +113,7 @@ Feature: Search
       | /फनी näme/upload.txt          |
       | /upload😀 😁                  |
       | /upload😀 😁/upload😀 😁.txt  |
+      | /upload😀 😁/upload,1.txt     |
     Examples:
       | dav_version |
       | old         |
@@ -119,7 +123,7 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" and limits the results to "100" items using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain "7" entries
+    And the search result should contain "8" entries
     And the search result of user "Alice" should contain these entries:
       | /upload.txt                   |
       | /just-a-folder/upload.txt     |
@@ -128,6 +132,7 @@ Feature: Search
       | /फनी näme/upload.txt          |
       | /upload😀 😁                  |
       | /upload😀 😁/upload😀 😁.txt  |
+      | /upload😀 😁/upload,1.txt     |
     Examples:
       | dav_version |
       | old         |

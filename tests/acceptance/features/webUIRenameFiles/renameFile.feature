@@ -52,6 +52,7 @@ Feature: rename files
       | "strängé filename (duplicate #2 &).txt" | "strängé filename (duplicate #3).txt" |
       | "'single'quotes.txt"                    | "single-quotes.txt"                   |
       | "?quot=OC&OC2 #OC%  3   "               | "sin#gle-qu&%%%%otes=.txt "           |
+      | "s,a,m,p,l,e.txt"                       | "sample,1.txt"                        |
 
   @smokeTest @skipOnLDAP
   Scenario: Rename a file using special characters and check its existence after page reload

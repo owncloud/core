@@ -28,6 +28,7 @@ Feature: move (rename) file
       | C++ file.cpp          |
       | file #2.txt           |
       | file ?2.txt           |
+      | sample,1.txt          |
 
   Scenario: Moving and overwriting a file
     When user "Alice" moves file "/welcome.txt" asynchronously to "/textfile0.txt" using the WebDAV API

@@ -16,18 +16,22 @@ Feature: files and folders can be deleted from the trashbin
 
   @smokeTest
   Scenario Outline: Trashbin can be emptied
-    Given using <dav-path> DAV path
-    And user "Alice" has deleted file "/textfile0.txt"
-    And user "Alice" has deleted file "/textfile1.txt"
-    And as "Alice" file "/textfile0.txt" should exist in the trashbin
-    And as "Alice" file "/textfile1.txt" should exist in the trashbin
+    Given user "Alice" has uploaded file with content "file with comma" to "sample,0.txt"
+    And user "Alice" has uploaded file with content "file with comma" to "sample,1.txt"
+    And using <dav-path> DAV path
+    And user "Alice" has deleted file "<filename1>"
+    And user "Alice" has deleted file "<filename2>"
+    And as "Alice" file "<filename1>" should exist in the trashbin
+    And as "Alice" file "<filename2>" should exist in the trashbin
     When user "Alice" empties the trashbin using the trashbin API
-    Then as "Alice" the file with original path "/textfile0.txt" should not exist in the trashbin
-    And as "Alice" the file with original path "/textfile1.txt" should not exist in the trashbin
+    Then as "Alice" the file with original path "<filename1>" should not exist in the trashbin
+    And as "Alice" the file with original path "<filename2>" should not exist in the trashbin
     Examples:
-      | dav-path |
-      | old      |
-      | new      |
+      | dav-path | filename1     | filename2     |
+      | old      | textfile0.txt | textfile1.txt |
+      | new      | textfile0.txt | textfile1.txt |
+      | old      | sample,0.txt  | sample,1.txt  |
+      | new      | sample,0.txt  | sample,1.txt  |
 
   @smokeTest
   Scenario: delete a single file from the trashbin
