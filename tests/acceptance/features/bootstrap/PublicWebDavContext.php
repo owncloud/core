@@ -666,19 +666,18 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $publicWebDAVAPIVersion
-	 * @param string $content
 	 *
 	 * @return void
 	 */
 	public function shouldBeAbleToDownloadFileInsidePublicSharedFolder(
-		$path, $publicWebDAVAPIVersion, $content
+		$path, $publicWebDAVAPIVersion
 	) {
 		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
-			"", $path, $publicWebDAVAPIVersion, "", $content
+			"", $path, $publicWebDAVAPIVersion, ""
 		);
 	}
 
@@ -701,20 +700,19 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @param string $publicWebDAVAPIVersion
 	 * @param string $password
-	 * @param string $content
 	 *
 	 * @return void
 	 */
 	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
-		$path, $publicWebDAVAPIVersion, $password, $content
+		$path, $publicWebDAVAPIVersion, $password
 	) {
 		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
-			"", $path, $publicWebDAVAPIVersion, $password, $content
+			"", $path, $publicWebDAVAPIVersion, $password
 		);
 	}
 
@@ -767,18 +765,17 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)""$/
 	 *
 	 * @param string $range
 	 * @param string $path
 	 * @param string $publicWebDAVAPIVersion
 	 * @param string $password
-	 * @param string $content
 	 *
 	 * @return void
 	 */
 	public function shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
-		$range, $path, $publicWebDAVAPIVersion, $password, $content
+		$range, $path, $publicWebDAVAPIVersion, $password
 	) {
 		if ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
@@ -789,12 +786,6 @@ class PublicWebDavContext implements Context {
 		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
 			$path, $password, $range, $publicWebDAVAPIVersion
 		);
-
-		$this->featureContext->downloadedContentShouldBe($content);
-
-		if ($techPreviewHadToBeEnabled) {
-			$this->occContext->disableDAVTechPreview();
-		}
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
