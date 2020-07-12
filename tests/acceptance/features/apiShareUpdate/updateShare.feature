@@ -269,7 +269,7 @@ Feature: sharing
       | item_source                | A_STRING             |
       | path                       | /Alice-folder        |
       | mimetype                   | httpd/unix-directory |
-      | storage_id                 | home::Alice          |
+      | storage_id                 | A_STRING             |
       | storage                    | A_STRING             |
       | file_source                | A_STRING             |
       | file_target                | /Alice-folder        |
