@@ -10,7 +10,7 @@ OC.L10N.register(
     "Couldn't add remote share" : "ไม่สามารถเพิ่มรีโมทแชร์",
     "Shared with you" : "แชร์กับคุณ",
     "Shared with others" : "แชร์กับผู้อื่น",
-    "Shared by link" : "แชร์แล้วผ่านลิงก์",
+    "Shared by link" : "ลิงก์ที่กำลังแชร์อยู่",
     "Anonymous upload" : "อัปโหลดแบบไม่ระบุตัวตน",
     "Click to select files or use drag & drop to upload" : "คลิกเพื่อเลือกไฟล์หรือลากไฟล์มาวางเพื่ออัปโหลด",
     "Uploaded files" : "อัปโหลดไฟล์แล้ว",

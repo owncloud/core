@@ -3,8 +3,8 @@ OC.L10N.register(
     {
     "Tags" : "ป้ายกำกับ",
     "Tagged files" : "ไฟล์ที่ติดแท็ก",
-    "Select tags to filter by" : "เลือกแท็กเพื่อกรอง",
-    "Please select tags to filter by" : "กรุณาเลือกแท็กเพื่อกรอง",
+    "Select tags to filter by" : "เลือกแท็กเพื่อกรองโดย",
+    "Please select tags to filter by" : "กรุณาเลือกแท็กเพื่อกรองโดย",
     "No files found for the selected tags" : "ไม่พบไฟล์แท็กที่เลือก",
     "<strong>System tags</strong> for a file have been modified" : "เมื่อ <strong>แท็กระบบ</strong> ของไฟล์ถูกแก้ไข",
     "You assigned system tag %3$s" : "คุณได้กำหนดแท็กระบบ %3$s แล้ว",
