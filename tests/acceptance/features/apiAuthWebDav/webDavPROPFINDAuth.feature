@@ -12,7 +12,7 @@ Feature: get file info using PROPFIND
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send PROPFIND requests to webDav endpoints as normal user with wrong password
-    When user "Alice" sends "PROPFIND" request on these endpoints to get property "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" sends "PROPFIND" request on these endpoints with body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -24,7 +24,7 @@ Feature: get file info using PROPFIND
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send PROPFIND requests to webDav endpoints as normal user with no password
-    When user "Alice" sends "PROPFIND" request on these endpoints to get property "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" sends "PROPFIND" request on these endpoints with body "doesnotmatter" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -53,7 +53,7 @@ Feature: get file info using PROPFIND
     Then the HTTP status code of responses on all endpoints should be "207"
 
   Scenario: send PROPFIND requests to webDav endpoints using invalid username but correct password
-    When user "usero" sends "PROPFIND" request on these endpoints to get property "doesnotmatter" using the password of user "Alice"
+    When user "usero" sends "PROPFIND" request on these endpoints with body "doesnotmatter" using password of the user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -63,7 +63,7 @@ Feature: get file info using PROPFIND
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send PROPFIND requests to webDav endpoints using valid password and username of different user
-    When user "Brian" sends "PROPFIND" request on these endpoints to get property "doesnotmatter" using the password of user "Alice"
+    When user "Brian" sends "PROPFIND" request on these endpoints with body "doesnotmatter" using password of the user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |

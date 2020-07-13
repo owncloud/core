@@ -620,40 +620,6 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When user :asUser sends :method request on these endpoints to get property :property using the password of user :user
-	 *
-	 * @param string $asUser
-	 * @param string $method
-	 * @param $property
-	 * @param string $user
-	 * @param TableNode $table
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function userRequestsTheseEndpointsWithPropertyBodyUsingThePasswordOfUser($asUser, $method, $property, $user, TableNode $table) {
-		$asUser = $this->featureContext->getActualUsername($asUser);
-		$userRenamed = $this->featureContext->getActualUsername($user);
-		$body = $this->authContext->getBodyForOCSRequest($method, $property);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
-		foreach ($table->getHash() as $row) {
-			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $userRenamed
-			);
-			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
-				$asUser,
-				$row['endpoint'],
-				$method,
-				$this->featureContext->getPasswordForUser($user),
-				$body
-			);
-			$this->featureContext->pushToLastStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-		}
-	}
-
-	/**
 	 * @When user :asUser sends :method request on these endpoints with body :body using password of the user :user
 	 *
 	 * @param string $asUser
