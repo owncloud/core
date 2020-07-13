@@ -1779,6 +1779,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBe($statusCode) {
+		var_dump($this->lastStatusCodesArray);
 		$duplicateRemovedStatusCodes = \array_unique($this->lastStatusCodesArray);
 		if (\count($duplicateRemovedStatusCodes) === 1) {
 			Assert::assertSame(

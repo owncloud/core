@@ -180,13 +180,41 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithNoAuth($method, $ofUser, TableNode $table) {
+		$this->sendRequestToEndpointsWithBodyAndNoAuth($method, $ofUser, $table);
+	}
+
+	/**
+	 * @When a user sends :method request on these endpoints with body :body and no authentication about user :user
+	 *
+	 * @param string $method http request method
+	 * @param string $body request body
+	 * @param string $ofUser resource owner
+	 * @param TableNode $table endpoints table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsEndpointsWithBodyAndNoAuth($method, $body, $ofUser, TableNode $table) {
+		$this->sendRequestToEndpointsWithBodyAndNoAuth($method, $ofUser, $table, $body);
+	}
+
+	/**
+	 * @param string $method http request method
+	 * @param string $ofUser resource owner
+	 * @param TableNode $table endpoints table
+	 * @param string|null $body body for request
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function sendRequestToEndpointsWithBodyAndNoAuth($method, $ofUser, TableNode $table, $body = null) {
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
 			);
-			$this->sendRequest($row['endpoint'], $method);
+			$this->sendRequest($row['endpoint'], $method, null, false, $body);
 			$this->featureContext->pushToLastStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
 			);
@@ -238,12 +266,47 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function requestEndpointWithBasicAuthAndGeneratedPassword(
+	public function userRequestEndpointWithBodyAndBasicAuthAndGeneratedPassword(
 		$user, $method, $property, $ofUser, TableNode $table
+	) {
+		$this->requestEndpointWithBasicAuthAndGeneratedPassword(
+			$user, $method, $ofUser, $table, $property
+		);
+	}
+
+	/**
+	 * @When the user :user sends :method request on these endpoints using the basic auth and generated app password about user :ofUser
+	 * @param string $user requesting user
+	 * @param string $method http method
+	 * @param string $ofUser owner
+	 * @param TableNode $table endpoints table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestEndpointWithBasicAuthAndGeneratedPasswordWithoutBody(
+		$user, $method, $ofUser, TableNode $table
+	) {
+		$this->requestEndpointWithBasicAuthAndGeneratedPassword(
+			$user, $method, $ofUser, $table
+		);
+	}
+
+	/**
+	 * @param $user
+	 * @param $method
+	 * @param $ofUser
+	 * @param TableNode $table
+	 * @param string|null $property
+	 * @throws Exception
+	 */
+	public function requestEndpointWithBasicAuthAndGeneratedPassword(
+		$user, $method, $ofUser, TableNode $table, $property = null
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
-		$body = $this->getBodyForOCSRequest($method, $property);
+
+		$body = ($property !== null) ? $this->getBodyForOCSRequest($method, $property) : null;
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
@@ -277,6 +340,7 @@ class AuthContext implements Context {
 			$body = "<?xml version='1.0' encoding='UTF-8'?><d:lockinfo xmlns:d='DAV:'> <d:lockscope><". $property. " /></d:lockscope></d:lockinfo>";
 		}
 		if ($property === 'doesnotmatter') $body = 'doesnotmatter';
+		if ($property === '') $body = '';
 		return $body;
 	}
 

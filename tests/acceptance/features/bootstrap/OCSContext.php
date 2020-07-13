@@ -502,7 +502,42 @@ class OCSContext implements Context {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
 			);
-			var_dump($row);
+			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
+				$user,
+				$row['endpoint'],
+				$method,
+				$password,
+				$body
+			);
+			$this->featureContext->pushToLastStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+		}
+	}
+
+	/**
+	 * @When user :user sends :method request on these endpoints with body :body using password :password about user :ofUser
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $body
+	 * @param string $password
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSendsRequestToTheseEndpointsToGetPropertyUsingPassword(
+		$user, $method, string $body, $password, $ofUser, TableNode $table
+	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
@@ -528,10 +563,43 @@ class OCSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $property, $ofUser, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsToGetProperty($user, $method, $property, $ofUser, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$body = $this->authContext->getBodyForOCSRequest($method, $property);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
+			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
+				$user,
+				$row['endpoint'],
+				$method,
+				$this->featureContext->getPasswordForUser($user),
+				$body
+			);
+			$this->featureContext->pushToLastStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+		}
+	}
+
+	/**
+	 * @When user :user sends :method request on these endpoints with body :body about user :ofUser
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $body
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $body, $ofUser, TableNode $table) {
+		$user = $this->featureContext->getActualUsername($user);
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
@@ -562,10 +630,43 @@ class OCSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $property, $user, TableNode $table) {
+	public function userRequestsTheseEndpointsWithPropertyBodyUsingThePasswordOfUser($asUser, $method, $property, $user, TableNode $table) {
 		$asUser = $this->featureContext->getActualUsername($asUser);
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$body = $this->authContext->getBodyForOCSRequest($method, $property);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		foreach ($table->getHash() as $row) {
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $userRenamed
+			);
+			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
+				$asUser,
+				$row['endpoint'],
+				$method,
+				$this->featureContext->getPasswordForUser($user),
+				$body
+			);
+			$this->featureContext->pushToLastStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+		}
+	}
+
+	/**
+	 * @When user :asUser sends :method request on these endpoints with body :body using password of the user :user
+	 *
+	 * @param string $asUser
+	 * @param string $method
+	 * @param string $body
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsTheseEndpointsWithBodyUsingThePasswordOfUser($asUser, $method, $body, $user, TableNode $table) {
+		$asUser = $this->featureContext->getActualUsername($asUser);
+		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
