@@ -553,6 +553,7 @@ class OCSContext implements Context {
 
 	/**
 	 * @When user :user sends :method request on these endpoints to get property :property about user :ofUser
+	 * @When user :user sends :method request to set property :property on these endpoints about user :ofUser
 	 *
 	 * @param string $user
 	 * @param string $method

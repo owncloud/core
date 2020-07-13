@@ -257,6 +257,9 @@ class AuthContext implements Context {
 
 	/**
 	 * @When the user :user sends :method request on these endpoints to get property :property using the basic auth and generated app password about user :ofUser
+	 * @When the user :user sends :method request to set property :property on these endpoints using the basic auth and generated app password about user :ofUser
+	 *
+	 *
 	 * @param string $user requesting user
 	 * @param string $method http method
 	 * @param string $property property to get
@@ -266,11 +269,31 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestEndpointWithBodyAndBasicAuthAndGeneratedPassword(
+	public function userRequestEndpointWithPropertyAndBasicAuthAndGeneratedPassword(
 		$user, $method, $property, $ofUser, TableNode $table
 	) {
 		$this->requestEndpointWithBasicAuthAndGeneratedPassword(
 			$user, $method, $ofUser, $table, $property
+		);
+	}
+
+	/**
+	 * @When the user :user sends :method request on these endpoints with body :body using the basic auth and generated app password about user :ofUser
+	 *
+	 * @param string $user requesting user
+	 * @param string $method http method
+	 * @param string $body property to get
+	 * @param string $ofUser owner
+	 * @param TableNode $table endpoints table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestEndpointWithBodyAndBasicAuthAndGeneratedPassword(
+		$user, $method, $body, $ofUser, TableNode $table
+	) {
+		$this->requestEndpointWithBasicAuthAndGeneratedPassword(
+			$user, $method, $ofUser, $table, null, $body
 		);
 	}
 
@@ -298,15 +321,22 @@ class AuthContext implements Context {
 	 * @param $ofUser
 	 * @param TableNode $table
 	 * @param string|null $property
+	 * @param string|null $body
 	 * @throws Exception
 	 */
 	public function requestEndpointWithBasicAuthAndGeneratedPassword(
-		$user, $method, $ofUser, TableNode $table, $property = null
+		$user, $method, $ofUser, TableNode $table, $property = null, $body = null
 	) {
+		$requestBody = null;
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
-
-		$body = ($property !== null) ? $this->getBodyForOCSRequest($method, $property) : null;
+		if ($property) {
+			$requestBody = $this->getBodyForOCSRequest($method, $property);
+		} elseif ($body) {
+			$requestBody = $body;
+		} else {
+			$requestBody = null;
+		}
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
@@ -317,7 +347,7 @@ class AuthContext implements Context {
 				$row['endpoint'],
 				$method,
 				$this->appToken,
-				$body
+				$requestBody
 			);
 			$this->featureContext->pushToLastStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
@@ -335,9 +365,13 @@ class AuthContext implements Context {
 	public function getBodyForOCSRequest($method, $property) {
 		$body = null;
 		if ($method === 'PROPFIND') {
-			$body = '<?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><'. $property . '/></d:prop></d:propfind>';
+			$body = '<?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><' . $property . '/></d:prop></d:propfind>';
 		} else if ($method === 'LOCK') {
-			$body = "<?xml version='1.0' encoding='UTF-8'?><d:lockinfo xmlns:d='DAV:'> <d:lockscope><". $property. " /></d:lockscope></d:lockinfo>";
+			$body = "<?xml version='1.0' encoding='UTF-8'?><d:lockinfo xmlns:d='DAV:'> <d:lockscope><" . $property . " /></d:lockscope></d:lockinfo>";
+		} else if ($method === 'PROPPATCH') {
+			if ($property === 'favorite')
+				$property = '<oc:favorite xmlns:oc="http://owncloud.org/ns">1</oc:favorite>';
+			$body = '<?xml version="1.0"?><d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:set><d:prop>' . $property . '</d:prop></d:set></d:propertyupdate>';
 		}
 		if ($property === 'doesnotmatter') $body = 'doesnotmatter';
 		if ($property === '') $body = '';
