@@ -12,7 +12,7 @@ Feature: MOVE file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MOVE requests to webDav endpoints as normal user with wrong password
-    When user "Alice" sends "MOVE" request on these endpoints to get property "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" sends "MOVE" request on these endpoints with body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -24,7 +24,7 @@ Feature: MOVE file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MOVE requests to webDav endpoints as normal user with no password
-    When user "Alice" sends "MOVE" request on these endpoints to get property "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" sends "MOVE" request on these endpoints with body "doesnotmatter" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -35,7 +35,7 @@ Feature: MOVE file/folder
 
   @skipOnOcis @issue-ocis-reva-14
   Scenario: send MOVE requests to another user's webDav endpoints as normal user
-    When user "Brian" sends "MOVE" request on these endpoints to get property "doesnotmatter" about user "Alice"
+    When user "Brian" sends "MOVE" request on these endpoints with body "doesnotmatter" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/dav/files/%username%/PARENT            |
@@ -45,7 +45,7 @@ Feature: MOVE file/folder
   @skipOnOcV10 @issue-ocis-reva-14
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send MOVE requests to another user's webDav endpoints as normal user
-    When user "Brian" sends "MOVE" request on these endpoints to get property "doesnotmatter" about user "Alice"
+    When user "Brian" sends "MOVE" request on these endpoints with body "doesnotmatter" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/dav/files/%username%/PARENT            |
@@ -53,7 +53,7 @@ Feature: MOVE file/folder
     Then the HTTP status code of responses on all endpoints should be "400"
 
   Scenario: send MOVE requests to webDav endpoints using invalid username but correct password
-    When user "usero" sends "MOVE" request on these endpoints to get property "doesnotmatter" using the password of user "Alice"
+    When user "usero" sends "MOVE" request on these endpoints with body "doesnotmatter" using password of the user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -63,7 +63,7 @@ Feature: MOVE file/folder
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send MOVE requests to webDav endpoints using valid password and username of different user
-    When user "Brian" sends "MOVE" request on these endpoints to get property "doesnotmatter" using the password of user "Alice"
+    When user "Brian" sends "MOVE" request on these endpoints with body "doesnotmatter" using password of the user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -103,7 +103,7 @@ Feature: MOVE file/folder
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"
-    When the user "Alice" sends "MOVE" request on these endpoints to get property "doesnotmatter" using the basic auth and generated app password about user "Alice"
+    When the user "Alice" sends "MOVE" request on these endpoints with body "doesnotmatter" using the basic auth and generated app password about user "Alice"
       | endpoint                                           |
       # The token was valid and accepted but the body is invalid so it gives 403
       | /remote.php/webdav/textfile0.txt                   |

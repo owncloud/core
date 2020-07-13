@@ -13,7 +13,7 @@ Feature: LOCK file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send LOCK requests to webDav endpoints as normal user with wrong password
-    When user "Alice" sends "LOCK" request on these endpoints to get property "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" sends "LOCK" request on these endpoints with body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -25,7 +25,7 @@ Feature: LOCK file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send LOCK requests to webDav endpoints as normal user with no password
-    When user "Alice" sends "LOCK" request on these endpoints to get property "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" sends "LOCK" request on these endpoints with body "doesnotmatter" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -54,7 +54,7 @@ Feature: LOCK file/folder
     Then the HTTP status code of responses on all endpoints should be "201"
 
   Scenario: send LOCK requests to webDav endpoints using invalid username but correct password
-    When user "usero" sends "LOCK" request on these endpoints to get property "doesnotmatter" about user "Alice"
+    When user "usero" sends "LOCK" request on these endpoints with body "doesnotmatter" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -64,7 +64,7 @@ Feature: LOCK file/folder
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send LOCK requests to webDav endpoints using valid password and username of different user
-    When user "Brian" sends "LOCK" request on these endpoints to get property "doesnotmatter" using the password of user "Alice"
+    When user "Brian" sends "LOCK" request on these endpoints with body "doesnotmatter" using password of the user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -76,7 +76,7 @@ Feature: LOCK file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send LOCK requests to webDav endpoints without any authentication
-    When a user sends "LOCK" request on these endpoints with no authentication about user "Alice"
+    When a user sends "LOCK" request on these endpoints with body "doesnotmatter" and no authentication about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
