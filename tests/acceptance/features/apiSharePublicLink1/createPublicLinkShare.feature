@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-49 @skipOnOcis-EOS-Storage @issue-ocis-reva-315 @issue-ocis-reva-316
+@api @files_sharing-app-required @public_link_share-feature-required @skipOnOcis-EOS-Storage @issue-ocis-reva-315 @issue-ocis-reva-316
 
 Feature: create a public link share
 
@@ -747,7 +747,6 @@ Feature: create a public link share
     Then the HTTP status code should be "207"
     And the size of the file should be "19"
 
-  @issue-ocis-reva-49
   Scenario Outline: Get the mtime of a file shared by public link
     Given using <dav_version> DAV path
     And user "Alice" has uploaded a file to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
@@ -761,7 +760,6 @@ Feature: create a public link share
       | old         |
       | new         |
 
-  @issue-ocis-reva-49
   Scenario Outline: Get the mtime of a file inside a folder shared by public link
     Given using <dav_version> DAV path
     And user "Alice" has created folder "testFolder"
@@ -776,7 +774,7 @@ Feature: create a public link share
       | old         |
       | new         |
 
-  @skipOnOcV10 @issue-ocis-reva-49 @issue-37605
+  @skipOnOcV10 @issue-37605
   Scenario: Get the mtime of a file inside a folder shared by public link using new webDAV version (run on OCIS)
     Given user "Alice" has created folder "testFolder"
     And user "Alice" has created a public link share with settings
@@ -787,7 +785,7 @@ Feature: create a public link share
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-  @skipOnOcis @issue-ocis-reva-49 @issue-37605
+  @skipOnOcis @issue-37605
   #after fixing all issues delete this Scenario and use the one above
   Scenario: Get the mtime of a file inside a folder shared by public link using new webDAV version
     Given user "Alice" has created folder "testFolder"
@@ -801,7 +799,7 @@ Feature: create a public link share
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should not be "Thu, 08 Aug 2019 04:18:13 GMT"
 #    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-  @skipOnOcV10 @issue-ocis-reva-49 @issue-37605
+  @skipOnOcV10 @issue-37605
   Scenario: overwriting a file changes its mtime (new public webDAV API) (run on OCIS)
     Given user "Alice" has created folder "testFolder"
     When user "Alice" uploads file with content "uploaded content for file name ending with a dot" to "testFolder/file.txt" using the WebDAV API
@@ -813,7 +811,7 @@ Feature: create a public link share
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-  @skipOnOcis @issue-ocis-reva-49 @issue-37605
+  @skipOnOcis @issue-37605
   #after fixing all issues delete this Scenario and use the one above
   Scenario: overwriting a file changes its mtime (new public webDAV API)
     Given user "Alice" has created folder "testFolder"

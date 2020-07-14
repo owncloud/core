@@ -1,4 +1,4 @@
-@api @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-49 @issue-ocis-reva-288 @issue-ocis-reva-252
+@api @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-288 @issue-ocis-reva-252
 Feature: multilinksharing
 
   Background:
