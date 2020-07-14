@@ -275,6 +275,46 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string stderr of last command
 	 */
 	private $lastStdErr;
+	/**
+	 * @var array last http status codes
+	 */
+	private $lastHttpStatusCodesArray = [];
+	/**
+	 * @var array last ocs status codes
+	 */
+	private $lastOCSStatusCodesArray = [];
+
+	/**
+	 * @param $httpStatusCode
+	 *
+	 * @return void
+	 */
+	public function pushToLastHttpStatusCodesArray($httpStatusCode) {
+		\array_push($this->lastHttpStatusCodesArray, $httpStatusCode);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function emptyLastHTTPStatusCodesArray() {
+		$this->lastHttpStatusCodesArray = [];
+	}
+
+	/**
+	 * @return void
+	 */
+	public function emptyLastOCSStatusCodesArray() {
+		$this->lastOCSStatusCodesArray = [];
+	}
+	/**
+	 * @param $ocsStatusCode
+	 *
+	 * @return void
+	 */
+	public function pushToLastOcsCodesArray($ocsStatusCode) {
+		\array_push($this->lastOCSStatusCodesArray, $ocsStatusCode);
+	}
+
 	/*
 	 * @var Ldap
 	 */
@@ -3531,6 +3571,31 @@ class FeatureContext extends BehatVariablesContext {
 				\array_column($serverData['element'], 'id', 'url') :
 				\array_column($serverData, 'id', 'url');
 		}
+	}
+
+	/**
+	 * @param string $method http request method
+	 * @param string $property property in form d:getetag
+	 * 						   if property is `doesnotmatter` body is also set `doesnotmatter`
+	 *
+	 * @return string
+	 */
+	public function getBodyForOCSRequest($method, $property) {
+		$body = null;
+		if ($method === 'PROPFIND') {
+			$body = '<?xml version="1.0"?><d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><' . $property . '/></d:prop></d:propfind>';
+		} elseif ($method === 'LOCK') {
+			$body = "<?xml version='1.0' encoding='UTF-8'?><d:lockinfo xmlns:d='DAV:'> <d:lockscope><" . $property . " /></d:lockscope></d:lockinfo>";
+		} elseif ($method === 'PROPPATCH') {
+			if ($property === 'favorite') {
+				$property = '<oc:favorite xmlns:oc="http://owncloud.org/ns">1</oc:favorite>';
+			}
+			$body = '<?xml version="1.0"?><d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:set><d:prop>' . $property . '</d:prop></d:set></d:propertyupdate>';
+		}
+		if ($property === '') {
+			$body = '';
+		}
+		return $body;
 	}
 
 	/**

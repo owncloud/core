@@ -1771,6 +1771,54 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the HTTP status code of responses on all endpoints should be :statusCode
+	 *
+	 * @param $statusCode
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBe($statusCode) {
+		$duplicateRemovedStatusCodes = \array_unique($this->lastHttpStatusCodesArray);
+		if (\count($duplicateRemovedStatusCodes) === 1) {
+			Assert::assertSame(
+				\intval($statusCode),
+				\intval($duplicateRemovedStatusCodes[0]),
+				'Responses did not return expected http status code'
+			);
+		} else {
+			throw new \Exception(
+				'Expected same but found different http status codes of last requested responses.' .
+				'Found status codes: ' . \implode(',', $this->lastHttpStatusCodesArray)
+			);
+		}
+	}
+
+	/**
+	 * @Then the OCS status code of responses on all endpoints should be :statusCode
+	 *
+	 * @param $statusCode
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theOCSStatusCodeOfResponsesOnAllEndpointsShouldBe($statusCode) {
+		$duplicateRemovedStatusCodes = \array_unique($this->lastOCSStatusCodesArray);
+		if (\count($duplicateRemovedStatusCodes) === 1) {
+			Assert::assertSame(
+				\intval($statusCode),
+				\intval($duplicateRemovedStatusCodes[0]),
+				'Responses did not return expected ocs status code'
+			);
+		} else {
+			throw new \Exception(
+				'Expected same but found different ocs status codes of last requested responses.' .
+				'Found status codes: ' . \implode(',', $this->lastOCSStatusCodesArray)
+			);
+		}
+	}
+
+	/**
 	 * @Then /^the HTTP reason phrase of all upload responses should be "([^"]*)"$/
 	 *
 	 * @param string $reasonPhrase

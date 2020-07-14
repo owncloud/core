@@ -170,31 +170,32 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When a user requests these endpoints with :method and no authentication then the status codes about user :user should be as listed
+	 * @When a user requests these endpoints with :method with body :body and no authentication about user :user
 	 *
 	 * @param string $method
-	 * @param string $user
+	 * @param string $body
+	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithNoAuthThenStatusCodeAboutUser($method, $user, TableNode $table) {
-		$user = \strtolower($this->featureContext->getActualUsername($user));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
+	public function userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser($method, $body, $ofUser, TableNode $table) {
+		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $user
+				$row['endpoint'], $ofUser
 			);
-			$body = $row['body'] ?? null;
 			$this->sendRequest($row['endpoint'], $method, null, false, $body);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 
 	/**
-	 * @When a user requests these endpoints with :method and no authentication then the status codes should be as listed
+	 * @When a user requests these endpoints with :method and no authentication
 	 *
 	 * @param string $method
 	 * @param TableNode $table
@@ -203,17 +204,24 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastOCSStatusCodesArray();
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		foreach ($table->getHash() as $row) {
-			$body = $row['body'] ?? null;
-			$this->sendRequest($row['endpoint'], $method, null, false, $body);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->sendRequest($row['endpoint'], $method);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			$this->featureContext->pushToLastOcsCodesArray(
+				$this->featureContext->ocsContext->getOCSResponseStatusCode(
+					$this->featureContext->getResponse()
+				)
+			);
 		}
 	}
 
 	/**
-	 * @When the user :user requests these endpoints with :method with basic auth then the status codes should be as listed
+	 * @When the user :user requests these endpoints with :method with basic auth
 	 *
 	 * @param string $user
 	 * @param string $method
@@ -228,7 +236,7 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When the user :user requests these endpoints with :method using the basic auth and generated app password then the status codes about user :ofUser should be as listed
+	 * @When the user :user requests these endpoints with :method using basic auth and generated app password about user :ofUser
 	 *
 	 * @param string $user
 	 * @param string $method
@@ -239,49 +247,85 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, $ofUser, TableNode $table) {
-		$user = $this->featureContext->getActualUsername($user);
-		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['body', 'ocs-code']);
-		foreach ($table->getHash() as $row) {
-			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $ofUser
-			);
-			$body = $row['body'] ?? null;
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
-		}
+		$this->requestEndpointsWithBasicAuthAndGeneratedPassword($user, $method, $ofUser, $table);
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method using password :password then the status codes about user :ofUser should be as listed
+	 * @When /^the user "([^"]*)" requests these endpoints with "([^"]*)" to (?:get|set) property "([^"]*)" using basic auth and generated app password about user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $method
-	 * @param string $password
+	 * @param string $property
 	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithPasswordThenStatusCodeAboutUser($user, $method, $password, $ofUser, TableNode $table) {
+	public function userRequestsEndpointsWithBasicAuthAndGeneratedPasswordWithProperty(
+		$user, $method, $property, $ofUser, TableNode $table
+	) {
+		$this->requestEndpointsWithBasicAuthAndGeneratedPassword(
+			$user, $method, $ofUser, $table, null, $property
+		);
+	}
+
+	/**
+	 * @When the user :user requests these endpoints with :method with body :body using basic auth and generated app password about user :ofUser
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $body
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsEndpointsWithBasicAuthAndGeneratedPasswordWithBody(
+		$user, $method, $body, $ofUser, TableNode $table
+	) {
+		$this->requestEndpointsWithBasicAuthAndGeneratedPassword(
+			$user, $method, $ofUser, $table, $body
+		);
+	}
+
+	/**
+	 * @param string $user requesting user
+	 * @param string $method http method
+	 * @param string $ofUser resource owner
+	 * @param TableNode $table endpoints table
+	 * @param string|null $body body for request
+	 * @param string|null $property property to get
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function requestEndpointsWithBasicAuthAndGeneratedPassword(
+		$user, $method, $ofUser, TableNode $table, $body = null, $property = null
+	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		if ($body === null && $property !== null) {
+			$body = $this->featureContext->getBodyForOCSRequest($method, $property);
+		}
+
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
 			);
-			$body = $row['body'] ?? null;
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method using password :password then the status codes should be as listed
+	 * @When user :user requests these endpoints with :method using password :password
 	 *
 	 * @param string $user
 	 * @param string $method
@@ -293,17 +337,24 @@ class AuthContext implements Context {
 	 */
 	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code', 'body']);
+		$this->featureContext->emptyLastOCSStatusCodesArray();
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
-			$body = $row['body'] ?? null;
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			$this->featureContext->pushToLastOcsCodesArray(
+				$this->featureContext->ocsContext->getOCSResponseStatusCode(
+					$this->featureContext->getResponse()
+				)
+			);
 		}
 	}
 
 	/**
-	 * @When the administrator requests these endpoint with :method then the status codes should be as listed
+	 * @When the administrator requests these endpoint with :method
 	 *
 	 * @param string $method
 	 * @param TableNode $table
@@ -316,7 +367,7 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When the administrator requests these endpoints with :method using password :password then the status codes should be as listed
+	 * @When the administrator requests these endpoints with :method using password :password
 	 *
 	 * @param string $method
 	 * @param string $password
@@ -330,20 +381,28 @@ class AuthContext implements Context {
 		$password,
 		TableNode $table
 	) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$this->administratorRequestsURLWithUsingBasicAuth(
 				$row['endpoint'],
 				$method,
 				$password
 			);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			$this->featureContext->pushToLastOcsCodesArray(
+				$this->featureContext->ocsContext->getOCSResponseStatusCode(
+					$this->featureContext->getResponse()
+				)
+			);
 		}
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method using basic token auth then the status codes should be as listed
+	 * @When user :user requests these endpoints with :method using basic token auth
 	 *
 	 * @param string $user
 	 * @param string $method
@@ -354,16 +413,24 @@ class AuthContext implements Context {
 	 */
 	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
-			$ocsCode = $row['ocs-code'] ?? null;
 			$this->userRequestsURLWithUsingBasicTokenAuth($user, $row['endpoint'], $method);
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			$this->featureContext->pushToLastOcsCodesArray(
+				$this->featureContext->ocsContext->getOCSResponseStatusCode(
+					$this->featureContext->getResponse()
+				)
+			);
 		}
 	}
 
 	/**
-	 * @When the user requests these endpoints with :method using a new browser session then the status codes should be as listed
+	 * @When the user requests these endpoints with :method using a new browser session
 	 *
 	 * @param string $method
 	 * @param TableNode $table
@@ -372,16 +439,24 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
-			$ocsCode = $row['ocs-code'] ?? null;
 			$this->userRequestsURLWithBrowserSession($row['endpoint'], $method);
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			$this->featureContext->pushToLastOcsCodesArray(
+				$this->featureContext->ocsContext->getOCSResponseStatusCode(
+					$this->featureContext->getResponse()
+				)
+			);
 		}
 	}
 
 	/**
-	 * @When the user requests these endpoints with :method using the generated app password then the status codes about user :user should be as listed
+	 * @When the user requests these endpoints with :method using the generated app password about user :user
 	 *
 	 * @param string $method
 	 * @param string $user
@@ -392,19 +467,21 @@ class AuthContext implements Context {
 	 */
 	public function userRequestsEndpointsUsingTheGeneratedAppPasswordThenStatusCodeAboutUser($method, $user, TableNode $table) {
 		$user = \strtolower($this->featureContext->getActualUsername($user));
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $user
 			);
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 
 	/**
-	 * @When the user requests these endpoints with :method using the generated app password then the status codes should be as listed
+	 * @When the user requests these endpoints with :method using the generated app password
 	 *
 	 * @param string $method
 	 * @param TableNode $table
@@ -413,11 +490,19 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
-			$ocsCode = $row['ocs-code'] ?? null;
-			$this->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			$this->featureContext->pushToLastOcsCodesArray(
+				$this->featureContext->ocsContext->getOCSResponseStatusCode(
+					$this->featureContext->getResponse()
+				)
+			);
 		}
 	}
 
@@ -576,6 +661,7 @@ class AuthContext implements Context {
 	 * @param string $body
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
 		$userRenamed = $this->featureContext->getActualUsername($user);
@@ -602,6 +688,7 @@ class AuthContext implements Context {
 	 * @param string $body
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasRequestedURLWithUsingBasicAuth(
 		$user, $url, $method, $password = null, $body = null
@@ -620,6 +707,7 @@ class AuthContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password = null) {
 		$this->userRequestsURLWithUsingBasicAuth(
