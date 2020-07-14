@@ -985,3 +985,10 @@ fieldset.warning legend + p, fieldset.update legend + p {
         padding-top: 35px;
     }
 }
+
+/* IE11 fix for centering the credential fields */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	#body-login .v-align {
+		margin-top: 30px;
+	}
+}
