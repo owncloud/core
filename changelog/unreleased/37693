@@ -1,0 +1,5 @@
+Bugfix: Fix for centering the credential fields on IE11
+
+In IE11 the input fields for user and password were not always centered.
+
+https://github.com/owncloud/core/pull/37693
