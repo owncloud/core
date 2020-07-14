@@ -719,7 +719,7 @@ class SFTP extends SSH2
             }
         }
 
-        if ($path[0] != '/') {
+        if (!strlen($path) || $path[0] != '/') {
             $path = $this->pwd . '/' . $path;
         }
 
@@ -1198,6 +1198,9 @@ class SFTP extends SSH2
         $temp = &$this->stat_cache;
         $max = count($dirs) - 1;
         foreach ($dirs as $i => $dir) {
+            if (!is_array($temp)) {
+                return false;
+            }
             if ($i === $max) {
                 unset($temp[$dir]);
                 return true;
@@ -1224,6 +1227,9 @@ class SFTP extends SSH2
 
         $temp = &$this->stat_cache;
         foreach ($dirs as $dir) {
+            if (!is_array($temp)) {
+                return null;
+            }
             if (!isset($temp[$dir])) {
                 return null;
             }
@@ -2018,8 +2024,8 @@ class SFTP extends SSH2
         $sent = 0;
         $size = $size < 0 ? ($size & 0x7FFFFFFF) + 0x80000000 : $size;
 
-        $sftp_packet_size = 4096; // PuTTY uses 4096
-        // make the SFTP packet be exactly 4096 bytes by including the bytes in the NET_SFTP_WRITE packets "header"
+        $sftp_packet_size = $this->max_sftp_packet;
+        // make the SFTP packet be exactly the SFTP packet size by including the bytes in the NET_SFTP_WRITE packets "header"
         $sftp_packet_size-= strlen($handle) + 25;
         $i = $j = 0;
         while ($dataCallback || ($size === 0 || $sent < $size)) {
