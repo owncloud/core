@@ -18,6 +18,7 @@ Summary
 * Change - Update Symfony contracts components to 1.1.9: [#37658](https://github.com/owncloud/core/pull/37658)
 * Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
 * Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
+* Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -89,6 +90,12 @@ Details
 * Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
 
    https://github.com/owncloud/core/pull/37670
+
+* Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
+
+   This change updates: - sabre/dav (4.1.0 => 4.1.1) - sabre/vobject (4.3.0 => 4.3.1)
+
+   https://github.com/owncloud/core/pull/37684
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
