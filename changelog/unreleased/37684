@@ -1,0 +1,7 @@
+Change: Update sabre dependencies
+
+This change updates:
+  - sabre/dav (4.1.0 => 4.1.1)
+  - sabre/vobject (4.3.0 => 4.3.1)
+
+https://github.com/owncloud/core/pull/37684
