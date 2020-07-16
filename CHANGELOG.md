@@ -19,6 +19,7 @@ Summary
 * Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
 * Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
+* Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -96,6 +97,16 @@ Details
    This change updates: - sabre/dav (4.1.0 => 4.1.1) - sabre/vobject (4.3.0 => 4.3.1)
 
    https://github.com/owncloud/core/pull/37684
+
+* Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
+
+   The following symfony/polyfill components have been updated to version 1.18.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-intl-normalizer symfony/polyfill-mbstring symfony/polyfill-php70
+   symfony/polyfill-php72 symfony/polyfill-php73 symfony/polyfill-php80
+
+   https://github.com/owncloud/core/pull/37694
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
