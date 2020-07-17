@@ -47,6 +47,7 @@ class PersistentLocking implements ISettings {
 		$tmpl = new Template('settings', 'panels/admin/persistentlocking');
 		$tmpl->assign('defaultTimeout', $this->config->getAppValue('core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT));
 		$tmpl->assign('maximumTimeout', $this->config->getAppValue('core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX));
+		$tmpl->assign('manualFileLockOnWebUIEnabled', $this->config->getAppValue('files', 'enable_lock_file_action', 'no'));
 
 		return $tmpl;
 	}
