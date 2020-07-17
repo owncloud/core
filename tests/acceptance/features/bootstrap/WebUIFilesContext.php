@@ -1755,7 +1755,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the option to (delete|rename|download)\s?(?:file|folder) "([^"]*)" should (not|)\s?be available on the webUI$/
+	 * @Then /^the option to (delete|rename|download|lock)\s?(?:file|folder) "([^"]*)" should (not|)\s?be available on the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $name
@@ -1770,7 +1770,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$session = $this->getSession();
 		$pageObject->waitTillPageIsLoaded($session);
 		$fileRow = $pageObject->findFileRowByName($name, $session);
-		$action = \ucfirst($action);
+		if ($action !== 'lock') {
+			$action = \ucfirst($action);
+		}
 		if ($visible) {
 			Assert::assertTrue(
 				$fileRow->isActionLabelAvailable($action, $session),
