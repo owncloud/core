@@ -679,7 +679,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @When /^user "([^"]*)" copies (?:file|folder) "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
 	 * @param string $fileSource

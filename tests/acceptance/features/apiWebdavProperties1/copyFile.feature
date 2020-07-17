@@ -101,3 +101,28 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
+
+    Scenario Outline: copy a file over the top of an existing folder
+      Given using <dav_version> DAV path
+      And user "Alice" has created folder "FOLDER/sample-folder"
+      When user "Alice" copies file "/textfile1.txt" to "/FOLDER" using the WebDAV API
+      Then the HTTP status code should be "204"
+      And the content of file "/FOLDER" for user "Alice" should be "ownCloud test text file 1"
+      And as "Alice" folder "/FOLDER/sample-folder" should not exist
+      And as "Alice" file "/textfile1.txt" should exist
+      Examples:
+        | dav_version |
+        | old         |
+        | new         |
+
+  Scenario Outline: copy a folder over the top of an existing file
+    Given using old DAV path
+    And user "Alice" has created folder "FOLDER/sample-folder"
+    When user "Alice" copies folder "/FOLDER" to "/textfile1.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "/FOLDER/sample-folder" should exist
+    And as "Alice" folder "/textfile1.txt/sample-folder" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
