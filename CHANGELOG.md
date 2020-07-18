@@ -19,6 +19,7 @@ Summary
 * Change - Update doctrine/cache (1.10.1 => 1.10.2): [#37665](https://github.com/owncloud/core/pull/37665)
 * Change - Update phpseclib/phpseclib (2.0.27 => 2.0.28): [#37670](https://github.com/owncloud/core/pull/37670)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
+* Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
 * Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
@@ -97,6 +98,14 @@ Details
    This change updates: - sabre/dav (4.1.0 => 4.1.1) - sabre/vobject (4.3.0 => 4.3.1)
 
    https://github.com/owncloud/core/pull/37684
+
+* Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
+
+   This change updates the 3rd-party dependencies of files_external: - google/apiclient
+   (v2.5.0 => v2.6.0) - google/auth (v1.9.0 => v1.10.0) - phpseclib/phpseclib (2.0.27 =>
+   2.0.28)
+
+   https://github.com/owncloud/core/pull/37687
 
 * Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
 
