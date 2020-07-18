@@ -101,3 +101,97 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
+
+    Scenario Outline: copy a file over the top of an existing folder
+      Given using <dav_version> DAV path
+      And user "Alice" has created folder "FOLDER/sample-folder"
+      When user "Alice" copies file "/textfile1.txt" to "/FOLDER" using the WebDAV API
+      Then the HTTP status code should be "204"
+      And the content of file "/FOLDER" for user "Alice" should be "ownCloud test text file 1"
+      And as "Alice" folder "/FOLDER/sample-folder" should not exist
+      And as "Alice" file "/textfile1.txt" should exist
+      Examples:
+        | dav_version |
+        | old         |
+        | new         |
+
+  Scenario Outline: copy a folder over the top of an existing file
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER/sample-folder"
+    When user "Alice" copies folder "/FOLDER" to "/textfile1.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "/FOLDER/sample-folder" should exist
+    And as "Alice" folder "/textfile1.txt/sample-folder" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: copy a folder into another folder at different level
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER/second-level-folder"
+    And user "Alice" has created folder "FOLDER/second-level-folder/third-level-folder"
+    And user "Alice" has created folder "Sample-Folder-A"
+    And user "Alice" has created folder "Sample-Folder-A/sample-folder-b"
+    And user "Alice" has created folder "Sample-Folder-A/sample-folder-b/sample-folder-c"
+    When user "Alice" copies folder "Sample-Folder-A/sample-folder-b" to "FOLDER/second-level-folder/third-level-folder" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "/Sample-Folder-A/sample-folder-b/sample-folder-c" should exist
+    And as "Alice" folder "/FOLDER/second-level-folder/third-level-folder/sample-folder-c" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: copy a file into a folder at different level
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER/second-level-folder"
+    And user "Alice" has created folder "FOLDER/second-level-folder/third-level-folder"
+    And user "Alice" has created folder "Sample-Folder-A"
+    And user "Alice" has created folder "Sample-Folder-A/sample-folder-b"
+    And user "Alice" has uploaded file with content "sample file-c" to "Sample-Folder-A/sample-folder-b/textfile-c.txt"
+    When user "Alice" copies file "Sample-Folder-A/sample-folder-b/textfile-c.txt" to "FOLDER/second-level-folder" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "FOLDER/second-level-folder/third-level-folder" should not exist
+    And as "Alice" file "Sample-Folder-A/sample-folder-b/textfile-c.txt" should exist
+    And as "Alice" file "FOLDER/second-level-folder" should exist
+    And the content of file "FOLDER/second-level-folder" for user "Alice" should be "sample file-c"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: copy a file into a file at different level
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "file at second level" to "FOLDER/second-level-file.txt"
+    And user "Alice" has created folder "Sample-Folder-A"
+    And user "Alice" has created folder "Sample-Folder-A/sample-folder-b"
+    And user "Alice" has uploaded file with content "sample file-c" to "Sample-Folder-A/sample-folder-b/textfile-c.txt"
+    When user "Alice" copies file "Sample-Folder-A/sample-folder-b/textfile-c.txt" to "FOLDER/second-level-file.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" file "Sample-Folder-A/sample-folder-b/textfile-c.txt" should exist
+    And as "Alice" file "FOLDER/second-level-file.txt" should exist
+    And as "Alice" file "FOLDER/textfile-c.txt" should not exist
+    And the content of file "FOLDER/second-level-file.txt" for user "Alice" should be "sample file-c"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: copy a folder into a file at different level
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER/second-level-folder"
+    And user "Alice" has created folder "FOLDER/second-level-folder/third-level-folder"
+    And user "Alice" has created folder "Sample-Folder-A"
+    And user "Alice" has created folder "Sample-Folder-A/sample-folder-b"
+    And user "Alice" has uploaded file with content "sample file-c" to "Sample-Folder-A/sample-folder-b/textfile-c.txt"
+    When user "Alice" copies folder "FOLDER/second-level-folder" to "Sample-Folder-A/sample-folder-b/textfile-c.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "Sample-Folder-A/sample-folder-b/textfile-c.txt" should exist
+    And as "Alice" folder "FOLDER/second-level-folder/third-level-folder" should exist
+    And as "Alice" folder "Sample-Folder-A/sample-folder-b/textfile-c.txt/third-level-folder" should exist
+    And as "Alice" folder "Sample-Folder-A/sample-folder-b/second-level-folder" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
