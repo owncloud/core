@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "יום הולדת של אנשי קשר",
+    "User disabled" : "משתמש מנוטרל",
     "Personal" : "אישי",
     "Contacts" : "אנשי קשר",
     "Technical details" : "פרטים טכנים",

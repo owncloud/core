@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Az ismerősök születésnapjai",
+    "User disabled" : "Felhasználó letiltva",
     "Personal" : "Személyes",
     "Contacts" : "Névjegyek",
     "Technical details" : "Technikai adatok",

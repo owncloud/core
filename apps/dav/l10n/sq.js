@@ -2,6 +2,8 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Datëlindje kontaktesh",
+    "User unknown" : "Përdorues i panjohur",
+    "User disabled" : "Përdorues i çaktivizuar",
     "Personal" : "Personale",
     "Contacts" : "Kontakte",
     "Technical details" : "Hollësi teknike",

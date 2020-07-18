@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Kontaktu jubilejas",
+    "User disabled" : "Lietotājs atspējots",
     "Personal" : "Personīgi",
     "Contacts" : "Kontakti"
 },

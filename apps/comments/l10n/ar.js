@@ -17,7 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "حدث خطأ أثناء نشر التعليق",
     "{count} unread comments" : "{count} تعليقات غير مقروءة",
     "Comment" : "تعليق",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>تعليقات</strong> للملفات <em>(دائمًا ما تُدرج في التدفق)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>تعليقات</strong> عن الملفات <em>(دائمًا ما تُدرج في الدفق)</em>",
     "You commented" : "كتبت تعليقًا",
     "%1$s commented" : "%1$s كتب تعليقًا",
     "You commented on %2$s" : "كتبت تعليقًا في %2$s",
