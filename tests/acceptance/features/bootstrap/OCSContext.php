@@ -431,29 +431,6 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When the administrator requests these endpoints with :method with body using password :password then the status codes should be as listed
-	 *
-	 * @param string $method
-	 * @param string $password
-	 * @param TableNode $table
-	 *
-	 * @return void
-	 */
-	public function administratorSendsRequestToTheseEndpointsWithPassword(
-		$method,
-		$password,
-		TableNode $table
-	) {
-		$admin = $this->featureContext->getAdminUsername();
-		$this->userSendsRequestToTheseEndpointsWithBodyUsingPassword(
-			$admin,
-			$method,
-			$password,
-			$table
-		);
-	}
-
-	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body using password "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -473,7 +450,7 @@ class OCSContext implements Context {
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method including body using password :password then the status codes about user :ofUser should be as listed
+	 * @When user :user requests these endpoints with :method using password :password about user :ofUser
 	 *
 	 * @param string $user
 	 * @param string $method
@@ -482,11 +459,37 @@ class OCSContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, $ofUser, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithOutBodyUsingPassword(
+		$user, $method, $password, $ofUser, TableNode $table
+	) {
+		$this->userSendsRequestToTheseEndpointsWithBodyUsingPassword(
+			$user, $method, null, $password, $ofUser, $table
+		);
+	}
+
+	/**
+	 * @When user :user requests these endpoints with :method including body :body using password :password about user :ofUser
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $body
+	 * @param string $password
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword(
+		$user, $method, $body, $password, $ofUser, TableNode $table
+	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
@@ -496,31 +499,81 @@ class OCSContext implements Context {
 				$row['endpoint'],
 				$method,
 				$password,
-				$row['body']
+				$body
 			);
-			$ocsCode = null;
-			if (\array_key_exists('ocs-code', $row)) {
-				$ocsCode = $row['ocs-code'];
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+			try {
+				$this->featureContext->pushToLastOcsCodesArray(
+					$this->getOCSResponseStatusCode(
+						$this->featureContext->getResponse()
+					)
+				);
+			} catch (Exception $exception) {
+				// do nothing if ocs code is not found
 			}
-			$this->featureContext->authContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
 		}
 	}
 
 	/**
-	 * @When user :user requests these endpoints with :method including body then the status codes about user :ofUser should be as listed
+	 * @When user :user requests these endpoints with :method including body :body about user :ofUser
 	 *
 	 * @param string $user
 	 * @param string $method
+	 * @param string $body
 	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $ofUser, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $body, $ofUser, TableNode $table) {
+		$this->sendRequestToTheseEndpointsAsNormalUser(
+			$user, $method, $ofUser, $table, $body
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" requests these endpoints with "([^"]*)" to (?:get|set) property "([^"]*)" about user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $property
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSendsRequestToTheseEndpointsWithProperty($user, $method, $property, $ofUser, TableNode $table) {
+		$this->sendRequestToTheseEndpointsAsNormalUser(
+			$user, $method, $ofUser, $table, null, $property
+		);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $method
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 * @param string|null $body
+	 * @param string|null $property
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function sendRequestToTheseEndpointsAsNormalUser(
+		$user, $method, $ofUser, $table, $body = null, $property = null
+	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
+		if (!$body && $property) {
+			$body = $this->featureContext->getBodyForOCSRequest($method, $property);
+		}
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
@@ -530,30 +583,30 @@ class OCSContext implements Context {
 				$row['endpoint'],
 				$method,
 				$this->featureContext->getPasswordForUser($user),
-				$row['body']
+				$body
 			);
-			$ocsCode = null;
-			if (\array_key_exists('ocs-code', $row)) {
-				$ocsCode = $row['ocs-code'];
-			}
-			$this->featureContext->authContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 
 	/**
-	 * @When user :asUser requests these endpoints with :method including body using the password of user :user then the status codes should be as listed
+	 * @When user :asUser requests these endpoints with :method including body :body using the password of user :user
 	 *
 	 * @param string $asUser
 	 * @param string $method
+	 * @param string $body
 	 * @param string $user
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $user, TableNode $table) {
+	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $body, $user, TableNode $table) {
 		$asUser = $this->featureContext->getActualUsername($asUser);
 		$userRenamed = $this->featureContext->getActualUsername($user);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint', 'http-code', 'body'], ['ocs-code']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $userRenamed
@@ -563,13 +616,11 @@ class OCSContext implements Context {
 				$row['endpoint'],
 				$method,
 				$this->featureContext->getPasswordForUser($user),
-				$row['body']
+				$body
 			);
-			$ocsCode = null;
-			if (\array_key_exists('ocs-code', $row)) {
-				$ocsCode = $row['ocs-code'];
-			}
-			$this->featureContext->authContext->verifyStatusCode($ocsCode, $row['http-code'], $row['endpoint']);
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
 		}
 	}
 
