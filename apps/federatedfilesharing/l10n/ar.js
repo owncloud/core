@@ -19,6 +19,7 @@ OC.L10N.register(
     "Share with me through my #ownCloud Federated Cloud ID" : "شارك معي عبر معرف السحابة الموحدة لـ #ownCloud",
     "Federated Cloud Sharing" : "المشاركة السحابية الموحدة",
     "Open documentation" : "فتح المستندات",
+    "Periodically synchronize outdated federated shares for active users" : "مزامنة المشاركات الموحدة القديمة بشكل دوري للمستخدمين النشطين",
     "Allow users on this server to send shares to other servers" : "السماح للمستخدمين على هذا الخادم بإرسال المشاركات إلى الخوادم الأخرى",
     "Allow users on this server to receive shares from other servers" : "السماح للمستخدمين على هذا الخادم باستقبال المشاركات من الخوادم الأخرى",
     "Automatically accept remote shares from trusted servers" : "قبول المشاركات البعيدة من الخوادم الموثوقة تلقائيًا",

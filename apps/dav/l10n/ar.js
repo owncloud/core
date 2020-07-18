@@ -4,7 +4,7 @@ OC.L10N.register(
     "Contact birthdays" : "أعياد ميلاد جهات الاتصال",
     "User disabled" : "تم تعطيل المستخدم",
     "Personal" : "شخصي",
-    "Contacts" : "جهات الاتصال",
+    "Contacts" : "جهات اتصال",
     "Technical details" : "تفاصيل فنية",
     "Remote Address: %s" : "العنوان البعيد: %s",
     "Request ID: %s" : "معرف الطلب: %s"
