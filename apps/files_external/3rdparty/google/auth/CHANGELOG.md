@@ -1,3 +1,9 @@
+## 1.10.0 (7/8/2020)
+
+* [feat]: Add support for Guzzle 7 (#256)
+* [fix]: Remove SDK warning (#283)
+* [chore]: Switch to github pages deploy action (#284)
+
 ## 1.9.0 (5/14/2020)
 
 * [feat] Add quotaProject param for extensible client options support (#277)

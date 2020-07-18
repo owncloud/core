@@ -765,8 +765,11 @@ class Google_Client
   /**
    * Set the scopes to be requested. Must be called before createAuthUrl().
    * Will remove any previously configured scopes.
-   * @param string|array $scope_or_scopes, ie: array('https://www.googleapis.com/auth/plus.login',
-   * 'https://www.googleapis.com/auth/moderator')
+   * @param string|array $scope_or_scopes, ie:
+   *    array(
+   *        'https://www.googleapis.com/auth/plus.login',
+   *        'https://www.googleapis.com/auth/moderator'
+   *    );
    */
   public function setScopes($scope_or_scopes)
   {
@@ -819,6 +822,7 @@ class Google_Client
    * Helper method to execute deferred HTTP requests.
    *
    * @param $request Psr\Http\Message\RequestInterface|Google_Http_Batch
+   * @param string $expectedClass
    * @throws Google_Exception
    * @return object of the type of the expected class or Psr\Http\Message\ResponseInterface.
    */
@@ -1124,22 +1128,29 @@ class Google_Client
 
   protected function createDefaultHttpClient()
   {
-    $options = ['exceptions' => false];
+    $guzzleVersion = null;
+    if (defined('\GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+      $guzzleVersion = ClientInterface::MAJOR_VERSION;
+    } elseif (defined('\GuzzleHttp\ClientInterface::VERSION')) {
+      $guzzleVersion = (int)substr(ClientInterface::VERSION, 0, 1);
+    }
 
-    $version = ClientInterface::VERSION;
-    if ('5' === $version[0]) {
+    $options = ['exceptions' => false];
+    if (5 === $guzzleVersion) {
       $options = [
         'base_url' => $this->config['base_path'],
         'defaults' => $options,
       ];
       if ($this->isAppEngine()) {
         // set StreamHandler on AppEngine by default
-        $options['handler']  = new StreamHandler();
+        $options['handler'] = new StreamHandler();
         $options['defaults']['verify'] = '/etc/ca-certificates.crt';
       }
-    } else {
-      // guzzle 6
+    } elseif (6 === $guzzleVersion || 7 === $guzzleVersion) {
+      // guzzle 6 or 7
       $options['base_uri'] = $this->config['base_path'];
+    } else {
+      throw new LogicException('Could not find supported version of Guzzle.');
     }
 
     return new Client($options);

@@ -3004,7 +3004,7 @@ class SSH2
      * @see self::write()
      * @param string $expect
      * @param int $mode
-     * @return string
+     * @return string|bool
      * @access public
      */
     function read($expect = '', $mode = self::READ_SIMPLE)
@@ -3894,7 +3894,7 @@ class SSH2
                     $this->channel_buffers[$channel][] = $data;
                     break;
                 case NET_SSH2_MSG_CHANNEL_CLOSE:
-                    $this->curTimeout = 0;
+                    $this->curTimeout = 5;
 
                     if ($this->bitmap & self::MASK_SHELL) {
                         $this->bitmap&= ~self::MASK_SHELL;
@@ -4123,9 +4123,13 @@ class SSH2
 
         $this->channel_status[$client_channel] = NET_SSH2_MSG_CHANNEL_CLOSE;
 
-        $this->curTimeout = 0;
+        $this->curTimeout = 5;
 
         while (!is_bool($this->_get_channel_packet($client_channel))) {
+        }
+
+        if ($this->is_timeout) {
+            $this->disconnect();
         }
 
         if ($want_reply) {

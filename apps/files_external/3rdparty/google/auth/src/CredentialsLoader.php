@@ -20,6 +20,7 @@ namespace Google\Auth;
 use Google\Auth\Credentials\InsecureCredentials;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Auth\Credentials\UserRefreshCredentials;
+use GuzzleHttp\ClientInterface;
 
 /**
  * CredentialsLoader contains the behaviour used to locate and find default
@@ -52,6 +53,24 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
     private static function isOnWindows()
     {
         return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+    }
+
+    /**
+     * Returns the currently available major Guzzle version.
+     *
+     * @return int
+     */
+    private static function getGuzzleMajorVersion()
+    {
+        if (defined('GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+            return ClientInterface::MAJOR_VERSION;
+        }
+
+        if (defined('GuzzleHttp\ClientInterface::VERSION')) {
+            return (int) substr(ClientInterface::VERSION, 0, 1);
+        }
+
+        throw new \Exception('Version not supported');
     }
 
     /**
@@ -145,35 +164,30 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface
         callable $httpHandler = null,
         callable $tokenCallback = null
     ) {
-        $version = \GuzzleHttp\ClientInterface::VERSION;
-
-        switch ($version[0]) {
-            case '5':
-                $client = new \GuzzleHttp\Client($httpClientOptions);
-                $client->setDefaultOption('auth', 'google_auth');
-                $subscriber = new Subscriber\AuthTokenSubscriber(
-                    $fetcher,
-                    $httpHandler,
-                    $tokenCallback
-                );
-                $client->getEmitter()->attach($subscriber);
-                return $client;
-            case '6':
-                $middleware = new Middleware\AuthTokenMiddleware(
-                    $fetcher,
-                    $httpHandler,
-                    $tokenCallback
-                );
-                $stack = \GuzzleHttp\HandlerStack::create();
-                $stack->push($middleware);
-
-                return new \GuzzleHttp\Client([
-                   'handler' => $stack,
-                   'auth' => 'google_auth',
-                ] + $httpClientOptions);
-            default:
-                throw new \Exception('Version not supported');
+        if (self::getGuzzleMajorVersion() === 5) {
+            $client = new \GuzzleHttp\Client($httpClientOptions);
+            $client->setDefaultOption('auth', 'google_auth');
+            $subscriber = new Subscriber\AuthTokenSubscriber(
+                $fetcher,
+                $httpHandler,
+                $tokenCallback
+            );
+            $client->getEmitter()->attach($subscriber);
+            return $client;
         }
+
+        $middleware = new Middleware\AuthTokenMiddleware(
+            $fetcher,
+            $httpHandler,
+            $tokenCallback
+        );
+        $stack = \GuzzleHttp\HandlerStack::create();
+        $stack->push($middleware);
+
+        return new \GuzzleHttp\Client([
+            'handler' => $stack,
+            'auth' => 'google_auth',
+        ] + $httpClientOptions);
     }
 
     /**
