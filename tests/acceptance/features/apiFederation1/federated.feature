@@ -65,14 +65,14 @@ Feature: federated
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Brian" should include
+    And the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_STRING                                   |
       | share_token | A_TOKEN                                    |
       | name        | /textfile0.txt                             |
-      | owner       | Alice                                      |
-      | user        | Brian                                      |
+      | owner       | %username%                                 |
+      | user        | %username%                                 |
       | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
       | accepted    | 0                                          |
     Examples:
@@ -87,14 +87,14 @@ Feature: federated
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Brian" should include
+    And the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                 |
       | remote      | REMOTE                   |
       | remote_id   | A_STRING                 |
       | share_token | A_TOKEN                  |
       | name        | /textfile0.txt           |
-      | owner       | Alice                    |
-      | user        | Brian                    |
+      | owner       | %username%               |
+      | user        | %username%               |
       | mountpoint  | /textfile0 (2).txt       |
       | accepted    | 1                        |
       | type        | file                     |
@@ -111,14 +111,14 @@ Feature: federated
     When user "Brian" retrieves the information of the last pending federated cloud share using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs-status>"
-    And the fields of the last response to user "Brian" should include
+    And the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_STRING                                   |
       | share_token | A_TOKEN                                    |
       | name        | /textfile0.txt                             |
-      | owner       | Alice                                      |
-      | user        | Brian                                      |
+      | owner       | %username%                                 |
+      | user        | %username%                                 |
       | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
       | accepted    | 0                                          |
     Examples:
@@ -303,14 +303,14 @@ Feature: federated
     And user "Brian" should see the following elements
       | /textfile0%20(2).txt |
     When user "Brian" gets the list of federated cloud shares using the sharing API
-    Then the fields of the last response to user "Brian" should include
+    Then the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                 |
       | remote      | REMOTE                   |
       | remote_id   | A_STRING                 |
       | share_token | A_TOKEN                  |
       | name        | /textfile0.txt           |
-      | owner       | Alice                    |
-      | user        | Brian                    |
+      | owner       | %username%               |
+      | user        | %username%               |
       | mountpoint  | /textfile0 (2).txt       |
       | accepted    | 1                        |
       | type        | file                     |
@@ -349,14 +349,14 @@ Feature: federated
     And user "Brian" should not see the following elements
       | /textfile0%20(2).txt |
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
-    Then the fields of the last response to user "Brian" should include
+    Then the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_STRING                                   |
       | share_token | A_TOKEN                                    |
       | name        | /textfile0.txt                             |
-      | owner       | Alice                                      |
-      | user        | Brian                                      |
+      | owner       | %username%                                 |
+      | user        | %username%                                 |
       | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
       | accepted    | 0                                          |
     When user "Brian" gets the list of federated cloud shares using the sharing API
@@ -419,12 +419,12 @@ Feature: federated
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Brian" should include
+    And the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING       |
       | remote      | REMOTE         |
       | name        | /zzzfolder     |
-      | owner       | Alice          |
-      | user        | Brian          |
+      | owner       | %username%     |
+      | user        | %username%     |
       | mountpoint  | /zzzfolder (2) |
       | type        | dir            |
       | permissions | all            |
@@ -446,14 +446,14 @@ Feature: federated
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Brian" should include
+    And the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                 |
       | remote      | REMOTE                   |
       | remote_id   | A_STRING                 |
       | share_token | A_TOKEN                  |
       | name        | /randomfile.txt          |
-      | owner       | Alice                    |
-      | user        | Brian                    |
+      | owner       | %username%               |
+      | user        | %username%               |
       | mountpoint  | /randomfile (2).txt      |
       | accepted    | 1                        |
       | type        | file                     |

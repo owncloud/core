@@ -459,8 +459,26 @@ class WebDavPropertiesContext implements Context {
 	public function theSingleResponseShouldContainAPropertyWithValue(
 		$key, $expectedValue
 	) {
-		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative(
+		$this->checkSingleResponseContainsAPropertyWithValueAndAlternative(
 			$key, $expectedValue, $expectedValue
+		);
+	}
+
+	/**
+	 * @Then the single response about the file owned by :user should contain a property :key with value :value
+	 *
+	 * @param string $user
+	 * @param string $key
+	 * @param string $expectedValue
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theSingleResponseAboutTheFileOwnedByShouldContainAPropertyWithValue(
+		$user, $key, $expectedValue
+	) {
+		$this->checkSingleResponseContainsAPropertyWithValueAndAlternative(
+			$key, $expectedValue, $expectedValue, $user
 		);
 	}
 
@@ -477,6 +495,23 @@ class WebDavPropertiesContext implements Context {
 	public function theSingleResponseShouldContainAPropertyWithValueAndAlternative(
 		$key, $expectedValue, $altExpectedValue
 	) {
+		$this->checkSingleResponseContainsAPropertyWithValueAndAlternative(
+			$key, $expectedValue, $altExpectedValue
+		);
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $expectedValue
+	 * @param string $altExpectedValue
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function checkSingleResponseContainsAPropertyWithValueAndAlternative(
+		$key, $expectedValue, $altExpectedValue, $user = null
+	) {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath(
 			"//d:prop/$key"
 		);
@@ -485,7 +520,8 @@ class WebDavPropertiesContext implements Context {
 		);
 		$value = $xmlPart[0]->__toString();
 		$expectedValue = $this->featureContext->substituteInLineCodes(
-			$expectedValue
+			$expectedValue,
+			$user
 		);
 		$expectedValue = "#^$expectedValue$#";
 		$altExpectedValue = "#^$altExpectedValue$#";

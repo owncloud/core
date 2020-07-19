@@ -512,10 +512,10 @@ Feature: get file properties
   Scenario Outline: Propfind the owner display name of a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
-    When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
+    When user "Alice" gets the following properties of file "file.txt" using the WebDAV API
       | propertyName          |
       | oc:owner-display-name |
-    Then the single response should contain a property "oc:owner-display-name" with value "Alice Hansen"
+    Then the single response about the file owned by "Alice" should contain a property "oc:owner-display-name" with value "%displayname%"
     Examples:
       | dav_version |
       | old         |
@@ -528,7 +528,7 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName          |
       | oc:owner-display-name |
-    Then the single response should contain a property "oc:owner-display-name" with value "Alice Hansen"
+    Then the single response about the file owned by "Alice" should contain a property "oc:owner-display-name" with value "%displayname%"
     Examples:
       | dav_version |
       | old         |

@@ -55,7 +55,7 @@ Feature: share with groups, group names are case-sensitive
       | file_target | /textfile1.txt    |
       | path        | /textfile1.txt    |
       | permissions | share,read,update |
-      | uid_owner   | Alice             |
+      | uid_owner   | %username%        |
     And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1" plus end-of-line
     When user "Alice" shares file "textfile2.txt" with group "<group_id2>" using the sharing API
     Then the OCS status code should be "404"

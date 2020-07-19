@@ -23,8 +23,8 @@ Feature: create a public link share
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
-      | uid_file_owner         | Alice           |
-      | uid_owner              | Alice           |
+      | uid_file_owner         | %username%      |
+      | uid_owner              | %username%      |
       | name                   |                 |
     When the public downloads the last public shared file with range "bytes=0-9" using the old public WebDAV API
     Then the downloaded content should be "Random dat"
@@ -52,8 +52,8 @@ Feature: create a public link share
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
-      | uid_file_owner         | Alice           |
-      | uid_owner              | Alice           |
+      | uid_file_owner         | %username%      |
+      | uid_owner              | %username%      |
       | name                   |                 |
     When the public downloads the last public shared file with range "bytes=0-9" using the new public WebDAV API
     Then the downloaded content should be "Random dat"
@@ -81,8 +81,8 @@ Feature: create a public link share
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
-      | uid_file_owner         | Alice           |
-      | uid_owner              | Alice           |
+      | uid_file_owner         | %username%      |
+      | uid_owner              | %username%      |
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "Random data"
     And the HTTP status code should be "200"
@@ -113,8 +113,8 @@ Feature: create a public link share
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
-      | uid_file_owner         | Alice           |
-      | uid_owner              | Alice           |
+      | uid_file_owner         | %username%      |
+      | uid_owner              | %username%      |
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Random data"
     And the HTTP status code should be "200"
@@ -145,8 +145,8 @@ Feature: create a public link share
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
-      | uid_file_owner         | Alice           |
-      | uid_owner              | Alice           |
+      | uid_file_owner         | %username%      |
+      | uid_owner              | %username%      |
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
     And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
@@ -173,8 +173,8 @@ Feature: create a public link share
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
-      | uid_file_owner         | Alice           |
-      | uid_owner              | Alice           |
+      | uid_file_owner         | %username%      |
+      | uid_owner              | %username%      |
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
     And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
@@ -201,8 +201,8 @@ Feature: create a public link share
       | share_type             | public_link          |
       | displayname_file_owner | %displayname%        |
       | displayname_owner      | %displayname%        |
-      | uid_file_owner         | Alice                |
-      | uid_owner              | Alice                |
+      | uid_file_owner         | %username%           |
+      | uid_owner              | %username%           |
       | name                   |                      |
     When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=1-7" using the old public WebDAV API
     Then the downloaded content should be "andom d"
@@ -232,8 +232,8 @@ Feature: create a public link share
       | share_type             | public_link          |
       | displayname_file_owner | %displayname%        |
       | displayname_owner      | %displayname%        |
-      | uid_file_owner         | Alice                |
-      | uid_owner              | Alice                |
+      | uid_file_owner         | %username%           |
+      | uid_owner              | %username%           |
       | name                   |                      |
     When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=2-7" using the new public WebDAV API
     Then the downloaded content should be "ndom d"
@@ -264,8 +264,8 @@ Feature: create a public link share
       | share_type             | public_link          |
       | displayname_file_owner | %displayname%        |
       | displayname_owner      | %displayname%        |
-      | uid_file_owner         | Alice                |
-      | uid_owner              | Alice                |
+      | uid_file_owner         | %username%           |
+      | uid_owner              | %username%           |
       | name                   |                      |
     And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%"
     And the downloaded content should be "Random data"
@@ -295,8 +295,8 @@ Feature: create a public link share
       | share_type             | public_link          |
       | displayname_file_owner | %displayname%        |
       | displayname_owner      | %displayname%        |
-      | uid_file_owner         | Alice                |
-      | uid_owner              | Alice                |
+      | uid_file_owner         | %username%           |
+      | uid_owner              | %username%           |
       | name                   |                      |
     And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%"
     And the downloaded content should be "Random data"
@@ -341,7 +341,7 @@ Feature: create a public link share
       | item_type   | file         |
       | share_type  | public_link  |
       | permissions | read         |
-      | uid_owner   | Alice        |
+      | uid_owner   | %username%   |
     And the fields of the last response should not include
       | share_with             | ANY_VALUE |
       | share_with_displayname | ANY_VALUE |
@@ -694,7 +694,7 @@ Feature: create a public link share
       | item_type   | file            |
       | share_type  | public_link     |
       | permissions | read            |
-      | uid_owner   | Alice           |
+      | uid_owner   | %username%      |
       | expiration  | +7 days         |
     When user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -705,7 +705,7 @@ Feature: create a public link share
       | item_type   | file            |
       | share_type  | public_link     |
       | permissions | read            |
-      | uid_owner   | Alice           |
+      | uid_owner   | %username%      |
       | expiration  | +7 days         |
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"

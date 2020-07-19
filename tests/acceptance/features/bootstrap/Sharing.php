@@ -2016,6 +2016,7 @@ trait Sharing {
 			if (\in_array($field, $userRelatedFieldNames)) {
 				$value = $this->substituteInLineCodes($value, $user);
 			}
+			$value = $this->getActualUsername($value);
 			$value = $this->replaceValuesFromTable($field, $value);
 			Assert::assertTrue(
 				$this->isFieldInResponse($field, $value),
@@ -2025,7 +2026,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the fields of the last response to user "([^"]*)" sharing with (?:user|group) "([^"]*)" should include$/
+	 * @Then /^the fields of the last response (?:to|about) user "([^"]*)" sharing with (?:user|group) "([^"]*)" should include$/
 	 *
 	 * @param string $sharer
 	 * @param string $sharee
@@ -2037,9 +2038,9 @@ trait Sharing {
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {
-			if (\in_array($field, ["displayname_owner", "displayname_file_owner", "uid_owner", "uid_file_owner"])) {
+			if (\in_array($field, ["displayname_owner", "displayname_file_owner", "owner", "uid_owner", "uid_file_owner"])) {
 				$value = $this->substituteInLineCodes($value, $sharer);
-			} elseif (\in_array($field, ["share_with", "share_with_displayname"])) {
+			} elseif (\in_array($field, ["share_with", "share_with_displayname", "user"])) {
 				$value = $this->substituteInLineCodes($value, $sharee);
 			}
 			$value = $this->replaceValuesFromTable($field, $value);
