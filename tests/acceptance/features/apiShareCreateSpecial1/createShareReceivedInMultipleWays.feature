@@ -99,17 +99,17 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | uid_owner   | Brian           |
-      | share_with  | Alice           |
+    Then the fields of the last response about user "Brian" sharing with user "Alice" should include
+      | uid_owner   | %username%      |
+      | share_with  | %username%      |
       | file_target | /randomfile.txt |
       | item_type   | file            |
       | permissions | read            |
     When user "Carol" shares file "randomfile.txt" with user "Alice" with permissions "read,update" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | uid_owner   | Carol               |
-      | share_with  | Alice               |
+    Then the fields of the last response about user "Carol" sharing with user "Alice" should include
+      | uid_owner   | %username%          |
+      | share_with  | %username%          |
       | file_target | /randomfile (2).txt |
       | item_type   | file                |
       | permissions | read,update         |
@@ -133,17 +133,17 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has created folder "zzzfolder/Carol"
     When user "Brian" shares folder "zzzfolder" with user "Alice" with permissions "read,delete" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | uid_owner   | Brian       |
-      | share_with  | Alice       |
+    Then the fields of the last response about user "Brian" sharing with user "Alice" should include
+      | uid_owner   | %username%  |
+      | share_with  | %username%  |
       | file_target | /zzzfolder  |
       | item_type   | folder      |
       | permissions | read,delete |
     When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | uid_owner   | Carol          |
-      | share_with  | Alice          |
+    Then the fields of the last response about user "Carol" sharing with user "Alice" should include
+      | uid_owner   | %username%     |
+      | share_with  | %username%     |
       | file_target | /zzzfolder (2) |
       | item_type   | folder         |
       | permissions | read,share     |

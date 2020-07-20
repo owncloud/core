@@ -22,7 +22,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  |            |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
 
   Scenario: expiration date is disabled for sharing with users but enabled for sharing with groups, user shares with another user
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -43,7 +43,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +7 days    |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
 
   Scenario Outline: expiration date is enforced for user, user shares file
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -58,7 +58,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | <days>     |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
     Examples:
       | num_days | days     |
       | 3        | +3 days  |
@@ -77,7 +77,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
 
   Scenario: expiration date is enforced for user, user reshares received file with another user
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -92,7 +92,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -106,7 +106,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +7 days    |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user, but removes default expiration date
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -119,7 +119,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
       | expiration  |            |
 
   Scenario: expiration date is enabled but not enforced for user, user reshares received file with another user, but changes expiration date
@@ -133,7 +133,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
       | expiration  | +15 days   |
 
   Scenario: expiration date is enabled but not enforced, user shares through api and checks the expiration date on webUI
@@ -166,7 +166,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
       | expiration  | +10 days   |
 
   Scenario: expiration date is enabled but not enforced, user receives a share with expiration date and reshares it, setting a date further in future than the original
@@ -186,7 +186,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
       | expiration  | +20 days   |
 
   Scenario: expiration date is enabled and enforced, user receives a share with expiration date and tries to reshare with expiration date less than the original
@@ -207,7 +207,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
       | expiration  | +20 days   |
 
   Scenario: expiration date is enabled and enforced, user receives a share with expiration date and tries to reshare it with a date further in future than the original
@@ -228,7 +228,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
       | expiration  | +30 days   |
 
   Scenario: expiration date is enabled and enforced, user receives a folder from a user share with expiration date and shares sub-folder with another user
@@ -249,7 +249,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And the information of the last share of user "Alice" should include
       | share_type  | user                 |
       | file_target | /simple-empty-folder |
-      | uid_owner   | Alice                |
+      | uid_owner   | %username%           |
       | expiration  | +20 days             |
       | share_with  | Brian                |
 
@@ -266,7 +266,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | <days>     |
-      | uid_owner   | Alice      |
+      | uid_owner   | %username% |
     Examples:
       | days     |
       | +15 days |

@@ -344,6 +344,12 @@ function env_alt_home_clear {
 function run_behat_tests() {
 	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
 
+	if [ "${REPLACE_USERNAMES}" == "true" ]
+	then
+		echo "Usernames and attributes in tests are being replaced:"
+		cat ${SCRIPT_PATH}/usernames.json
+	fi
+
 	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
