@@ -150,7 +150,7 @@ class FileActionsMenu extends OwncloudPage {
 		$this->assertElementNotNull(
 			$detailsBtn,
 			__METHOD__ .
-			" could not find action button with label $this->deleteActionLabel"
+			" could not find action button with label $this->detailsActionLabel"
 		);
 		$detailsBtn->focus();
 		$detailsBtn->click();
