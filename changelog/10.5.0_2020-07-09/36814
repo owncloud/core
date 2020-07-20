@@ -12,3 +12,4 @@ key from there, and it will take into account whether the config.php is read-onl
 You can also enter a license key from the grace period popup.
 
 https://github.com/owncloud/core/pull/36814
+https://github.com/owncloud/core/pull/37711

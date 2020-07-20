@@ -447,6 +447,12 @@ class Installer {
 			if ($dir = \opendir($app_dir['path'])) {
 				$nodes = \scandir($app_dir['path']);
 				foreach ($nodes as $filename) {
+					// Since core 10.5.0, enterprise_key app is no longer used
+					// Be sure not to accidentally enable it if it has been
+					// left behind in an apps dir.
+					if ($filename === 'enterprise_key') {
+						continue;
+					}
 					if (\substr($filename, 0, 1) != '.' and \is_dir($app_dir['path']."/$filename")) {
 						if (\file_exists($app_dir['path']."/$filename/appinfo/info.xml")) {
 							if (!Installer::isInstalled($filename)) {
