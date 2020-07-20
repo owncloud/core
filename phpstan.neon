@@ -2,24 +2,20 @@ parameters:
   bootstrapFiles:
     - %currentWorkingDirectory%/lib/base.php
   excludes_analyse:
-    - %currentWorkingDirectory%/core/templates/*
-    - %currentWorkingDirectory%/core/routes.php
     - %currentWorkingDirectory%/core/ajax/update.php
     - %currentWorkingDirectory%/apps/*/tests*
-    - %currentWorkingDirectory%/apps/*/appinfo/routes.php
     - %currentWorkingDirectory%/apps/*/composer/*
     - %currentWorkingDirectory%/apps/*/3rdparty/*
     - %currentWorkingDirectory%/apps/files_external/ajax/oauth2.php
     - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/Google.php
     - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/SMB.php
     - %currentWorkingDirectory%/settings/templates/*
-    - %currentWorkingDirectory%/settings/routes.php
   ignoreErrors:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'
     - '#Instantiated class Test\\Util\\User\\Dummy not found.#'
     # errors below are to be addressed by own pull requests - non trivial changes required
-    - '#Unsafe usage of new static().#'
+    - '#Unsafe usage of new static\(\).#'
     - '#Cannot instantiate interface OCP\\Files\\ObjectStore\\IObjectStore.#'
     - '#Instantiated class OCA\\Encryption\\Crypto\\Crypt not found.#'
     - '#Instantiated class OCA\\Encryption\\Util not found.#'
