@@ -41,6 +41,7 @@ class FileActionsMenu extends OwncloudPage {
 	protected $renameActionLabel = "Rename";
 	protected $deleteActionLabel = "Delete";
 	protected $detailsActionLabel = "Details";
+	protected $lockFileActionLabel = "Lock file";
 	protected $declineShareDataAction = "Reject";
 	protected $fileRowDownloadBtnXpath = "//td[@class='filename']//a[@class='name']";
 
@@ -157,6 +158,22 @@ class FileActionsMenu extends OwncloudPage {
 	}
 
 	/**
+	 * clicks the lock file button
+	 *
+	 * @return void
+	 */
+	public function lockFile() {
+		$detailsBtn = $this->findButton($this->lockFileActionLabel);
+		$this->assertElementNotNull(
+			$detailsBtn,
+			__METHOD__ .
+			" could not find action button with label $this->lockFileActionLabel"
+		);
+		$detailsBtn->focus();
+		$detailsBtn->click();
+	}
+
+	/**
 	 * clicks the decline share button
 	 *
 	 * @return void
@@ -216,6 +233,16 @@ class FileActionsMenu extends OwncloudPage {
 	 */
 	public function getDetailsActionLabel() {
 		return $this->detailsActionLabel;
+	}
+
+	/**
+	 * just so the label can be reused in other places
+	 * and does not need to be redefined
+	 *
+	 * @return string
+	 */
+	public function getLockFileActionLabel() {
+		return $this->lockFileActionLabel;
 	}
 
 	/**
