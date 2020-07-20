@@ -21,6 +21,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   Scenario: send DELETE requests to webDav endpoints as normal user with no password
     When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "" about user "Alice"
@@ -31,6 +32,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @skipOnOcis @issue-ocis-reva-13
   Scenario: send DELETE requests to another user's webDav endpoints as normal user
@@ -40,6 +42,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @smokeTest
   Scenario: send DELETE requests to webDav endpoints using invalid username but correct password
@@ -51,6 +54,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   Scenario: send DELETE requests to webDav endpoints using valid password and username of different user
     When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
@@ -61,6 +65,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
@@ -73,6 +78,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @skipOnOcis @issue-ocis-reva-60
   Scenario: send DELETE requests to webDav endpoints using token authentication should not work
@@ -87,6 +93,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @skipOnOcis @issue-ocis-reva-60
   Scenario: send DELETE requests to webDav endpoints using app password token as password
@@ -101,3 +108,4 @@ Feature: delete file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/FOLDER            |
     Then the HTTP status code of responses on all endpoints should be "204"
+    And the OCS status code of responses on all endpoints should be "notset"

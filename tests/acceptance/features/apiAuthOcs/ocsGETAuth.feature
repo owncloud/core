@@ -27,7 +27,7 @@ Feature: auth
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
-    Then the OCS status code of responses on all endpoints should be "997"
+    And the OCS status code of responses on all endpoints should be "997"
 
   @issue-ocis-reva-29 @skipOnOcis
   Scenario: ocs config end point accessible by unauthorized users
@@ -35,12 +35,12 @@ Feature: auth
       | endpoint           |
       | /ocs/v1.php/config |
     Then the HTTP status code of responses on all endpoints should be "200"
-    Then the OCS status code of responses on all endpoints should be "100"
+    And the OCS status code of responses on all endpoints should be "100"
     When a user requests these endpoints with "GET" and no authentication
       | endpoint           |
       | /ocs/v2.php/config |
     Then the HTTP status code of responses on all endpoints should be "200"
-    Then the OCS status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "200"
 
   @skipOnOcV10
   @issue-ocis-reva-29
@@ -69,6 +69,7 @@ Feature: auth
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-11
@@ -88,7 +89,7 @@ Feature: auth
       | /ocs/v1.php/config                                          |
       | /ocs/v1.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "200"
-    Then the OCS status code of responses on all endpoints should be "100"
+    And the OCS status code of responses on all endpoints should be "100"
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                                                    |
       | /ocs/v2.php/apps/files_external/api/v1/mounts               |
@@ -98,7 +99,7 @@ Feature: auth
       | /ocs/v2.php/config                                          |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "200"
-    Then the OCS status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "200"
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                 |
       | /ocs/v1.php/cloud/apps   |
@@ -108,7 +109,7 @@ Feature: auth
       | /ocs/v2.php/cloud/groups |
       | /ocs/v2.php/cloud/users  |
     Then the HTTP status code of responses on all endpoints should be "401"
-    Then the OCS status code of responses on all endpoints should be "997"
+    And the OCS status code of responses on all endpoints should be "997"
 
   @skipOnOcV10
   @issue-ocis-reva-11
@@ -229,6 +230,7 @@ Feature: auth
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
 
   @skipOnOcis
   @issue-ocis-reva-65

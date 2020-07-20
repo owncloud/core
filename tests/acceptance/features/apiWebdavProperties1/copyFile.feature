@@ -102,7 +102,8 @@ Feature: copy file
       | old         |
       | new         |
 
-    Scenario Outline: copy a file over the top of an existing folder
+  @skipOnOcis
+  Scenario Outline: copy a file over the top of an existing folder
       Given using <dav_version> DAV path
       And user "Alice" has created folder "FOLDER/sample-folder"
       When user "Alice" copies file "/textfile1.txt" to "/FOLDER" using the WebDAV API
@@ -115,6 +116,7 @@ Feature: copy file
         | old         |
         | new         |
 
+  @skipOnOcis
   Scenario Outline: copy a folder over the top of an existing file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER/sample-folder"
@@ -127,6 +129,7 @@ Feature: copy file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: copy a folder into another folder at different level
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER/second-level-folder"
@@ -143,6 +146,7 @@ Feature: copy file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: copy a file into a folder at different level
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER/second-level-folder"
@@ -161,6 +165,7 @@ Feature: copy file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: copy a file into a file at different level
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "file at second level" to "FOLDER/second-level-file.txt"
@@ -178,6 +183,7 @@ Feature: copy file
       | old         |
       | new         |
 
+  @skipOnOcis
   Scenario Outline: copy a folder into a file at different level
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER/second-level-folder"

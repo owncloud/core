@@ -28,7 +28,7 @@ Feature: auth
       | /ocs/v1.php/cloud/users/%username%/subadmins                    |
       | /ocs/v2.php/cloud/users/%username%/subadmins                    |
     Then the HTTP status code of responses on all endpoints should be "401"
-    Then the OCS status code of responses on all endpoints should be "997"
+    And the OCS status code of responses on all endpoints should be "997"
 
   @smokeTest @skipOnOcV10 @issue-ocis-reva-30 @issue-ocis-reva-65
    #after fixing all issues delete this Scenario and use the one above
@@ -53,3 +53,4 @@ Feature: auth
       | /ocs/v1.php/cloud/users/%username%/subadmins                    |
       | /ocs/v2.php/cloud/users/%username%/subadmins                    |
     Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"

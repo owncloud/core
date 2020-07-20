@@ -510,8 +510,9 @@ class OCSContext implements Context {
 						$this->featureContext->getResponse()
 					)
 				);
-			} catch (Exception $exception) {
-				// do nothing if ocs code is not found
+			} catch (\Exception $e) {
+				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
+				$this->featureContext->pushToLastOcsCodesArray("notset");
 			}
 		}
 	}
@@ -588,6 +589,16 @@ class OCSContext implements Context {
 			$this->featureContext->pushToLastHttpStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
 			);
+			try {
+				$this->featureContext->pushToLastOcsCodesArray(
+					$this->getOCSResponseStatusCode(
+						$this->featureContext->getResponse()
+					)
+				);
+			} catch (\Exception $e) {
+				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
+				$this->featureContext->pushToLastOcsCodesArray("notset");
+			}
 		}
 	}
 
@@ -607,6 +618,8 @@ class OCSContext implements Context {
 		$asUser = $this->featureContext->getActualUsername($asUser);
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $userRenamed
@@ -621,6 +634,16 @@ class OCSContext implements Context {
 			$this->featureContext->pushToLastHttpStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
 			);
+			try {
+				$this->featureContext->pushToLastOcsCodesArray(
+					$this->getOCSResponseStatusCode(
+						$this->featureContext->getResponse()
+					)
+				);
+			} catch (\Exception $e) {
+				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
+				$this->featureContext->pushToLastOcsCodesArray("notset");
+			}
 		}
 	}
 
