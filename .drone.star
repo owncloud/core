@@ -248,6 +248,9 @@ config = {
 			'filterTags': '@smokeTest&&~@notifications-app-required',
 			'runAllSuites': True,
 			'numberOfParts': 5,
+			'extraEnvironment': {
+				'EXPECTED_FAILURES_FILE': 'tests/acceptance/expected-failures.txt'
+			}
 		},
 	}
 }
