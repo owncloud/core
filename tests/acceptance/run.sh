@@ -395,6 +395,7 @@ function run_behat_tests() {
 		PASSED=true
 		SOME_SCENARIO_RERUN=false
 		FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+		echo "FAILED_SCENARIO_PATHS_COLORED: ${FAILED_SCENARIO_PATHS_COLORED}"
 		# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
 		# Strip them out so we can pass just the ordinary feature details to Behat.
 		# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
