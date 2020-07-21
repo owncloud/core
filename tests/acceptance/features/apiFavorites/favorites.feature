@@ -22,7 +22,7 @@ Feature: favorite
     When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
       | propertyName |
       | oc:favorite  |
-    Then the single response should contain a property "oc:favorite" with value "1"
+    Then the single response should contain a property "oc:favorite" with value "2"
     Examples:
       | dav_version |
       | old         |

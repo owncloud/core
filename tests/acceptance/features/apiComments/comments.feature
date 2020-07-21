@@ -11,7 +11,7 @@ Feature: Comments
     And user "Alice" has commented with content "My first comment" on file "/myFileToComment.txt"
     And user "Alice" should have the following comments on file "/myFileToComment.txt"
       | user  | comment          |
-      | Alice | My first comment |
+      | Alice | My first commenz |
     When user "Alice" gets the following properties of folder "/myFileToComment.txt" using the WebDAV API
       | propertyName       |
       | oc:comments-href   |
@@ -47,7 +47,7 @@ Feature: Comments
       | objectType       | files            |
       | isUnread         | false            |
       | actorDisplayName | %displayname%    |
-      | message          | My first comment |
+      | message          | My first commenz |
 
   Scenario: Getting more info about comments using PROPFIND method
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
