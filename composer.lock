@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2afa5f0ded072c52e8a2954ddb42497e",
+    "content-hash": "5bb7ed2602d6df756232a36398eff9f4",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -168,16 +168,16 @@
         },
         {
             "name": "deepdiver/zipstreamer",
-            "version": "1.1.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DeepDiver1975/PHPZipStreamer.git",
-                "reference": "c8e73ca3204bd0e06abdb0bc533f073b616d6e47"
+                "reference": "b8c59647ff34fb97e8937aefb2a65de2bc4b4755"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/c8e73ca3204bd0e06abdb0bc533f073b616d6e47",
-                "reference": "c8e73ca3204bd0e06abdb0bc533f073b616d6e47",
+                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/b8c59647ff34fb97e8937aefb2a65de2bc4b4755",
+                "reference": "b8c59647ff34fb97e8937aefb2a65de2bc4b4755",
                 "shasum": ""
             },
             "require": {
@@ -229,7 +229,7 @@
                 "stream",
                 "zip"
             ],
-            "time": "2018-03-26T14:48:40+00:00"
+            "time": "2020-07-21T07:45:14+00:00"
         },
         {
             "name": "deepdiver1975/tarstreamer",
