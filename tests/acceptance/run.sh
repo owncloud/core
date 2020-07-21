@@ -417,6 +417,7 @@ function run_behat_tests() {
 				fi
 			done
 
+		echo "FAILED_SCENARIO_PATHS: ${FAILED_SCENARIO_PATHS}"
 		# Check that every scenario in the list of expected failures did fail
 		while read SUITE_SCENARIO
 			do
@@ -437,6 +438,7 @@ function run_behat_tests() {
 					fi
 				fi
 
+				echo "SUITE_SCENARIO: ${SUITE_SCENARIO}"
 				# look for the expected suite-scenario at the end of a line in the
 				# FAILED_SCENARIO_PATHS - for example looking for apiComments/comments.feature:9
 				# we want to match lines like:
