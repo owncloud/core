@@ -1083,6 +1083,8 @@ export IPV4_URL
 export IPV6_URL
 export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
+TEST_LOG_FILE=$(mktemp)
+
 if [ ${#BEHAT_SUITES[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
 then
 	SUITE_FEATURE_TEXT="all ${TEST_TYPE_TEXT}"
@@ -1103,8 +1105,6 @@ else
 		SUITE_FEATURE_TEXT="${SUITE_FEATURE_TEXT} ${BEHAT_FEATURE_FILE}"
 	fi
 fi
-
-TEST_LOG_FILE=$(mktemp)
 
 for i in "${!BEHAT_SUITES[@]}"
 	do
