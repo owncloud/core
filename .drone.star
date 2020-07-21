@@ -116,6 +116,9 @@ config = {
 				'apiWebdavUpload1',
 				'apiWebdavUpload2',
 			],
+			'extraEnvironment': {
+				'EXPECTED_FAILURES_FILE': 'tests/acceptance/expected-failures.txt'
+			}
 		},
 		'apiNotifications': {
 			'suites': [
