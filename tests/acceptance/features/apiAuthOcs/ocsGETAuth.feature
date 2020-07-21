@@ -29,7 +29,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @issue-ocis-reva-29 @skipOnOcis
+  @skipOnOcis @issue-ocis-reva-29
   Scenario: ocs config end point accessible by unauthorized users
     When a user requests these endpoints with "GET" and no authentication
       | endpoint           |
@@ -251,6 +251,7 @@ Feature: auth
     And the OCS status code of responses on all endpoints should be "200"
 
   @skipOnOcis
+  @issue-ocis-reva-30
   @issue-ocis-reva-65
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as admin user with wrong password
@@ -289,6 +290,7 @@ Feature: auth
 
 
   @skipOnOcis
+  @issue-ocis-reva-30
   @issue-ocis-reva-28
   Scenario: using OCS with token auth of a normal user
     Given a new client token for "Alice" has been generated
@@ -359,6 +361,7 @@ Feature: auth
 
 
   @skipOnOcis
+  @issue-ocis-reva-30
   @issue-ocis-reva-60
   Scenario: using OCS with an app password of a normal user
     Given a new browser session for "Alice" has been started
