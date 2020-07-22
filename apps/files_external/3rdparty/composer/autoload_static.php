@@ -36,7 +36,6 @@ class ComposerStaticInit98fe9b281934250b3a93f69a5ce843b3
         'I' => 
         array (
             'Icewind\\Streams\\' => 16,
-            'Icewind\\SMB\\Test\\' => 17,
             'Icewind\\SMB\\' => 12,
         ),
         'G' => 
@@ -81,10 +80,6 @@ class ComposerStaticInit98fe9b281934250b3a93f69a5ce843b3
         'Icewind\\Streams\\' => 
         array (
             0 => __DIR__ . '/..' . '/icewind/streams/src',
-        ),
-        'Icewind\\SMB\\Test\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/icewind/smb/tests',
         ),
         'Icewind\\SMB\\' => 
         array (
@@ -12258,16 +12253,6 @@ class ComposerStaticInit98fe9b281934250b3a93f69a5ce843b3
         'Icewind\\SMB\\Options' => __DIR__ . '/..' . '/icewind/smb/src/Options.php',
         'Icewind\\SMB\\ServerFactory' => __DIR__ . '/..' . '/icewind/smb/src/ServerFactory.php',
         'Icewind\\SMB\\System' => __DIR__ . '/..' . '/icewind/smb/src/System.php',
-        'Icewind\\SMB\\Test\\AbstractShareTest' => __DIR__ . '/..' . '/icewind/smb/tests/AbstractShareTest.php',
-        'Icewind\\SMB\\Test\\NativeShareTest' => __DIR__ . '/..' . '/icewind/smb/tests/NativeShareTest.php',
-        'Icewind\\SMB\\Test\\NativeStreamTest' => __DIR__ . '/..' . '/icewind/smb/tests/NativeStreamTest.php',
-        'Icewind\\SMB\\Test\\NotifyHandlerTest' => __DIR__ . '/..' . '/icewind/smb/tests/NotifyHandlerTest.php',
-        'Icewind\\SMB\\Test\\ParserTest' => __DIR__ . '/..' . '/icewind/smb/tests/ParserTest.php',
-        'Icewind\\SMB\\Test\\ServerFactoryTest' => __DIR__ . '/..' . '/icewind/smb/tests/ServerFactoryTest.php',
-        'Icewind\\SMB\\Test\\ServerTest' => __DIR__ . '/..' . '/icewind/smb/tests/ServerTest.php',
-        'Icewind\\SMB\\Test\\ShareTest' => __DIR__ . '/..' . '/icewind/smb/tests/ShareTest.php',
-        'Icewind\\SMB\\Test\\TestCase' => __DIR__ . '/..' . '/icewind/smb/tests/TestCase.php',
-        'Icewind\\SMB\\Test\\TimeZoneProviderTest' => __DIR__ . '/..' . '/icewind/smb/tests/TimeZoneProviderTest.php',
         'Icewind\\SMB\\TimeZoneProvider' => __DIR__ . '/..' . '/icewind/smb/src/TimeZoneProvider.php',
         'Icewind\\SMB\\Wrapped\\Connection' => __DIR__ . '/..' . '/icewind/smb/src/Wrapped/Connection.php',
         'Icewind\\SMB\\Wrapped\\ErrorCodes' => __DIR__ . '/..' . '/icewind/smb/src/Wrapped/ErrorCodes.php',
