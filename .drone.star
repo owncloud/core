@@ -249,7 +249,7 @@ config = {
 			'runAllSuites': True,
 			'numberOfParts': 5,
 			'extraEnvironment': {
-				'EXPECTED_FAILURES_FILE': 'tests/acceptance/expected-failures.txt'
+				'EXPECTED_FAILURES_FILE': 'tests/acceptance/expected-smoke-test-failures.txt'
 			}
 		},
 	}
