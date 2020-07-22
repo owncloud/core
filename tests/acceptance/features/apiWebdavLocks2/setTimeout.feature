@@ -23,13 +23,13 @@ Feature: set timeouts of LOCKS
       | propertyName    |
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
-    # consider a drift of 5 seconds between setting the lock and retrieving it
+    # consider a drift of up to 9 seconds between setting the lock and retrieving it
     Examples:
       | dav-path | default-timeout | max-timeout | result                     |
-      | old      | 120             | 3600        | /Second-(120\|11[5-9])$/   |
-      | old      | 99999           | 3600        | /Second-(3600\|359[5-9])$/ |
-      | new      | 120             | 3600        | /Second-(120\|11[5-9])$/   |
-      | new      | 99999           | 3600        | /Second-(3600\|359[5-9])$/ |
+      | old      | 120             | 3600        | /Second-(120\|11[1-9])$/   |
+      | old      | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
+      | new      | 120             | 3600        | /Second-(120\|11[1-9])$/   |
+      | new      | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
 
   Scenario Outline: set timeout on folder
     Given using <dav-path> DAV path
@@ -83,18 +83,18 @@ Feature: set timeouts of LOCKS
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
       | dav-path | timeout      | default-timeout | max-timeout | result                     |
-      | old      | second-600   | 120             | 3600        | /Second-(600\|59[5-9])$/   |
-      | old      | second-600   | 99999           | 3600        | /Second-(600\|59[5-9])$/   |
-      | old      | second-10000 | 120             | 3600        | /Second-(3600\|359[5-9])$/ |
-      | old      | second-10000 | 99999           | 3600        | /Second-(3600\|359[5-9])$/ |
-      | old      | infinite     | 120             | 3600        | /Second-(3600\|359[5-9])$/ |
-      | old      | infinite     | 99999           | 3600        | /Second-(3600\|359[5-9])$/ |
-      | new      | second-600   | 120             | 3600        | /Second-(600\|59[5-9])$/   |
-      | new      | second-600   | 99999           | 3600        | /Second-(600\|59[5-9])$/   |
-      | new      | second-10000 | 120             | 3600        | /Second-(3600\|359[5-9])$/ |
-      | new      | second-10000 | 99999           | 3600        | /Second-(3600\|359[5-9])$/ |
-      | new      | infinite     | 120             | 3600        | /Second-(3600\|359[5-9])$/ |
-      | new      | infinite     | 99999           | 3600        | /Second-(3600\|359[3-9])$/ |
+      | old      | second-600   | 120             | 3600        | /Second-(600\|59[1-9])$/   |
+      | old      | second-600   | 99999           | 3600        | /Second-(600\|59[1-9])$/   |
+      | old      | second-10000 | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
+      | old      | second-10000 | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
+      | old      | infinite     | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
+      | old      | infinite     | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
+      | new      | second-600   | 120             | 3600        | /Second-(600\|59[1-9])$/   |
+      | new      | second-600   | 99999           | 3600        | /Second-(600\|59[1-9])$/   |
+      | new      | second-10000 | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
+      | new      | second-10000 | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
+      | new      | infinite     | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
+      | new      | infinite     | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
 
   @files_sharing-app-required
   Scenario Outline: as owner set timeout on folder as receiver check it
