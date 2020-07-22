@@ -68,8 +68,8 @@ Feature: lock folders
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/parent.txt" to "/parent.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "Alice" folder "/parent.txt" should not exist
-    But as "Alice" folder "/PARENT/parent.txt" should exist
+    And as "Alice" file "/parent.txt" should not exist
+    But as "Alice" file "/PARENT/parent.txt" should exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -83,8 +83,8 @@ Feature: lock folders
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/CHILD/child.txt" to "/PARENT/child.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And as "Alice" folder "/PARENT/child.txt" should not exist
-    But as "Alice" folder "/PARENT/CHILD/child.txt" should exist
+    And as "Alice" file "/PARENT/child.txt" should not exist
+    But as "Alice" file "/PARENT/CHILD/child.txt" should exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |

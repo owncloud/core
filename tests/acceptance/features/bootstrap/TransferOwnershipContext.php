@@ -190,7 +190,7 @@ class TransferOwnershipContext implements Context {
 	 * @param string $entry
 	 * @param string $path
 	 *
-	 * @return ResponseInterface
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
@@ -202,7 +202,7 @@ class TransferOwnershipContext implements Context {
 			$user, $entry, $this->getLastTransferPath()
 		);
 		$path = $this->getLastTransferPath() . $path;
-		return $this->featureContext->asFileOrFolderShouldNotExist(
+		$this->featureContext->asFileOrFolderShouldNotExist(
 			$user, $entry, $path
 		);
 	}

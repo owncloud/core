@@ -49,12 +49,12 @@ Feature: sharing
     And user "Carol" has created folder "<receiver_folder>"
     When user "Alice" shares folder "<sharer_folder>" with user "Brian" using the sharing API
     And user "Brian" moves folder "<receiver_folder>" to "<sharer_folder>/<receiver_folder>" using the WebDAV API
-    Then as "Alice" file "<sharer_folder>/<receiver_folder>" should exist
-    And as "Brian" file "<sharer_folder>/<receiver_folder>" should exist
+    Then as "Alice" folder "<sharer_folder>/<receiver_folder>" should exist
+    And as "Brian" folder "<sharer_folder>/<receiver_folder>" should exist
     When user "Alice" shares folder "<group_folder>" with group "grp1" using the sharing API
     And user "Carol" moves folder "<receiver_folder>" to "<group_folder>/<receiver_folder>" using the WebDAV API
-    Then as "Alice" file "<group_folder>/<receiver_folder>" should exist
-    And as "Carol" file "<group_folder>/<receiver_folder>" should exist
+    Then as "Alice" folder "<group_folder>/<receiver_folder>" should exist
+    And as "Carol" folder "<group_folder>/<receiver_folder>" should exist
     Examples:
       | sharer_folder | group_folder    | receiver_folder |
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a  |

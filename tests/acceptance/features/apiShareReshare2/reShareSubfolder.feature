@@ -16,7 +16,7 @@ Feature: a subfolder of a received share can be reshared
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/SUB" should exist
-    And as "Brian" file "/TMP/SUB" should exist
+    And as "Brian" folder "/TMP/SUB" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -32,7 +32,7 @@ Feature: a subfolder of a received share can be reshared
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "/SUB" should not exist
-    But as "Brian" file "/TMP/SUB" should exist
+    But as "Brian" folder "/TMP/SUB" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
       # try to pass on more bits including reshare
@@ -89,7 +89,7 @@ Feature: a subfolder of a received share can be reshared
     And the HTTP status code should be "200"
     And as "Carol" folder "/SUB" should exist
     But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    And as "Brian" file "/TMP/SUB" should exist
+    And as "Brian" folder "/TMP/SUB" should exist
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -109,7 +109,7 @@ Feature: a subfolder of a received share can be reshared
     And the HTTP status code should be "200"
     And as "Carol" folder "/SUB" should exist
     And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    And as "Brian" file "/TMP/SUB" should exist
+    And as "Brian" folder "/TMP/SUB" should exist
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -129,7 +129,7 @@ Feature: a subfolder of a received share can be reshared
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "/SUB" should exist
     But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    And as "Brian" file "/TMP/SUB" should exist
+    And as "Brian" folder "/TMP/SUB" should exist
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
       | ocs_api_version | http_status_code |

@@ -298,7 +298,8 @@ class WebDavHelper {
 	 * @param string $type
 	 * @param int $davPathVersionToUse
 	 *
-	 * @return SimpleXMLElement
+	 * @return SimpleXMLElement|ResponseInterface
+	 * @throws Exception
 	 */
 	public static function listFolder(
 		$baseUrl,
@@ -312,17 +313,25 @@ class WebDavHelper {
 	) {
 		if (!$properties) {
 			$properties = [
-				'getetag'
+				'getetag', 'resourcetype'
 			];
 		}
 		$response = self::propfind(
 			$baseUrl, $user, $password, $path, $properties,
 			$folderDepth, $type, $davPathVersionToUse
 		);
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
-		$responseXmlObject->registerXPathNamespace(
-			'ocs', 'http://open-collaboration-services.org/ns'
-		);
+		try {
+			$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+			$responseXmlObject->registerXPathNamespace(
+				'ocs', 'http://open-collaboration-services.org/ns'
+			);
+		} catch (\Exception $e) {
+			if (OcisHelper::isTestingOnOcis()) {
+				return $response;
+			} else {
+				throw new \Exception($e);
+			}
+		}
 		return $responseXmlObject;
 	}
 

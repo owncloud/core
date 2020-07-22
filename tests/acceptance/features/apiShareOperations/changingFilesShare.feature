@@ -45,7 +45,7 @@ Feature: sharing
     And user "Alice" has shared file "/shared" with user "Brian"
     And user "Brian" has moved folder "/shared" to "/shared_renamed"
     When user "Brian" moves folder "/shared_renamed/sub" to "/taken_out" using the WebDAV API
-    Then as "Brian" file "/taken_out" should exist
+    Then as "Brian" folder "/taken_out" should exist
     And as "Alice" folder "/shared/sub" should not exist
     And as "Alice" folder "/sub" should exist in the trashbin
     And as "Alice" file "/sub/shared_file.txt" should exist in the trashbin
