@@ -11,6 +11,7 @@ Summary
 * Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
 * Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
 * Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
+* Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update icewind/smb from 3.2.3 to 3.2.4 and files_external dependencies: [#37415](https://github.com/owncloud/core/pull/37415)
 * Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
 * Change - New CI color and background image: [#37650](https://github.com/owncloud/core/pull/37650)
@@ -50,6 +51,11 @@ Details
 
    https://github.com/owncloud/core/issues/36055
    https://github.com/owncloud/core/pull/37625
+
+* Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
+
+   https://github.com/owncloud/core/issues/37159
+   https://github.com/owncloud/core/pull/37718
 
 * Change - Update icewind/smb from 3.2.3 to 3.2.4 and files_external dependencies: [#37415](https://github.com/owncloud/core/pull/37415)
 
