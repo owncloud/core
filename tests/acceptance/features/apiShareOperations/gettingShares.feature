@@ -175,13 +175,13 @@ Feature: sharing
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Carol" gets the info of the last share using the sharing API
-    Then the OCS status code should be "400"
+    Then the OCS status code should be "998"
 #    Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
-      | 2               | 400              |
+      | 2               | 404              |
 
   @skipOnLDAP @skipOnOcis @issue-ocis-reva-194
   Scenario: Share of folder to a group, remove user from that group
