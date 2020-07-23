@@ -393,7 +393,7 @@ function run_behat_tests() {
 	then
 		echo "Checking expected failures"
 		PASSED=true
-		SOME_SCENARIO_RERUN=false
+		FAILED_SCENARIO_FOUND=false
 		FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
 		# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
 		# Strip them out so we can pass just the ordinary feature details to Behat.
@@ -464,17 +464,32 @@ function run_behat_tests() {
 	then
 		echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
 		PASSED=true
-		SOME_SCENARIO_RERUN=false
+		FAILED_SCENARIO_FOUND=false
 		FAILED_SCENARIO_PATHS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
 		for FEATURE_COLORED in ${FAILED_SCENARIO_PATHS}
 			do
-				SOME_SCENARIO_RERUN=true
+				FAILED_SCENARIO_FOUND=true
 				# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
 				# Strip them out so we can pass just the ordinary feature details to Behat.
 				# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
 				# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
 				# for ideas.
 				FAILED_SCENARIO_PATH=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
+
+				if [ -n "${EXPECTED_FAILURES_FILE}" ]
+				then
+					SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
+					SUITE=`basename ${SUITE_PATH}`
+					SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
+					SUITE_SCENARIO="${SUITE}/${SCENARIO}"
+					grep -x ${SUITE_SCENARIO} ${EXPECTED_FAILURES_FILE} > /dev/null
+					if [ $? -eq 0 ]
+					then
+						echo "Notice: Scenario ${SUITE_SCENARIO} is expected to fail so do not rerun it."
+						continue
+					fi
+				fi
+
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
 				${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
@@ -485,7 +500,7 @@ function run_behat_tests() {
 				fi
 			done
 
-		if [ "${SOME_SCENARIO_RERUN}" = false ]
+		if [ "${FAILED_SCENARIO_FOUND}" = false ]
 		then
 			# If the original Behat had a fatal PHP error and exited directly with
 			# a "bad" exit code, then it may not have even logged a summary of the
