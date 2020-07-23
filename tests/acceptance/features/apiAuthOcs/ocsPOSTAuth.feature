@@ -4,7 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis
+  @wasSkipOnOcis
   @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112

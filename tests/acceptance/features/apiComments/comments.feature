@@ -1,4 +1,4 @@
-@api @comments-app-required @skipOnOcis @issue-ocis-reva-38
+@api @comments-app-required @wasSkipOnOcis @issue-ocis-reva-38
 Feature: Comments
 
   Background:

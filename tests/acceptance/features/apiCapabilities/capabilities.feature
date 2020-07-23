@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcis @issue-ocis-reva-41
+@api @files_sharing-app-required @wasSkipOnOcis @issue-ocis-reva-41
 Feature: capabilities
 
   Background:

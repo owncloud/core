@@ -1,11 +1,11 @@
-@api @files_sharing-app-required @skipOnOcis
+@api @files_sharing-app-required @wasSkipOnOcis
 Feature: auth
 
   Background:
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
 
-  @skipOnOcis
+  @wasSkipOnOcis
   @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112

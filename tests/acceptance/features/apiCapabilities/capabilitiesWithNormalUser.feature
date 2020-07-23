@@ -48,7 +48,7 @@ Feature: default capabilities for normal user
 
   # remove this scenario after fixing tagged issue as its just created to show difference
   # in the response items in different environment (core & ocis-reva)
-  @skipOnOcis @issue-ocis-reva-175 @issue-ocis-reva-176
+  @wasSkipOnOcis @issue-ocis-reva-175 @issue-ocis-reva-176
   Scenario: getting default capabilities with normal user
     When user "Alice" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
