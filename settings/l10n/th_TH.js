@@ -98,7 +98,7 @@ OC.L10N.register(
     "Valid until {date}" : "ใช้ได้จนถึงวันที่ {date}",
     "Disconnect" : "ตัดการเชื่อมต่อ",
     "Error while loading browser sessions and device tokens" : "ข้อผิดพลาดขณะโหลดเซสชันของเบราเซอร์และโทเค็นของอุปกรณ์",
-    "Empty app name is not allowed." : "จำเป็นต้องใส่ชื่อแอปฯ",
+    "Empty app name is not allowed." : "จำเป็นต้องกรอกชื่อแอปฯ",
     "Error while creating device token" : "เกิดข้อผิดพลาดขณะที่การสร้างโทเค็นของอุปกรณ์",
     "Error while deleting the token" : "เกิดข้อผิดพลาดขณะลบโทเค็น",
     "Are you sure you want to remove this domain?" : "คุณแน่ใจหรือไม่ว่าต้องการลบโดเมนนี้?",
