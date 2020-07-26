@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -22,6 +23,10 @@
 namespace OCA\Files_Sharing;
 
 use OC\BackgroundJob\TimedJob;
+use OC\Share20\DefaultShareProvider;
+use OCP\IDBConnection;
+use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Share\IManager;
 
 /**
  * Delete all shares that are expired
@@ -29,11 +34,37 @@ use OC\BackgroundJob\TimedJob;
 class ExpireSharesJob extends TimedJob {
 
 	/**
-	 * sets the correct interval for this timed job
+	 * @var IManager $shareManager
 	 */
-	public function __construct() {
+	private $shareManager;
+
+	/**
+	 * @var IDBConnection $connection
+	 */
+	private $connection;
+
+	/**
+	 * @var DefaultShareProvider $defaultShareProvider
+	 */
+	private $defaultShareProvider;
+
+	/**
+	 * sets the correct interval for this timed job
+	 *
+	 * @param IManager $shareManager
+	 * @param IDBConnection $connection
+	 * @param DefaultShareProvider $defaultShareProvider
+	 */
+	public function __construct(
+		IManager $shareManager,
+		IDBConnection $connection,
+		DefaultShareProvider $defaultShareProvider
+	) {
 		// Run once a day
 		$this->setInterval(24 * 60 * 60);
+		$this->shareManager = $shareManager;
+		$this->connection = $connection;
+		$this->defaultShareProvider = $defaultShareProvider;
 	}
 
 	/**
@@ -42,22 +73,18 @@ class ExpireSharesJob extends TimedJob {
 	 * @param array $argument unused argument
 	 */
 	public function run($argument) {
-		$connection = \OC::$server->getDatabaseConnection();
-		$logger = \OC::$server->getLogger();
-
 		//Current time
 		$now = new \DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 
 		/*
-		 * Expire file link shares only (for now)
+		 * Expire file shares only (for now)
 		 */
-		$qb = $connection->getQueryBuilder();
-		$qb->select('id', 'file_source', 'uid_owner', 'item_type')
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('id')
 			->from('share')
 			->where(
 				$qb->expr()->andX(
-					$qb->expr()->eq('share_type', $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK)),
 					$qb->expr()->lte('expiration', $qb->expr()->literal($now)),
 					$qb->expr()->orX(
 						$qb->expr()->eq('item_type', $qb->expr()->literal('file')),
@@ -68,7 +95,12 @@ class ExpireSharesJob extends TimedJob {
 
 		$shares = $qb->execute();
 		while ($share = $shares->fetch()) {
-			\OCP\Share::unshare($share['item_type'], $share['file_source'], \OCP\Share::SHARE_TYPE_LINK, null, $share['uid_owner']);
+			try {
+				$shareObject = $this->defaultShareProvider->getShareById($share['id']);
+				$this->shareManager->deleteShare($shareObject);
+			} catch (ShareNotFound $ex) {
+				//already deleted
+			}
 		}
 		$shares->closeCursor();
 	}

@@ -1,0 +1,7 @@
+Bugfix: Fix expiring a wrong share entry problem
+
+If multiple links exist for the same node and, non-expired share created before expired share,
+expiredSharesJob was deleting non-expired share.
+This problem has been resolved. Also, ExpireSharesJob now handles user and group shares.
+
+https://github.com/owncloud/core/pull/37729
