@@ -47,6 +47,7 @@ use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\Mount\IMountManager;
 use OCP\IDateTimeFormatter;
+use OCP\License\ILicenseManager;
 
 class DIContainer extends SimpleContainer implements IAppContainer {
 
@@ -83,6 +84,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		$this->registerService('OCP\\App\\IAppManager', function ($c) {
 			return $this->getServer()->getAppManager();
+		});
+
+		$this->registerService('OCP\\License\\ILicenseManager', function ($c) {
+			return $this->getServer()->getLicenseManager();
 		});
 
 		$this->registerService('OCP\\AppFramework\\Http\\IOutput', function ($c) {
