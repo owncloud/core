@@ -34,6 +34,19 @@ BEHAT_TAGS_OPTION_FOUND=false
 # RUN_PART and DIVIDE_INTO_NUM_PARTS - see "--part" description
 # SHOW_OC_LOGS - see "--show-oc-logs" description
 # TESTING_REMOTE_SYSTEM - see "--remote" description
+# EXPECTED_FAILURES_FILE - a file that contains a list of the scenarios that are expected to fail
+
+if [ -n "${EXPECTED_FAILURES_FILE}" ]
+then
+	if [ -f "${EXPECTED_FAILURES_FILE}" ]
+	then
+		echo "Checking expected failures in ${EXPECTED_FAILURES_FILE}"
+	else
+		echo "Expected failures file ${EXPECTED_FAILURES_FILE} not found"
+		echo "Check the setting of EXPECTED_FAILURES_FILE environment variable"
+		exit 1
+	fi
+fi
 
 # Default to testing a local system
 if [ -z "${TESTING_REMOTE_SYSTEM}" ]
@@ -376,24 +389,109 @@ function run_behat_tests() {
 		fi
 	fi
 
+	if [ -n "${EXPECTED_FAILURES_FILE}" ]
+	then
+		echo "Checking expected failures"
+		PASSED=true
+		FAILED_SCENARIO_FOUND=false
+		FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+		# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
+		# Strip them out so we can pass just the ordinary feature details to Behat.
+		# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
+		# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
+		# for ideas.
+		FAILED_SCENARIO_PATHS=$(echo "${FAILED_SCENARIO_PATHS_COLORED}" | sed "s/\x1b[^m]*m//g")
+
+		# Check that every failed scenario is in the list of expected failures
+		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
+			do
+				SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
+				SUITE=`basename ${SUITE_PATH}`
+				SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
+				SUITE_SCENARIO="${SUITE}/${SCENARIO}"
+				grep -x ${SUITE_SCENARIO} ${EXPECTED_FAILURES_FILE} > /dev/null
+				if [ $? -ne 0 ]
+				then
+					echo "Error: Scenario ${SUITE_SCENARIO} failed but was not expected to fail."
+					PASSED=false
+				fi
+			done
+
+		# Check that every scenario in the list of expected failures did fail
+		while read SUITE_SCENARIO
+			do
+				# Ignore comment lines (starting with hash)
+				if [[ "${SUITE_SCENARIO}" =~ ^# ]]
+				then
+					continue
+				fi
+
+				if [ -n "${BEHAT_SUITE_TO_RUN}" ]
+				then
+					# If the expected failure is not in the suite that is currently being run,
+					# then do not try and check that it failed.
+					REGEX_TO_MATCH="^${BEHAT_SUITE_TO_RUN}"
+					if ! [[ "${SUITE_SCENARIO}" =~ ${REGEX_TO_MATCH} ]]
+					then
+						continue
+					fi
+				fi
+
+				# look for the expected suite-scenario at the end of a line in the
+				# FAILED_SCENARIO_PATHS - for example looking for apiComments/comments.feature:9
+				# we want to match lines like:
+				# tests/acceptance/features/apiComments/comments.feature:9
+				# but not lines like::
+				# tests/acceptance/features/apiComments/comments.feature:902
+				echo "${FAILED_SCENARIO_PATHS}" | grep ${SUITE_SCENARIO}$ > /dev/null
+				if [ $? -ne 0 ]
+				then
+					echo "Error: Scenario ${SUITE_SCENARIO} was expected to fail but did not fail."
+					PASSED=false
+				fi
+			done < ${EXPECTED_FAILURES_FILE}
+
+		if [ "${PASSED}" = true ]
+		then
+			echo "Success - all failures were expected"
+		else
+			echo "Failure - actual and expected failures did not match"
+		fi
+	fi
+
 	# With webUI tests, we try running failed tests again.
 	if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 	then
 		echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
 		PASSED=true
-		SOME_SCENARIO_RERUN=false
-		FAILED_SCENARIOS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
-		for FEATURE_COLORED in ${FAILED_SCENARIOS}
+		FAILED_SCENARIO_FOUND=false
+		FAILED_SCENARIO_PATHS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+		for FEATURE_COLORED in ${FAILED_SCENARIO_PATHS}
 			do
-				SOME_SCENARIO_RERUN=true
+				FAILED_SCENARIO_FOUND=true
 				# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
 				# Strip them out so we can pass just the ordinary feature details to Behat.
 				# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
 				# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
 				# for ideas.
-				FEATURE=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
-				echo "Rerun failed scenario: ${FEATURE}"
-				${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+				FAILED_SCENARIO_PATH=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
+
+				if [ -n "${EXPECTED_FAILURES_FILE}" ]
+				then
+					SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
+					SUITE=`basename ${SUITE_PATH}`
+					SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
+					SUITE_SCENARIO="${SUITE}/${SCENARIO}"
+					grep -x ${SUITE_SCENARIO} ${EXPECTED_FAILURES_FILE} > /dev/null
+					if [ $? -eq 0 ]
+					then
+						echo "Notice: Scenario ${SUITE_SCENARIO} is expected to fail so do not rerun it."
+						continue
+					fi
+				fi
+
+				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
+				${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 				if [ ${BEHAT_EXIT_STATUS} -ne 0 ]
 				then
@@ -402,7 +500,7 @@ function run_behat_tests() {
 				fi
 			done
 
-		if [ "${SOME_SCENARIO_RERUN}" = false ]
+		if [ "${FAILED_SCENARIO_FOUND}" = false ]
 		then
 			# If the original Behat had a fatal PHP error and exited directly with
 			# a "bad" exit code, then it may not have even logged a summary of the
@@ -602,8 +700,8 @@ fi
 # If a feature file has been specified but no suite, then deduce the suite
 if [ -n "${BEHAT_FEATURE}" ] && [ -z "${BEHAT_SUITE}" ]
 then
-	FEATURE_PATH=`dirname ${BEHAT_FEATURE}`
-	BEHAT_SUITE=`basename ${FEATURE_PATH}`
+	SUITE_PATH=`dirname ${BEHAT_FEATURE}`
+	BEHAT_SUITE=`basename ${SUITE_PATH}`
 fi
 
 if [ -z "${BEHAT_YML}" ]
@@ -1000,6 +1098,8 @@ export IPV4_URL
 export IPV6_URL
 export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
+TEST_LOG_FILE=$(mktemp)
+
 if [ ${#BEHAT_SUITES[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
 then
 	SUITE_FEATURE_TEXT="all ${TEST_TYPE_TEXT}"
@@ -1021,25 +1121,23 @@ else
 	fi
 fi
 
-TEST_LOG_FILE=$(mktemp)
-
 for i in "${!BEHAT_SUITES[@]}"
 	do
-	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITES[$i]}"
-	SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
-	for rerun_number in $(seq 1 ${BEHAT_RERUN_TIMES})
-		do
-		if ((${BEHAT_RERUN_TIMES} > 1))
-		then
-			echo -e "\nTest repeat $rerun_number of ${BEHAT_RERUN_TIMES}"
-		fi
-		run_behat_tests
-	done
+		BEHAT_SUITE_TO_RUN="${BEHAT_SUITES[$i]}"
+		BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITE_TO_RUN}"
+		SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
+		for rerun_number in $(seq 1 ${BEHAT_RERUN_TIMES})
+			do
+				if ((${BEHAT_RERUN_TIMES} > 1))
+				then
+					echo -e "\nTest repeat $rerun_number of ${BEHAT_RERUN_TIMES}"
+				fi
+				run_behat_tests
+			done
 
 	if [ "${PASSED}" = false ]
 	then
-		teardown
-		exit 1
+		break
 	fi
 done
 
@@ -1047,7 +1145,13 @@ teardown
 
 if [ "${PASSED}" = true ]
 then
-	exit 0
+	FINAL_EXIT_STATUS=0
 else
-	exit 1
+	FINAL_EXIT_STATUS=1
 fi
+
+if [ -n "${EXPECTED_FAILURES_FILE}" ]
+then
+	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
+fi
+exit ${FINAL_EXIT_STATUS}
