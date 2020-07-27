@@ -22,6 +22,7 @@ Summary
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
 * Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
+* Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -122,6 +123,14 @@ Details
    symfony/polyfill-php72 symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/37694
+
+* Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
+
+   The following Symfony components have been updated to version 4.4.11 - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/37727
+   https://symfony.com/blog/symfony-4-4-11-released
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
