@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis
+@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
 Feature: get user groups
   As an admin
   I want to be able to get groups

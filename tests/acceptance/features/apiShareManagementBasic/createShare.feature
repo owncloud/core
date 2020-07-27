@@ -528,7 +528,7 @@ Feature: sharing
       | 1               |
       | 2               |
 
-  @skipOnLDAP @skipOnOcis
+  @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
   # deleting an LDAP group is not relevant or possible using the provisioning API
   Scenario Outline: shares shared to deleted group should not be available
     Given using OCS API version "<ocs_api_version>"

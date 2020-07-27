@@ -1,4 +1,4 @@
-@api @skipOnOcV10.3 @skipOnOcis
+@api @skipOnOcV10.3 @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-401
 Feature: Users sync
 
   Background:
