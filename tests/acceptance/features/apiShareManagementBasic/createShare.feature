@@ -7,7 +7,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  @skipOnOcis @issue-ocis-reva-11 @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-11 @issue-ocis-reva-243
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -34,7 +34,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  @skipOnOcis @issue-ocis-reva-11 @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-11 @issue-ocis-reva-243
   Scenario Outline: Creating a share of a file containing commas in the filename, with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -272,7 +272,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-243
+  @smokeTest @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-34 @issue-ocis-reva-243
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -300,7 +300,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-34 @issue-ocis-reva-243
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -317,7 +317,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-372 @issue-ocis-reva-243 @toImplementOnOCIS
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-372 @issue-ocis-reva-243 @toImplementOnOCIS
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -380,7 +380,7 @@ Feature: sharing
       | 1               | 200              | 996             |
       | 2               | 500              | 996             |
 
-  @skipOnOcis @issue-ocis-reva-14 @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -410,7 +410,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files

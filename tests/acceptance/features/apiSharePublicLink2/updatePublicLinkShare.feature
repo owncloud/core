@@ -5,7 +5,7 @@ Feature: update a public link share
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-37653
+  @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-37653
   #after fixing all the issues merge this scenario with the one below
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"
@@ -45,7 +45,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10 @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-37653
+  @skipOnOcV10 @toImplementOnOCIS @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-37653
   #after fixing all the issues merge this scenario with the one above
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"

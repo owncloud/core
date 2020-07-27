@@ -64,7 +64,7 @@ Feature: sharing
     Then the HTTP status code should be "204"
     And as "Brian" folder "/sub" should not exist
 
-  @smokeTest @files_trashbin-app-required @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
+  @smokeTest @files_trashbin-app-required @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -79,7 +79,7 @@ Feature: sharing
     And as "Alice" file "/shared_file.txt" should exist in the trashbin
     And as "Brian" file "/shared_file.txt" should exist in the trashbin
 
-  @files_trashbin-app-required @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
+  @files_trashbin-app-required @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -115,7 +115,7 @@ Feature: sharing
     And the etag of element "/" of user "Brian" should have changed
     And the etag of element "/PARENT" of user "Carol" should not have changed
 
-  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -127,7 +127,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "Brian" file "/shared/shared_file.txt" should exist
 
-  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
@@ -139,7 +139,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/shared_file.txt" should exist
 
-  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
     And these users have been created with default attributes and without skeleton files:
@@ -178,7 +178,7 @@ Feature: sharing
       | /PARENT            | 1               | 200              | PARENT         |
       | /PARENT            | 2               | 404              | PARENT         |
 
-  @skipOnOcis @toFixOnOCIS @issue-ocis-reva-243 @issue-ocis-reva-364
+  @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243 @issue-ocis-reva-364
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has been created with default attributes and skeleton files
