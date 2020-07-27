@@ -69,6 +69,8 @@
     "New" : "חדש",
     "Unknown user" : "משתמש לא ידוע",
     "Lock status" : "מצב נעילה",
+    "Lock file" : "נעילת קובץ",
+    "Failed to lock." : "נעילה נכשלה.",
     "This resource is locked. Click to see more details." : "המשאב נעול. יש ללחוץ לקבלת פרטים נוספים.",
     "\"{name}\" is an invalid file name." : "\"{name}\" הנו שם קובץ לא חוקי.",
     "File name cannot be empty." : "שם קובץ אינו יכול להיות ריק",
