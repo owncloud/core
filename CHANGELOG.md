@@ -24,6 +24,7 @@ Summary
 * Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
 * Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 * Change - Update league/flysystem (1.0.69 => 1.0.70): [#37730](https://github.com/owncloud/core/pull/37730)
+* Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -136,6 +137,10 @@ Details
 * Change - Update league/flysystem (1.0.69 => 1.0.70): [#37730](https://github.com/owncloud/core/pull/37730)
 
    https://github.com/owncloud/core/pull/37730
+
+* Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
+
+   https://github.com/owncloud/core/issues/37734
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
