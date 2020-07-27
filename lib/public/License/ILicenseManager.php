@@ -20,7 +20,7 @@
 namespace OCP\License;
 
 /**
- * @since 10.5.0
+ * Interface ILicenseManager
  * Holds operations for managing the ownCloud license
  *
  * License states are expected to go through the following states:
@@ -28,6 +28,9 @@ namespace OCP\License;
  * This means that "valid" and "about to expire" states must be considered
  * as "good" states. Error states are "expired", "invalid" (if the license string
  * can't be parsed or contains errors) and "missing" (if no license is found)
+ *
+ * @package OCP\License
+ * @since 10.5.0
  */
 interface ILicenseManager {
 	/** The license is valid and hasn't expired yet */
