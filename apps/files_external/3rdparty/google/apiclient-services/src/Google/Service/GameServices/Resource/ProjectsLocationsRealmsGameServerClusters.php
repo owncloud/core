@@ -184,13 +184,13 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealmsGameServerClus
    * @param Google_Service_GameServices_GameServerCluster $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string previewTime Optional. The target timestamp to compute the
+   * preview.
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
    *
    * https: //developers.google.com/protocol-buffers //
    * /docs/reference/google.protobuf#fieldmask
-   * @opt_param string previewTime Optional. The target timestamp to compute the
-   * preview.
    * @return Google_Service_GameServices_PreviewUpdateGameServerClusterResponse
    */
   public function previewUpdate($name, Google_Service_GameServices_GameServerCluster $postBody, $optParams = array())

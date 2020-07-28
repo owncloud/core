@@ -28,12 +28,13 @@ class Google_Service_AndroidPublisher_Resource_Internalappsharingartifacts exten
   /**
    * Uploads an APK to internal app sharing. If you are using the Google API
    * client libraries, please increase the timeout of the http request before
-   * calling this endpoint (a timeout of 2 minutes is recommended). See:
-   * https://developers.google.com/api-client-library/java/google-api-java-
-   * client/errors for an example in java. (internalappsharingartifacts.uploadapk)
+   * calling this endpoint (a timeout of 2 minutes is recommended).
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * See [Timeouts and Errors](https://developers.google.com/api-client-
+   * library/java/google-api-java-client/errors) for an example in java.
+   * (internalappsharingartifacts.uploadapk)
+   *
+   * @param string $packageName Package name of the app.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_InternalAppSharingArtifact
    */
@@ -46,13 +47,13 @@ class Google_Service_AndroidPublisher_Resource_Internalappsharingartifacts exten
   /**
    * Uploads an app bundle to internal app sharing. If you are using the Google
    * API client libraries, please increase the timeout of the http request before
-   * calling this endpoint (a timeout of 2 minutes is recommended). See:
-   * https://developers.google.com/api-client-library/java/google-api-java-
-   * client/errors for an example in java.
+   * calling this endpoint (a timeout of 2 minutes is recommended).
+   *
+   * See [Timeouts and Errors](https://developers.google.com/api-client-
+   * library/java/google-api-java-client/errors) for an example in java.
    * (internalappsharingartifacts.uploadbundle)
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_InternalAppSharingArtifact
    */

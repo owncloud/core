@@ -73,17 +73,10 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'scope' => array(
+                'languageCodes' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'companyName' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
+                  'repeated' => true,
                 ),
                 'query' => array(
                   'location' => 'query',
@@ -93,14 +86,21 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'companyName' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'type' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'languageCodes' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'scope' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
                 ),
               ),
             ),
@@ -254,7 +254,7 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -262,7 +262,7 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

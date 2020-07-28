@@ -87,11 +87,9 @@ class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordLists exten
    * Defaults to `100` if not set. Returns error code `INVALID_ARGUMENT` if an
    * invalid value is specified.
    * @opt_param string pageToken A token identifying a page of results the server
-   * should return.
-   *
-   * Typically, this is the value of next_page_token returned from the previous
-   * call to `ListNegativeKeywordLists` method. If not specified, the first page
-   * of results will be returned.
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListNegativeKeywordLists` method. If not specified, the
+   * first page of results will be returned.
    * @return Google_Service_DisplayVideo_ListNegativeKeywordListsResponse
    */
   public function listAdvertisersNegativeKeywordLists($advertiserId, $optParams = array())

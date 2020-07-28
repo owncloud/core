@@ -15,6 +15,8 @@
 This is Google's officially supported PHP client library for using OAuth 2.0
 authorization and authentication with Google APIs.
 
+View the [reference documentation][ref-docs].
+
 ### Installing via Composer
 
 The recommended way to install the google auth library is through
@@ -217,6 +219,7 @@ hesitate to
 [ask questions](http://stackoverflow.com/questions/tagged/google-auth-library-php)
 about the client or APIs on [StackOverflow](http://stackoverflow.com).
 
+[ref-docs]: https://googleapis.github.io/google-auth-library-php/master/
 [google-apis-php-client]: https://github.com/google/google-api-php-client
 [application default credentials]: https://developers.google.com/accounts/docs/application-default-credentials
 [contributing]: https://github.com/google/google-auth-library-php/tree/master/.github/CONTRIBUTING.md

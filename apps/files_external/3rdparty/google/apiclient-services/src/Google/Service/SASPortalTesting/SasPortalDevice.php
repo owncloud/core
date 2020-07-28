@@ -20,6 +20,8 @@ class Google_Service_SASPortalTesting_SasPortalDevice extends Google_Collection
   protected $collection_key = 'grants';
   protected $activeConfigType = 'Google_Service_SASPortalTesting_SasPortalDeviceConfig';
   protected $activeConfigDataType = '';
+  protected $deviceMetadataType = 'Google_Service_SASPortalTesting_SasPortalDeviceMetadata';
+  protected $deviceMetadataDataType = '';
   public $displayName;
   public $fccId;
   protected $grantsType = 'Google_Service_SASPortalTesting_SasPortalDeviceGrant';
@@ -43,6 +45,20 @@ class Google_Service_SASPortalTesting_SasPortalDevice extends Google_Collection
   public function getActiveConfig()
   {
     return $this->activeConfig;
+  }
+  /**
+   * @param Google_Service_SASPortalTesting_SasPortalDeviceMetadata
+   */
+  public function setDeviceMetadata(Google_Service_SASPortalTesting_SasPortalDeviceMetadata $deviceMetadata)
+  {
+    $this->deviceMetadata = $deviceMetadata;
+  }
+  /**
+   * @return Google_Service_SASPortalTesting_SasPortalDeviceMetadata
+   */
+  public function getDeviceMetadata()
+  {
+    return $this->deviceMetadata;
   }
   public function setDisplayName($displayName)
   {

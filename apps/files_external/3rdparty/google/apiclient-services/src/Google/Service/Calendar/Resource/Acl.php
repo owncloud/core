@@ -83,11 +83,6 @@ class Google_Service_Calendar_Resource_Acl extends Google_Service_Resource
    * the currently logged in user, use the "primary" keyword.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of entries returned on one result
-   * page. By default the value is 100 entries. The page size can never be larger
-   * than 250 entries. Optional.
-   * @opt_param string pageToken Token specifying which result page to return.
-   * Optional.
    * @opt_param bool showDeleted Whether to include deleted ACLs in the result.
    * Deleted ACLs are represented by role equal to "none". Deleted ACLs will
    * always be included if syncToken is provided. Optional. The default is False.
@@ -100,6 +95,11 @@ class Google_Service_Calendar_Resource_Acl extends Google_Service_Resource
    * the client should clear its storage and perform a full synchronization
    * without any syncToken. Learn more about incremental synchronization.
    * Optional. The default is to return all entries.
+   * @opt_param int maxResults Maximum number of entries returned on one result
+   * page. By default the value is 100 entries. The page size can never be larger
+   * than 250 entries. Optional.
+   * @opt_param string pageToken Token specifying which result page to return.
+   * Optional.
    * @return Google_Service_Calendar_Acl
    */
   public function listAcl($calendarId, $optParams = array())
@@ -160,14 +160,8 @@ class Google_Service_Calendar_Resource_Acl extends Google_Service_Resource
    * @param Google_Service_Calendar_Channel $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of entries returned on one result
-   * page. By default the value is 100 entries. The page size can never be larger
-   * than 250 entries. Optional.
    * @opt_param string pageToken Token specifying which result page to return.
    * Optional.
-   * @opt_param bool showDeleted Whether to include deleted ACLs in the result.
-   * Deleted ACLs are represented by role equal to "none". Deleted ACLs will
-   * always be included if syncToken is provided. Optional. The default is False.
    * @opt_param string syncToken Token obtained from the nextSyncToken field
    * returned on the last page of results from the previous list request. It makes
    * the result of this list request contain only entries that have changed since
@@ -177,6 +171,12 @@ class Google_Service_Calendar_Resource_Acl extends Google_Service_Resource
    * the client should clear its storage and perform a full synchronization
    * without any syncToken. Learn more about incremental synchronization.
    * Optional. The default is to return all entries.
+   * @opt_param bool showDeleted Whether to include deleted ACLs in the result.
+   * Deleted ACLs are represented by role equal to "none". Deleted ACLs will
+   * always be included if syncToken is provided. Optional. The default is False.
+   * @opt_param int maxResults Maximum number of entries returned on one result
+   * page. By default the value is 100 entries. The page size can never be larger
+   * than 250 entries. Optional.
    * @return Google_Service_Calendar_Channel
    */
   public function watch($calendarId, Google_Service_Calendar_Channel $postBody, $optParams = array())

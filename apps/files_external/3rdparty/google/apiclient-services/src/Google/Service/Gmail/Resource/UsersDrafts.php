@@ -26,9 +26,9 @@
 class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
 {
   /**
-   * Creates a new draft with the DRAFT label. (drafts.create)
+   * Creates a new draft with the `DRAFT` label. (drafts.create)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param Google_Service_Gmail_Draft $postBody
    * @param array $optParams Optional parameters.
@@ -44,7 +44,7 @@ class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
    * Immediately and permanently deletes the specified draft. Does not simply
    * trash it. (drafts.delete)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the draft to delete.
    * @param array $optParams Optional parameters.
@@ -58,7 +58,7 @@ class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
   /**
    * Gets the specified draft. (drafts.get)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the draft to retrieve.
    * @param array $optParams Optional parameters.
@@ -75,18 +75,18 @@ class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
   /**
    * Lists the drafts in the user's mailbox. (drafts.listUsersDrafts)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeSpamTrash Include drafts from SPAM and TRASH in the
-   * results.
-   * @opt_param string maxResults Maximum number of drafts to return.
    * @opt_param string pageToken Page token to retrieve a specific page of results
    * in the list.
+   * @opt_param string maxResults Maximum number of drafts to return.
    * @opt_param string q Only return draft messages matching the specified query.
    * Supports the same query format as the Gmail search box. For example,
-   * "from:someuser@example.com rfc822msgid: is:unread".
+   * `"from:someuser@example.com rfc822msgid: is:unread"`.
+   * @opt_param bool includeSpamTrash Include drafts from `SPAM` and `TRASH` in
+   * the results.
    * @return Google_Service_Gmail_ListDraftsResponse
    */
   public function listUsersDrafts($userId, $optParams = array())
@@ -96,10 +96,10 @@ class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Gmail_ListDraftsResponse");
   }
   /**
-   * Sends the specified, existing draft to the recipients in the To, Cc, and Bcc
-   * headers. (drafts.send)
+   * Sends the specified, existing draft to the recipients in the `To`, `Cc`, and
+   * `Bcc` headers. (drafts.send)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param Google_Service_Gmail_Draft $postBody
    * @param array $optParams Optional parameters.
@@ -114,7 +114,7 @@ class Google_Service_Gmail_Resource_UsersDrafts extends Google_Service_Resource
   /**
    * Replaces a draft's content. (drafts.update)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the draft to update.
    * @param Google_Service_Gmail_Draft $postBody

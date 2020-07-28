@@ -22,6 +22,10 @@ class Google_Service_Dfareporting_CompatibleFields extends Google_Model
   protected $floodlightReportCompatibleFieldsType = 'Google_Service_Dfareporting_FloodlightReportCompatibleFields';
   protected $floodlightReportCompatibleFieldsDataType = '';
   public $kind;
+  protected $pathAttributionReportCompatibleFieldsType = 'Google_Service_Dfareporting_PathReportCompatibleFields';
+  protected $pathAttributionReportCompatibleFieldsDataType = '';
+  protected $pathReportCompatibleFieldsType = 'Google_Service_Dfareporting_PathReportCompatibleFields';
+  protected $pathReportCompatibleFieldsDataType = '';
   protected $pathToConversionReportCompatibleFieldsType = 'Google_Service_Dfareporting_PathToConversionReportCompatibleFields';
   protected $pathToConversionReportCompatibleFieldsDataType = '';
   protected $reachReportCompatibleFieldsType = 'Google_Service_Dfareporting_ReachReportCompatibleFields';
@@ -64,6 +68,34 @@ class Google_Service_Dfareporting_CompatibleFields extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param Google_Service_Dfareporting_PathReportCompatibleFields
+   */
+  public function setPathAttributionReportCompatibleFields(Google_Service_Dfareporting_PathReportCompatibleFields $pathAttributionReportCompatibleFields)
+  {
+    $this->pathAttributionReportCompatibleFields = $pathAttributionReportCompatibleFields;
+  }
+  /**
+   * @return Google_Service_Dfareporting_PathReportCompatibleFields
+   */
+  public function getPathAttributionReportCompatibleFields()
+  {
+    return $this->pathAttributionReportCompatibleFields;
+  }
+  /**
+   * @param Google_Service_Dfareporting_PathReportCompatibleFields
+   */
+  public function setPathReportCompatibleFields(Google_Service_Dfareporting_PathReportCompatibleFields $pathReportCompatibleFields)
+  {
+    $this->pathReportCompatibleFields = $pathReportCompatibleFields;
+  }
+  /**
+   * @return Google_Service_Dfareporting_PathReportCompatibleFields
+   */
+  public function getPathReportCompatibleFields()
+  {
+    return $this->pathReportCompatibleFields;
   }
   /**
    * @param Google_Service_Dfareporting_PathToConversionReportCompatibleFields

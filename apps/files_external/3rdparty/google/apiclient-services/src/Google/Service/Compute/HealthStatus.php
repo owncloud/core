@@ -17,11 +17,20 @@
 
 class Google_Service_Compute_HealthStatus extends Google_Model
 {
+  public $annotations;
   public $healthState;
   public $instance;
   public $ipAddress;
   public $port;
 
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  public function getAnnotations()
+  {
+    return $this->annotations;
+  }
   public function setHealthState($healthState)
   {
     $this->healthState = $healthState;

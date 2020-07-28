@@ -33,9 +33,9 @@ class Google_Service_YouTube_Resource_GuideCategories extends Google_Service_Res
    * value to snippet.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string id Return the guide categories with the given IDs.
-   * @opt_param string hl
    * @opt_param string regionCode Return all categories in the given region code.
+   * @opt_param string hl
+   * @opt_param string id Return the guide categories with the given IDs.
    * @return Google_Service_YouTube_GuideCategoryListResponse
    */
   public function listGuideCategories($part, $optParams = array())

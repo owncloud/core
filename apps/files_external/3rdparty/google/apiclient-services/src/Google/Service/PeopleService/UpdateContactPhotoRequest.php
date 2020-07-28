@@ -15,10 +15,12 @@
  * the License.
  */
 
-class Google_Service_PeopleService_UpdateContactPhotoRequest extends Google_Model
+class Google_Service_PeopleService_UpdateContactPhotoRequest extends Google_Collection
 {
+  protected $collection_key = 'sources';
   public $personFields;
   public $photoBytes;
+  public $sources;
 
   public function setPersonFields($personFields)
   {
@@ -35,5 +37,13 @@ class Google_Service_PeopleService_UpdateContactPhotoRequest extends Google_Mode
   public function getPhotoBytes()
   {
     return $this->photoBytes;
+  }
+  public function setSources($sources)
+  {
+    $this->sources = $sources;
+  }
+  public function getSources()
+  {
+    return $this->sources;
   }
 }

@@ -55,14 +55,11 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsSecrets extends Google_S
     return $this->call('get', array($params), "Google_Service_CloudRun_Secret");
   }
   /**
-   * Rpc to replace a secret.
-   *
-   * Only the spec and metadata labels and annotations are modifiable. After the
-   * Update request, Cloud Run will work to make the 'status' match the requested
-   * 'spec'.
-   *
-   * May provide metadata.resourceVersion to enforce update from last read for
-   * optimistic concurrency control. (secrets.replaceSecret)
+   * Rpc to replace a secret. Only the spec and metadata labels and annotations
+   * are modifiable. After the Update request, Cloud Run will work to make the
+   * 'status' match the requested 'spec'. May provide metadata.resourceVersion to
+   * enforce update from last read for optimistic concurrency control.
+   * (secrets.replaceSecret)
    *
    * @param string $name Required. The name of the secret being retrieved. If
    * needed, replace {namespace_id} with the project ID.

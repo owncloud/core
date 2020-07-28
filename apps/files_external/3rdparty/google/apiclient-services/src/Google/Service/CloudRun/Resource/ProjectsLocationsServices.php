@@ -50,11 +50,11 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsServices extends Google_
    * managed), replace {namespace_id} with the project ID or number.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string apiVersion Cloud Run currently ignores this parameter.
    * @opt_param string propagationPolicy Specifies the propagation policy of
    * delete. Cloud Run currently ignores this setting, and deletes in the
    * background. Please see kubernetes.io/docs/concepts/workloads/controllers
    * /garbage-collection/ for more information.
+   * @opt_param string apiVersion Cloud Run currently ignores this parameter.
    * @opt_param string kind Cloud Run currently ignores this parameter.
    * @return Google_Service_CloudRun_Status
    */
@@ -89,17 +89,12 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsServices extends Google_
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_CloudRun_Policy
    */
@@ -117,16 +112,16 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsServices extends Google_
    * number.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string labelSelector Allows to filter resources based on a label.
-   * Supported operations are =, !=, exists, in, and notIn.
+   * @opt_param int limit The maximum number of records that should be returned.
    * @opt_param string resourceVersion The baseline resource version from which
    * the list or watch operation should start. Not currently used by Cloud Run.
-   * @opt_param bool includeUninitialized Not currently used by Cloud Run.
+   * @opt_param string labelSelector Allows to filter resources based on a label.
+   * Supported operations are =, !=, exists, in, and notIn.
+   * @opt_param string continue Optional encoded string to continue paging.
    * @opt_param string fieldSelector Allows to filter resources based on a
    * specific value for a field name. Send this in a query string format. i.e.
    * 'metadata.name%3Dlorem'. Not currently used by Cloud Run.
-   * @opt_param string continue Optional encoded string to continue paging.
-   * @opt_param int limit The maximum number of records that should be returned.
+   * @opt_param bool includeUninitialized Not currently used by Cloud Run.
    * @opt_param bool watch Flag that indicates that the client expects to watch
    * this resource as well. Not currently used by Cloud Run.
    * @return Google_Service_CloudRun_ListServicesResponse
@@ -138,14 +133,11 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsServices extends Google_
     return $this->call('list', array($params), "Google_Service_CloudRun_ListServicesResponse");
   }
   /**
-   * Replace a service.
-   *
-   * Only the spec and metadata labels and annotations are modifiable. After the
-   * Update request, Cloud Run will work to make the 'status' match the requested
-   * 'spec'.
-   *
-   * May provide metadata.resourceVersion to enforce update from last read for
-   * optimistic concurrency control. (services.replaceService)
+   * Replace a service. Only the spec and metadata labels and annotations are
+   * modifiable. After the Update request, Cloud Run will work to make the
+   * 'status' match the requested 'spec'. May provide metadata.resourceVersion to
+   * enforce update from last read for optimistic concurrency control.
+   * (services.replaceService)
    *
    * @param string $name The name of the service being replaced. For Cloud Run
    * (fully managed), replace {namespace_id} with the project ID or number.
@@ -177,10 +169,8 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsServices extends Google_
     return $this->call('setIamPolicy', array($params), "Google_Service_CloudRun_Policy");
   }
   /**
-   * Returns permissions that a caller has on the specified Project.
-   *
-   * There are no permissions required for making this API call.
-   * (services.testIamPermissions)
+   * Returns permissions that a caller has on the specified Project. There are no
+   * permissions required for making this API call. (services.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value

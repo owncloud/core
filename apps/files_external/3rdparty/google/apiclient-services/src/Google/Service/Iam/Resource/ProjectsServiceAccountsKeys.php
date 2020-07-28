@@ -26,7 +26,7 @@
 class Google_Service_Iam_Resource_ProjectsServiceAccountsKeys extends Google_Service_Resource
 {
   /**
-   * Creates a ServiceAccountKey and returns it. (keys.create)
+   * Creates a ServiceAccountKey. (keys.create)
    *
    * @param string $name Required. The resource name of the service account in the
    * following format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using
@@ -62,7 +62,7 @@ class Google_Service_Iam_Resource_ProjectsServiceAccountsKeys extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_Iam_IamEmpty");
   }
   /**
-   * Gets the ServiceAccountKey by key id. (keys.get)
+   * Gets a ServiceAccountKey. (keys.get)
    *
    * @param string $name Required. The resource name of the service account key in
    * the following format:
@@ -84,7 +84,8 @@ class Google_Service_Iam_Resource_ProjectsServiceAccountsKeys extends Google_Ser
     return $this->call('get', array($params), "Google_Service_Iam_ServiceAccountKey");
   }
   /**
-   * Lists ServiceAccountKeys. (keys.listProjectsServiceAccountsKeys)
+   * Lists every ServiceAccountKey for a service account.
+   * (keys.listProjectsServiceAccountsKeys)
    *
    * @param string $name Required. The resource name of the service account in the
    * following format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -106,8 +107,7 @@ class Google_Service_Iam_Resource_ProjectsServiceAccountsKeys extends Google_Ser
     return $this->call('list', array($params), "Google_Service_Iam_ListServiceAccountKeysResponse");
   }
   /**
-   * Upload public key for a given service account. This rpc will create a
-   * ServiceAccountKey that has the provided public key and returns it.
+   * Creates a ServiceAccountKey, using a public key that you provide.
    * (keys.upload)
    *
    * @param string $name The resource name of the service account in the following

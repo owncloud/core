@@ -50,6 +50,7 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
   protected $networkInfoDataType = '';
   protected $nonComplianceDetailsType = 'Google_Service_AndroidManagement_NonComplianceDetail';
   protected $nonComplianceDetailsDataType = 'array';
+  public $ownership;
   public $policyCompliant;
   public $policyName;
   protected $powerManagementEventsType = 'Google_Service_AndroidManagement_PowerManagementEvent';
@@ -300,6 +301,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
   public function getNonComplianceDetails()
   {
     return $this->nonComplianceDetails;
+  }
+  public function setOwnership($ownership)
+  {
+    $this->ownership = $ownership;
+  }
+  public function getOwnership()
+  {
+    return $this->ownership;
   }
   public function setPolicyCompliant($policyCompliant)
   {

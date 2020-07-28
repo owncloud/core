@@ -77,11 +77,11 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    *
    * @opt_param string pageToken The next_page_token value returned from a
    * previous list request, if any.
-   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
-   * view, and 50 (max 500) for the FULL view.
    * @opt_param string view Group resource view to be returned. Defaults to
    * [View.BASIC]().
    * @opt_param string parent Required. Customer ID to list all groups from.
+   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
+   * view, and 50 (max 500) for the FULL view.
    * @return Google_Service_CloudIdentity_ListGroupsResponse
    */
   public function listGroups($optParams = array())
@@ -141,14 +141,14 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    *
    * @opt_param string pageToken The next_page_token value returned from a
    * previous search request, if any.
-   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
-   * view, and 50 (max 500) for the FULL view.
    * @opt_param string query Required. `Required`. Query string for performing
    * search on groups. Users can search on parent and label attributes of groups.
    * EXACT match ('==') is supported on parent, and CONTAINS match ('in') is
    * supported on labels.
    * @opt_param string view Group resource view to be returned. Defaults to
    * [View.BASIC]().
+   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
+   * view, and 50 (max 500) for the FULL view.
    * @return Google_Service_CloudIdentity_SearchGroupsResponse
    */
   public function search($optParams = array())

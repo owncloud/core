@@ -17,11 +17,20 @@
 
 class Google_Service_Compute_NetworkEndpoint extends Google_Model
 {
+  public $annotations;
   public $fqdn;
   public $instance;
   public $ipAddress;
   public $port;
 
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  public function getAnnotations()
+  {
+    return $this->annotations;
+  }
   public function setFqdn($fqdn)
   {
     $this->fqdn = $fqdn;

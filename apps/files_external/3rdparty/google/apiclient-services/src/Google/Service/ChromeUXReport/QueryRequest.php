@@ -18,11 +18,20 @@
 class Google_Service_ChromeUXReport_QueryRequest extends Google_Collection
 {
   protected $collection_key = 'metrics';
+  public $effectiveConnectionType;
   public $formFactor;
   public $metrics;
   public $origin;
   public $url;
 
+  public function setEffectiveConnectionType($effectiveConnectionType)
+  {
+    $this->effectiveConnectionType = $effectiveConnectionType;
+  }
+  public function getEffectiveConnectionType()
+  {
+    return $this->effectiveConnectionType;
+  }
   public function setFormFactor($formFactor)
   {
     $this->formFactor = $formFactor;

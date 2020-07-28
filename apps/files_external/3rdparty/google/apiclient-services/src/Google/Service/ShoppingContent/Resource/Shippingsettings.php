@@ -121,7 +121,8 @@ class Google_Service_ShoppingContent_Resource_Shippingsettings extends Google_Se
     return $this->call('list', array($params), "Google_Service_ShoppingContent_ShippingsettingsListResponse");
   }
   /**
-   * Updates the shipping settings of the account. (shippingsettings.update)
+   * Updates the shipping settings of the account. Any fields that are not
+   * provided are deleted from the resource. (shippingsettings.update)
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client

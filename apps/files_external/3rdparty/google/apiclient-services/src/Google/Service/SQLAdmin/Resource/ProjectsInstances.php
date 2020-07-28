@@ -69,8 +69,8 @@ class Google_Service_SQLAdmin_Resource_ProjectsInstances extends Google_Service_
    * project ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string syncMode External sync mode
    * @opt_param bool verifyConnectionOnly Flag to enable verifying connection only
+   * @opt_param string syncMode External sync mode
    * @return Google_Service_SQLAdmin_SqlInstancesVerifyExternalSyncSettingsResponse
    */
   public function verifyExternalSyncSettings($project, $instance, $optParams = array())

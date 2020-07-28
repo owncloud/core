@@ -86,10 +86,10 @@ class Google_Service_ServiceNetworking_Resource_ServicesConnections extends Goog
    * @param Google_Service_ServiceNetworking_Connection $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool force If a previously defined allocated range is removed,
-   * force flag must be set to true.
    * @opt_param string updateMask The update mask. If this is omitted, it defaults
    * to "*". You can only update the listed peering ranges.
+   * @opt_param bool force If a previously defined allocated range is removed,
+   * force flag must be set to true.
    * @return Google_Service_ServiceNetworking_Operation
    */
   public function patch($name, Google_Service_ServiceNetworking_Connection $postBody, $optParams = array())

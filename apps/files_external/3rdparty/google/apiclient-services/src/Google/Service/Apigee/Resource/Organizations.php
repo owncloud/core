@@ -60,6 +60,22 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Organization");
   }
   /**
+   * Gets the deployed ingress configuration for an organization.
+   * (organizations.getDeployedIngressConfig)
+   *
+   * @param string $name Required. Name of the deployed configuration for the
+   * organization in the following format:
+   * 'organizations/{org}/deployedIngressConfig'.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1IngressConfig
+   */
+  public function getDeployedIngressConfig($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('getDeployedIngressConfig', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1IngressConfig");
+  }
+  /**
    * Lists the service accounts with the permissions required to allow the
    * Synchronizer to download environment data from the control plane.
    *

@@ -26,17 +26,14 @@
 class Google_Service_DisplayVideo_Resource_Sdfdownloadtasks extends Google_Service_Resource
 {
   /**
-   * Creates an SDF Download Task. Returns an Operation.
-   *
-   * An SDF Download Task is a long-running, asynchronous operation. The metadata
-   * type of this operation is SdfDownloadTaskMetadata. If the request is
-   * successful, the response type of the operation is SdfDownloadTask. The
-   * response will not include the download files, which must be retrieved with
-   * media.download. The state of operation can be retrieved with
-   * sdfdownloadtask.operations.get.
-   *
-   * Any errors can be found in the error.message. Note that error.details is
-   * expected to be empty. (sdfdownloadtasks.create)
+   * Creates an SDF Download Task. Returns an Operation. An SDF Download Task is a
+   * long-running, asynchronous operation. The metadata type of this operation is
+   * SdfDownloadTaskMetadata. If the request is successful, the response type of
+   * the operation is SdfDownloadTask. The response will not include the download
+   * files, which must be retrieved with media.download. The state of operation
+   * can be retrieved with sdfdownloadtask.operations.get. Any errors can be found
+   * in the error.message. Note that error.details is expected to be empty.
+   * (sdfdownloadtasks.create)
    *
    * @param Google_Service_DisplayVideo_CreateSdfDownloadTaskRequest $postBody
    * @param array $optParams Optional parameters.

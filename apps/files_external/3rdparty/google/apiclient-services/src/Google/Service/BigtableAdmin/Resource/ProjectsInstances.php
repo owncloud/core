@@ -108,8 +108,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstances extends Google_Ser
    * fields of an Instance and is the preferred way to update an Instance.
    * (instances.partialUpdateInstance)
    *
-   * @param string $name Required. (`OutputOnly`) The unique name of the instance.
-   * Values are of the form `projects/{project}/instances/a-z+[a-z0-9]`.
+   * @param string $name The unique name of the instance. Values are of the form
+   * `projects/{project}/instances/a-z+[a-z0-9]`.
    * @param Google_Service_BigtableAdmin_Instance $postBody
    * @param array $optParams Optional parameters.
    *
@@ -162,8 +162,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstances extends Google_Ser
    * name and type for an Instance. To update other Instance properties, such as
    * labels, use PartialUpdateInstance. (instances.update)
    *
-   * @param string $name Required. (`OutputOnly`) The unique name of the instance.
-   * Values are of the form `projects/{project}/instances/a-z+[a-z0-9]`.
+   * @param string $name The unique name of the instance. Values are of the form
+   * `projects/{project}/instances/a-z+[a-z0-9]`.
    * @param Google_Service_BigtableAdmin_Instance $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigtableAdmin_Instance

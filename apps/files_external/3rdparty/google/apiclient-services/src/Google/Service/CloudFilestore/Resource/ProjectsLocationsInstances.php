@@ -83,12 +83,12 @@ class Google_Service_CloudFilestore_Resource_ProjectsLocationsInstances extends 
    * for all locations, use "-" for the {location} value.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter List filter.
+   * @opt_param string pageToken The next_page_token value to use if there are
+   * additional results to retrieve for this list request.
    * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string orderBy Sort results. Supported values are "name", "name
    * desc" or "" (unsorted).
-   * @opt_param string pageToken The next_page_token value to use if there are
-   * additional results to retrieve for this list request.
-   * @opt_param string filter List filter.
    * @return Google_Service_CloudFilestore_ListInstancesResponse
    */
   public function listProjectsLocationsInstances($parent, $optParams = array())

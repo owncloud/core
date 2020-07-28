@@ -21,6 +21,8 @@ class Google_Service_Cloudbilling_Sku extends Google_Collection
   protected $categoryType = 'Google_Service_Cloudbilling_Category';
   protected $categoryDataType = '';
   public $description;
+  protected $geoTaxonomyType = 'Google_Service_Cloudbilling_GeoTaxonomy';
+  protected $geoTaxonomyDataType = '';
   public $name;
   protected $pricingInfoType = 'Google_Service_Cloudbilling_PricingInfo';
   protected $pricingInfoDataType = 'array';
@@ -49,6 +51,20 @@ class Google_Service_Cloudbilling_Sku extends Google_Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param Google_Service_Cloudbilling_GeoTaxonomy
+   */
+  public function setGeoTaxonomy(Google_Service_Cloudbilling_GeoTaxonomy $geoTaxonomy)
+  {
+    $this->geoTaxonomy = $geoTaxonomy;
+  }
+  /**
+   * @return Google_Service_Cloudbilling_GeoTaxonomy
+   */
+  public function getGeoTaxonomy()
+  {
+    return $this->geoTaxonomy;
   }
   public function setName($name)
   {

@@ -61,14 +61,14 @@ class Google_Service_YouTube_Resource_Comments extends Google_Service_Resource
    * include.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string id Returns the comments with the given IDs for One
-   * Platform.
-   * @opt_param string maxResults The maxResults parameter specifies the maximum
-   * number of items that should be returned in the result set.
    * @opt_param string pageToken The pageToken parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
    * nextPageToken and prevPageToken properties identify other pages that could be
    * retrieved.
+   * @opt_param string maxResults The maxResults parameter specifies the maximum
+   * number of items that should be returned in the result set.
+   * @opt_param string id Returns the comments with the given IDs for One
+   * Platform.
    * @opt_param string parentId Returns replies to the specified comment. Note,
    * currently YouTube features only one level of replies (ie replies to top level
    * comments). However replies to replies may be supported in the future.

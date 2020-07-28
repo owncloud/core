@@ -38,18 +38,18 @@ class Google_Service_YouTube_Resource_Activities extends Google_Service_Resource
    * contain all of those nested properties.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string regionCode
-   * @opt_param string channelId
-   * @opt_param bool mine
-   * @opt_param string publishedBefore
    * @opt_param string pageToken The pageToken parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
    * nextPageToken and prevPageToken properties identify other pages that could be
    * retrieved.
-   * @opt_param bool home
+   * @opt_param string regionCode
+   * @opt_param string channelId
+   * @opt_param string publishedAfter
+   * @opt_param string publishedBefore
+   * @opt_param bool mine
    * @opt_param string maxResults The maxResults parameter specifies the maximum
    * number of items that should be returned in the result set.
-   * @opt_param string publishedAfter
+   * @opt_param bool home
    * @return Google_Service_YouTube_ActivityListResponse
    */
   public function listActivities($part, $optParams = array())

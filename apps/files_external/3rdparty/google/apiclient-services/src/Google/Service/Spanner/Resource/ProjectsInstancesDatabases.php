@@ -79,6 +79,7 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
    * queried using the Operations API. (databases.getDdl)
    *
    * @param string $database Required. The database whose schema we wish to get.
+   * Values are of the form `projects//instances//databases/`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Spanner_GetDatabaseDdlResponse
    */

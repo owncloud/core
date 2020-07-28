@@ -455,9 +455,10 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Compute_InstanceList");
   }
   /**
-   * Retrieves the list of referrers to instances contained within the specified
-   * zone. For more information, read Viewing Referrers to VM Instances.
-   * (instances.listReferrers)
+   * Retrieves a list of resources that refer to the VM instance specified in the
+   * request. For example, if the VM instance is part of a managed instance group,
+   * the referrers list includes the managed instance group. For more information,
+   * read Viewing Referrers to VM Instances. (instances.listReferrers)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -803,7 +804,10 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('setMinCpuPlatform', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Sets an instance's scheduling options. (instances.setScheduling)
+   * Sets an instance's scheduling options. You can only call this method on a
+   * stopped instance, that is, a VM instance that is in a `TERMINATED` state. See
+   * Instance Life Cycle for more information on the possible instance states.
+   * (instances.setScheduling)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

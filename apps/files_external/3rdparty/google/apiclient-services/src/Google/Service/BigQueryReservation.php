@@ -116,14 +116,18 @@ class Google_Service_BigQueryReservation extends Google_Service
                   'required' => true,
                 ),
               ),
-            ),'searchAssignments' => array(
-              'path' => 'v1/{+parent}:searchAssignments',
+            ),'searchAllAssignments' => array(
+              'path' => 'v1/{+parent}:searchAllAssignments',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'query' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -133,9 +137,27 @@ class Google_Service_BigQueryReservation extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+              ),
+            ),'searchAssignments' => array(
+              'path' => 'v1/{+parent}:searchAssignments',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
                 'query' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'updateBiReservation' => array(

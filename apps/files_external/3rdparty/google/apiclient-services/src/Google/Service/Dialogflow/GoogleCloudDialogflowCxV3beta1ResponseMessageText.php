@@ -18,8 +18,17 @@
 class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageText extends Google_Collection
 {
   protected $collection_key = 'text';
+  public $allowPlaybackInterruption;
   public $text;
 
+  public function setAllowPlaybackInterruption($allowPlaybackInterruption)
+  {
+    $this->allowPlaybackInterruption = $allowPlaybackInterruption;
+  }
+  public function getAllowPlaybackInterruption()
+  {
+    return $this->allowPlaybackInterruption;
+  }
   public function setText($text)
   {
     $this->text = $text;

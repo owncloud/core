@@ -41,16 +41,15 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAvailableLocations exte
    * policy/defining-locations) for the specified Project and, thus, might return
    * a subset of all possible GCP resource locations. To list all GCP resource
    * locations (regardless of any restrictions), call the endpoint without
-   * specifying a `projectId` (that is,
-   * `/v1beta1/{parent=projects/-}/listAvailableLocations`).
-   *
-   * To call `ListAvailableLocations` with a specified project, a member must be
-   * at minimum a Viewer of the project. Calls without a specified project do not
+   * specifying a `PROJECT_NUMBER` (that is,
+   * `/v1beta1/{parent=projects/-}/listAvailableLocations`).  To call
+   * `ListAvailableLocations` with a specified project, a member must be at
+   * minimum a Viewer of the project. Calls without a specified project do not
    * require any specific project permissions.
    * (availableLocations.listProjectsAvailableLocations)
    *
    * @param string $parent The Project for which to list GCP resource locations,
-   * in the format: projects/projectId If no project is specified (that is,
+   * in the format: projects/PROJECT_NUMBER If no project is specified (that is,
    * `projects/-`), the returned list does not take into account org-specific or
    * project-specific location restrictions.
    * @param array $optParams Optional parameters.

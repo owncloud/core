@@ -23,6 +23,8 @@ class Google_Service_BigtableAdmin_Table extends Google_Model
   protected $columnFamiliesDataType = 'map';
   public $granularity;
   public $name;
+  protected $restoreInfoType = 'Google_Service_BigtableAdmin_RestoreInfo';
+  protected $restoreInfoDataType = '';
 
   /**
    * @param Google_Service_BigtableAdmin_ClusterState
@@ -67,5 +69,19 @@ class Google_Service_BigtableAdmin_Table extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param Google_Service_BigtableAdmin_RestoreInfo
+   */
+  public function setRestoreInfo(Google_Service_BigtableAdmin_RestoreInfo $restoreInfo)
+  {
+    $this->restoreInfo = $restoreInfo;
+  }
+  /**
+   * @return Google_Service_BigtableAdmin_RestoreInfo
+   */
+  public function getRestoreInfo()
+  {
+    return $this->restoreInfo;
   }
 }

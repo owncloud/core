@@ -20,6 +20,7 @@ class Google_Service_ArtifactRegistry_Repository extends Google_Model
   public $createTime;
   public $description;
   public $format;
+  public $kmsKeyName;
   public $labels;
   public $name;
   public $updateTime;
@@ -47,6 +48,14 @@ class Google_Service_ArtifactRegistry_Repository extends Google_Model
   public function getFormat()
   {
     return $this->format;
+  }
+  public function setKmsKeyName($kmsKeyName)
+  {
+    $this->kmsKeyName = $kmsKeyName;
+  }
+  public function getKmsKeyName()
+  {
+    return $this->kmsKeyName;
   }
   public function setLabels($labels)
   {

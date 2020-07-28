@@ -78,11 +78,10 @@ class Google_Service_DisplayVideo_Resource_AdvertisersInsertionOrders extends Go
     return $this->call('get', array($params), "Google_Service_DisplayVideo_InsertionOrder");
   }
   /**
-   * Lists insertion orders in an advertiser.
-   *
-   * The order is defined by the order_by parameter. If a filter by entity_status
-   * is not specified, insertion orders with `ENTITY_STATUS_ARCHIVED` will not be
-   * included in the results. (insertionOrders.listAdvertisersInsertionOrders)
+   * Lists insertion orders in an advertiser. The order is defined by the order_by
+   * parameter. If a filter by entity_status is not specified, insertion orders
+   * with `ENTITY_STATUS_ARCHIVED` will not be included in the results.
+   * (insertionOrders.listAdvertisersInsertionOrders)
    *
    * @param string $advertiserId Required. The ID of the advertiser to list
    * insertion orders for.
@@ -92,35 +91,24 @@ class Google_Service_DisplayVideo_Resource_AdvertisersInsertionOrders extends Go
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListInsertionOrders` method. If not specified, the
    * first page of results will be returned.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are:
-   *
-   * * "displayName" (default) * "entityStatus"
-   *
-   * The default sorting order is ascending. To specify descending order for a
-   * field, a suffix "desc" should be added to the field name. Example:
-   * `displayName desc`.
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * "displayName" (default) * "entityStatus" The default sorting order is
+   * ascending. To specify descending order for a field, a suffix "desc" should be
+   * added to the field name. Example: `displayName desc`.
    * @opt_param string filter Allows filtering by insertion order properties.
-   *
-   * Supported syntax:
-   *
-   * * Filter expressions are made up of one or more restrictions. * Restrictions
-   * can be combined by `AND` or `OR` logical operators. A sequence of
-   * restrictions implicitly uses `AND`. * A restriction has the form of `{field}
-   * {operator} {value}`. * The operator must be `EQUALS (=)`. * Supported fields:
-   * - `campaignId`     - `entityStatus`
-   *
-   * Examples:
-   *
-   * * All insertion orders under a campaign: `campaignId="1234"` * All
+   * Supported syntax: * Filter expressions are made up of one or more
+   * restrictions. * Restrictions can be combined by `AND` or `OR` logical
+   * operators. A sequence of restrictions implicitly uses `AND`. * A restriction
+   * has the form of `{field} {operator} {value}`. * The operator must be `EQUALS
+   * (=)`. * Supported fields: - `campaignId` - `entityStatus` Examples: * All
+   * insertion orders under a campaign: `campaignId="1234"` * All
    * `ENTITY_STATUS_ACTIVE` or `ENTITY_STATUS_PAUSED` insertion orders under an
    * advertiser: `(entityStatus="ENTITY_STATUS_ACTIVE" OR
-   * entityStatus="ENTITY_STATUS_PAUSED")`
-   *
-   * The length of this field should be no more than 500 characters.
+   * entityStatus="ENTITY_STATUS_PAUSED")` The length of this field should be no
+   * more than 500 characters.
    * @return Google_Service_DisplayVideo_ListInsertionOrdersResponse
    */
   public function listAdvertisersInsertionOrders($advertiserId, $optParams = array())

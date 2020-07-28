@@ -184,10 +184,10 @@ class Google_Service_SQLAdmin_Resource_Instances extends Google_Service_Resource
    * instances.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A previously-returned page token representing
-   * part of the larger set of results to view.
    * @opt_param string maxResults The maximum number of results to return per
    * response.
+   * @opt_param string pageToken A previously-returned page token representing
+   * part of the larger set of results to view.
    * @opt_param string filter A filter expression that filters resources listed in
    * the response. The expression is in the form of field:value. For example,
    * 'instanceType:CLOUD_SQL_INSTANCE'. Fields can be nested as needed as per

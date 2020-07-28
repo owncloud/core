@@ -34,6 +34,10 @@ class Google_Service_Dfareporting_Report extends Google_Model
   public $lastModifiedTime;
   public $name;
   public $ownerProfileId;
+  protected $pathAttributionCriteriaType = 'Google_Service_Dfareporting_ReportPathAttributionCriteria';
+  protected $pathAttributionCriteriaDataType = '';
+  protected $pathCriteriaType = 'Google_Service_Dfareporting_ReportPathCriteria';
+  protected $pathCriteriaDataType = '';
   protected $pathToConversionCriteriaType = 'Google_Service_Dfareporting_ReportPathToConversionCriteria';
   protected $pathToConversionCriteriaDataType = '';
   protected $reachCriteriaType = 'Google_Service_Dfareporting_ReportReachCriteria';
@@ -170,6 +174,34 @@ class Google_Service_Dfareporting_Report extends Google_Model
   public function getOwnerProfileId()
   {
     return $this->ownerProfileId;
+  }
+  /**
+   * @param Google_Service_Dfareporting_ReportPathAttributionCriteria
+   */
+  public function setPathAttributionCriteria(Google_Service_Dfareporting_ReportPathAttributionCriteria $pathAttributionCriteria)
+  {
+    $this->pathAttributionCriteria = $pathAttributionCriteria;
+  }
+  /**
+   * @return Google_Service_Dfareporting_ReportPathAttributionCriteria
+   */
+  public function getPathAttributionCriteria()
+  {
+    return $this->pathAttributionCriteria;
+  }
+  /**
+   * @param Google_Service_Dfareporting_ReportPathCriteria
+   */
+  public function setPathCriteria(Google_Service_Dfareporting_ReportPathCriteria $pathCriteria)
+  {
+    $this->pathCriteria = $pathCriteria;
+  }
+  /**
+   * @return Google_Service_Dfareporting_ReportPathCriteria
+   */
+  public function getPathCriteria()
+  {
+    return $this->pathCriteria;
   }
   /**
    * @param Google_Service_Dfareporting_ReportPathToConversionCriteria

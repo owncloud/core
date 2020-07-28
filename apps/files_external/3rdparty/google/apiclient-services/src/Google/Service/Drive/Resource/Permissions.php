@@ -50,10 +50,8 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * when sharing to users or groups. This defaults to true for users and groups,
    * and is not allowed for other requests. It must not be disabled for ownership
    * transfers.
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool transferOwnership Whether to transfer ownership to the
    * specified user and downgrade the current owner to a writer. This parameter is
@@ -77,10 +75,8 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * @param string $permissionId The ID of the permission.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
@@ -100,10 +96,8 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * @param string $permissionId The ID of the permission.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
@@ -130,10 +124,8 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * @opt_param string pageToken The token for continuing a previous list request
    * on the next page. This should be set to the value of 'nextPageToken' from the
    * previous response.
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool useDomainAdminAccess Issue the request as a domain
    * administrator; if set to true, then the requester will be granted access if
@@ -156,10 +148,8 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool removeExpiration Whether to remove the expiration date.
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param bool transferOwnership Whether to transfer ownership to the
    * specified user and downgrade the current owner to a writer. This parameter is

@@ -19,7 +19,8 @@
  * Service definition for SearchConsole (v1).
  *
  * <p>
- * Provides tools for running validation tests against single URLs</p>
+ * The Search Console API provides access to both Search Console data (verified
+ * users only) and to public information on an URL basis (anyone)</p>
  *
  * <p>
  * For more information about this service, see the API

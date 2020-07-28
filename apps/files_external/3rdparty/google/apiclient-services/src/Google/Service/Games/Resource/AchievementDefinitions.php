@@ -33,10 +33,11 @@ class Google_Service_Games_Resource_AchievementDefinitions extends Google_Servic
    *
    * @opt_param string language The preferred language to use for strings returned
    * by this method.
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param int maxResults The maximum number of achievement resources to
    * return in the response, used for paging. For any response, the actual number
-   * of achievement resources returned may be less than the specified maxResults.
-   * @opt_param string pageToken The token returned by the previous request.
+   * of achievement resources returned may be less than the specified
+   * `maxResults`.
    * @return Google_Service_Games_AchievementDefinitionsListResponse
    */
   public function listAchievementDefinitions($optParams = array())

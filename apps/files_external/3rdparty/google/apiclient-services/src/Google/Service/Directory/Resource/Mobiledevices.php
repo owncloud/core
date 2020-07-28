@@ -76,14 +76,13 @@ class Google_Service_Directory_Resource_Mobiledevices extends Google_Service_Res
    * @param string $customerId Immutable ID of the G Suite account
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return. Max allowed
-   * value is 100.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Column to use for sorting results
    * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string projection Restrict information returned to a set of
    * selected fields.
-   * @opt_param string query Search string in the format given at
-   * http://support.google.com/a/bin/answer.py?answer=1408863#search
+   * @opt_param string query Search string in the format provided by this Help
+   * Center article.
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order. Only of use when orderBy is also used
    * @return Google_Service_Directory_MobileDevices

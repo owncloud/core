@@ -130,20 +130,20 @@ class Google_Service_AndroidEnterprise_Resource_Products extends Google_Service_
    * @param string $enterpriseId The ID of the enterprise.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool approved Specifies whether to search among all products
+   * (false) or among only products that have been approved (true). Only "true" is
+   * supported, and should be specified.
+   * @opt_param string maxResults Defines how many results the list operation
+   * should return. The default number depends on the resource collection.
    * @opt_param string token Defines the token of the page to return, usually
    * taken from TokenPagination. This can only be used if token paging is enabled.
    * @opt_param string language The BCP47 tag for the user's preferred language
    * (e.g. "en-US", "de"). Results are returned in the language best matching the
    * preferred language.
-   * @opt_param bool approved Specifies whether to search among all products
-   * (false) or among only products that have been approved (true). Only "true" is
-   * supported, and should be specified.
    * @opt_param string query The search query as typed in the Google Play store
    * search box. If omitted, all approved apps will be returned (using the
    * pagination parameters), including apps that are not available in the store
    * (e.g. unpublished apps).
-   * @opt_param string maxResults Defines how many results the list operation
-   * should return. The default number depends on the resource collection.
    * @return Google_Service_AndroidEnterprise_ProductsListResponse
    */
   public function listProducts($enterpriseId, $optParams = array())

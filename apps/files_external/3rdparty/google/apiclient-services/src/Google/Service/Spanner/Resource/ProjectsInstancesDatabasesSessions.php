@@ -68,7 +68,13 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    * commonly, the cause is conflicts with concurrent transactions. However, it
    * can also happen for a variety of other reasons. If `Commit` returns
    * `ABORTED`, the caller should re-attempt the transaction from the beginning,
-   * re-using the same session. (sessions.commit)
+   * re-using the same session.
+   *
+   * On very rare occasions, `Commit` might return `UNKNOWN`. This can happen, for
+   * example, if the client job experiences a 1+ hour networking failure. At that
+   * point, Cloud Spanner has lost track of the transaction outcome and we
+   * recommend that you perform another read from the database to see the state of
+   * things as they are now. (sessions.commit)
    *
    * @param string $session Required. The session in which the transaction to be
    * committed is running.
@@ -216,8 +222,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    * @param string $database Required. The database in which to list sessions.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken If non-empty, `page_token` should contain a
-   * next_page_token from a previous ListSessionsResponse.
    * @opt_param string filter An expression for filtering the results of the
    * request. Filter rules are case insensitive. The fields eligible for filtering
    * are:
@@ -229,6 +233,8 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    *   * `labels.env:*` --> The session has the label "env".   * `labels.env:dev`
    * --> The session has the label "env" and the value of
    * the label contains the string "dev".
+   * @opt_param string pageToken If non-empty, `page_token` should contain a
+   * next_page_token from a previous ListSessionsResponse.
    * @opt_param int pageSize Number of sessions to be returned in the response. If
    * 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_Spanner_ListSessionsResponse

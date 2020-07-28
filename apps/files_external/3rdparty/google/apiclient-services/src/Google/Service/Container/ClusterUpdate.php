@@ -39,6 +39,8 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   protected $desiredNodePoolAutoscalingDataType = '';
   public $desiredNodePoolId;
   public $desiredNodeVersion;
+  protected $desiredReleaseChannelType = 'Google_Service_Container_ReleaseChannel';
+  protected $desiredReleaseChannelDataType = '';
   protected $desiredResourceUsageExportConfigType = 'Google_Service_Container_ResourceUsageExportConfig';
   protected $desiredResourceUsageExportConfigDataType = '';
   protected $desiredShieldedNodesType = 'Google_Service_Container_ShieldedNodes';
@@ -201,6 +203,20 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   public function getDesiredNodeVersion()
   {
     return $this->desiredNodeVersion;
+  }
+  /**
+   * @param Google_Service_Container_ReleaseChannel
+   */
+  public function setDesiredReleaseChannel(Google_Service_Container_ReleaseChannel $desiredReleaseChannel)
+  {
+    $this->desiredReleaseChannel = $desiredReleaseChannel;
+  }
+  /**
+   * @return Google_Service_Container_ReleaseChannel
+   */
+  public function getDesiredReleaseChannel()
+  {
+    return $this->desiredReleaseChannel;
   }
   /**
    * @param Google_Service_Container_ResourceUsageExportConfig

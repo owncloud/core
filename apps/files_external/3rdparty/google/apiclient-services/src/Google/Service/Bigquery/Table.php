@@ -47,6 +47,8 @@ class Google_Service_Bigquery_Table extends Google_Model
   protected $schemaType = 'Google_Service_Bigquery_TableSchema';
   protected $schemaDataType = '';
   public $selfLink;
+  protected $snapshotDefinitionType = 'Google_Service_Bigquery_SnapshotDefinition';
+  protected $snapshotDefinitionDataType = '';
   protected $streamingBufferType = 'Google_Service_Bigquery_Streamingbuffer';
   protected $streamingBufferDataType = '';
   protected $tableReferenceType = 'Google_Service_Bigquery_TableReference';
@@ -282,6 +284,20 @@ class Google_Service_Bigquery_Table extends Google_Model
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param Google_Service_Bigquery_SnapshotDefinition
+   */
+  public function setSnapshotDefinition(Google_Service_Bigquery_SnapshotDefinition $snapshotDefinition)
+  {
+    $this->snapshotDefinition = $snapshotDefinition;
+  }
+  /**
+   * @return Google_Service_Bigquery_SnapshotDefinition
+   */
+  public function getSnapshotDefinition()
+  {
+    return $this->snapshotDefinition;
   }
   /**
    * @param Google_Service_Bigquery_Streamingbuffer

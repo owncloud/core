@@ -28,7 +28,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * DeleteInstance deletes an instance associated with the given study, series,
    * and SOP Instance UID. Delete requests are equivalent to the GET requests
-   * specified in the Retrieve transaction. (instances.delete)
+   * specified in the Retrieve transaction. Study and series search results can
+   * take a few seconds to be updated after an instance is deleted using
+   * DeleteInstance. (instances.delete)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}

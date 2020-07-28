@@ -26,15 +26,13 @@
 class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordListsNegativeKeywords extends Google_Service_Resource
 {
   /**
-   * Bulk edits negative keywords in a single negative keyword list.
-   *
-   * The operation will delete the negative keywords provided in
+   * Bulk edits negative keywords in a single negative keyword list. The operation
+   * will delete the negative keywords provided in
    * BulkEditNegativeKeywordsRequest.deleted_negative_keywords and then create the
    * negative keywords provided in
-   * BulkEditNegativeKeywordsRequest.created_negative_keywords.
-   *
-   * This operation is guaranteed to be atomic and will never result in a partial
-   * success or partial failure. (negativeKeywords.bulkEdit)
+   * BulkEditNegativeKeywordsRequest.created_negative_keywords. This operation is
+   * guaranteed to be atomic and will never result in a partial success or partial
+   * failure. (negativeKeywords.bulkEdit)
    *
    * @param string $advertiserId Required. The ID of the DV360 advertiser to which
    * the parent negative keyword list belongs.
@@ -97,36 +95,23 @@ class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordListsNegati
    * keyword list to which the requested negative keywords belong.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Allows filtering by negative keyword fields.
-   *
-   * Supported syntax:
-   *
-   * * Filter expressions for negative keyword currently can only contain at most
-   * one * restriction. * A restriction has the form of `{field} {operator}
-   * {value}`. * The operator must be `CONTAINS (:)`. * Supported fields:     -
-   * `keywordValue`
-   *
-   * Examples:
-   *
-   * * All negative keywords for which the keyword value contains "google":
-   * `keywordValue : "google"`
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
+   * @opt_param string filter Allows filtering by negative keyword fields.
+   * Supported syntax: * Filter expressions for negative keyword currently can
+   * only contain at most one * restriction. * A restriction has the form of
+   * `{field} {operator} {value}`. * The operator must be `CONTAINS (:)`. *
+   * Supported fields: - `keywordValue` Examples: * All negative keywords for
+   * which the keyword value contains "google": `keywordValue : "google"`
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are:
-   *
-   * * `keywordValue` (default)
-   *
-   * The default sorting order is ascending. To specify descending order for a
-   * field, a suffix " desc" should be added to the field name. Example:
-   * `keywordValue desc`.
+   * are: * `keywordValue` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix " desc" should be added to the
+   * field name. Example: `keywordValue desc`.
    * @opt_param string pageToken A token identifying a page of results the server
-   * should return.
-   *
-   * Typically, this is the value of next_page_token returned from the previous
-   * call to `ListNegativeKeywords` method. If not specified, the first page of
-   * results will be returned.
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListNegativeKeywords` method. If not specified, the
+   * first page of results will be returned.
    * @return Google_Service_DisplayVideo_ListNegativeKeywordsResponse
    */
   public function listAdvertisersNegativeKeywordListsNegativeKeywords($advertiserId, $negativeKeywordListId, $optParams = array())

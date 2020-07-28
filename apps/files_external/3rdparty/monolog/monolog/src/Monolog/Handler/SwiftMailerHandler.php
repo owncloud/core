@@ -28,6 +28,8 @@ class SwiftMailerHandler extends MailHandler
     private $messageTemplate;
 
     /**
+     * @psalm-param Swift_Message|callable(string, array): Swift_Message $message
+     *
      * @param \Swift_Mailer          $mailer  The mailer to use
      * @param callable|Swift_Message $message An example message for real messages, only the body will be replaced
      * @param string|int             $level   The minimum logging level at which this handler will be triggered
@@ -52,9 +54,9 @@ class SwiftMailerHandler extends MailHandler
     /**
      * Gets the formatter for the Swift_Message subject.
      *
-     * @param string $format The format of the subject
+     * @param string|null $format The format of the subject
      */
-    protected function getSubjectFormatter(string $format): FormatterInterface
+    protected function getSubjectFormatter(?string $format): FormatterInterface
     {
         return new LineFormatter($format);
     }
@@ -73,7 +75,7 @@ class SwiftMailerHandler extends MailHandler
             $message = clone $this->messageTemplate;
             $message->generateId();
         } elseif (is_callable($this->messageTemplate)) {
-            $message = call_user_func($this->messageTemplate, $content, $records);
+            $message = ($this->messageTemplate)($content, $records);
         }
 
         if (!$message instanceof Swift_Message) {

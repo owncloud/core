@@ -20,6 +20,7 @@ class Google_Service_Pubsub_PubsubMessage extends Google_Model
   public $attributes;
   public $data;
   public $messageId;
+  public $orderingKey;
   public $publishTime;
 
   public function setAttributes($attributes)
@@ -45,6 +46,14 @@ class Google_Service_Pubsub_PubsubMessage extends Google_Model
   public function getMessageId()
   {
     return $this->messageId;
+  }
+  public function setOrderingKey($orderingKey)
+  {
+    $this->orderingKey = $orderingKey;
+  }
+  public function getOrderingKey()
+  {
+    return $this->orderingKey;
   }
   public function setPublishTime($publishTime)
   {

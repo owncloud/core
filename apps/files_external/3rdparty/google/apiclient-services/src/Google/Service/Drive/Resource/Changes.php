@@ -33,10 +33,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    *
    * @opt_param string driveId The ID of the shared drive for which the starting
    * pageToken for listing future changes from that shared drive is returned.
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param string teamDriveId Deprecated use driveId instead.
    * @return Google_Service_Drive_StartPageToken
@@ -62,10 +60,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * resource if the file is still accessible by the user at the time of the
    * request, even when a file was removed from the list of changes and there will
    * be no further change entries for this file.
-   * @opt_param bool includeItemsFromAllDrives Deprecated - Whether both My Drive
-   * and shared drive items should be included in results. This parameter will
-   * only be effective until June 1, 2020. Afterwards shared drive items are
-   * included in the results.
+   * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
+   * drive items should be included in results.
    * @opt_param bool includeRemoved Whether to include changes indicating that
    * items have been removed from the list of changes, for example by deletion or
    * loss of access.
@@ -78,10 +74,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * Drive.
    * @opt_param string spaces A comma-separated list of spaces to query within the
    * user corpus. Supported values are 'drive', 'appDataFolder' and 'photos'.
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param string teamDriveId Deprecated use driveId instead.
    * @return Google_Service_Drive_ChangeList
@@ -108,10 +102,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * resource if the file is still accessible by the user at the time of the
    * request, even when a file was removed from the list of changes and there will
    * be no further change entries for this file.
-   * @opt_param bool includeItemsFromAllDrives Deprecated - Whether both My Drive
-   * and shared drive items should be included in results. This parameter will
-   * only be effective until June 1, 2020. Afterwards shared drive items are
-   * included in the results.
+   * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
+   * drive items should be included in results.
    * @opt_param bool includeRemoved Whether to include changes indicating that
    * items have been removed from the list of changes, for example by deletion or
    * loss of access.
@@ -124,10 +116,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * Drive.
    * @opt_param string spaces A comma-separated list of spaces to query within the
    * user corpus. Supported values are 'drive', 'appDataFolder' and 'photos'.
-   * @opt_param bool supportsAllDrives Deprecated - Whether the requesting
-   * application supports both My Drives and shared drives. This parameter will
-   * only be effective until June 1, 2020. Afterwards all applications are assumed
-   * to support shared drives.
+   * @opt_param bool supportsAllDrives Whether the requesting application supports
+   * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
    * @opt_param string teamDriveId Deprecated use driveId instead.
    * @return Google_Service_Drive_Channel

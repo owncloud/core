@@ -31,8 +31,8 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * manager/reference/rest/v1/projects).
    *
    * Since a FirebaseProject is actually also a GCP `Project`, a `FirebaseProject`
-   * uses underlying GCP identifiers (most importantly, the `projectId`) as its
-   * own for easy interop with GCP APIs.
+   * uses underlying GCP identifiers (most importantly, the `PROJECT_NUMBER`) as
+   * its own for easy interop with GCP APIs.
    *
    * The result of this call is an [`Operation`](../../v1beta1/operations). Poll
    * the `Operation` to track the provisioning process by calling GetOperation
@@ -55,10 +55,10 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * (projects.addFirebase)
    *
    * @param string $project The resource name of the GCP `Project` to which
-   * Firebase resources will be added, in the format: projects/projectId After
-   * calling `AddFirebase`, the [`projectId`](https://cloud.google.com/resource-
-   * manager/reference/rest/v1/projects#Project.FIELDS.project_id) of the GCP
-   * `Project` is also the `projectId` of the FirebaseProject.
+   * Firebase resources will be added, in the format: projects/PROJECT_NUMBER
+   * After calling `AddFirebase`, the [`project_id`](https://cloud.google.com
+   * /resource-manager/reference/rest/v1/projects#Project.FIELDS.project_id) of
+   * the GCP `Project` is also the `project_id` of the FirebaseProject.
    * @param Google_Service_FirebaseManagement_AddFirebaseRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -120,7 +120,7 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * (projects.addGoogleAnalytics)
    *
    * @param string $parent The parent `FirebaseProject` to link to an existing
-   * Google Analytics account, in the format: projects/projectId
+   * Google Analytics account, in the format: projects/PROJECT_NUMBER
    * @param Google_Service_FirebaseManagement_AddGoogleAnalyticsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -136,7 +136,7 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * (projects.get)
    *
    * @param string $name The fully qualified resource name of the Project, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_FirebaseProject
    */
@@ -154,7 +154,7 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * command. (projects.getAdminSdkConfig)
    *
    * @param string $name The fully qualified resource name of the Project, in the
-   * format: projects/projectId/adminSdkConfig
+   * format: projects/PROJECT_NUMBER/adminSdkConfig
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_AdminSdkConfig
    */
@@ -173,7 +173,7 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * (projects.getAnalyticsDetails)
    *
    * @param string $name The fully qualified resource name, in the format:
-   * projects/projectId/analyticsDetails
+   * projects/PROJECT_NUMBER/analyticsDetails
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_AnalyticsDetails
    */
@@ -200,9 +200,6 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListFirebaseProjects` indicating where in the set of Projects to resume
-   * listing.
    * @opt_param int pageSize The maximum number of Projects to return in the
    * response.
    *
@@ -211,6 +208,9 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * limit.
    *
    * This value cannot be negative.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListFirebaseProjects` indicating where in the set of Projects to resume
+   * listing.
    * @return Google_Service_FirebaseManagement_ListFirebaseProjectsResponse
    */
   public function listProjects($optParams = array())
@@ -260,7 +260,7 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * `FirebaseProject`. (projects.removeAnalytics)
    *
    * @param string $parent The parent `FirebaseProject` to unlink from its Google
-   * Analytics account, in the format: projects/projectId
+   * Analytics account, in the format: projects/PROJECT_NUMBER
    * @param Google_Service_FirebaseManagement_RemoveAnalyticsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_FirebaseEmpty
@@ -280,7 +280,7 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    * for App selector interfaces). (projects.searchApps)
    *
    * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Token returned from a previous call to

@@ -30,9 +30,9 @@ class Google_Service_AndroidProvisioningPartner_Resource_Customers extends Googl
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A token specifying which result page to return.
    * @opt_param int pageSize The maximum number of customers to show in a page of
    * results. A number between 1 and 100 (inclusive).
+   * @opt_param string pageToken A token specifying which result page to return.
    * @return Google_Service_AndroidProvisioningPartner_CustomerListCustomersResponse
    */
   public function listCustomers($optParams = array())

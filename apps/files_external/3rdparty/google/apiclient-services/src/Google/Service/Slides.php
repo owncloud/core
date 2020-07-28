@@ -139,11 +139,11 @@ class Google_Service_Slides extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'thumbnailProperties.mimeType' => array(
+                'thumbnailProperties.thumbnailSize' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'thumbnailProperties.thumbnailSize' => array(
+                'thumbnailProperties.mimeType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

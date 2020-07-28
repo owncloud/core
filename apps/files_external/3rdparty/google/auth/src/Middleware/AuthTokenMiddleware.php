@@ -124,7 +124,11 @@ class AuthTokenMiddleware
         if (array_key_exists('access_token', $auth_tokens)) {
             // notify the callback if applicable
             if ($this->tokenCallback) {
-                call_user_func($this->tokenCallback, $this->fetcher->getCacheKey(), $auth_tokens['access_token']);
+                call_user_func(
+                    $this->tokenCallback,
+                    $this->fetcher->getCacheKey(),
+                    $auth_tokens['access_token']
+                );
             }
 
             return $auth_tokens['access_token'];

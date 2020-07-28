@@ -51,10 +51,10 @@ class Google_Service_DisplayVideo_Resource_FloodlightGroups extends Google_Servi
    * @param Google_Service_DisplayVideo_FloodlightGroup $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. The mask to control which fields to
-   * update.
    * @opt_param string partnerId Required. The partner context by which the
    * Floodlight group is being accessed.
+   * @opt_param string updateMask Required. The mask to control which fields to
+   * update.
    * @return Google_Service_DisplayVideo_FloodlightGroup
    */
   public function patch($floodlightGroupId, Google_Service_DisplayVideo_FloodlightGroup $postBody, $optParams = array())

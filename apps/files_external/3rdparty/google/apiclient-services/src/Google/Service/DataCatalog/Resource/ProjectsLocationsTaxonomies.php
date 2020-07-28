@@ -56,20 +56,18 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTaxonomies extends Go
     return $this->call('delete', array($params), "Google_Service_DataCatalog_DatacatalogEmpty");
   }
   /**
-   * Exports all taxonomies and their policy tags in a project.
-   *
-   * This method generates SerializedTaxonomy protos with nested policy tags that
-   * can be used as an input for future ImportTaxonomies calls.
-   * (taxonomies.export)
+   * Exports all taxonomies and their policy tags in a project. This method
+   * generates SerializedTaxonomy protos with nested policy tags that can be used
+   * as an input for future ImportTaxonomies calls. (taxonomies.export)
    *
    * @param string $parent Required. Resource name of the project that taxonomies
    * to be exported will share.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool serializedTaxonomies Export taxonomies as serialized
-   * taxonomies.
    * @opt_param string taxonomies Required. Resource names of the taxonomies to be
    * exported.
+   * @opt_param bool serializedTaxonomies Export taxonomies as serialized
+   * taxonomies.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ExportTaxonomiesResponse
    */
   public function export($parent, $optParams = array())
@@ -109,7 +107,6 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTaxonomies extends Go
   }
   /**
    * Imports all taxonomies and their policy tags to a project as new taxonomies.
-   *
    * This method provides a bulk taxonomy / policy tag creation using nested proto
    * structure. (taxonomies.import)
    *
@@ -133,10 +130,10 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTaxonomies extends Go
    * taxonomies of.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous list request, if any. If not set, defaults to an empty string.
    * @opt_param int pageSize The maximum number of items to return. Must be a
    * value between 1 and 1000. If not set, defaults to 50.
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous list request, if any. If not set, defaults to an empty string.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListTaxonomiesResponse
    */
   public function listProjectsLocationsTaxonomies($parent, $optParams = array())

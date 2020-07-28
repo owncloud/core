@@ -64,11 +64,23 @@ class Google_Service_PagespeedInsights extends Google_Service
               'path' => 'pagespeedonline/v5/runPagespeed',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'strategy' => array(
+                'utm_campaign' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'utm_source' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'locale' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'strategy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'captchaToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -77,19 +89,7 @@ class Google_Service_PagespeedInsights extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'locale' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'url' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'utm_campaign' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'captchaToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

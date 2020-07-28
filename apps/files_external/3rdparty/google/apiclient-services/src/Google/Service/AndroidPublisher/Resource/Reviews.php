@@ -26,14 +26,13 @@
 class Google_Service_AndroidPublisher_Resource_Reviews extends Google_Service_Resource
 {
   /**
-   * Returns a single review. (reviews.get)
+   * Gets a single review. (reviews.get)
    *
-   * @param string $packageName Unique identifier for the Android app for which we
-   * want reviews; for example, "com.spiffygame".
-   * @param string $reviewId
+   * @param string $packageName Package name of the app.
+   * @param string $reviewId Unique identifier for a review.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string translationLanguage
+   * @opt_param string translationLanguage Language localization code.
    * @return Google_Service_AndroidPublisher_Review
    */
   public function get($packageName, $reviewId, $optParams = array())
@@ -43,17 +42,17 @@ class Google_Service_AndroidPublisher_Resource_Reviews extends Google_Service_Re
     return $this->call('get', array($params), "Google_Service_AndroidPublisher_Review");
   }
   /**
-   * Returns a list of reviews. Only reviews from last week will be returned.
-   * (reviews.listReviews)
+   * Lists all reviews. (reviews.listReviews)
    *
-   * @param string $packageName Unique identifier for the Android app for which we
-   * want reviews; for example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string maxResults
-   * @opt_param string startIndex
-   * @opt_param string token
-   * @opt_param string translationLanguage
+   * @opt_param string translationLanguage Language localization code.
+   * @opt_param string startIndex The index of the first element to return.
+   * @opt_param string maxResults How many results the list operation should
+   * return.
+   * @opt_param string token Pagination token. If empty, list starts at the first
+   * review.
    * @return Google_Service_AndroidPublisher_ReviewsListResponse
    */
   public function listReviews($packageName, $optParams = array())
@@ -63,11 +62,10 @@ class Google_Service_AndroidPublisher_Resource_Reviews extends Google_Service_Re
     return $this->call('list', array($params), "Google_Service_AndroidPublisher_ReviewsListResponse");
   }
   /**
-   * Reply to a single review, or update an existing reply. (reviews.reply)
+   * Replies to a single review, or updates an existing reply. (reviews.reply)
    *
-   * @param string $packageName Unique identifier for the Android app for which we
-   * want reviews; for example, "com.spiffygame".
-   * @param string $reviewId
+   * @param string $packageName Package name of the app.
+   * @param string $reviewId Unique identifier for a review.
    * @param Google_Service_AndroidPublisher_ReviewsReplyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_ReviewsReplyResponse

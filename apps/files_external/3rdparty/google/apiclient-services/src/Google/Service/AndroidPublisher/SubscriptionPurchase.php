@@ -34,6 +34,8 @@ class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
   protected $introductoryPriceInfoDataType = '';
   public $kind;
   public $linkedPurchaseToken;
+  public $obfuscatedExternalAccountId;
+  public $obfuscatedExternalProfileId;
   public $orderId;
   public $paymentState;
   public $priceAmountMicros;
@@ -179,6 +181,22 @@ class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
   public function getLinkedPurchaseToken()
   {
     return $this->linkedPurchaseToken;
+  }
+  public function setObfuscatedExternalAccountId($obfuscatedExternalAccountId)
+  {
+    $this->obfuscatedExternalAccountId = $obfuscatedExternalAccountId;
+  }
+  public function getObfuscatedExternalAccountId()
+  {
+    return $this->obfuscatedExternalAccountId;
+  }
+  public function setObfuscatedExternalProfileId($obfuscatedExternalProfileId)
+  {
+    $this->obfuscatedExternalProfileId = $obfuscatedExternalProfileId;
+  }
+  public function getObfuscatedExternalProfileId()
+  {
+    return $this->obfuscatedExternalProfileId;
   }
   public function setOrderId($orderId)
   {

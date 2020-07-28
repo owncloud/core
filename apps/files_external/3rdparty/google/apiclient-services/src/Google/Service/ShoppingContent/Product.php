@@ -27,6 +27,7 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public $availability;
   public $availabilityDate;
   public $brand;
+  public $canonicalLink;
   public $channel;
   public $color;
   public $condition;
@@ -76,6 +77,9 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public $pattern;
   protected $priceType = 'Google_Service_ShoppingContent_Price';
   protected $priceDataType = '';
+  protected $productDetailsType = 'Google_Service_ShoppingContent_ProductProductDetail';
+  protected $productDetailsDataType = 'array';
+  public $productHighlights;
   public $productTypes;
   public $promotionIds;
   protected $salePriceType = 'Google_Service_ShoppingContent_Price';
@@ -97,6 +101,8 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public $sizeType;
   public $sizes;
   public $source;
+  protected $subscriptionCostType = 'Google_Service_ShoppingContent_ProductSubscriptionCost';
+  protected $subscriptionCostDataType = '';
   public $targetCountry;
   public $taxCategory;
   protected $taxesType = 'Google_Service_ShoppingContent_ProductTax';
@@ -179,6 +185,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getBrand()
   {
     return $this->brand;
+  }
+  public function setCanonicalLink($canonicalLink)
+  {
+    $this->canonicalLink = $canonicalLink;
+  }
+  public function getCanonicalLink()
+  {
+    return $this->canonicalLink;
   }
   public function setChannel($channel)
   {
@@ -562,6 +576,28 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   {
     return $this->price;
   }
+  /**
+   * @param Google_Service_ShoppingContent_ProductProductDetail
+   */
+  public function setProductDetails($productDetails)
+  {
+    $this->productDetails = $productDetails;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_ProductProductDetail
+   */
+  public function getProductDetails()
+  {
+    return $this->productDetails;
+  }
+  public function setProductHighlights($productHighlights)
+  {
+    $this->productHighlights = $productHighlights;
+  }
+  public function getProductHighlights()
+  {
+    return $this->productHighlights;
+  }
   public function setProductTypes($productTypes)
   {
     $this->productTypes = $productTypes;
@@ -717,6 +753,20 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getSource()
   {
     return $this->source;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_ProductSubscriptionCost
+   */
+  public function setSubscriptionCost(Google_Service_ShoppingContent_ProductSubscriptionCost $subscriptionCost)
+  {
+    $this->subscriptionCost = $subscriptionCost;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_ProductSubscriptionCost
+   */
+  public function getSubscriptionCost()
+  {
+    return $this->subscriptionCost;
   }
   public function setTargetCountry($targetCountry)
   {

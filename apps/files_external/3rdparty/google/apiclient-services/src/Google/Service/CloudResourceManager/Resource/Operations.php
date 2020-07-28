@@ -26,7 +26,7 @@
 class Google_Service_CloudResourceManager_Resource_Operations extends Google_Service_Resource
 {
   /**
-   * Gets the latest state of a long-running operation.  Clients can use this
+   * Gets the latest state of a long-running operation. Clients can use this
    * method to poll the operation result at intervals as recommended by the API
    * service. (operations.get)
    *

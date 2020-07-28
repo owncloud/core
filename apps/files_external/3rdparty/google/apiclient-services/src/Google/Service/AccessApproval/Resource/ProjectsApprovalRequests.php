@@ -93,14 +93,14 @@ class Google_Service_AccessApproval_Resource_ProjectsApprovalRequests extends Go
    *
    * @opt_param string pageToken A token identifying the page of results to
    * return.
-   * @opt_param int pageSize Requested page size.
    * @opt_param string filter A filter on the type of approval requests to
    * retrieve. Must be one of the following values:
    *
    *   [not set]: Requests that are pending or have active approvals.   ALL: All
    * requests.   PENDING: Only pending requests.   ACTIVE: Only active (i.e.
    * currently approved) requests.   DISMISSED: Only dismissed (including expired)
-   * requests.
+   * requests.   HISTORY: Active and dismissed (including expired) requests.
+   * @opt_param int pageSize Requested page size.
    * @return Google_Service_AccessApproval_ListApprovalRequestsResponse
    */
   public function listProjectsApprovalRequests($parent, $optParams = array())

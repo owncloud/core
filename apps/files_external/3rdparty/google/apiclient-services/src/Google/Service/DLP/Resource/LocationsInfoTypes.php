@@ -30,8 +30,8 @@ class Google_Service_DLP_Resource_LocationsInfoTypes extends Google_Service_Reso
    * See https://cloud.google.com/dlp/docs/infotypes-reference to learn more.
    * (infoTypes.listLocationsInfoTypes)
    *
-   * @param string $parent The parent resource name, for example
-   * locations/{location_id}.
+   * @param string $parent The parent resource name. - Format:locations/[LOCATION-
+   * ID]
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter filter to only return infoTypes supported by certain

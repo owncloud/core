@@ -83,9 +83,15 @@ class Google_Service_Dialogflow_Resource_ProjectsAgent extends Google_Service_Re
    *
    * Uploads new intents and entity types without deleting the existing ones.
    * Intents and entity types with the same name are replaced with the new
-   * versions from ImportAgentRequest.
+   * versions from ImportAgentRequest. After the import, the imported draft agent
+   * will be trained automatically (unless disabled in agent settings). However,
+   * once the import is done, training may not be completed yet. Please call
+   * TrainAgent and wait for the operation it returns in order to train
+   * explicitly.
    *
-   * Operation  (agent.import)
+   * Operation  An operation which tracks when importing is complete. It only
+   * tracks when the draft agent is updated not when it is done training.
+   * (agent.import)
    *
    * @param string $parent Required. The project that the agent to import is
    * associated with. Format: `projects/`.
@@ -103,9 +109,15 @@ class Google_Service_Dialogflow_Resource_ProjectsAgent extends Google_Service_Re
    * Restores the specified agent from a ZIP file.
    *
    * Replaces the current agent version with a new one. All the intents and entity
-   * types in the older version are deleted.
+   * types in the older version are deleted. After the restore, the restored draft
+   * agent will be trained automatically (unless disabled in agent settings).
+   * However, once the restore is done, training may not be completed yet. Please
+   * call TrainAgent and wait for the operation it returns in order to train
+   * explicitly.
    *
-   * Operation  (agent.restore)
+   * Operation  An operation which tracks when restoring is complete. It only
+   * tracks when the draft agent is updated not when it is done training.
+   * (agent.restore)
    *
    * @param string $parent Required. The project that the agent to restore is
    * associated with. Format: `projects/`.

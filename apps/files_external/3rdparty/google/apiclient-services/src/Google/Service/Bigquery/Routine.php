@@ -23,6 +23,7 @@ class Google_Service_Bigquery_Routine extends Google_Collection
   public $creationTime;
   public $definitionBody;
   public $description;
+  public $determinismLevel;
   public $etag;
   public $importedLibraries;
   public $language;
@@ -70,6 +71,14 @@ class Google_Service_Bigquery_Routine extends Google_Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setDeterminismLevel($determinismLevel)
+  {
+    $this->determinismLevel = $determinismLevel;
+  }
+  public function getDeterminismLevel()
+  {
+    return $this->determinismLevel;
   }
   public function setEtag($etag)
   {

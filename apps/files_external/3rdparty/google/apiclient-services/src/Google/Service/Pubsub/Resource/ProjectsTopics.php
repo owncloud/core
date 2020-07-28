@@ -26,9 +26,8 @@
 class Google_Service_Pubsub_Resource_ProjectsTopics extends Google_Service_Resource
 {
   /**
-   * Creates the given topic with the given name. See the
-   *
-   * resource name rules. (topics.create)
+   * Creates the given topic with the given name. See the [resource name rules](
+   * https://cloud.google.com/pubsub/docs/admin#resource_names). (topics.create)
    *
    * @param string $name Required. The name of the topic. It must have the format
    * `"projects/{project}/topics/{topic}"`. `{topic}` must start with a letter,
@@ -115,10 +114,10 @@ class Google_Service_Pubsub_Resource_ProjectsTopics extends Google_Service_Resou
    * topics. Format is `projects/{project-id}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of topics to return.
    * @opt_param string pageToken The value returned by the last
    * `ListTopicsResponse`; indicates that this is a continuation of a prior
    * `ListTopics` call, and that the system should return the next page of data.
-   * @opt_param int pageSize Maximum number of topics to return.
    * @return Google_Service_Pubsub_ListTopicsResponse
    */
   public function listProjectsTopics($project, $optParams = array())

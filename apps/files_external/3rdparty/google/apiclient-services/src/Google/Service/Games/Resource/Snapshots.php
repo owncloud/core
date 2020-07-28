@@ -45,15 +45,15 @@ class Google_Service_Games_Resource_Snapshots extends Google_Service_Resource
    * Retrieves a list of snapshots created by your application for the player
    * corresponding to the player ID. (snapshots.listSnapshots)
    *
-   * @param string $playerId A player ID. A value of me may be used in place of
+   * @param string $playerId A player ID. A value of `me` may be used in place of
    * the authenticated player's ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string language The preferred language to use for strings returned
-   * by this method.
    * @opt_param int maxResults The maximum number of snapshot resources to return
    * in the response, used for paging. For any response, the actual number of
-   * snapshot resources returned may be less than the specified maxResults.
+   * snapshot resources returned may be less than the specified `maxResults`.
+   * @opt_param string language The preferred language to use for strings returned
+   * by this method.
    * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_Games_SnapshotListResponse
    */

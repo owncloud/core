@@ -20,6 +20,8 @@ class Google_Service_Compute_HealthCheck extends Google_Model
   public $checkIntervalSec;
   public $creationTimestamp;
   public $description;
+  protected $grpcHealthCheckType = 'Google_Service_Compute_GRPCHealthCheck';
+  protected $grpcHealthCheckDataType = '';
   public $healthyThreshold;
   protected $http2HealthCheckType = 'Google_Service_Compute_HTTP2HealthCheck';
   protected $http2HealthCheckDataType = '';
@@ -29,6 +31,8 @@ class Google_Service_Compute_HealthCheck extends Google_Model
   protected $httpsHealthCheckDataType = '';
   public $id;
   public $kind;
+  protected $logConfigType = 'Google_Service_Compute_HealthCheckLogConfig';
+  protected $logConfigDataType = '';
   public $name;
   public $region;
   public $selfLink;
@@ -63,6 +67,20 @@ class Google_Service_Compute_HealthCheck extends Google_Model
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param Google_Service_Compute_GRPCHealthCheck
+   */
+  public function setGrpcHealthCheck(Google_Service_Compute_GRPCHealthCheck $grpcHealthCheck)
+  {
+    $this->grpcHealthCheck = $grpcHealthCheck;
+  }
+  /**
+   * @return Google_Service_Compute_GRPCHealthCheck
+   */
+  public function getGrpcHealthCheck()
+  {
+    return $this->grpcHealthCheck;
   }
   public function setHealthyThreshold($healthyThreshold)
   {
@@ -129,6 +147,20 @@ class Google_Service_Compute_HealthCheck extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param Google_Service_Compute_HealthCheckLogConfig
+   */
+  public function setLogConfig(Google_Service_Compute_HealthCheckLogConfig $logConfig)
+  {
+    $this->logConfig = $logConfig;
+  }
+  /**
+   * @return Google_Service_Compute_HealthCheckLogConfig
+   */
+  public function getLogConfig()
+  {
+    return $this->logConfig;
   }
   public function setName($name)
   {

@@ -42,9 +42,9 @@ class Google_Service_Doubleclicksearch_Resource_Conversion extends Google_Servic
    * @param array $optParams Optional parameters.
    *
    * @opt_param string adGroupId Numeric ID of the ad group.
-   * @opt_param string adId Numeric ID of the ad.
    * @opt_param string campaignId Numeric ID of the campaign.
    * @opt_param string criterionId Numeric ID of the criterion.
+   * @opt_param string adId Numeric ID of the ad.
    * @return Google_Service_Doubleclicksearch_ConversionList
    */
   public function get($agencyId, $advertiserId, $engineAccountId, $endDate, $rowCount, $startDate, $startRow, $optParams = array())

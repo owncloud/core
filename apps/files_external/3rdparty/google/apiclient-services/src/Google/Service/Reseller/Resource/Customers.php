@@ -28,7 +28,7 @@ class Google_Service_Reseller_Resource_Customers extends Google_Service_Resource
   /**
    * Get a customer account. (customers.get)
    *
-   * @param string $customerId Either the customer's primary domain name or the
+   * @param string $customerId Either the customers primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -48,8 +48,8 @@ class Google_Service_Reseller_Resource_Customers extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string customerAuthToken The customerAuthToken query string is
-   * required when creating a resold account that transfers a direct customer's
-   * subscription or transfers another reseller customer's subscription to your
+   * required when creating a resold account that transfers a direct customers
+   * subscription or transfers another reseller customers subscription to your
    * reseller management. This is a hexadecimal authentication token needed to
    * complete the subscription transfer. For more information, see the
    * administrator help center.
@@ -62,10 +62,10 @@ class Google_Service_Reseller_Resource_Customers extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Reseller_Customer");
   }
   /**
-   * Update a customer account's settings. This method supports patch semantics.
+   * Patch a customer account's settings via Apiary Patch Orchestration
    * (customers.patch)
    *
-   * @param string $customerId Either the customer's primary domain name or the
+   * @param string $customerId Either the customers primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -82,7 +82,7 @@ class Google_Service_Reseller_Resource_Customers extends Google_Service_Resource
   /**
    * Update a customer account's settings. (customers.update)
    *
-   * @param string $customerId Either the customer's primary domain name or the
+   * @param string $customerId Either the customers primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.

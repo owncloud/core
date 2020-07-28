@@ -108,7 +108,7 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * List the jobs of a project.
    *
    * To list the jobs of a project in a region, we recommend using
-   * `projects.locations.jobs.get` with a [regional endpoint]
+   * `projects.locations.jobs.list` with a [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). To list
    * the all jobs across all regions, use `projects.jobs.aggregated`. Using
    * `projects.jobs.list` is not recommended, as you can only get the list of jobs
@@ -120,14 +120,14 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * contains this job.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string view Level of information requested in response. Default is
+   * `JOB_VIEW_SUMMARY`.
    * @opt_param string filter The kind of filter to use.
-   * @opt_param string pageToken Set this to the 'next_page_token' field of a
-   * previous response to request additional results in a long list.
    * @opt_param int pageSize If there are many jobs, limit response to at most
    * this many. The actual number of jobs returned will be the lesser of
    * max_responses and an unspecified server-defined limit.
-   * @opt_param string view Level of information requested in response. Default is
-   * `JOB_VIEW_SUMMARY`.
+   * @opt_param string pageToken Set this to the 'next_page_token' field of a
+   * previous response to request additional results in a long list.
    * @return Google_Service_Dataflow_ListJobsResponse
    */
   public function listProjectsLocationsJobs($projectId, $location, $optParams = array())

@@ -20,6 +20,8 @@ class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Not
   protected $findingType = 'Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Finding';
   protected $findingDataType = '';
   public $notificationConfigName;
+  protected $resourceType = 'Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Resource';
+  protected $resourceDataType = '';
   protected $temporalAssetType = 'Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1TemporalAsset';
   protected $temporalAssetDataType = '';
 
@@ -44,6 +46,20 @@ class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Not
   public function getNotificationConfigName()
   {
     return $this->notificationConfigName;
+  }
+  /**
+   * @param Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Resource
+   */
+  public function setResource(Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Resource $resource)
+  {
+    $this->resource = $resource;
+  }
+  /**
+   * @return Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Resource
+   */
+  public function getResource()
+  {
+    return $this->resource;
   }
   /**
    * @param Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1TemporalAsset

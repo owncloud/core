@@ -122,8 +122,8 @@ class Google_Service_ShoppingContent_Resource_Datafeeds extends Google_Service_R
     return $this->call('list', array($params), "Google_Service_ShoppingContent_DatafeedsListResponse");
   }
   /**
-   * Updates a datafeed configuration of your Merchant Center account.
-   * (datafeeds.update)
+   * Updates a datafeed configuration of your Merchant Center account. Any fields
+   * that are not provided are deleted from the resource. (datafeeds.update)
    *
    * @param string $merchantId The ID of the account that manages the datafeed.
    * This account cannot be a multi-client account.

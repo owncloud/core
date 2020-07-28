@@ -27,11 +27,11 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
 {
   /**
    * Batch gets the update history of assets that overlap a time window. For
-   * RESOURCE content, this API outputs history with asset in both non-delete or
-   * deleted status. For IAM_POLICY content, this API outputs history when the
-   * asset and its attached IAM POLICY both exist. This can create gaps in the
-   * output history. If a specified asset does not exist, this API returns an
-   * INVALID_ARGUMENT error. (v1.batchGetAssetsHistory)
+   * IAM_POLICY content, this API outputs history when the asset and its attached
+   * IAM POLICY both exist. This can create gaps in the output history. Otherwise,
+   * this API outputs history with asset in both non-delete or deleted status. If
+   * a specified asset does not exist, this API returns an INVALID_ARGUMENT error.
+   * (v1.batchGetAssetsHistory)
    *
    * @param string $parent Required. The relative name of the root asset. It can
    * only be an organization number (such as "organizations/123"), a project ID
@@ -39,11 +39,10 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * "projects/12345").
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string contentType Optional. The content type.
-   * @opt_param string readTimeWindow.endTime End time of the time window
-   * (inclusive). If not specified, the current timestamp is used instead.
    * @opt_param string readTimeWindow.startTime Start time of the time window
    * (exclusive).
+   * @opt_param string readTimeWindow.endTime End time of the time window
+   * (inclusive). If not specified, the current timestamp is used instead.
    * @opt_param string assetNames A list of the full names of the assets. See:
    * https://cloud.google.com/asset-inventory/docs/resource-name-format Example:
    *
@@ -52,6 +51,7 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    *
    * The request becomes a no-op if the asset name list is empty, and the max size
    * of the asset name list is 100 in one request.
+   * @opt_param string contentType Optional. The content type.
    * @return Google_Service_CloudAsset_BatchGetAssetsHistoryResponse
    */
   public function batchGetAssetsHistory($parent, $optParams = array())
@@ -62,12 +62,15 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
   }
   /**
    * Exports assets with time and resource types to a given Cloud Storage
-   * location. The output format is newline-delimited JSON. Each line represents a
-   * google.cloud.asset.v1.Asset in the JSON format. This API implements the
-   * google.longrunning.Operation API allowing you to keep track of the export. We
-   * recommend intervals of at least 2 seconds with exponential retry to poll the
-   * export operation result. For regular-size resource parent, the export
-   * operation usually finishes within 5 minutes. (v1.exportAssets)
+   * location/BigQuery table. For Cloud Storage location destinations, the output
+   * format is newline-delimited JSON. Each line represents a
+   * google.cloud.asset.v1.Asset in the JSON format; for BigQuery table
+   * destinations, the output table stores the fields in asset proto as columns.
+   * This API implements the google.longrunning.Operation API , which allows you
+   * to keep track of the export. We recommend intervals of at least 2 seconds
+   * with exponential retry to poll the export operation result. For regular-size
+   * resource parent, the export operation usually finishes within 5 minutes.
+   * (v1.exportAssets)
    *
    * @param string $parent Required. The relative name of the root asset. This can
    * only be an organization number (such as "organizations/123"), a project ID
@@ -86,7 +89,7 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
   /**
    * Searches all the IAM policies within the given accessible scope (e.g., a
    * project, a folder or an organization). Callers should have
-   * cloud.assets.SearchAllIamPolicies permission upon the requested scope,
+   * `cloud.assets.SearchAllIamPolicies` permission upon the requested scope,
    * otherwise the request will be rejected. (v1.searchAllIamPolicies)
    *
    * @param string $scope Required. A scope can be a project, a folder or an
@@ -98,15 +101,6 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * * organizations/{ORGANIZATION_NUMBER}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. If present, retrieve the next batch of
-   * results from the preceding call to this method. `page_token` must be the
-   * value of `next_page_token` from the previous response. The values of all
-   * other method parameters must be identical to those in the previous call.
-   * @opt_param int pageSize Optional. The page size for search result pagination.
-   * Page size is capped at 500 even if a larger value is given. If set to zero,
-   * server will pick an appropriate default. Returned results may be fewer than
-   * requested. When this happens, there could be more results as long as
-   * `next_page_token` is returned.
    * @opt_param string query Optional. The query statement. An empty query can be
    * specified to search all the IAM policies within the given `scope`.
    *
@@ -125,6 +119,15 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    *
    * See [how to construct a query](https://cloud.google.com/asset-inventory/docs
    * /searching-iam-policies#how_to_construct_a_query) for more details.
+   * @opt_param int pageSize Optional. The page size for search result pagination.
+   * Page size is capped at 500 even if a larger value is given. If set to zero,
+   * server will pick an appropriate default. Returned results may be fewer than
+   * requested. When this happens, there could be more results as long as
+   * `next_page_token` is returned.
+   * @opt_param string pageToken Optional. If present, retrieve the next batch of
+   * results from the preceding call to this method. `page_token` must be the
+   * value of `next_page_token` from the previous response. The values of all
+   * other method parameters must be identical to those in the previous call.
    * @return Google_Service_CloudAsset_SearchAllIamPoliciesResponse
    */
   public function searchAllIamPolicies($scope, $optParams = array())
@@ -136,7 +139,7 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
   /**
    * Searches all the resources within the given accessible scope (e.g., a
    * project, a folder or an organization). Callers should have
-   * cloud.assets.SearchAllResources permission upon the requested scope,
+   * `cloud.assets.SearchAllResources` permission upon the requested scope,
    * otherwise the request will be rejected. (v1.searchAllResources)
    *
    * @param string $scope Required. A scope can be a project, a folder or an
@@ -148,6 +151,10 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * * organizations/{ORGANIZATION_NUMBER}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Optional. If present, then retrieve the next
+   * batch of results from the preceding call to this method. `page_token` must be
+   * the value of `next_page_token` from the previous response. The values of all
+   * other method parameters, must be identical to those in the previous call.
    * @opt_param string query Optional. The query statement. An empty query can be
    * specified to search all the resources of certain `asset_types` within the
    * given `scope`.
@@ -174,25 +181,23 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    *
    * See [how to construct a query](https://cloud.google.com/asset-inventory/docs
    * /searching-resources#how_to_construct_a_query) for more details.
-   * @opt_param string assetTypes Optional. A list of asset types that this
-   * request searches for. If empty, it will search all the [searchable asset
-   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
-   * types#searchable_asset_types).
-   * @opt_param string orderBy Optional. A comma separated list of fields
-   * specifying the sorting order of the results. The default order is ascending.
-   * Add " DESC" after the field name to indicate descending order. Redundant
-   * space characters are ignored. Example: "location DESC, name". See [supported
-   * resource metadata fields](https://cloud.google.com/asset-inventory/docs
-   * /searching-resources#query_on_resource_metadata_fields) for more details.
-   * @opt_param string pageToken Optional. If present, then retrieve the next
-   * batch of results from the preceding call to this method. `page_token` must be
-   * the value of `next_page_token` from the previous response. The values of all
-   * other method parameters, must be identical to those in the previous call.
    * @opt_param int pageSize Optional. The page size for search result pagination.
    * Page size is capped at 500 even if a larger value is given. If set to zero,
    * server will pick an appropriate default. Returned results may be fewer than
    * requested. When this happens, there could be more results as long as
    * `next_page_token` is returned.
+   * @opt_param string orderBy Optional. A comma separated list of fields
+   * specifying the sorting order of the results. The default order is ascending.
+   * Add " DESC" after the field name to indicate descending order. Redundant
+   * space characters are ignored. Example: "location DESC, name". Only string
+   * fields in the response are sortable, including `name`, `displayName`,
+   * `description`, `location`. All the other fields such as repeated fields
+   * (e.g., `networkTags`), map fields (e.g., `labels`) and struct fields (e.g.,
+   * `additionalAttributes`) are not supported.
+   * @opt_param string assetTypes Optional. A list of asset types that this
+   * request searches for. If empty, it will search all the [searchable asset
+   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
+   * types#searchable_asset_types).
    * @return Google_Service_CloudAsset_SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = array())

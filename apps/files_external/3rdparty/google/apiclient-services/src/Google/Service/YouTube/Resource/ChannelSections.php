@@ -58,16 +58,6 @@ class Google_Service_YouTube_Resource_ChannelSections extends Google_Service_Res
    * @param Google_Service_YouTube_ChannelSection $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
-   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
-   * indicates that the request's authorization credentials identify a YouTube CMS
-   * user who is acting on behalf of the content owner specified in the parameter
-   * value. This parameter is intended for YouTube content partners that own and
-   * manage many different YouTube channels. It allows content owners to
-   * authenticate once and get access to all their video and channel data, without
-   * having to provide authentication credentials for each individual channel. The
-   * CMS account that the user authenticates with must be linked to the specified
-   * YouTube content owner.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. Note: This parameter is intended
    * exclusively for YouTube content partners.The onBehalfOfContentOwnerChannel
@@ -84,6 +74,16 @@ class Google_Service_YouTube_Resource_ChannelSections extends Google_Service_Res
    * perform actions on behalf of the channel specified in the parameter value,
    * without having to provide authentication credentials for each separate
    * channel.
+   * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
+   * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
+   * indicates that the request's authorization credentials identify a YouTube CMS
+   * user who is acting on behalf of the content owner specified in the parameter
+   * value. This parameter is intended for YouTube content partners that own and
+   * manage many different YouTube channels. It allows content owners to
+   * authenticate once and get access to all their video and channel data, without
+   * having to provide authentication credentials for each individual channel. The
+   * CMS account that the user authenticates with must be linked to the specified
+   * YouTube content owner.
    * @return Google_Service_YouTube_ChannelSection
    */
   public function insert($part, Google_Service_YouTube_ChannelSection $postBody, $optParams = array())
@@ -107,10 +107,8 @@ class Google_Service_YouTube_Resource_ChannelSections extends Google_Service_Res
    * properties.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool mine Return the ChannelSections owned by the authenticated
-   * user.
-   * @opt_param string id Return the ChannelSections with the given IDs for Stubby
-   * or Apiary.
+   * @opt_param string channelId Return the ChannelSections owned by the specified
+   * channel ID.
    * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
    * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
    * indicates that the request's authorization credentials identify a YouTube CMS
@@ -121,8 +119,10 @@ class Google_Service_YouTube_Resource_ChannelSections extends Google_Service_Res
    * having to provide authentication credentials for each individual channel. The
    * CMS account that the user authenticates with must be linked to the specified
    * YouTube content owner.
-   * @opt_param string channelId Return the ChannelSections owned by the specified
-   * channel ID.
+   * @opt_param string id Return the ChannelSections with the given IDs for Stubby
+   * or Apiary.
+   * @opt_param bool mine Return the ChannelSections owned by the authenticated
+   * user.
    * @opt_param string hl Return content in specified language
    * @return Google_Service_YouTube_ChannelSectionListResponse
    */

@@ -23,6 +23,7 @@ class Google_Service_Compute_AllocationSpecificSKUAllocationReservedInstanceProp
   protected $localSsdsType = 'Google_Service_Compute_AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk';
   protected $localSsdsDataType = 'array';
   public $machineType;
+  public $maintenanceInterval;
   public $minCpuPlatform;
 
   /**
@@ -60,6 +61,14 @@ class Google_Service_Compute_AllocationSpecificSKUAllocationReservedInstanceProp
   public function getMachineType()
   {
     return $this->machineType;
+  }
+  public function setMaintenanceInterval($maintenanceInterval)
+  {
+    $this->maintenanceInterval = $maintenanceInterval;
+  }
+  public function getMaintenanceInterval()
+  {
+    return $this->maintenanceInterval;
   }
   public function setMinCpuPlatform($minCpuPlatform)
   {

@@ -117,13 +117,13 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsModels extends 
    * be listed.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. Specifies the subset of models to
-   * retrieve.
    * @opt_param string pageToken Optional. A page token to request the next page
    * of results.
    *
    * You get the token from the `next_page_token` field of the response from the
    * previous call.
+   * @opt_param string filter Optional. Specifies the subset of models to
+   * retrieve.
    * @opt_param int pageSize Optional. The number of models to retrieve per "page"
    * of results. If there are more remaining results than this number, the
    * response message will contain a valid value in the `next_page_token` field.

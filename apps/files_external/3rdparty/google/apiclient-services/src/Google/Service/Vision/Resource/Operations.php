@@ -94,8 +94,8 @@ class Google_Service_Vision_Resource_Operations extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The standard list page token.
-   * @opt_param int pageSize The standard list page size.
    * @opt_param string filter The standard list filter.
+   * @opt_param int pageSize The standard list page size.
    * @return Google_Service_Vision_ListOperationsResponse
    */
   public function listOperations($name, $optParams = array())

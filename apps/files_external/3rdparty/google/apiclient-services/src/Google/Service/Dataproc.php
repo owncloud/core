@@ -340,13 +340,13 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'setIamPolicy' => array(
@@ -427,11 +427,11 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'clusterUuid' => array(
+                'requestId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'requestId' => array(
+                'clusterUuid' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -500,11 +500,11 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -532,15 +532,15 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'requestId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'gracefulDecommissionTimeout' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -659,7 +659,7 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'filter' => array(
+                'jobStateMatcher' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -667,17 +667,17 @@ class Google_Service_Dataproc extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'jobStateMatcher' => array(
+                'clusterName' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'clusterName' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -813,17 +813,17 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'pageToken' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),'setIamPolicy' => array(

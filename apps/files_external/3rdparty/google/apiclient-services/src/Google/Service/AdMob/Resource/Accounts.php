@@ -46,11 +46,11 @@ class Google_Service_AdMob_Resource_Accounts extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of accounts to return.
    * @opt_param string pageToken The value returned by the last
    * `ListPublisherAccountsResponse`; indicates that this is a continuation of a
    * prior `ListPublisherAccounts` call, and that the system should return the
    * next page of data.
-   * @opt_param int pageSize Maximum number of accounts to return.
    * @return Google_Service_AdMob_ListPublisherAccountsResponse
    */
   public function listAccounts($optParams = array())

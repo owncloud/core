@@ -130,13 +130,13 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductsReferenceImages ex
    * Format is `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return. Default 10,
+   * maximum 100.
    * @opt_param string pageToken A token identifying a page of results to be
    * returned. This is the value of `nextPageToken` returned in a previous
    * reference image list request.
    *
    * Defaults to the first page if not specified.
-   * @opt_param int pageSize The maximum number of items to return. Default 10,
-   * maximum 100.
    * @return Google_Service_Vision_ListReferenceImagesResponse
    */
   public function listProjectsLocationsProductsReferenceImages($parent, $optParams = array())

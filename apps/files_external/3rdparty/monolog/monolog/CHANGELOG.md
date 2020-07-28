@@ -1,3 +1,11 @@
+### 2.1.1 (2020-07-23)
+
+  * Fixed removing of json encoding options
+  * Fixed type hint of $level not accepting strings in SendGridHandler and OverflowHandler
+  * Fixed SwiftMailerHandler not accepting email templates with an empty subject
+  * Fixed array access on null in RavenHandler
+  * Fixed unique_id in WebProcessor not being disableable
+
 ### 2.1.0 (2020-05-22)
 
   * Added `JSON_INVALID_UTF8_SUBSTITUTE` to default json flags, so that invalid UTF8 characters now get converted to [�](https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character) instead of being converted from ISO-8859-15 to UTF8 as it was before, which was hardly a comprehensive solution
@@ -77,6 +85,11 @@
   * Added a `$dateFormat` option to the PsrLogMessageProcessor which lets you format DateTime instances nicely
   * Added support for the PHP 7.x `mongodb` extension in the MongoDBHandler
   * Fixed many minor issues in various handlers, and probably added a few regressions too
+
+### 1.25.5 (2020-07-23)
+
+  * Fixed array access on null in RavenHandler
+  * Fixed unique_id in WebProcessor not being disableable
 
 ### 1.25.4 (2020-05-22)
 

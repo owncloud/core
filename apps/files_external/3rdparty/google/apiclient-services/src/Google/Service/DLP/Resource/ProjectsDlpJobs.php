@@ -54,8 +54,8 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * be all types, but may change over time as detectors are updated.
    * (dlpJobs.create)
    *
-   * @param string $parent Required. The parent resource name, for example
-   * projects/my-project-id.
+   * @param string $parent Required. Parent resource name. - Format:projects
+   * /[PROJECT-ID] - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
    * @param Google_Service_DLP_GooglePrivacyDlpV2CreateDlpJobRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2DlpJob
@@ -105,12 +105,11 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
    * (dlpJobs.listProjectsDlpJobs)
    *
-   * @param string $parent Required. The parent resource name, for example
-   * projects/my-project-id.
+   * @param string $parent Required. Parent resource name. - Format:projects
+   * /[PROJECT-ID] - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The standard list page token.
-   * @opt_param int pageSize The standard list page size.
    * @opt_param string orderBy Comma separated list of fields to order by,
    * followed by `asc` or `desc` postfix. This list is case-insensitive, default
    * sorting order is ascending, redundant space characters are insignificant.
@@ -122,8 +121,6 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * - `create_time`: corresponds to time the job was created. - `end_time`:
    * corresponds to time the job ended. - `name`: corresponds to job's name. -
    * `state`: corresponds to `state`
-   * @opt_param string type The type of job. Defaults to `DlpJobType.INSPECT`
-   * @opt_param string locationId Deprecated. This field has no effect.
    * @opt_param string filter Allows filtering.
    *
    * Supported syntax:
@@ -149,6 +146,9 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * \"2017-12-12T00:00:00+00:00\"
    *
    * The length of this field should be no more than 500 characters.
+   * @opt_param string type The type of job. Defaults to `DlpJobType.INSPECT`
+   * @opt_param int pageSize The standard list page size.
+   * @opt_param string locationId Deprecated. This field has no effect.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListDlpJobsResponse
    */
   public function listProjectsDlpJobs($parent, $optParams = array())

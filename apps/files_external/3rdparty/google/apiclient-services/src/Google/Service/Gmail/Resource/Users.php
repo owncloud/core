@@ -28,7 +28,7 @@ class Google_Service_Gmail_Resource_Users extends Google_Service_Resource
   /**
    * Gets the current user's Gmail profile. (users.getProfile)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Gmail_Profile
@@ -42,7 +42,7 @@ class Google_Service_Gmail_Resource_Users extends Google_Service_Resource
   /**
    * Stop receiving push notifications for the given user mailbox. (users.stop)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    */
@@ -56,7 +56,7 @@ class Google_Service_Gmail_Resource_Users extends Google_Service_Resource
    * Set up or update a push notification watch on the given user mailbox.
    * (users.watch)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param Google_Service_Gmail_WatchRequest $postBody
    * @param array $optParams Optional parameters.

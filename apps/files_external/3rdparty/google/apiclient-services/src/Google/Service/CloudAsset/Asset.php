@@ -33,6 +33,7 @@ class Google_Service_CloudAsset_Asset extends Google_Collection
   protected $resourceDataType = '';
   protected $servicePerimeterType = 'Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1ServicePerimeter';
   protected $servicePerimeterDataType = '';
+  public $updateTime;
 
   /**
    * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessLevel
@@ -141,5 +142,13 @@ class Google_Service_CloudAsset_Asset extends Google_Collection
   public function getServicePerimeter()
   {
     return $this->servicePerimeter;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
 }

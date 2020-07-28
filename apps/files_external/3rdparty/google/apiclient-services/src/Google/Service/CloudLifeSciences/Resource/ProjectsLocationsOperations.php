@@ -74,9 +74,9 @@ class Google_Service_CloudLifeSciences_Resource_ProjectsLocationsOperations exte
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The standard list page token.
    * @opt_param int pageSize The maximum number of results to return. The maximum
    * value is 256.
+   * @opt_param string pageToken The standard list page token.
    * @opt_param string filter A string for filtering Operations. The following
    * filter fields are supported
    *

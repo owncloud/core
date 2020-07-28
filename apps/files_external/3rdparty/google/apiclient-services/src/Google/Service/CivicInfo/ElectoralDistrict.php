@@ -18,7 +18,6 @@
 class Google_Service_CivicInfo_ElectoralDistrict extends Google_Model
 {
   public $id;
-  public $kgForeignKey;
   public $name;
   public $scope;
 
@@ -29,14 +28,6 @@ class Google_Service_CivicInfo_ElectoralDistrict extends Google_Model
   public function getId()
   {
     return $this->id;
-  }
-  public function setKgForeignKey($kgForeignKey)
-  {
-    $this->kgForeignKey = $kgForeignKey;
-  }
-  public function getKgForeignKey()
-  {
-    return $this->kgForeignKey;
   }
   public function setName($name)
   {

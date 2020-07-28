@@ -99,15 +99,15 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsImportJobs exten
    * If not specified, the results will be sorted in the default order. For more
    * information, see [Sorting and filtering list
    * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
-   * @opt_param string pageToken Optional. Optional pagination token, returned
-   * earlier via ListImportJobsResponse.next_page_token.
-   * @opt_param string filter Optional. Only include resources that match the
-   * filter in the response. For more information, see [Sorting and filtering list
-   * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
    * @opt_param int pageSize Optional. Optional limit on the number of ImportJobs
    * to include in the response. Further ImportJobs can subsequently be obtained
    * by including the ListImportJobsResponse.next_page_token in a subsequent
    * request. If unspecified, the server will pick an appropriate default.
+   * @opt_param string filter Optional. Only include resources that match the
+   * filter in the response. For more information, see [Sorting and filtering list
+   * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+   * @opt_param string pageToken Optional. Optional pagination token, returned
+   * earlier via ListImportJobsResponse.next_page_token.
    * @return Google_Service_CloudKMS_ListImportJobsResponse
    */
   public function listProjectsLocationsKeyRingsImportJobs($parent, $optParams = array())

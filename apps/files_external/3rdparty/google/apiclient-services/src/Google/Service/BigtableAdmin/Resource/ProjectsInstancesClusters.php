@@ -98,8 +98,7 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClusters extends Go
   /**
    * Updates a cluster within an instance. (clusters.update)
    *
-   * @param string $name Required. (`OutputOnly`) The unique name of the cluster.
-   * Values are of the form
+   * @param string $name The unique name of the cluster. Values are of the form
    * `projects/{project}/instances/{instance}/clusters/a-z*`.
    * @param Google_Service_BigtableAdmin_Cluster $postBody
    * @param array $optParams Optional parameters.

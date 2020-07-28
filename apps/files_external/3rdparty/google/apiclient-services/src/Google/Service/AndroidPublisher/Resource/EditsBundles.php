@@ -26,11 +26,11 @@
 class Google_Service_AndroidPublisher_Resource_EditsBundles extends Google_Service_Resource
 {
   /**
+   * Lists all current Android App Bundles of the app and edit.
    * (bundles.listEditsBundles)
    *
-   * @param string $packageName Unique identifier for the Android app that is
-   * being updated; for example, "com.spiffygame".
-   * @param string $editId Unique identifier for this edit.
+   * @param string $packageName Package name of the app.
+   * @param string $editId Identifier of the edit.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_BundlesListResponse
    */
@@ -43,13 +43,12 @@ class Google_Service_AndroidPublisher_Resource_EditsBundles extends Google_Servi
   /**
    * Uploads a new Android App Bundle to this edit. If you are using the Google
    * API client libraries, please increase the timeout of the http request before
-   * calling this endpoint (a timeout of 2 minutes is recommended). See:
-   * https://developers.google.com/api-client-library/java/google-api-java-
-   * client/errors for an example in java. (bundles.upload)
+   * calling this endpoint (a timeout of 2 minutes is recommended). See [Timeouts
+   * and Errors](https://developers.google.com/api-client-library/java/google-api-
+   * java-client/errors) for an example in java. (bundles.upload)
    *
-   * @param string $packageName Unique identifier for the Android app that is
-   * being updated; for example, "com.spiffygame".
-   * @param string $editId Unique identifier for this edit.
+   * @param string $packageName Package name of the app.
+   * @param string $editId Identifier of the edit.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool ackBundleInstallationWarning Must be set to true if the

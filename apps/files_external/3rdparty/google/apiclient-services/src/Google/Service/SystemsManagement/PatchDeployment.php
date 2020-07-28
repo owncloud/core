@@ -30,6 +30,8 @@ class Google_Service_SystemsManagement_PatchDeployment extends Google_Model
   protected $patchConfigDataType = '';
   protected $recurringScheduleType = 'Google_Service_SystemsManagement_RecurringSchedule';
   protected $recurringScheduleDataType = '';
+  protected $rolloutType = 'Google_Service_SystemsManagement_PatchRollout';
+  protected $rolloutDataType = '';
   public $updateTime;
 
   public function setCreateTime($createTime)
@@ -127,6 +129,20 @@ class Google_Service_SystemsManagement_PatchDeployment extends Google_Model
   public function getRecurringSchedule()
   {
     return $this->recurringSchedule;
+  }
+  /**
+   * @param Google_Service_SystemsManagement_PatchRollout
+   */
+  public function setRollout(Google_Service_SystemsManagement_PatchRollout $rollout)
+  {
+    $this->rollout = $rollout;
+  }
+  /**
+   * @return Google_Service_SystemsManagement_PatchRollout
+   */
+  public function getRollout()
+  {
+    return $this->rollout;
   }
   public function setUpdateTime($updateTime)
   {

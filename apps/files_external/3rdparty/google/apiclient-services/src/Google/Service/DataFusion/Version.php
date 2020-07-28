@@ -17,8 +17,17 @@
 
 class Google_Service_DataFusion_Version extends Google_Model
 {
+  public $defaultVersion;
   public $versionNumber;
 
+  public function setDefaultVersion($defaultVersion)
+  {
+    $this->defaultVersion = $defaultVersion;
+  }
+  public function getDefaultVersion()
+  {
+    return $this->defaultVersion;
+  }
   public function setVersionNumber($versionNumber)
   {
     $this->versionNumber = $versionNumber;

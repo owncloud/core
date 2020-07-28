@@ -108,6 +108,13 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
    * request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string jobStateMatcher Optional. Specifies enumerated categories
+   * of jobs to list. (default = match ALL jobs).If filter is provided,
+   * jobStateMatcher will be ignored.
+   * @opt_param string pageToken Optional. The page token, returned by a previous
+   * call, to request the next page of results.
+   * @opt_param string clusterName Optional. If set, the returned jobs list
+   * includes only jobs that were submitted to the named cluster.
    * @opt_param string filter Optional. A filter constraining the jobs to list.
    * Filters are case-sensitive and have the following syntax:field = value AND
    * field = value ...where field is status.state or labels.[KEY], and [KEY] is a
@@ -115,15 +122,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsJobs extends Google_Servic
    * ACTIVE or NON_ACTIVE. Only the logical AND operator is supported; space-
    * separated items are treated as having an implicit AND operator.Example
    * filter:status.state = ACTIVE AND labels.env = staging AND labels.starred = *
-   * @opt_param string pageToken Optional. The page token, returned by a previous
-   * call, to request the next page of results.
-   * @opt_param string jobStateMatcher Optional. Specifies enumerated categories
-   * of jobs to list. (default = match ALL jobs).If filter is provided,
-   * jobStateMatcher will be ignored.
    * @opt_param int pageSize Optional. The number of results to return in each
    * response.
-   * @opt_param string clusterName Optional. If set, the returned jobs list
-   * includes only jobs that were submitted to the named cluster.
    * @return Google_Service_Dataproc_ListJobsResponse
    */
   public function listProjectsRegionsJobs($projectId, $region, $optParams = array())

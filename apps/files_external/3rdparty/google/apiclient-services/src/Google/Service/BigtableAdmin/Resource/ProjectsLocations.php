@@ -47,8 +47,8 @@ class Google_Service_BigtableAdmin_Resource_ProjectsLocations extends Google_Ser
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter The standard list filter.
-   * @opt_param string pageToken The standard list page token.
    * @opt_param int pageSize The standard list page size.
+   * @opt_param string pageToken The standard list page token.
    * @return Google_Service_BigtableAdmin_ListLocationsResponse
    */
   public function listProjectsLocations($name, $optParams = array())

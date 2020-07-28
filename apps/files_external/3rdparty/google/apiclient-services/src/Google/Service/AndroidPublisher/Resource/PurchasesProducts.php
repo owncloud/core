@@ -32,8 +32,8 @@ class Google_Service_AndroidPublisher_Resource_PurchasesProducts extends Google_
    * product was sold in (for example, 'com.some.thing').
    * @param string $productId The inapp product SKU (for example,
    * 'com.some.thing.inapp1').
-   * @param string $token The token provided to the user's device when the
-   * subscription was purchased.
+   * @param string $token The token provided to the user's device when the inapp
+   * product was purchased.
    * @param Google_Service_AndroidPublisher_ProductPurchasesAcknowledgeRequest $postBody
    * @param array $optParams Optional parameters.
    */

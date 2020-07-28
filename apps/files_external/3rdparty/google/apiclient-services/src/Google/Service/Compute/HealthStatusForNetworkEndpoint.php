@@ -23,6 +23,8 @@ class Google_Service_Compute_HealthStatusForNetworkEndpoint extends Google_Model
   protected $forwardingRuleDataType = '';
   protected $healthCheckType = 'Google_Service_Compute_HealthCheckReference';
   protected $healthCheckDataType = '';
+  protected $healthCheckServiceType = 'Google_Service_Compute_HealthCheckServiceReference';
+  protected $healthCheckServiceDataType = '';
   public $healthState;
 
   /**
@@ -66,6 +68,20 @@ class Google_Service_Compute_HealthStatusForNetworkEndpoint extends Google_Model
   public function getHealthCheck()
   {
     return $this->healthCheck;
+  }
+  /**
+   * @param Google_Service_Compute_HealthCheckServiceReference
+   */
+  public function setHealthCheckService(Google_Service_Compute_HealthCheckServiceReference $healthCheckService)
+  {
+    $this->healthCheckService = $healthCheckService;
+  }
+  /**
+   * @return Google_Service_Compute_HealthCheckServiceReference
+   */
+  public function getHealthCheckService()
+  {
+    return $this->healthCheckService;
   }
   public function setHealthState($healthState)
   {

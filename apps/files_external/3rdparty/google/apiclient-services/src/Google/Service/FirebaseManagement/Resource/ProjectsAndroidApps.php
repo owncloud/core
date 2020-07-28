@@ -34,7 +34,7 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * (androidApps.create)
    *
    * @param string $parent The parent Project in which to create an App, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param Google_Service_FirebaseManagement_AndroidApp $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -50,9 +50,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * (androidApps.get)
    *
    * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/projectId/androidApps/appId As an appId is a unique
+   * format: projects/PROJECT_NUMBER/androidApps/APP_ID As an APP_ID is a unique
    * identifier, the Unique Resource from Sub-Collection access pattern may be
-   * used here, in the format: projects/-/androidApps/appId
+   * used here, in the format: projects/-/androidApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_AndroidApp
    */
@@ -67,9 +67,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * (androidApps.getConfig)
    *
    * @param string $name The resource name of the App configuration to download,
-   * in the format: projects/projectId/androidApps/appId/config As an appId is a
-   * unique identifier, the Unique Resource from Sub-Collection access pattern may
-   * be used here, in the format: projects/-/androidApps/appId
+   * in the format: projects/PROJECT_NUMBER/androidApps/APP_ID/config As an APP_ID
+   * is a unique identifier, the Unique Resource from Sub-Collection access
+   * pattern may be used here, in the format: projects/-/androidApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_AndroidAppConfig
    */
@@ -87,16 +87,16 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * (androidApps.listProjectsAndroidApps)
    *
    * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListAndroidApps` indicating where in the set of Apps to resume listing.
    * @opt_param int pageSize The maximum number of Apps to return in the response.
    *
    * The server may return fewer than this at its discretion. If no value is
    * specified (or too large a value is specified), then the server will impose
    * its own limit.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListAndroidApps` indicating where in the set of Apps to resume listing.
    * @return Google_Service_FirebaseManagement_ListAndroidAppsResponse
    */
   public function listProjectsAndroidApps($parent, $optParams = array())
@@ -115,7 +115,7 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Specifies which fields to update. Note that the
-   * fields `name`, `appId`, `projectId`, and `packageName` are all immutable.
+   * fields `name`, `app_id`, `project_id`, and `package_name` are all immutable.
    * @return Google_Service_FirebaseManagement_AndroidApp
    */
   public function patch($name, Google_Service_FirebaseManagement_AndroidApp $postBody, $optParams = array())

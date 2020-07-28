@@ -33,10 +33,10 @@ class Google_Service_Books_Resource_Cloudloading extends Google_Service_Resource
    * @opt_param string name The document name. It can be set only if the
    * drive_document_id is set.
    * @opt_param string upload_client_token Scotty upload token.
-   * @opt_param string mime_type The document MIME type. It can be set only if the
-   * drive_document_id is set.
    * @opt_param string drive_document_id A drive document id. The
    * upload_client_token must not be set.
+   * @opt_param string mime_type The document MIME type. It can be set only if the
+   * drive_document_id is set.
    * @return Google_Service_Books_BooksCloudloadingResource
    */
   public function addBook($optParams = array())

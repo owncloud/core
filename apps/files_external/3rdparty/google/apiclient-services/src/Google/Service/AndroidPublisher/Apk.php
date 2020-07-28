@@ -19,8 +19,6 @@ class Google_Service_AndroidPublisher_Apk extends Google_Model
 {
   protected $binaryType = 'Google_Service_AndroidPublisher_ApkBinary';
   protected $binaryDataType = '';
-  protected $testBinaryType = 'Google_Service_AndroidPublisher_ApkBinary';
-  protected $testBinaryDataType = '';
   public $versionCode;
 
   /**
@@ -36,20 +34,6 @@ class Google_Service_AndroidPublisher_Apk extends Google_Model
   public function getBinary()
   {
     return $this->binary;
-  }
-  /**
-   * @param Google_Service_AndroidPublisher_ApkBinary
-   */
-  public function setTestBinary(Google_Service_AndroidPublisher_ApkBinary $testBinary)
-  {
-    $this->testBinary = $testBinary;
-  }
-  /**
-   * @return Google_Service_AndroidPublisher_ApkBinary
-   */
-  public function getTestBinary()
-  {
-    return $this->testBinary;
   }
   public function setVersionCode($versionCode)
   {

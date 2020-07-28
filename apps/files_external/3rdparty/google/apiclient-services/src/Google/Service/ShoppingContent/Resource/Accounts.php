@@ -179,7 +179,8 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
     return $this->call('listlinks', array($params), "Google_Service_ShoppingContent_AccountsListLinksResponse");
   }
   /**
-   * Updates a Merchant Center account. (accounts.update)
+   * Updates a Merchant Center account. Any fields that are not provided are
+   * deleted from the resource. (accounts.update)
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client
