@@ -135,11 +135,11 @@ interface IShareProvider {
 	 * @since 10.0.0
 	 */
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares);
-	
+
 	/**
 	 * Get share by id
 	 *
-	 * @param int $id
+	 * @param string $id
 	 * @param string|null $recipientId
 	 * @return \OCP\Share\IShare
 	 * @throws ShareNotFound
@@ -168,7 +168,7 @@ interface IShareProvider {
 	 * @since 10.0.0
 	 */
 	public function getAllSharedWith($userId, $node);
-	
+
 	/**
 	 * Get shared with the given user specifying share type predicate for this specific share provider
 	 *

@@ -96,7 +96,12 @@ class ExpireSharesJob extends TimedJob {
 		$shares = $qb->execute();
 		while ($share = $shares->fetch()) {
 			try {
-				$shareObject = $this->defaultShareProvider->getShareById($share['id']);
+				/*
+				 * The type of $share['id'] changes depends on the db type. (int for pgsql, string for others)
+				 * This situation led to problem when stubbing method in tests.
+				 * $share['id'] has been casted to string to ensure consistency.
+				 */
+				$shareObject = $this->defaultShareProvider->getShareById((string)$share['id']);
 				$this->shareManager->deleteShare($shareObject);
 			} catch (ShareNotFound $ex) {
 				//already deleted
