@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcis
+@api @files_sharing-app-required
 Feature: auth
 
   Background:
