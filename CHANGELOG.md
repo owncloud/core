@@ -25,6 +25,7 @@ Summary
 * Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 * Change - Update league/flysystem (1.0.69 => 1.0.70): [#37730](https://github.com/owncloud/core/pull/37730)
 * Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
+* Change - Update google/apiclient from 2.6.0 to 2.7.0 and related dependencies: [#37739](https://github.com/owncloud/core/pull/37739)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -141,6 +142,14 @@ Details
 * Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
 
    https://github.com/owncloud/core/issues/37734
+
+* Change - Update google/apiclient from 2.6.0 to 2.7.0 and related dependencies: [#37739](https://github.com/owncloud/core/pull/37739)
+
+   This change updates the 3rd-party dependencies of files_external: - google/apiclient
+   (v2.6.0 => v2.7.0) - google/apiclient-services (v0.139 => v0.141) - google/auth (v1.10.0 =>
+   v1.11.1) - monolog/monolog (2.1.0 => 2.1.1)
+
+   https://github.com/owncloud/core/pull/37739
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
