@@ -1,4 +1,4 @@
-@api
+@api @skipOnOcis @issue-ocis-187
 Feature: previews of files downloaded through the webdav API
 
   Background:
