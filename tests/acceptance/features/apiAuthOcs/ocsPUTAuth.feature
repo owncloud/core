@@ -1,15 +1,15 @@
-@api @files_sharing-app-required @skipOnOcis
+@api @files_sharing-app-required
 Feature: auth
 
   Background:
     Given user "another-admin" has been created with default attributes and without skeleton files
-    And user "another-admin" has been added to group "admin"
 
   @skipOnOcis
   @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send PUT request to OCS endpoints as admin with wrong password
+    Given user "another-admin" has been added to group "admin"
     When user "another-admin" requests these endpoints with "PUT" including body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                                         |
       | /ocs/v1.php/cloud/users/%username%               |
@@ -28,7 +28,7 @@ Feature: auth
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send PUT request to OCS endpoints as admin with wrong password
-    When user "another-admin" requests these endpoints with "PUT" including body "doesnotmatter" using password "invalid" about user "Alice"
+    When the administrator requests these endpoints with "PUT" with body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                                         |
       | /ocs/v1.php/cloud/users/%username%               |
       | /ocs/v2.php/cloud/users/%username%               |

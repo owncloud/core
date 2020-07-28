@@ -397,32 +397,38 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminRequestsEndpoint($method, TableNode $table) {
-		$this->adminRequestsEndpointsWithPassword($method, null, $table);
+		$this->adminRequestsEndpointsWithBodyWithPassword($method, null, null, null, $table);
 	}
 
 	/**
-	 * @When the administrator requests these endpoints with :method using password :password
+	 * @When the administrator requests these endpoints with :method with body :body using password :password about user :ofUser
 	 *
 	 * @param string $method
+	 * @param string $body
 	 * @param string $password
+	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminRequestsEndpointsWithPassword(
+	public function adminRequestsEndpointsWithBodyWithPassword(
 		$method,
+		$body,
 		$password,
+		$ofUser,
 		TableNode $table
 	) {
+		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
-			$this->administratorRequestsURLWithUsingBasicAuth(
-				$row['endpoint'],
-				$method,
-				$password
+			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
+				$row['endpoint'], $ofUser
+			);
+			$this->userRequestsURLWithUsingBasicAuth(
+				$this->featureContext->getAdminUsername(), $row['endpoint'], $method, $password, $body
 			);
 			$this->featureContext->pushToLastHttpStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
@@ -438,6 +444,26 @@ class AuthContext implements Context {
 				$this->featureContext->pushToLastOcsCodesArray("notset");
 			}
 		}
+	}
+
+	/**
+	 * @When the administrator requests these endpoints with :method using password :password about user :ofUser
+	 *
+	 * @param string $method
+	 * @param string $password
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminRequestsEndpointsWithPassword(
+		$method,
+		$password,
+		$ofUser,
+		TableNode $table
+	) {
+		$this->adminRequestsEndpointsWithBodyWithPassword($method, null, $password, $ofUser, $table);
 	}
 
 	/**
