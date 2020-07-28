@@ -156,10 +156,6 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
    * `projects/{project}/instances/{instance}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view The view to be applied to the returned tables' fields.
-   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
-   * @opt_param string pageToken The value of `next_page_token` returned by a
-   * previous call.
    * @opt_param int pageSize Maximum number of results per page.
    *
    * A page_size of zero lets the server choose the number of items to return. A
@@ -169,6 +165,10 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
    * Following the first request, subsequent paginated calls are not required to
    * pass a page_size. If a page_size is set in subsequent calls, it must match
    * the page_size given in the first request.
+   * @opt_param string view The view to be applied to the returned tables' fields.
+   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
+   * @opt_param string pageToken The value of `next_page_token` returned by a
+   * previous call.
    * @return Google_Service_BigtableAdmin_ListTablesResponse
    */
   public function listProjectsInstancesTables($parent, $optParams = array())
@@ -195,6 +195,27 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('modifyColumnFamilies', array($params), "Google_Service_BigtableAdmin_Table");
+  }
+  /**
+   * Create a new table by restoring from a completed backup. The new table must
+   * be in the same instance as the instance containing the backup.  The returned
+   * table long-running operation can be used to track the progress of the
+   * operation, and to cancel it.  The metadata field type is
+   * RestoreTableMetadata.  The response type is Table, if successful.
+   * (tables.restore)
+   *
+   * @param string $parent Required. The name of the instance in which to create
+   * the restored table. This instance must be the parent of the source backup.
+   * Values are of the form `projects//instances/`.
+   * @param Google_Service_BigtableAdmin_RestoreTableRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_BigtableAdmin_Operation
+   */
+  public function restore($parent, Google_Service_BigtableAdmin_RestoreTableRequest $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('restore', array($params), "Google_Service_BigtableAdmin_Operation");
   }
   /**
    * Sets the access control policy on a Table resource. Replaces any existing

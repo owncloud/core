@@ -31,11 +31,11 @@ class Google_Service_PeopleService_Resource_ContactGroups extends Google_Service
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string resourceNames Required. The resource names of the contact
+   * groups to get.
    * @opt_param int maxMembers Optional. Specifies the maximum number of members
    * to return for each group. Defaults to 0 if not set, which will return zero
    * members.
-   * @opt_param string resourceNames Required. The resource names of the contact
-   * groups to get.
    * @return Google_Service_PeopleService_BatchGetContactGroupsResponse
    */
   public function batchGet($optParams = array())
@@ -104,12 +104,12 @@ class Google_Service_PeopleService_Resource_ContactGroups extends Google_Service
    * a previous call to
    * [ListContactGroups](/people/api/rest/v1/contactgroups/list). Requests the
    * next page of resources.
-   * @opt_param string syncToken Optional. A sync token, returned by a previous
-   * call to `contactgroups.list`. Only resources changed since the sync token was
-   * created will be returned.
    * @opt_param int pageSize Optional. The maximum number of resources to return.
    * Valid values are between 1 and 1000, inclusive. Defaults to 30 if not set or
    * set to 0.
+   * @opt_param string syncToken Optional. A sync token, returned by a previous
+   * call to `contactgroups.list`. Only resources changed since the sync token was
+   * created will be returned.
    * @return Google_Service_PeopleService_ListContactGroupsResponse
    */
   public function listContactGroups($optParams = array())

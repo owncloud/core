@@ -543,6 +543,10 @@ class OAuth2 implements FetchAuthTokenInterface
             return implode(':', $this->scope);
         }
 
+        if ($this->audience) {
+            return $this->audience;
+        }
+
         // If scope has not set, return null to indicate no caching.
         return null;
     }

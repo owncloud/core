@@ -17,6 +17,8 @@
 
 class Google_Service_Bigquery_EvaluationMetrics extends Google_Model
 {
+  protected $arimaForecastingMetricsType = 'Google_Service_Bigquery_ArimaForecastingMetrics';
+  protected $arimaForecastingMetricsDataType = '';
   protected $binaryClassificationMetricsType = 'Google_Service_Bigquery_BinaryClassificationMetrics';
   protected $binaryClassificationMetricsDataType = '';
   protected $clusteringMetricsType = 'Google_Service_Bigquery_ClusteringMetrics';
@@ -28,6 +30,20 @@ class Google_Service_Bigquery_EvaluationMetrics extends Google_Model
   protected $regressionMetricsType = 'Google_Service_Bigquery_RegressionMetrics';
   protected $regressionMetricsDataType = '';
 
+  /**
+   * @param Google_Service_Bigquery_ArimaForecastingMetrics
+   */
+  public function setArimaForecastingMetrics(Google_Service_Bigquery_ArimaForecastingMetrics $arimaForecastingMetrics)
+  {
+    $this->arimaForecastingMetrics = $arimaForecastingMetrics;
+  }
+  /**
+   * @return Google_Service_Bigquery_ArimaForecastingMetrics
+   */
+  public function getArimaForecastingMetrics()
+  {
+    return $this->arimaForecastingMetrics;
+  }
   /**
    * @param Google_Service_Bigquery_BinaryClassificationMetrics
    */

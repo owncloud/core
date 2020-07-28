@@ -18,6 +18,7 @@
 class Google_Service_BigQueryReservation_CapacityCommitment extends Google_Model
 {
   public $commitmentEndTime;
+  public $commitmentStartTime;
   protected $failureStatusType = 'Google_Service_BigQueryReservation_Status';
   protected $failureStatusDataType = '';
   public $name;
@@ -33,6 +34,14 @@ class Google_Service_BigQueryReservation_CapacityCommitment extends Google_Model
   public function getCommitmentEndTime()
   {
     return $this->commitmentEndTime;
+  }
+  public function setCommitmentStartTime($commitmentStartTime)
+  {
+    $this->commitmentStartTime = $commitmentStartTime;
+  }
+  public function getCommitmentStartTime()
+  {
+    return $this->commitmentStartTime;
   }
   /**
    * @param Google_Service_BigQueryReservation_Status

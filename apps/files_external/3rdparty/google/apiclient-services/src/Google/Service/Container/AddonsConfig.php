@@ -19,6 +19,8 @@ class Google_Service_Container_AddonsConfig extends Google_Model
 {
   protected $cloudRunConfigType = 'Google_Service_Container_CloudRunConfig';
   protected $cloudRunConfigDataType = '';
+  protected $dnsCacheConfigType = 'Google_Service_Container_DnsCacheConfig';
+  protected $dnsCacheConfigDataType = '';
   protected $horizontalPodAutoscalingType = 'Google_Service_Container_HorizontalPodAutoscaling';
   protected $horizontalPodAutoscalingDataType = '';
   protected $httpLoadBalancingType = 'Google_Service_Container_HttpLoadBalancing';
@@ -41,6 +43,20 @@ class Google_Service_Container_AddonsConfig extends Google_Model
   public function getCloudRunConfig()
   {
     return $this->cloudRunConfig;
+  }
+  /**
+   * @param Google_Service_Container_DnsCacheConfig
+   */
+  public function setDnsCacheConfig(Google_Service_Container_DnsCacheConfig $dnsCacheConfig)
+  {
+    $this->dnsCacheConfig = $dnsCacheConfig;
+  }
+  /**
+   * @return Google_Service_Container_DnsCacheConfig
+   */
+  public function getDnsCacheConfig()
+  {
+    return $this->dnsCacheConfig;
   }
   /**
    * @param Google_Service_Container_HorizontalPodAutoscaling

@@ -64,35 +64,22 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLocationLists extends Goog
    * the fetched location lists belong.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Allows filtering by location list fields.
-   *
-   * Supported syntax:
-   *
-   * * Filter expressions are made up of one or more restrictions. * Restrictions
-   * can be combined by `AND` or `OR` logical operators. A sequence of
-   * restrictions implicitly uses `AND`. * A restriction has the form of `{field}
-   * {operator} {value}`. * The operator must be `EQUALS (=)`. * Supported fields:
-   * - `locationType`
-   *
-   * Examples:
-   *
-   * * All regional location list:
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListLocationLists` method. If not specified, the first
+   * page of results will be returned.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `locationListId` (default) * `displayName` The default sorting order
+   * is ascending. To specify descending order for a field, a suffix "desc" should
+   * be added to the field name. Example: `displayName desc`.
+   * @opt_param string filter Allows filtering by location list fields. Supported
+   * syntax: * Filter expressions are made up of one or more restrictions. *
+   * Restrictions can be combined by `AND` or `OR` logical operators. A sequence
+   * of restrictions implicitly uses `AND`. * A restriction has the form of
+   * `{field} {operator} {value}`. * The operator must be `EQUALS (=)`. *
+   * Supported fields: - `locationType` Examples: * All regional location list:
    * `locationType="TARGETING_LOCATION_TYPE_REGIONAL"` * All proximity location
    * list: `locationType="TARGETING_LOCATION_TYPE_PROXIMITY"`
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return.
-   *
-   * Typically, this is the value of next_page_token returned from the previous
-   * call to `ListLocationLists` method. If not specified, the first page of
-   * results will be returned.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are:
-   *
-   * * `locationListId` (default) * `displayName`
-   *
-   * The default sorting order is ascending. To specify descending order for a
-   * field, a suffix "desc" should be added to the field name. Example:
-   * `displayName desc`.
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * Defaults to `100` if not set. Returns error code `INVALID_ARGUMENT` if an
    * invalid value is specified.

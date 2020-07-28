@@ -28,7 +28,7 @@ class Google_Service_Gmail_Resource_UsersMessagesAttachments extends Google_Serv
   /**
    * Gets the specified message attachment. (attachments.get)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $messageId The ID of the message containing the attachment.
    * @param string $id The ID of the attachment.

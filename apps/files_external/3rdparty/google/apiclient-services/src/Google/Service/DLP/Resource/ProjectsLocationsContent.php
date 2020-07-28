@@ -35,8 +35,8 @@ class Google_Service_DLP_Resource_ProjectsLocationsContent extends Google_Servic
    * be all types, but may change over time as detectors are updated.
    * (content.deidentify)
    *
-   * @param string $parent The parent resource name, for example projects/my-
-   * project-id.
+   * @param string $parent Parent resource name. - Format:projects/[PROJECT-ID] -
+   * Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
    * @param Google_Service_DLP_GooglePrivacyDlpV2DeidentifyContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2DeidentifyContentResponse
@@ -58,8 +58,8 @@ class Google_Service_DLP_Resource_ProjectsLocationsContent extends Google_Servic
    * For how to guides, see https://cloud.google.com/dlp/docs/inspecting-images
    * and https://cloud.google.com/dlp/docs/inspecting-text, (content.inspect)
    *
-   * @param string $parent The parent resource name, for example projects/my-
-   * project-id.
+   * @param string $parent Parent resource name. - Format:projects/[PROJECT-ID] -
+   * Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
    * @param Google_Service_DLP_GooglePrivacyDlpV2InspectContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2InspectContentResponse
@@ -75,7 +75,8 @@ class Google_Service_DLP_Resource_ProjectsLocationsContent extends Google_Servic
    * https://cloud.google.com/dlp/docs/pseudonymization#re-
    * identification_in_free_text_code_example to learn more. (content.reidentify)
    *
-   * @param string $parent Required. The parent resource name.
+   * @param string $parent Required. The parent resource name. - Format:projects
+   * /[PROJECT-ID] - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
    * @param Google_Service_DLP_GooglePrivacyDlpV2ReidentifyContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ReidentifyContentResponse

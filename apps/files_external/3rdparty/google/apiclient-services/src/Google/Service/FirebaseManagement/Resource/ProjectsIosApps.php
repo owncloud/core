@@ -33,7 +33,7 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
    * completion, so there is no need to call `DeleteOperation`. (iosApps.create)
    *
    * @param string $parent The parent Project in which to create an App, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param Google_Service_FirebaseManagement_IosApp $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -48,9 +48,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
    * Gets the IosApp identified by the specified resource name. (iosApps.get)
    *
    * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/projectId/iosApps/appId As an appId is a unique identifier,
-   * the Unique Resource from Sub-Collection access pattern may be used here, in
-   * the format: projects/-/iosApps/appId
+   * format: projects/PROJECT_NUMBER/iosApps/APP_ID As an APP_ID is a unique
+   * identifier, the Unique Resource from Sub-Collection access pattern may be
+   * used here, in the format: projects/-/iosApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_IosApp
    */
@@ -65,9 +65,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
    * (iosApps.getConfig)
    *
    * @param string $name The resource name of the App configuration to download,
-   * in the format: projects/projectId/iosApps/appId/config As an appId is a
-   * unique identifier, the Unique Resource from Sub-Collection access pattern may
-   * be used here, in the format: projects/-/iosApps/appId
+   * in the format: projects/PROJECT_NUMBER/iosApps/APP_ID/config As an APP_ID is
+   * a unique identifier, the Unique Resource from Sub-Collection access pattern
+   * may be used here, in the format: projects/-/iosApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_IosAppConfig
    */
@@ -85,7 +85,7 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
    * (iosApps.listProjectsIosApps)
    *
    * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Token returned from a previous call to

@@ -26,30 +26,28 @@
 class Google_Service_AndroidPublisher_Resource_SystemapksVariants extends Google_Service_Resource
 {
   /**
-   * Creates a new variant of APK which is suitable for inclusion in a system
-   * image. (variants.create)
+   * Creates an APK which is suitable for inclusion in a system image from an
+   * already uploaded Android App Bundle. (variants.create)
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * @param string $packageName Unique identifier of the Android app.
    * @param string $versionCode The version code of the App Bundle.
-   * @param Google_Service_AndroidPublisher_SystemApkVariantsCreateRequest $postBody
+   * @param Google_Service_AndroidPublisher_Variant $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_Variant
    */
-  public function create($packageName, $versionCode, Google_Service_AndroidPublisher_SystemApkVariantsCreateRequest $postBody, $optParams = array())
+  public function create($packageName, $versionCode, Google_Service_AndroidPublisher_Variant $postBody, $optParams = array())
   {
     $params = array('packageName' => $packageName, 'versionCode' => $versionCode, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('create', array($params), "Google_Service_AndroidPublisher_Variant");
   }
   /**
-   * Download a previously created APK which is suitable for inclusion in a system
-   * image. (variants.download)
+   * Downloads a previously created system APK which is suitable for inclusion in
+   * a system image. (variants.download)
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * @param string $packageName Unique identifier of the Android app.
    * @param string $versionCode The version code of the App Bundle.
-   * @param string $variantId
+   * @param string $variantId The ID of a previously created system APK variant.
    * @param array $optParams Optional parameters.
    */
   public function download($packageName, $versionCode, $variantId, $optParams = array())
@@ -61,10 +59,9 @@ class Google_Service_AndroidPublisher_Resource_SystemapksVariants extends Google
   /**
    * Returns a previously created system APK variant. (variants.get)
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * @param string $packageName Unique identifier of the Android app.
    * @param string $versionCode The version code of the App Bundle.
-   * @param string $variantId Unique identifier for this variant.
+   * @param string $variantId The ID of a previously created system APK variant.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_Variant
    */
@@ -78,16 +75,15 @@ class Google_Service_AndroidPublisher_Resource_SystemapksVariants extends Google
    * Returns the list of previously created system APK variants.
    * (variants.listSystemapksVariants)
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * @param string $packageName Unique identifier of the Android app.
    * @param string $versionCode The version code of the App Bundle.
    * @param array $optParams Optional parameters.
-   * @return Google_Service_AndroidPublisher_SystemApkVariantsListResponse
+   * @return Google_Service_AndroidPublisher_SystemApksListResponse
    */
   public function listSystemapksVariants($packageName, $versionCode, $optParams = array())
   {
     $params = array('packageName' => $packageName, 'versionCode' => $versionCode);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_AndroidPublisher_SystemApkVariantsListResponse");
+    return $this->call('list', array($params), "Google_Service_AndroidPublisher_SystemApksListResponse");
   }
 }

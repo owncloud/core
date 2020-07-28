@@ -63,7 +63,7 @@ class Google_Service_FirebaseManagement_Resource_ProjectsDefaultLocation extends
    * (defaultLocation.finalize)
    *
    * @param string $parent The resource name of the Project for which the default
-   * GCP resource location will be set, in the format: projects/projectId
+   * GCP resource location will be set, in the format: projects/PROJECT_NUMBER
    * @param Google_Service_FirebaseManagement_FinalizeDefaultLocationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation

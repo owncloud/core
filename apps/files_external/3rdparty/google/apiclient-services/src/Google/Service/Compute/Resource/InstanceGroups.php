@@ -248,8 +248,8 @@ class Google_Service_Compute_Resource_InstanceGroups extends Google_Service_Reso
     return $this->call('list', array($params), "Google_Service_Compute_InstanceGroupList");
   }
   /**
-   * Lists the instances in the specified instance group.
-   * (instanceGroups.listInstances)
+   * Lists the instances in the specified instance group. The orderBy query
+   * parameter is not supported. (instanceGroups.listInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the instance group is located.

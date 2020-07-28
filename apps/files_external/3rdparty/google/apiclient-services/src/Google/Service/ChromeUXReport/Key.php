@@ -17,10 +17,19 @@
 
 class Google_Service_ChromeUXReport_Key extends Google_Model
 {
+  public $effectiveConnectionType;
   public $formFactor;
   public $origin;
   public $url;
 
+  public function setEffectiveConnectionType($effectiveConnectionType)
+  {
+    $this->effectiveConnectionType = $effectiveConnectionType;
+  }
+  public function getEffectiveConnectionType()
+  {
+    return $this->effectiveConnectionType;
+  }
   public function setFormFactor($formFactor)
   {
     $this->formFactor = $formFactor;

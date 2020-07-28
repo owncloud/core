@@ -26,7 +26,7 @@
 class Google_Service_Playcustomapp_Resource_AccountsCustomApps extends Google_Service_Resource
 {
   /**
-   * Create and publish a new custom app. (customApps.create)
+   * Creates a new custom app. (customApps.create)
    *
    * @param string $account Developer account ID.
    * @param Google_Service_Playcustomapp_CustomApp $postBody

@@ -17,8 +17,17 @@
 
 class Google_Service_ServiceUsage_DisableServiceRequest extends Google_Model
 {
+  public $checkIfServiceHasUsage;
   public $disableDependentServices;
 
+  public function setCheckIfServiceHasUsage($checkIfServiceHasUsage)
+  {
+    $this->checkIfServiceHasUsage = $checkIfServiceHasUsage;
+  }
+  public function getCheckIfServiceHasUsage()
+  {
+    return $this->checkIfServiceHasUsage;
+  }
   public function setDisableDependentServices($disableDependentServices)
   {
     $this->disableDependentServices = $disableDependentServices;

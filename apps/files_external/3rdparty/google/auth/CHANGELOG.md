@@ -1,3 +1,8 @@
+## 1.11.0 (7/22/2020)
+
+* [feat]: Check cache expiration (#291)
+* [fix]: OAuth2 cache key when audience is set (#291)
+
 ## 1.10.0 (7/8/2020)
 
 * [feat]: Add support for Guzzle 7 (#256)

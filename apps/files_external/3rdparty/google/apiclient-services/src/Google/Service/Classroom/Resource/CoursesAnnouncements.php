@@ -116,6 +116,10 @@ class Google_Service_Classroom_Resource_CoursesAnnouncements extends Google_Serv
    * either the Classroom-assigned identifier or an alias.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of items to return. Zero or
+   * unspecified indicates that the server may assign a maximum.
+   *
+   * The server may return fewer than the specified number of results.
    * @opt_param string announcementStates Restriction on the `state` of
    * announcements returned. If this argument is left unspecified, the default
    * value is `PUBLISHED`.
@@ -129,10 +133,6 @@ class Google_Service_Classroom_Resource_CoursesAnnouncements extends Google_Serv
    *
    * The list request must be otherwise identical to the one that resulted in this
    * token.
-   * @opt_param int pageSize Maximum number of items to return. Zero or
-   * unspecified indicates that the server may assign a maximum.
-   *
-   * The server may return fewer than the specified number of results.
    * @return Google_Service_Classroom_ListAnnouncementsResponse
    */
   public function listCoursesAnnouncements($courseId, $optParams = array())

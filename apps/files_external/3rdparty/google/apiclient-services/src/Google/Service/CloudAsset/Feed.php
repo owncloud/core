@@ -20,6 +20,8 @@ class Google_Service_CloudAsset_Feed extends Google_Collection
   protected $collection_key = 'assetTypes';
   public $assetNames;
   public $assetTypes;
+  protected $conditionType = 'Google_Service_CloudAsset_Expr';
+  protected $conditionDataType = '';
   public $contentType;
   protected $feedOutputConfigType = 'Google_Service_CloudAsset_FeedOutputConfig';
   protected $feedOutputConfigDataType = '';
@@ -40,6 +42,20 @@ class Google_Service_CloudAsset_Feed extends Google_Collection
   public function getAssetTypes()
   {
     return $this->assetTypes;
+  }
+  /**
+   * @param Google_Service_CloudAsset_Expr
+   */
+  public function setCondition(Google_Service_CloudAsset_Expr $condition)
+  {
+    $this->condition = $condition;
+  }
+  /**
+   * @return Google_Service_CloudAsset_Expr
+   */
+  public function getCondition()
+  {
+    return $this->condition;
   }
   public function setContentType($contentType)
   {

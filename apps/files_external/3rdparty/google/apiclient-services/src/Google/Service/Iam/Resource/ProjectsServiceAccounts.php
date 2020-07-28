@@ -26,7 +26,7 @@
 class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service_Resource
 {
   /**
-   * Creates a ServiceAccount and returns it. (serviceAccounts.create)
+   * Creates a ServiceAccount. (serviceAccounts.create)
    *
    * @param string $name Required. The resource name of the project associated
    * with the service accounts, such as `projects/my-project-123`.
@@ -41,7 +41,21 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('create', array($params), "Google_Service_Iam_ServiceAccount");
   }
   /**
-   * Deletes a ServiceAccount. (serviceAccounts.delete)
+   * Deletes a ServiceAccount.
+   *
+   * **Warning:** After you delete a service account, you might not be able to
+   * undelete it. If you know that you need to re-enable the service account in
+   * the future, use DisableServiceAccount instead.
+   *
+   * If you delete a service account, IAM permanently removes the service account
+   * 30 days later. Google Cloud cannot recover the service account after it is
+   * permanently removed, even if you file a support request.
+   *
+   * To help avoid unplanned outages, we recommend that you disable the service
+   * account before you delete it. Use DisableServiceAccount to disable the
+   * service account, then wait at least 24 hours and watch for unintended
+   * consequences. If there are no unintended consequences, you can delete the
+   * service account. (serviceAccounts.delete)
    *
    * @param string $name Required. The resource name of the service account in the
    * following format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using
@@ -58,29 +72,22 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('delete', array($params), "Google_Service_Iam_IamEmpty");
   }
   /**
-   * DisableServiceAccount is currently in the alpha launch stage.
+   * Disables a ServiceAccount immediately.
    *
-   * Disables a ServiceAccount, which immediately prevents the service account
-   * from authenticating and gaining access to APIs.
+   * If an application uses the service account to authenticate, that application
+   * can no longer call Google APIs or access Google Cloud resources. Existing
+   * access tokens for the service account are rejected, and requests for new
+   * access tokens will fail.
    *
-   * Disabled service accounts can be safely restored by using
-   * EnableServiceAccount at any point. Deleted service accounts cannot be
-   * restored using this method.
+   * To re-enable the service account, use EnableServiceAccount. After you re-
+   * enable the service account, its existing access tokens will be accepted, and
+   * you can request new access tokens.
    *
-   * Disabling a service account that is bound to VMs, Apps, Functions, or other
-   * jobs will cause those jobs to lose access to resources if they are using the
-   * disabled service account.
-   *
-   * Previously issued Access tokens for a service account will be rejected while
-   * the service account is disabled but will start working again if the account
-   * is re-enabled. Issuance of new tokens will fail while the account is
-   * disabled.
-   *
-   * To improve reliability of your services and avoid unexpected outages, it is
-   * recommended to first disable a service account rather than delete it. After
-   * disabling the service account, wait at least 24 hours to verify there are no
-   * unintended consequences, and then delete the service account.
-   * (serviceAccounts.disable)
+   * To help avoid unplanned outages, we recommend that you disable the service
+   * account before you delete it. Use this method to disable the service account,
+   * then wait at least 24 hours and watch for unintended consequences. If there
+   * are no unintended consequences, you can delete the service account with
+   * DeleteServiceAccount. (serviceAccounts.disable)
    *
    * @param string $name The resource name of the service account in the following
    * format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using `-` as a
@@ -98,16 +105,13 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('disable', array($params), "Google_Service_Iam_IamEmpty");
   }
   /**
-   * EnableServiceAccount is currently in the alpha launch stage.
+   * Enables a ServiceAccount that was disabled by DisableServiceAccount.
    *
-   *  Restores a disabled ServiceAccount  that has been manually disabled by using
-   * DisableServiceAccount. Service  accounts that have been disabled by other
-   * means or for other reasons,  such as abuse, cannot be restored using this
-   * method.
+   * If the service account is already enabled, then this method has no effect.
    *
-   *  EnableServiceAccount will have no effect on a service account that is  not
-   * disabled.  Enabling an already enabled service account will have no  effect.
-   * (serviceAccounts.enable)
+   * If the service account was disabled by other means—for example, if Google
+   * disabled the service account because it was compromised—you cannot use this
+   * method to enable the service account. (serviceAccounts.enable)
    *
    * @param string $name The resource name of the service account in the following
    * format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using `-` as a
@@ -142,17 +146,14 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('get', array($params), "Google_Service_Iam_ServiceAccount");
   }
   /**
-   * Returns the Cloud IAM access control policy for a ServiceAccount.
+   * Gets the IAM policy that is attached to a ServiceAccount. This IAM policy
+   * specifies which members have access to the service account.
    *
-   * Note: Service accounts are both [resources and identities](/iam/docs/service-
-   * accounts#service_account_permissions). This method treats the service account
-   * as a resource. It returns the Cloud IAM policy that reflects what members
-   * have access to the service account.
-   *
-   * This method does not return what resources the service account has access to.
-   * To see if a service account has access to a resource, call the `getIamPolicy`
-   * method on the target resource. For example, to view grants for a project,
-   * call the [projects.getIamPolicy](/resource-
+   * This method does not tell you whether the service account has been granted
+   * any roles on other resources. To check whether a service account has role
+   * grants on a resource, use the `getIamPolicy` method for that resource. For
+   * example, to view the role grants for a project, call the Resource Manager
+   * API's [`projects.getIamPolicy`](https://cloud.google.com/resource-
    * manager/reference/rest/v1/projects/getIamPolicy) method.
    * (serviceAccounts.getIamPolicy)
    *
@@ -183,19 +184,21 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('getIamPolicy', array($params), "Google_Service_Iam_Policy");
   }
   /**
-   * Lists ServiceAccounts for a project.
+   * Lists every ServiceAccount that belongs to a specific project.
    * (serviceAccounts.listProjectsServiceAccounts)
    *
    * @param string $name Required. The resource name of the project associated
    * with the service accounts, such as `projects/my-project-123`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional pagination token returned in an earlier
-   * ListServiceAccountsResponse.next_page_token.
    * @opt_param int pageSize Optional limit on the number of service accounts to
    * include in the response. Further accounts can subsequently be obtained by
    * including the ListServiceAccountsResponse.next_page_token in a subsequent
    * request.
+   *
+   * The default is 20, and the maximum is 100.
+   * @opt_param string pageToken Optional pagination token returned in an earlier
+   * ListServiceAccountsResponse.next_page_token.
    * @return Google_Service_Iam_ListServiceAccountsResponse
    */
   public function listProjectsServiceAccounts($name, $optParams = array())
@@ -205,25 +208,26 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('list', array($params), "Google_Service_Iam_ListServiceAccountsResponse");
   }
   /**
-   * Patches a ServiceAccount.
+   * Patches a ServiceAccount. (serviceAccounts.patch)
    *
-   * Currently, only the following fields are updatable: `display_name` and
-   * `description`.
+   * @param string $name The resource name of the service account.
    *
-   * Only fields specified in the request are guaranteed to be returned in the
-   * response. Other fields in the response may be empty.
+   * Use one of the following formats:
    *
-   * Note: The field mask is required. (serviceAccounts.patch)
+   * * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` *
+   * `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}`
    *
-   * @param string $name The resource name of the service account in the following
-   * format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+   * As an alternative, you can use the `-` wildcard character instead of the
+   * project ID:
    *
-   * Requests using `-` as a wildcard for the `PROJECT_ID` will infer the project
-   * from the `account` and the `ACCOUNT` value can be the `email` address or the
-   * `unique_id` of the service account.
+   * * `projects/-/serviceAccounts/{EMAIL_ADDRESS}` *
+   * `projects/-/serviceAccounts/{UNIQUE_ID}`
    *
-   * In responses the resource name will always be in the format
-   * `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+   * When possible, avoid using the `-` wildcard character, because it can cause
+   * response messages to contain misleading error codes. For example, if you try
+   * to get the service account `projects/-/serviceAccounts/fake@example.com`,
+   * which does not exist, the response contains an HTTP `403 Forbidden` error
+   * instead of a `404 Not Found` error.
    * @param Google_Service_Iam_PatchServiceAccountRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Iam_ServiceAccount
@@ -235,20 +239,23 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('patch', array($params), "Google_Service_Iam_ServiceAccount");
   }
   /**
-   * Sets the Cloud IAM access control policy for a ServiceAccount.
+   * Sets the IAM policy that is attached to a ServiceAccount.
    *
-   * Note: Service accounts are both [resources and identities](/iam/docs/service-
-   * accounts#service_account_permissions). This method treats the service account
-   * as a resource. Use it to grant members access to the service account, such as
-   * when they need to impersonate it.
+   * Use this method to grant or revoke access to the service account. For
+   * example, you could grant a member the ability to impersonate the service
+   * account.
    *
-   * This method does not grant the service account access to other resources,
-   * such as projects. To grant a service account access to resources, include the
-   * service account in the Cloud IAM policy for the desired resource, then call
-   * the appropriate `setIamPolicy` method on the target resource. For example, to
-   * grant a service account access to a project, call the [projects.setIamPolicy
-   * ](/resource-manager/reference/rest/v1/projects/setIamPolicy) method.
-   * (serviceAccounts.setIamPolicy)
+   * This method does not enable the service account to access other resources. To
+   * grant roles to a service account on a resource, follow these steps:
+   *
+   * 1. Call the resource's `getIamPolicy` method to get its current IAM policy.
+   * 2. Edit the policy so that it binds the service account to an IAM role for
+   * the resource. 3. Call the resource's `setIamPolicy` method to update its IAM
+   * policy.
+   *
+   * For detailed instructions, see [Granting roles to a service account for
+   * specific resources](https://cloud.google.com/iam/help/service-accounts
+   * /granting-access-to-service-accounts). (serviceAccounts.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -264,18 +271,23 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('setIamPolicy', array($params), "Google_Service_Iam_Policy");
   }
   /**
-   * **Note**: This method is in the process of being deprecated. Call the [`signB
-   * lob()`](/iam/credentials/reference/rest/v1/projects.serviceAccounts/signBlob)
-   * method of the Cloud IAM Service Account Credentials API instead.
+   * **Note:** This method is deprecated and will stop working on July 1, 2021.
+   * Use the [`signBlob`](https://cloud.google.com/iam/help/rest-
+   * credentials/v1/projects.serviceAccounts/signBlob) method in the IAM Service
+   * Account Credentials API instead. If you currently use this method, see the
+   * [migration guide](https://cloud.google.com/iam/help/credentials/migrate-api)
+   * for instructions.
    *
-   * Signs a blob using a service account's system-managed private key.
+   * Signs a blob using the system-managed private key for a ServiceAccount.
    * (serviceAccounts.signBlob)
    *
-   * @param string $name Required. The resource name of the service account in the
-   * following format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using
-   * `-` as a wildcard for the `PROJECT_ID` will infer the project from the
-   * account. The `ACCOUNT` value can be the `email` address or the `unique_id` of
-   * the service account.
+   * @param string $name Required. Deprecated. [Migrate to Service Account
+   * Credentials API](https://cloud.google.com/iam/help/credentials/migrate-api).
+   *
+   * The resource name of the service account in the following format:
+   * `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using `-` as a wildcard
+   * for the `PROJECT_ID` will infer the project from the account. The `ACCOUNT`
+   * value can be the `email` address or the `unique_id` of the service account.
    * @param Google_Service_Iam_SignBlobRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Iam_SignBlobResponse
@@ -287,21 +299,23 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('signBlob', array($params), "Google_Service_Iam_SignBlobResponse");
   }
   /**
-   * **Note**: This method is in the process of being deprecated. Call the [`signJ
-   * wt()`](/iam/credentials/reference/rest/v1/projects.serviceAccounts/signJwt)
-   * method of the Cloud IAM Service Account Credentials API instead.
+   * **Note:** This method is deprecated and will stop working on July 1, 2021.
+   * Use the [`signJwt`](https://cloud.google.com/iam/help/rest-
+   * credentials/v1/projects.serviceAccounts/signJwt) method in the IAM Service
+   * Account Credentials API instead. If you currently use this method, see the
+   * [migration guide](https://cloud.google.com/iam/help/credentials/migrate-api)
+   * for instructions.
    *
-   * Signs a JWT using a service account's system-managed private key.
+   * Signs a JSON Web Token (JWT) using the system-managed private key for a
+   * ServiceAccount. (serviceAccounts.signJwt)
    *
-   * If no expiry time (`exp`) is provided in the `SignJwtRequest`, IAM sets an an
-   * expiry time of one hour by default. If you request an expiry time of more
-   * than one hour, the request will fail. (serviceAccounts.signJwt)
+   * @param string $name Required. Deprecated. [Migrate to Service Account
+   * Credentials API](https://cloud.google.com/iam/help/credentials/migrate-api).
    *
-   * @param string $name Required. The resource name of the service account in the
-   * following format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using
-   * `-` as a wildcard for the `PROJECT_ID` will infer the project from the
-   * account. The `ACCOUNT` value can be the `email` address or the `unique_id` of
-   * the service account.
+   * The resource name of the service account in the following format:
+   * `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`. Using `-` as a wildcard
+   * for the `PROJECT_ID` will infer the project from the account. The `ACCOUNT`
+   * value can be the `email` address or the `unique_id` of the service account.
    * @param Google_Service_Iam_SignJwtRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Iam_SignJwtResponse
@@ -313,8 +327,8 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('signJwt', array($params), "Google_Service_Iam_SignJwtResponse");
   }
   /**
-   * Tests the specified permissions against the IAM access control policy for a
-   * ServiceAccount. (serviceAccounts.testIamPermissions)
+   * Tests whether the caller has the specified permissions on a ServiceAccount.
+   * (serviceAccounts.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value
@@ -330,9 +344,14 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('testIamPermissions', array($params), "Google_Service_Iam_TestIamPermissionsResponse");
   }
   /**
-   * Restores a deleted ServiceAccount. This is to be used as an action of last
-   * resort.  A service account may not always be restorable.
-   * (serviceAccounts.undelete)
+   * Restores a deleted ServiceAccount.
+   *
+   * **Important:** It is not always possible to restore a deleted service
+   * account. Use this method only as a last resort.
+   *
+   * After you delete a service account, IAM permanently removes the service
+   * account 30 days later. There is no way to restore a deleted service account
+   * that has been permanently removed. (serviceAccounts.undelete)
    *
    * @param string $name The resource name of the service account in the following
    * format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_UNIQUE_ID}`. Using
@@ -349,23 +368,32 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
     return $this->call('undelete', array($params), "Google_Service_Iam_UndeleteServiceAccountResponse");
   }
   /**
-   * Note: This method is in the process of being deprecated. Use
+   * **Note:** We are in the process of deprecating this method. Use
    * PatchServiceAccount instead.
    *
    * Updates a ServiceAccount.
    *
-   * Currently, only the following fields are updatable: `display_name` and
-   * `description`. (serviceAccounts.update)
+   * You can update only the `display_name` and `description` fields.
+   * (serviceAccounts.update)
    *
-   * @param string $name The resource name of the service account in the following
-   * format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+   * @param string $name The resource name of the service account.
    *
-   * Requests using `-` as a wildcard for the `PROJECT_ID` will infer the project
-   * from the `account` and the `ACCOUNT` value can be the `email` address or the
-   * `unique_id` of the service account.
+   * Use one of the following formats:
    *
-   * In responses the resource name will always be in the format
-   * `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+   * * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` *
+   * `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}`
+   *
+   * As an alternative, you can use the `-` wildcard character instead of the
+   * project ID:
+   *
+   * * `projects/-/serviceAccounts/{EMAIL_ADDRESS}` *
+   * `projects/-/serviceAccounts/{UNIQUE_ID}`
+   *
+   * When possible, avoid using the `-` wildcard character, because it can cause
+   * response messages to contain misleading error codes. For example, if you try
+   * to get the service account `projects/-/serviceAccounts/fake@example.com`,
+   * which does not exist, the response contains an HTTP `403 Forbidden` error
+   * instead of a `404 Not Found` error.
    * @param Google_Service_Iam_ServiceAccount $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Iam_ServiceAccount

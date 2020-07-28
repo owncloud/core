@@ -15,11 +15,21 @@
  * the License.
  */
 
-class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1beta1AllUpdatesRule extends Google_Model
+class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1beta1AllUpdatesRule extends Google_Collection
 {
+  protected $collection_key = 'monitoringNotificationChannels';
+  public $monitoringNotificationChannels;
   public $pubsubTopic;
   public $schemaVersion;
 
+  public function setMonitoringNotificationChannels($monitoringNotificationChannels)
+  {
+    $this->monitoringNotificationChannels = $monitoringNotificationChannels;
+  }
+  public function getMonitoringNotificationChannels()
+  {
+    return $this->monitoringNotificationChannels;
+  }
   public function setPubsubTopic($pubsubTopic)
   {
     $this->pubsubTopic = $pubsubTopic;

@@ -33,7 +33,7 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
    * completion, so there is no need to call `DeleteOperation`. (webApps.create)
    *
    * @param string $parent The parent Project in which to create an App, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param Google_Service_FirebaseManagement_WebApp $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -48,9 +48,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
    * Gets the WebApp identified by the specified resource name. (webApps.get)
    *
    * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/projectId/webApps/appId As an appId is a unique identifier,
-   * the Unique Resource from Sub-Collection access pattern may be used here, in
-   * the format: projects/-/webApps/appId
+   * format: projects/PROJECT_NUMBER/webApps/APP_ID As an APP_ID is a unique
+   * identifier, the Unique Resource from Sub-Collection access pattern may be
+   * used here, in the format: projects/-/webApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_WebApp
    */
@@ -65,9 +65,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
    * (webApps.getConfig)
    *
    * @param string $name The resource name of the App configuration to download,
-   * in the format: projects/projectId/webApps/appId/config As an appId is a
-   * unique identifier, the Unique Resource from Sub-Collection access pattern may
-   * be used here, in the format: projects/-/webApps/appId
+   * in the format: projects/PROJECT_NUMBER/webApps/APP_ID/config As an APP_ID is
+   * a unique identifier, the Unique Resource from Sub-Collection access pattern
+   * may be used here, in the format: projects/-/webApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_WebAppConfig
    */
@@ -85,16 +85,16 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
    * (webApps.listProjectsWebApps)
    *
    * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/projectId
+   * format: projects/PROJECT_NUMBER
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListWebApps` indicating where in the set of Apps to resume listing.
    * @opt_param int pageSize The maximum number of Apps to return in the response.
    *
    * The server may return fewer than this value at its discretion. If no value is
    * specified (or too large a value is specified), then the server will impose
    * its own limit.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListWebApps` indicating where in the set of Apps to resume listing.
    * @return Google_Service_FirebaseManagement_ListWebAppsResponse
    */
   public function listProjectsWebApps($parent, $optParams = array())

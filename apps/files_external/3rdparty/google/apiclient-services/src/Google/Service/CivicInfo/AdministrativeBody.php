@@ -22,7 +22,6 @@ class Google_Service_CivicInfo_AdministrativeBody extends Google_Collection
         "voterServices" => "voter_services",
   );
   public $absenteeVotingInfoUrl;
-  public $addressLines;
   public $ballotInfoUrl;
   protected $correspondenceAddressType = 'Google_Service_CivicInfo_SimpleAddressType';
   protected $correspondenceAddressDataType = '';
@@ -46,14 +45,6 @@ class Google_Service_CivicInfo_AdministrativeBody extends Google_Collection
   public function getAbsenteeVotingInfoUrl()
   {
     return $this->absenteeVotingInfoUrl;
-  }
-  public function setAddressLines($addressLines)
-  {
-    $this->addressLines = $addressLines;
-  }
-  public function getAddressLines()
-  {
-    return $this->addressLines;
   }
   public function setBallotInfoUrl($ballotInfoUrl)
   {

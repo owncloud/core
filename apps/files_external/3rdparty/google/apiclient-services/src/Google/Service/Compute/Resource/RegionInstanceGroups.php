@@ -97,8 +97,8 @@ class Google_Service_Compute_Resource_RegionInstanceGroups extends Google_Servic
   /**
    * Lists the instances in the specified instance group and displays information
    * about the named ports. Depending on the specified options, this method can
-   * list all instances or only the instances that are running.
-   * (regionInstanceGroups.listInstances)
+   * list all instances or only the instances that are running. The orderBy query
+   * parameter is not supported. (regionInstanceGroups.listInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

@@ -54,16 +54,16 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * https://cloud.google.com/about/locations/
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Filter expression to restrict the recommendations
-   * returned. Supported filter fields: state_info.state Eg:
-   * `state_info.state:"DISMISSED" or state_info.state:"FAILED"
+   * @opt_param int pageSize Optional. The maximum number of results to return
+   * from this request.  Non-positive values are ignored. If not specified, the
+   * server will determine the number of results to return.
    * @opt_param string pageToken Optional. If present, retrieves the next batch of
    * results from the preceding call to this method. `page_token` must be the
    * value of `next_page_token` from the previous response. The values of other
    * method parameters must be identical to those in the previous call.
-   * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request.  Non-positive values are ignored. If not specified, the
-   * server will determine the number of results to return.
+   * @opt_param string filter Filter expression to restrict the recommendations
+   * returned. Supported filter fields: state_info.state Eg:
+   * `state_info.state:"DISMISSED" or state_info.state:"FAILED"
    * @return Google_Service_Recommender_GoogleCloudRecommenderV1ListRecommendationsResponse
    */
   public function listProjectsLocationsRecommendersRecommendations($parent, $optParams = array())

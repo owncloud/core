@@ -76,7 +76,8 @@ class Google_Service_ShoppingContent_Resource_Accounttax extends Google_Service_
     return $this->call('list', array($params), "Google_Service_ShoppingContent_AccounttaxListResponse");
   }
   /**
-   * Updates the tax settings of the account. (accounttax.update)
+   * Updates the tax settings of the account. Any fields that are not provided are
+   * deleted from the resource. (accounttax.update)
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client

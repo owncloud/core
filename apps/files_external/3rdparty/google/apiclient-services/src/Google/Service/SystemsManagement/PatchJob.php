@@ -32,6 +32,8 @@ class Google_Service_SystemsManagement_PatchJob extends Google_Model
   protected $patchConfigDataType = '';
   public $patchDeployment;
   public $percentComplete;
+  protected $rolloutType = 'Google_Service_SystemsManagement_PatchRollout';
+  protected $rolloutDataType = '';
   public $state;
   public $updateTime;
 
@@ -148,6 +150,20 @@ class Google_Service_SystemsManagement_PatchJob extends Google_Model
   public function getPercentComplete()
   {
     return $this->percentComplete;
+  }
+  /**
+   * @param Google_Service_SystemsManagement_PatchRollout
+   */
+  public function setRollout(Google_Service_SystemsManagement_PatchRollout $rollout)
+  {
+    $this->rollout = $rollout;
+  }
+  /**
+   * @return Google_Service_SystemsManagement_PatchRollout
+   */
+  public function getRollout()
+  {
+    return $this->rollout;
   }
   public function setState($state)
   {

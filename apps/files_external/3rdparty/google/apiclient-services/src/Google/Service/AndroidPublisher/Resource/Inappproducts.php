@@ -26,10 +26,10 @@
 class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Service_Resource
 {
   /**
-   * Delete an in-app product for an app. (inappproducts.delete)
+   * Deletes an in-app product (i.e. a managed product or a subscriptions).
+   * (inappproducts.delete)
    *
-   * @param string $packageName Unique identifier for the Android app with the in-
-   * app product; for example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param string $sku Unique identifier for the in-app product.
    * @param array $optParams Optional parameters.
    */
@@ -40,9 +40,10 @@ class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Serv
     return $this->call('delete', array($params));
   }
   /**
-   * Returns information about the in-app product specified. (inappproducts.get)
+   * Gets an in-app product, which can be a managed product or a subscription.
+   * (inappproducts.get)
    *
-   * @param string $packageName
+   * @param string $packageName Package name of the app.
    * @param string $sku Unique identifier for the in-app product.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_InAppProduct
@@ -54,10 +55,10 @@ class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Serv
     return $this->call('get', array($params), "Google_Service_AndroidPublisher_InAppProduct");
   }
   /**
-   * Creates a new in-app product for an app. (inappproducts.insert)
+   * Creates an in-app product (i.e. a managed product or a subscriptions).
+   * (inappproducts.insert)
    *
-   * @param string $packageName Unique identifier for the Android app; for
-   * example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param Google_Service_AndroidPublisher_InAppProduct $postBody
    * @param array $optParams Optional parameters.
    *
@@ -74,16 +75,17 @@ class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Serv
     return $this->call('insert', array($params), "Google_Service_AndroidPublisher_InAppProduct");
   }
   /**
-   * List all the in-app products for an Android app, both subscriptions and
-   * managed in-app products.. (inappproducts.listInappproducts)
+   * Lists all in-app products - both managed products and subscriptions.
+   * (inappproducts.listInappproducts)
    *
-   * @param string $packageName Unique identifier for the Android app with in-app
-   * products; for example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string maxResults
-   * @opt_param string startIndex
-   * @opt_param string token
+   * @opt_param string token Pagination token. If empty, list starts at the first
+   * product.
+   * @opt_param string startIndex The index of the first element to return.
+   * @opt_param string maxResults How many results the list operation should
+   * return.
    * @return Google_Service_AndroidPublisher_InappproductsListResponse
    */
   public function listInappproducts($packageName, $optParams = array())
@@ -93,11 +95,10 @@ class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Serv
     return $this->call('list', array($params), "Google_Service_AndroidPublisher_InappproductsListResponse");
   }
   /**
-   * Updates the details of an in-app product. This method supports patch
-   * semantics. (inappproducts.patch)
+   * Patches an in-app product (i.e. a managed product or a subscriptions).
+   * (inappproducts.patch)
    *
-   * @param string $packageName Unique identifier for the Android app with the in-
-   * app product; for example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param string $sku Unique identifier for the in-app product.
    * @param Google_Service_AndroidPublisher_InAppProduct $postBody
    * @param array $optParams Optional parameters.
@@ -115,10 +116,10 @@ class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Serv
     return $this->call('patch', array($params), "Google_Service_AndroidPublisher_InAppProduct");
   }
   /**
-   * Updates the details of an in-app product. (inappproducts.update)
+   * Updates an in-app product (i.e. a managed product or a subscriptions).
+   * (inappproducts.update)
    *
-   * @param string $packageName Unique identifier for the Android app with the in-
-   * app product; for example, "com.spiffygame".
+   * @param string $packageName Package name of the app.
    * @param string $sku Unique identifier for the in-app product.
    * @param Google_Service_AndroidPublisher_InAppProduct $postBody
    * @param array $optParams Optional parameters.

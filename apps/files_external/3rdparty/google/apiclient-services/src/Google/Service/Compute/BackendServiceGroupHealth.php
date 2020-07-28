@@ -18,10 +18,19 @@
 class Google_Service_Compute_BackendServiceGroupHealth extends Google_Collection
 {
   protected $collection_key = 'healthStatus';
+  public $annotations;
   protected $healthStatusType = 'Google_Service_Compute_HealthStatus';
   protected $healthStatusDataType = 'array';
   public $kind;
 
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  public function getAnnotations()
+  {
+    return $this->annotations;
+  }
   /**
    * @param Google_Service_Compute_HealthStatus
    */

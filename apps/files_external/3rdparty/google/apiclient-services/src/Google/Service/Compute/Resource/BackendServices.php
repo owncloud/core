@@ -210,9 +210,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Creates a BackendService resource in the specified project using the data
-   * included in the request. There are several restrictions and guidelines to
-   * keep in mind when creating a backend service. Read  Understanding backend
-   * services for more information. (backendServices.insert)
+   * included in the request. For more information, see  Backend services
+   * overview. (backendServices.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_BackendService $postBody
@@ -293,10 +292,9 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Patches the specified BackendService resource with the data included in the
-   * request. There are several Understanding backend services to keep in mind
-   * when updating a backend service. Read  Understanding backend services for
-   * more information. This method supports PATCH semantics and uses the JSON
-   * merge patch format and processing rules. (backendServices.patch)
+   * request. For more information, see  Backend services overview. This method
+   * supports PATCH semantics and uses the JSON merge patch format and processing
+   * rules. (backendServices.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to patch.
@@ -355,9 +353,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Updates the specified BackendService resource with the data included in the
-   * request. There are several Understanding backend services to keep in mind
-   * when updating a backend service. Read  Understanding backend services for
-   * more information. (backendServices.update)
+   * request. For more information, see Backend services overview.
+   * (backendServices.update)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to update.

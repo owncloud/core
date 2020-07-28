@@ -39,6 +39,8 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public $firmwareVersion;
   public $kind;
   public $lastEnrollmentTime;
+  protected $lastKnownNetworkType = 'Google_Service_Directory_ChromeOsDeviceLastKnownNetwork';
+  protected $lastKnownNetworkDataType = 'array';
   public $lastSync;
   public $macAddress;
   public $manufactureDate;
@@ -220,6 +222,20 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public function getLastEnrollmentTime()
   {
     return $this->lastEnrollmentTime;
+  }
+  /**
+   * @param Google_Service_Directory_ChromeOsDeviceLastKnownNetwork
+   */
+  public function setLastKnownNetwork($lastKnownNetwork)
+  {
+    $this->lastKnownNetwork = $lastKnownNetwork;
+  }
+  /**
+   * @return Google_Service_Directory_ChromeOsDeviceLastKnownNetwork
+   */
+  public function getLastKnownNetwork()
+  {
+    return $this->lastKnownNetwork;
   }
   public function setLastSync($lastSync)
   {

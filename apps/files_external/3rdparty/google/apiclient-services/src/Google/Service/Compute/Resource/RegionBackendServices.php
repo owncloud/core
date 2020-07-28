@@ -90,9 +90,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
   }
   /**
    * Creates a regional BackendService resource in the specified project using the
-   * data included in the request. There are several restrictions and guidelines
-   * to keep in mind when creating a regional backend service. Read  Understanding
-   * backend services for more information. (regionBackendServices.insert)
+   * data included in the request. For more information, see  Backend services
+   * overview. (regionBackendServices.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -176,10 +175,9 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
   }
   /**
    * Updates the specified regional BackendService resource with the data included
-   * in the request. There are several Understanding backend services to keep in
-   * mind when updating a backend service. Read  Understanding backend services
-   * for more information. This method supports PATCH semantics and uses the JSON
-   * merge patch format and processing rules. (regionBackendServices.patch)
+   * in the request. For more information, see  Understanding backend services
+   * This method supports PATCH semantics and uses the JSON merge patch format and
+   * processing rules. (regionBackendServices.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -209,9 +207,8 @@ class Google_Service_Compute_Resource_RegionBackendServices extends Google_Servi
   }
   /**
    * Updates the specified regional BackendService resource with the data included
-   * in the request. There are several Understanding backend services to keep in
-   * mind when updating a backend service. Read  Understanding backend services
-   * for more information. (regionBackendServices.update)
+   * in the request. For more information, see  Backend services overview.
+   * (regionBackendServices.update)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

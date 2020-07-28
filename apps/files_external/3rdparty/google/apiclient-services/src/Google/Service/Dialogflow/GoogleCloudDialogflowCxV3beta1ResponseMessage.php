@@ -19,9 +19,19 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage ex
 {
   protected $conversationSuccessType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageConversationSuccess';
   protected $conversationSuccessDataType = '';
+  protected $endInteractionType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageEndInteraction';
+  protected $endInteractionDataType = '';
   protected $humanAgentHandoffType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff';
   protected $humanAgentHandoffDataType = '';
+  protected $liveAgentHandoffType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageLiveAgentHandoff';
+  protected $liveAgentHandoffDataType = '';
+  protected $mixedAudioType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudio';
+  protected $mixedAudioDataType = '';
+  protected $outputAudioTextType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageOutputAudioText';
+  protected $outputAudioTextDataType = '';
   public $payload;
+  protected $playAudioType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessagePlayAudio';
+  protected $playAudioDataType = '';
   protected $textType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageText';
   protected $textDataType = '';
 
@@ -40,6 +50,20 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage ex
     return $this->conversationSuccess;
   }
   /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageEndInteraction
+   */
+  public function setEndInteraction(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageEndInteraction $endInteraction)
+  {
+    $this->endInteraction = $endInteraction;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageEndInteraction
+   */
+  public function getEndInteraction()
+  {
+    return $this->endInteraction;
+  }
+  /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff
    */
   public function setHumanAgentHandoff(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff $humanAgentHandoff)
@@ -53,6 +77,48 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage ex
   {
     return $this->humanAgentHandoff;
   }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageLiveAgentHandoff
+   */
+  public function setLiveAgentHandoff(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageLiveAgentHandoff $liveAgentHandoff)
+  {
+    $this->liveAgentHandoff = $liveAgentHandoff;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageLiveAgentHandoff
+   */
+  public function getLiveAgentHandoff()
+  {
+    return $this->liveAgentHandoff;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudio
+   */
+  public function setMixedAudio(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudio $mixedAudio)
+  {
+    $this->mixedAudio = $mixedAudio;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudio
+   */
+  public function getMixedAudio()
+  {
+    return $this->mixedAudio;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageOutputAudioText
+   */
+  public function setOutputAudioText(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageOutputAudioText $outputAudioText)
+  {
+    $this->outputAudioText = $outputAudioText;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageOutputAudioText
+   */
+  public function getOutputAudioText()
+  {
+    return $this->outputAudioText;
+  }
   public function setPayload($payload)
   {
     $this->payload = $payload;
@@ -60,6 +126,20 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage ex
   public function getPayload()
   {
     return $this->payload;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessagePlayAudio
+   */
+  public function setPlayAudio(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessagePlayAudio $playAudio)
+  {
+    $this->playAudio = $playAudio;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessagePlayAudio
+   */
+  public function getPlayAudio()
+  {
+    return $this->playAudio;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageText

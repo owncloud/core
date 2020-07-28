@@ -40,9 +40,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string type Required. Resource file type. {{ resource_file_type }}
    * @opt_param string name Required. Name of the resource file.  Must match the
    * regular expression: [a-zA-Z0-9:/\\!@#$%^&{}\[\]()+\-=,.~'` ]{1,255}
+   * @opt_param string type Required. Resource file type. {{ resource_file_type }}
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile
    */
   public function create($parent, Google_Service_Apigee_GoogleApiHttpBody $postBody, $optParams = array())

@@ -26,7 +26,7 @@
 class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
 {
   /**
-   * Creates a new Role. (roles.create)
+   * Creates a new custom Role. (roles.create)
    *
    * @param string $parent The `parent` parameter's value depends on the target
    * resource for the request, namely
@@ -58,12 +58,20 @@ class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
     return $this->call('create', array($params), "Google_Service_Iam_Role");
   }
   /**
-   * Soft deletes a role. The role is suspended and cannot be used to create new
-   * IAM Policy Bindings. The Role will not be included in `ListRoles()` unless
-   * `show_deleted` is set in the `ListRolesRequest`. The Role contains the
-   * deleted boolean set. Existing Bindings remains, but are inactive. The Role
-   * can be undeleted within 7 days. After 7 days the Role is deleted and all
-   * Bindings associated with the role are removed. (roles.delete)
+   * Deletes a custom Role.
+   *
+   * When you delete a custom role, the following changes occur immediately:
+   *
+   * * You cannot bind a member to the custom role in an IAM Policy. * Existing
+   * bindings to the custom role are not changed, but they have no effect. * By
+   * default, the response from ListRoles does not include the custom role.
+   *
+   * You have 7 days to undelete the custom role. After 7 days, the following
+   * changes occur:
+   *
+   * * The custom role is permanently deleted and cannot be recovered. * If an IAM
+   * policy contains a binding to the custom role, the binding is permanently
+   * removed. (roles.delete)
    *
    * @param string $name The `name` parameter's value depends on the target
    * resource for the request, namely
@@ -98,7 +106,7 @@ class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
     return $this->call('delete', array($params), "Google_Service_Iam_Role");
   }
   /**
-   * Gets a Role definition. (roles.get)
+   * Gets the definition of a Role. (roles.get)
    *
    * @param string $name The `name` parameter's value depends on the target
    * resource for the request, namely [`roles`](/iam/reference/rest/v1/roles),
@@ -135,7 +143,8 @@ class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Iam_Role");
   }
   /**
-   * Lists the Roles defined on a resource. (roles.listProjectsRoles)
+   * Lists every predefined Role that IAM supports, or every custom role that is
+   * defined for an organization or project. (roles.listProjectsRoles)
    *
    * @param string $parent The `parent` parameter's value depends on the target
    * resource for the request, namely [`roles`](/iam/reference/rest/v1/roles),
@@ -163,15 +172,17 @@ class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
    * or organization ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool showDeleted Include Roles that have been deleted.
    * @opt_param string pageToken Optional pagination token returned in an earlier
    * ListRolesResponse.
    * @opt_param int pageSize Optional limit on the number of roles to include in
    * the response.
+   *
+   * The default is 300, and the maximum is 1,000.
    * @opt_param string view Optional view for the returned Role objects. When
    * `FULL` is specified, the `includedPermissions` field is returned, which
    * includes a list of all permissions in the role. The default value is `BASIC`,
    * which does not return the `includedPermissions` field.
+   * @opt_param bool showDeleted Include Roles that have been deleted.
    * @return Google_Service_Iam_ListRolesResponse
    */
   public function listProjectsRoles($parent, $optParams = array())
@@ -181,7 +192,7 @@ class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Iam_ListRolesResponse");
   }
   /**
-   * Updates a Role definition. (roles.patch)
+   * Updates the definition of a custom Role. (roles.patch)
    *
    * @param string $name The `name` parameter's value depends on the target
    * resource for the request, namely
@@ -218,7 +229,7 @@ class Google_Service_Iam_Resource_ProjectsRoles extends Google_Service_Resource
     return $this->call('patch', array($params), "Google_Service_Iam_Role");
   }
   /**
-   * Undelete a Role, bringing it back in its previous state. (roles.undelete)
+   * Undeletes a custom Role. (roles.undelete)
    *
    * @param string $name The `name` parameter's value depends on the target
    * resource for the request, namely

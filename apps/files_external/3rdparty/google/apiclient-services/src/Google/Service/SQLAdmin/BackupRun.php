@@ -17,6 +17,7 @@
 
 class Google_Service_SQLAdmin_BackupRun extends Google_Model
 {
+  public $backupKind;
   public $description;
   protected $diskEncryptionConfigurationType = 'Google_Service_SQLAdmin_DiskEncryptionConfiguration';
   protected $diskEncryptionConfigurationDataType = '';
@@ -36,6 +37,14 @@ class Google_Service_SQLAdmin_BackupRun extends Google_Model
   public $type;
   public $windowStartTime;
 
+  public function setBackupKind($backupKind)
+  {
+    $this->backupKind = $backupKind;
+  }
+  public function getBackupKind()
+  {
+    return $this->backupKind;
+  }
   public function setDescription($description)
   {
     $this->description = $description;

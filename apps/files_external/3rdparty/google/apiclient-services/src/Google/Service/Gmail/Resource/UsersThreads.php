@@ -27,9 +27,9 @@ class Google_Service_Gmail_Resource_UsersThreads extends Google_Service_Resource
 {
   /**
    * Immediately and permanently deletes the specified thread. This operation
-   * cannot be undone. Prefer threads.trash instead. (threads.delete)
+   * cannot be undone. Prefer `threads.trash` instead. (threads.delete)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id ID of the Thread to delete.
    * @param array $optParams Optional parameters.
@@ -43,7 +43,7 @@ class Google_Service_Gmail_Resource_UsersThreads extends Google_Service_Resource
   /**
    * Gets the specified thread. (threads.get)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the thread to retrieve.
    * @param array $optParams Optional parameters.
@@ -62,21 +62,21 @@ class Google_Service_Gmail_Resource_UsersThreads extends Google_Service_Resource
   /**
    * Lists the threads in the user's mailbox. (threads.listUsersThreads)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeSpamTrash Include threads from SPAM and TRASH in the
-   * results.
-   * @opt_param string labelIds Only return threads with labels that match all of
-   * the specified label IDs.
    * @opt_param string maxResults Maximum number of threads to return.
-   * @opt_param string pageToken Page token to retrieve a specific page of results
-   * in the list.
+   * @opt_param bool includeSpamTrash Include threads from `SPAM` and `TRASH` in
+   * the results.
    * @opt_param string q Only return threads matching the specified query.
    * Supports the same query format as the Gmail search box. For example,
-   * "from:someuser@example.com rfc822msgid: is:unread". Parameter cannot be used
-   * when accessing the api using the gmail.metadata scope.
+   * `"from:someuser@example.com rfc822msgid: is:unread"`. Parameter cannot be
+   * used when accessing the api using the gmail.metadata scope.
+   * @opt_param string pageToken Page token to retrieve a specific page of results
+   * in the list.
+   * @opt_param string labelIds Only return threads with labels that match all of
+   * the specified label IDs.
    * @return Google_Service_Gmail_ListThreadsResponse
    */
   public function listUsersThreads($userId, $optParams = array())
@@ -89,7 +89,7 @@ class Google_Service_Gmail_Resource_UsersThreads extends Google_Service_Resource
    * Modifies the labels applied to the thread. This applies to all messages in
    * the thread. (threads.modify)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the thread to modify.
    * @param Google_Service_Gmail_ModifyThreadRequest $postBody
@@ -105,7 +105,7 @@ class Google_Service_Gmail_Resource_UsersThreads extends Google_Service_Resource
   /**
    * Moves the specified thread to the trash. (threads.trash)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the thread to Trash.
    * @param array $optParams Optional parameters.
@@ -120,7 +120,7 @@ class Google_Service_Gmail_Resource_UsersThreads extends Google_Service_Resource
   /**
    * Removes the specified thread from the trash. (threads.untrash)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $id The ID of the thread to remove from Trash.
    * @param array $optParams Optional parameters.

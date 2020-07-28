@@ -19,9 +19,8 @@
  * Service definition for Webfonts (v1).
  *
  * <p>
- * Accesses the metadata for all families served by Google Fonts, providing a
- * list of families currently available (including available styles and a list
- * of supported script subsets).</p>
+ * The Google Web Fonts Developer API lets you retrieve information about web
+ * fonts served     by Google.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -45,9 +44,9 @@ class Google_Service_Webfonts extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
-    $this->servicePath = 'webfonts/v1/';
-    $this->batchPath = 'batch/webfonts/v1';
+    $this->rootUrl = $rootUrl ?: 'https://webfonts.googleapis.com/';
+    $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'webfonts';
 
@@ -58,7 +57,7 @@ class Google_Service_Webfonts extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'webfonts',
+              'path' => 'v1/webfonts',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'sort' => array(

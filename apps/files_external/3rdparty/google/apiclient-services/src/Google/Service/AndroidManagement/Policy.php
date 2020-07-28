@@ -85,6 +85,8 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   protected $permittedInputMethodsDataType = '';
   protected $persistentPreferredActivitiesType = 'Google_Service_AndroidManagement_PersistentPreferredActivity';
   protected $persistentPreferredActivitiesDataType = 'array';
+  protected $personalUsagePoliciesType = 'Google_Service_AndroidManagement_PersonalUsagePolicies';
+  protected $personalUsagePoliciesDataType = '';
   public $playStoreMode;
   protected $policyEnforcementRulesType = 'Google_Service_AndroidManagement_PolicyEnforcementRule';
   protected $policyEnforcementRulesDataType = 'array';
@@ -626,6 +628,20 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   public function getPersistentPreferredActivities()
   {
     return $this->persistentPreferredActivities;
+  }
+  /**
+   * @param Google_Service_AndroidManagement_PersonalUsagePolicies
+   */
+  public function setPersonalUsagePolicies(Google_Service_AndroidManagement_PersonalUsagePolicies $personalUsagePolicies)
+  {
+    $this->personalUsagePolicies = $personalUsagePolicies;
+  }
+  /**
+   * @return Google_Service_AndroidManagement_PersonalUsagePolicies
+   */
+  public function getPersonalUsagePolicies()
+  {
+    return $this->personalUsagePolicies;
   }
   public function setPlayStoreMode($playStoreMode)
   {

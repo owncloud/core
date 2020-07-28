@@ -31,6 +31,17 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    *
    * @param Google_Service_PeopleService_Person $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string sources Optional. A mask of what source types to return.
+   * Defaults to ReadSourceType.CONTACT and ReadSourceType.PROFILE if not set.
+   * @opt_param string personFields Required. A field mask to restrict which
+   * fields on each person are returned. Multiple fields can be specified by
+   * separating them with commas. Defaults to all fields if not set. Valid values
+   * are: * addresses * ageRanges * biographies * birthdays * coverPhotos *
+   * emailAddresses * events * genders * imClients * interests * locales *
+   * memberships * metadata * names * nicknames * occupations * organizations *
+   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
+   * * userDefined
    * @return Google_Service_PeopleService_Person
    */
   public function createContact(Google_Service_PeopleService_Person $postBody, $optParams = array())
@@ -64,13 +75,13 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * @opt_param string personFields Optional. A field mask to restrict which
    * fields on the person are returned. Multiple fields can be specified by
    * separating them with commas. Defaults to empty if not set, which will skip
-   * the post mutate get. Valid values are:
-   *
-   * * addresses * ageRanges * biographies * birthdays * coverPhotos *
-   * emailAddresses * events * genders * imClients * interests * locales *
-   * memberships * metadata * names * nicknames * occupations * organizations *
-   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
-   * * userDefined
+   * the post mutate get. Valid values are: * addresses * ageRanges * biographies
+   * * birthdays * coverPhotos * emailAddresses * events * genders * imClients *
+   * interests * locales * memberships * metadata * names * nicknames *
+   * occupations * organizations * phoneNumbers * photos * relations * residences
+   * * sipAddresses * skills * urls * userDefined
+   * @opt_param string sources Optional. A mask of what source types to return.
+   * Defaults to ReadSourceType.CONTACT and ReadSourceType.PROFILE if not set.
    * @return Google_Service_PeopleService_DeleteContactPhotoResponse
    */
   public function deleteContactPhoto($resourceName, $optParams = array())
@@ -81,33 +92,29 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
   }
   /**
    * Provides information about a person by specifying a resource name. Use
-   * `people/me` to indicate the authenticated user.
-   *
-   * The request throws a 400 error if 'personFields' is not specified.
-   * (people.get)
+   * `people/me` to indicate the authenticated user. The request throws a 400
+   * error if 'personFields' is not specified. (people.get)
    *
    * @param string $resourceName Required. The resource name of the person to
-   * provide information about.
-   *
-   * - To get information about the authenticated user, specify `people/me`. - To
-   * get information about a google account, specify  `people/{account_id}`. - To
-   * get information about a contact, specify the resource name that   identifies
-   * the contact as returned by
+   * provide information about. - To get information about the authenticated user,
+   * specify `people/me`. - To get information about a google account, specify
+   * `people/{account_id}`. - To get information about a contact, specify the
+   * resource name that identifies the contact as returned by
    * [`people.connections.list`](/people/api/rest/v1/people.connections/list).
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string personFields Required. A field mask to restrict which
-   * fields on the person are returned. Multiple fields can be specified by
-   * separating them with commas. Valid values are:
-   *
-   * * addresses * ageRanges * biographies * birthdays * coverPhotos *
-   * emailAddresses * events * genders * imClients * interests * locales *
-   * memberships * metadata * names * nicknames * occupations * organizations *
-   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
-   * * userDefined
+   * @opt_param string sources Optional. A mask of what source types to return.
+   * Defaults to ReadSourceType.PROFILE and ReadSourceType.CONTACT if not set.
    * @opt_param string requestMask.includeField Required. Comma-separated list of
    * person fields to be included in the response. Each path should start with
    * `person.`: for example, `person.names` or `person.photos`.
+   * @opt_param string personFields Required. A field mask to restrict which
+   * fields on the person are returned. Multiple fields can be specified by
+   * separating them with commas. Valid values are: * addresses * ageRanges *
+   * biographies * birthdays * coverPhotos * emailAddresses * events * genders *
+   * imClients * interests * locales * memberships * metadata * names * nicknames
+   * * occupations * organizations * phoneNumbers * photos * relations *
+   * residences * sipAddresses * skills * urls * userDefined
    * @return Google_Service_PeopleService_Person
    */
   public function get($resourceName, $optParams = array())
@@ -119,7 +126,6 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
   /**
    * Provides information about a list of specific people by specifying a list of
    * requested resource names. Use `people/me` to indicate the authenticated user.
-   *
    * The request throws a 400 error if 'personFields' is not specified.
    * (people.getBatchGet)
    *
@@ -127,23 +133,20 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    *
    * @opt_param string personFields Required. A field mask to restrict which
    * fields on each person are returned. Multiple fields can be specified by
-   * separating them with commas. Valid values are:
-   *
-   * * addresses * ageRanges * biographies * birthdays * coverPhotos *
-   * emailAddresses * events * genders * imClients * interests * locales *
-   * memberships * metadata * names * nicknames * occupations * organizations *
-   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
-   * * userDefined
+   * separating them with commas. Valid values are: * addresses * ageRanges *
+   * biographies * birthdays * coverPhotos * emailAddresses * events * genders *
+   * imClients * interests * locales * memberships * metadata * names * nicknames
+   * * occupations * organizations * phoneNumbers * photos * relations *
+   * residences * sipAddresses * skills * urls * userDefined
+   * @opt_param string sources Optional. A mask of what source types to return.
+   * Defaults to ReadSourceType.CONTACT and ReadSourceType.PROFILE if not set.
    * @opt_param string resourceNames Required. The resource names of the people to
-   * provide information about.
-   *
-   * - To get information about the authenticated user, specify `people/me`. - To
-   * get information about a google account, specify   `people/{account_id}`. - To
-   * get information about a contact, specify the resource name that   identifies
-   * the contact as returned by
-   * [`people.connections.list`](/people/api/rest/v1/people.connections/list).
-   *
-   * You can include up to 50 resource names in one request.
+   * provide information about. - To get information about the authenticated user,
+   * specify `people/me`. - To get information about a google account, specify
+   * `people/{account_id}`. - To get information about a contact, specify the
+   * resource name that identifies the contact as returned by
+   * [`people.connections.list`](/people/api/rest/v1/people.connections/list). You
+   * can include up to 50 resource names in one request.
    * @opt_param string requestMask.includeField Required. Comma-separated list of
    * person fields to be included in the response. Each path should start with
    * `person.`: for example, `person.names` or `person.photos`.
@@ -156,19 +159,90 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
     return $this->call('getBatchGet', array($params), "Google_Service_PeopleService_GetPeopleResponse");
   }
   /**
+   * Provides a list of domain profiles and domain contacts in the authenticated
+   * user's domain directory. (people.listDirectoryPeople)
+   *
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string syncToken Optional. A sync token, received from a previous
+   * `ListDirectoryPeople` call. Provide this to retrieve only the resources
+   * changed since the last request. When syncing, all other parameters provided
+   * to `ListDirectoryPeople` must match the call that provided the sync token.
+   * @opt_param int pageSize Optional. The number of people to include in the
+   * response. Valid values are between 1 and 1000, inclusive. Defaults to 100 if
+   * not set or set to 0.
+   * @opt_param bool requestSyncToken Optional. Whether the response should
+   * include `next_sync_token`, which can be used to get all changes since the
+   * last request. For subsequent sync requests use the `sync_token` param
+   * instead.
+   * @opt_param string readMask Required. A field mask to restrict which fields on
+   * each person are returned. Multiple fields can be specified by separating them
+   * with commas. Valid values are: * addresses * ageRanges * biographies *
+   * birthdays * coverPhotos * emailAddresses * events * genders * imClients *
+   * interests * locales * memberships * metadata * names * nicknames *
+   * occupations * organizations * phoneNumbers * photos * relations * residences
+   * * sipAddresses * skills * urls * userDefined
+   * @opt_param string mergeSources Optional. Additional data to merge into the
+   * directory sources if they are connected through verified join keys such as
+   * email addresses or phone numbers.
+   * @opt_param string sources Required. Directory sources to return.
+   * @opt_param string pageToken Optional. A page token, received from a previous
+   * `ListDirectoryPeople` call. Provide this to retrieve the subsequent page.
+   * When paginating, all other parameters provided to `ListDirectoryPeople` must
+   * match the call that provided the page token.
+   * @return Google_Service_PeopleService_ListDirectoryPeopleResponse
+   */
+  public function listDirectoryPeople($optParams = array())
+  {
+    $params = array();
+    $params = array_merge($params, $optParams);
+    return $this->call('listDirectoryPeople', array($params), "Google_Service_PeopleService_ListDirectoryPeopleResponse");
+  }
+  /**
+   * Provides a list of domain profiles and domain contacts in the authenticated
+   * user's domain directory that match the search query.
+   * (people.searchDirectoryPeople)
+   *
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string query Required. Prefix query that matches fields in the
+   * person. Does NOT use the read_mask for determining what fields to match.
+   * @opt_param int pageSize Optional. The number of people to include in the
+   * response. Valid values are between 1 and 500, inclusive. Defaults to 100 if
+   * not set or set to 0.
+   * @opt_param string sources Required. Directory sources to return.
+   * @opt_param string readMask Required. A field mask to restrict which fields on
+   * each person are returned. Multiple fields can be specified by separating them
+   * with commas. Valid values are: * addresses * ageRanges * biographies *
+   * birthdays * coverPhotos * emailAddresses * events * genders * imClients *
+   * interests * locales * memberships * metadata * names * nicknames *
+   * occupations * organizations * phoneNumbers * photos * relations * residences
+   * * sipAddresses * skills * urls * userDefined
+   * @opt_param string pageToken Optional. A page token, received from a previous
+   * `SearchDirectoryPeople` call. Provide this to retrieve the subsequent page.
+   * When paginating, all other parameters provided to `SearchDirectoryPeople`
+   * must match the call that provided the page token.
+   * @opt_param string mergeSources Optional. Additional data to merge into the
+   * directory sources if they are connected through verified join keys such as
+   * email addresses or phone numbers.
+   * @return Google_Service_PeopleService_SearchDirectoryPeopleResponse
+   */
+  public function searchDirectoryPeople($optParams = array())
+  {
+    $params = array();
+    $params = array_merge($params, $optParams);
+    return $this->call('searchDirectoryPeople', array($params), "Google_Service_PeopleService_SearchDirectoryPeopleResponse");
+  }
+  /**
    * Update contact data for an existing contact person. Any non-contact data will
-   * not be modified.
-   *
-   * The request throws a 400 error if `updatePersonFields` is not specified.
-   *
-   * The request throws a 400 error if `person.metadata.sources` is not specified
-   * for the contact to be updated.
-   *
-   * The request throws a 400 error with an error with reason
-   * `"failedPrecondition"` if `person.metadata.sources.etag` is different than
-   * the contact's etag, which indicates the contact has changed since its data
-   * was read. Clients should get the latest person and re-apply their updates to
-   * the latest person. (people.updateContact)
+   * not be modified. The request throws a 400 error if `updatePersonFields` is
+   * not specified. The request throws a 400 error if `person.metadata.sources` is
+   * not specified for the contact to be updated. The request throws a 400 error
+   * with an error with reason `"failedPrecondition"` if
+   * `person.metadata.sources.etag` is different than the contact's etag, which
+   * indicates the contact has changed since its data was read. Clients should get
+   * the latest person and re-apply their updates to the latest person.
+   * (people.updateContact)
    *
    * @param string $resourceName The resource name for the person, assigned by the
    * server. An ASCII string with a max length of 27 characters, in the form of
@@ -176,13 +250,21 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * @param Google_Service_PeopleService_Person $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string personFields Optional. A field mask to restrict which
+   * fields on each person are returned. Multiple fields can be specified by
+   * separating them with commas. Defaults to all fields if not set. Valid values
+   * are: * addresses * ageRanges * biographies * birthdays * coverPhotos *
+   * emailAddresses * events * genders * imClients * interests * locales *
+   * memberships * metadata * names * nicknames * occupations * organizations *
+   * phoneNumbers * photos * relations * residences * sipAddresses * skills * urls
+   * * userDefined
+   * @opt_param string sources Optional. A mask of what source types to return.
+   * Defaults to ReadSourceType.CONTACT and ReadSourceType.PROFILE if not set.
    * @opt_param string updatePersonFields Required. A field mask to restrict which
    * fields on the person are updated. Multiple fields can be specified by
    * separating them with commas. All updated fields will be replaced. Valid
-   * values are:
-   *
-   * * addresses * biographies * birthdays * emailAddresses * events * genders *
-   * imClients * interests * locales * memberships * names * nicknames *
+   * values are: * addresses * biographies * birthdays * emailAddresses * events *
+   * genders * imClients * interests * locales * memberships * names * nicknames *
    * occupations * organizations * phoneNumbers * relations * residences *
    * sipAddresses * urls * userDefined
    * @return Google_Service_PeopleService_Person

@@ -18,12 +18,28 @@
 class Google_Service_Container_ServerConfig extends Google_Collection
 {
   protected $collection_key = 'validNodeVersions';
+  protected $channelsType = 'Google_Service_Container_ReleaseChannelConfig';
+  protected $channelsDataType = 'array';
   public $defaultClusterVersion;
   public $defaultImageType;
   public $validImageTypes;
   public $validMasterVersions;
   public $validNodeVersions;
 
+  /**
+   * @param Google_Service_Container_ReleaseChannelConfig
+   */
+  public function setChannels($channels)
+  {
+    $this->channels = $channels;
+  }
+  /**
+   * @return Google_Service_Container_ReleaseChannelConfig
+   */
+  public function getChannels()
+  {
+    return $this->channels;
+  }
   public function setDefaultClusterVersion($defaultClusterVersion)
   {
     $this->defaultClusterVersion = $defaultClusterVersion;

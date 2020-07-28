@@ -31,12 +31,12 @@ class Google_Service_Books_Resource_VolumesRecommended extends Google_Service_Re
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string source String to identify the originator of this request.
    * @opt_param string maxAllowedMaturityRating The maximum allowed maturity
    * rating of returned recommendations. Books with a higher maturity rating are
    * filtered out.
    * @opt_param string locale ISO-639-1 language and ISO-3166-1 country code. Ex:
    * 'en_US'. Used for generating recommendations.
+   * @opt_param string source String to identify the originator of this request.
    * @return Google_Service_Books_Volumes
    */
   public function listVolumesRecommended($optParams = array())
@@ -50,11 +50,11 @@ class Google_Service_Books_Resource_VolumesRecommended extends Google_Service_Re
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string volumeId ID of the source volume.
    * @opt_param string rating Rating to be given to the volume.
+   * @opt_param string source String to identify the originator of this request.
+   * @opt_param string volumeId ID of the source volume.
    * @opt_param string locale ISO-639-1 language and ISO-3166-1 country code. Ex:
    * 'en_US'. Used for generating recommendations.
-   * @opt_param string source String to identify the originator of this request.
    * @return Google_Service_Books_BooksVolumesRecommendedRateResponse
    */
   public function rate($optParams = array())

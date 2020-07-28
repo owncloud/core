@@ -17,11 +17,86 @@
 
 class Google_Service_DisplayVideo_FirstAndThirdPartyAudience extends Google_Model
 {
+  public $activeDisplayAudienceSize;
+  public $audienceSource;
+  public $audienceType;
+  public $description;
+  public $displayAudienceSize;
+  public $displayDesktopAudienceSize;
+  public $displayMobileAppAudienceSize;
+  public $displayMobileWebAudienceSize;
   public $displayName;
   public $firstAndThirdPartyAudienceId;
   public $firstAndThirdPartyAudienceType;
+  public $gmailAudienceSize;
+  public $membershipDurationDays;
   public $name;
+  public $youtubeAudienceSize;
 
+  public function setActiveDisplayAudienceSize($activeDisplayAudienceSize)
+  {
+    $this->activeDisplayAudienceSize = $activeDisplayAudienceSize;
+  }
+  public function getActiveDisplayAudienceSize()
+  {
+    return $this->activeDisplayAudienceSize;
+  }
+  public function setAudienceSource($audienceSource)
+  {
+    $this->audienceSource = $audienceSource;
+  }
+  public function getAudienceSource()
+  {
+    return $this->audienceSource;
+  }
+  public function setAudienceType($audienceType)
+  {
+    $this->audienceType = $audienceType;
+  }
+  public function getAudienceType()
+  {
+    return $this->audienceType;
+  }
+  public function setDescription($description)
+  {
+    $this->description = $description;
+  }
+  public function getDescription()
+  {
+    return $this->description;
+  }
+  public function setDisplayAudienceSize($displayAudienceSize)
+  {
+    $this->displayAudienceSize = $displayAudienceSize;
+  }
+  public function getDisplayAudienceSize()
+  {
+    return $this->displayAudienceSize;
+  }
+  public function setDisplayDesktopAudienceSize($displayDesktopAudienceSize)
+  {
+    $this->displayDesktopAudienceSize = $displayDesktopAudienceSize;
+  }
+  public function getDisplayDesktopAudienceSize()
+  {
+    return $this->displayDesktopAudienceSize;
+  }
+  public function setDisplayMobileAppAudienceSize($displayMobileAppAudienceSize)
+  {
+    $this->displayMobileAppAudienceSize = $displayMobileAppAudienceSize;
+  }
+  public function getDisplayMobileAppAudienceSize()
+  {
+    return $this->displayMobileAppAudienceSize;
+  }
+  public function setDisplayMobileWebAudienceSize($displayMobileWebAudienceSize)
+  {
+    $this->displayMobileWebAudienceSize = $displayMobileWebAudienceSize;
+  }
+  public function getDisplayMobileWebAudienceSize()
+  {
+    return $this->displayMobileWebAudienceSize;
+  }
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
@@ -46,6 +121,22 @@ class Google_Service_DisplayVideo_FirstAndThirdPartyAudience extends Google_Mode
   {
     return $this->firstAndThirdPartyAudienceType;
   }
+  public function setGmailAudienceSize($gmailAudienceSize)
+  {
+    $this->gmailAudienceSize = $gmailAudienceSize;
+  }
+  public function getGmailAudienceSize()
+  {
+    return $this->gmailAudienceSize;
+  }
+  public function setMembershipDurationDays($membershipDurationDays)
+  {
+    $this->membershipDurationDays = $membershipDurationDays;
+  }
+  public function getMembershipDurationDays()
+  {
+    return $this->membershipDurationDays;
+  }
   public function setName($name)
   {
     $this->name = $name;
@@ -53,5 +144,13 @@ class Google_Service_DisplayVideo_FirstAndThirdPartyAudience extends Google_Mode
   public function getName()
   {
     return $this->name;
+  }
+  public function setYoutubeAudienceSize($youtubeAudienceSize)
+  {
+    $this->youtubeAudienceSize = $youtubeAudienceSize;
+  }
+  public function getYoutubeAudienceSize()
+  {
+    return $this->youtubeAudienceSize;
   }
 }

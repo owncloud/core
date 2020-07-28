@@ -73,6 +73,8 @@ class Google_Service_Container_Cluster extends Google_Collection
   protected $nodePoolsDataType = 'array';
   protected $privateClusterConfigType = 'Google_Service_Container_PrivateClusterConfig';
   protected $privateClusterConfigDataType = '';
+  protected $releaseChannelType = 'Google_Service_Container_ReleaseChannel';
+  protected $releaseChannelDataType = '';
   public $resourceLabels;
   protected $resourceUsageExportConfigType = 'Google_Service_Container_ResourceUsageExportConfig';
   protected $resourceUsageExportConfigDataType = '';
@@ -495,6 +497,20 @@ class Google_Service_Container_Cluster extends Google_Collection
   public function getPrivateClusterConfig()
   {
     return $this->privateClusterConfig;
+  }
+  /**
+   * @param Google_Service_Container_ReleaseChannel
+   */
+  public function setReleaseChannel(Google_Service_Container_ReleaseChannel $releaseChannel)
+  {
+    $this->releaseChannel = $releaseChannel;
+  }
+  /**
+   * @return Google_Service_Container_ReleaseChannel
+   */
+  public function getReleaseChannel()
+  {
+    return $this->releaseChannel;
   }
   public function setResourceLabels($resourceLabels)
   {

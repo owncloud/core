@@ -46,11 +46,11 @@ class Google_Service_Books_Resource_MylibraryAnnotations extends Google_Service_
    * @param Google_Service_Books_Annotation $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string source String to identify the originator of this request.
    * @opt_param bool showOnlySummaryInResponse Requests that only the summary of
    * the specified layer be provided in the response.
    * @opt_param string annotationId The ID for the annotation to insert.
    * @opt_param string country ISO-3166-1 code to override the IP-based location.
-   * @opt_param string source String to identify the originator of this request.
    * @return Google_Service_Books_Annotation
    */
   public function insert(Google_Service_Books_Annotation $postBody, $optParams = array())
@@ -65,21 +65,21 @@ class Google_Service_Books_Resource_MylibraryAnnotations extends Google_Service_
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updatedMin RFC 3339 timestamp to restrict to items updated
-   * since this timestamp (inclusive).
+   * @opt_param string layerId The layer ID to limit annotation by.
    * @opt_param bool showDeleted Set to true to return deleted annotations.
    * updatedMin must be in the request to use this. Defaults to false.
-   * @opt_param string updatedMax RFC 3339 timestamp to restrict to items updated
-   * prior to this timestamp (exclusive).
-   * @opt_param string layerId The layer ID to limit annotation by.
-   * @opt_param string contentVersion The content version for the requested
-   * volume.
+   * @opt_param string source String to identify the originator of this request.
    * @opt_param string pageToken The value of the nextToken from the previous
    * page.
-   * @opt_param string source String to identify the originator of this request.
-   * @opt_param string layerIds The layer ID(s) to limit annotation by.
+   * @opt_param string updatedMax RFC 3339 timestamp to restrict to items updated
+   * prior to this timestamp (exclusive).
    * @opt_param string maxResults Maximum number of results to return
+   * @opt_param string updatedMin RFC 3339 timestamp to restrict to items updated
+   * since this timestamp (inclusive).
+   * @opt_param string layerIds The layer ID(s) to limit annotation by.
    * @opt_param string volumeId The volume to restrict annotations to.
+   * @opt_param string contentVersion The content version for the requested
+   * volume.
    * @return Google_Service_Books_Annotations
    */
   public function listMylibraryAnnotations($optParams = array())

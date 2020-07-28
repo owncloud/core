@@ -26,17 +26,17 @@
 class Google_Service_CloudTrace_Resource_ProjectsTracesSpans extends Google_Service_Resource
 {
   /**
-   * Creates a new span. In this case, writing traces is not considered an active
-   * developer method since traces are machine generated. (spans.createSpan)
+   * Creates a new span. (spans.createSpan)
    *
-   * @param string $name The resource name of the span in the following format:
+   * @param string $name Required. The resource name of the span in the following
+   * format:
    *
    *     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/SPAN_ID is a unique
    * identifier for a trace within a project; it is a 32-character hexadecimal
    * encoding of a 16-byte array.
    *
    * [SPAN_ID] is a unique identifier for a span within a trace; it is a
-   * 16-character hexadecimal encoding of an 8-byte array.
+   * 16-character hexadecimal encoding of an 8-byte array. It should not be zero.
    * @param Google_Service_CloudTrace_Span $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudTrace_Span

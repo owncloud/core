@@ -29,7 +29,7 @@ class Google_Service_Gmail_Resource_UsersSettingsSendAsSmimeInfo extends Google_
    * Deletes the specified S/MIME config for the specified send-as alias.
    * (smimeInfo.delete)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $sendAsEmail The email address that appears in the "From:"
    * header for mail sent using this alias.
@@ -46,7 +46,7 @@ class Google_Service_Gmail_Resource_UsersSettingsSendAsSmimeInfo extends Google_
    * Gets the specified S/MIME config for the specified send-as alias.
    * (smimeInfo.get)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $sendAsEmail The email address that appears in the "From:"
    * header for mail sent using this alias.
@@ -64,7 +64,7 @@ class Google_Service_Gmail_Resource_UsersSettingsSendAsSmimeInfo extends Google_
    * Insert (upload) the given S/MIME config for the specified send-as alias. Note
    * that pkcs12 format is required for the key. (smimeInfo.insert)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $sendAsEmail The email address that appears in the "From:"
    * header for mail sent using this alias.
@@ -82,7 +82,7 @@ class Google_Service_Gmail_Resource_UsersSettingsSendAsSmimeInfo extends Google_
    * Lists S/MIME configs for the specified send-as alias.
    * (smimeInfo.listUsersSettingsSendAsSmimeInfo)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $sendAsEmail The email address that appears in the "From:"
    * header for mail sent using this alias.
@@ -99,7 +99,7 @@ class Google_Service_Gmail_Resource_UsersSettingsSendAsSmimeInfo extends Google_
    * Sets the default S/MIME config for the specified send-as alias.
    * (smimeInfo.setDefault)
    *
-   * @param string $userId The user's email address. The special value me can be
+   * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param string $sendAsEmail The email address that appears in the "From:"
    * header for mail sent using this alias.

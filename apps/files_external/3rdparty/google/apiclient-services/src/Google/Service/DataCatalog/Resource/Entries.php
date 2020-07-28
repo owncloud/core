@@ -32,27 +32,20 @@ class Google_Service_DataCatalog_Resource_Entries extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string sqlResource The SQL name of the entry. SQL names are case-
+   * sensitive. Examples: * `pubsub.project_id.topic_id` *
+   * ``pubsub.project_id.`topic.id.with.dots` `` *
+   * `bigquery.table.project_id.dataset_id.table_id` *
+   * `bigquery.dataset.project_id.dataset_id` *
+   * `datacatalog.entry.project_id.location_id.entry_group_id.entry_id` `*_id`s
+   * shoud satisfy the standard SQL rules for identifiers.
+   * https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
    * @opt_param string linkedResource The full name of the Google Cloud Platform
    * resource the Data Catalog entry represents. See:
    * https://cloud.google.com/apis/design/resource_names#full_resource_name. Full
-   * names are case-sensitive.
-   *
-   * Examples:
-   *
-   * //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableI
-   * d //pubsub.googleapis.com/projects/projectId/topics/topicId
-   * @opt_param string sqlResource The SQL name of the entry. SQL names are case-
-   * sensitive.
-   *
-   * Examples:
-   *
-   *   * `pubsub.project_id.topic_id`   * ``pubsub.project_id.`topic.id.with.dots`
-   * ``   * `bigquery.table.project_id.dataset_id.table_id`   *
-   * `bigquery.dataset.project_id.dataset_id`   *
-   * `datacatalog.entry.project_id.location_id.entry_group_id.entry_id`
-   *
-   * `*_id`s shoud satisfy the standard SQL rules for identifiers.
-   * https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
+   * names are case-sensitive. Examples: * //bigquery.googleapis.com/projects/proj
+   * ectId/datasets/datasetId/tables/tableId *
+   * //pubsub.googleapis.com/projects/projectId/topics/topicId
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Entry
    */
   public function lookup($optParams = array())

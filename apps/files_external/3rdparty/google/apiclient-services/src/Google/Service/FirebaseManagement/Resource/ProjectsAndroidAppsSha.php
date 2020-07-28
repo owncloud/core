@@ -29,9 +29,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidAppsSha extends 
    * Adds a SHA certificate to the specified AndroidApp. (sha.create)
    *
    * @param string $parent The parent App to which a SHA certificate will be
-   * added, in the format: projects/projectId/androidApps/appId As an appId is a
-   * unique identifier, the Unique Resource from Sub-Collection access pattern may
-   * be used here, in the format: projects/-/androidApps/appId
+   * added, in the format: projects/PROJECT_NUMBER/androidApps/APP_ID As an APP_ID
+   * is a unique identifier, the Unique Resource from Sub-Collection access
+   * pattern may be used here, in the format: projects/-/androidApps/APP_ID
    * @param Google_Service_FirebaseManagement_ShaCertificate $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_ShaCertificate
@@ -46,8 +46,8 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidAppsSha extends 
    * Removes a SHA certificate from the specified AndroidApp. (sha.delete)
    *
    * @param string $name The fully qualified resource name of the `sha-key`, in
-   * the format: projects/projectId/androidApps/appId/sha/shaId You can obtain the
-   * full name from the response of
+   * the format: projects/PROJECT_NUMBER/androidApps/APP_ID/sha/SHA_ID You can
+   * obtain the full name from the response of
    * [`ListShaCertificates`](../projects.androidApps.sha/list) or the original
    * [`CreateShaCertificate`](../projects.androidApps.sha/create).
    * @param array $optParams Optional parameters.
@@ -64,9 +64,9 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidAppsSha extends 
    * AndroidApp. (sha.listProjectsAndroidAppsSha)
    *
    * @param string $parent The parent App for which to list SHA certificates, in
-   * the format: projects/projectId/androidApps/appId As an appId is a unique
-   * identifier, the Unique Resource from Sub-Collection access pattern may be
-   * used here, in the format: projects/-/androidApps/appId
+   * the format: projects/PROJECT_NUMBER/androidApps/APP_ID As an APP_ID is a
+   * unique identifier, the Unique Resource from Sub-Collection access pattern may
+   * be used here, in the format: projects/-/androidApps/APP_ID
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_ListShaCertificatesResponse
    */

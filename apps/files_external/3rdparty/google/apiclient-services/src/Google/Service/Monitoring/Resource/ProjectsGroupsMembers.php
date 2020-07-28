@@ -33,7 +33,6 @@ class Google_Service_Monitoring_Resource_ProjectsGroupsMembers extends Google_Se
    * is: projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string interval.endTime Required. The end of the time interval.
    * @opt_param string filter An optional list filter
    * (https://cloud.google.com/monitoring/api/learn_more#filtering) describing the
    * members to be returned. The filter may reference the type, labels, and
@@ -44,6 +43,7 @@ class Google_Service_Monitoring_Resource_ProjectsGroupsMembers extends Google_Se
    * the next_page_token value returned by a previous call to this method. Using
    * this field causes the method to return additional results from the previous
    * method call.
+   * @opt_param string interval.endTime Required. The end of the time interval.
    * @opt_param string interval.startTime Optional. The beginning of the time
    * interval. The default value for the start time is the end time. The start
    * time must not be later than the end time.

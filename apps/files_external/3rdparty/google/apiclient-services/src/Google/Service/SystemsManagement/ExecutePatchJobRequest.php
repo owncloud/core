@@ -25,6 +25,8 @@ class Google_Service_SystemsManagement_ExecutePatchJobRequest extends Google_Mod
   protected $instanceFilterDataType = '';
   protected $patchConfigType = 'Google_Service_SystemsManagement_PatchConfig';
   protected $patchConfigDataType = '';
+  protected $rolloutType = 'Google_Service_SystemsManagement_PatchRollout';
+  protected $rolloutDataType = '';
 
   public function setDescription($description)
   {
@@ -85,5 +87,19 @@ class Google_Service_SystemsManagement_ExecutePatchJobRequest extends Google_Mod
   public function getPatchConfig()
   {
     return $this->patchConfig;
+  }
+  /**
+   * @param Google_Service_SystemsManagement_PatchRollout
+   */
+  public function setRollout(Google_Service_SystemsManagement_PatchRollout $rollout)
+  {
+    $this->rollout = $rollout;
+  }
+  /**
+   * @return Google_Service_SystemsManagement_PatchRollout
+   */
+  public function getRollout()
+  {
+    return $this->rollout;
   }
 }

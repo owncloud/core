@@ -19,7 +19,8 @@
  * Service definition for Reseller (v1).
  *
  * <p>
- * Creates and manages your customers and their subscriptions.</p>
+ * Perform common functions that are available on the Google Apps Reseller
+ * Console at scale like placing orders and viewing customer information</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -51,7 +52,7 @@ class Google_Service_Reseller extends Google_Service
   {
     parent::__construct($client);
     $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
-    $this->servicePath = 'apps/reseller/v1/';
+    $this->servicePath = '';
     $this->batchPath = 'batch/reseller/v1';
     $this->version = 'v1';
     $this->serviceName = 'reseller';
@@ -63,7 +64,7 @@ class Google_Service_Reseller extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'customers/{customerId}',
+              'path' => 'apps/reseller/v1/customers/{customerId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'customerId' => array(
@@ -73,7 +74,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'customers',
+              'path' => 'apps/reseller/v1/customers',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerAuthToken' => array(
@@ -82,7 +83,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'customers/{customerId}',
+              'path' => 'apps/reseller/v1/customers/{customerId}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'customerId' => array(
@@ -92,7 +93,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'customers/{customerId}',
+              'path' => 'apps/reseller/v1/customers/{customerId}',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'customerId' => array(
@@ -112,11 +113,11 @@ class Google_Service_Reseller extends Google_Service
         array(
           'methods' => array(
             'getwatchdetails' => array(
-              'path' => 'resellernotify/getwatchdetails',
+              'path' => 'apps/reseller/v1/resellernotify/getwatchdetails',
               'httpMethod' => 'GET',
               'parameters' => array(),
             ),'register' => array(
-              'path' => 'resellernotify/register',
+              'path' => 'apps/reseller/v1/resellernotify/register',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'serviceAccountEmailAddress' => array(
@@ -125,7 +126,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'unregister' => array(
-              'path' => 'resellernotify/unregister',
+              'path' => 'apps/reseller/v1/resellernotify/unregister',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'serviceAccountEmailAddress' => array(
@@ -144,7 +145,7 @@ class Google_Service_Reseller extends Google_Service
         array(
           'methods' => array(
             'activate' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}/activate',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}/activate',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(
@@ -159,7 +160,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'changePlan' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}/changePlan',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}/changePlan',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(
@@ -174,7 +175,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'changeRenewalSettings' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}/changeRenewalSettings',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}/changeRenewalSettings',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(
@@ -189,7 +190,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'changeSeats' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}/changeSeats',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}/changeSeats',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(
@@ -204,7 +205,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'customerId' => array(
@@ -224,7 +225,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'customerId' => array(
@@ -239,7 +240,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'customers/{customerId}/subscriptions',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(
@@ -253,14 +254,14 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'subscriptions',
+              'path' => 'apps/reseller/v1/subscriptions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'customerAuthToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customerId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -268,17 +269,17 @@ class Google_Service_Reseller extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'customerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
               ),
             ),'startPaidService' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}/startPaidService',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}/startPaidService',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(
@@ -293,7 +294,7 @@ class Google_Service_Reseller extends Google_Service
                 ),
               ),
             ),'suspend' => array(
-              'path' => 'customers/{customerId}/subscriptions/{subscriptionId}/suspend',
+              'path' => 'apps/reseller/v1/customers/{customerId}/subscriptions/{subscriptionId}/suspend',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'customerId' => array(

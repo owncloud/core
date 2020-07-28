@@ -27,20 +27,15 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
 {
   /**
    * A maximum of 10,000 entry groups may be created per organization across all
-   * locations.
-   *
-   * Users should enable the Data Catalog API in the project identified by the
-   * `parent` parameter (see [Data Catalog Resource Project]
+   * locations. Users should enable the Data Catalog API in the project identified
+   * by the `parent` parameter (see [Data Catalog Resource Project]
    * (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for
    * more information). (entryGroups.create)
    *
    * @param string $parent Required. The name of the project this entry group is
-   * in. Example:
-   *
-   * * projects/{project_id}/locations/{location}
-   *
-   * Note that this EntryGroup and its child resources may not actually be stored
-   * in the location in this name.
+   * in. Example: * projects/{project_id}/locations/{location} Note that this
+   * EntryGroup and its child resources may not actually be stored in the location
+   * in this name.
    * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup $postBody
    * @param array $optParams Optional parameters.
    *
@@ -96,17 +91,14 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
   /**
    * Gets the access control policy for a resource. A `NOT_FOUND` error is
    * returned if the resource does not exist. An empty policy is returned if the
-   * resource exists but does not have a policy set on it.
-   *
-   * Supported resources are:   - Tag templates.   - Entries.   - Entry groups.
-   * Note, this method cannot be used to manage policies for BigQuery, Pub/Sub and
-   * any external Google Cloud Platform resources synced to Data Catalog.
-   *
-   * Callers must have following Google IAM permission   -
-   * `datacatalog.tagTemplates.getIamPolicy` to get policies on tag     templates.
-   * - `datacatalog.entries.getIamPolicy` to get policies on entries.   -
-   * `datacatalog.entryGroups.getIamPolicy` to get policies on entry groups.
-   * (entryGroups.getIamPolicy)
+   * resource exists but does not have a policy set on it. Supported resources
+   * are: - Tag templates. - Entries. - Entry groups. Note, this method cannot be
+   * used to manage policies for BigQuery, Pub/Sub and any external Google Cloud
+   * Platform resources synced to Data Catalog. Callers must have following Google
+   * IAM permission - `datacatalog.tagTemplates.getIamPolicy` to get policies on
+   * tag templates. - `datacatalog.entries.getIamPolicy` to get policies on
+   * entries. - `datacatalog.entryGroups.getIamPolicy` to get policies on entry
+   * groups. (entryGroups.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * requested. See the operation documentation for the appropriate value for this
@@ -125,9 +117,8 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * Lists entry groups. (entryGroups.listProjectsLocationsEntryGroups)
    *
    * @param string $parent Required. The name of the location that contains the
-   * entry groups, which can be provided in URL format. Example:
-   *
-   * * projects/{project_id}/locations/{location}
+   * entry groups, which can be provided in URL format. Example: *
+   * projects/{project_id}/locations/{location}
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of items to return.
@@ -150,12 +141,10 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * /resource-project) for more information). (entryGroups.patch)
    *
    * @param string $name The resource name of the entry group in URL format.
-   * Example:
-   *
-   * * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
-   *
-   * Note that this EntryGroup and its child resources may not actually be stored
-   * in the location in this name.
+   * Example: *
+   * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id} Note
+   * that this EntryGroup and its child resources may not actually be stored in
+   * the location in this name.
    * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup $postBody
    * @param array $optParams Optional parameters.
    *
@@ -171,13 +160,12 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
   }
   /**
    * Sets the access control policy for a resource. Replaces any existing policy.
-   * Supported resources are:   - Tag templates.   - Entries.   - Entry groups.
-   * Note, this method cannot be used to manage policies for BigQuery, Pub/Sub and
-   * any external Google Cloud Platform resources synced to Data Catalog.
-   *
-   * Callers must have following Google IAM permission   -
-   * `datacatalog.tagTemplates.setIamPolicy` to set policies on tag     templates.
-   * - `datacatalog.entries.setIamPolicy` to set policies on entries.   -
+   * Supported resources are: - Tag templates. - Entries. - Entry groups. Note,
+   * this method cannot be used to manage policies for BigQuery, Pub/Sub and any
+   * external Google Cloud Platform resources synced to Data Catalog. Callers must
+   * have following Google IAM permission -
+   * `datacatalog.tagTemplates.setIamPolicy` to set policies on tag templates. -
+   * `datacatalog.entries.setIamPolicy` to set policies on entries. -
    * `datacatalog.entryGroups.setIamPolicy` to set policies on entry groups.
    * (entryGroups.setIamPolicy)
    *
@@ -197,13 +185,10 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
   /**
    * Returns the caller's permissions on a resource. If the resource does not
    * exist, an empty set of permissions is returned (We don't return a `NOT_FOUND`
-   * error).
-   *
-   * Supported resources are:   - Tag templates.   - Entries.   - Entry groups.
+   * error). Supported resources are: - Tag templates. - Entries. - Entry groups.
    * Note, this method cannot be used to manage policies for BigQuery, Pub/Sub and
-   * any external Google Cloud Platform resources synced to Data Catalog.
-   *
-   * A caller is not required to have Google IAM permission to make this request.
+   * any external Google Cloud Platform resources synced to Data Catalog. A caller
+   * is not required to have Google IAM permission to make this request.
    * (entryGroups.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is

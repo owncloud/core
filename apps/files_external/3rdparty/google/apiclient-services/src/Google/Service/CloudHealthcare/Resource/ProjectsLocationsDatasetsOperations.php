@@ -79,8 +79,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsOperation
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The standard list page size.
-   * @opt_param string pageToken The standard list page token.
    * @opt_param string filter The standard list filter.
+   * @opt_param string pageToken The standard list page token.
    * @return Google_Service_CloudHealthcare_ListOperationsResponse
    */
   public function listProjectsLocationsDatasetsOperations($name, $optParams = array())

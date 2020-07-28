@@ -140,12 +140,12 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopers extends Google_Serv
    * @opt_param bool expand Specifies whether to expand the results. Set to `true`
    * to expand the results. This query parameter is not valid if you use the
    * `count` or `startKey` query parameters.
+   * @opt_param string ids Optional. List of IDs to include, separated by commas.
    * @opt_param bool includeCompany Flag that specifies whether to include company
    * details in the response.
    * @opt_param string count Optional. Number of developers to return in the API
    * call. Use with the `startKey` parameter to provide more targeted filtering.
    * The limit is 1000.
-   * @opt_param string ids Optional. List of IDs to include, separated by commas.
    * @opt_param string startKey **Note**: Must be used in conjunction with the
    * `count` parameter.
    *

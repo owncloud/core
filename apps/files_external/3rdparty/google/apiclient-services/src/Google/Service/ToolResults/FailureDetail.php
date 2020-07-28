@@ -18,6 +18,7 @@
 class Google_Service_ToolResults_FailureDetail extends Google_Model
 {
   public $crashed;
+  public $failedRoboscript;
   public $notInstalled;
   public $otherNativeCrash;
   public $timedOut;
@@ -30,6 +31,14 @@ class Google_Service_ToolResults_FailureDetail extends Google_Model
   public function getCrashed()
   {
     return $this->crashed;
+  }
+  public function setFailedRoboscript($failedRoboscript)
+  {
+    $this->failedRoboscript = $failedRoboscript;
+  }
+  public function getFailedRoboscript()
+  {
+    return $this->failedRoboscript;
   }
   public function setNotInstalled($notInstalled)
   {

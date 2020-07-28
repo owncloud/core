@@ -26,9 +26,8 @@
 class Google_Service_PeopleService_Resource_ContactGroupsMembers extends Google_Service_Resource
 {
   /**
-   * Modify the members of a contact group owned by the authenticated user.
-   *
-   * The only system contact groups that can have members added are
+   * Modify the members of a contact group owned by the authenticated user. The
+   * only system contact groups that can have members added are
    * `contactGroups/myContacts` and `contactGroups/starred`. Other system contact
    * groups are deprecated and can only have contacts removed. (members.modify)
    *

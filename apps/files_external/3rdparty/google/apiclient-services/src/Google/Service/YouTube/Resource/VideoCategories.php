@@ -36,8 +36,8 @@ class Google_Service_YouTube_Resource_VideoCategories extends Google_Service_Res
    *
    * @opt_param string id Returns the video categories with the given IDs for
    * Stubby or Apiary.
-   * @opt_param string regionCode
    * @opt_param string hl
+   * @opt_param string regionCode
    * @return Google_Service_YouTube_VideoCategoryListResponse
    */
   public function listVideoCategories($part, $optParams = array())

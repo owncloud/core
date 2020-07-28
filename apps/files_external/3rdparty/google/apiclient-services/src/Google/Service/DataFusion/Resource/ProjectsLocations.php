@@ -46,10 +46,10 @@ class Google_Service_DataFusion_Resource_ProjectsLocations extends Google_Servic
    * applicable.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter The standard list filter.
    * @opt_param bool includeUnrevealedLocations If true, the returned list will
    * include locations which are not yet revealed.
    * @opt_param string pageToken The standard list page token.
+   * @opt_param string filter The standard list filter.
    * @opt_param int pageSize The standard list page size.
    * @return Google_Service_DataFusion_ListLocationsResponse
    */

@@ -26,6 +26,28 @@
 class Google_Service_DisplayVideo_Resource_Advertisers extends Google_Service_Resource
 {
   /**
+   * Audits an advertiser. Returns the counts of used entities per resource type
+   * under the advertiser provided. Used entities count towards their [respective
+   * resource limit]:
+   * (https://support.google.com/displayvideo/answer/6071450?hl=en)
+   * (advertisers.audit)
+   *
+   * @param string $advertiserId Required. The ID of the advertiser to audit.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string readMask Optional. The specific fields to return. If no
+   * mask is specified, all fields in the response proto will be filled. Valid
+   * values are: * usedLineItemsCount * usedInsertionOrdersCount *
+   * usedCampaignsCount
+   * @return Google_Service_DisplayVideo_AuditAdvertiserResponse
+   */
+  public function audit($advertiserId, $optParams = array())
+  {
+    $params = array('advertiserId' => $advertiserId);
+    $params = array_merge($params, $optParams);
+    return $this->call('audit', array($params), "Google_Service_DisplayVideo_AuditAdvertiserResponse");
+  }
+  /**
    * Bulk edits targeting options under a single advertiser. The operation will
    * delete the assigned targeting options provided in
    * BulkEditAdvertiserAssignedTargetingOptionsRequest.delete_requests and then
@@ -52,35 +74,25 @@ class Google_Service_DisplayVideo_Resource_Advertisers extends Google_Service_Re
    * belongs to.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. The size must be an integer
+   * between `1` and `5000`. If unspecified, the default is '5000'. Returns error
+   * code `INVALID_ARGUMENT` if an invalid value is specified.
+   * @opt_param string filter Allows filtering by assigned targeting option
+   * properties. Supported syntax: * Filter expressions are made up of one or more
+   * restrictions. * Restrictions can be combined by the logical operator `OR`.. *
+   * A restriction has the form of `{field} {operator} {value}`. * The operator
+   * must be `EQUALS (=)`. * Supported fields: - `targetingType` Examples: *
+   * targetingType with value TARGETING_TYPE_CHANNEL
+   * `targetingType="TARGETING_TYPE_CHANNEL"` The length of this field should be
+   * no more than 500 characters.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `targetingType` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix "desc" should be added to the
+   * field name. Example: `targetingType desc`.
    * @opt_param string pageToken A token that lets the client fetch the next page
    * of results. Typically, this is the value of next_page_token returned from the
    * previous call to `BulkListAdvertiserAssignedTargetingOptions` method. If not
    * specified, the first page of results will be returned.
-   * @opt_param string filter Allows filtering by assigned targeting option
-   * properties. Supported syntax:
-   *
-   * * Filter expressions are made up of one or more restrictions. * Restrictions
-   * can be combined by the logical operator `OR`.. * A restriction has the form
-   * of `{field} {operator} {value}`. * The operator must be `EQUALS (=)`. *
-   * Supported fields:     - `targetingType`
-   *
-   * Examples:
-   *
-   * * targetingType with value TARGETING_TYPE_CHANNEL
-   * `targetingType="TARGETING_TYPE_CHANNEL"`
-   *
-   * The length of this field should be no more than 500 characters.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are:
-   *
-   * * `targetingType` (default)
-   *
-   * The default sorting order is ascending. To specify descending order for a
-   * field, a suffix "desc" should be added to the field name. Example:
-   * `targetingType desc`.
-   * @opt_param int pageSize Requested page size. The size must be an integer
-   * between `1` and `5000`. If unspecified, the default is '5000'. Returns error
-   * code `INVALID_ARGUMENT` if an invalid value is specified.
    * @return Google_Service_DisplayVideo_BulkListAdvertiserAssignedTargetingOptionsResponse
    */
   public function bulkListAdvertiserAssignedTargetingOptions($advertiserId, $optParams = array())
@@ -132,39 +144,14 @@ class Google_Service_DisplayVideo_Resource_Advertisers extends Google_Service_Re
     return $this->call('get', array($params), "Google_Service_DisplayVideo_Advertiser");
   }
   /**
-   * Lists advertisers that are accessible to the current user.
-   *
-   * The order is defined by the order_by parameter.
-   *
-   * A single partner_id is required. Cross-partner listing is not supported.
-   * (advertisers.listAdvertisers)
+   * Lists advertisers that are accessible to the current user. The order is
+   * defined by the order_by parameter. A single partner_id is required. Cross-
+   * partner listing is not supported. (advertisers.listAdvertisers)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Allows filtering by advertiser properties.
-   *
-   * Supported syntax:
-   *
-   * * Filter expressions are made up of one or more restrictions. * Restrictions
-   * can be combined by `AND` or `OR` logical operators. A sequence of
-   * restrictions implicitly uses `AND`. * A restriction has the form of `{field}
-   * {operator} {value}`. * The operator must be `EQUALS (=)`. * Supported fields:
-   * - `entityStatus`
-   *
-   * Examples:
-   *
-   * * All active advertisers under a partner:
-   * `entityStatus="ENTITY_STATUS_ACTIVE"`
-   *
-   * The length of this field should be no more than 500 characters.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are:
-   *
-   * * `displayName` (default) * `entityStatus`
-   *
-   * The default sorting order is ascending. To specify descending order for a
-   * field, a suffix "desc" should be added to the field name. For example,
-   * `displayName desc`.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`.
    * @opt_param string partnerId Required. The ID of the partner that the fetched
    * advertisers should all belong to. The system only supports listing
    * advertisers for one partner at a time.
@@ -172,8 +159,18 @@ class Google_Service_DisplayVideo_Resource_Advertisers extends Google_Service_Re
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListAdvertisers` method. If not specified, the first
    * page of results will be returned.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `displayName` (default) * `entityStatus` The default sorting order is
+   * ascending. To specify descending order for a field, a suffix "desc" should be
+   * added to the field name. For example, `displayName desc`.
+   * @opt_param string filter Allows filtering by advertiser properties. Supported
+   * syntax: * Filter expressions are made up of one or more restrictions. *
+   * Restrictions can be combined by `AND` or `OR` logical operators. A sequence
+   * of restrictions implicitly uses `AND`. * A restriction has the form of
+   * `{field} {operator} {value}`. * The operator must be `EQUALS (=)`. *
+   * Supported fields: - `entityStatus` Examples: * All active advertisers under a
+   * partner: `entityStatus="ENTITY_STATUS_ACTIVE"` The length of this field
+   * should be no more than 500 characters.
    * @return Google_Service_DisplayVideo_ListAdvertisersResponse
    */
   public function listAdvertisers($optParams = array())

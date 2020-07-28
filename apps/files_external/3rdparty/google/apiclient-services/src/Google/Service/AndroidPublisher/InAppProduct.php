@@ -27,7 +27,6 @@ class Google_Service_AndroidPublisher_InAppProduct extends Google_Model
   protected $pricesType = 'Google_Service_AndroidPublisher_Price';
   protected $pricesDataType = 'map';
   public $purchaseType;
-  public $resubscribeEligibility;
   public $sku;
   public $status;
   public $subscriptionPeriod;
@@ -106,14 +105,6 @@ class Google_Service_AndroidPublisher_InAppProduct extends Google_Model
   public function getPurchaseType()
   {
     return $this->purchaseType;
-  }
-  public function setResubscribeEligibility($resubscribeEligibility)
-  {
-    $this->resubscribeEligibility = $resubscribeEligibility;
-  }
-  public function getResubscribeEligibility()
-  {
-    return $this->resubscribeEligibility;
   }
   public function setSku($sku)
   {

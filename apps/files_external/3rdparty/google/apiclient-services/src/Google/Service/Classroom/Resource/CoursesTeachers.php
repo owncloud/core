@@ -117,15 +117,15 @@ class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_R
    * either the Classroom-assigned identifier or an alias.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of items to return. The default is 30
+   * if unspecified or `0`.
+   *
+   * The server may return fewer than the specified number of results.
    * @opt_param string pageToken nextPageToken value returned from a previous list
    * call, indicating that the subsequent page of results should be returned.
    *
    * The list request must be otherwise identical to the one that resulted in this
    * token.
-   * @opt_param int pageSize Maximum number of items to return. Zero means no
-   * maximum.
-   *
-   * The server may return fewer than the specified number of results.
    * @return Google_Service_Classroom_ListTeachersResponse
    */
   public function listCoursesTeachers($courseId, $optParams = array())

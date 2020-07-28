@@ -38,7 +38,7 @@ class Google_Service_AndroidPublisher_Resource_Orders extends Google_Service_Res
    * access to the subscription or in-app item will be terminated immediately. If
    * the item is a recurring subscription, all future payments will also be
    * terminated. Consumed in-app items need to be handled by developer's app.
-   * (optional)
+   * (optional).
    */
   public function refund($packageName, $orderId, $optParams = array())
   {

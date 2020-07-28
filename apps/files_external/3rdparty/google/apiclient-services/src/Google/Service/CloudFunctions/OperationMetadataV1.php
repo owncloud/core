@@ -17,12 +17,21 @@
 
 class Google_Service_CloudFunctions_OperationMetadataV1 extends Google_Model
 {
+  public $buildId;
   public $request;
   public $target;
   public $type;
   public $updateTime;
   public $versionId;
 
+  public function setBuildId($buildId)
+  {
+    $this->buildId = $buildId;
+  }
+  public function getBuildId()
+  {
+    return $this->buildId;
+  }
   public function setRequest($request)
   {
     $this->request = $request;

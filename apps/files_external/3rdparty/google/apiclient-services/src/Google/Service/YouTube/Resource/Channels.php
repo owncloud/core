@@ -38,28 +38,6 @@ class Google_Service_YouTube_Resource_Channels extends Google_Service_Resource
    * properties.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The pageToken parameter identifies a specific
-   * page in the result set that should be returned. In an API response, the
-   * nextPageToken and prevPageToken properties identify other pages that could be
-   * retrieved.
-   * @opt_param string id Return the channels with the specified IDs.
-   * @opt_param string forUsername Return the channel associated with a YouTube
-   * username.
-   * @opt_param bool mySubscribers Return the channels subscribed to the
-   * authenticated user
-   * @opt_param bool mine Return the ids of channels owned by the authenticated
-   * user.
-   * @opt_param bool managedByMe Return the channels managed by the authenticated
-   * user.
-   * @opt_param string hl Stands for "host language". Specifies the localization
-   * language of the metadata to be filled into snippet.localized. The field is
-   * filled with the default metadata if there is no localization in the specified
-   * language. The parameter value must be a language code included in the list
-   * returned by the i18nLanguages.list method (e.g. en_US, es_MX).
-   * @opt_param string maxResults The maxResults parameter specifies the maximum
-   * number of items that should be returned in the result set.
-   * @opt_param string categoryId Return the channels within the specified guide
-   * category ID.
    * @opt_param string onBehalfOfContentOwner Note: This parameter is intended
    * exclusively for YouTube content partners.The onBehalfOfContentOwner parameter
    * indicates that the request's authorization credentials identify a YouTube CMS
@@ -70,6 +48,28 @@ class Google_Service_YouTube_Resource_Channels extends Google_Service_Resource
    * having to provide authentication credentials for each individual channel. The
    * CMS account that the user authenticates with must be linked to the specified
    * YouTube content owner.
+   * @opt_param bool mySubscribers Return the channels subscribed to the
+   * authenticated user
+   * @opt_param string hl Stands for "host language". Specifies the localization
+   * language of the metadata to be filled into snippet.localized. The field is
+   * filled with the default metadata if there is no localization in the specified
+   * language. The parameter value must be a language code included in the list
+   * returned by the i18nLanguages.list method (e.g. en_US, es_MX).
+   * @opt_param string id Return the channels with the specified IDs.
+   * @opt_param bool managedByMe Return the channels managed by the authenticated
+   * user.
+   * @opt_param string pageToken The pageToken parameter identifies a specific
+   * page in the result set that should be returned. In an API response, the
+   * nextPageToken and prevPageToken properties identify other pages that could be
+   * retrieved.
+   * @opt_param bool mine Return the ids of channels owned by the authenticated
+   * user.
+   * @opt_param string maxResults The maxResults parameter specifies the maximum
+   * number of items that should be returned in the result set.
+   * @opt_param string forUsername Return the channel associated with a YouTube
+   * username.
+   * @opt_param string categoryId Return the channels within the specified guide
+   * category ID.
    * @return Google_Service_YouTube_ChannelListResponse
    */
   public function listChannels($part, $optParams = array())

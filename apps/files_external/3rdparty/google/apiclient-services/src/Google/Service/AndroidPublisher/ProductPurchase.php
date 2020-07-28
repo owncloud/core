@@ -21,6 +21,8 @@ class Google_Service_AndroidPublisher_ProductPurchase extends Google_Model
   public $consumptionState;
   public $developerPayload;
   public $kind;
+  public $obfuscatedExternalAccountId;
+  public $obfuscatedExternalProfileId;
   public $orderId;
   public $productId;
   public $purchaseState;
@@ -60,6 +62,22 @@ class Google_Service_AndroidPublisher_ProductPurchase extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  public function setObfuscatedExternalAccountId($obfuscatedExternalAccountId)
+  {
+    $this->obfuscatedExternalAccountId = $obfuscatedExternalAccountId;
+  }
+  public function getObfuscatedExternalAccountId()
+  {
+    return $this->obfuscatedExternalAccountId;
+  }
+  public function setObfuscatedExternalProfileId($obfuscatedExternalProfileId)
+  {
+    $this->obfuscatedExternalProfileId = $obfuscatedExternalProfileId;
+  }
+  public function getObfuscatedExternalProfileId()
+  {
+    return $this->obfuscatedExternalProfileId;
   }
   public function setOrderId($orderId)
   {

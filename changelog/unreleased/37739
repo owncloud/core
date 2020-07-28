@@ -1,0 +1,9 @@
+Change: Update google/apiclient from 2.6.0 to 2.7.0 and related dependencies
+
+This change updates the 3rd-party dependencies of files_external:
+  - google/apiclient (v2.6.0 => v2.7.0)
+  - google/apiclient-services (v0.139 => v0.141)
+  - google/auth (v1.10.0 => v1.11.1)
+  - monolog/monolog (2.1.0 => 2.1.1)
+
+https://github.com/owncloud/core/pull/37739

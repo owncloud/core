@@ -17,7 +17,7 @@
 
 class Google_Service_CloudLifeSciences_VirtualMachine extends Google_Collection
 {
-  protected $collection_key = 'disks';
+  protected $collection_key = 'dockerCacheImages';
   protected $acceleratorsType = 'Google_Service_CloudLifeSciences_Accelerator';
   protected $acceleratorsDataType = 'array';
   public $bootDiskSizeGb;
@@ -25,6 +25,7 @@ class Google_Service_CloudLifeSciences_VirtualMachine extends Google_Collection
   public $cpuPlatform;
   protected $disksType = 'Google_Service_CloudLifeSciences_Disk';
   protected $disksDataType = 'array';
+  public $dockerCacheImages;
   public $enableStackdriverMonitoring;
   public $labels;
   public $machineType;
@@ -86,6 +87,14 @@ class Google_Service_CloudLifeSciences_VirtualMachine extends Google_Collection
   public function getDisks()
   {
     return $this->disks;
+  }
+  public function setDockerCacheImages($dockerCacheImages)
+  {
+    $this->dockerCacheImages = $dockerCacheImages;
+  }
+  public function getDockerCacheImages()
+  {
+    return $this->dockerCacheImages;
   }
   public function setEnableStackdriverMonitoring($enableStackdriverMonitoring)
   {

@@ -34,17 +34,17 @@ class Google_Service_ToolResults extends Google_Service
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
-  public $clusters;
-  public $environments;
-  public $executions;
-  public $histories;
-  public $perfMetricsSummary;
-  public $perfSampleSeries;
   public $projects;
-  public $samples;
-  public $steps;
-  public $testCases;
-  public $thumbnails;
+  public $projects_histories;
+  public $projects_histories_executions;
+  public $projects_histories_executions_clusters;
+  public $projects_histories_executions_environments;
+  public $projects_histories_executions_steps;
+  public $projects_histories_executions_steps_perfMetricsSummary;
+  public $projects_histories_executions_steps_perfSampleSeries;
+  public $projects_histories_executions_steps_perfSampleSeries_samples;
+  public $projects_histories_executions_steps_testCases;
+  public $projects_histories_executions_steps_thumbnails;
   
   /**
    * Constructs the internal representation of the ToolResults service.
@@ -55,58 +55,33 @@ class Google_Service_ToolResults extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://toolresults.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/toolresults/v1beta3';
+    $this->batchPath = 'batch';
     $this->version = 'v1beta3';
     $this->serviceName = 'toolresults';
 
-    $this->clusters = new Google_Service_ToolResults_Resource_Clusters(
+    $this->projects = new Google_Service_ToolResults_Resource_Projects(
         $this,
         $this->serviceName,
-        'clusters',
+        'projects',
         array(
           'methods' => array(
-            'get' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/clusters/{clusterId}',
+            'getSettings' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/settings',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'clusterId' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
                 ),
               ),
-            ),'list' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/clusters',
-              'httpMethod' => 'GET',
+            ),'initializeSettings' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}:initializeSettings',
+              'httpMethod' => 'POST',
               'parameters' => array(
                 'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -116,14 +91,28 @@ class Google_Service_ToolResults extends Google_Service
           )
         )
     );
-    $this->environments = new Google_Service_ToolResults_Resource_Environments(
+    $this->projects_histories = new Google_Service_ToolResults_Resource_ProjectsHistories(
         $this,
         $this->serviceName,
-        'environments',
+        'histories',
         array(
           'methods' => array(
-            'get' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/environments/{environmentId}',
+            'create' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'requestId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'projectId' => array(
@@ -132,23 +121,13 @@ class Google_Service_ToolResults extends Google_Service
                   'required' => true,
                 ),
                 'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'environmentId' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
                 ),
               ),
             ),'list' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/environments',
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'projectId' => array(
@@ -156,15 +135,9 @@ class Google_Service_ToolResults extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'historyId' => array(
-                  'location' => 'path',
+                'filterByName' => array(
+                  'location' => 'query',
                   'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -179,7 +152,7 @@ class Google_Service_ToolResults extends Google_Service
           )
         )
     );
-    $this->executions = new Google_Service_ToolResults_Resource_Executions(
+    $this->projects_histories_executions = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutions(
         $this,
         $this->serviceName,
         'executions',
@@ -275,28 +248,14 @@ class Google_Service_ToolResults extends Google_Service
           )
         )
     );
-    $this->histories = new Google_Service_ToolResults_Resource_Histories(
+    $this->projects_histories_executions_clusters = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsClusters(
         $this,
         $this->serviceName,
-        'histories',
+        'clusters',
         array(
           'methods' => array(
-            'create' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'requestId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
-            ),'get' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}',
+            'get' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/clusters/{clusterId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'projectId' => array(
@@ -309,9 +268,19 @@ class Google_Service_ToolResults extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'clusterId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
               ),
             ),'list' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories',
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/clusters',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'projectId' => array(
@@ -319,262 +288,85 @@ class Google_Service_ToolResults extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
+                'historyId' => array(
+                  'location' => 'path',
                   'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_histories_executions_environments = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsEnvironments(
+        $this,
+        $this->serviceName,
+        'environments',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/environments/{environmentId}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'environmentId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/environments',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filterByName' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->perfMetricsSummary = new Google_Service_ToolResults_Resource_PerfMetricsSummary(
-        $this,
-        $this->serviceName,
-        'perfMetricsSummary',
-        array(
-          'methods' => array(
-            'create' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfMetricsSummary',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'stepId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->perfSampleSeries = new Google_Service_ToolResults_Resource_PerfSampleSeries(
-        $this,
-        $this->serviceName,
-        'perfSampleSeries',
-        array(
-          'methods' => array(
-            'create' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'stepId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'get' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries/{sampleSeriesId}',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'stepId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'sampleSeriesId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'list' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'stepId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects = new Google_Service_ToolResults_Resource_Projects(
-        $this,
-        $this->serviceName,
-        'projects',
-        array(
-          'methods' => array(
-            'getSettings' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/settings',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'initializeSettings' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}:initializeSettings',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->samples = new Google_Service_ToolResults_Resource_Samples(
-        $this,
-        $this->serviceName,
-        'samples',
-        array(
-          'methods' => array(
-            'batchCreate' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries/{sampleSeriesId}/samples:batchCreate',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'stepId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'sampleSeriesId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'list' => array(
-              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries/{sampleSeriesId}/samples',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'historyId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'executionId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'stepId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'sampleSeriesId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
               ),
             ),
           )
         )
     );
-    $this->steps = new Google_Service_ToolResults_Resource_Steps(
+    $this->projects_histories_executions_steps = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsSteps(
         $this,
         $this->serviceName,
         'steps',
@@ -687,13 +479,13 @@ class Google_Service_ToolResults extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -754,7 +546,215 @@ class Google_Service_ToolResults extends Google_Service
           )
         )
     );
-    $this->testCases = new Google_Service_ToolResults_Resource_TestCases(
+    $this->projects_histories_executions_steps_perfMetricsSummary = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfMetricsSummary(
+        $this,
+        $this->serviceName,
+        'perfMetricsSummary',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfMetricsSummary',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_histories_executions_steps_perfSampleSeries = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSampleSeries(
+        $this,
+        $this->serviceName,
+        'perfSampleSeries',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries/{sampleSeriesId}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'sampleSeriesId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_histories_executions_steps_perfSampleSeries_samples = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSampleSeriesSamples(
+        $this,
+        $this->serviceName,
+        'samples',
+        array(
+          'methods' => array(
+            'batchCreate' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries/{sampleSeriesId}/samples:batchCreate',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'sampleSeriesId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'toolresults/v1beta3/projects/{projectId}/histories/{historyId}/executions/{executionId}/steps/{stepId}/perfSampleSeries/{sampleSeriesId}/samples',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'historyId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'executionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'stepId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'sampleSeriesId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_histories_executions_steps_testCases = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsTestCases(
         $this,
         $this->serviceName,
         'testCases',
@@ -814,20 +814,20 @@ class Google_Service_ToolResults extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
           )
         )
     );
-    $this->thumbnails = new Google_Service_ToolResults_Resource_Thumbnails(
+    $this->projects_histories_executions_steps_thumbnails = new Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsThumbnails(
         $this,
         $this->serviceName,
         'thumbnails',

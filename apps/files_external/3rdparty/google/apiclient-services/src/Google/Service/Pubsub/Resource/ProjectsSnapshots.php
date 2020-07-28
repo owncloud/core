@@ -27,19 +27,20 @@ class Google_Service_Pubsub_Resource_ProjectsSnapshots extends Google_Service_Re
 {
   /**
    * Creates a snapshot from the requested subscription. Snapshots are used in
-   * Seek operations, which allow you to manage message acknowledgments in bulk.
-   * That is, you can set the acknowledgment state of messages in an existing
-   * subscription to the state captured by a snapshot. If the snapshot already
-   * exists, returns `ALREADY_EXISTS`. If the requested subscription doesn't
-   * exist, returns `NOT_FOUND`. If the backlog in the subscription is too old --
-   * and the resulting snapshot would expire in less than 1 hour -- then
+   * [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
+   * which allow you to manage message acknowledgments in bulk. That is, you can
+   * set the acknowledgment state of messages in an existing subscription to the
+   * state captured by a snapshot. If the snapshot already exists, returns
+   * `ALREADY_EXISTS`. If the requested subscription doesn't exist, returns
+   * `NOT_FOUND`. If the backlog in the subscription is too old -- and the
+   * resulting snapshot would expire in less than 1 hour -- then
    * `FAILED_PRECONDITION` is returned. See also the `Snapshot.expire_time` field.
    * If the name is not provided in the request, the server will assign a random
    * name for this snapshot on the same project as the subscription, conforming to
-   * the [resource name
-   * format](https://cloud.google.com/pubsub/docs/admin#resource_names). The
-   * generated name is populated in the returned Snapshot object. Note that for
-   * REST API requests, you must specify a name in the request. (snapshots.create)
+   * the [resource name format]
+   * (https://cloud.google.com/pubsub/docs/admin#resource_names). The generated
+   * name is populated in the returned Snapshot object. Note that for REST API
+   * requests, you must specify a name in the request. (snapshots.create)
    *
    * @param string $name Required. User-provided name for this snapshot. If the
    * name is not provided in the request, the server will assign a random name for
@@ -57,7 +58,8 @@ class Google_Service_Pubsub_Resource_ProjectsSnapshots extends Google_Service_Re
     return $this->call('create', array($params), "Google_Service_Pubsub_Snapshot");
   }
   /**
-   * Removes an existing snapshot. Snapshots are used in Seek operations, which
+   * Removes an existing snapshot. Snapshots are used in [Seek]
+   * (https://cloud.google.com/pubsub/docs/replay-overview) operations, which
    * allow you to manage message acknowledgments in bulk. That is, you can set the
    * acknowledgment state of messages in an existing subscription to the state
    * captured by a snapshot. When the snapshot is deleted, all messages retained
@@ -125,8 +127,9 @@ class Google_Service_Pubsub_Resource_ProjectsSnapshots extends Google_Service_Re
     return $this->call('getIamPolicy', array($params), "Google_Service_Pubsub_Policy");
   }
   /**
-   * Lists the existing snapshots. Snapshots are used in Seek operations, which
-   * allow you to manage message acknowledgments in bulk. That is, you can set the
+   * Lists the existing snapshots. Snapshots are used in [Seek](
+   * https://cloud.google.com/pubsub/docs/replay-overview) operations, which allow
+   * you to manage message acknowledgments in bulk. That is, you can set the
    * acknowledgment state of messages in an existing subscription to the state
    * captured by a snapshot. (snapshots.listProjectsSnapshots)
    *
@@ -134,11 +137,11 @@ class Google_Service_Pubsub_Resource_ProjectsSnapshots extends Google_Service_Re
    * snapshots. Format is `projects/{project-id}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of snapshots to return.
    * @opt_param string pageToken The value returned by the last
    * `ListSnapshotsResponse`; indicates that this is a continuation of a prior
    * `ListSnapshots` call, and that the system should return the next page of
    * data.
-   * @opt_param int pageSize Maximum number of snapshots to return.
    * @return Google_Service_Pubsub_ListSnapshotsResponse
    */
   public function listProjectsSnapshots($project, $optParams = array())

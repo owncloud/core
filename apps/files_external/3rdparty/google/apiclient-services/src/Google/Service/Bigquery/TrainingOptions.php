@@ -18,7 +18,9 @@
 class Google_Service_Bigquery_TrainingOptions extends Google_Collection
 {
   protected $collection_key = 'inputLabelColumns';
+  public $autoArima;
   public $batchSize;
+  public $dataFrequency;
   public $dataSplitColumn;
   public $dataSplitEvalFraction;
   public $dataSplitMethod;
@@ -27,6 +29,9 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public $earlyStop;
   public $feedbackType;
   public $hiddenUnits;
+  public $holidayRegion;
+  public $horizon;
+  public $includeDrift;
   public $initialLearnRate;
   public $inputLabelColumns;
   public $itemColumn;
@@ -43,14 +48,28 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public $minRelativeProgress;
   public $minSplitLoss;
   public $modelUri;
+  protected $nonSeasonalOrderType = 'Google_Service_Bigquery_ArimaOrder';
+  protected $nonSeasonalOrderDataType = '';
   public $numClusters;
   public $numFactors;
   public $optimizationStrategy;
+  public $preserveInputStructs;
   public $subsample;
+  public $timeSeriesDataColumn;
+  public $timeSeriesIdColumn;
+  public $timeSeriesTimestampColumn;
   public $userColumn;
   public $walsAlpha;
   public $warmStart;
 
+  public function setAutoArima($autoArima)
+  {
+    $this->autoArima = $autoArima;
+  }
+  public function getAutoArima()
+  {
+    return $this->autoArima;
+  }
   public function setBatchSize($batchSize)
   {
     $this->batchSize = $batchSize;
@@ -58,6 +77,14 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getBatchSize()
   {
     return $this->batchSize;
+  }
+  public function setDataFrequency($dataFrequency)
+  {
+    $this->dataFrequency = $dataFrequency;
+  }
+  public function getDataFrequency()
+  {
+    return $this->dataFrequency;
   }
   public function setDataSplitColumn($dataSplitColumn)
   {
@@ -122,6 +149,30 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getHiddenUnits()
   {
     return $this->hiddenUnits;
+  }
+  public function setHolidayRegion($holidayRegion)
+  {
+    $this->holidayRegion = $holidayRegion;
+  }
+  public function getHolidayRegion()
+  {
+    return $this->holidayRegion;
+  }
+  public function setHorizon($horizon)
+  {
+    $this->horizon = $horizon;
+  }
+  public function getHorizon()
+  {
+    return $this->horizon;
+  }
+  public function setIncludeDrift($includeDrift)
+  {
+    $this->includeDrift = $includeDrift;
+  }
+  public function getIncludeDrift()
+  {
+    return $this->includeDrift;
   }
   public function setInitialLearnRate($initialLearnRate)
   {
@@ -251,6 +302,20 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   {
     return $this->modelUri;
   }
+  /**
+   * @param Google_Service_Bigquery_ArimaOrder
+   */
+  public function setNonSeasonalOrder(Google_Service_Bigquery_ArimaOrder $nonSeasonalOrder)
+  {
+    $this->nonSeasonalOrder = $nonSeasonalOrder;
+  }
+  /**
+   * @return Google_Service_Bigquery_ArimaOrder
+   */
+  public function getNonSeasonalOrder()
+  {
+    return $this->nonSeasonalOrder;
+  }
   public function setNumClusters($numClusters)
   {
     $this->numClusters = $numClusters;
@@ -275,6 +340,14 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   {
     return $this->optimizationStrategy;
   }
+  public function setPreserveInputStructs($preserveInputStructs)
+  {
+    $this->preserveInputStructs = $preserveInputStructs;
+  }
+  public function getPreserveInputStructs()
+  {
+    return $this->preserveInputStructs;
+  }
   public function setSubsample($subsample)
   {
     $this->subsample = $subsample;
@@ -282,6 +355,30 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getSubsample()
   {
     return $this->subsample;
+  }
+  public function setTimeSeriesDataColumn($timeSeriesDataColumn)
+  {
+    $this->timeSeriesDataColumn = $timeSeriesDataColumn;
+  }
+  public function getTimeSeriesDataColumn()
+  {
+    return $this->timeSeriesDataColumn;
+  }
+  public function setTimeSeriesIdColumn($timeSeriesIdColumn)
+  {
+    $this->timeSeriesIdColumn = $timeSeriesIdColumn;
+  }
+  public function getTimeSeriesIdColumn()
+  {
+    return $this->timeSeriesIdColumn;
+  }
+  public function setTimeSeriesTimestampColumn($timeSeriesTimestampColumn)
+  {
+    $this->timeSeriesTimestampColumn = $timeSeriesTimestampColumn;
+  }
+  public function getTimeSeriesTimestampColumn()
+  {
+    return $this->timeSeriesTimestampColumn;
   }
   public function setUserColumn($userColumn)
   {

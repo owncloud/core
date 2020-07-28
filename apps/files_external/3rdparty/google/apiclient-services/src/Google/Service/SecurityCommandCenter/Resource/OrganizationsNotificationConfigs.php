@@ -95,7 +95,9 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsNotificationCon
     return $this->call('list', array($params), "Google_Service_SecurityCommandCenter_ListNotificationConfigsResponse");
   }
   /**
-   * Updates a notification config. (notificationConfigs.patch)
+   * Updates a notification config. The following update fields are allowed:
+   * description, pubsub_topic, streaming_config.filter
+   * (notificationConfigs.patch)
    *
    * @param string $name The relative resource name of this notification config.
    * See:
