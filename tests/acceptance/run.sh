@@ -391,7 +391,13 @@ function run_behat_tests() {
 
 	if [ -n "${EXPECTED_FAILURES_FILE}" ]
 	then
-		echo "Checking expected failures"
+		if [ -n "${BEHAT_SUITE_TO_RUN}" ]
+		then
+			echo "Checking expected failures for suite ${BEHAT_SUITE_TO_RUN}"
+		else
+			echo "Checking expected failures"
+		fi
+
 		PASSED=true
 		FAILED_SCENARIO_FOUND=false
 		FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
@@ -430,7 +436,7 @@ function run_behat_tests() {
 				then
 					# If the expected failure is not in the suite that is currently being run,
 					# then do not try and check that it failed.
-					REGEX_TO_MATCH="^${BEHAT_SUITE_TO_RUN}"
+					REGEX_TO_MATCH="^${BEHAT_SUITE_TO_RUN}/"
 					if ! [[ "${SUITE_SCENARIO}" =~ ${REGEX_TO_MATCH} ]]
 					then
 						continue
