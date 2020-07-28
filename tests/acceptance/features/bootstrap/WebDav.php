@@ -27,6 +27,7 @@ use Guzzle\Http\Exception\BadResponseException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
@@ -535,9 +536,10 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)"\s?(asynchronously|) to these (?:filenames|foldernames|entries) using the webDAV API then the results should be as listed$/
+	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)"\s?(asynchronously|) to these (?:filenames|foldernames|entries) using the webDAV API then the results should be as listed$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $fileSource
 	 * @param string $type "asynchronously" or empty
 	 * @param TableNode $table
@@ -546,6 +548,7 @@ trait WebDav {
 	 */
 	public function userMovesEntriesUsingTheAPI(
 		$user,
+		$entry,
 		$fileSource,
 		$type,
 		TableNode $table
@@ -570,7 +573,7 @@ trait WebDav {
 				"HTTP status code is not the expected value while trying to move " . $targetName
 			);
 			if ($row['exists'] === "yes") {
-				$this->asFileOrFolderShouldExist($user, "entry", $targetName);
+				$this->asFileOrFolderShouldExist($user, $entry, $targetName);
 				// The move was successful.
 				// Move the file/folder back so the source file/folder exists for the next move
 				$this->userMovesFileUsingTheAPI(
@@ -580,7 +583,7 @@ trait WebDav {
 					$fileSource
 				);
 			} else {
-				$this->asFileOrFolderShouldNotExist($user, "entry", $targetName);
+				$this->asFileOrFolderShouldNotExist($user, $entry, $targetName);
 			}
 		}
 	}
@@ -1302,28 +1305,38 @@ trait WebDav {
 	 * @param string $path
 	 * @param string $type
 	 *
-	 * @return ResponseInterface
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist(
-		$user, $entry, $path, $type = "files"
+		$user, $entry="file", $path= null, $type = "files"
 	) {
 		$user = $this->getActualUsername($user);
-		$path = $this->substituteInLineCodes($path, $user);
-		$response = WebDavHelper::makeDavRequest(
-			$this->getBaseUrl(), $this->getActualUsername($user),
-			$this->getPasswordForUser($user), 'GET', $path,
-			[], null, 2, $type
+		$path = $this->substituteInLineCodes($path);
+		$this->responseXmlObject = $this->listFolder(
+			$user, $path, 0, null, $type
 		);
-
-		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
-			throw new \Exception(
-				"$entry '$path' expected to not exist " .
-				"(status code {$response->getStatusCode()}, expected 401 - 404)"
-			);
+		if (\get_class($this->responseXmlObject) === "GuzzleHttp\Psr7\Response") {
+			$response = $this->responseXmlObject;
+			if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
+				throw new \Exception(
+					"$entry '$path' expected to not exist " .
+					"(status code {$response->getStatusCode()}, expected 401 -404)"
+				);
+			}
+		} else {
+			if ($this->isEtagValid()) {
+				$isCollection = $this->getResponseXmlObject()->xpath("//d:prop/d:resourcetype/d:collection");
+				if (\count($isCollection) === 0) {
+					$actualResourceType = "file";
+				} else {
+					$actualResourceType = "folder";
+				}
+				Assert::fail(
+					"$entry '$path' should not exist. But it does exist and is a $actualResourceType"
+				);
+			}
 		}
-
-		return $response;
 	}
 
 	/**
@@ -1349,6 +1362,12 @@ trait WebDav {
 			$this->isEtagValid(),
 			"$entry '$path' expected to exist but not found"
 		);
+		$isCollection = $this->getResponseXmlObject()->xpath("//d:prop/d:resourcetype/d:collection");
+		if ($entry === "folder") {
+			Assert::assertEquals(\count($isCollection), 1, "Unexpectedly, `$path` is not a folder");
+		} elseif ($entry === "file") {
+			Assert::assertEquals(\count($isCollection), 0, "Unexpectedly, `$path` is not a file");
+		}
 	}
 
 	/**
@@ -1385,7 +1404,7 @@ trait WebDav {
 	 * @param array|null $properties
 	 * @param string $type
 	 *
-	 * @return SimpleXMLElement
+	 * @return SimpleXMLElement|ResponseInterface
 	 */
 	public function listFolder(
 		$user, $path, $folderDepth, $properties = null, $type = "files"
@@ -1847,7 +1866,7 @@ trait WebDav {
 	public function userShouldBeAbleToUploadFileTo($user, $source, $destination) {
 		$user = $this->getActualUsername($user);
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->asFileOrFolderShouldExist($user, null, $destination);
+		$this->asFileOrFolderShouldExist($user, "file", $destination);
 	}
 
 	/**
@@ -1861,7 +1880,7 @@ trait WebDav {
 	 */
 	public function theUserShouldNotBeAbleToUploadFileTo($user, $source, $destination) {
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->asFileOrFolderShouldNotExist($user, null, $destination);
+		$this->asFileOrFolderShouldNotExist($user, "file", $destination);
 	}
 
 	/**
@@ -2035,9 +2054,9 @@ trait WebDav {
 				"HTTP status code is not the expected value while trying to upload " . $row['filename']
 			);
 			if ($row['exists'] === "yes") {
-				$this->asFileOrFolderShouldExist($user, "entry", $row['filename']);
+				$this->asFileOrFolderShouldExist($user, "file", $row['filename']);
 			} else {
-				$this->asFileOrFolderShouldNotExist($user, "entry", $row['filename']);
+				$this->asFileOrFolderShouldNotExist($user, "file", $row['filename']);
 			}
 		}
 	}

@@ -733,17 +733,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to create a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to create a public link share of (file|folder) "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
+	 * @param string $entry
 	 * @param string $filepath
 	 *
 	 * @return void
 	 */
-	public function shouldNotBeAbleToCreatePublicLinkShare($sharer, $filepath) {
+	public function shouldNotBeAbleToCreatePublicLinkShare($sharer, $entry, $filepath) {
 		$this->asFileOrFolderShouldExist(
 			$this->getActualUsername($sharer),
-			"entry",
+			$entry,
 			$filepath
 		);
 		$this->createAPublicShare($sharer, $filepath);
@@ -1435,10 +1436,11 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to share (file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to share (file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
+	 * @param string $entry
 	 * @param string $filepath
 	 * @param string $userOrGroupShareType
 	 * @param string $sharee
@@ -1446,11 +1448,11 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null) {
+	public function userTriesToShareFileUsingTheSharingApi($sharer, $entry, $filepath, $userOrGroupShareType, $sharee, $permissions = null) {
 		$sharee = $this->getActualUsername($sharee);
 		$this->asFileOrFolderShouldExist(
 			$this->getActualUsername($sharer),
-			"entry",
+			$entry,
 			$filepath
 		);
 		$this->createShare(
@@ -1464,10 +1466,11 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
-	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to share (file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to share (file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
+	 * @param string $entry
 	 * @param string $filepath
 	 * @param string $userOrGroupShareType
 	 * @param string $sharee
@@ -1476,10 +1479,10 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userShouldBeAbleToShareUsingTheSharingApi(
-		$sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null
+		$sharer, $entry, $filepath, $userOrGroupShareType, $sharee, $permissions = null
 	) {
 		$sharee = $this->getActualUsername($sharee);
-		$this->asFileOrFolderShouldExist($sharer, "entry", $filepath);
+		$this->asFileOrFolderShouldExist($sharer, $entry, $filepath);
 		$this->createShare(
 			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
@@ -2351,16 +2354,17 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the (?:file|folder) "([^"]*)" should not have any shares$/
+	 * @Then /^as user "([^"]*)" the (file|folder) "([^"]*)" should not have any shares$/
 	 *
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function checkPublicSharesAreEmpty($user, $path) {
+	public function checkPublicSharesAreEmpty($user, $entry, $path) {
 		$user = $this->getActualUsername($user);
-		$this->asFileOrFolderShouldExist($user, "entry", $path);
+		$this->asFileOrFolderShouldExist($user, $entry, $path);
 		$dataResponded = $this->getShares($user, $path);
 		//It shouldn't have public shares
 		Assert::assertEquals(

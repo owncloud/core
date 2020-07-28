@@ -68,7 +68,7 @@ Feature: copying from public link share
     Then the HTTP status code should be "204"
     And as "Alice" folder "/PARENT/testFolder" should exist
     And as "Alice" folder "/PARENT/copy1.txt" should exist
-    And as "Alice" folder "/PARENT/copy1.txt/testfile.txt" should exist
+    And as "Alice" file "/PARENT/copy1.txt/testfile.txt" should exist
     And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"
     And the content of file "/PARENT/copy1.txt/testfile.txt" for user "Alice" should be "some data"
 
@@ -84,7 +84,7 @@ Feature: copying from public link share
     When the public copies folder "/testFolder" to "/copy1.txt" using the new public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" folder "/PARENT/testFolder" should exist
-    And as "Alice" folder "/PARENT/copy1.txt" should exist
+    And as "Alice" file "/PARENT/copy1.txt" should exist
     And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"
     And the content of file "/PARENT/copy1.txt" for user "Alice" should be "some data 1"
 
@@ -109,7 +109,7 @@ Feature: copying from public link share
     When the public copies file "/testfile.txt" to "/new-folder" using the new public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "/PARENT/testfile.txt" should exist
-    And as "Alice" folder "/PARENT/new-folder" should exist
+    And as "Alice" file "/PARENT/new-folder" should exist
     And the content of file "/PARENT/testfile.txt" for user "Alice" should be "some data"
     And the content of file "/PARENT/new-folder" for user "Alice" should be "some data"
 
@@ -125,7 +125,7 @@ Feature: copying from public link share
     When the public copies file "/testfile.txt" to "/new-folder" using the new public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "/PARENT/testfile.txt" should exist
-    And as "Alice" folder "/PARENT/new-folder" should exist
+    And as "Alice" file "/PARENT/new-folder" should exist
     And the content of file "/PARENT/testfile.txt" for user "Alice" should be "some data"
 
   Scenario Outline: Copy file with special characters in it's name within a public link folder
