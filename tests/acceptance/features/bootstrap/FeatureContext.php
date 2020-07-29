@@ -3460,10 +3460,13 @@ class FeatureContext extends BehatVariablesContext {
 	 * @param string $targetUser
 	 *
 	 * @return string|null
+	 * @throws Exception
 	 */
 	public function findLastTransferFolderForUser($sourceUser, $targetUser) {
 		$foundPaths = [];
-		$responseXmlObject = $this->listFolder($targetUser, '', 1);
+		$responseXmlObject = $this->listFolderAndReturnResponseXml(
+			$targetUser, '', 1
+		);
 		$transferredElements = $responseXmlObject->xpath(
 			"//d:response/d:href[contains(., '/transferred%20from%20$sourceUser%20on%')]"
 		);
