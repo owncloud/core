@@ -23,6 +23,7 @@ Summary
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
 * Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
 * Change - Update icewind/smb from 3.2.5 to 3.2.6 in files_external: [#37712](https://github.com/owncloud/core/pull/37712)
+* Change - Add settings checkbox to enable manual file locking: [#37720](https://github.com/owncloud/core/pull/37720)
 * Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 * Change - Update league/flysystem (1.0.69 => 1.0.70): [#37730](https://github.com/owncloud/core/pull/37730)
 * Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
@@ -131,6 +132,15 @@ Details
 * Change - Update icewind/smb from 3.2.5 to 3.2.6 in files_external: [#37712](https://github.com/owncloud/core/pull/37712)
 
    https://github.com/owncloud/core/pull/37712
+
+* Change - Add settings checkbox to enable manual file locking: [#37720](https://github.com/owncloud/core/pull/37720)
+
+   A checkbox to enable manual file locking on clients has been added to admin settings,
+   additional, manual file locking. This checkbox is an alternative way to enable manual file
+   locking on clients that support it. The occ command can also still be used - occ config:app:set
+   files enable_lock_file_action --value yes
+
+   https://github.com/owncloud/core/pull/37720
 
 * Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 
