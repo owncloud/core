@@ -71,6 +71,8 @@ OC.L10N.register(
     "New" : "جديد",
     "Unknown user" : "مستخدم غير معروف",
     "Lock status" : "حالة مغلق",
+    "Lock file" : "قفل الملف",
+    "Failed to lock." : "فشل في القفل.",
     "This resource is locked. Click to see more details." : "هذا المورد مغلق. انقر لمعرفة مزيد من التفاصيل.",
     "\"{name}\" is an invalid file name." : "\"{name}\" اسم ملف غير صالح.",
     "File name cannot be empty." : "لا يمكن أن يكون اسم الملف فارغًا.",
