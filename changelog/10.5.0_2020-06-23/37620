@@ -1,0 +1,8 @@
+Change: Add capabilities for file locking
+
+- file_locking_support -> general capability
+- file_locking_enable_file_action - > depending on the setting
+
+
+https://github.com/owncloud/core/issues/37620
+https://github.com/owncloud/core/pull/37747
