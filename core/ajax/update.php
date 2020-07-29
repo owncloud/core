@@ -185,6 +185,8 @@ if (OC::checkUpgrade(false)) {
 		$eventSource->send('success', (string)$l->t('Finished code integrity check'));
 	});
 
+	$cacheFactory = \OC::$server->getMemCacheFactory();  // create instance before the upgrade
+
 	try {
 		$updater->upgrade();
 	} catch (\Exception $e) {
@@ -192,6 +194,12 @@ if (OC::checkUpgrade(false)) {
 		$eventSource->close();
 		exit();
 	}
+
+	// Clear caches after successful upgrade.
+	// Caches were created before the upgrade, so the cache prefix will be the old one
+	// TODO: Note that only the "create" method is available in the interface. It isn't
+	// possible to create local or distributed caches explicitly
+	$cacheFactory->create()->clear();
 
 	$disabledApps = [];
 	foreach ($disabledThirdPartyApps as $app) {
