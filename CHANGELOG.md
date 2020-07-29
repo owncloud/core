@@ -22,6 +22,7 @@ Summary
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
 * Change - Update symfony/polyfill (1.17.0 => 1.18.0): [#37694](https://github.com/owncloud/core/pull/37694)
+* Change - Update icewind/smb from 3.2.5 to 3.2.6 in files_external: [#37712](https://github.com/owncloud/core/pull/37712)
 * Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 * Change - Update league/flysystem (1.0.69 => 1.0.70): [#37730](https://github.com/owncloud/core/pull/37730)
 * Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
@@ -126,6 +127,10 @@ Details
    symfony/polyfill-php72 symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/37694
+
+* Change - Update icewind/smb from 3.2.5 to 3.2.6 in files_external: [#37712](https://github.com/owncloud/core/pull/37712)
+
+   https://github.com/owncloud/core/pull/37712
 
 * Change - Update Symfony components to 4.4.11: [#37727](https://github.com/owncloud/core/pull/37727)
 
