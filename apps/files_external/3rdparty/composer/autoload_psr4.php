@@ -13,7 +13,6 @@ return array(
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Icewind\\Streams\\' => array($vendorDir . '/icewind/streams/src'),
-    'Icewind\\SMB\\Test\\' => array($vendorDir . '/icewind/smb/tests'),
     'Icewind\\SMB\\' => array($vendorDir . '/icewind/smb/src'),
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
