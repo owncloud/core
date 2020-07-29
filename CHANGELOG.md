@@ -235,6 +235,7 @@ Summary
 * Change - Update opis/closure (3.5.4 => 3.5.5): [#37547](https://github.com/owncloud/core/pull/37547)
 * Change - Share sheet improvements (external sharing): [#37558](https://github.com/owncloud/core/pull/37558)
 * Change - Update symfony/polyfill (1.17.0 => 1.17.1): [#37385](https://github.com/owncloud/core/pull/37385)
+* Change - Add capabilities for file locking: [#37620](https://github.com/owncloud/core/issues/37620)
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 * Enhancement - Add 3 new events (before-fail-after) for share password validations: [#37438](https://github.com/owncloud/core/pull/37438)
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
@@ -684,6 +685,14 @@ Details
    symfony/polyfill-mbstring symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/37385
+
+* Change - Add capabilities for file locking: [#37620](https://github.com/owncloud/core/issues/37620)
+
+   - file_locking_support -> general capability - file_locking_enable_file_action - >
+   depending on the setting
+
+   https://github.com/owncloud/core/issues/37620
+   https://github.com/owncloud/core/pull/37747
 
 * Enhancement - Add new grace period and license management into core: [#36814](https://github.com/owncloud/core/pull/36814)
 
