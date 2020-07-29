@@ -2303,31 +2303,6 @@ trait Provisioning {
 		$user = \trim($user);
 		$method = \trim(\strtolower($method));
 		switch ($method) {
-			case "api":
-				$results = UserHelper::createUser(
-					$this->getBaseUrl(),
-					$user,
-					$password,
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$displayName, $email
-				);
-				foreach ($results as $result) {
-					if ($result->getStatusCode() !== 200) {
-						$message = $this->getResponseXml($result)->xpath("/ocs/meta/message");
-						if ($message && (string) $message[0] === "User already exists") {
-							Assert::fail(
-								'Could not create user as it already exists. ' .
-								'Please delete the user to run tests again.'
-							);
-						}
-						throw new Exception(
-							__METHOD__ . " could not create user. "
-							. $result->getStatusCode() . " " . $result->getBody()
-						);
-					}
-				}
-				break;
 			case "occ":
 				$result = SetupHelper::createUser(
 					$user, $password, $displayName, $email
@@ -2338,6 +2313,7 @@ trait Provisioning {
 					);
 				}
 				break;
+			case "api":
 			case "ldap":
 				$settings = [];
 				$setting["userid"] = $user;

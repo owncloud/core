@@ -32,52 +32,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class UserHelper {
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $displayName
-	 * @param string $email
-	 *
-	 * @return ResponseInterface[]
-	 *          we need multiple requests to set $displayName and $email
-	 *          this array will contain the responses from all requests
-	 */
-	public static function createUser(
-		$baseUrl, $user, $password, $adminUser, $adminPassword,
-		$displayName = null, $email = null
-	) {
-		$body = [
-			'userid' => $user,
-			'password' => $password
-		];
-		$return = [];
-		$return[] = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUser, $adminPassword, "POST", "/cloud/users", $body
-		);
-		//if we couldn't successfully create the user, no need to keep on going
-		if ($return[0]->getStatusCode() !== 200) {
-			return $return;
-		}
-		if ($displayName !== null) {
-			$editResponse = self::editUser(
-				$baseUrl, $user, "display", $displayName, $adminUser, $adminPassword
-			);
-			$return[] = $editResponse;
-			if ($editResponse->getStatusCode() !== 200) {
-				return $return;
-			}
-		}
-		if ($email !== null) {
-			$return[] = self::editUser(
-				$baseUrl, $user, "email", $email, $adminUser, $adminPassword
-			);
-		}
-		return $return;
-	}
-
-	/**
 	 *
 	 * @param string $baseUrl
 	 * @param string $user
