@@ -2740,6 +2740,52 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given /^the administrator has (enabled|disabled) the webUI lock file action$/
+	 *
+	 * @param string $enabledOrDisabled
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasEnabledTheWebUILockFileAction($enabledOrDisabled) {
+		$switch = ($enabledOrDisabled !== "disabled");
+		if ($switch) {
+			$value = 'yes';
+		} else {
+			$value = 'no';
+		}
+		SetupHelper::runOcc(
+			[
+				"config:app:set",
+				"files",
+				"enable_lock_file_action",
+				"--value=$value"
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$response = SetupHelper::runOcc(
+			[
+				"config:app:get",
+				"files",
+				"enable_lock_file_action"
+			],
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getOcPath()
+		);
+		$status = \trim($response['stdOut']);
+		Assert::assertEquals(
+			$value,
+			$status,
+			"enable_lock_file_action was expected to be '$value'($enabledOrDisabled) but got '$status'"
+		);
+	}
+
+	/**
 	 * @When the administrator creates an external mount point with the following configuration about user :user using the occ command
 	 *
 	 * @param string $user

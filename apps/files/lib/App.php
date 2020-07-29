@@ -48,7 +48,7 @@ class App {
 		$maxChunkSize = (int)($config->getAppValue('files', 'max_chunk_size', (10 * 1024 * 1024)));
 		$uploadStallTimeout = (int)($config->getAppValue('files', 'upload_stall_timeout', 60)); // in seconds
 		$uploadStallRetries = (int)($config->getAppValue('files', 'upload_stall_retries', 100));
-		$enableLockFileAction = (boolean)($config->getAppValue('files', 'enable_lock_file_action', false));
+		$enableLockFileAction = (boolean)($config->getAppValue('files', 'enable_lock_file_action', 'no') === 'yes');
 
 		$array['array']['oc_appconfig']['files'] = [
 			'max_chunk_size' => $maxChunkSize,
