@@ -1,0 +1,8 @@
+Change: Add settings checkbox to enable manual file locking
+
+A checkbox to enable manual file locking on clients has been added to
+admin settings, additional, manual file locking. This checkbox is an alternative
+way to enable manual file locking on clients that support it. The occ command
+can also still be used - occ config:app:set files enable_lock_file_action --value yes
+
+https://github.com/owncloud/core/pull/37720

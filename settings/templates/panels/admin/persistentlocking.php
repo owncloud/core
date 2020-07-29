@@ -17,4 +17,10 @@ script('settings', 'panels/persistentlocking');
 		min="0"
 		value="<?php p($_['maximumTimeout'])?>" />
 	<br/>
+	<input type="checkbox" name="enable_lock_file_action" id="manualFileLockOnClientsEnabled" class="checkbox"
+		   value="1" <?php if ($_['manualFileLockOnClientsEnabled'] === 'yes') {
+	print_unescaped('checked="checked"');
+} ?> />
+	<label for="manualFileLockOnClientsEnabled"><?php p($l->t('Enable manual file locking on clients'));?></label>
+	<br/>
 </div>
