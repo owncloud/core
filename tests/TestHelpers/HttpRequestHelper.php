@@ -325,18 +325,34 @@ class HttpRequestHelper {
 	}
 
 	/**
-	 * Parses the response as XML
+	 * Parses the response as XML and returns a SimpleXMLElement with these
+	 * registered namespaces:
+	 *  | prefix | namespace                                 |
+	 *  | d      | DAV:                                      |
+	 *  | oc     | http://owncloud.org/ns                    |
+	 *  | ocs    | http://open-collaboration-services.org/ns |
 	 *
 	 * @param ResponseInterface $response
 	 *
 	 * @return SimpleXMLElement
+	 * @throws \Exception
 	 */
 	public static function getResponseXml($response) {
 		// rewind just to make sure we can re-parse it in case it was parsed already...
 		$response->getBody()->rewind();
 		$contents = $response->getBody()->getContents();
 		try {
-			return new SimpleXMLElement($contents);
+			$responseXmlObject = new SimpleXMLElement($contents);
+			$responseXmlObject->registerXPathNamespace(
+				'ocs', 'http://open-collaboration-services.org/ns'
+			);
+			$responseXmlObject->registerXPathNamespace(
+				'oc', 'http://owncloud.org/ns'
+			);
+			$responseXmlObject->registerXPathNamespace(
+				'd', 'DAV:'
+			);
+			return $responseXmlObject;
 		} catch (\Exception $e) {
 			if ($contents === '') {
 				throw new \Exception("Received empty response where XML was expected");

@@ -318,35 +318,6 @@ class WebDavHelper {
 	}
 
 	/**
-	 * returns the response parsed into a SimpleXMLElement
-	 * with these registered namespaces:
-	 *  | prefix | namespace                                 |
-	 *  | d      | DAV:                                      |
-	 *  | oc     | http://owncloud.org/ns                    |
-	 *  | ocs    | http://open-collaboration-services.org/ns |
-	 *
-	 * @param ResponseInterface $response
-	 *
-	 * @return SimpleXMLElement
-	 * @throws Exception
-	 */
-	public static function getResponseXmlWithNamespace(
-		$response
-	) {
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
-		$responseXmlObject->registerXPathNamespace(
-			'ocs', 'http://open-collaboration-services.org/ns'
-		);
-		$responseXmlObject->registerXPathNamespace(
-			'oc', 'http://owncloud.org/ns'
-		);
-		$responseXmlObject->registerXPathNamespace(
-			'd', 'DAV:'
-		);
-		return $responseXmlObject;
-	}
-
-	/**
 	 *
 	 * @param string $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080

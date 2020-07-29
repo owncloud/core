@@ -1318,7 +1318,7 @@ trait WebDav {
 		$statusCode = $response->getStatusCode();
 		if ($statusCode < 401 || $statusCode > 404) {
 			try {
-				$this->responseXmlObject = WebDavHelper::getResponseXmlWithNamespace(
+				$this->responseXmlObject = HttpRequestHelper::getResponseXml(
 					$response
 				);
 			} catch (\Exception $e) {
@@ -1444,10 +1444,11 @@ trait WebDav {
 	public function listFolderAndReturnResponseXml(
 		$user, $path, $folderDepth, $properties = null, $type = "files"
 	) {
-		$response = $this->listFolder(
-			$user, $path, $folderDepth, $properties, $type
+		return HttpRequestHelper::getResponseXml(
+			$this->listFolder(
+				$user, $path, $folderDepth, $properties, $type
+			)
 		);
-		return WebDavHelper::getResponseXmlWithNamespace($response);
 	}
 
 	/**

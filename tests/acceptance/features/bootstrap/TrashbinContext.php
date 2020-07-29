@@ -160,7 +160,7 @@ class TrashbinContext implements Context {
 			],
 			'trash-bin'
 		);
-		$responseXml = WebDavHelper::getResponseXmlWithNamespace($response);
+		$responseXml = HttpRequestHelper::getResponseXml($response);
 
 		$this->featureContext->setResponseXmlObject($responseXml);
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
