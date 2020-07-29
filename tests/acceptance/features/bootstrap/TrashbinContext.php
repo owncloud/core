@@ -146,7 +146,7 @@ class TrashbinContext implements Context {
 		$asUser = $asUser ?? $user;
 		$path = $path ?? '/';
 		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
-		$responseXml = WebDavHelper::listFolder(
+		$response = WebDavHelper::listFolder(
 			$this->featureContext->getBaseUrl(),
 			$asUser,
 			$password,
@@ -160,6 +160,7 @@ class TrashbinContext implements Context {
 			],
 			'trash-bin'
 		);
+		$responseXml = WebDavHelper::getResponseXmlWithNamespace($response);
 
 		$this->featureContext->setResponseXmlObject($responseXml);
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);

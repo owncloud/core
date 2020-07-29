@@ -27,7 +27,6 @@ use Guzzle\Http\Exception\BadResponseException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
@@ -1305,38 +1304,43 @@ trait WebDav {
 	 * @param string $path
 	 * @param string $type
 	 *
-	 * @return void
+	 * @return ResponseInterface
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist(
-		$user, $entry="file", $path= null, $type = "files"
+		$user, $entry = "file", $path = null, $type = "files"
 	) {
 		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
-		$this->responseXmlObject = $this->listFolder(
+		$response = $this->listFolder(
 			$user, $path, 0, null, $type
 		);
-		if (\get_class($this->responseXmlObject) === "GuzzleHttp\Psr7\Response") {
-			$response = $this->responseXmlObject;
-			if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
-				throw new \Exception(
-					"$entry '$path' expected to not exist " .
-					"(status code {$response->getStatusCode()}, expected 401 -404)"
+		$statusCode = $response->getStatusCode();
+		if ($statusCode < 401 || $statusCode > 404) {
+			try {
+				$this->responseXmlObject = WebDavHelper::getResponseXmlWithNamespace(
+					$response
 				);
-			}
-		} else {
-			if ($this->isEtagValid()) {
-				$isCollection = $this->getResponseXmlObject()->xpath("//d:prop/d:resourcetype/d:collection");
-				if (\count($isCollection) === 0) {
-					$actualResourceType = "file";
-				} else {
-					$actualResourceType = "folder";
-				}
+			} catch (\Exception $e) {
 				Assert::fail(
-					"$entry '$path' should not exist. But it does exist and is a $actualResourceType"
+					"$entry '$path' should not exist. But API returned $statusCode without XML in the body"
 				);
 			}
+			Assert::assertTrue(
+				$this->isEtagValid(),
+				"$entry '$path' should not exist. But API returned $statusCode without an etag in the body"
+			);
+			$isCollection = $this->getResponseXmlObject()->xpath("//d:prop/d:resourcetype/d:collection");
+			if (\count($isCollection) === 0) {
+				$actualResourceType = "file";
+			} else {
+				$actualResourceType = "folder";
+			}
+			Assert::fail(
+				"$entry '$path' should not exist. But it does exist and is a $actualResourceType"
+			);
 		}
+		return $response;
 	}
 
 	/**
@@ -1355,7 +1359,7 @@ trait WebDav {
 	) {
 		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
-		$this->responseXmlObject = $this->listFolder(
+		$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
 			$user, $path, 0, null, $type
 		);
 		Assert::assertTrue(
@@ -1384,7 +1388,9 @@ trait WebDav {
 		$numEntriesThatExist = 0;
 		foreach ($table->getTable() as $row) {
 			$path = $this->substituteInLineCodes($row[0]);
-			$this->responseXmlObject = $this->listFolder($user, $path, 0);
+			$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
+				$user, $path, 0
+			);
 			if ($this->isEtagValid()) {
 				$numEntriesThatExist = $numEntriesThatExist + 1;
 			}
@@ -1404,7 +1410,8 @@ trait WebDav {
 	 * @param array|null $properties
 	 * @param string $type
 	 *
-	 * @return SimpleXMLElement|ResponseInterface
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
 	public function listFolder(
 		$user, $path, $folderDepth, $properties = null, $type = "files"
@@ -1421,6 +1428,26 @@ trait WebDav {
 			$path, $folderDepth, $properties,
 			$type, ($this->usingOldDavPath) ? 1 : 2
 		);
+	}
+
+	/**
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param int $folderDepth requires 1 to see elements without children
+	 * @param array|null $properties
+	 * @param string $type
+	 *
+	 * @return SimpleXMLElement
+	 * @throws Exception
+	 */
+	public function listFolderAndReturnResponseXml(
+		$user, $path, $folderDepth, $properties = null, $type = "files"
+	) {
+		$response = $this->listFolder(
+			$user, $path, $folderDepth, $properties, $type
+		);
+		return WebDavHelper::getResponseXmlWithNamespace($response);
 	}
 
 	/**
@@ -1468,6 +1495,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 * @throws InvalidArgumentException
+	 * @throws Exception
 	 *
 	 */
 	public function checkElementList(
@@ -1475,7 +1503,9 @@ trait WebDav {
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($elements, 1);
-		$responseXmlObject = $this->listFolder($user, "/", "infinity");
+		$responseXmlObject = $this->listFolderAndReturnResponseXml(
+			$user, "/", "infinity"
+		);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
@@ -3184,12 +3214,15 @@ trait WebDav {
 	 * @param bool $checkEachDelete
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userDeletesEverythingInFolder(
 		$user, $folder, $checkEachDelete = false
 	) {
 		$user = $this->getActualUsername($user);
-		$responseXmlObject = $this->listFolder($user, $folder, 1);
+		$responseXmlObject = $this->listFolderAndReturnResponseXml(
+			$user, $folder, 1
+		);
 		$elementList = $responseXmlObject->xpath("//d:response/d:href");
 		if (\is_array($elementList) && \count($elementList)) {
 			\array_shift($elementList); //don't delete the folder itself

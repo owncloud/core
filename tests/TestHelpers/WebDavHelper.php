@@ -282,12 +282,7 @@ class WebDavHelper {
 	}
 
 	/**
-	 * returns the result parsed into a SimpleXMLElement
-	 * with these registered namespaces:
-	 *  | prefix | namespace                                 |
-	 *  | d      | DAV:                                      |
-	 *  | oc     | http://owncloud.org/ns                    |
-	 *  | ocs    | http://open-collaboration-services.org/ns |
+	 * returns the response to listing a folder (collection)
 	 *
 	 * @param string $baseUrl
 	 * @param string $user
@@ -298,7 +293,7 @@ class WebDavHelper {
 	 * @param string $type
 	 * @param int $davPathVersionToUse
 	 *
-	 * @return SimpleXMLElement|ResponseInterface
+	 * @return ResponseInterface
 	 * @throws Exception
 	 */
 	public static function listFolder(
@@ -316,22 +311,38 @@ class WebDavHelper {
 				'getetag', 'resourcetype'
 			];
 		}
-		$response = self::propfind(
+		return self::propfind(
 			$baseUrl, $user, $password, $path, $properties,
 			$folderDepth, $type, $davPathVersionToUse
 		);
-		try {
-			$responseXmlObject = HttpRequestHelper::getResponseXml($response);
-			$responseXmlObject->registerXPathNamespace(
-				'ocs', 'http://open-collaboration-services.org/ns'
-			);
-		} catch (\Exception $e) {
-			if (OcisHelper::isTestingOnOcis()) {
-				return $response;
-			} else {
-				throw new \Exception($e);
-			}
-		}
+	}
+
+	/**
+	 * returns the response parsed into a SimpleXMLElement
+	 * with these registered namespaces:
+	 *  | prefix | namespace                                 |
+	 *  | d      | DAV:                                      |
+	 *  | oc     | http://owncloud.org/ns                    |
+	 *  | ocs    | http://open-collaboration-services.org/ns |
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return SimpleXMLElement
+	 * @throws Exception
+	 */
+	public static function getResponseXmlWithNamespace(
+		$response
+	) {
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject->registerXPathNamespace(
+			'ocs', 'http://open-collaboration-services.org/ns'
+		);
+		$responseXmlObject->registerXPathNamespace(
+			'oc', 'http://owncloud.org/ns'
+		);
+		$responseXmlObject->registerXPathNamespace(
+			'd', 'DAV:'
+		);
 		return $responseXmlObject;
 	}
 

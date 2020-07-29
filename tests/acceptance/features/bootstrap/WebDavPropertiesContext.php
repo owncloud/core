@@ -59,7 +59,9 @@ class WebDavPropertiesContext implements Context {
 		$user, $path
 	) {
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder($user, $path, 0)
+			$this->featureContext->listFolderAndReturnResponseXml(
+				$user, $path, 0
+			)
 		);
 	}
 
@@ -76,7 +78,9 @@ class WebDavPropertiesContext implements Context {
 		$user, $path, $depth
 	) {
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder($user, $path, $depth)
+			$this->featureContext->listFolderAndReturnResponseXml(
+				$user, $path, $depth
+			)
 		);
 	}
 
@@ -108,7 +112,9 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->usingNewDavPath();
 		}
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder($user, $path, $depth, $properties)
+			$this->featureContext->listFolderAndReturnResponseXml(
+				$user, $path, $depth, $properties
+			)
 		);
 	}
 
@@ -139,7 +145,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->usingNewDavPath();
 		}
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder(
+			$this->featureContext->listFolderAndReturnResponseXml(
 				$user, $commentsPath, $depth, $properties, "comments"
 			)
 		);
@@ -271,7 +277,9 @@ class WebDavPropertiesContext implements Context {
 			}
 		}
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder($user, $path, 0, $properties, "public-files")
+			$this->featureContext->listFolderAndReturnResponseXml(
+				$user, $path, 0, $properties, "public-files"
+			)
 		);
 	}
 
@@ -662,7 +670,9 @@ class WebDavPropertiesContext implements Context {
 		$user, $path, $property, $expectedValue, $altExpectedValue
 	) {
 		$this->featureContext->setResponseXmlObject(
-			$this->featureContext->listFolder($user, $path, 0, [$property])
+			$this->featureContext->listFolderAndReturnResponseXml(
+				$user, $path, 0, [$property]
+			)
 		);
 		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative(
 			$property, $expectedValue, $altExpectedValue
