@@ -493,7 +493,7 @@ class DefaultShareProvider implements IShareProvider {
 			}
 			$cursor->closeCursor();
 		}
-		
+
 		return $shares;
 	}
 
@@ -569,7 +569,7 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
 				$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
 			));
-		
+
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
 		$cursor->closeCursor();
@@ -945,7 +945,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		return $share;
 	}
-	
+
 	/**
 	 * Create a share object from an database row
 	 *
@@ -955,7 +955,7 @@ class DefaultShareProvider implements IShareProvider {
 	 */
 	private function createShare($data) {
 		$share = new Share($this->rootFolder, $this->userManager);
-		$share->setId((int)$data['id'])
+		$share->setId($data['id'])
 			->setShareType((int)$data['share_type'])
 			->setPermissions((int)$data['permissions'])
 			->setTarget($data['file_target'])
@@ -1086,7 +1086,7 @@ class DefaultShareProvider implements IShareProvider {
 			}
 			$stmt->closeCursor();
 		}
-		
+
 		$resolvedShares = \array_values($shareIdToShareMap);
 		return $resolvedShares;
 	}

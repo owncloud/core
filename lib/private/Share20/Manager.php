@@ -1397,7 +1397,7 @@ class Manager implements IManager {
 
 		$share = $provider->getShareById($id, $recipient);
 
-		// Validate link shares expiration date
+		// Validate shares expiration date
 		if ($this->shareHasExpired($share)) {
 			$this->deleteShare($share);
 			throw new ShareNotFound();
