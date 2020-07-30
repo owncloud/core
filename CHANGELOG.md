@@ -11,6 +11,7 @@ Summary
 * Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
 * Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
 * Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
+* Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update icewind/smb from 3.2.3 to 3.2.4 and files_external dependencies: [#37415](https://github.com/owncloud/core/pull/37415)
 * Change - Adjust wording on login page: [#37603](https://github.com/owncloud/core/issues/37603)
@@ -57,6 +58,14 @@ Details
 
    https://github.com/owncloud/core/issues/36055
    https://github.com/owncloud/core/pull/37625
+
+* Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
+
+   If multiple links exist for the same node and, non-expired share created before expired share,
+   expiredSharesJob was deleting non-expired share. This problem has been resolved. Also,
+   ExpireSharesJob now handles user and group shares.
+
+   https://github.com/owncloud/core/pull/37729
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
