@@ -89,6 +89,32 @@ Feature: capabilities
       | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
       | files_sharing | providers_capabilities@@@ocFederatedSharing@@@remote     | EMPTY             |
 
+  @smokeTest @skipOnOcV10.3 @skipOnOcV10.4
+  # These are new capabilities in 10.5
+  Scenario: getting new default capabilities in 10.5.0 with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability | path_to_element | value |
+      | files      | favorites       | 1     |
+
+  @smokeTest @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  # These are new capabilities after 10.5.0
+  Scenario: getting new default capabilities in versions after 10.5.0 with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability | path_to_element                 | value |
+      | files      | file_locking_support            | 1     |
+      | files      | file_locking_enable_file_action | EMPTY |
+
+  @smokeTest @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  Scenario: lock file action can be enabled
+    Given parameter "enable_lock_file_action" of app "files" has been set to "yes"
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability | path_to_element                 | value |
+      | files      | file_locking_support            | 1     |
+      | files      | file_locking_enable_file_action | 1     |
+
   @files_trashbin-app-required
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
