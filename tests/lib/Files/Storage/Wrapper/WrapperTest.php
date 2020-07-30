@@ -8,6 +8,7 @@
 
 namespace Test\Files\Storage\Wrapper;
 
+use OCP\Files\Storage\IStorage;
 use Test\Files\Storage\Storage;
 use OC\Files\Storage\Wrapper\Wrapper;
 use OC\Files\Storage\Local;
@@ -19,16 +20,21 @@ use OC\Files\Storage\Local;
  */
 class WrapperTest extends Storage {
 	/**
-	 * @var string tmpDir
+	 * @var string $tmpDir
 	 */
 	private $tmpDir;
+
+	/**
+	 * @var IStorage $storage
+	 */
+	private $storage;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
-		$storage = new Local(['datadir' => $this->tmpDir]);
-		$this->instance = new Wrapper(['storage' => $storage]);
+		$this->storage = new Local(['datadir' => $this->tmpDir]);
+		$this->instance = new Wrapper(['storage' => $this->storage]);
 	}
 
 	protected function tearDown(): void {
@@ -39,5 +45,9 @@ class WrapperTest extends Storage {
 	public function testInstanceOfStorageWrapper() {
 		$this->assertTrue($this->instance->instanceOfStorage(Local::class));
 		$this->assertTrue($this->instance->instanceOfStorage(Wrapper::class));
+	}
+
+	public function testNeedsPartFile() {
+		$this->assertEquals($this->instance->needsPartFile(), $this->storage->needsPartFile());
 	}
 }
