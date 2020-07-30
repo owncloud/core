@@ -2365,9 +2365,8 @@ trait Provisioning {
 	public function deleteUser($user) {
 		if (OcisHelper::isTestingOnOcis()) {
 			OcisHelper::deleteRevaUserData($user);
-		} else {
-			$this->deleteTheUserUsingTheProvisioningApi($user);
 		}
+		$this->deleteTheUserUsingTheProvisioningApi($user);
 
 		$this->userShouldNotExist($user);
 	}
@@ -4115,12 +4114,10 @@ trait Provisioning {
 		if ($this->isTestingWithLdap()) {
 			$this->deleteLdapUsersAndGroups();
 		}
+		$this->cleanupDatabaseUsers();
+		$this->cleanupDatabaseGroups();
 
-		if (OcisHelper::isTestingOnOcis()) {
-			OcisHelper::deleteRevaUserData("");
-		} else {
-			$this->cleanupDatabaseUsers();
-			$this->cleanupDatabaseGroups();
+		if (!OcisHelper::isTestingOnOcis()) {
 			$this->resetAdminUserAttributes();
 		}
 	}
