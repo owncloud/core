@@ -377,8 +377,8 @@ Feature: sharing
 #    And folder "/folder1/folder2" should be included as path in the response
     Examples:
       | ocs_api_version | http_status_code | ocs_status_code |
-      | 1               | 200              | 996             |
-      | 2               | 500              | 996             |
+      | 1               | 200              | 100             |
+      | 2               | 200              | 200             |
 
   @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243
   Scenario Outline: user shares a file with file name longer than 64 chars to another user

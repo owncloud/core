@@ -62,14 +62,28 @@ Feature: auth
       | /ocs/v2.php/cloud/apps                                      |
       | /ocs/v1.php/cloud/groups                                    |
       | /ocs/v2.php/cloud/groups                                    |
-      | /ocs/v1.php/cloud/users                                     |
-      | /ocs/v2.php/cloud/users                                     |
       | /ocs/v1.php/config                                          |
       | /ocs/v2.php/config                                          |
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "notset"
+
+  @skipOnOcV10
+  @issue-ocis-ocs-26
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: using OCS anonymously
+    When a user requests these endpoints with "GET" and no authentication
+      | endpoint                |
+      | /ocs/v1.php/cloud/users |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    When a user requests these endpoints with "GET" and no authentication
+      | endpoint                |
+      | /ocs/v2.php/cloud/users |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "200"
 
   @issue-32068 @skipOnOcis
   @issue-ocis-reva-11
@@ -153,12 +167,12 @@ Feature: auth
       | endpoint                |
       | /ocs/v1.php/cloud/users |
     Then the HTTP status code of responses on all endpoints should be "200"
-    And the OCS status code of responses on all endpoints should be "403"
+    And the OCS status code of responses on all endpoints should be "100"
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                |
       | /ocs/v2.php/cloud/users |
-    Then the HTTP status code of responses on all endpoints should be "403"
-    And the OCS status code of responses on all endpoints should be "403"
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "200"
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint           |
       | /ocs/v2.php/config |
