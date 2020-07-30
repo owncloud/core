@@ -111,4 +111,16 @@ class OwnCloudFunctionsTest extends \Test\TestCase {
 		$instance = new \OCA\Files_External\Lib\Storage\OwnCloud($config);
 		$this->assertEquals($expectedUri, $instance->createBaseUri());
 	}
+
+	public function testUsePartFile() {
+		$config = [
+			'host' => 'http://testhost/testroot',
+			'root' => 'subdir',
+			'secure' => true,
+			'user' => 'someuser',
+			'password' => 'somepassword'
+		];
+		$instance = new \OCA\Files_External\Lib\Storage\OwnCloud($config);
+		$this->assertFalse($instance->usePartFile());
+	}
 }

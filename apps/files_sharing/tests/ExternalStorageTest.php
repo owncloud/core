@@ -92,6 +92,10 @@ class ExternalStorageTest extends \Test\TestCase {
 		$result = $this->getTestStorage('https://remoteserver')->test();
 		$this->assertTrue($result);
 	}
+
+	public function testUsePartFile() {
+		$this->assertFalse($this->getTestStorage('https://remoteserver/')->usePartFile());
+	}
 }
 
 /**

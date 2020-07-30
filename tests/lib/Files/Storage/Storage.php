@@ -636,8 +636,12 @@ abstract class Storage extends \Test\TestCase {
 	}
 
 	public function testPartFile() {
-		$this->instance->file_put_contents('bar.txt.part', 'bar');
-		$this->instance->rename('bar.txt.part', 'bar.txt');
+		if ($this->instance->usePartFile()) {
+			$this->instance->file_put_contents('bar.txt.part', 'bar');
+			$this->instance->rename('bar.txt.part', 'bar.txt');
+		} else {
+			$this->instance->file_put_contents('bar.txt', 'bar');
+		}
 		$this->assertEquals('bar', $this->instance->file_get_contents('bar.txt'));
 	}
 }
