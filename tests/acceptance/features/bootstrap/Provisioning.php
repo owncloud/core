@@ -616,6 +616,7 @@ trait Provisioning {
 		$usersAttributes = [];
 		foreach ($table as $row) {
 			$userAttribute['userid'] = $this->getActualUsername($row['username']);
+
 			if (isset($row['displayname'])) {
 				$userAttribute['displayName'] = $row['displayname'];
 			} elseif ($setDefaultAttributes) {
@@ -837,12 +838,22 @@ trait Provisioning {
 			if ($this->isTestingWithLdap()) {
 				$this->createLdapUser($userAttributes);
 			} else {
+				$attributesToCreateUser['userid'] = $userAttributes['userid'];
+				$attributesToCreateUser['password'] = $userAttributes['password'];
+				if (OcisHelper::isTestingOnOcis()) {
+					$attributesToCreateUser['username'] = $userAttributes['userid'];
+					if ($userAttributes['email'] === null) {
+						$attributesToCreateUser['email'] = $userAttributes['username'] . '@owncloud.org';
+					} else {
+						$attributesToCreateUser['email'] = $userAttributes['email'];
+					}
+				}
 				// Create a OCS request for creating the user. The request is not sent to the server yet.
 				$request = OcsApiHelper::createOcsRequest(
 					$this->getBaseUrl(),
 					'POST',
 					"/cloud/users",
-					$userAttributes
+					$attributesToCreateUser
 				);
 				// Add the request to the $requests array so that they can be sent in parallel.
 				\array_push($requests, $request);
