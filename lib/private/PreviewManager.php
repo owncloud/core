@@ -268,7 +268,8 @@ class PreviewManager implements IPreview {
 			'OC\Preview\GIF',
 			'OC\Preview\BMP',
 			'OC\Preview\Heic',
-			'OC\Preview\XBitmap'
+			'OC\Preview\XBitmap',
+			'OC\Preview\SGI',
 		];
 
 		$this->defaultProviders = $this->config->getSystemValue('enabledPreviewProviders', \array_merge([
@@ -329,6 +330,7 @@ class PreviewManager implements IPreview {
 				'EPS'	=> ['mimetype' => '/application\/postscript/', 'class' => '\OC\Preview\Postscript'],
 				'TTF'	=> ['mimetype' => '/application\/(?:font-sfnt|x-font$)/', 'class' => '\OC\Preview\Font'],
 				'HEIC'	=> ['mimetype' => '/image\/hei(f|c)/', 'class' => '\OC\Preview\Heic'],
+				'SGI'	=> ['mimetype' => '/image\/sgi/', 'class' => '\OC\Preview\SGI'],
 			];
 
 			foreach ($imagickProviders as $queryFormat => $provider) {
