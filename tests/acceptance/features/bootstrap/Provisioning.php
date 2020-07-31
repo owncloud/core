@@ -820,13 +820,14 @@ trait Provisioning {
 	 *
 	 * @param boolean $initialize
 	 * @param array $usersAttributes
+	 * @param string|null $method create the user with "ldap" or "api"
 	 * @param boolean $skeleton
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function usersHaveBeenCreated(
-		$initialize, $usersAttributes, $skeleton = true
+		$initialize, $usersAttributes, $method = null, $skeleton = true
 	) {
 		$requests = [];
 		$client = HttpRequestHelper::createClient(
@@ -834,8 +835,16 @@ trait Provisioning {
 			$this->getAdminPassword()
 		);
 
+		if ($method === null) {
+			$useLdap = $this->isTestingWithLdap();
+		} elseif ($method === "ldap") {
+			$useLdap = true;
+		} else {
+			$useLdap = false;
+		}
+
 		foreach ($usersAttributes as $userAttributes) {
-			if ($this->isTestingWithLdap()) {
+			if ($useLdap) {
 				$this->createLdapUser($userAttributes);
 			} else {
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
@@ -860,7 +869,7 @@ trait Provisioning {
 			}
 		}
 
-		if (!$this->isTestingWithLdap()) {
+		if (!$useLdap) {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Retrieve all failures.
 			foreach ($results as $e) {
@@ -892,7 +901,7 @@ trait Provisioning {
 			}
 		}
 		// Edit the users in parallel to make the process faster.
-		if (!$this->isTestingWithLdap() && \count($editData) > 0) {
+		if (!$useLdap && \count($editData) > 0) {
 			UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
@@ -2336,6 +2345,7 @@ trait Provisioning {
 					$this->usersHaveBeenCreated(
 						$initialize,
 						$settings,
+						$method,
 						$skeleton
 					);
 				} catch (LdapException $exception) {
