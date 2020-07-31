@@ -88,6 +88,13 @@ class Storage extends DAV implements ISharedStorage {
 		]);
 	}
 
+	/**
+	 * @return boolean
+	 */
+	public function usePartFile() {
+		return false;
+	}
+
 	protected function init() {
 		if ($this->ready) {
 			return;
@@ -299,7 +306,7 @@ class Storage extends DAV implements ISharedStorage {
 		}
 		return ($this->getPermissions($path) & \OCP\Constants::PERMISSION_SHARE);
 	}
-	
+
 	public function getPermissions($path) {
 		$response = $this->propfind($path);
 		if (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
