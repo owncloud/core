@@ -9,6 +9,7 @@ Summary
 -------
 
 * Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
+* Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 * Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
 * Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: [#37625](https://github.com/owncloud/core/pull/37625)
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
@@ -41,6 +42,19 @@ Details
 
    https://github.com/owncloud/core/issues/37598
    https://github.com/owncloud/core/pull/37596
+
+* Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
+
+   Change: Allow Storage backends to explicitly opt-in/opt-out of marking file as partial while
+   uploading
+
+   Existing files in Google Drive that were modified and saved (uploaded) would result in
+   duplicate files of the same name. The root cause was appending .part to filenames for upload.
+   This update first allows Storage to opt-out of .part filenames during upload and second opts
+   out of .part filenames for Google Storage backend specifically.
+
+   https://github.com/owncloud/core/issues/25826
+   https://github.com/owncloud/core/pull/37062
 
 * Bugfix - Handle exceptions for deleted share nodes while transfering ownership: [#4023](https://github.com/owncloud/enterprise/issues/4023)
 
