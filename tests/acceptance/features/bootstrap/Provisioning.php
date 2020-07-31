@@ -2363,11 +2363,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function deleteUser($user) {
-		if (OcisHelper::isTestingOnOcis()) {
-			OcisHelper::deleteRevaUserData($user);
-		}
 		$this->deleteTheUserUsingTheProvisioningApi($user);
-
 		$this->userShouldNotExist($user);
 	}
 
@@ -4117,7 +4113,9 @@ trait Provisioning {
 		$this->cleanupDatabaseUsers();
 		$this->cleanupDatabaseGroups();
 
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcis()) {
+			OcisHelper::deleteRevaUserData("");
+		} else {
 			$this->resetAdminUserAttributes();
 		}
 	}
