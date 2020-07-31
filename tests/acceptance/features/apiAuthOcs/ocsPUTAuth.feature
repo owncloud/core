@@ -24,18 +24,49 @@ Feature: auth
 
   @skipOnOcV10
   @issue-ocis-reva-30
+  @issue-ocis-ocs-26
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: send PUT request to OCS endpoints as admin with wrong password
+    When the administrator requests these endpoints with "PUT" with body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                         |
+      | /ocs/v1.php/apps/files_sharing/api/v1/shares/123 |
+      | /ocs/v2.php/apps/files_sharing/api/v1/shares/123 |
+    Then the HTTP status code of responses on all endpoints should be "401"
+    And the OCS status code of responses on all endpoints should be "notset"
+
+  @skipOnOcV10
+  @issue-ocis-reva-30
+  @issue-ocis-ocs-26
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send PUT request to OCS endpoints as admin with wrong password
     When the administrator requests these endpoints with "PUT" with body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                                         |
       | /ocs/v1.php/cloud/users/%username%               |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "103"
+    When the administrator requests these endpoints with "PUT" with body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                         |
       | /ocs/v2.php/cloud/users/%username%               |
+    Then the HTTP status code of responses on all endpoints should be "400"
+    And the OCS status code of responses on all endpoints should be "103"
+
+  @skipOnOcV10
+  @issue-ocis-reva-30
+  @issue-ocis-ocs-28
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: send PUT request to OCS endpoints as admin with wrong password
+    When the administrator requests these endpoints with "PUT" with body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                         |
       | /ocs/v1.php/cloud/users/%username%/disable       |
-      | /ocs/v2.php/cloud/users/%username%/disable       |
       | /ocs/v1.php/cloud/users/%username%/enable        |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "998"
+    When the administrator requests these endpoints with "PUT" with body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                         |
+      | /ocs/v2.php/cloud/users/%username%/disable       |
       | /ocs/v2.php/cloud/users/%username%/enable        |
-      | /ocs/v1.php/apps/files_sharing/api/v1/shares/123 |
-      | /ocs/v2.php/apps/files_sharing/api/v1/shares/123 |
-    Then the HTTP status code of responses on all endpoints should be "401"
-    And the OCS status code of responses on all endpoints should be "notset"
+    Then the HTTP status code of responses on all endpoints should be "404"
+    And the OCS status code of responses on all endpoints should be "998"
