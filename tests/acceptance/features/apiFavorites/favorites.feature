@@ -211,7 +211,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-243
+  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

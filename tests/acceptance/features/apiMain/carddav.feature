@@ -1,4 +1,4 @@
-@api @skipOnOcis
+@api @skipOnOcis @toImplementOnOCIS
 Feature: carddav
 
   Background:

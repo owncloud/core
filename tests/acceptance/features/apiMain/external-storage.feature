@@ -1,4 +1,4 @@
-@api @local_storage @skipOnOcis
+@api @local_storage @skipOnOcis @notToImplementOnOCIS
 Feature: external-storage
 
   Background:

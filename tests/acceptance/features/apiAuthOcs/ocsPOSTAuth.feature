@@ -4,8 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis
-  @issue-ocis-reva-30
+  @skipOnOcis @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send POST requests to OCS endpoints as normal user with wrong password
@@ -44,9 +43,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "400"
     And the OCS status code of responses on all endpoints should be "400"
 
-
-  @skipOnOcV10
-  @issue-ocis-reva-30
+  @skipOnOcV10 @issue-ocis-reva-30
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send POST requests to OCS endpoints as normal user with wrong password

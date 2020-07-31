@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis
+@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
 Feature: disable user
   As an admin
   I want to be able to disable a user
