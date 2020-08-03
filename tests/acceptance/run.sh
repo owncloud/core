@@ -370,6 +370,13 @@ function run_behat_tests() {
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then
 		PASSED=true
+		# Find the count of scenarios that passed
+		SCENARIO_RESULTS_COLORED=`grep -E '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
+		SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
+		# They all passed, so just get the first number.
+		# The text looks like "1 scenario (1 passed)" or "123 scenarios (123 passed)"
+		[[ ${SCENARIO_RESULTS} =~ ([0-9]+) ]]
+		SCENARIOS_THAT_PASSED=$((SCENARIOS_THAT_PASSED + BASH_REMATCH[1]))
 	else
 		# If there were no scenarios in the requested suite or feature that match
 		# the requested combination of tags, then Behat exits with an error status
@@ -386,6 +393,21 @@ function run_behat_tests() {
 			PASSED=true
 		else
 			PASSED=false
+			# Find the count of scenarios that passed and failed
+			SCENARIO_RESULTS_COLORED=`grep -E '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
+			SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
+			if [[ ${SCENARIO_RESULTS} =~ [0-9]+[^0-9]+([0-9]+)[^0-9]+([0-9]+)[^0-9]+ ]]
+			then
+				# Some passed and some failed, we got the second and third numbers.
+				# The text looked like "15 scenarios (6 passed, 9 failed)"
+				SCENARIOS_THAT_PASSED=$((SCENARIOS_THAT_PASSED + BASH_REMATCH[1]))
+				SCENARIOS_THAT_FAILED=$((SCENARIOS_THAT_FAILED + BASH_REMATCH[2]))
+			elif [[ ${SCENARIO_RESULTS} =~ [0-9]+[^0-9]+([0-9]+)[^0-9]+ ]]
+			then
+				# All failed, we got the second number.
+				# The text looked like "4 scenarios (4 failed)"
+				SCENARIOS_THAT_FAILED=$((SCENARIOS_THAT_FAILED + BASH_REMATCH[1]))
+			fi
 		fi
 	fi
 
@@ -526,7 +548,7 @@ function run_behat_tests() {
 		${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
 		if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
 		then
-			# If there are no skip scenarios, then no need TEST_SERVER_URLto report that
+			# If there are no skip scenarios, then no need to report that
 			:
 		else
 			echo ""
@@ -1105,6 +1127,8 @@ export IPV6_URL
 export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
 TEST_LOG_FILE=$(mktemp)
+SCENARIOS_THAT_PASSED=0
+SCENARIOS_THAT_FAILED=0
 
 if [ ${#BEHAT_SUITES[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
 then
@@ -1146,6 +1170,10 @@ for i in "${!BEHAT_SUITES[@]}"
 		break
 	fi
 done
+
+TOTAL_SCENARIOS=$((SCENARIOS_THAT_PASSED + SCENARIOS_THAT_FAILED))
+
+echo "runsh: Total ${TOTAL_SCENARIOS} scenarios (${SCENARIOS_THAT_PASSED} passed, ${SCENARIOS_THAT_FAILED} failed)"
 
 teardown
 
