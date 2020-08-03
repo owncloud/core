@@ -370,7 +370,11 @@ class Manager extends PublicEmitter implements IUserManager {
 				'avatars',
 				'meta',
 				'files_external',
-				'files_encryption'
+				'files_encryption',
+				'.htaccess',
+				'.ocdata',
+				'owncloud.db',
+				'owncloud.log'
 			];
 
 			if (\in_array(\strtolower($uid), $invalidUids)) {
