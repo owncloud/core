@@ -30,6 +30,7 @@ Summary
 * Change - Update league/flysystem (1.0.69 => 1.0.70): [#37730](https://github.com/owncloud/core/pull/37730)
 * Change - Make core/signature.json and core/skeleton/ inaccessible: [#37734](https://github.com/owncloud/core/issues/37734)
 * Change - Update google/apiclient from 2.6.0 to 2.7.0 and related dependencies: [#37739](https://github.com/owncloud/core/pull/37739)
+* Change - Update doctrine/event-manager (1.1.0 => 1.1.1): [#37768](https://github.com/owncloud/core/pull/37768)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -188,6 +189,10 @@ Details
    v1.11.1) - monolog/monolog (2.1.0 => 2.1.1)
 
    https://github.com/owncloud/core/pull/37739
+
+* Change - Update doctrine/event-manager (1.1.0 => 1.1.1): [#37768](https://github.com/owncloud/core/pull/37768)
+
+   https://github.com/owncloud/core/pull/37768
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
