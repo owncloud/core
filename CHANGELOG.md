@@ -32,6 +32,7 @@ Summary
 * Change - Update google/apiclient from 2.6.0 to 2.7.0 and related dependencies: [#37739](https://github.com/owncloud/core/pull/37739)
 * Change - Add values to the invalid uid list: [#37765](https://github.com/owncloud/core/issues/37765)
 * Change - Update doctrine/event-manager (1.1.0 => 1.1.1): [#37768](https://github.com/owncloud/core/pull/37768)
+* Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -201,6 +202,16 @@ Details
 * Change - Update doctrine/event-manager (1.1.0 => 1.1.1): [#37768](https://github.com/owncloud/core/pull/37768)
 
    https://github.com/owncloud/core/pull/37768
+
+* Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
+
+   The following symfony/polyfill components have been updated to version 1.18.1:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-intl-normalizer symfony/polyfill-mbstring symfony/polyfill-php70
+   symfony/polyfill-php72 symfony/polyfill-php73 symfony/polyfill-php80
+
+   https://github.com/owncloud/core/pull/37772
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
