@@ -8,7 +8,6 @@ Feature: manage groups
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
-  @skipOnOcV10.0.3
   Scenario: delete group called "0" and "false"
     Given these groups have been created:
       | groupname      |
@@ -47,7 +46,6 @@ Feature: manage groups
       | 0         |
       | false     |
 
-  @skipOnOcV10.0.3 @skipOnOcV10.0.4 @skipOnOcV10.0.5
   Scenario: delete groups with special characters that appear in URLs
     Given these groups have been created:
       | groupname      |

@@ -220,16 +220,15 @@ Feature: capabilities
       | files_sharing | group@@@expire_date@@@days     | 14    |
       | files_sharing | group@@@expire_date@@@enforced | EMPTY |
 
-	#feature added in #31824 will be released in 10.0.10
-  @smokeTest @skipOnOcV10.0.9
+  #feature added in #31824 released in 10.0.10
+  @smokeTest
   Scenario: getting capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element | value |
       | files_sharing | can_share       | 1     |
 
-	#feature added in #32414 will be released in 10.0.10
-  @skipOnOcV10.0.9
+  #feature added in #32414 released in 10.0.10
   Scenario: getting async capabilites when async operations are enabled
     Given the administrator has enabled async operations
     When the administrator retrieves the capabilities using the capabilities API
@@ -237,7 +236,6 @@ Feature: capabilities
       | capability | path_to_element | value |
       | async      |                 | 1.0   |
 
-  @skipOnOcV10.0.9
   Scenario: getting async capabilites when async operations are disabled
     Given the administrator has disabled async operations
     When the administrator retrieves the capabilities using the capabilities API

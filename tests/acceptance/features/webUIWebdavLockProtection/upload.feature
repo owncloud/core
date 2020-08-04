@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @skipOnOcV10.0
+@webUI @insulated @disablePreviews
 Feature: Locks
   As a user
   I would like to be able to use locks control upload of files and folders

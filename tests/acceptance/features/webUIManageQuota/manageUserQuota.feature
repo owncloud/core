@@ -27,7 +27,6 @@ Feature: manage user quota
       | Unlimited   | 55kB         | 55 KB          |
       | Unlimited   | 45Kb         | 45 KB          |
 
-  @skipOnOcV10.0.3
   Scenario: change quota to a valid value that do not work on 10.0.3
     Given the administrator has set the quota of user "Alice" to "Unlimited"
     When the administrator changes the quota of user "Alice" to "0 Kb" using the webUI
