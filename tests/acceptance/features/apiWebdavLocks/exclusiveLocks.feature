@@ -1,4 +1,4 @@
-@api @skipOnOcV10.0 @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-172
+@api @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-172
 Feature: there can be only one exclusive lock on a resource
 
   Background:

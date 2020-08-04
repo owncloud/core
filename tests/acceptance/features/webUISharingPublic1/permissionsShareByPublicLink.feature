@@ -7,7 +7,6 @@ Feature: Share by public link
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
   Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
     Given user "Brian" has been created with default attributes and skeleton files
     And user "Brian" has logged in using the webUI
@@ -23,7 +22,6 @@ Feature: Share by public link
     Then the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
-  @skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
   Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file with content "test" to "/simple-folder/lorem.txt"
