@@ -20,18 +20,6 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @skipOnOcV10 @issue-ocis-reva-276
-  # after fixing the issues delete this scenario and use the one above
-  Scenario Outline: Setting custom DAV property
-    Given using <dav_version> DAV path
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
-    When user "Alice" sets property "very-custom-prop"  with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt" to "veryCustomPropValue" using the WebDAV API
-    Then the HTTP status code should be "500"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcis @issue-ocis-reva-217
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path

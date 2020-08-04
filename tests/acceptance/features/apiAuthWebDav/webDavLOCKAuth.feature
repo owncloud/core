@@ -46,16 +46,6 @@ Feature: LOCK file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
 
-  @skipOnOcV10 @issue-ocis-reva-9
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario: send LOCK requests to another user's webDav endpoints as normal user
-    When user "Brian" requests these endpoints with "LOCK" to get property "d:shared" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/files/%username%/textfile0.txt     |
-      | /remote.php/dav/files/%username%/PARENT            |
-      | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "200"
-
   Scenario: send LOCK requests to webDav endpoints using invalid username but correct password
     When user "usero" requests these endpoints with "LOCK" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                                           |

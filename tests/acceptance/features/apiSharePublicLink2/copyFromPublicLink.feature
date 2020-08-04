@@ -72,22 +72,6 @@ Feature: copying from public link share
     And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"
     And the content of file "/PARENT/copy1.txt/testfile.txt" for user "Alice" should be "some data"
 
-  @skipOnOcV10 @issue-ocis-reva-373 @issue-core-37683
-  # After fixing issue-ocis-reva-373 issue-core-37683, remove this and use the above scenario as its just created to show difference
-  Scenario: Copy folder within a public link folder to the same folder name as an already existing file
-    Given user "Alice" has created folder "/PARENT/testFolder"
-    And user "Alice" has uploaded file with content "some data" to "/PARENT/testFolder/testfile.txt"
-    And user "Alice" has uploaded file with content "some data 1" to "/PARENT/copy1.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public copies folder "/testFolder" to "/copy1.txt" using the new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" folder "/PARENT/testFolder" should exist
-    And as "Alice" file "/PARENT/copy1.txt" should exist
-    And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"
-    And the content of file "/PARENT/copy1.txt" for user "Alice" should be "some data 1"
-
   Scenario: Copy file within a public link folder and delete file
     Given user "Alice" has uploaded file with content "some data" to "/PARENT/testfile.txt"
     And user "Alice" has created a public link share with settings
@@ -112,21 +96,6 @@ Feature: copying from public link share
     And as "Alice" file "/PARENT/new-folder" should exist
     And the content of file "/PARENT/testfile.txt" for user "Alice" should be "some data"
     And the content of file "/PARENT/new-folder" for user "Alice" should be "some data"
-
-  @skipOnOcV10 @issue-ocis-reva-373 @issue-core-37683
-  # After fixing issue-ocis-reva-373 issue-core-37683, remove this and use the above scenario as its just created to show difference
-  Scenario: Copy file within a public link folder to a file with name same as an existing folder
-    Given user "Alice" has uploaded file with content "some data" to "/PARENT/testfile.txt"
-    And user "Alice" has created folder "/PARENT/new-folder"
-    And user "Alice" has uploaded file with content "some data 1" to "/PARENT/new-folder/testfile1.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public copies file "/testfile.txt" to "/new-folder" using the new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" file "/PARENT/testfile.txt" should exist
-    And as "Alice" file "/PARENT/new-folder" should exist
-    And the content of file "/PARENT/testfile.txt" for user "Alice" should be "some data"
 
   Scenario Outline: Copy file with special characters in it's name within a public link folder
     Given user "Alice" has uploaded file with content "some data" to "/PARENT/<file-name>"
@@ -198,22 +167,6 @@ Feature: copying from public link share
       | testfile.txt          |
       |                       |
 
-  @skipOnOcV10 @issue-ocis-reva-368
-  # After fixing issue-ocis-reva-368, remove this and use the above scenario as its just created to show difference
-  Scenario Outline: Copy file within a public link folder to a file with unusual destination names
-    Given user "Alice" has uploaded file with content "some data" to "/PARENT/testfile.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public copies file "/testfile.txt" to "/<destination-file-name>" using the new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" file "/PARENT/<destination-file-name>" should exist
-    And the content of file "/PARENT/<destination-file-name>" for user "Alice" should be "some data"
-    Examples:
-      | destination-file-name |
-      | testfile.txt          |
-      |                       |
-
   @skipOnOcis @issue-ocis-reva-368
   Scenario Outline: Copy folder within a public link folder to a folder with unusual destination names
     Given user "Alice" has created folder "/PARENT/testFolder"
@@ -229,16 +182,3 @@ Feature: copying from public link share
       | destination-file-name |
       | testFolder            |
       |                       |
-
-  @skipOnOcV10 @issue-ocis-reva-368
-  # After fixing issue-ocis-reva-368, remove this and use the above scenario as its just created to show difference
-  Scenario: Copy folder within a public link folder to a folder with unusual destination names
-    Given user "Alice" has created folder "/PARENT/testFolder"
-    And user "Alice" has uploaded file with content "some data" to "/PARENT/testFolder/testfile.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public copies folder "/testFolder" to "/testFolder" using the new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" folder "/PARENT/testFolder" should exist
-    And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"

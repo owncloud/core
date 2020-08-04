@@ -21,19 +21,6 @@ Feature: users cannot move (rename) a folder to a blacklisted name
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcV10 @skipOnOcis-EOS-Storage @issue-ocis-reva-269
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: Renaming a folder to a name that is banned by default is allowed
-    Given using <dav_version> DAV path
-    And user "Alice" has created folder "/testshare"
-    When user "Alice" moves folder "/testshare" to "/.htaccess" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" folder "/.htaccess" should exist
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
   @skipOnOcis
   Scenario Outline: Rename a folder to a banned name
     Given using <dav_version> DAV path

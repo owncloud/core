@@ -219,18 +219,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcV10
-  #after fixing the issues delete this Scenario and use the one above
-  Scenario Outline: rename a file into an invalid filename
-    Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/a\\a" should exist
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
   Scenario Outline: Checking file id after a move
     Given using <dav_version> DAV path
     And user "Alice" has stored id of file "/textfile0.txt"
@@ -284,18 +272,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcV10
-  #after fixing the issues delete this Scenario and use the one above
-  Scenario Outline: Renaming a file to a path with extension .part is possible
-    Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/welcome.part" should exist
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
   Scenario Outline: renaming to a file with special characters
     When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -304,16 +280,6 @@ Feature: move (rename) file
       | renamed_file  |
       | *a@b#c$e%f&g* |
       | 1 2 3##.##    |
-
-  @skipOnOcis-OC-Storage @skipOnOcV10 @issue-ocis-reva-211
-  #after fixing the issues merge this Scenario into the one above
-  Scenario Outline: renaming to a file with special characters
-    When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the content of file "/<renamed_file>" for user "Alice" should be ""
-    Examples:
-      | renamed_file  |
-      | #oc ab?cd=ef# |
 
   @skipOnOcis-EOS-Storage @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
