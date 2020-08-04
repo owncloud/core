@@ -387,6 +387,10 @@ class ManagerTest extends TestCase {
 			['meta'],
 			['files_external'],
 			['files_encryption'],
+			['.htaccess'],
+			['.ocdata'],
+			['owncloud.db'],
+			['owncloud.log']
 		];
 	}
 
