@@ -43,7 +43,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "400"
     And the OCS status code of responses on all endpoints should be "400"
 
-  @skipOnOcV10 @issue-ocis-reva-30
+  @skipOnOcV10 @issue-ocis-ocs-26 @issue-ocis-reva-30
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
   Scenario: send POST requests to OCS endpoints as normal user with wrong password
@@ -59,12 +59,6 @@ Feature: auth
       | /ocs/v2.php/cloud/apps/testing                                  |
       | /ocs/v1.php/cloud/groups                                        |
       | /ocs/v2.php/cloud/groups                                        |
-      | /ocs/v1.php/cloud/users                                         |
-      | /ocs/v2.php/cloud/users                                         |
-      | /ocs/v1.php/cloud/users/%username%/groups                       |
-      | /ocs/v2.php/cloud/users/%username%/groups                       |
-      | /ocs/v1.php/cloud/users/%username%/subadmins                    |
-      | /ocs/v2.php/cloud/users/%username%/subadmins                    |
       | /ocs/v1.php/person/check                                        |
       | /ocs/v2.php/person/check                                        |
       | /ocs/v1.php/privatedata/deleteattribute/testing/test            |
@@ -73,3 +67,48 @@ Feature: auth
       | /ocs/v2.php/privatedata/setattribute/testing/test               |
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "notset"
+
+  @skipOnOcV10 @issue-ocis-ocs-26 @issue-ocis-reva-30
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: send POST requests to OCS endpoints as normal user with wrong password
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                                        |
+      | /ocs/v1.php/cloud/users                                         |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "400"
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                                        |
+      | /ocs/v2.php/cloud/users                                         |
+    Then the HTTP status code of responses on all endpoints should be "400"
+    And the OCS status code of responses on all endpoints should be "400"
+
+  @skipOnOcV10 @issue-ocis-reva-30
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: send POST requests to OCS endpoints as normal user with wrong password
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                                        |
+      | /ocs/v1.php/cloud/users/%username%/groups                       |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "996"
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                                        |
+      | /ocs/v2.php/cloud/users/%username%/groups                       |
+    Then the HTTP status code of responses on all endpoints should be "500"
+    And the OCS status code of responses on all endpoints should be "996"
+
+  @skipOnOcV10 @issue-ocis-reva-30
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: send POST requests to OCS endpoints as normal user with wrong password
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                                        |
+      | /ocs/v1.php/cloud/users/%username%/subadmins                    |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "998"
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                                        |
+      | /ocs/v2.php/cloud/users/%username%/subadmins                    |
+    Then the HTTP status code of responses on all endpoints should be "404"
+    And the OCS status code of responses on all endpoints should be "998"
