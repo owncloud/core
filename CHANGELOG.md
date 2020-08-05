@@ -25,6 +25,7 @@ Summary
 * Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
+* Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
 
 Details
 -------
@@ -161,6 +162,18 @@ Details
 
    https://github.com/owncloud/ocis-reva/issues/354
    https://github.com/owncloud/core/pull/37673
+
+* Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
+
+   We added support for Silicone Graphics images previews. The following file extensions will be
+   supported: .sgi, .rgb, .rgba, .bw, .int, .inta. These files will be associated with the
+   mimetype image/sgi. This mimetype is not officially registered. This needs the imagick php
+   extension to be installed.
+
+   https://github.com/owncloud/core/pull/37758
+   https://en.wikipedia.org/wiki/Silicon_Graphics_Image
+   https://www.iana.org/assignments/media-types/media-types.xhtml
+   https://www.php.net/manual/en/book.imagick.php
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
