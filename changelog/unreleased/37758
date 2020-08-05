@@ -1,0 +1,8 @@
+Enhancement: Add Support for SGI Image Previews
+
+We added support for Silicone Graphics images previews. The following file extensions will be supported: .sgi, .rgb, .rgba, .bw, .int, .inta. These files will be associated with the mimetype image/sgi. This mimetype is not officially registered. This needs the imagick php extension to be installed.
+
+https://github.com/owncloud/core/pull/37758
+https://en.wikipedia.org/wiki/Silicon_Graphics_Image
+https://www.iana.org/assignments/media-types/media-types.xhtml
+https://www.php.net/manual/en/book.imagick.php
