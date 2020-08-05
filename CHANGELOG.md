@@ -23,6 +23,7 @@ Summary
 * Change - Add values to the invalid uid list: [#37765](https://github.com/owncloud/core/issues/37765)
 * Change - Update doctrine/event-manager (1.1.0 => 1.1.1): [#37768](https://github.com/owncloud/core/pull/37768)
 * Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
+* Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
 Details
@@ -136,6 +137,23 @@ Details
 
    https://github.com/owncloud/core/pull/37772
 
+* Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
+
+   Ocis-web (Phoenix) doesn't use cookies for authentication but the "Bearer" header.
+
+   This means that we can only fetch data using XHR or the fetch API but cannot use URLs directly in
+   image tags, also cannot download files directly.
+
+   To solve this, we now support pre-signed URLs. This means that before creating an image tag or
+   starting a download, we send an authenticated request to the server (OC 10 or OCIS) to ask for a
+   pre-signed URL pointing at a specific resource. Then said URL can be forwarded either to an
+   image tag (for thumbnails) or to another browser window to trigger a download.
+
+   https://github.com/owncloud/core/pull/37634
+   https://github.com/owncloud/phoenix/pull/3797
+   https://github.com/owncloud/owncloud-sdk/pull/504
+   https://github.com/owncloud/ocis-proxy/pull/75
+
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 
    The server is now exposing a new capability to advertise that the server supports the favorite
@@ -144,7 +162,7 @@ Details
    https://github.com/owncloud/ocis-reva/issues/354
    https://github.com/owncloud/core/pull/37673
 
-Changelog for ownCloud Core [10.5.0] (2020-07-09)
+Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
 The following sections list the changes in ownCloud core 10.5.0 relevant to
 ownCloud admins and users.
