@@ -221,7 +221,7 @@ Feature: auth
   @issue-ocis-accounts-73
   @smokeTest
   #after fixing all issues delete this Scenario and use the one above
-  Scenario: using OCS as normal user with wrong password
+  Scenario: using OCS as normal user (username has a capital letter) with wrong password
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint                                                    |
       | /ocs/v1.php/apps/files_external/api/v1/mounts               |
@@ -236,14 +236,31 @@ Feature: auth
       | /ocs/v2.php/cloud/apps                                      |
       | /ocs/v1.php/cloud/groups                                    |
       | /ocs/v2.php/cloud/groups                                    |
-      | /ocs/v1.php/cloud/users                                     |
-      | /ocs/v2.php/cloud/users                                     |
       | /ocs/v1.php/config                                          |
       | /ocs/v2.php/config                                          |
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "notset"
+
+  @skipOnOcV10
+  @issue-ocis-reva-29
+  @issue-ocis-reva-30
+  @issue-ocis-accounts-73
+  @issue-ocis-ocs-26
+  @smokeTest
+  #after fixing all issues delete this Scenario and use the one above
+  Scenario: using OCS as normal user (username has a capital letter) with wrong password
+    When user "Alice" requests these endpoints with "GET" using password "invalid"
+      | endpoint                |
+      | /ocs/v1.php/cloud/users |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    When user "Alice" requests these endpoints with "GET" using password "invalid"
+      | endpoint                |
+      | /ocs/v2.php/cloud/users |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "200"
 
   @skipOnOcV10
   @issue-ocis-reva-29
