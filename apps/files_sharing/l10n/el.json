@@ -101,6 +101,7 @@
     "Unknown share type" : "Άγνωστος τύπος διαμοιρασμού",
     "Not a directory" : "Δεν είναι κατάλογος",
     "Could not lock path" : "Αδυναμία κλειδώματος της διαδρομής",
+    "Could not update share" : "Δεν ήταν δυνατή η ενημέρωση του κοινόχρηστου",
     "Can't change permissions for public share links" : "Δεν μπορούν να γίνουν αλλαγές δικαιωμάτων για δημόσιο διαμοιρασμό συνδέσμων",
     "Only recipient can change accepted state" : "Μόνο ο παραλήπτης μπορεί να αλλάξει αποδεκτή κατάσταση",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "Ο \"%1$s\" διαμοιράστηκε το \"%3$s\" μαζί σας (εκ μέρους του \"%2$s\")",

@@ -343,6 +343,8 @@ OC.L10N.register(
     "Please set your password" : "Παρακαλούμε ορίστε το συνθηματικό σας",
     "Personal" : "Προσωπικά",
     "Admin" : "Διαχειριστής",
+    "Currently no settings are available in this category" : "Προς το παρόν δεν υπάρχουν διαθέσιμες ρυθμίσεις σε αυτήν την κατηγορία",
+    "The administrators can enable additional apps which add settings sections here." : "Οι διαχειριστές μπορούν να ενεργοποιήσουν πρόσθετες εφαρμογές που προσθέτουν ενότητες ρυθμίσεων εδώ.",
     "Activation link was sent to an email address, if one was configured." : "Ο σύνδεσμος ενεργοποίησης στάλθηκε σε μια διεύθυνση ηλεκτρονικού ταχυδρομείου, εάν είχε εισαχθεί στις ρυθμίσεις.",
     "Settings" : "Ρυθμίσεις",
     "Show enabled/disabled option" : "Εμφάνιση επιλογής ενεργοποίησης/απενεργοποίησης",
