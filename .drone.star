@@ -131,7 +131,7 @@ config = {
 				'apiFederation2',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
+			'federatedServerVersions': ['daily-master-qa', 'latest', '10.4.1']
 		},
 		'cli': {
 			'suites': [
@@ -154,7 +154,7 @@ config = {
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
+			'federatedServerVersions': ['daily-master-qa', 'latest', '10.4.1']
 		},
 		'webUI': {
 			'suites': {
