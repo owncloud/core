@@ -354,6 +354,9 @@ function env_alt_home_clear {
 # ---------------
 # $PASSED true|false
 
+declare -a UNEXPECTED_FAILED_SCENARIOS
+declare -a UNEXPECTED_PASSED_SCENARIOS
+
 function run_behat_tests() {
 	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
 
@@ -442,6 +445,7 @@ function run_behat_tests() {
 				then
 					echo "Error: Scenario ${SUITE_SCENARIO} failed but was not expected to fail."
 					PASSED=false
+					UNEXPECTED_FAILED_SCENARIOS+=("${SUITE_SCENARIO}")
 				fi
 			done
 
@@ -476,6 +480,7 @@ function run_behat_tests() {
 				then
 					echo "Error: Scenario ${SUITE_SCENARIO} was expected to fail but did not fail."
 					PASSED=false
+					UNEXPECTED_PASSED_SCENARIOS+=("${SUITE_SCENARIO}")
 				fi
 			done < ${EXPECTED_FAILURES_FILE}
 
@@ -1164,20 +1169,29 @@ for i in "${!BEHAT_SUITES[@]}"
 				fi
 				run_behat_tests
 			done
-
-	if [ "${PASSED}" = false ]
-	then
-		break
-	fi
 done
 
 TOTAL_SCENARIOS=$((SCENARIOS_THAT_PASSED + SCENARIOS_THAT_FAILED))
 
-echo "runsh: Total ${TOTAL_SCENARIOS} scenarios (${SCENARIOS_THAT_PASSED} passed, ${SCENARIOS_THAT_FAILED} failed)"
+echo -e "\nrunsh: Total ${TOTAL_SCENARIOS} scenarios (${SCENARIOS_THAT_PASSED} passed, ${SCENARIOS_THAT_FAILED} failed)"
 
 teardown
 
-if [ "${PASSED}" = true ]
+if [ ${#UNEXPECTED_FAILED_SCENARIOS[@]} -gt 0 ]
+then
+	UNEXPECTED_FAILURE=true
+else
+	UNEXPECTED_FAILURE=false
+fi
+
+if [ ${#UNEXPECTED_PASSED_SCENARIOS[@]} -gt 0 ]
+then
+	UNEXPECTED_SUCCESS=true
+else
+	UNEXPECTED_SUCCESS=false
+fi
+
+if [ "${UNEXPECTED_FAILURE}" = false ] && [ "${UNEXPECTED_SUCCESS}" = false ]
 then
 	FINAL_EXIT_STATUS=0
 else
@@ -1187,5 +1201,19 @@ fi
 if [ -n "${EXPECTED_FAILURES_FILE}" ]
 then
 	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
+	if [ "${UNEXPECTED_FAILURE}" = true ]
+	then
+		tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
+		tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+	else
+		tput setaf 2; echo "runsh: There were no unexpected failures."
+	fi
+	if [ "${UNEXPECTED_SUCCESS}" = true ]
+	then
+		tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
+		tput setaf 1; printf "%s\n" "${UNEXPECTED_PASSED_SCENARIOS[@]}"
+	else
+		tput setaf 2; echo "runsh: There were no unexpected success."
+	fi
 fi
 exit ${FINAL_EXIT_STATUS}
