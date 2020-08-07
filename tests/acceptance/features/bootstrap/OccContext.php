@@ -132,9 +132,11 @@ class OccContext implements Context {
 	 */
 	public function importSecurityCertificateFromPath($path) {
 		$this->invokingTheCommand("security:certificates:import " . $path);
-		$pathComponents = \explode("/", $path);
-		$certificate = \end($pathComponents);
-		\array_push($this->importedCertificates, $certificate);
+		if ($this->featureContext->getExitStatusCodeOfOccCommand() === 0) {
+			$pathComponents = \explode("/", $path);
+			$certificate = \end($pathComponents);
+			\array_push($this->importedCertificates, $certificate);
+		}
 	}
 
 	/**

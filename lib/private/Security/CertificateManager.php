@@ -172,6 +172,8 @@ class CertificateManager implements ICertificateManager {
 		if ($this->view->file_exists($path . $name)) {
 			$this->view->unlink($path . $name);
 			$this->createCertificateBundle();
+		} else {
+			return false;
 		}
 		return true;
 	}

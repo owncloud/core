@@ -53,7 +53,7 @@ class ImportCertificate extends Base {
 
 		if (!\file_exists($path)) {
 			$output->writeln('<error>certificate not found</error>');
-			return;
+			return 1;
 		}
 
 		$certData = \file_get_contents($path);

@@ -52,6 +52,11 @@ class RemoveCertificate extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$name = $input->getArgument('name');
 
-		$this->certificateManager->removeCertificate($name);
+		if ($this->certificateManager->removeCertificate($name)) {
+			return 0;
+		}
+
+		$output->writeln('<error>certificate not found</error>');
+		return 1;
 	}
 }

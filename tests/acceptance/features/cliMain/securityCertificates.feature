@@ -13,6 +13,11 @@ Feature: security certificates
       | table_column        |
       | goodCertificate.crt |
 
+  Scenario: Import a security certificate specifying a file that does not exist
+    When the administrator imports security certificate from the path "tests/data/certificates/aFileThatDoesNotExist.crt"
+    Then the command should have failed with exit code 1
+    And the command output should contain the text "certificate not found"
+
   Scenario: List security certificates when multiple certificates are imported
     Given the administrator has imported security certificate from the path "tests/data/certificates/goodCertificate.crt"
     And the administrator has imported security certificate from the path "tests/data/certificates/badCertificate.crt"
@@ -32,11 +37,10 @@ Feature: security certificates
       | table_column       |
       | badCertificate.crt |
 
-  @issue-35364
   Scenario: Remove a security certificate that is not installed
     When the administrator removes the security certificate "someCertificate.crt"
-    Then the command should have been successful
-    # Then the command should not have been successful
+    Then the command should have failed with exit code 1
+    And the command output should contain the text "certificate not found"
 
   Scenario: Import random file as certificate
     When the administrator imports security certificate from the path "tests/data/lorem.txt"
