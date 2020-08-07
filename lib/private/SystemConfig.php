@@ -74,6 +74,9 @@ class SystemConfig {
 				],
 			],
 		],
+		'openid-connect' => [
+			'client-secret' => true
+		]
 	];
 	/** @var Config */
 	private $config;
