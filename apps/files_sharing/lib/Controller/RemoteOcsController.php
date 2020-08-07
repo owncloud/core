@@ -27,6 +27,8 @@ use OCA\Files_Sharing\External\Manager;
 use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 use OCP\Share;
+use OCP\Files\StorageNotAvailableException;
+use OCP\Files\StorageInvalidException;
 
 class RemoteOcsController extends OCSController {
 	/** @var IRequest */
@@ -123,10 +125,16 @@ class RemoteOcsController extends OCSController {
 	 * @return Result
 	 */
 	public function getShares($includingPending = false) {
-		$shares = \array_map(
-			[$this, 'extendShareInfo'],
-			$this->externalManager->getAcceptedShares()
-		);
+		$shares = [];
+		foreach ($this->externalManager->getAcceptedShares() as $shareInfo) {
+			try {
+				$shares[] = $this->extendShareInfo($shareInfo);
+			} catch (StorageNotAvailableException $e) {
+				//TODO: Log the exception here? There are several logs already below the stack
+			} catch (StorageInvalidException $e) {
+				//TODO: Log the exception here? There are several logs already below the stack
+			}
+		}
 
 		if ($includingPending === true) {
 			/**
