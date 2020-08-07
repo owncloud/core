@@ -31,7 +31,7 @@ Learn about the different ways you can get support for ownCloud: https://ownclou
 * :envelope: [Mailing list](https://mailman.owncloud.org/mailman/listinfo)
 * :hash: [IRC channel](https://webchat.freenode.net/?channels=owncloud)
 * :busts_in_silhouette: [Facebook](https://facebook.com/ownclouders)
-* :hatching_chick: [Twitter](https://twitter.com/ownClouders)
+* :hatching_chick: [Twitter](https://twitter.com/ownCloud)
 
 ## Important notice on translations
 Please submit translations via Transifex:
