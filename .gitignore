@@ -125,6 +125,7 @@ vendor-bin/**/composer.lock
 /tests/.phpunit.result.cache
 /tests/coverage*
 /tests/karma-coverage
+/tests/acceptance/server_tmp
 /tests/autoconfig*
 /tests/autotest*
 /tests/data/lorem-copy.txt

@@ -2081,48 +2081,28 @@ class FeatureContext extends BehatVariablesContext {
 	public function theAdministratorCreatesFileWithContentInLocalStorageUsingTheTestingApi(
 		$path, $content, $mountPoint
 	) {
-		$user = $this->getAdminUsername();
-		$response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
-			$user,
-			$this->getAdminPassword(),
-			'POST',
-			"/apps/testing/api/v1/file",
-			[
-				'file' => TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mountPoint/$path",
-				'content' => $content
-			],
-			$this->getOcsApiVersion()
+		$response = $this->copyContentToFileInTemporaryStorageOnSystemUnderTest(
+			"$mountPoint/$path",
+			$content
 		);
 		$this->setResponse($response);
 	}
 
 	/**
-	 * @Given the administrator has created a file :path with the last exported content using the testing API
+	 * @Given the administrator has created a file :path in temporary storage with the last exported content using the testing API
 	 *
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasCreatedAFileWithLastExportedContent(
+	public function theAdministratorHasCreatedAFileInTemporaryStorageWithLastExportedContent(
 		$path
 	) {
 		$commandOutput = $this->getStdOutOfOccCommand();
-		$user = $this->getAdminUsername();
-		$response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
-			$user,
-			$this->getAdminPassword(),
-			'POST',
-			"/apps/testing/api/v1/file",
-			[
-				'file' => "/$path",
-				'content' => $commandOutput
-			],
-			$this->getOcsApiVersion()
+		$this->copyContentToFileInTemporaryStorageOnSystemUnderTest($path, $commandOutput);
+		$this->theFileWithContentShouldExistInTheServerRoot(
+			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$path", $commandOutput
 		);
-		$lastExportedContent = $this->getStdOutOfOccCommand();
-		$this->theFileWithContentShouldExistInTheServerRoot($path, $lastExportedContent);
 	}
 
 	/**
@@ -2143,6 +2123,52 @@ class FeatureContext extends BehatVariablesContext {
 			$mountPoint
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Given the administrator has copied file :localPath to :destination in temporary storage on the system under test
+	 *
+	 * @param string $localPath
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasCopiedFileToTemporaryStorageOnTheSystemUnderTest(
+		$localPath, $destination
+	) {
+		$content = \file_get_contents($localPath);
+		Assert::assertNotFalse(
+			$content,
+			"Local file $localPath cannot be read"
+		);
+		$this->copyContentToFileInTemporaryStorageOnSystemUnderTest($destination, $content);
+		$this->theFileWithContentShouldExistInTheServerRoot(TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$destination", $content);
+	}
+
+	/**
+	 * @param string $destination
+	 * @param string $content
+	 *
+	 * @return ResponseInterface
+	 * @throws Exception
+	 */
+	public function copyContentToFileInTemporaryStorageOnSystemUnderTest(
+		$destination, $content
+	) {
+		$this->mkDirOnServer(TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER);
+
+		return OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/file",
+			[
+				'file' => TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$destination",
+				'content' => $content
+			],
+			$this->getOcsApiVersion()
+		);
 	}
 
 	/**
@@ -3029,12 +3055,8 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function removeLocalStorageAfter() {
-		if ($this->getStorageIds() !== null) {
-			$this->deleteAllStorages();
-		}
-		SetupHelper::rmDirOnServer(
-			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
-		);
+		$this->removeExternalStorage();
+		$this->removeTemporaryStorageOnServerAfter();
 	}
 
 	/**
@@ -3048,6 +3070,28 @@ class FeatureContext extends BehatVariablesContext {
 		if ($this->getStorageIds() !== null) {
 			$this->deleteAllStorages();
 		}
+	}
+
+	/**
+	 * @BeforeScenario @temporary_storage_on_server
+	 *
+	 * @return void
+	 */
+	public function makeTemporaryStorageOnServerBefore() {
+		$this->mkDirOnServer(
+			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
+		);
+	}
+
+	/**
+	 * @AfterScenario @temporary_storage_on_server
+	 *
+	 * @return void
+	 */
+	public function removeTemporaryStorageOnServerAfter() {
+		SetupHelper::rmDirOnServer(
+			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
+		);
 	}
 
 	/**
