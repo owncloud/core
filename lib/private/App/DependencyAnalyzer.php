@@ -176,8 +176,8 @@ class DependencyAnalyzer {
 			return $this->getValue($db);
 		}, $supportedDatabases);
 		$currentDatabase = $this->platform->getDatabase();
-		if (!\in_array($currentDatabase, $supportedDatabases)) {
-			$missing[] = (string)$this->l->t('Following databases are supported: %s', \join(', ', $supportedDatabases));
+		if (!\in_array($currentDatabase, $supportedDatabases, true)) {
+			$missing[] = (string)$this->l->t('Following databases are supported: %s', \implode(', ', $supportedDatabases));
 		}
 		return $missing;
 	}
@@ -279,8 +279,8 @@ class DependencyAnalyzer {
 			$oss = [$oss];
 		}
 		$currentOS = $this->platform->getOS();
-		if (!\in_array($currentOS, $oss)) {
-			$missing[] = (string)$this->l->t('Following platforms are supported: %s', \join(', ', $oss));
+		if (!\in_array($currentOS, $oss, true)) {
+			$missing[] = (string)$this->l->t('Following platforms are supported: %s', \implode(', ', $oss));
 		}
 		return $missing;
 	}
@@ -312,7 +312,7 @@ class DependencyAnalyzer {
 				$missing[] = (string)$this->l->t('ownCloud %s or higher is required.', $minVersion);
 			}
 		}
-		if ($maxVersion !== null) {
+		if ($maxVersion !== null && !\in_array($this->platform->getOcChannel(), ['git', 'daily'], true)) {
 			if ($this->compareBigger($this->platform->getOcVersion(), $maxVersion)) {
 				$missing[] = (string)$this->l->t('ownCloud %s or lower is required.', $maxVersion);
 			}
