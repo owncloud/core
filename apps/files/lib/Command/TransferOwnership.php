@@ -4,6 +4,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -325,6 +326,14 @@ class TransferOwnership extends Command {
 				} else {
 					$filteredShares = $sharePage;
 				}
+
+				// filter out the reshares as transfer ownership only transfers
+				// files owned by the user - in case of reshares source
+				// user is not file owner
+				$filteredShares = \array_filter($filteredShares, function (IShare $share) {
+					return $share->getShareOwner() === $this->sourceUser;
+				});
+
 				$progress->advance(\count($filteredShares));
 				$this->shares = \array_merge($this->shares, $filteredShares);
 				$offset += 50;
