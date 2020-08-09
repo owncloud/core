@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
+* Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
@@ -43,6 +44,15 @@ Details
 
    https://github.com/owncloud/core/issues/25826
    https://github.com/owncloud/core/pull/37062
+
+* Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
+
+   If there is an error when doing occ security:certificates:import or occ
+   security:certificates:remove then the command will exit with status 1. This allows the
+   caller to reliably detect if there was a problem.
+
+   https://github.com/owncloud/core/issues/35364
+   https://github.com/owncloud/core/pull/37783
 
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 
