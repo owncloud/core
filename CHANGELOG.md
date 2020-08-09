@@ -25,6 +25,7 @@ Summary
 * Change - Add values to the invalid uid list: [#37765](https://github.com/owncloud/core/issues/37765)
 * Change - Update doctrine/event-manager (1.1.0 => 1.1.1): [#37768](https://github.com/owncloud/core/pull/37768)
 * Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
+* Change - Update egulias/email-validator (2.1.18 => 2.1.19): [#37790](https://github.com/owncloud/core/pull/37790)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
@@ -154,6 +155,10 @@ Details
    symfony/polyfill-php72 symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/37772
+
+* Change - Update egulias/email-validator (2.1.18 => 2.1.19): [#37790](https://github.com/owncloud/core/pull/37790)
+
+   https://github.com/owncloud/core/pull/37790
 
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 
