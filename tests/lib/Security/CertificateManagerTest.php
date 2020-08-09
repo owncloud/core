@@ -103,9 +103,13 @@ class CertificateManagerTest extends \Test\TestCase {
 		$this->assertFalse($this->certificateManager->removeCertificate('../../foo.txt'));
 	}
 
-	public function testRemoveExistingFile() {
+	public function testRemoveCertificate() {
 		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$this->assertTrue($this->certificateManager->removeCertificate('GoodCertificate'));
+	}
+
+	public function testRemoveNonExistentCertificate() {
+		$this->assertFalse($this->certificateManager->removeCertificate('NonExistentCertificate'));
 	}
 
 	public function testGetCertificateBundle() {

@@ -750,7 +750,8 @@ def litmus():
 
 	default = {
 		'phpVersions': ['7.2', '7.3', '7.4'],
-		'logLevel': '2'
+		'logLevel': '2',
+		'useHttps': True,
 	}
 
 	if 'defaults' in config:
@@ -800,7 +801,7 @@ def litmus():
 					composerInstall(phpVersion) +
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
-					installServer(phpVersion, db, params['logLevel']) +
+					installServer(phpVersion, db, params['logLevel'], params['useHttps']) +
 					setupLocalStorage(phpVersion) +
 					fixPermissions(phpVersion, False) +
 					createShare(phpVersion) +
@@ -890,7 +891,7 @@ def litmus():
 					],
 				'services':
 					databaseService(db) +
-					owncloudService(phpVersion, 'server', '/drone/src', True),
+					owncloudService(phpVersion, 'server', '/drone/src', params['useHttps']),
 				'depends_on': [],
 				'trigger': {
 					'ref': [
@@ -1461,7 +1462,7 @@ def acceptance():
 										composerInstall(phpVersion) +
 										vendorbinInstall(phpVersion) +
 										yarnInstall(phpVersion) +
-										installServer(phpVersion, db, params['logLevel'], params['federatedServerNeeded'], params['proxyNeeded']) +
+										installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
 											installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
@@ -1752,7 +1753,6 @@ def cephService(cephS3):
 		}
 	}]
 
-
 def owncloudService(phpVersion, name = 'server', path = '/drone/src', ssl = True):
 	if ssl:
 		environment = {
@@ -1972,7 +1972,7 @@ def databaseServiceForFederation(db, suffix):
 		}
 	}]
 
-def installServer(phpVersion, db, logLevel, federatedServerNeeded = False, proxyNeeded = False):
+def installServer(phpVersion, db, logLevel, ssl = False, federatedServerNeeded = False, proxyNeeded = False):
 	return [{
 		'name': 'install-server',
 		'image': 'owncloudci/php:%s' % phpVersion,
@@ -1995,10 +1995,11 @@ def installServer(phpVersion, db, logLevel, federatedServerNeeded = False, proxy
 		] if proxyNeeded else []) + [
 			'php occ log:manage --level %s' % logLevel,
 			'php occ config:list',
-			'php occ security:certificates:import /drone/server.crt',
 		] + ([
+			'php occ security:certificates:import /drone/server.crt',
+		] if ssl else []) + ([
 			'php occ security:certificates:import /drone/federated.crt',
-		] if federatedServerNeeded else []) + [
+		] if federatedServerNeeded and ssl else []) + [
 			'php occ security:certificates',
 		]
 	}]
