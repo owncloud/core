@@ -14,10 +14,10 @@ Feature: import exported local storage mounts from the command line
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage2.txt"
     And the administrator has exported the local storage mounts using the occ command
-    And the administrator has created a file "data/exportedMounts.json" with the last exported content using the testing API
+    And the administrator has created a file "exportedMounts.json" in temporary storage with the last exported content using the testing API
     And the administrator has deleted local storage "local_storage" using the occ command
     And the administrator has deleted local storage "local_storage2" using the occ command
-    When the administrator imports the local storage mount from file "data/exportedMounts.json" using the occ command
+    When the administrator imports the local storage mount from file "exportedMounts.json" using the occ command
     And the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
       | MountPoint         | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
@@ -45,11 +45,11 @@ Feature: import exported local storage mounts from the command line
     And the administrator has added group "grp2" as the applicable group for local storage mount "local_storage3"
     And the administrator has added group "grp3" as the applicable group for local storage mount "local_storage3"
     And the administrator has exported the local storage mounts using the occ command
-    And the administrator has created a file "data/exportedMounts.json" with the last exported content using the testing API
+    And the administrator has created a file "exportedMounts.json" in temporary storage with the last exported content using the testing API
     And the administrator has deleted local storage "local_storage" using the occ command
     And the administrator has deleted local storage "local_storage2" using the occ command
     And the administrator has deleted local storage "local_storage3" using the occ command
-    When the administrator imports the local storage mount from file "data/exportedMounts.json" using the occ command
+    When the administrator imports the local storage mount from file "exportedMounts.json" using the occ command
     And the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
       | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |

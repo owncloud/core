@@ -130,8 +130,8 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function importSecurityCertificateFromPath($path) {
-		$this->invokingTheCommand("security:certificates:import " . $path);
+	public function importSecurityCertificateFromFileInTemporaryStorage($path) {
+		$this->invokingTheCommand("security:certificates:import " . TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$path");
 		if ($this->featureContext->getExitStatusCodeOfOccCommand() === 0) {
 			$pathComponents = \explode("/", $path);
 			$certificate = \end($pathComponents);
@@ -575,27 +575,27 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator imports security certificate from the path :path
+	 * @When the administrator imports security certificate from file :filename in temporary storage on the system under test
 	 *
-	 * @param string $path
+	 * @param string $filename
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorImportsSecurityCertificateFromThePath($path) {
-		$this->importSecurityCertificateFromPath($path);
+	public function theAdministratorImportsSecurityCertificateFromFile($filename) {
+		$this->importSecurityCertificateFromFileInTemporaryStorage($filename);
 	}
 
 	/**
-	 * @Given the administrator has imported security certificate from the path :path
+	 * @Given the administrator has imported security certificate from file :filename in temporary storage on the system under test
 	 *
-	 * @param string $path
+	 * @param string $filename
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasImportedSecurityCertificateFromThePath($path) {
-		$this->importSecurityCertificateFromPath($path);
+	public function theAdministratorHasImportedSecurityCertificateFromFile($filename) {
+		$this->importSecurityCertificateFromFileInTemporaryStorage($filename);
 		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
@@ -2086,7 +2086,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorImportsTheMountFromFileUsingTheOccCommand($file) {
-		$this->invokingTheCommand('files_external:import ' . $file);
+		$this->invokingTheCommand(
+			'files_external:import ' . TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$file"
+		);
 	}
 
 	/**
