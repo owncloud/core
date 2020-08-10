@@ -196,6 +196,9 @@ class OcisHelper {
 		if (($root === false || $root === "") && self::isTestingOnOcis()) {
 			$root = "/var/tmp/reva/";
 		}
+		if (!\file_exists($root)) {
+			echo "WARNING: reva data root folder ($root) does not exist\n";
+		}
 		return $root;
 	}
 
