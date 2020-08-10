@@ -317,7 +317,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-372 @issue-ocis-reva-243 @toImplementOnOCIS
+  @issue-ocis-reva-372 @issue-ocis-reva-243
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -346,39 +346,6 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
-
-  @skipOnOcV10 @issue-ocis-reva-372 @issue-ocis-reva-243
-  #after fixing all issues delete this Scenario and use the one above
-  Scenario Outline: sharing subfolder of already shared folder, GET result is correct
-    Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | Brian    |
-      | Carol    |
-      | David    |
-      | Emily    |
-    And user "Alice" has created folder "/folder1"
-    And user "Alice" has shared folder "/folder1" with user "Brian"
-    And user "Alice" has shared folder "/folder1" with user "Carol"
-    And user "Alice" has created folder "/folder1/folder2"
-    And user "Alice" has shared folder "/folder1/folder2" with user "David"
-    And user "Alice" has shared folder "/folder1/folder2" with user "Emily"
-    When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    # On OCIS and reva the response is currently not there
-#    And the response should contain 4 entries
-#    And folder "/folder1" should be included as path in the response
-#    And folder "/folder1/folder2" should be included as path in the response
-    And user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
-    And the response should contain 2 entries
-    And folder "/folder1" should not be included as path in the response
-    And folder "/folder2" should be included as path in the response
-#    And folder "/folder1/folder2" should be included as path in the response
-    Examples:
-      | ocs_api_version | http_status_code | ocs_status_code |
-      | 1               | 200              | 996             |
-      | 2               | 500              | 996             |
 
   @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
