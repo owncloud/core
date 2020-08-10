@@ -2126,9 +2126,14 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * Copy a file from the test-runner to the temporary storage directory on
+	 * the system-under-test. This uses the testing app to push the file into
+	 * the backend of the server, where it can be seen by occ commands done in
+	 * the server-under-test.
+	 *
 	 * @Given the administrator has copied file :localPath to :destination in temporary storage on the system under test
 	 *
-	 * @param string $localPath
+	 * @param string $localPath relative to the core "root" folder
 	 * @param string $destination
 	 *
 	 * @return void
@@ -2136,7 +2141,11 @@ class FeatureContext extends BehatVariablesContext {
 	public function theAdministratorHasCopiedFileToTemporaryStorageOnTheSystemUnderTest(
 		$localPath, $destination
 	) {
-		$content = \file_get_contents($localPath);
+		// FeatureContext is in tests/acceptance/features/bootstrap so go up 4
+		// levels to the test-runner root
+		$testRunnerRoot = \dirname(__DIR__, 4);
+		// The local path is specified down from the root - e.g. tests/data/file.txt
+		$content = \file_get_contents("$testRunnerRoot/$localPath");
 		Assert::assertNotFalse(
 			$content,
 			"Local file $localPath cannot be read"
