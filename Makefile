@@ -12,7 +12,7 @@
 #
 #  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 #  sudo apt-get install -y nodejs build-essential
-#  
+#
 # (installation from distro packages is not recommended, often old versions)
 #
 #
@@ -60,10 +60,12 @@ TEST_PHP_SUITE=
 TEST_SERVER_URL?=
 TEST_SERVER_FED_URL?=
 TEST_EXTERNAL_USER_BACKENDS?=
-TESTING_REMOTE_SYSTEM?=true
 BEHAT_FEATURE?=
 NORERUN?=
 BEHAT_RERUN_TIMES?=
+
+# set TESTING_REMOTE_SYSTEM to default=true and make it a system env. variable
+export TESTING_REMOTE_SYSTEM?=true
 
 RELEASE_CHANNEL=git
 
