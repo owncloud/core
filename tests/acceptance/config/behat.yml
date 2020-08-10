@@ -411,6 +411,7 @@ default:
         - LoggingContext:
         - OccContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     apiWebdavUpload2:
       paths:
