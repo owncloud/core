@@ -144,9 +144,9 @@ trait Provisioning {
 	 * @return string
 	 */
 	public function getUserDisplayName($username) {
-		$user = $this->normalizeUsername($username);
-		if (isset($this->createdUsers[$user]['displayname'])) {
-			$displayName = (string) $this->createdUsers[$user]['displayname'];
+		$normalizedUsername = $this->normalizeUsername($username);
+		if (isset($this->createdUsers[$normalizedUsername]['displayname'])) {
+			$displayName = (string) $this->createdUsers[$normalizedUsername]['displayname'];
 			if ($displayName !== '') {
 				return $displayName;
 			}
@@ -162,21 +162,21 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function rememberUserDisplayName($user, $displayName) {
-		$user = $this->normalizeUsername($user);
-		if ($this->isAdminUsername($user)) {
+		$normalizedUsername = $this->normalizeUsername($user);
+		if ($this->isAdminUsername($normalizedUsername)) {
 			$this->adminDisplayName = $displayName;
 		} else {
 			if ($this->currentServer === 'LOCAL') {
-				if (\array_key_exists($user, $this->createdUsers)) {
-					$this->createdUsers[$user]['displayname'] = $displayName;
+				if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
+					$this->createdUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
 					throw new \Exception(
 						__METHOD__ . " tried to remember display name '$displayName' for non-existent local user '$user'"
 					);
 				}
 			} elseif ($this->currentServer === 'REMOTE') {
-				if (\array_key_exists($user, $this->createdRemoteUsers)) {
-					$this->createdRemoteUsers[$user]['displayname'] = $displayName;
+				if (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
+					$this->createdRemoteUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
 					throw new \Exception(
 						__METHOD__ . " tried to remember display name '$displayName' for non-existent remote user '$user'"
@@ -194,21 +194,21 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function rememberUserEmailAddress($user, $emailAddress) {
-		$user = $this->normalizeUsername($user);
-		if ($this->isAdminUsername($user)) {
+		$normalizedUsername = $this->normalizeUsername($user);
+		if ($this->isAdminUsername($normalizedUsername)) {
 			$this->adminEmailAddress = $emailAddress;
 		} else {
 			if ($this->currentServer === 'LOCAL') {
-				if (\array_key_exists($user, $this->createdUsers)) {
-					$this->createdUsers[$user]['email'] = $emailAddress;
+				if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
+					$this->createdUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
 					throw new \Exception(
 						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent local user '$user'"
 					);
 				}
 			} elseif ($this->currentServer === 'REMOTE') {
-				if (\array_key_exists($user, $this->createdRemoteUsers)) {
-					$this->createdRemoteUsers[$user]['email'] = $emailAddress;
+				if (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
+					$this->createdRemoteUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
 					throw new \Exception(
 						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent remote user '$user'"
@@ -219,15 +219,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * returns an array of the user display names, keyed by username
+	 * returns an array of the user display names, keyed by normalized username
 	 * if no "Display Name" is set the user-name is returned instead
 	 *
 	 * @return array
 	 */
 	public function getCreatedUserDisplayNames() {
 		$result = [];
-		foreach ($this->getCreatedUsers() as $username => $user) {
-			$result[$username] = $this->getUserDisplayName($username);
+		foreach ($this->getCreatedUsers() as $normalizedUsername => $user) {
+			$result[$normalizedUsername] = $this->getUserDisplayName($normalizedUsername);
 		}
 		return $result;
 	}
@@ -256,13 +256,13 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function getUserPassword($username) {
-		$username = $this->normalizeUsername($username);
-		if ($username === $this->getAdminUsername()) {
+		$normalizedUsername = $this->normalizeUsername($username);
+		if ($normalizedUsername === $this->getAdminUsername()) {
 			$password = $this->getAdminPassword();
-		} elseif (\array_key_exists($username, $this->createdUsers)) {
-			$password = $this->createdUsers[$username]['password'];
-		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
-			$password = $this->createdRemoteUsers[$username]['password'];
+		} elseif (\array_key_exists($normalizedUsername, $this->createdUsers)) {
+			$password = $this->createdUsers[$normalizedUsername]['password'];
+		} elseif (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
+			$password = $this->createdRemoteUsers[$normalizedUsername]['password'];
 		} else {
 			throw new Exception(
 				"user '$username' was not created by this test run"
@@ -281,13 +281,13 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theUserShouldExist($username) {
-		$username = $this->normalizeUsername($username);
-		if (\array_key_exists($username, $this->createdUsers)) {
-			return $this->createdUsers[$username]['shouldExist'];
+		$normalizedUsername = $this->normalizeUsername($username);
+		if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
+			return $this->createdUsers[$normalizedUsername]['shouldExist'];
 		}
 
-		if (\array_key_exists($username, $this->createdRemoteUsers)) {
-			return $this->createdRemoteUsers[$username]['shouldExist'];
+		if (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
+			return $this->createdRemoteUsers[$normalizedUsername]['shouldExist'];
 		}
 
 		throw new Exception(
@@ -2200,12 +2200,13 @@ trait Provisioning {
 		$user, $password, $displayName = null, $email = null, $shouldExist = true
 	) {
 		$user = $this->getActualUsername($user);
-		$user = $this->normalizeUsername($user);
+		$normalizedUsername = $this->normalizeUsername($user);
 		$userData = [
 			"password" => $password,
 			"displayname" => $displayName,
 			"email" => $email,
-			"shouldExist" => $shouldExist
+			"shouldExist" => $shouldExist,
+			"actualUsername" => $user
 		];
 
 		if ($this->currentServer === 'LOCAL') {
@@ -2214,13 +2215,13 @@ trait Provisioning {
 			// first time (successfully) and then purposely try to create the user again.
 			// The 2nd user creation is expected to fail, and in that case we want to
 			// still remember the details of the first user creation.
-			if ($shouldExist || !\array_key_exists($user, $this->createdUsers)) {
-				$this->createdUsers[$user] = $userData;
+			if ($shouldExist || !\array_key_exists($normalizedUsername, $this->createdUsers)) {
+				$this->createdUsers[$normalizedUsername] = $userData;
 			}
 		} elseif ($this->currentServer === 'REMOTE') {
 			// See comment above about the LOCAL case. The logic is the same for the remote case.
-			if ($shouldExist || !\array_key_exists($user, $this->createdRemoteUsers)) {
-				$this->createdRemoteUsers[$user] = $userData;
+			if ($shouldExist || !\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
+				$this->createdRemoteUsers[$normalizedUsername] = $userData;
 			}
 		}
 	}
@@ -2237,13 +2238,13 @@ trait Provisioning {
 	public function rememberUserPassword(
 		$user, $password
 	) {
-		$user = $this->normalizeUsername($user);
+		$normalizedUsername = $this->normalizeUsername($user);
 		if ($this->currentServer === 'LOCAL') {
-			if (\array_key_exists($user, $this->createdUsers)) {
-				$this->createdUsers[$user]['password'] = $password;
+			if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
+				$this->createdUsers[$normalizedUsername]['password'] = $password;
 			}
 		} elseif ($this->currentServer === 'REMOTE') {
-			if (\array_key_exists($user, $this->createdRemoteUsers)) {
+			if (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
 				$this->createdRemoteUsers[$user]['password'] = $password;
 			}
 		}
@@ -2261,9 +2262,9 @@ trait Provisioning {
 	 */
 	public function rememberThatUserIsNotExpectedToExist($user) {
 		$user = $this->getActualUsername($user);
-		$user = $this->normalizeUsername($user);
-		if (\array_key_exists($user, $this->createdUsers)) {
-			$this->createdUsers[$user]['shouldExist'] = false;
+		$normalizedUsername = $this->normalizeUsername($user);
+		if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
+			$this->createdUsers[$normalizedUsername]['shouldExist'] = false;
 		}
 	}
 
@@ -4159,11 +4160,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user => $userData) {
-			$this->deleteUser($user);
+			$this->deleteUser($userData['actualUsername']);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
-			$this->deleteUser($remoteUser);
+			$this->deleteUser($userData['actualUsername']);
 		}
 		$this->usingServer($previousServer);
 	}
