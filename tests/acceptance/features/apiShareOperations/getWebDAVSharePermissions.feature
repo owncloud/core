@@ -21,20 +21,6 @@ Feature: sharing
       | old      |
       | new      |
 
-  @issue-ocis-reva-47 @skipOnOcV10
-  #after fixing the issues delete this Scenario and use the one above
-  Scenario Outline: Empty webdav share-permissions for owned file
-    Given using <dav-path> DAV path
-    And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
-    When user "Alice" gets the following properties of file "/tmp.txt" using the WebDAV API
-      | propertyName          |
-      | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "5"
-    Examples:
-      | dav-path |
-      | old      |
-      | new      |
-
   @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received file with edit and reshare permissions
     Given using <dav-path> DAV path

@@ -62,17 +62,6 @@ Feature: upload to a public link share
       | old      |
       | new      |
 
-  @skipOnOcV10 @issue-ocis-reva-290
-  #After fixing the issue delete this Scenario and use the commented-out step in the above scenario
-  Scenario: Uploading file to a public upload-only share that was deleted does not work
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
-      | path        | FOLDER |
-      | permissions | create |
-    When user "Alice" deletes file "/FOLDER" using the WebDAV API
-    And the public uploads file "does-not-matter.txt" with content "does not matter" using the new public WebDAV API
-    Then the HTTP status code should be "500"
-
   @skipOnOcis
   Scenario: Uploading file to a public read-only share folder with old public API does not work
     When user "Alice" creates a public link share using the sharing API with settings

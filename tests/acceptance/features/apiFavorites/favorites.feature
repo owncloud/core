@@ -28,17 +28,6 @@ Feature: favorite
       | old         |
       | new         |
 
-  @skipOnOcV10 @skipOnOcis-OC-Storage @issue-ocis-reva-276
-  #after fixing the issues delete this Scenario and use the one above
-  Scenario Outline: Favorite a folder
-    Given using <dav_version> DAV path
-    When user "Alice" favorites element "/FOLDER" using the WebDAV API
-    Then the HTTP status code should be "500"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
   @skipOnOcis-EOS-Storage @issue-ocis-reva-276
   Scenario Outline: Favorite and unfavorite a folder
     Given using <dav_version> DAV path
