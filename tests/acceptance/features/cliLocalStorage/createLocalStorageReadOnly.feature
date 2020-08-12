@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP @skipOnOcis
+@cli @local_storage @skipOnLDAP
 Feature: create read-only local storage from the command line
   As an admin
   I want to create read-only local storage from the command line

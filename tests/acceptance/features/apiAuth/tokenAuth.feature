@@ -1,4 +1,4 @@
-@api @skipOnOcis @notToImplementOnOCIS @issue-ocis-reva-28 @issue-ocis-reva-37
+@api @notToImplementOnOCIS @issue-ocis-reva-28 @issue-ocis-reva-37
 Feature: tokenAuth
 
   Background:

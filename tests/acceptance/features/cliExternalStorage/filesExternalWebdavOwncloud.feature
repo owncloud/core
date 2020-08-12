@@ -1,4 +1,4 @@
-@cli @external_storage @skipOnLDAP @skipOnOcis
+@cli @external_storage @skipOnLDAP
 Feature: using files external service with storage as webdav_owncloud
 
 As a user

@@ -1,4 +1,4 @@
-@api @skipOnOcis @notToImplementOnOCIS @issue-ocis-reva-28
+@api @notToImplementOnOCIS @issue-ocis-reva-28
 Feature: auth
 
   Background:

@@ -1,4 +1,4 @@
-@cli @comments-app-required @skipOnLDAP @skipOnOcis
+@cli @comments-app-required @skipOnLDAP
 Feature: get app info
   As an admin
   I want to be able to get app info

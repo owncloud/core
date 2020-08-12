@@ -1,4 +1,4 @@
-@cli @comments-app-required @skipOnLDAP @skipOnOcis
+@cli @comments-app-required @skipOnLDAP
 Feature: disable an app
   As an admin
   I want to be able to disable an enabled app

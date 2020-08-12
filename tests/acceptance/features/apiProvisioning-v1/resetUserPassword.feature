@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
 Feature: reset user password
   As an admin
   I want to be able to reset a user's password

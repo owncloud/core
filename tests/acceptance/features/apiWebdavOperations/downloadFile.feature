@@ -19,7 +19,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-12
+  @issue-ocis-reva-12
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" with range "bytes=24-50" using the WebDAV API
@@ -60,7 +60,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @skipOnOcis
+
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
@@ -72,7 +72,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @skipOnOcis
+
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session

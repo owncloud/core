@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-282
+@api @files_sharing-app-required @public_link_share-feature-required @toImplementOnOCIS @issue-ocis-reva-282
 @issue-ocis-reva-233 @issue-ocis-reva-243 @issue-ocis-reva-289
 Feature: reshare as public link
   As a user

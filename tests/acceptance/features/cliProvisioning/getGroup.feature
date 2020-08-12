@@ -1,4 +1,4 @@
-@cli @skipOnOcis
+@cli
 Feature: get group
   As an admin
   I want to be able to get group details

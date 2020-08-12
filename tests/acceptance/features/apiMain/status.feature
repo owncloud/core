@@ -1,4 +1,4 @@
-@api @skipOnOcis @issue-ocis-reva-65 @issue-ocis-reva-97
+@api @issue-ocis-reva-65 @issue-ocis-reva-97
 Feature: Status
 
   @smokeTest

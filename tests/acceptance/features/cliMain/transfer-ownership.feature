@@ -1,4 +1,4 @@
-@cli @skipOnOcis
+@cli
 Feature: transfer-ownership
 
   @smokeTest

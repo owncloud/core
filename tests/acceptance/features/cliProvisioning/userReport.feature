@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @skipOnOcis
+@cli @skipOnLDAP
 Feature: get user report
   As an admin
   I want to be able get user report

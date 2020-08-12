@@ -76,7 +76,7 @@ Feature: favorite
       | new         |
 
   @smokeTest @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: Get favorited elements of a folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
@@ -93,7 +93,7 @@ Feature: favorite
       | new         |
 
   @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: Get favorited elements of a subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"
@@ -116,7 +116,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -133,7 +133,7 @@ Feature: favorite
       | new         |
 
   @issue-33840 @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: Get favorited elements and limit count of entries
     Given using <dav_version> DAV path
     And user "Alice" has favorited element "/textfile0.txt"
@@ -155,7 +155,7 @@ Feature: favorite
       | new         |
 
   @issue-33840 @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: Get favorited elements paginated in subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"
@@ -185,7 +185,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required @toImplementOnOCIS
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -200,7 +200,7 @@ Feature: favorite
       | new         |
 
   @files_sharing-app-required @toImplementOnOCIS
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -214,7 +214,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-39
+  @issue-ocis-reva-39
   Scenario Outline: favoriting a folder does not change the favorite state of elements inside the folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/PARENT/parent.txt" using the WebDAV API

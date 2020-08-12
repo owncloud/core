@@ -7,7 +7,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-11 @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-11 @issue-ocis-reva-243
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -34,7 +34,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-11 @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-11 @issue-ocis-reva-243
   Scenario Outline: Creating a share of a file containing commas in the filename, with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -145,7 +145,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34
+  @issue-ocis-reva-34
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -169,7 +169,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34
+  @issue-ocis-reva-34
   Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -194,7 +194,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-34 @issue-ocis-reva-243
+  @smokeTest @toImplementOnOCIS @issue-ocis-reva-34 @issue-ocis-reva-243
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -222,7 +222,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-34 @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-34 @issue-ocis-reva-243
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -239,7 +239,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-372 @issue-ocis-reva-243
+  @issue-ocis-reva-372 @issue-ocis-reva-243
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -269,7 +269,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -283,7 +283,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-243 @toImplementOnOCIS
+  @issue-ocis-reva-34 @issue-ocis-reva-243 @toImplementOnOCIS
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -299,7 +299,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
+  @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -314,7 +314,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34 @issue-ocis-reva-243 @issue-ocis-reva-12 @toImplementOnOCIS
+  @issue-ocis-reva-34 @issue-ocis-reva-243 @issue-ocis-reva-12 @toImplementOnOCIS
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -332,7 +332,7 @@ Feature: sharing
       | 2               | 200             |
 
   @issue-35484
-  @skipOnOcis @skipOnOcis-OC-Storage @issue-ocis-reva-11
+  @skipOnOcis-OC-Storage @issue-ocis-reva-11
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -353,7 +353,7 @@ Feature: sharing
     And user "brian" should not see the following elements if the upper and lower case username are different
       | /randomfile.txt |
 
-  @skipOnLDAP @skipOnOcis
+  @skipOnLDAP
   Scenario: creating a new share with user of a group when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -368,7 +368,7 @@ Feature: sharing
       | /randomfile.txt |
     And the content of file "randomfile.txt" for user "Brian" should be "Random data"
 
-  @skipOnOcis @issue-ocis-reva-34 @toImplementOnOCIS
+  @issue-ocis-reva-34 @toImplementOnOCIS
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -396,7 +396,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnOcis
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
   Scenario Outline: share with a group and then add a user to that group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -417,7 +417,7 @@ Feature: sharing
       | 1               |
       | 2               |
 
-  @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
+  @skipOnLDAP @notToImplementOnOCIS
   # deleting an LDAP group is not relevant or possible using the provisioning API
   Scenario Outline: shares shared to deleted group should not be available
     Given using OCS API version "<ocs_api_version>"
@@ -451,7 +451,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-34 @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-reva-243 @toImplementOnOCIS
+  @issue-ocis-reva-34 @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-reva-243 @toImplementOnOCIS
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and without skeleton files:
       | username |

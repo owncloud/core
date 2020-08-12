@@ -8,7 +8,7 @@ Feature: users cannot upload a file to or into an excluded directory
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis @issue-ocis-reva-54
+  @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
@@ -20,7 +20,7 @@ Feature: users cannot upload a file to or into an excluded directory
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-54
+  @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
@@ -34,7 +34,7 @@ Feature: users cannot upload a file to or into an excluded directory
       | new         |
 
   @skipOnOcV10.3
-  @skipOnOcis @issue-ocis-reva-54
+  @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

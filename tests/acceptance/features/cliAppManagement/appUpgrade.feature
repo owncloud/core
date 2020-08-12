@@ -1,4 +1,4 @@
-@cli @skipWhenTestingRemoteSystems @skipOnLDAP @skipOnOcis
+@cli @skipWhenTestingRemoteSystems @skipOnLDAP
 Feature: App upgrade
   As an admin
   I want to be able to upgrade my app version

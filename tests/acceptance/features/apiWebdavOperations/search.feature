@@ -1,4 +1,4 @@
-@api @skipOnOcis @issue-ocis-reva-39
+@api @issue-ocis-reva-39
 Feature: Search
   As a user
   I would like to be able to search for files

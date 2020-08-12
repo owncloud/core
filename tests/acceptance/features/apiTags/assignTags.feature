@@ -1,4 +1,4 @@
-@api @systemtags-app-required @files_sharing-app-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-51
+@api @systemtags-app-required @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-51
 Feature: Assign tags to file/folder
   I want to assign tags to the file/folder
   So that I can organize the files/folders easily

@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
 Feature: get user
   As an admin, subadmin or as myself
   I want to be able to retrieve user information

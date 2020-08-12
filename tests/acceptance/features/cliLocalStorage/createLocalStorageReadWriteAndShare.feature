@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP @skipOnOcis
+@cli @local_storage @skipOnLDAP
 Feature: create local storage and enable sharing from the command line
   As an admin
   I want to create read-write local storage and enable sharing from the command line

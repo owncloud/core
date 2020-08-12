@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @skipOnOcis
+@cli @skipOnLDAP
 Feature: get user last seen
   As an admin
   I want to be able get user last seen

@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP @skipOnOcis
+@cli @local_storage @skipOnLDAP
 Feature: delete local storage from the command line
   As an admin
   I want to delete local storage
