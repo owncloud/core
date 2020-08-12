@@ -239,7 +239,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-372 @issue-ocis-reva-243 @toImplementOnOCIS
+  @skipOnOcis @issue-ocis-reva-372 @issue-ocis-reva-243
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
