@@ -184,7 +184,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @skipOnOcis @issue-product-127
+  @skipOnOcis @toImplementOnOCIS @issue-product-127
   Scenario Outline: uploading a file inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
