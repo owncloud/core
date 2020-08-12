@@ -414,6 +414,14 @@ function run_behat_tests() {
 		fi
 	fi
 
+	FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+	# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
+	# Strip them out so we can pass just the ordinary feature details to Behat.
+	# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
+	# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
+	# for ideas.
+	FAILED_SCENARIO_PATHS=$(echo "${FAILED_SCENARIO_PATHS_COLORED}" | sed "s/\x1b[^m]*m//g")
+
 	if [ -n "${EXPECTED_FAILURES_FILE}" ]
 	then
 		if [ -n "${BEHAT_SUITE_TO_RUN}" ]
@@ -425,13 +433,6 @@ function run_behat_tests() {
 
 		PASSED=true
 		FAILED_SCENARIO_FOUND=false
-		FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
-		# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
-		# Strip them out so we can pass just the ordinary feature details to Behat.
-		# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
-		# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
-		# for ideas.
-		FAILED_SCENARIO_PATHS=$(echo "${FAILED_SCENARIO_PATHS_COLORED}" | sed "s/\x1b[^m]*m//g")
 
 		# Check that every failed scenario is in the list of expected failures
 		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
@@ -490,6 +491,15 @@ function run_behat_tests() {
 		else
 			echo "Failure - actual and expected failures did not match"
 		fi
+	else
+		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
+		do
+			SUITE_PATH=$(dirname "${FAILED_SCENARIO_PATH}")
+			SUITE=$(basename "${SUITE_PATH}")
+			SCENARIO=$(basename "${FAILED_SCENARIO_PATH}")
+			SUITE_SCENARIO="${SUITE}/${SCENARIO}"
+			UNEXPECTED_FAILED_SCENARIOS+=("${SUITE_SCENARIO}")
+		done
 	fi
 
 	# With webUI tests, we try running failed tests again.
@@ -1173,7 +1183,7 @@ done
 
 TOTAL_SCENARIOS=$((SCENARIOS_THAT_PASSED + SCENARIOS_THAT_FAILED))
 
-echo -e "\nrunsh: Total ${TOTAL_SCENARIOS} scenarios (${SCENARIOS_THAT_PASSED} passed, ${SCENARIOS_THAT_FAILED} failed)"
+echo "runsh: Total ${TOTAL_SCENARIOS} scenarios (${SCENARIOS_THAT_PASSED} passed, ${SCENARIOS_THAT_FAILED} failed)"
 
 teardown
 
@@ -1201,19 +1211,21 @@ fi
 if [ -n "${EXPECTED_FAILURES_FILE}" ]
 then
 	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
-	if [ "${UNEXPECTED_FAILURE}" = true ]
-	then
-		tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
-		tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
-	else
-		tput setaf 2; echo "runsh: There were no unexpected failures."
-	fi
-	if [ "${UNEXPECTED_SUCCESS}" = true ]
-	then
-		tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
-		tput setaf 1; printf "%s\n" "${UNEXPECTED_PASSED_SCENARIOS[@]}"
-	else
-		tput setaf 2; echo "runsh: There were no unexpected success."
-	fi
 fi
+
+if [ "${UNEXPECTED_FAILURE}" = true ]
+then
+  tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
+  tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+else
+  tput setaf 2; echo "runsh: There were no unexpected failures."
+fi
+if [ "${UNEXPECTED_SUCCESS}" = true ]
+then
+  tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
+  tput setaf 1; printf "%s\n" "${UNEXPECTED_PASSED_SCENARIOS[@]}"
+else
+  tput setaf 2; echo "runsh: There were no unexpected success."
+fi
+
 exit ${FINAL_EXIT_STATUS}
