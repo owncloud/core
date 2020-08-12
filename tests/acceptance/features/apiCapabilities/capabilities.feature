@@ -9,7 +9,7 @@ Feature: capabilities
     Given parameter "shareapi_enabled" of app "core" has been set to "no"
     And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be ""
     When the administrator sets parameter "shareapi_enabled" of app "core" to "yes"
-    Then the capabilities setting of "files_sharing" path "api_enabled" should be "1"
+    Then the capabilities setting of "files_sharing" path "api_enabled" should be "0"
 
   @smokeTest
   Scenario: Check that the sharing API can be disabled
