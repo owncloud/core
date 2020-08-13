@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP @skipOnOcis
+@cli @local_storage @skipOnLDAP
 Feature: list created local storage from the command line
   As an admin
   I want to list all created local storage from the command line

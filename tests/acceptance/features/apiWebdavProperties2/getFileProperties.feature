@@ -25,7 +25,7 @@ Feature: get file properties
       | old         | s,a,m,p,l,e.txt   |
       | new         | s,a,m,p,l,e.txt   |
 
-  @skipOnOcis @issue-ocis-reva-214
+  @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
@@ -43,7 +43,7 @@ Feature: get file properties
       | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3f2\.txt    |
       | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt    |
 
-  @skipOnOcis @issue-ocis-reva-214
+  @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
@@ -115,7 +115,7 @@ Feature: get file properties
       | new         |
 
   @files_sharing-app-required
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -136,7 +136,7 @@ Feature: get file properties
       | new         |
 
   @files_sharing-app-required
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
@@ -157,7 +157,7 @@ Feature: get file properties
       | new         |
 
   @public_link_share-feature-required @files_sharing-app-required
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -175,7 +175,7 @@ Feature: get file properties
       | new         |
 
   @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -206,7 +206,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis
+
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -219,7 +219,7 @@ Feature: get file properties
       | new         |
 
   @smokeTest
-  @skipOnOcis @issue-ocis-reva-216
+  @issue-ocis-reva-216
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -232,7 +232,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-163
+  @issue-ocis-reva-163
   Scenario Outline: Do a PROPFIND to a non-existing URL
     And user "Alice" requests "<url>" with "PROPFIND" using basic auth
     Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message>"
@@ -242,7 +242,7 @@ Feature: get file properties
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |
 
-  @skipOnOcis @issue-ocis-reva-57 @issue-ocis-reva-217
+  @issue-ocis-reva-57 @issue-ocis-reva-217
   Scenario: add, receive multiple custom meta properties to a file
     Given user "Alice" has created folder "/TestFolder"
     And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
@@ -262,7 +262,7 @@ Feature: get file properties
       | /TestFolder/test1.txt | status       | HTTP/1.1 200 OK |
 
   @issue-36920
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcis @issue-ocis-reva-57 @issue-ocis-reva-217
+  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-reva-57 @issue-ocis-reva-217
   Scenario: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given user "Alice" has created folder "/TestFolder"
     And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
@@ -288,7 +288,7 @@ Feature: get file properties
       | /TestFolder/test2.txt | testprop2    | DDDDD                  |
       | /TestFolder/          | status       | HTTP/1.1 404 Not Found |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the last modified date of a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -301,7 +301,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the content type of a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -314,7 +314,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the content type of a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
@@ -363,7 +363,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the size of a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -376,7 +376,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the file id of a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
@@ -389,7 +389,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the file id of a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -402,7 +402,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the owner display name of a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
@@ -415,7 +415,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the owner display name of a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -428,7 +428,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the permissions on a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
@@ -441,7 +441,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-57
+  @issue-ocis-reva-57
   Scenario Outline: Propfind the permissions on a folder using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"

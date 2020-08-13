@@ -1,4 +1,4 @@
-@api @comments-app-required @files_sharing-app-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-38
+@api @comments-app-required @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-38
 Feature: Comments
 
   Background:

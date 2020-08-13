@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @skipOnOcis
+@cli @skipOnLDAP
 Feature: get users
   As an admin
   I want to be able to list the users that exist

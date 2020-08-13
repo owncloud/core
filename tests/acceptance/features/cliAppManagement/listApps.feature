@@ -1,4 +1,4 @@
-@cli @skipWhenTestingRemoteSystems @skipOnLDAP @skipOnOcis
+@cli @skipWhenTestingRemoteSystems @skipOnLDAP
 Feature: list apps
   As an admin
   I want to be able to get a list of apps that are enabled and/or disabled

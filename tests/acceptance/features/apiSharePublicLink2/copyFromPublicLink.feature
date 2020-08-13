@@ -56,7 +56,7 @@ Feature: copying from public link share
     And as "Alice" file "/PARENT/copy1.txt" should exist
     And the content of file "/PARENT/copy1.txt" for user "Alice" should be "some data 0"
 
-  @skipOnOcis @issue-ocis-reva-373 @issue-core-37683
+  @issue-ocis-reva-373 @issue-core-37683
   Scenario: Copy folder within a public link folder to the same folder name as an already existing file
     Given user "Alice" has created folder "/PARENT/testFolder"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/testFolder/testfile.txt"
@@ -82,7 +82,7 @@ Feature: copying from public link share
     Then the HTTP status code should be "204"
     And as "Alice" file "/PARENT/copy1.txt" should not exist
 
-  @skipOnOcis @issue-ocis-reva-373 @issue-core-37683
+  @issue-ocis-reva-373 @issue-core-37683
   Scenario: Copy file within a public link folder to a file with name same as an existing folder
     Given user "Alice" has uploaded file with content "some data" to "/PARENT/testfile.txt"
     And user "Alice" has created folder "/PARENT/new-folder"
@@ -152,7 +152,7 @@ Feature: copying from public link share
       | C++ file.cpp            |
       | sample,1.txt            |
 
-  @skipOnOcis @issue-ocis-reva-368
+  @issue-ocis-reva-368
   Scenario Outline: Copy file within a public link folder to a file with unusual destination names
     Given user "Alice" has uploaded file with content "some data" to "/PARENT/testfile.txt"
     And user "Alice" has created a public link share with settings
@@ -167,7 +167,7 @@ Feature: copying from public link share
       | testfile.txt          |
       |                       |
 
-  @skipOnOcis @issue-ocis-reva-368
+  @issue-ocis-reva-368
   Scenario Outline: Copy folder within a public link folder to a folder with unusual destination names
     Given user "Alice" has created folder "/PARENT/testFolder"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/testFolder/testfile.txt"

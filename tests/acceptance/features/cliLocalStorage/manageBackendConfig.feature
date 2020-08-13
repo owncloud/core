@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP @skipOnOcis
+@cli @local_storage @skipOnLDAP
 Feature: manage backend configuration for a mount using occ command
   As an admin
   I want to configure a local storage mount

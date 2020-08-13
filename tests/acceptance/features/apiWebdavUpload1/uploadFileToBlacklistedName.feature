@@ -8,7 +8,7 @@ Feature: users cannot upload a file to a blacklisted name
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis @issue-ocis-reva-15
+  @issue-ocis-reva-15
   Scenario Outline: upload a file to a filename that is banned by default
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to ".htaccess" using the WebDAV API
@@ -19,7 +19,7 @@ Feature: users cannot upload a file to a blacklisted name
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-54
+  @issue-ocis-reva-54
   Scenario Outline: upload a file to a banned filename
     Given using <dav_version> DAV path
     When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
@@ -32,7 +32,7 @@ Feature: users cannot upload a file to a blacklisted name
       | new         |
 
   @skipOnOcV10.3
-  @skipOnOcis @issue-ocis-reva-54
+  @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

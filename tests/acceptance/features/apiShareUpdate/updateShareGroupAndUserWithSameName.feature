@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
+@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
 Feature: updating shares to users and groups that have the same name
 
   Background:

@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP @skipOnOcis
+@cli @local_storage @skipOnLDAP
 Feature: create local storage from the command line
   As an admin
   I want to create local storage available to a specific user(s) from the command line

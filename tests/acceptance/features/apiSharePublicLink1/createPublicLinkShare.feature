@@ -5,7 +5,7 @@ Feature: create a public link share
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1) using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And the administrator has enabled DAV tech_preview
@@ -34,7 +34,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-12
+  @issue-ocis-reva-12
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1) using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And the administrator has enabled DAV tech_preview
@@ -63,7 +63,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario Outline: Creating a new public link share of a file with password using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -95,7 +95,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnOcis @issue-ocis-reva-199
+  @smokeTest @issue-ocis-reva-199
   Scenario Outline: Creating a new public link share of a file with password using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -127,7 +127,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -155,7 +155,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-292
+  @issue-ocis-reva-292
   Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -183,7 +183,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And the administrator has enabled DAV tech_preview
@@ -214,7 +214,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-12
+  @issue-ocis-reva-12
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And the administrator has enabled DAV tech_preview
@@ -245,7 +245,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Creating a new public link share of a folder, with a password using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/randomfile.txt"
@@ -276,7 +276,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-292
+  @issue-ocis-reva-292
   Scenario Outline: Creating a new public link share of a folder, with a password using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/randomfile.txt"
@@ -351,7 +351,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -370,7 +370,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-41
+  @issue-ocis-reva-41
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -389,7 +389,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-36442 @skipOnOcis @issue-ocis-reva-41
+  @issue-36442 @issue-ocis-reva-41
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -413,7 +413,7 @@ Feature: create a public link share
       | 2               | 403             | 403              |
       #| 2               | 200             | 200              |
 
-  @issue-36442 @skipOnOcis @issue-ocis-reva-41
+  @issue-36442 @issue-ocis-reva-41
   Scenario Outline: Creating a public link share with create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -437,7 +437,7 @@ Feature: create a public link share
       | 2               | 403             | 403              |
       #| 2               | 200             | 200              |
 
-  @issue-36442 @skipOnOcis @issue-ocis-reva-41
+  @issue-36442 @issue-ocis-reva-41
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -463,7 +463,7 @@ Feature: create a public link share
       | 2               | 400             | 400              |
       #| 2               | 200             | 200              |
 
-  @issue-36442 @skipOnOcis @issue-ocis-reva-41
+  @issue-36442 @issue-ocis-reva-41
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -497,7 +497,7 @@ Feature: create a public link share
       | 2               | 403             | 403              | read,create,update,delete |
       #| 2               | 200             | 200              | read,create,update,delete  |
 
-  @skipOnOcis @issue-ocis-reva-41
+  @issue-ocis-reva-41
   Scenario Outline: Creating a link share with read+update+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -518,7 +518,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-41
+  @issue-ocis-reva-41
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -534,7 +534,7 @@ Feature: create a public link share
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
-  @skipOnOcis
+
   Scenario Outline: Creating a link share with edit permissions keeps it using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -571,7 +571,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Creating a link share with upload permissions keeps it using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -608,7 +608,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-283
+  @issue-ocis-reva-283
   Scenario Outline: Do not allow public sharing of the root
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -620,7 +620,7 @@ Feature: create a public link share
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
-  @skipOnOcis
+
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "long file" to "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
@@ -647,7 +647,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
@@ -678,7 +678,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-41
+  @issue-ocis-reva-41
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -714,7 +714,7 @@ Feature: create a public link share
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @skipOnOcis @issue-ocis-reva-199
+  @issue-ocis-reva-199
   Scenario: Deleting a folder that has been publicly shared
     Given user "Alice" has created a public link share with settings
       | path        | PARENT |
@@ -723,7 +723,7 @@ Feature: create a public link share
     Then the public download of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API should fail with HTTP status code "404"
     And the public download of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API should fail with HTTP status code "404"
 
-  @skipOnOcis @issue-ocis-reva-292
+  @issue-ocis-reva-292
   Scenario: try to download from a public share that has upload only permissions
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created a public link share with settings
@@ -774,7 +774,7 @@ Feature: create a public link share
       | old         |
       | new         |
 
-  @skipOnOcis @issue-37605
+  @issue-37605
   #after fixing all issues make this scenario like the one in OCIS, and delete the one in OCIS
   Scenario: Get the mtime of a file inside a folder shared by public link using new webDAV version
     Given user "Alice" has created folder "testFolder"
@@ -788,7 +788,7 @@ Feature: create a public link share
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should not be "Thu, 08 Aug 2019 04:18:13 GMT"
 #    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-  @skipOnOcis @issue-37605
+  @issue-37605
   #after fixing all issues make this scenario like the one in OCIS, and delete the one in OCIS
   Scenario: overwriting a file changes its mtime (new public webDAV API)
     Given user "Alice" has created folder "testFolder"

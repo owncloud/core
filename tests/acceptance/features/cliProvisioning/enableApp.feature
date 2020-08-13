@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @skipOnOcis
+@cli @skipOnLDAP
 Feature: enable an app
   As an admin
   I want to be able to enable a disabled app

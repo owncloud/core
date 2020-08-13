@@ -1,4 +1,4 @@
-@api @skipOnOcis @issue-ocis-187 @preview-extension-required
+@api @issue-ocis-187 @preview-extension-required
 Feature: previews of files downloaded through the webdav API
 
   Background:

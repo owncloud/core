@@ -4,7 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @issue-32068 @skipOnOcis
+  @issue-32068
   @issue-ocis-reva-30
   @smokeTest
   Scenario: using OCS anonymously
@@ -29,7 +29,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @skipOnOcis @issue-ocis-reva-29
+  @issue-ocis-reva-29
   Scenario: ocs config end point accessible by unauthorized users
     When a user requests these endpoints with "GET" and no authentication
       | endpoint           |
@@ -42,7 +42,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @issue-32068 @skipOnOcis
+  @issue-32068
   @issue-ocis-reva-11
   @issue-ocis-reva-30
   @issue-ocis-reva-31
@@ -82,7 +82,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @issue-32068 @skipOnOcis @issue-ocis-reva-29 @issue-ocis-reva-30
+  @issue-32068 @issue-ocis-reva-29 @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
@@ -117,7 +117,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @skipOnOcis @issue-ocis-reva-65
+  @issue-ocis-reva-65
   Scenario:using OCS with admin basic auth
     When the administrator requests these endpoint with "GET"
       | endpoint                 |
@@ -134,7 +134,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @skipOnOcis @issue-ocis-reva-30 @issue-ocis-reva-65
+  @issue-ocis-reva-30 @issue-ocis-reva-65
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as admin user with wrong password
     Given user "another-admin" has been created with default attributes and without skeleton files
@@ -171,7 +171,7 @@ Feature: auth
     And the OCS status code of responses on all endpoints should be "200"
 
 
-  @skipOnOcis @notToImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-28
+  @notToImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-28
   Scenario: using OCS with token auth of a normal user
     Given a new client token for "Alice" has been generated
     When user "Alice" requests these endpoints with "GET" using basic token auth
@@ -205,7 +205,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @skipOnOcis @notToImplementOnOCIS
+  @notToImplementOnOCIS
   Scenario: using OCS with browser session of normal user
     Given a new browser session for "Alice" has been started
     When the user requests these endpoints with "GET" using a new browser session
@@ -239,7 +239,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-60
+  @toImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-60
   Scenario: using OCS with an app password of a normal user
     Given a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"

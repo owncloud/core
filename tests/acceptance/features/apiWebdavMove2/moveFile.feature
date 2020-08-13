@@ -68,7 +68,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a file into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -91,7 +91,7 @@ Feature: move (rename) file
       | old         | Brian |
       | new         | Brian |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a file out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -114,7 +114,7 @@ Feature: move (rename) file
       | old         | Brian |
       | new         | Brian |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -138,7 +138,7 @@ Feature: move (rename) file
       | old         | Brian |
       | new         | Brian |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -162,7 +162,7 @@ Feature: move (rename) file
       | old         | Brian |
       | new         | Brian |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a file to a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and skeleton files
@@ -181,7 +181,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and skeleton files
@@ -209,7 +209,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcis
+  @issue-ocis-reva-211
   Scenario Outline: rename a file into an invalid filename
     Given using <dav_version> DAV path
     When user "Alice" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
@@ -231,7 +231,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and skeleton files
@@ -255,7 +255,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcis
+  @issue-ocis-reva-211
   Scenario Outline: Renaming a file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API

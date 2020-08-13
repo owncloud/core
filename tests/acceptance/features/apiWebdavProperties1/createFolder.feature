@@ -56,7 +56,7 @@ Feature: create folder
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-15
+  @issue-ocis-reva-15
   Scenario Outline: Creating a directory which contains .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" creates folder "/folder.with.ext.part" using the WebDAV API
@@ -71,7 +71,7 @@ Feature: create folder
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-168
+  @issue-ocis-reva-168
   Scenario Outline: try to create a folder that already exists
     Given using <dav_version> DAV path
     And user "Alice" has created folder "my-data"
@@ -85,7 +85,7 @@ Feature: create folder
       | old         |
       | new         |
 
-  @skipOnOcis @issue-ocis-reva-168
+  @issue-ocis-reva-168
   Scenario Outline: try to create a folder with a name of an existing file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded data" to "/my-data.txt"

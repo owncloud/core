@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-243
 Feature: resharing can be done on a reshared resource
 
   Background:

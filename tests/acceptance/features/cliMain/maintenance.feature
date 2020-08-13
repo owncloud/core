@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnOcis
+@cli @local_storage
 Feature: Maintenance command
 
   As an admin

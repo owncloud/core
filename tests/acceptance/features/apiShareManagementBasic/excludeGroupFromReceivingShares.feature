@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-41
+@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-41
 Feature: Exclude groups from receiving shares
   As an admin
   I want to exclude groups from receiving shares

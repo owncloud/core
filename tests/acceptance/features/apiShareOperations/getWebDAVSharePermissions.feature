@@ -8,7 +8,7 @@ Feature: sharing
       | Alice    |
       | Brian    |
 
-  @smokeTest @skipOnOcis @issue-ocis-reva-47
+  @smokeTest @issue-ocis-reva-47
   Scenario Outline: Correct webdav share-permissions for owned file
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -21,7 +21,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received file with edit and reshare permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -35,7 +35,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared file with edit and reshare permissions
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -55,7 +55,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received file with edit permissions but no reshare permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -68,7 +68,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared file with edit permissions but no reshare permissions
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -88,7 +88,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received file with reshare permissions but no edit permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -101,7 +101,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared file with reshare permissions but no edit permissions
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -121,7 +121,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis
+
   Scenario Outline: Correct webdav share-permissions for owned folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -134,7 +134,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -148,7 +148,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -167,7 +167,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but edit
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -180,7 +180,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but edit
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -200,7 +200,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but create
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -213,7 +213,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but create
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -233,7 +233,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but delete
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -246,7 +246,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but delete
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -266,7 +266,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but share
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -279,7 +279,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-243
+  @toImplementOnOCIS @issue-ocis-reva-243
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but share
     Given using <dav-path> DAV path
     And group "grp1" has been created

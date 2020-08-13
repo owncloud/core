@@ -1,4 +1,4 @@
-@api @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-172
+@api @toImplementOnOCIS @issue-ocis-reva-172
 Feature: actions on a locked item are possible if the token is sent with the request
 
   Background:

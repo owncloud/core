@@ -8,7 +8,7 @@ Feature: move (rename) folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-ocis-reva-211 @skipOnOcis
+  @issue-ocis-reva-211
   Scenario Outline: Renaming a folder to a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -21,7 +21,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcis
+  @issue-ocis-reva-211
   Scenario Outline: Renaming a folder beginning with a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -34,7 +34,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-211 @skipOnOcis
+  @issue-ocis-reva-211
   Scenario Outline: Renaming a folder including a backslash encoded should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"

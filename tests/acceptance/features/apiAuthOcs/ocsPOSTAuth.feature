@@ -4,7 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis @issue-ocis-reva-30
+  @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send POST requests to OCS endpoints as normal user with wrong password

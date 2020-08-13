@@ -1,4 +1,4 @@
-@cli @skipOnOcis
+@cli
 Feature: add and delete app configs using occ command
 
   As an administrator

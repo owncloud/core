@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @skipOnOcis
+@cli @skipOnLDAP
 Feature: manipulate the ownCloud logging backend
   As an admin
   I want to be able to manipulate the ownCloud logging backend

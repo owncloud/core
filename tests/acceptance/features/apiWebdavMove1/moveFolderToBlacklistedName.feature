@@ -8,7 +8,7 @@ Feature: users cannot move (rename) a folder to a blacklisted name
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-ocis-reva-211 @skipOnOcis
+  @issue-ocis-reva-211
   Scenario Outline: Rename a folder to a name that is banned by default
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -21,7 +21,7 @@ Feature: users cannot move (rename) a folder to a blacklisted name
       | old         |
       | new         |
 
-  @skipOnOcis
+
   Scenario Outline: Rename a folder to a banned name
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -35,7 +35,7 @@ Feature: users cannot move (rename) a folder to a blacklisted name
       | old         |
       | new         |
 
-  @skipOnOcV10.3 @skipOnOcis
+  @skipOnOcV10.3
   Scenario Outline: rename a folder to a folder name that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and skeleton files

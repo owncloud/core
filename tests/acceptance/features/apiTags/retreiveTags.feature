@@ -1,4 +1,4 @@
-@api @systemtags-app-required @skipOnOcis @toImplementOnOCIS @issue-ocis-reva-51
+@api @systemtags-app-required @toImplementOnOCIS @issue-ocis-reva-51
 Feature: tags
 
   Background:

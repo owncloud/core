@@ -1,4 +1,4 @@
-@cli @files_trashbin-app-required @files_sharing-app-required @skipOnLDAP @skipOnOcis
+@cli @files_trashbin-app-required @files_sharing-app-required @skipOnLDAP
 Feature: get status, delete and execute jobs in background queue
   As an admin
   I want to be able to see, delete and execute the jobs in background queue

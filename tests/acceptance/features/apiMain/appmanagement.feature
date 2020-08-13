@@ -1,4 +1,4 @@
-@api @skipOnLDAP @skipOnOcis @notToImplementOnOCIS
+@api @skipOnLDAP @notToImplementOnOCIS
 Feature: AppManagement
 
   Scenario: Two apps_path exist by default. The first one is more recent

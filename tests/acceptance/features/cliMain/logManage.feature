@@ -1,4 +1,4 @@
-@cli @skipOnLDAP @skipOnOcis
+@cli @skipOnLDAP
 Feature: manage logging configuration
   As an admin
   I want to be able to manage the logging configuration

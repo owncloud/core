@@ -1,4 +1,4 @@
-@cli @skipOnOcis
+@cli
 Feature: poll incoming shares
   As an administrator of a ownCloud Server
   I want to be able to poll incoming shares manually

@@ -7,7 +7,7 @@ Feature: refuse access
   Background:
     Given using OCS API version "1"
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario Outline: Unauthenticated call
     Given using <dav_version> DAV path
     When an unauthenticated client connects to the dav endpoint using the WebDAV API
@@ -21,7 +21,7 @@ Feature: refuse access
       | old         |
       | new         |
 
-  @skipOnOcis
+
   Scenario Outline: A disabled user cannot use webdav
     Given using <dav_version> DAV path
     And user "Alice" has been created with default attributes and skeleton files

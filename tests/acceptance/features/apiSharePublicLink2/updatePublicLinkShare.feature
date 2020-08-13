@@ -5,7 +5,7 @@ Feature: update a public link share
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @skipOnOcis @toImplementOnOCIS @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-37653
+  @toImplementOnOCIS @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-37653
   #after fixing all the issues merge this scenario with the one below
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"
@@ -77,7 +77,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Creating a new public link share with password and adding an expiration date using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -266,7 +266,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -285,7 +285,7 @@ Feature: update a public link share
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the new public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -304,7 +304,7 @@ Feature: update a public link share
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcis
+
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -323,7 +323,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the new public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -342,7 +342,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -361,7 +361,7 @@ Feature: update a public link share
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the new public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -380,7 +380,7 @@ Feature: update a public link share
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcis
+
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -399,7 +399,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the new public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -418,7 +418,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the old public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"
@@ -440,7 +440,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis @issue-ocis-reva-292
+  @issue-ocis-reva-292
   Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the new public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"
@@ -462,7 +462,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis
+
   Scenario Outline: Updating share permissions from read to change allows public to delete files using the old public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"

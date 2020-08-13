@@ -1,4 +1,4 @@
-@cli @skipOnOcis
+@cli
 Feature: check file versions
 
   Scenario: user clears the versions of a file
