@@ -913,11 +913,16 @@ trait Sharing {
 			$this->ocsApiVersion,
 			$this->sharingApiVersion
 		);
-		$this->lastShareData = $this->getResponseXml();
-		if ($shareType === 'public_link' && isset($this->lastShareData->data)) {
-			$linkName = (string) $this->lastShareData->data[0]->name;
-			$linkUrl = (string) $this->lastShareData->data[0]->url;
-			$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+		// In case of HTTP status code 204, there is no content in response payload body.
+		if ($this->response->getStatusCode() === 204) {
+			$this->lastShareData = null;
+		} else {
+			$this->lastShareData = $this->getResponseXml();
+			if ($shareType === 'public_link' && isset($this->lastShareData->data)) {
+				$linkName = (string) $this->lastShareData->data[0]->name;
+				$linkUrl = (string) $this->lastShareData->data[0]->url;
+				$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+			}
 		}
 		$this->localLastShareTime = \microtime(true);
 	}
