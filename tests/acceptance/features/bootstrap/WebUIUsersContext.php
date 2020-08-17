@@ -373,7 +373,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdministratorDeletesTheUser($username) {
 		$username = $this->featureContext->getActualUsername($username);
-		$this->usersPage->deleteUser($username, true);
+		$this->usersPage->deleteUser($username, true, $this->getSession());
 		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
 	}
 
@@ -386,7 +386,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdministratorDoesNotDeleteTheUser($username) {
 		$username = $this->featureContext->getActualUsername($username);
-		$this->usersPage->deleteUser($username, false);
+		$this->usersPage->deleteUser($username, false, $this->getSession());
 	}
 
 	/**
