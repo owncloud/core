@@ -22,6 +22,7 @@
 
 namespace OCA\Files_External\Lib\Backend;
 
+use Icewind\SMB\KerberosAuth;
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Backend\Backend as ExternalBackend;
@@ -48,14 +49,24 @@ class SMB extends ExternalBackend {
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)
+			->addAuthScheme(AuthMechanism::SCHEME_SMB)
 		;
 	}
 
 	/**
-	 * @param StorageConfig $storage
-	 * @param IUser $user
+	 * @param IStorageConfig $storage
+	 * @param IUser|null $user
 	 */
 	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
+		$authMechanism = $storage->getAuthMechanism();
+		if ($authMechanism->getScheme() === AuthMechanism::SCHEME_SMB) {
+			if ($authMechanism->getIdentifier() === 'smb::kerberos') {
+				$smbAuth = new KerberosAuth();
+				$storage->setBackendOption('auth', $smbAuth);
+			}
+			throw new \InvalidArgumentException('Unknown auth mechanism');
+		}
+
 		$user = $storage->getBackendOption('user');
 		if ($domain = $storage->getBackendOption('domain')) {
 			$storage->setBackendOption('user', $domain.'\\'.$user);
