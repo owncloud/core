@@ -24,7 +24,7 @@
 				retypePasswordObj.val('');
 				passwordObj.parent().addClass('shake');
 				$('#message').addClass('warning');
-				$('#message').text('Passwords do not match');
+				$('#message').text(t('core', 'Passwords do not match'));
 				$('#message').show();
 				passwordObj.focus();
 			}
