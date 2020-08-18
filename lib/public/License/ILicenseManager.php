@@ -19,6 +19,8 @@
  */
 namespace OCP\License;
 
+use OC\License\ILicense;
+
 /**
  * Interface ILicenseManager
  * Holds operations for managing the ownCloud license
@@ -89,6 +91,9 @@ interface ILicenseManager {
 	public function getLicenseStateFor(string $appid): int;
 
 	/**
+	 * @param string $appid the application to be checked
+	 * @param string|null $language the language to translate the messages to.
+	 * @return array containing the information as described above
 	 * @since 10.5.0
 	 * Get a message suitable to be displayed with the state of the license for the app
 	 * The message will be translated to the requested language if there is translation
@@ -104,9 +109,6 @@ interface ILicenseManager {
 	 * "contains_html" -> an array containing which lines of the translated message contains html code
 	 *   The lines start counting at 0
 	 *
-	 * @param string $appid the aplication to be checked
-	 * @param string $language the language to translate the messages to.
-	 * @return array containing the information as described above
 	 */
 	public function getLicenseMessageFor(string $appid, string $language = null): array;
 
@@ -133,4 +135,12 @@ interface ILicenseManager {
 	 * otherwise.
 	 */
 	public function checkLicenseFor(string $appid): bool;
+
+	/**
+	 * In some cases the default ownCloud license implementation shall be replaces
+	 * by a different mechanism. Use this method to do so.
+	 * @param ILicense $license
+	 * @since 10.6.0
+	 */
+	public function setLicense(ILicense $license): void;
 }
