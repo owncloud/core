@@ -60,6 +60,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $profilePicPreviewXpath = "//*[@id='displayavatar']/div[@class='avatardiv']/img";
 	protected $profilePicDeleteBtnXpath = "//*[@id='removeavatar']";
 	protected $profilePicUploadInputId = "uploadavatar";
+	protected $profilePicUploadedXpath = "//div[@class='jcrop-holder']";
 	protected $invalidImageErrorMsgXpath = "//*[@id='displayavatar']/div[@class='warning hidden' and contains(.,'Invalid image')]";
 
 	/**
@@ -300,6 +301,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function selectDefaultCropForProfilePicture(Session $session) {
 		$setBtn = $this->find('xpath', $this->setProfilePicBtnXpath);
+		$this->waitTillXpathIsVisible(
+			$this->profilePicUploadedXpath
+		);
 		$this->assertElementNotNull(
 			$setBtn,
 			__METHOD__ . " The button to set profile picture was not found"
