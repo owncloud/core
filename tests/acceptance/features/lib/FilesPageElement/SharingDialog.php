@@ -30,6 +30,7 @@ use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
 use WebDriver\Exception\StaleElementReference;
+use PHPUnit\Framework\Assert;
 
 /**
  * The Sharing Dialog
@@ -706,7 +707,20 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function removePublicLink(Session $session, $number = 1) {
 		$this->clickRemoveBtn($session, $number);
-		$ocDialog = $this->getLastOcDialog($session);
+		// In some cases, it takes some time for the oc dialog to appear.
+		// Here, if oc dialog is not present we are waiting for 0.1 second
+		// and then checking it's visibility on the webUI
+		for ($i = 0; $i < 20; $i++) {
+			$ocDialog = $this->getLastOcDialog($session);
+			if ($ocDialog) {
+				break;
+			}
+			\usleep(100000);
+		}
+		Assert::assertNotFalse(
+			$ocDialog,
+			'oc dialog was expected to be present but not found'
+		);
 		$ocDialog->accept($session);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
