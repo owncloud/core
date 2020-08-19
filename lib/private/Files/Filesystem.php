@@ -480,6 +480,9 @@ class Filesystem {
 	 * @return View
 	 */
 	public static function getView() {
+		if (self::$defaultInstance === null) {
+			self::$defaultInstance = new View();
+		}
 		return self::$defaultInstance;
 	}
 
