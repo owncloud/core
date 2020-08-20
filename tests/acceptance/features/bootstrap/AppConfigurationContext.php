@@ -66,6 +66,9 @@ class AppConfigurationContext implements Context {
 	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
+		if (\TestHelpers\OcisHelper::isTestingOnOcis()) {
+			return;
+		}
 		$value = \trim($value, $value[0]);
 		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
 	}

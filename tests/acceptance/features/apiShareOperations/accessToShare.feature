@@ -48,7 +48,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-34 @issue-ocis-reva-194
+  @smokeTest @issue-ocis-reva-34 @issue-ocis-reva-194 @toImplementOnOCIS
   Scenario Outline: Sharee can see the group share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
