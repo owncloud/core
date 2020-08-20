@@ -509,6 +509,7 @@ function run_behat_tests() {
 		PASSED=true
 		FAILED_SCENARIO_FOUND=false
 		FAILED_SCENARIO_PATHS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+
 		for FEATURE_COLORED in ${FAILED_SCENARIO_PATHS}
 			do
 				FAILED_SCENARIO_FOUND=true
@@ -536,10 +537,24 @@ function run_behat_tests() {
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
 				${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
-				if [ ${BEHAT_EXIT_STATUS} -ne 0 ]
+				if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 				then
+					# The scenario was not expected to fail but had failed and is present in the
+					# unexpected_failures list. We've checked the scenario with a re-run and
+					# it passed. So remove it from the unexpected_failures list.
+					for i in "${!UNEXPECTED_FAILED_SCENARIOS[@]}"
+					do
+						if [ "${UNEXPECTED_FAILED_SCENARIOS[i]}" == "$SUITE_SCENARIO" ]
+						then
+							unset "UNEXPECTED_FAILED_SCENARIOS[i]"
+						fi
+					done
+				else
 					echo "webUI test rerun failed with exit status: ${BEHAT_EXIT_STATUS}"
 					PASSED=false
+					# The scenario is not expected to fail but is failing also after the rerun.
+					# Since it is already reported in the unexpected_failures list, there is no
+					# need to touch that again. Continue processing the next scenario to rerun.
 				fi
 			done
 
