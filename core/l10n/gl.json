@@ -112,6 +112,7 @@
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Os seus ficheiros están cifrados. Se non activou a chave de recuperación, non haberá maneira de recuperar os datos após o restabelecemento do contrasinal. <br />Se non está seguro de que facer, póñase en contacto co administrador antes de continuar. <br /> Confirma que quere continuar?",
     "I know what I'm doing" : "Sei o estou a facer",
     "Password can not be changed. Please contact your administrator." : "Non é posíbel cambiar o contrasinal. Póñase en contacto co administrador.",
+    "Passwords do not match" : "Os cotrasinais non coinciden.",
     "Error adding {addItem}: {addItem} already exists" : "Produciuse un erro ao engadir {addItem}: xa existe {addItem} ",
     "No" : "Non",
     "Yes" : "Si",

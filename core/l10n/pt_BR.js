@@ -114,6 +114,7 @@ OC.L10N.register(
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Seus arquivos são criptografados. Se você não ativou a chave de recuperação, não haverá maneira de obter seus dados de volta após a sua senha ser redefinida. <br/> Se você não tem certeza do que fazer, por favor, contate o administrador antes de continuar. <br/> Você realmente deseja continuar?",
     "I know what I'm doing" : "Eu sei o que estou fazendo",
     "Password can not be changed. Please contact your administrator." : "A senha não pode ser alterada. Por favor, contate o administrador.",
+    "Passwords do not match" : "Senhas não coincidem",
     "Error adding {addItem}: {addItem} already exists" : "Erro ao adicionar {addItem}: {addItem} já existe",
     "No" : "Não",
     "Yes" : "Sim",

@@ -112,6 +112,7 @@
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Deine Dateien sind verschlüsselt. Solltest Du den Wiederherstellungsschlüssel nicht aktiviert haben, gibt es keine Möglichkeit, Deine Daten zurückzuerhalten, nachdem Dein Passwort zurückgesetzt ist.<br />Falls Du Dir nicht sicher bist, was zu tun ist, kontaktiere bitte Deinen Administrator, bevor Du fortfährst.<br />Willst Du wirklich fortfahren?",
     "I know what I'm doing" : "Ich weiß, was ich mache",
     "Password can not be changed. Please contact your administrator." : "Passwort kann nicht geändert werden. Bitte kontaktiere Deinen Administrator.",
+    "Passwords do not match" : "Passwörter stimmen nicht überein ",
     "Error adding {addItem}: {addItem} already exists" : "Fehler beim Hinzufügen von {addItem},  {addItem} existiert schon.",
     "No" : "Nein",
     "Yes" : "Ja",

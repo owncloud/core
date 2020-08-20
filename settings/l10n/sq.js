@@ -113,6 +113,7 @@ OC.L10N.register(
     "So-so password" : "Fjalëkalim çka",
     "Good password" : "Fjalëkalim i mirë",
     "Strong password" : "Fjalëkalim i fortë",
+    "Passwords do not match" : "Fjalëkalimet s’përputhen",
     "Groups" : "Grupe",
     "Unable to delete {objName}" : "S’arrihet të fshihet {objName}",
     "Error creating group: {message}" : "Gabim gjatë krijimit të grupit: {message}",

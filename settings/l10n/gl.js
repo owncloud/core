@@ -113,6 +113,7 @@ OC.L10N.register(
     "So-so password" : "Contrasinal non moi aló",
     "Good password" : "Bo contrasinal",
     "Strong password" : "Contrasinal forte",
+    "Passwords do not match" : "Os cotrasinais non coinciden.",
     "Groups" : "Grupos",
     "Unable to delete {objName}" : "Non é posíbel eliminar {objName}",
     "Error creating group: {message}" : "Produciuse un erro ao crear o grupo: {message}",

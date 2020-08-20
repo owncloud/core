@@ -113,6 +113,7 @@ OC.L10N.register(
     "So-so password" : "Senha mais ou menos",
     "Good password" : "Boa senha",
     "Strong password" : "Senha forte",
+    "Passwords do not match" : "Senhas não coincidem",
     "Groups" : "Grupos",
     "Unable to delete {objName}" : "Não é possível excluir {objName}",
     "Error creating group: {message}" : "Erro criando o grupo: {message}",
