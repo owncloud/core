@@ -641,10 +641,11 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @param string $username
 	 * @param bool $confirm
+	 * @param Session $session
 	 *
 	 * @return void
 	 */
-	public function deleteUser($username, $confirm) {
+	public function deleteUser($username, $confirm, Session $session) {
 		$userTr = $this->findUserInTable($username);
 		$deleteBtn = $userTr->find("xpath", $this->deleteUserBtnXpath);
 		if ($deleteBtn === null) {
@@ -655,6 +656,7 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$deleteBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 
 		if ($confirm) {
 			$confirmBtn = $this->find('xpath', $this->deleteConfirmBtnXpath);
