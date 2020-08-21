@@ -531,7 +531,7 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function thePublicUploadsFileWithCOntentUsingThePublicWebDavApi(
+	public function thePublicUploadsFileWithContentUsingThePublicWebDavApi(
 		$filename, $body = 'test', $publicWebDAVAPIVersion = "old"
 	) {
 		$this->publiclyUploadingContent(
@@ -550,7 +550,7 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function thePublicHasUploadedFileWithCOntentUsingThePublicWebDavApi(
+	public function thePublicHasUploadedFileWithContentUsingThePublicWebDavApi(
 		$filename, $body = 'test', $publicWebDAVAPIVersion = "old"
 	) {
 		$this->publiclyUploadingContent(
