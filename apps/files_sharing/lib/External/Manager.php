@@ -191,6 +191,7 @@ class Manager {
 		$share = $this->getShare($id);
 
 		if ($share) {
+			\OC_Util::setupFS($share['user']);
 			$shareFolder = Helper::getShareFolder();
 			$mountPoint = Files::buildNotExistingFileName($shareFolder, $share['name']);
 			$mountPoint = Filesystem::normalizePath($mountPoint);
