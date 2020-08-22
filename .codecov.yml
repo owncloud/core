@@ -1,3 +1,5 @@
 codecov:
   ci:
     - drone.owncloud.com
+  notify:
+    wait_for_ci: false
