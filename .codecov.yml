@@ -3,4 +3,4 @@ codecov:
     - drone.owncloud.com
   notify:
     wait_for_ci: false
-    after_n_builds: 25
+    after_n_builds: 26
