@@ -193,16 +193,13 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
-  @issue-36730
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario: test sharing long file names with federation share
     When user "Alice" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
     And the user has reloaded the current page of the webUI
     And the user shares file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
-    #  And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
-    And using server "REMOTE"
-    Then user "Alice" should not have any received shares
-    # Then as "Alice" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
-    Then as "Alice" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should not exist
+    And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
+    Then as "Alice" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
 
   Scenario: sharee should be able to access the files/folders inside other folder
     Given user "Alice" has created folder "simple-folder/simple-empty-folder"
