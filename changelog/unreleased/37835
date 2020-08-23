@@ -1,0 +1,7 @@
+Bugfix: Allow federated share name up to 255 character
+
+Receiving a federated share of a file with name greater than 63 characters was not possible.
+This problem has been resolved by extending related column length of database to 255.
+
+https://github.com/owncloud/core/issues/36730
+https://github.com/owncloud/core/pull/37835
