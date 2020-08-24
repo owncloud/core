@@ -95,7 +95,7 @@ Feature: capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability | path_to_element                 | value |
-      | files      | favorites                       | 1     |
+      | files      | favorites                       | 0     |
       | files      | file_locking_support            | 1     |
       | files      | file_locking_enable_file_action | EMPTY |
 

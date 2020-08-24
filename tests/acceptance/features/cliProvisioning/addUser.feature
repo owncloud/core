@@ -32,7 +32,7 @@ Feature: add a user using the using the occ command
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
     Then the user attributes returned by the API should include
       | displayname | Brand New User             |
-      | email       | brand-new-user@example.com |
+      | email       | brand-new@example.com      |
 
   Scenario: admin tries to create an existing user
     Given user "brand-new-user" has been created with default attributes and skeleton files

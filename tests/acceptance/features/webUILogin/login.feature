@@ -39,7 +39,7 @@ Feature: login users
   @smokeTest
   Scenario: admin login
     When the administrator logs in using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - %productname%"
+    Then the user should be redirected to a webUI page with the title "Filez - %productname%"
 
   @smokeTest
   Scenario: admin login with invalid password
