@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use TestHelpers\OcsApiHelper;
 
 require_once 'bootstrap.php';
 
@@ -130,13 +131,25 @@ class OccUsersGroupsContext implements Context {
 		$this->createUsersUsingOccCommand($table);
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 		$createdUsersList = $this->featureContext->getCreatedUsers();
-		$tableUsername = [];
-		$displayName = [];
 		$usernameArray = \array_keys($createdUsersList);
-		foreach ($table as $row) {
-			\array_push($tableUsername, $row['username']);
+
+		$url = "/cloud/users/%s";
+		foreach ($table as $users) {
+			$user = $this->featureContext->getActualUsername($users['username']);
+			$response = OcsApiHelper::sendRequest(
+				$this->featureContext->getBaseUrl(),
+				$user,
+				$this->featureContext->getPasswordForUser($user),
+				'GET',
+				\sprintf($url, $user)
+			);
+			$this->featureContext->setResponse($response);
+			$username = \explode("data/", (string)$this->featureContext->getResponseXml()->data[0]->home);
+			Assert::assertTrue(
+				\in_array($username[1], $usernameArray, true),
+				"User: " . \implode($username) . " was not created"
+			);
 		}
-		\in_array($tableUsername, $usernameArray, true);
 	}
 
 	/**
