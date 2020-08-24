@@ -350,9 +350,10 @@ function env_alt_home_clear {
 # $RUNNING_WEBUI_TESTS
 # $RERUN_FAILED_WEBUI_SCENARIOS
 #
-# set variables
+# set arrays
 # ---------------
-# $PASSED true|false
+# $UNEXPECTED_FAILED_SCENARIOS array of scenarios that failed unexpectedly
+# $UNEXPECTED_PASSED_SCENARIOS array of scenarios that passed unexpectedly (while running with expected-failures.txt)
 
 declare -a UNEXPECTED_FAILED_SCENARIOS
 declare -a UNEXPECTED_PASSED_SCENARIOS
@@ -372,7 +373,6 @@ function run_behat_tests() {
 
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then
-		PASSED=true
 		# Find the count of scenarios that passed
 		SCENARIO_RESULTS_COLORED=`grep -E '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
 		SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
@@ -393,9 +393,7 @@ function run_behat_tests() {
 		then
 			echo "Information: no matching scenarios were found."
 			BEHAT_EXIT_STATUS=0
-			PASSED=true
 		else
-			PASSED=false
 			# Find the count of scenarios that passed and failed
 			SCENARIO_RESULTS_COLORED=`grep -E '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
 			SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
@@ -431,9 +429,6 @@ function run_behat_tests() {
 			echo "Checking expected failures"
 		fi
 
-		PASSED=true
-		FAILED_SCENARIO_FOUND=false
-
 		# Check that every failed scenario is in the list of expected failures
 		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
 			do
@@ -445,7 +440,6 @@ function run_behat_tests() {
 				if [ $? -ne 0 ]
 				then
 					echo "Error: Scenario ${SUITE_SCENARIO} failed but was not expected to fail."
-					PASSED=false
 					UNEXPECTED_FAILED_SCENARIOS+=("${SUITE_SCENARIO}")
 				fi
 			done
@@ -480,12 +474,11 @@ function run_behat_tests() {
 				if [ $? -ne 0 ]
 				then
 					echo "Error: Scenario ${SUITE_SCENARIO} was expected to fail but did not fail."
-					PASSED=false
 					UNEXPECTED_PASSED_SCENARIOS+=("${SUITE_SCENARIO}")
 				fi
 			done < ${EXPECTED_FAILURES_FILE}
 
-		if [ "${PASSED}" = true ]
+		if [ ${#UNEXPECTED_PASSED_SCENARIOS[@]} = 0 ]
 		then
 			echo "Success - all failures were expected"
 		else
@@ -503,16 +496,13 @@ function run_behat_tests() {
 	fi
 
 	# With webUI tests, we try running failed tests again.
-	if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
+	if [ ${#UNEXPECTED_FAILED_SCENARIOS[@]} -gt 0 ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 	then
 		echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
-		PASSED=true
-		FAILED_SCENARIO_FOUND=false
 		FAILED_SCENARIO_PATHS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
 
 		for FEATURE_COLORED in ${FAILED_SCENARIO_PATHS}
 			do
-				FAILED_SCENARIO_FOUND=true
 				# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
 				# Strip them out so we can pass just the ordinary feature details to Behat.
 				# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
@@ -551,21 +541,11 @@ function run_behat_tests() {
 					done
 				else
 					echo "webUI test rerun failed with exit status: ${BEHAT_EXIT_STATUS}"
-					PASSED=false
 					# The scenario is not expected to fail but is failing also after the rerun.
 					# Since it is already reported in the unexpected_failures list, there is no
 					# need to touch that again. Continue processing the next scenario to rerun.
 				fi
 			done
-
-		if [ "${FAILED_SCENARIO_FOUND}" = false ]
-		then
-			# If the original Behat had a fatal PHP error and exited directly with
-			# a "bad" exit code, then it may not have even logged a summary of the
-			# failed scenarios. In that case there was an error and no scenarios
-			# have been rerun. So PASSED needs to be false.
-			PASSED=false
-		fi
 	fi
 
 	if [ "${BEHAT_TAGS_OPTION_FOUND}" != true ]
@@ -632,7 +612,7 @@ function teardown() {
 	fi
 
 	# Upload log file for later analysis
-	if [ "${PASSED}" = false ] && [ ! -z "${REPORTING_WEBDAV_USER}" ] && [ ! -z "${REPORTING_WEBDAV_PWD}" ] && [ ! -z "${REPORTING_WEBDAV_URL}" ]
+	if [ ${#UNEXPECTED_FAILED_SCENARIOS[@]} -gt 0 ] && [ -n "${REPORTING_WEBDAV_USER}" ] && [ -n "${REPORTING_WEBDAV_PWD}" ] && [ -n "${REPORTING_WEBDAV_URL}" ]
 	then
 		curl -u ${REPORTING_WEBDAV_USER}:${REPORTING_WEBDAV_PWD} -T ${TEST_LOG_FILE} ${REPORTING_WEBDAV_URL}/"${TRAVIS_JOB_NUMBER}"_`date "+%F_%T"`.log
 	fi
