@@ -131,7 +131,7 @@ config = {
 				'apiFederation2',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.4.1']
+			'federatedServerVersions': ['git', 'latest', '10.4.1']
 		},
 		'cli': {
 			'suites': [
@@ -154,7 +154,7 @@ config = {
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.4.1']
+			'federatedServerVersions': ['git', 'latest', '10.4.1']
 		},
 		'webUI': {
 			'suites': {
@@ -207,7 +207,7 @@ config = {
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['daily-master-qa', 'latest', '10.3.2']
+			'federatedServerVersions': ['git', 'latest', '10.3.2']
 		},
 		'webUIFirefox': {
 			'suites': {
@@ -255,7 +255,7 @@ def main(ctx):
 	before = beforePipelines(ctx)
 	dependsOn(initial, before)
 
-	stages = stagePipelines()
+	stages = stagePipelines(ctx)
 	if (stages == False):
 		print('Errors detected. Review messages above.')
 		return []
@@ -273,13 +273,13 @@ def initialPipelines():
 def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
 
-def stagePipelines():
+def stagePipelines(ctx):
 	jsPipelines = javascript()
 	litmusPipelines = litmus()
 	davPipelines = dav()
 	phpunitPipelines = phptests('phpunit')
 	phpintegrationPipelines = phptests('phpintegration')
-	acceptancePipelines = acceptance()
+	acceptancePipelines = acceptance(ctx)
 	if (jsPipelines == False) or (litmusPipelines == False) or (davPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False) or (acceptancePipelines == False):
 		return False
 
@@ -1288,7 +1288,7 @@ def phptests(testType):
 
 	return pipelines
 
-def acceptance():
+def acceptance(ctx):
 	pipelines = []
 
 	if 'acceptance' not in config:
@@ -1464,7 +1464,7 @@ def acceptance():
 										yarnInstall(phpVersion) +
 										installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
-											installFederated(federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
+											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
 										) +
 										installExtraApps(phpVersion, extraAppsDict) +
@@ -2004,7 +2004,13 @@ def installServer(phpVersion, db, logLevel, ssl = False, federatedServerNeeded =
 		]
 	}]
 
-def installFederated(federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = '-federated'):
+def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = '-federated'):
+	return [
+		installFederated(ctx, federatedServerVersion, db, dbSuffix),
+		configureFederated(phpVersion, logLevel, protocol)
+	]
+
+def installFederated(ctx, federatedServerVersion, db, dbSuffix = '-federated'):
 	host = getDbName(db)
 	dbType = host
 
@@ -2018,41 +2024,48 @@ def installFederated(federatedServerVersion, phpVersion, logLevel, protocol, db,
 		dbType = 'pgsql'
 	elif host == 'oracle':
 		dbType = 'oci'
-	return [
-		{
-			'name': 'install-federated',
-			'image': 'owncloudci/core',
-			'pull': 'always',
-			'settings': {
-				'version': federatedServerVersion,
+
+	installerSettings = {
 				'core_path': '/drone/federated',
 				'db_type': dbType,
 				'db_name': database,
 				'db_host': host + dbSuffix,
 				'db_username': username,
 				'db_password': password
-			},
-		},
-		{
-			'name': 'configure-federated',
-			'image': 'owncloudci/php:%s' % phpVersion,
+	}
+
+	if (federatedServerVersion == 'git'):
+		installerSettings['git_reference'] = ctx.build.source
+	else:
+		installerSettings['version'] = federatedServerVersion
+
+	return {
+			'name': 'install-federated',
+			'image': 'owncloudci/core',
 			'pull': 'always',
-			'commands': [
-				'cd /drone/federated',
-				'php occ a:l',
-				'php occ a:e testing',
-				'php occ a:l',
-				'php occ config:system:set trusted_domains 1 --value=server',
-				'php occ config:system:set trusted_domains 2 --value=federated',
-				'php occ log:manage --level %s' % logLevel,
-				'php occ config:list',
-				'echo "export TEST_SERVER_FED_URL=%s://federated" > /drone/saved-settings.sh' % protocol,
-				'php occ security:certificates:import /drone/server.crt',
-				'php occ security:certificates:import /drone/federated.crt',
-				'php occ security:certificates',
-			]
+			'settings': installerSettings
 		}
-	]
+
+def configureFederated(phpVersion, logLevel, protocol):
+	return {
+		'name': 'configure-federated',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'commands': [
+			'cd /drone/federated',
+			'php occ a:l',
+			'php occ a:e testing',
+			'php occ a:l',
+			'php occ config:system:set trusted_domains 1 --value=server',
+			'php occ config:system:set trusted_domains 2 --value=federated',
+			'php occ log:manage --level %s' % logLevel,
+			'php occ config:list',
+			'echo "export TEST_SERVER_FED_URL=%s://federated" > /drone/saved-settings.sh' % protocol,
+			'php occ security:certificates:import /drone/server.crt',
+			'php occ security:certificates:import /drone/federated.crt',
+			'php occ security:certificates',
+		]
+	}
 
 def setupCeph(phpVersion, cephS3):
 	if not cephS3:
