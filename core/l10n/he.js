@@ -114,6 +114,7 @@ OC.L10N.register(
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "הקבצים שלך מוצפנים. אם לא הפעלת את מפתח השחזור, לא תהיה דרך לקבל את המידע מחדש אחרי שהסיסמא תאופס.<br />אם אין לך מושג מה לעשות what to do, מוטב לפנות למנהל שלך לפני ההמשך. <br />האם באמת ברצונך להמשיך?",
     "I know what I'm doing" : "אני יודע/ת מה אני עושה",
     "Password can not be changed. Please contact your administrator." : "לא ניתן לשנות את הסיסמא. יש לפנות למנהל שלך.",
+    "Passwords do not match" : "סיסמאות לא מתאימות",
     "Error adding {addItem}: {addItem} already exists" : "שגיאה בהוספת {addItem}:‏ {addItem} כבר קיים",
     "No" : "לא",
     "Yes" : "כן",

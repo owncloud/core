@@ -113,6 +113,7 @@ OC.L10N.register(
     "So-so password" : "סיסמא ככה-ככה",
     "Good password" : "סיסמא טובה",
     "Strong password" : "סיסמא חזקה",
+    "Passwords do not match" : "סיסמאות לא מתאימות",
     "Groups" : "קבוצות",
     "Unable to delete {objName}" : "לא ניתן למחיקה {objName}",
     "Error creating group: {message}" : "שגיאה ביצירת קבוצה: {message}",
