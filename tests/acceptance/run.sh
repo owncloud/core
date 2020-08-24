@@ -697,10 +697,10 @@ then
 		OCC_FED_URL="${TESTING_APP_FED_URL}occ"
 		# test that fed server is up and running, and testing app is enabled.
 		assert_server_up ${TEST_SERVER_FED_URL}
-	if [ "${TEST_OCIS}" != "true" ]
-	then
+		if [ "${TEST_OCIS}" != "true" ]
+		then
 			assert_testing_app_enabled ${TEST_SERVER_URL}
-	fi
+		fi
 	fi
 
 	echo "Not using php inbuilt server for running scenario ..."
@@ -1052,6 +1052,17 @@ OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1-2`
 BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
 OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1`
 BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
+
+if [ -n "${TEST_SERVER_FED_URL}" ]
+then
+	remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:get version"
+	OWNCLOUD_FED_VERSION=`echo ${REMOTE_OCC_STDOUT} | cut -d"." -f1-3`
+	BEHAT_FILTER_TAGS='~@skipOnFedOcV'${OWNCLOUD_FED_VERSION}'&&'${BEHAT_FILTER_TAGS}
+	OWNCLOUD_FED_VERSION=`echo ${OWNCLOUD_FED_VERSION} | cut -d"." -f1-2`
+	BEHAT_FILTER_TAGS='~@skipOnFedOcV'${OWNCLOUD_FED_VERSION}'&&'${BEHAT_FILTER_TAGS}
+	OWNCLOUD_FED_VERSION=`echo ${OWNCLOUD_FED_VERSION} | cut -d"." -f1`
+	BEHAT_FILTER_TAGS='~@skipOnFedOcV'${OWNCLOUD_FED_VERSION}'&&'${BEHAT_FILTER_TAGS}
+fi
 
 # If we are running remote only tests add another skip '@skipWhenTestingRemoteSystems'
 if [ "${TESTING_REMOTE_SYSTEM}" = true ]
