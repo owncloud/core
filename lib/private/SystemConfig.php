@@ -49,6 +49,7 @@ class SystemConfig {
 		'ldap_agent_password' => true,
 		'proxyuserpwd' => true,
 		'marketplace.key' => true,
+		'metrics_shared_secret' => true,
 		'log.condition' => [
 			[
 			'shared_secret' => true,
