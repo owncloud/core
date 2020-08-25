@@ -30,6 +30,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.18 => 2.1.19): [#37790](https://github.com/owncloud/core/pull/37790)
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
+* Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
@@ -185,6 +186,24 @@ Details
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 
    https://github.com/owncloud/core/pull/37843
+
+* Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
+
+   An expiration date can be set now for shares originating in your server. This feature behaves
+   the same as the expiration for user, group and link shares.
+
+   The expiration is controlled in the source server (server A). The target server (server B)
+   won't know about the expiration. Once the share expires, the target server (server B) won't be
+   able to access to those shares and it will remove them automatically
+
+   This feature won't work for shares that are grabbed from a public link: if source server (server
+   A) shares a file / folder via link, and an user from the target server (server B) adds that link to
+   his ownCloud; in this case, this "remote share expiration" won't apply.
+
+   In addition, the same as happens with user, group and link shares, the share recipient won't
+   have control over the expiration date.
+
+   https://github.com/owncloud/core/pull/37548
 
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 
