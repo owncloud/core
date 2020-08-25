@@ -27,7 +27,6 @@ use OCP\IConfig;
 use OCP\L10N\IFactory;
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCP\IL10N;
 
 class FileSharing implements ISettings {
 
@@ -35,17 +34,15 @@ class FileSharing implements ISettings {
 	protected $config;
 	/** @var Helper */
 	protected $helper;
-	/** @var IL10N */
-	protected $l;
 	/** @var IFactory */
 	private $lfactory;
 	/** @var LocaleHelper */
 	private $localeHelper;
 
-	public function __construct(IConfig $config, Helper $helper, IL10N $l) {
+	public function __construct(IConfig $config, Helper $helper, IFactory $lfactory) {
 		$this->config = $config;
 		$this->helper = $helper;
-		$this->l = $l;
+		$this->lfactory = $lfactory;
 	}
 
 	public function getPriority() {
@@ -53,7 +50,7 @@ class FileSharing implements ISettings {
 	}
 
 	public function getPanel() {
-		$this->lfactory = \OC::$server->getL10NFactory();
+		$l = $this->lfactory->get('settings');
 		$activeLangCode = $this->config->getAppValue(
 			'core',
 			'shareapi_public_notification_lang',
@@ -67,13 +64,13 @@ class FileSharing implements ISettings {
 
 		// Allow reset to the defaults when mail notification is sent in the lang of owner
 		if ($userLang['code']  === "owner") {
-			$userLang['name'] = $this->l->t("Owner language");
+			$userLang['name'] = $l->t("Owner language");
 		} else {
 			\array_push(
 				$commonLanguages,
 				[
 					'code' => 'owner',
-					'name' => $this->l->t("Owner language")
+					'name' => $l->t("Owner language")
 				]
 			);
 		}
@@ -125,22 +122,22 @@ class FileSharing implements ISettings {
 		$permList = [
 			[
 				'id' => 'cancreate',
-				'label' => $this->l->t('Create'),
+				'label' => $l->t('Create'),
 				'value' => \OCP\Constants::PERMISSION_CREATE
 			],
 			[
 				'id' => 'canupdate',
-				'label' => $this->l->t('Change'),
+				'label' => $l->t('Change'),
 				'value' => \OCP\Constants::PERMISSION_UPDATE
 			],
 			[
 				'id' => 'candelete',
-				'label' => $this->l->t('Delete'),
+				'label' => $l->t('Delete'),
 				'value' => \OCP\Constants::PERMISSION_DELETE
 			],
 			[
 				'id' => 'canshare',
-				'label' => $this->l->t('Share'),
+				'label' => $l->t('Share'),
 				'value' => \OCP\Constants::PERMISSION_SHARE
 			],
 		];
