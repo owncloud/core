@@ -264,6 +264,7 @@
 				deletePermissionPossible: this.model.deletePermissionPossible(),
 				defaultExpireDateUserEnabled: this.configModel.isDefaultExpireDateUserEnabled(),
 				defaultExpireDateGroupEnabled: this.configModel.isDefaultExpireDateGroupEnabled(),
+				defaultExpireDateRemoteEnabled: this.configModel.isDefaultExpireDateRemoteEnabled(),
 				sharePermission: OC.PERMISSION_SHARE,
 				createPermission: OC.PERMISSION_CREATE,
 				updatePermission: OC.PERMISSION_UPDATE,
