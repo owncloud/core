@@ -29,6 +29,7 @@ Summary
 * Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
 * Change - Update egulias/email-validator (2.1.18 => 2.1.19): [#37790](https://github.com/owncloud/core/pull/37790)
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
+* Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
@@ -180,6 +181,10 @@ Details
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
 
    https://github.com/owncloud/core/pull/37804
+
+* Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
+
+   https://github.com/owncloud/core/pull/37843
 
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 
