@@ -459,14 +459,14 @@ class SharingDialog extends OwncloudPage {
 		$this->assertElementNotNull(
 			$permissionsField,
 			__METHOD__
-			. " xpath $xpathLocator could not find share permissions field for user "
+			. " xpath $xpathLocator could not find share permissions field for $userOrGroup "
 			. $shareReceiverName
 		);
 		$shareOptionsLocator = $permissionsField->find("xpath", $this->shareOptionsXpath);
 		$this->assertElementNotNull(
 			$shareOptionsLocator,
 			__METHOD__
-			. " xpath $this->shareOptionsXpath could not find share options for user "
+			. " xpath $this->shareOptionsXpath could not find share options for $userOrGroup "
 			. $shareReceiverName
 		);
 		$shareOptionsStyle = $shareOptionsLocator->getAttribute("style");
@@ -480,7 +480,7 @@ class SharingDialog extends OwncloudPage {
 		$this->assertElementNotNull(
 			$showCrudsBtn,
 			__METHOD__
-			. " xpath $this->showCrudsXpath could not find show-cruds button for user "
+			. " xpath $this->showCrudsXpath could not find show-cruds button for $userOrGroup "
 			. $shareReceiverName
 		);
 		$showCrudsBtn->click();

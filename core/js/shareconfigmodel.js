@@ -34,6 +34,9 @@
 			isDefaultExpireDateEnforced: oc_appconfig.core.defaultExpireDateEnforced === true,
 			isDefaultExpireDateEnabled: oc_appconfig.core.defaultExpireDateEnabled === true,
 			isRemoteShareAllowed: oc_appconfig.core.remoteShareAllowed,
+			defaultExpireDateRemote: oc_appconfig.core.defaultExpireDateRemote,
+			isDefaultExpireDateRemoteEnabled: oc_appconfig.core.defaultExpireDateRemoteEnabled,
+			isDefaultExpireDateRemoteEnforced: oc_appconfig.core.enforceDefaultExpireDateRemote,
 			defaultExpireDate: oc_appconfig.core.defaultExpireDate,
 			isResharingAllowed: oc_appconfig.core.resharingAllowed,
 			allowGroupSharing: oc_appconfig.core.allowGroupSharing
@@ -132,14 +135,14 @@
 		 * @returns {boolean}
 		 */
 		isDefaultExpireDateGroupEnabled: function() {
-			return this.get('isDefaultExpireDateGroupEnabled')
+			return this.get('isDefaultExpireDateGroupEnabled');
 		},
 
 		/**
 		 * @returns {boolean}
 		 */
 		isDefaultExpireDateGroupEnforced: function() {
-			return this.get('isDefaultExpireDateGroupEnforced')
+			return this.get('isDefaultExpireDateGroupEnforced');
 		},
 
 		/**
@@ -147,13 +150,41 @@
 		 */
 		getDefaultExpireDateGroup: function(format) {
 			format = format || false;
-			defaultExpireDateGroup = parseInt(this.get('defaultExpireDateGroup'), 10)
+			defaultExpireDateGroup = parseInt(this.get('defaultExpireDateGroup'), 10);
 
 			if (format) {
-				return moment().add(defaultExpireDateGroup, 'days').format(format)
+				return moment().add(defaultExpireDateGroup, 'days').format(format);
 			}
 
-			return defaultExpireDateGroup
+			return defaultExpireDateGroup;
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDefaultExpireDateRemoteEnabled: function() {
+			return this.get('isDefaultExpireDateRemoteEnabled');
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDefaultExpireDateRemoteEnforced: function() {
+			return this.get('isDefaultExpireDateRemoteEnforced');
+		},
+
+		/**
+		 * @returns {number/string}
+		 */
+		getDefaultExpireDateRemote: function(format) {
+			format = format || false;
+			defaultExpireDateRemote = parseInt(this.get('defaultExpireDateRemote'), 10);
+
+			if (format) {
+				return moment().add(defaultExpireDateRemote, 'days').format(format);
+			}
+
+			return defaultExpireDateRemote;
 		},
 	});
 

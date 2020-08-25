@@ -489,4 +489,115 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertTrue($result['public']['multiple']);
 		$this->assertEquals('Public link', $result['public']['defaultPublicLinkShareName']);
 	}
+
+	public function testUserShareExpirationNotEnabled() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_user_share', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['user']['expire_date']['enabled']);
+		$this->assertArrayNotHasKey('days', $result['user']['expire_date']);
+		$this->assertArrayNotHasKey('enforced', $result['user']['expire_date']);
+	}
+
+	public function testUserShareExpirationEnabled() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_user_share', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days_user_share', '7', '15'],
+			['core', 'shareapi_enforce_expire_date_user_share', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['user']['expire_date']['enabled']);
+		$this->assertSame('15', $result['user']['expire_date']['days']);
+		$this->assertFalse($result['user']['expire_date']['enforced']);
+	}
+
+	public function testUserShareExpirationEnabledEnforced() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_user_share', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days_user_share', '7', '15'],
+			['core', 'shareapi_enforce_expire_date_user_share', 'no', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['user']['expire_date']['enabled']);
+		$this->assertSame('15', $result['user']['expire_date']['days']);
+		$this->assertTrue($result['user']['expire_date']['enforced']);
+	}
+
+	public function testGroupShareExpirationNotEnabled() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_group_share', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['group']['expire_date']['enabled']);
+		$this->assertArrayNotHasKey('days', $result['group']['expire_date']);
+		$this->assertArrayNotHasKey('enforced', $result['group']['expire_date']);
+	}
+
+	public function testGroupShareExpirationEnabled() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_group_share', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days_group_share', '7', '15'],
+			['core', 'shareapi_enforce_expire_date_group_share', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['group']['expire_date']['enabled']);
+		$this->assertSame('15', $result['group']['expire_date']['days']);
+		$this->assertFalse($result['group']['expire_date']['enforced']);
+	}
+
+	public function testGroupShareExpirationEnabledEnforced() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_group_share', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days_group_share', '7', '15'],
+			['core', 'shareapi_enforce_expire_date_group_share', 'no', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['group']['expire_date']['enabled']);
+		$this->assertSame('15', $result['group']['expire_date']['days']);
+		$this->assertTrue($result['group']['expire_date']['enforced']);
+	}
+
+	public function testRemoteShareExpirationNotEnabled() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_remote_share', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['remote']['expire_date']['enabled']);
+		$this->assertArrayNotHasKey('days', $result['remote']['expire_date']);
+		$this->assertArrayNotHasKey('enforced', $result['remote']['expire_date']);
+	}
+
+	public function testRemoteShareExpirationEnabled() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_remote_share', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days_remote_share', '7', '15'],
+			['core', 'shareapi_enforce_expire_date_remote_share', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['remote']['expire_date']['enabled']);
+		$this->assertSame('15', $result['remote']['expire_date']['days']);
+		$this->assertFalse($result['remote']['expire_date']['enforced']);
+	}
+
+	public function testRemoteShareExpirationEnabledEnforced() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date_remote_share', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days_remote_share', '7', '15'],
+			['core', 'shareapi_enforce_expire_date_remote_share', 'no', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['remote']['expire_date']['enabled']);
+		$this->assertSame('15', $result['remote']['expire_date']['days']);
+		$this->assertTrue($result['remote']['expire_date']['enforced']);
+	}
 }

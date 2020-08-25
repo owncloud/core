@@ -201,6 +201,66 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->assertEquals('token', $share->getToken());
 	}
 
+	public function testCreateWithExpiration() {
+		$expirationDate = new \DateTime('2222-11-11');
+
+		$share = $this->shareManager->newShare();
+
+		$share->setSharedWith('user@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner')
+			->setPermissions(19)
+			->setExpirationDate($expirationDate)
+			->setNode($this->defaultNode);
+
+		$this->tokenHandler->method('generateToken')->willReturn('token');
+
+		$shareWithAddress = new Address('user@server.com');
+		$ownerAddress = new Address('shareOwner@http://localhost/');
+		$sharedByAddress = new Address('sharedBy@http://localhost/');
+		$this->addressHandler->expects($this->any())->method('getLocalUserFederatedAddress')
+			->will($this->onConsecutiveCalls($ownerAddress, $sharedByAddress, $ownerAddress));
+
+		$this->addressHandler->expects($this->any())->method('splitUserRemote')
+			->willReturn(['user', 'server.com']);
+
+		$this->notifications->expects($this->once())
+			->method('sendRemoteShare')
+			->with(
+				$this->equalTo($shareWithAddress),
+				$this->equalTo($ownerAddress),
+				$this->equalTo($sharedByAddress),
+				$this->equalTo('token'),
+				$this->equalTo('myFile'),
+				$this->anything()
+			)->willReturn(self::OCS_GENERIC_SUCCESS);
+
+		$this->rootFolder->expects($this->never())->method($this->anything());
+		$this->userManager->method('userExists')->willReturn(true);
+
+		$share = $this->provider->create($share);
+
+		$qb = $this->connection->getQueryBuilder();
+		$stmt = $qb->select('*')
+			->from('share')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
+			->execute();
+
+		$fetchedData = $stmt->fetch();
+		$stmt->closeCursor();
+
+		$this->assertEquals($fetchedData['id'], $share->getId());
+		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
+		$this->assertEquals('user@server.com', $share->getSharedWith());
+		$this->assertEquals('sharedBy', $share->getSharedBy());
+		$this->assertEquals('shareOwner', $share->getShareOwner());
+		$this->assertEquals('file', $share->getNodeType());
+		$this->assertEquals(42, $share->getNodeId());
+		$this->assertEquals(19, $share->getPermissions());
+		$this->assertEquals($expirationDate->getTimestamp(), $share->getExpirationDate()->getTimestamp());
+		$this->assertEquals('token', $share->getToken());
+	}
+
 	public function testCreateLegacy() {
 		$share = $this->shareManager->newShare();
 		$share->setSharedWith('user@server.com')
@@ -527,11 +587,14 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$share = $this->provider->create($share);
 
 		$share->setPermissions(1);
+		$expirationDate = new \DateTime('2222-11-11');
+		$share->setExpirationDate($expirationDate);
 		$this->provider->update($share);
 
 		$share = $this->provider->getShareById($share->getId());
 
 		$this->assertEquals(1, $share->getPermissions());
+		$this->assertEquals($expirationDate->getTimestamp(), $share->getExpirationDate()->getTimestamp());
 	}
 
 	public function datatTestUpdate() {

@@ -169,14 +169,15 @@
 			if (
 				this.configModel.isDefaultExpireDateUserEnabled() && (
 					shareType === OC.Share.SHARE_TYPE_USER ||
-					shareType === OC.Share.SHARE_TYPE_GUEST ||
-					shareType === OC.Share.SHARE_TYPE_REMOTE )
+					shareType === OC.Share.SHARE_TYPE_GUEST)
 				) {
 				properties.expireDate = this.configModel.getDefaultExpireDateUser('YYYY-MM-DD')
 			}
 
 			else if (this.configModel.isDefaultExpireDateGroupEnabled() && shareType === OC.Share.SHARE_TYPE_GROUP) {
 				properties.expireDate = this.configModel.getDefaultExpireDateGroup('YYYY-MM-DD')
+			} else if (this.configModel.isDefaultExpireDateRemoteEnabled() && shareType === OC.Share.SHARE_TYPE_REMOTE) {
+				properties.expireDate = this.configModel.getDefaultExpireDateRemote('YYYY-MM-DD')
 			}
 
 			// Get default permissions

@@ -435,6 +435,11 @@ class Manager implements IManager {
 				$thereIsDefault = $this->shareApiLinkDefaultExpireDate();
 				$defaultDays = $this->shareApiLinkDefaultExpireDays();
 				break;
+			case \OCP\Share::SHARE_TYPE_REMOTE:
+				$isEnforced = $this->shareApiLinkDefaultExpireDateEnforcedForRemotes();
+				$thereIsDefault = $this->shareApiLinkDefaultExpireDateForRemotes();
+				$defaultDays = $this->shareApiLinkDefaultExpireDaysForRemotes();
+				break;
 			default:
 				$isEnforced = false;
 				break;
@@ -1726,6 +1731,33 @@ class Manager implements IManager {
 	 */
 	public function shareApiLinkDefaultExpireDaysForGroups() {
 		return (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days_group_share', '7');
+	}
+
+	/**
+	 * Is default expire date enabled for remote shares
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateForRemotes() {
+		return $this->config->getAppValue('core', 'shareapi_default_expire_date_remote_share', 'no') === 'yes';
+	}
+
+	/**
+	 * Is default expire date enforced for remote shares
+	 *`
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateEnforcedForRemotes() {
+		return $this->shareApiLinkDefaultExpireDateForRemotes() &&
+			$this->config->getAppValue('core', 'shareapi_enforce_expire_date_remote_share', 'no') === 'yes';
+	}
+
+	/**
+	 * Number of default expire days for remote shares
+	 * @return int
+	 */
+	public function shareApiLinkDefaultExpireDaysForRemotes() {
+		return (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days_remote_share', '7');
 	}
 
 	/**

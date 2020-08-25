@@ -145,6 +145,7 @@ class FederatedShareProvider implements IShareProvider {
 		$itemSource = $share->getNodeId();
 		$itemType = $share->getNodeType();
 		$permissions = $share->getPermissions();
+		$expiration = $share->getExpirationDate();
 		$sharedBy = $share->getSharedBy();
 
 		/*
@@ -181,7 +182,7 @@ class FederatedShareProvider implements IShareProvider {
 		if ($remoteShare) {
 			try {
 				$uidOwner = $remoteShare['owner'] . '@' . $remoteShare['remote'];
-				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, 'tmp_token_' . \time());
+				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $expiration, 'tmp_token_' . \time());
 				$share->setId($shareId);
 				list($token, $remoteId) = $this->askOwnerToReShare($shareWith, $share, $shareId);
 				// remote share was create successfully if we get a valid token as return
@@ -225,6 +226,7 @@ class FederatedShareProvider implements IShareProvider {
 			$share->getSharedBy(),
 			$share->getShareOwner(),
 			$share->getPermissions(),
+			$share->getExpirationDate(),
 			$token
 		);
 
@@ -337,7 +339,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * @param string $token
 	 * @return int
 	 */
-	private function addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $token) {
+	private function addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $expiration, $token) {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->insert($this->shareTable)
 			->setValue('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE))
@@ -348,6 +350,7 @@ class FederatedShareProvider implements IShareProvider {
 			->setValue('uid_owner', $qb->createNamedParameter($uidOwner))
 			->setValue('uid_initiator', $qb->createNamedParameter($sharedBy))
 			->setValue('permissions', $qb->createNamedParameter($permissions))
+			->setValue('expiration', $qb->createNamedParameter($expiration, IQueryBuilder::PARAM_DATE))
 			->setValue('token', $qb->createNamedParameter($token))
 			->setValue('stime', $qb->createNamedParameter(\time()));
 
@@ -377,6 +380,7 @@ class FederatedShareProvider implements IShareProvider {
 		$qb->update($this->shareTable)
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->execute();
@@ -902,6 +906,11 @@ class FederatedShareProvider implements IShareProvider {
 			$share->setShareOwner($owner->getUID());
 		}
 
+		if ($data['expiration'] !== null) {
+			$expiration = \DateTime::createFromFormat('Y-m-d H:i:s', $data['expiration']);
+			$share->setExpirationDate($expiration);
+		}
+
 		$share->setNodeId((int)$data['file_source']);
 		$share->setNodeType($data['item_type']);
 
@@ -1128,7 +1137,9 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function getProviderCapabilities() {
 		return [
-			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_REMOTE] => [],
+			\OCP\Share::CONVERT_SHARE_TYPE_TO_STRING[\OCP\Share::SHARE_TYPE_REMOTE] => [
+				IShareProvider::CAPABILITY_STORE_EXPIRATION,
+			],
 		];
 	}
 }

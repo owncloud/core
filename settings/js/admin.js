@@ -98,6 +98,18 @@ $(document).ready(function(){
 		$("#setDefaultExpireDateGroupShare").toggleClass('hidden', !this.checked);
 	});
 
+	$('#shareapiExpireAfterNDaysRemoteShare').change(function() {
+		var value = parseInt($(this).val(), 10)
+
+		if (value <= 0 || isNaN(value)) {
+			$(this).val(7);
+		}
+	});
+
+	$('#shareapiDefaultExpireDateRemoteShare').change(function() {
+		$("#setDefaultExpireDateRemoteShare").toggleClass('hidden', !this.checked);
+	});
+
 	$('#allowLinks').change(function() {
 		$("#publicLinkSettings").toggleClass('hidden', !this.checked);
 		$('#setDefaultExpireDate').toggleClass('hidden', !(this.checked && $('#shareapiDefaultExpireDate')[0].checked));

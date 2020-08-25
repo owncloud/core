@@ -125,6 +125,13 @@ class Capabilities implements ICapability {
 				$res['group']['expire_date']['enforced'] = $this->config->getAppValue('core', 'shareapi_enforce_expire_date_group_share', 'no') === 'yes';
 			}
 
+			$res['remote']['expire_date'] = [];
+			$res['remote']['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date_remote_share', 'no') === 'yes';
+			if ($res['remote']['expire_date']['enabled']) {
+				$res['remote']['expire_date']['days'] = $this->config->getAppValue('core', 'shareapi_expire_after_n_days_remote_share', '7');
+				$res['remote']['expire_date']['enforced'] = $this->config->getAppValue('core', 'shareapi_enforce_expire_date_remote_share', 'no') === 'yes';
+			}
+
 			$res['resharing'] = $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes') === 'yes';
 
 			$res['group_sharing'] = $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes') === 'yes';
