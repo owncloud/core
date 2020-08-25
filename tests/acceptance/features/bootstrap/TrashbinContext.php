@@ -435,7 +435,7 @@ class TrashbinContext implements Context {
 
 		Assert::assertNotNull(
 			$firstEntry,
-			"The first trash entry is found null unexpectedly"
+			"The first trash entry was not found while looking for trashbin entry '$path' of user '$user'"
 		);
 
 		if (\count($sections) !== 1) {
