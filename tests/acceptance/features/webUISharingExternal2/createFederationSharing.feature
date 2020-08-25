@@ -17,10 +17,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has created folder "simple-empty-folder"
     And user "Alice" has uploaded file with content "I am lorem.txt inside simple-folder" to "/simple-folder/lorem.txt"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "Alice" has logged in using the webUI
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
   Scenario: test the single steps of sharing a folder to a remote server
+    Given user "Alice" has logged in using the webUI
     When the user shares folder "simple-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And the user shares folder "simple-empty-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
@@ -41,7 +41,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" has shared "simple-folder" with user "Alice" from server "LOCAL"
     And user "Brian" from server "REMOTE" has shared "simple-empty-folder" with user "Alice" from server "LOCAL"
     And user "Carol" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
-    And the user has reloaded the current page of the webUI
+    And user "Alice" has logged in using the webUI
     Then dialogs should be displayed on the webUI
       | title        | content                                                                                                  | user  |
       | Remote share | Do you want to add the remote share /simple-folder from %username%@%remote_server_without_scheme%?       | Alice |
@@ -61,6 +61,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: sharing indicator inside folder shared using federated sharing
     Given user "Alice" has created folder "/simple-folder/sub-folder"
     And user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     Then the following resources should have share indicators on the webUI
       | lorem.txt  |
@@ -69,6 +70,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   @skipOnOcV10.3
   Scenario: sharing indicator for file uploaded inside folder shared using federated sharing
     Given user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user uploads file "new-lorem.txt" using the webUI
     Then the following resources should have share indicators on the webUI
@@ -77,6 +79,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   @skipOnOcV10.3
   Scenario: sharing indicator for folder created inside folder shared using federated sharing
     Given user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user creates a folder with the name "sub-folder" using the webUI
     Then the following resources should have share indicators on the webUI
@@ -87,6 +90,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given user "Alice" has created folder "/simple-folder/sub-folder"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
     And user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user opens the share dialog for folder "sub-folder"
     Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
@@ -100,6 +104,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/sub-folder/textfile.txt"
     And user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
     And user "Alice" has shared folder "simple-folder/sub-folder" with user "Brian"
+    And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder/sub-folder" using the webUI
     And the user opens the share dialog for file "textfile.txt"
     Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
@@ -109,6 +114,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: expiration date is disabled for federation sharing, sharer checks the expiration date of a federation share
     Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "no"
     And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
     Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the expiration date input field should be empty for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
@@ -123,6 +129,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
     Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the expiration date input field should be "+7 days" for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
@@ -138,6 +145,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "<num_days>"
     And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
     Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the expiration date input field should be "<days>" for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
@@ -157,6 +165,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "3"
     And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
+    And user "Alice" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
     And the user changes expiration date for share of federated user "Alice" with displayname "%username%@%remote_server% (federated)" to "+4 days" in the share dialog
 #    Cannot set expiration date more than 3 days in the future
@@ -177,7 +186,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    And the user has reloaded the current page of the webUI
+    And user "Alice" has logged in using the webUI
     When the user shares file "lorem (2).txt" with user "Brian" using the webUI without closing the share dialog
     And the user changes expiration date for share of user "Brian" to "+10 days" in the share dialog
     Then the expiration date input field should be "+ 10 days" for the user "Brian" in the share dialog
@@ -198,7 +207,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    And the user has reloaded the current page of the webUI
+    And user "Alice" has logged in using the webUI
     When the user shares file "lorem (2).txt" with federated user "Brian" with displayname "%username%@%remote_server_without_scheme%" using the webUI without closing the share dialog
     And the user changes expiration date for share of federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" to "+4 days" in the share dialog
     Then the expiration date input field should be "+ 4 days" for the federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" in the share dialog
@@ -218,7 +227,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    And the user has reloaded the current page of the webUI
+    And user "Alice" has logged in using the webUI
     When the user shares file "lorem (2).txt" with user "Brian" using the webUI without closing the share dialog
     Then the expiration date input field should be empty for the user "Brian" in the share dialog
     And the information of the last share of user "Alice" should include
@@ -238,7 +247,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" has shared "lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    And the user has reloaded the current page of the webUI
+    And user "Alice" has logged in using the webUI
     When the user shares file "lorem (2).txt" with federated user "Brian" with displayname "%username%@%remote_server_without_scheme%" using the webUI without closing the share dialog
     Then the expiration date input field should be empty for the federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" in the share dialog
     And the information of the last share of user "Alice" should include
