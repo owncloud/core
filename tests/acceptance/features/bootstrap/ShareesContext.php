@@ -148,6 +148,12 @@ class ShareesContext implements Context {
 			$shareeType = \substr($shareeType, 6);
 		}
 
+		Assert::assertArrayHasKey(
+			$shareeType,
+			$elements,
+			__METHOD__ . " The sharees response does not have key '$shareeType'"
+		);
+
 		$sharees = [];
 		foreach ($elements[$shareeType] as $element) {
 			if (\is_int(\key($element))) {
