@@ -510,12 +510,13 @@ function run_behat_tests() {
 				# for ideas.
 				FAILED_SCENARIO_PATH=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
 
+				SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
+				SUITE=`basename ${SUITE_PATH}`
+				SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
+				SUITE_SCENARIO="${SUITE}/${SCENARIO}"
+
 				if [ -n "${EXPECTED_FAILURES_FILE}" ]
 				then
-					SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
-					SUITE=`basename ${SUITE_PATH}`
-					SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
-					SUITE_SCENARIO="${SUITE}/${SCENARIO}"
 					grep -x ${SUITE_SCENARIO} ${EXPECTED_FAILURES_FILE} > /dev/null
 					if [ $? -eq 0 ]
 					then
