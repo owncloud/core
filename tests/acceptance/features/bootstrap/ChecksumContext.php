@@ -217,8 +217,28 @@ class ChecksumContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theHeaderChecksumShouldMatch($checksum) {
+		$headerChecksums
+			= $this->featureContext->getResponse()->getHeader('OC-Checksum');
+
+		Assert::assertIsArray(
+			$headerChecksums,
+			__METHOD__ . " getHeader('OC-Checksum') did not return an array"
+		);
+
+		Assert::assertNotEmpty(
+			$headerChecksums,
+			__METHOD__ . " getHeader('OC-Checksum') returned an empty array. No checksum header was found."
+		);
+
+		$checksumCount = \count($headerChecksums);
+
+		Assert::assertTrue(
+			$checksumCount === 1,
+			__METHOD__ . " Expected 1 checksum in the header but found $checksumCount checksums"
+		);
+
 		$headerChecksum
-			= $this->featureContext->getResponse()->getHeader('OC-Checksum')[0];
+			= $headerChecksums[0];
 		Assert::assertEquals(
 			$checksum,
 			$headerChecksum,
