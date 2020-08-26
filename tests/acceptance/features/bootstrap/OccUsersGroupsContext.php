@@ -50,11 +50,15 @@ class OccUsersGroupsContext implements Context {
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * displayname & email are optional
+	 * @param bool $checkOccCommandStatus
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createUsersUsingOccCommand(TableNode $table) {
+	public function createUsersUsingOccCommand(
+		TableNode $table,
+		$checkOccCommandStatus = false
+	) {
 		foreach ($table as $row) {
 			$username = $row['username'];
 			$user = $this->featureContext->getActualUsername($username);
@@ -90,6 +94,10 @@ class OccUsersGroupsContext implements Context {
 				'OC_PASS',
 				$password
 			);
+
+			if ($checkOccCommandStatus) {
+				$this->occContext->theCommandShouldHaveBeenSuccessful();
+			}
 
 			$username = $this->featureContext->getActualUsername($username);
 			$this->featureContext->addUserToCreatedUsersList(
@@ -128,27 +136,10 @@ class OccUsersGroupsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreatedUsingTheOccCommand(TableNode $table) {
-		$this->createUsersUsingOccCommand($table);
-		$this->occContext->theCommandShouldHaveBeenSuccessful();
-		$createdUsersList = $this->featureContext->getCreatedUsers();
-		$usernameArray = \array_keys($createdUsersList);
+		$this->createUsersUsingOccCommand($table, true);
 
-		$url = "/cloud/users/%s";
-		foreach ($table as $users) {
-			$user = $this->featureContext->getActualUsername($users['username']);
-			$response = OcsApiHelper::sendRequest(
-				$this->featureContext->getBaseUrl(),
-				$user,
-				$this->featureContext->getPasswordForUser($user),
-				'GET',
-				\sprintf($url, $user)
-			);
-			$this->featureContext->setResponse($response);
-			$username = \explode("data/", (string)$this->featureContext->getResponseXml()->data[0]->home);
-			Assert::assertTrue(
-				\in_array($username[1], $usernameArray, true),
-				"User: " . \implode($username) . " was not created"
-			);
+		foreach ($table as $row) {
+			$this->featureContext->userShouldExist($row['username']);
 		}
 	}
 
