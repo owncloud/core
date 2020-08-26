@@ -14,6 +14,7 @@ use OC\Settings\Panels\Admin\FileSharing;
 use OC\Settings\Panels\Helper;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\L10N\IFactory;
 
 /**
  * @package Tests\Settings\Panels\Admin
@@ -31,8 +32,12 @@ class FileSharingTest extends \Test\TestCase {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
-		$l10n = $this->getMockBuilder(IL10N::class)->getMock();
-		$this->panel = new FileSharing($this->config, $this->helper, $l10n);
+
+		$l = $this->createMock(IL10N::class);
+		$lfactory = $this->getMockBuilder(IFactory::class)->getMock();
+		$lfactory->method('findAvailableLanguages')->willReturn([]);
+		$lfactory->method('get')->willReturn($l);
+		$this->panel = new FileSharing($this->config, $this->helper, $lfactory);
 	}
 
 	public function testGetSection() {
