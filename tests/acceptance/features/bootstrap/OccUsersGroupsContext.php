@@ -144,10 +144,13 @@ class OccUsersGroupsContext implements Context {
 				\sprintf($url, $user)
 			);
 			$this->featureContext->setResponse($response);
-			$username = \explode("data/", (string)$this->featureContext->getResponseXml()->data[0]->home);
+			$home = (string)$this->featureContext->getResponseXml()->data[0]->home;
+			$homeArray = \explode("data/", $home);
+			$username = $homeArray[1];
+			$username = $this->featureContext->normalizeUsername($username);
 			Assert::assertTrue(
-				\in_array($username[1], $usernameArray, true),
-				"User: " . \implode($username) . " was not created"
+				\in_array($username, $usernameArray, true),
+				"User: " . $username . " was not created"
 			);
 		}
 	}
