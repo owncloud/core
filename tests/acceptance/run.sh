@@ -357,6 +357,7 @@ function env_alt_home_clear {
 
 declare -a UNEXPECTED_FAILED_SCENARIOS
 declare -a UNEXPECTED_PASSED_SCENARIOS
+declare -a UNEXPECTED_BEHAT_EXIT_STATUSES
 
 function run_behat_tests() {
 	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
@@ -419,6 +420,15 @@ function run_behat_tests() {
 	# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
 	# for ideas.
 	FAILED_SCENARIO_PATHS=$(echo "${FAILED_SCENARIO_PATHS_COLORED}" | sed "s/\x1b[^m]*m//g")
+
+	# If something else went wrong, and there were no failed scenarios,
+	# then the awk, grep, sed command sequence above ends up with an empty string.
+	# Unset FAILED_SCENARIO_PATHS to avoid later code thinking that there might be
+	# one failed scenario.
+	if [ -z "${FAILED_SCENARIO_PATHS}" ]
+	then
+		unset FAILED_SCENARIO_PATHS
+	fi
 
 	if [ -n "${EXPECTED_FAILURES_FILE}" ]
 	then
@@ -495,21 +505,38 @@ function run_behat_tests() {
 		done
 	fi
 
+	if [ ${BEHAT_EXIT_STATUS} -ne 0 ] && [ ${#FAILED_SCENARIO_PATHS[@]} -eq 0 ]
+	then
+		# Behat had some problem and there were no failed scenarios reported
+		# So the problem is something else.
+		# Possibly there were missing step definitions. Or Behat crashed badly, or...
+		UNEXPECTED_BEHAT_EXIT_STATUSES+=("${SUITE_FEATURE_TEXT} had behat exit status ${BEHAT_EXIT_STATUS}")
+	fi
+
 	# With webUI tests, we try running failed tests again.
 	if [ ${#UNEXPECTED_FAILED_SCENARIOS[@]} -gt 0 ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 	then
 		echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
-		FAILED_SCENARIO_PATHS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+		FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+		# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
+		# Strip them out so we can pass just the ordinary feature details to Behat.
+		# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
+		# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
+		# for ideas.
+		FAILED_SCENARIO_PATHS=$(echo "${FAILED_SCENARIO_PATHS_COLORED}" | sed "s/\x1b[^m]*m//g")
 
-		for FEATURE_COLORED in ${FAILED_SCENARIO_PATHS}
+		# If something else went wrong, and there were no failed scenarios,
+		# then the awk, grep, sed command sequence above ends up with an empty string.
+		# Unset FAILED_SCENARIO_PATHS to avoid later code thinking that there might be
+		# one failed scenario.
+		if [ -z "${FAILED_SCENARIO_PATHS}" ]
+		then
+			unset FAILED_SCENARIO_PATHS
+			FAILED_SCENARIO_PATHS=()
+		fi
+
+		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
 			do
-				# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
-				# Strip them out so we can pass just the ordinary feature details to Behat.
-				# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
-				# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
-				# for ideas.
-				FAILED_SCENARIO_PATH=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
-
 				SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
 				SUITE=`basename ${SUITE_PATH}`
 				SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
@@ -1194,6 +1221,12 @@ echo "runsh: Total ${TOTAL_SCENARIOS} scenarios (${SCENARIOS_THAT_PASSED} passed
 
 teardown
 
+# 3 types of things can have gone wrong:
+#   - some scenario failed (and it was not expected to fail)
+#   - some scenario passed (but it was expected to fail)
+#   - Behat exited with non-zero status because of some other error
+# If any of these happened then report about it and exit with status 1 (error)
+
 if [ ${#UNEXPECTED_FAILED_SCENARIOS[@]} -gt 0 ]
 then
 	UNEXPECTED_FAILURE=true
@@ -1208,7 +1241,14 @@ else
 	UNEXPECTED_SUCCESS=false
 fi
 
-if [ "${UNEXPECTED_FAILURE}" = false ] && [ "${UNEXPECTED_SUCCESS}" = false ]
+if [ ${#UNEXPECTED_BEHAT_EXIT_STATUSES[@]} -gt 0 ]
+then
+	UNEXPECTED_BEHAT_EXIT_STATUS=true
+else
+	UNEXPECTED_BEHAT_EXIT_STATUS=false
+fi
+
+if [ "${UNEXPECTED_FAILURE}" = false ] && [ "${UNEXPECTED_SUCCESS}" = false ] && [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = false ]
 then
 	FINAL_EXIT_STATUS=0
 else
@@ -1233,6 +1273,11 @@ then
   tput setaf 1; printf "%s\n" "${UNEXPECTED_PASSED_SCENARIOS[@]}"
 else
   tput setaf 2; echo "runsh: There were no unexpected success."
+fi
+if [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = true ]
+then
+  tput setaf 3; echo "runsh: The following Behat test runs exited with non-zero status:"
+  tput setaf 1; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
 fi
 
 exit ${FINAL_EXIT_STATUS}
