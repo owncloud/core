@@ -231,7 +231,7 @@ class Detection implements IMimeTypeDetector {
 				return empty($mimeType) ? 'application/octet-stream' : $mimeType;
 			}
 		}
-		$isWrapped = (\strpos($path, '://') !== false) and (\substr($path, 0, 7) === 'file://');
+		$isWrapped = (\strpos($path, '://') !== false) && (\substr($path, 0, 7) === 'file://');
 		if (!$isWrapped and $mimeType === 'application/octet-stream' && \function_exists("mime_content_type")) {
 			// use mime magic extension if available
 			$mimeType = \mime_content_type($path);
