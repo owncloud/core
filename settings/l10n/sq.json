@@ -205,6 +205,7 @@
     "Allow users to share file via social media" : "Lejoji përdoruesit të ndajnë gjëra përmes mediash shoqërore",
     "Set default expiration date for user shares" : "Caktoni datë parazgjedhje skadimesh për ndarje përdoruesish",
     "Set default expiration date for group shares" : "Caktoni datë parazgjedhje skadimesh për ndarje grupesh",
+    "Set default expiration date for remote shares" : "Caktoni datë parazgjedhje skadimesh për ndarje të largëta",
     "Automatically accept new incoming local user shares" : "Prano vetvetiu ndarje të reja që vijnë nga përdorues vendorë",
     "Allow resharing" : "Lejo rindarje",
     "Allow sharing with groups" : "Lejoni ndarje me grupe",
