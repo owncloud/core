@@ -850,7 +850,9 @@ trait Provisioning {
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
 				$attributesToCreateUser['password'] = $userAttributes['password'];
 				if (OcisHelper::isTestingOnOcis()) {
-					$attributesToCreateUser['username'] = $userAttributes['userid'];
+					// Temporarily put a "u" at the start of the username.
+					// OCIS is currently expecting the username to start with an alpha or underscore.
+					$attributesToCreateUser['username'] = "u" . $userAttributes['userid'];
 					if ($userAttributes['email'] === null) {
 						$attributesToCreateUser['email'] = $userAttributes['username'] . '@owncloud.org';
 					} else {
@@ -880,7 +882,7 @@ trait Provisioning {
 					$httpStatusCode = $e->getResponse()->getStatusCode();
 					$reasonPhrase = $e->getResponse()->getReasonPhrase();
 					throw new Exception(
-						__METHOD__ . "Unexpected failure when creating a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase OCS status $ocsStatusCode OCS message $messageText"
+						__METHOD__ . " Unexpected failure when creating a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase OCS status $ocsStatusCode OCS message $messageText"
 					);
 				}
 			}

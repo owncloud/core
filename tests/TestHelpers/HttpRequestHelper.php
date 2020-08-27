@@ -144,7 +144,7 @@ class HttpRequestHelper {
 	) {
 		$options = [];
 		if ($user !== null) {
-			$options['auth'] = [$user, $password];
+			$options['auth'] = ["u" . $user, $password];
 		}
 		if ($config !== null) {
 			$options['config'] = $config;

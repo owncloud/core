@@ -755,7 +755,7 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
-		$userRenamed = $this->featureContext->getActualUsername($user);
+		$userRenamed = "u" . $this->featureContext->getActualUsername($user);
 		$url = $this->featureContext->substituteInLineCodes(
 			$url, $userRenamed
 		);
