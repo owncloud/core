@@ -7,7 +7,7 @@ Feature: sharing
       | Alice    |
       | Brian    |
 
-  @smokeTest
+  @smokeTest @accessToShareSpecial
   Scenario Outline: Sharee can see the share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -20,7 +20,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @accessToShareSpecial
   Scenario Outline: Sharee can see the filtered share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
