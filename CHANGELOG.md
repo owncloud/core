@@ -11,6 +11,7 @@ Summary
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 * Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
+* Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
 * Bugfix - "Passwords do not match" message was not being translated: [#37826](https://github.com/owncloud/core/pull/37826)
 * Bugfix - Allow federated share name up to 255 character: [#36730](https://github.com/owncloud/core/issues/36730)
@@ -69,6 +70,15 @@ Details
    ExpireSharesJob now handles user and group shares.
 
    https://github.com/owncloud/core/pull/37729
+
+* Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
+
+   In case an user had calendars uri containing special characters, for instance "persönlich",
+   and this user was then invited to a calendar event, the event could not be created and a 404 was
+   shown in the stack trace. Reason for this was the uri not being properly decoded. The behavior
+   has now been fixed.
+
+   https://github.com/owncloud/core/pull/37750
 
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
 
