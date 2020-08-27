@@ -22,7 +22,7 @@ Feature: Comments
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
   Scenario: Getting info on comments for a folder using the endpoint
-    And user "Alice" has commented with content "My first comment" on folder "/PARENT"
+    And user "Alice" has added a comment with content "My first comment" on folder "/PARENT"
     And user "Alice" should have the following comments on folder "/PARENT"
       | user  | comment          |
       | Alice | My first comment |
