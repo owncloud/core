@@ -8,31 +8,42 @@ Feature: sharing
       | Brian    |
 
   @smokeTest @accessToShareSpecial
-  Scenario Outline: Sharee can see the share
-    Given using OCS API version "<ocs_api_version>"
+  Scenario: Sharee can see the share
+    Given using OCS API version "1"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Brian" gets all the shares shared with him using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the last share_id should be included in the response
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
 
   @smokeTest @accessToShareSpecial
-  Scenario Outline: Sharee can see the filtered share
-    Given using OCS API version "<ocs_api_version>"
+  Scenario: Sharee can see the share
+    Given using OCS API version "2"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    When user "Brian" gets all the shares shared with him using the sharing API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the last share_id should be included in the response
+
+  @smokeTest @accessToShareSpecial
+  Scenario: Sharee can see the filtered share
+    Given using OCS API version "1"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has shared file "textfile1.txt" with user "Brian"
     When user "Brian" gets all the shares shared with him that are received as file "textfile1 (2).txt" using the provisioning API
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the last share_id should be included in the response
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+
+  @smokeTest @accessToShareSpecial
+  Scenario: Sharee can see the filtered share
+    Given using OCS API version "2"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Alice" has shared file "textfile1.txt" with user "Brian"
+    When user "Brian" gets all the shares shared with him that are received as file "textfile1 (2).txt" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the last share_id should be included in the response
 
   @smokeTest @issue-ocis-reva-260
   Scenario Outline: Sharee can't see the share that is filtered out
