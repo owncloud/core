@@ -1054,7 +1054,7 @@ $CONFIG = [
 	'port' => 6379,
 	'timeout' => 0.0,
 	'password' => '', // Optional, if not defined no password will be used.
-	'dbindex' => 0,   // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
+	'dbindex' => 0,   // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index. Out of the box, every Redis instance supports 16 databases so `<dbIndex>` has to be set between 0 and 15.
   ],
 
 /**
