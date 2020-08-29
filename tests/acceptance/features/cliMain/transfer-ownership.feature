@@ -308,3 +308,55 @@ Feature: transfer-ownership
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command output should contain the text "No files/folders to transfer"
     And the command should have failed with exit code 1
+
+  @skipOnEncryptionType:user-keys
+  Scenario: troubleshoot transfer ownerships for all with share and reshare
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and skeleton files
+    And user "David" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/testByAlice"
+    And user "Alice" has shared folder "/testByAlice" with user "Brian" with permissions "all"
+    And user "Brian" has shared folder "/testByAlice" with user "Carol" with permissions "all"
+    And user "Brian" has created folder "/testByBrian"
+    And user "Brian" has shared folder "/testByBrian" with user "Carol" with permissions "all"
+    And the administrator transfers ownership from "Brian" to "David" using the occ command
+    When the administrator troubleshoots transfer of ownerships for "all" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text "Searching for reshares that have invalid uid_initiator"
+    And the command output should contain the text "Found 0 invalid initiator reshares"
+    And the command output should contain the text "Repaired 0 invalid initiator reshares"
+    And the command output should contain the text "Searching for shares that have invalid uid_owner"
+    And the command output should contain the text "Found 0 invalid share owners"
+    And the command output should contain the text "Repaired 0 invalid share owners"
+
+  @skipOnEncryptionType:user-keys
+  Scenario: troubleshoot transfer ownerships for invalid-initiator with reshare
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and skeleton files
+    And user "David" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/testByAlice"
+    And user "Alice" has shared folder "/testByAlice" with user "Brian" with permissions "all"
+    And user "Brian" has shared folder "/testByAlice" with user "Carol" with permissions "all"
+    And the administrator transfers ownership from "Brian" to "David" using the occ command
+    When the administrator troubleshoots transfer of ownerships for "invalid-initiator" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text "Searching for reshares that have invalid uid_initiator"
+    And the command output should contain the text "Found 0 invalid initiator reshares"
+    And the command output should contain the text "Repaired 0 invalid initiator reshares"
+
+  @skipOnEncryptionType:user-keys
+  Scenario: troubleshoot transfer ownerships for invalid-owner with share
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/test"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has shared folder "/test" with user "Carol" with permissions "all"
+    And the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
+    When the administrator troubleshoots transfer of ownerships for "invalid-owner" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text "Searching for shares that have invalid uid_owner"
+    And the command output should contain the text "Found 0 invalid share owners"
+    And the command output should contain the text "Repaired 0 invalid share owners"

@@ -78,6 +78,16 @@ class TransferOwnershipContext implements Context {
 	}
 
 	/**
+	 * @param string $type
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function troubleshootingTransferOwnership($type) {
+		$this->featureContext->runOcc(['files:troubleshoot-transfer-ownership', $type, '--fix']);
+	}
+
+	/**
 	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
 	 *
 	 * @param string $user1
@@ -90,6 +100,19 @@ class TransferOwnershipContext implements Context {
 		$user1 = $this->featureContext->getActualUsername($user1);
 		$user2 = $this->featureContext->getActualUsername($user2);
 		$this->transferringOwnership($user1, $user2);
+	}
+
+	/**
+	 * @When /^the administrator troubleshoots transfer of ownerships for "([^"]+)" using the occ command$/
+	 *
+	 * @param string $type
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorTroubleshootsTransferOwnershipUsingTheOccCommand($type) {
+		$this->troubleshootingTransferOwnership($type);
+		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**

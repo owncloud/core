@@ -319,7 +319,7 @@ class TransferOwnership extends Command {
 							}
 						} catch (NotFoundException | NoUserException $e) {
 							$skipped++;
-							$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
+							$output->writeln('<error>Share with id ' . $share->getId() . ' and type ' . $share->getShareType() . ' points at deleted file or share that is no longer accessible, skipping</error>');
 							$progress->advance(1);
 						}
 					}
@@ -409,7 +409,7 @@ class TransferOwnership extends Command {
 				}
 				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
 			} catch (NotFoundException | NoUserException $e) {
-				$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
+				$output->writeln('<error>Share with id ' . $share->getId() . ' and type ' . $share->getShareType() . ' points at deleted file or share that is no longer accessible, skipping</error>');
 			} catch (\Exception $e) {
 				$output->writeln('<error>Could not restore share with id ' . $share->getId() . ':' . $e->getTraceAsString() . '</error>');
 				$status = 1;
