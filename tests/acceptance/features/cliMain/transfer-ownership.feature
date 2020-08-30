@@ -96,6 +96,26 @@ Feature: transfer-ownership
     Then the command should have been successful
     And as "Brian" folder "/test" should not exist in the last received transfer folder
 
+  @skipOnEncryptionType:user-keys @files_sharing-app-required
+  Scenario: transferring ownership does not transfer reshares
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and skeleton files
+    And user "David" has been created with default attributes and skeleton files
+    And user "Alice" has created folder "/testByAlice"
+    And user "Alice" has shared folder "/testByAlice" with user "Brian" with permissions "all"
+    And user "Brian" has shared folder "/testByAlice" with user "Carol" with permissions "all"
+    And user "Brian" has created folder "/testByBrian"
+    And user "Brian" has shared folder "/testByBrian" with user "Carol" with permissions "all"
+    When the administrator transfers ownership from "Brian" to "David" using the occ command
+    Then the command should have been successful
+    And as "Brian" folder "/testByAlice" should exist
+    But as "Brian" folder "/testByBrian" should not exist
+    And as "David" folder "/testByBrian" should exist in the last received transfer folder
+    But as "David" folder "/testByAlice" should not exist in the last received transfer folder
+    And as "Carol" folder "/testByAlice" should exist
+    And as "Carol" folder "/testByBrian" should exist
+
   @local_storage @skipOnEncryptionType:user-keys
   Scenario: transferring ownership does not transfer external storage
     Given user "Alice" has been created with default attributes and skeleton files
