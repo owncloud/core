@@ -13,6 +13,7 @@ Summary
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
+* Bugfix - Reshares using files:transfer-ownership cannot be transferred: [#4121](https://github.com/owncloud/enterprise/issues/4121)
 * Bugfix - "Passwords do not match" message was not being translated: [#37826](https://github.com/owncloud/core/pull/37826)
 * Bugfix - Allow federated share name up to 255 character: [#36730](https://github.com/owncloud/core/issues/36730)
 * Bugfix - Fix application id used for sharing settings translation: [#37846](https://github.com/owncloud/core/pull/37846)
@@ -85,6 +86,15 @@ Details
    Openid client secret was printed as is in the config report. Now it is masked.
 
    https://github.com/owncloud/core/pull/37782
+
+* Bugfix - Reshares using files:transfer-ownership cannot be transferred: [#4121](https://github.com/owncloud/enterprise/issues/4121)
+
+   Received shares that have been reshared further now will not be transferred using
+   files:transfer-ownership. Fixes issue with mismatching ownership after executing
+   transfer.
+
+   https://github.com/owncloud/enterprise/issues/4121
+   https://github.com/owncloud/core/pull/37791
 
 * Bugfix - "Passwords do not match" message was not being translated: [#37826](https://github.com/owncloud/core/pull/37826)
 
