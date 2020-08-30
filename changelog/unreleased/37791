@@ -1,0 +1,8 @@
+Bugfix: Reshares using files:transfer-ownership cannot be transferred
+
+Received shares that have been reshared further now will not be transferred
+using files:transfer-ownership. Fixes issue with mismatching ownership after
+executing transfer.
+
+https://github.com/owncloud/enterprise/issues/4121
+https://github.com/owncloud/core/pull/37791
