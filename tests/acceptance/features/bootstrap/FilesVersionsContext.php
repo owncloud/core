@@ -155,7 +155,10 @@ class FilesVersionsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$user, $password, $path, $properties, $folderDepth, "versions"
 		);
-		$responseXml = HttpRequestHelper::getResponseXml($response);
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		return $responseXml;
 	}
 

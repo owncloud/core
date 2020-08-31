@@ -105,7 +105,7 @@ class AppConfigurationContext implements Context {
 	 */
 	public function getAppParameter($capabilitiesApp, $capabilitiesPath) {
 		$answeredValue = $this->getParameterValueFromXml(
-			$this->getCapabilitiesXml(),
+			$this->getCapabilitiesXml(__METHOD__),
 			$capabilitiesApp,
 			$capabilitiesPath
 		);
@@ -189,10 +189,15 @@ class AppConfigurationContext implements Context {
 	}
 
 	/**
+	 * @param string $exceptionText text to put at the front of exception messages
+	 *
 	 * @return string latest retrieved capabilities in XML format
 	 */
-	public function getCapabilitiesXml() {
-		return $this->featureContext->getResponseXml()->data->capabilities;
+	public function getCapabilitiesXml($exceptionText = '') {
+		if ($exceptionText === '') {
+			$exceptionText = __METHOD__;
+		}
+		return $this->featureContext->getResponseXml(null, $exceptionText)->data->capabilities;
 	}
 
 	/**

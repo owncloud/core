@@ -370,7 +370,10 @@ class WebDavPropertiesContext implements Context {
 		$propertyName, $namespaceString, $propertyValue
 	) {
 		$this->featureContext->setResponseXmlObject(
-			HttpRequestHelper::getResponseXml($this->featureContext->getResponse())
+			HttpRequestHelper::getResponseXml(
+				$this->featureContext->getResponse(),
+				__METHOD__
+			)
 		);
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 		//calculate the namespace prefix and namespace
@@ -410,7 +413,10 @@ class WebDavPropertiesContext implements Context {
 		// let's unescape quotes first
 		$propertyValue = \str_replace('\"', '"', $propertyValue);
 		$this->featureContext->setResponseXmlObject(
-			HttpRequestHelper::getResponseXml($this->featureContext->getResponse())
+			HttpRequestHelper::getResponseXml(
+				$this->featureContext->getResponse(),
+				__METHOD__
+			)
 		);
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 		//calculate the namespace prefix and namespace
@@ -573,7 +579,10 @@ class WebDavPropertiesContext implements Context {
 	public function assertValueOfItemInResponseAboutUserIs($xpath, $user, $expectedValue) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
-			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->featureContext->getResponse(),
+				__METHOD__
+			);
 		}
 		$xmlPart = $resXml->xpath($xpath);
 		Assert::assertTrue(
@@ -621,7 +630,10 @@ class WebDavPropertiesContext implements Context {
 	public function assertValueOfItemInResponseToUserRegExp($xpath, $user, $pattern) {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
-			$resXml = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->featureContext->getResponse(),
+				__METHOD__
+			);
 		}
 		$xmlPart = $resXml->xpath($xpath);
 		Assert::assertTrue(

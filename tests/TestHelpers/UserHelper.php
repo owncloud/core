@@ -266,7 +266,7 @@ class UserHelper {
 		$baseUrl, $adminUser, $adminPassword, $search =""
 	) {
 		$result = self::getGroups($baseUrl, $adminUser, $adminPassword, $search);
-		$groups = HttpRequestHelper::getResponseXml($result)->xpath(".//groups")[0];
+		$groups = HttpRequestHelper::getResponseXml($result, __METHOD__)->xpath(".//groups")[0];
 		$return = [];
 		foreach ($groups as $group) {
 			$return[] = $group->__toString();

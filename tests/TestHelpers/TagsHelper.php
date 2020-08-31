@@ -140,7 +140,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$response = WebDavHelper::propfind(
 			$baseUrl, $user, $password, '/systemtags/', $properties, 1, "systemtags"
 		);
-		return HttpRequestHelper::getResponseXml($response);
+		return HttpRequestHelper::getResponseXml($response, __METHOD__);
 	}
 
 	/**

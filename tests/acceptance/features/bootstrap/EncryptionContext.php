@@ -178,7 +178,10 @@ class EncryptionContext implements Context {
 		$this->featureContext->readFileInServerRoot($filePath);
 
 		$response = $this->featureContext->getResponse();
-		$parsedResponse = HttpRequestHelper::getResponseXml($response);
+		$parsedResponse = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
 
@@ -206,7 +209,10 @@ class EncryptionContext implements Context {
 		$this->featureContext->readFileInServerRoot($filePath);
 
 		$response = $this->featureContext->getResponse();
-		$parsedResponse = HttpRequestHelper::getResponseXml($this->featureContext->getResponse());
+		$parsedResponse = HttpRequestHelper::getResponseXml(
+			$this->featureContext->getResponse(),
+			__METHOD__
+		);
 		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
 		$expectedContentStart = "HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true";

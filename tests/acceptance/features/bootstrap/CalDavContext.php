@@ -20,6 +20,7 @@
  */
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use TestHelpers\HttpRequestHelper;
 
@@ -109,21 +110,18 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	/**
 	 * @Then the CalDAV HTTP status code should be :code
 	 *
-	 * @param int $code
+	 * @param string $expectedStatus
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theCalDavHttpStatusCodeShouldBe($code) {
-		if ((int) $code !== $this->response->getStatusCode()) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					(int) $code,
-					$this->response->getStatusCode()
-				)
-			);
-		}
+	public function theCalDavHttpStatusCodeShouldBe($expectedStatus) {
+		$actualStatus = $this->response->getStatusCode();
+		Assert::assertEquals(
+			(int) $expectedStatus,
+			$actualStatus,
+			__METHOD__ . " Expected HTTP status $expectedStatus but got $actualStatus"
+		);
 	}
 
 	/**
@@ -154,7 +152,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			$davUrl, "MKCALENDAR", $user,
 			$this->featureContext->getPasswordForUser($user), null, $body
 		);
-		$this->theCalDavHttpStatusCodeShouldBe(201);
+		$this->theCalDavHttpStatusCodeShouldBe("201");
 		$this->featureContext->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);

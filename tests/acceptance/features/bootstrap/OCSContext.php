@@ -783,7 +783,7 @@ class OCSContext implements Context {
 	 * @throws \Exception
 	 */
 	public function getOCSResponseStatusCode($response) {
-		$responseXml = $this->featureContext->getResponseXml($response);
+		$responseXml = $this->featureContext->getResponseXml($response, __METHOD__);
 		if (isset($responseXml->meta[0], $responseXml->meta[0]->statuscode)) {
 			return (string) $responseXml->meta[0]->statuscode;
 		}
@@ -801,7 +801,7 @@ class OCSContext implements Context {
 	 * @return string
 	 */
 	public function getOCSResponseStatusMessage($response) {
-		return (string) $this->featureContext->getResponseXml($response)->meta[0]->message;
+		return (string) $this->featureContext->getResponseXml($response, __METHOD__)->meta[0]->message;
 	}
 
 	/**

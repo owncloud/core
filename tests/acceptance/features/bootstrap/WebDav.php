@@ -402,7 +402,10 @@ trait WebDav {
 	public function theNumberOfVersionsShouldBe($number) {
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
-			$resXml = HttpRequestHelper::getResponseXml($this->getResponse());
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->getResponse(),
+				__METHOD__
+			);
 		}
 		$xmlPart = $resXml->xpath("//d:getlastmodified");
 		$actualNumber = \count($xmlPart);
@@ -514,12 +517,14 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "MOVE", $fileSource, $headers
 		);
-		if ($this->response->getStatusCode() !== 201) {
-			throw new Exception(
-				__METHOD__ . " Failed moving resource '$fileSource' to '$fileDestination'."
-				. " Expected status code was '201' but got '" . $this->response->getStatusCode() . "'"
-			);
-		}
+		$expectedStatusCode = 201;
+		$actualStatusCode = $this->response->getStatusCode();
+		Assert::assertEquals(
+			$expectedStatusCode,
+			$actualStatusCode,
+			__METHOD__ . " Failed moving resource '$fileSource' to '$fileDestination'."
+			. " Expected status code was '$expectedStatusCode' but got '$actualStatusCode'"
+		);
 	}
 
 	/**
@@ -1193,7 +1198,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theSizeOfTheFileShouldBe($size) {
-		$responseXml = HttpRequestHelper::getResponseXml($this->response);
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$this->response,
+			__METHOD__
+		);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
 		$actualSize = (string) $xmlPart[0];
 		Assert::assertEquals(
@@ -1319,7 +1327,8 @@ trait WebDav {
 		if ($statusCode < 401 || $statusCode > 404) {
 			try {
 				$this->responseXmlObject = HttpRequestHelper::getResponseXml(
-					$response
+					$response,
+					__METHOD__
 				);
 			} catch (\Exception $e) {
 				Assert::fail(
@@ -1447,7 +1456,8 @@ trait WebDav {
 		return HttpRequestHelper::getResponseXml(
 			$this->listFolder(
 				$user, $path, $folderDepth, $properties, $type
-			)
+			),
+			__METHOD__
 		);
 	}
 
@@ -1522,7 +1532,7 @@ trait WebDav {
 				&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
 			) {
 				Assert::fail(
-					"$webdavPath is not in propfind answer but should"
+					"$webdavPath is not in propfind answer but should be"
 				);
 			} elseif (!$expectedToBeListed && isset($element[0])
 			) {
@@ -3360,7 +3370,7 @@ trait WebDav {
 	 */
 	public function theDavElementShouldBe($element, $message) {
 		WebDavAssert::assertDavResponseElementIs(
-			$element, $message, $this->responseXml
+			$element, $message, $this->responseXml, __METHOD__
 		);
 	}
 
@@ -3430,6 +3440,15 @@ trait WebDav {
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
 		}
+		Assert::assertIsArray(
+			$this->responseXml,
+			__METHOD__ . " responseXml is not an array"
+		);
+		Assert::assertArrayHasKey(
+			"value",
+			$this->responseXml,
+			__METHOD__ . " responseXml does not have key 'value'"
+		);
 		$multistatusResults = $this->responseXml["value"];
 		if ($multistatusResults === null) {
 			$multistatusResults = [];
@@ -3548,6 +3567,15 @@ trait WebDav {
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
+		Assert::assertIsArray(
+			$this->responseXml,
+			__METHOD__ . " responseXml for user $user is not an array"
+		);
+		Assert::assertArrayHasKey(
+			"value",
+			$this->responseXml,
+			__METHOD__ . " responseXml for user $user does not have key 'value'"
+		);
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {

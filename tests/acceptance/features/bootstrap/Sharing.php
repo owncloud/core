@@ -174,7 +174,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function getServerShareTimeFromLastResponse() {
-		$stime = $this->getResponseXml()->xpath("//stime");
+		$stime = $this->getResponseXml(null, __METHOD__)->xpath("//stime");
 		if ((bool) $stime) {
 			return (int) $stime[0];
 		}
@@ -917,7 +917,7 @@ trait Sharing {
 		if ($this->response->getStatusCode() === 204) {
 			$this->lastShareData = null;
 		} else {
-			$this->lastShareData = $this->getResponseXml();
+			$this->lastShareData = $this->getResponseXml(null, __METHOD__);
 			if ($shareType === 'public_link' && isset($this->lastShareData->data)) {
 				$linkName = (string) $this->lastShareData->data[0]->name;
 				$linkUrl = (string) $this->lastShareData->data[0]->url;
@@ -968,8 +968,11 @@ trait Sharing {
 	 */
 	public function isFieldInResponse($field, $contentExpected, $expectSuccess = true, $data = null) {
 		if ($data === null) {
-			$data = $this->getResponseXml()->data[0];
+			$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		}
+
+		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
+
 		//do not try to convert empty date
 		if ((string) $field === 'expiration' && !empty($contentExpected)) {
 			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
@@ -1127,7 +1130,7 @@ trait Sharing {
 			$permissionSum = SharingHelper::getPermissionSum($permissions);
 		}
 
-		$data = $this->getResponseXml()->data[0];
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		if (\is_iterable($data)) {
 			foreach ($data as $element) {
 				if (($element->share_type->__toString() === (string) $shareType)
@@ -1239,7 +1242,7 @@ trait Sharing {
 		// this is expected to fail if a file is shared with create and delete permissions, which is not possible
 		Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, "user", $permissions),
-			"User $user1 failed to share $filepath with user $user2"
+			__METHOD__ . " User $user1 failed to share $filepath with user $user2"
 		);
 	}
 
@@ -1466,7 +1469,7 @@ trait Sharing {
 		$statusCode = $this->ocsContext->getOCSResponseStatusCode($this->response);
 		Assert::assertTrue(
 			($statusCode == 404) || ($statusCode == 403),
-			"Sharing should have failed but passed with status code $statusCode"
+			"Sharing should have failed with status code 403 or 404 but got status code $statusCode"
 		);
 	}
 
@@ -1604,9 +1607,10 @@ trait Sharing {
 
 		$this->getListOfShares($user);
 		$id = $this->extractLastSharedIdFromLastResponse();
-		if ($id === null) {
-			throw new Exception("Could not find id in the last response.");
-		}
+		Assert::assertNotNull(
+			$id,
+			__METHOD__ . " Could not find id in the last response."
+		);
 		return $id;
 	}
 
@@ -1639,7 +1643,7 @@ trait Sharing {
 	public function extractLastSharedIdFromLastResponse() {
 		// extract max id
 		$xpath = '/ocs/data/element/id[not (. < ../../element/id)][1]';
-		$id = $this->getResponseXml()->xpath($xpath);
+		$id = $this->getResponseXml(null, __METHOD__)->xpath($xpath);
 		if ((bool) $id) {
 			return (int) $id[0];
 		}
@@ -1837,9 +1841,10 @@ trait Sharing {
 		$user = $this->getActualUsername($user);
 		$this->getListOfShares($user);
 		$share_id = $this->extractLastSharedIdFromLastResponse();
-		if ($share_id === null) {
-			throw new Exception("Could not find id in the last response.");
-		}
+		Assert::assertNotNull(
+			$share_id,
+			__METHOD__ . " Could not find id in the last response."
+		);
 		$this->getShareData($user, $share_id);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
@@ -1937,7 +1942,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theResponseShouldNotContainAnyShareIds() {
-		$data = $this->getResponseXml()->data[0];
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		$fieldIsSet = false;
 		$receivedShareCount = 0;
 
@@ -1992,7 +1997,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkingTheResponseEntriesCount($count) {
-		$actualCount = \count($this->getResponseXml()->data[0]);
+		$actualCount = \count($this->getResponseXml(null, __METHOD__)->data[0]);
 		Assert::assertEquals(
 			$count,
 			$actualCount,
@@ -2065,7 +2070,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theFieldsOfTheLastResponseShouldBeEmpty() {
-		$data = $this->getResponseXml()->data[0];
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		Assert::assertEquals(
 			\count($data->element), 0, "last response contains data but was expected to be empty"
 		);
@@ -2078,7 +2083,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function getSharingAttributesFromLastResponse() {
-		$responseXml = $this->getResponseXml()->data[0];
+		$responseXml = $this->getResponseXml(null, __METHOD__)->data[0];
 		$actualAttributesElement = $responseXml->xpath('//attributes');
 
 		if ((bool) $actualAttributesElement) {
@@ -2165,7 +2170,7 @@ trait Sharing {
 	public function userDownloadsFailWithMessage($fileName, $user, $errorMessage) {
 		$user = $this->getActualUsername($user);
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
-		$receivedErrorMessage = $this->getResponseXml()->xpath('//s:message');
+		$receivedErrorMessage = $this->getResponseXml(null, __METHOD__)->xpath('//s:message');
 		if ((bool) $errorMessage) {
 			Assert::assertEquals(
 				$errorMessage,
@@ -2306,7 +2311,7 @@ trait Sharing {
 			[],
 			$this->ocsApiVersion
 		);
-		return $this->getResponseXml()->data->element;
+		return $this->getResponseXml(null, __METHOD__)->data->element;
 	}
 
 	/**
@@ -2481,12 +2486,10 @@ trait Sharing {
 				break;
 			}
 		}
-		if ($shareId === null) {
-			throw new Exception(
-				__METHOD__ .
-				" could not find share $share, offered by $offeredBy to $user"
-			);
-		}
+		Assert::assertNotNull(
+			$shareId,
+			__METHOD__ . " could not find share $share, offered by $offeredBy to $user"
+		);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
 			"/shares/pending/$shareId";
 		if (\substr($action, 0, 7) === "decline") {

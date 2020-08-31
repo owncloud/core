@@ -160,7 +160,10 @@ class TrashbinContext implements Context {
 			],
 			'trash-bin'
 		);
-		$responseXml = HttpRequestHelper::getResponseXml($response);
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 
 		$this->featureContext->setResponseXmlObject($responseXml);
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
@@ -205,7 +208,10 @@ class TrashbinContext implements Context {
 			2
 		);
 		$this->featureContext->setResponse($response);
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		$this->featureContext->setResponseXmlObject($responseXmlObject);
 	}
 

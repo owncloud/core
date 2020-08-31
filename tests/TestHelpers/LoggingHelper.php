@@ -90,7 +90,7 @@ class LoggingHelper {
 				"could not get logfile content " . $result->getReasonPhrase()
 			);
 		}
-		return HttpRequestHelper::getResponseXml($result)->data->element;
+		return HttpRequestHelper::getResponseXml($result, __METHOD__)->data->element;
 	}
 
 	/**

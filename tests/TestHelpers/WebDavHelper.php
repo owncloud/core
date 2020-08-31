@@ -513,7 +513,10 @@ class WebDavHelper {
 			null,
 			$davVersionToUse
 		);
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		$xmlPart = $responseXmlObject->xpath("//d:getlastmodified");
 
 		return $xmlPart[0]->__toString();
@@ -538,7 +541,10 @@ class WebDavHelper {
 		$response = self::propfind(
 			$baseUrl, $user, $password, $resource, ["getlastmodified"]
 		);
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		$xmlpart = $responseXmlObject->xpath("//d:getlastmodified");
 		$mtime = new DateTime($xmlpart[0]->__toString());
 		return $mtime->format('U');

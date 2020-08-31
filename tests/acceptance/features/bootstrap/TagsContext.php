@@ -1148,7 +1148,10 @@ class TagsContext implements Context {
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		return $responseXmlObject;
 	}
 
@@ -1678,7 +1681,10 @@ class TagsContext implements Context {
 			$baseUrl, $user, $password, "REPORT", null, null, $body, 2
 		);
 		$this->featureContext->setResponse($response);
-		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
 		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
 		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
 		$this->featureContext->setResponseXmlObject($responseXmlObject);

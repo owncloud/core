@@ -204,7 +204,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return string
 	 */
 	public static function getOCSResponse($response) {
-		return HttpRequestHelper::getResponseXml($response)->meta[0]->statuscode;
+		return HttpRequestHelper::getResponseXml($response, __METHOD__)->meta[0]->statuscode;
 	}
 
 	/**
@@ -225,7 +225,15 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			'/cloud/capabilities',
 			null
 		);
-		self::assertEquals(200, $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		return $response;
 	}
 
@@ -235,7 +243,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return string retrieved capabilities in XML format
 	 */
 	public static function getCapabilitiesXml($response) {
-		return HttpRequestHelper::getResponseXml($response)->data->capabilities;
+		return HttpRequestHelper::getResponseXml($response, __METHOD__)->data->capabilities;
 	}
 
 	/**
@@ -264,10 +272,22 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$body,
 			$ocsApiVersion
 		);
-		self::assertEquals("200", $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		if ($ocsApiVersion === 1) {
+			$expectedOcsStatus = "100";
+			$actualOcsStatus = self::getOCSResponse($response);
 			self::assertEquals(
-				"100", self::getOCSResponse($response)
+				$expectedOcsStatus,
+				$actualOcsStatus,
+				__METHOD__ . " expected OCS status $expectedOcsStatus but got $actualOcsStatus"
 			);
 		}
 	}
@@ -303,10 +323,22 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$body,
 			$ocsApiVersion
 		);
-		self::assertEquals("200", $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		if ($ocsApiVersion === 1) {
+			$expectedOcsStatus = "100";
+			$actualOcsStatus = self::getOCSResponse($response);
 			self::assertEquals(
-				"100", self::getOCSResponse($response)
+				$expectedOcsStatus,
+				$actualOcsStatus,
+				__METHOD__ . " expected OCS status $expectedOcsStatus but got $actualOcsStatus"
 			);
 		}
 	}
@@ -334,10 +366,22 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$body,
 			$ocsApiVersion
 		);
-		self::assertEquals("200", $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		if ($ocsApiVersion === 1) {
+			$expectedOcsStatus = "100";
+			$actualOcsStatus = self::getOCSResponse($response);
 			self::assertEquals(
-				"100", self::getOCSResponse($response)
+				$expectedOcsStatus,
+				$actualOcsStatus,
+				__METHOD__ . " expected OCS status $expectedOcsStatus but got $actualOcsStatus"
 			);
 		}
 	}
@@ -364,10 +408,22 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$body,
 			$ocsApiVersion
 		);
-		self::assertEquals("200", $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		if ($ocsApiVersion === 1) {
+			$expectedOcsStatus = "100";
+			$actualOcsStatus = self::getOCSResponse($response);
 			self::assertEquals(
-				"100", self::getOCSResponse($response)
+				$expectedOcsStatus,
+				$actualOcsStatus,
+				__METHOD__ . " expected OCS status $expectedOcsStatus but got $actualOcsStatus"
 			);
 		}
 	}
@@ -393,14 +449,26 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			null,
 			$ocsApiVersion
 		);
-		self::assertEquals("200", $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		if ($ocsApiVersion === 1) {
+			$expectedOcsStatus = "100";
+			$actualOcsStatus = self::getOCSResponse($response);
 			self::assertEquals(
-				"100", self::getOCSResponse($response)
+				$expectedOcsStatus,
+				$actualOcsStatus,
+				__METHOD__ . " expected OCS status $expectedOcsStatus but got $actualOcsStatus"
 			);
 		}
 
-		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
+		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data[0];
 		$response = \json_decode(\json_encode($responseXml), true)['element'];
 		return $response;
 	}
@@ -427,14 +495,26 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			null,
 			$ocsApiVersion
 		);
-		self::assertEquals("200", $response->getStatusCode());
+
+		$expectedHttpStatus = 200;
+		$actualHttpStatus = $response->getStatusCode();
+
+		self::assertEquals(
+			$expectedHttpStatus,
+			$actualHttpStatus,
+			__METHOD__ . " expected HTTP status $expectedHttpStatus but got $actualHttpStatus"
+		);
 		if ($ocsApiVersion === 1) {
+			$expectedOcsStatus = "100";
+			$actualOcsStatus = self::getOCSResponse($response);
 			self::assertEquals(
-				"100", self::getOCSResponse($response)
+				$expectedOcsStatus,
+				$actualOcsStatus,
+				__METHOD__ . " expected OCS status $expectedOcsStatus but got $actualOcsStatus"
 			);
 		}
 
-		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
+		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data[0];
 		$response = \json_decode(\json_encode($responseXml), true)['element'];
 		return $response;
 	}

@@ -48,7 +48,7 @@ class CapabilitiesContext implements Context {
 	 * @return void
 	 */
 	public function checkCapabilitiesResponse(TableNode $formData) {
-		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		$assertedSomething = false;
 
 		$this->featureContext->verifyTableNodeColumns($formData, ['value', 'path_to_element', 'capability']);
@@ -87,7 +87,7 @@ class CapabilitiesContext implements Context {
 		$this->featureContext->appConfigurationContext->userGetsCapabilitiesCheckResponse(
 			$this->featureContext->getCurrentUser()
 		);
-		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		$actualValue = $this->featureContext->appConfigurationContext->getParameterValueFromXml(
 			$capabilitiesXML,
 			"files_sharing",
@@ -108,7 +108,7 @@ class CapabilitiesContext implements Context {
 	 * @return void
 	 */
 	public function theCapabilitiesShouldNotContain(TableNode $formData) {
-		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		$assertedSomething = false;
 
 		foreach ($formData->getHash() as $row) {

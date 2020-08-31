@@ -1123,15 +1123,19 @@ class FeatureContext extends BehatVariablesContext {
 	 * Parses the response as XML
 	 *
 	 * @param ResponseInterface $response
+	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement
 	 */
-	public function getResponseXml($response = null) {
+	public function getResponseXml($response = null, $exceptionText = '') {
 		if ($response === null) {
 			$response = $this->response;
 		}
 
-		return HttpRequestHelper::getResponseXml($response);
+		if ($exceptionText === '') {
+			$exceptionText = __METHOD__;
+		}
+		return HttpRequestHelper::getResponseXml($response, $exceptionText);
 	}
 
 	/**
@@ -1144,7 +1148,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Value($response, $key1, $key2) {
-		return $this->getResponseXml($response)->$key1->$key2;
+		return $this->getResponseXml($response, __METHOD__)->$key1->$key2;
 	}
 
 	/**
@@ -1158,7 +1162,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
-		return $this->getResponseXml($response)->$key1->$key2->$key3;
+		return $this->getResponseXml($response, __METHOD__)->$key1->$key2->$key3;
 	}
 
 	/**
@@ -1175,7 +1179,7 @@ class FeatureContext extends BehatVariablesContext {
 	public function getXMLKey1Key2Key3AttributeValue(
 		$response, $key1, $key2, $key3, $attribute
 	) {
-		return (string) $this->getResponseXml($response)->$key1->$key2->$key3->attributes()->$attribute;
+		return (string) $this->getResponseXml($response, __METHOD__)->$key1->$key2->$key3->attributes()->$attribute;
 	}
 
 	/**
@@ -2272,7 +2276,7 @@ class FeatureContext extends BehatVariablesContext {
 
 		$this->appConfigurationContext->theAdministratorGetsCapabilitiesCheckResponse();
 		$edition = $this->appConfigurationContext->getParameterValueFromXml(
-			$this->appConfigurationContext->getCapabilitiesXml(),
+			$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
 			'core',
 			'status@@@edition'
 		);
@@ -2284,7 +2288,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		$productName = $this->appConfigurationContext->getParameterValueFromXml(
-			$this->appConfigurationContext->getCapabilitiesXml(),
+			$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
 			'core',
 			'status@@@productname'
 		);
@@ -2376,7 +2380,10 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getResponse()->getStatusCode(),
 			"Failed to read the file {$path}"
 		);
-		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
+		$fileContent = HttpRequestHelper::getResponseXml(
+			$this->getResponse(),
+			__METHOD__
+		);
 		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($fileContent);
 
@@ -2780,7 +2787,7 @@ class FeatureContext extends BehatVariablesContext {
 			[],
 			$this->getOcsApiVersion()
 		);
-		$configkeyValue = (string) $this->getResponseXml($response)->data[0]->element->value;
+		$configkeyValue = (string) $this->getResponseXml($response, __METHOD__)->data[0]->element->value;
 		Assert::assertEquals(
 			$value, $configkeyValue,
 			"The config key {$key} of app {$appID} was expected to have value {$value} but got {$configkeyValue}"
@@ -2815,10 +2822,14 @@ class FeatureContext extends BehatVariablesContext {
 	 * Returns a list of config keys for the given app
 	 *
 	 * @param string $appID
+	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return array
 	 */
-	public function getConfigKeyList($appID) {
+	public function getConfigKeyList($appID, $exceptionText = '') {
+		if ($exceptionText === '') {
+			$exceptionText = __METHOD__;
+		}
 		$response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
@@ -2828,7 +2839,9 @@ class FeatureContext extends BehatVariablesContext {
 			[],
 			$this->getOcsApiVersion()
 		);
-		return $this->parseConfigListFromResponseXml($this->getResponseXml($response));
+		return $this->parseConfigListFromResponseXml(
+			$this->getResponseXml($response, $exceptionText)
+		);
 	}
 
 	/**
@@ -3321,7 +3334,7 @@ class FeatureContext extends BehatVariablesContext {
 	public function resetAppConfigs() {
 		// Remember the current capabilities
 		$this->appConfigurationContext->theAdministratorGetsCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml[$this->getBaseUrl()] = $this->appConfigurationContext->getCapabilitiesXml();
+		$this->savedCapabilitiesXml[$this->getBaseUrl()] = $this->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		// Set the required starting values for testing
 		$this->setCapabilities($this->getCommonSharingConfigs());
 	}
@@ -3612,7 +3625,8 @@ class FeatureContext extends BehatVariablesContext {
 			throw new Exception("Could not get the list of trusted servers" . $response->getBody()->getContents());
 		}
 		$responseXml = HttpRequestHelper::getResponseXml(
-			$response
+			$response,
+			__METHOD__
 		);
 		$serverData = \json_decode(
 			\json_encode(

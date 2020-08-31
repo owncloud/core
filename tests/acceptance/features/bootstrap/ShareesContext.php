@@ -141,7 +141,7 @@ class ShareesContext implements Context {
 	public function getArrayOfShareesResponded(
 		ResponseInterface $response, $shareeType
 	) {
-		$elements = $this->featureContext->getResponseXml($response)->data;
+		$elements = $this->featureContext->getResponseXml($response, __METHOD__)->data;
 		$elements = \json_decode(\json_encode($elements), 1);
 		if (\strpos($shareeType, 'exact ') === 0) {
 			$elements = $elements['exact'];
