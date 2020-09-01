@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: edit users
   As an admin, subadmin or as myself
   I want to be able to edit user information
@@ -81,7 +81,7 @@ Feature: edit users
     And the HTTP status code should be "200"
     And the email address of user "brand-new-user" should be ""
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: a subadmin should be able to edit the user information in their group
     Given these users have been created with default attributes and skeleton files:
       | username       |

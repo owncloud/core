@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: get users
   As an admin
   I want to be able to list the users that exist
@@ -17,7 +17,7 @@ Feature: get users
       | brand-new-user |
       | admin          |
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: subadmin gets the users in their group
     Given these users have been created with default attributes and skeleton files:
       | username         |
