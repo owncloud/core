@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: get user
   As an admin, subadmin or as myself
   I want to be able to retrieve user information
@@ -50,7 +50,7 @@ Feature: get user
     And the HTTP status code should be "404"
     And the API should not return any data
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: a subadmin gets information of a user in their group
     Given these users have been created with default attributes and skeleton files:
       | username       | displayname |
@@ -65,6 +65,7 @@ Feature: get user
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
 
+  @notToImplementOnOCIS
   Scenario: a subadmin tries to get information of a user not in their group
     Given these users have been created with default attributes and skeleton files:
       | username       |

@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: delete users
   As an admin
   I want to be able to delete users
@@ -36,7 +36,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: subadmin deletes a user in their group
     Given these users have been created with default attributes and skeleton files:
       | username       |

@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @files_sharing-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @files_sharing-app-required @skipOnLDAP
 Feature: get apps
   As an admin
   I want to be able to get the list of apps on my ownCloud

@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @comments-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @comments-app-required @skipOnLDAP
 Feature: disable an app
   As an admin
   I want to be able to disable an enabled app
@@ -15,7 +15,7 @@ Feature: disable an app
     And the HTTP status code should be "200"
     And app "comments" should be disabled
 
-  @issue-31276
+  @issue-31276 @notToImplementOnOCIS
   Scenario: subadmin tries to disable an app
     Given user "subadmin" has been created with default attributes and skeleton files
     And group "brand-new-group" has been created

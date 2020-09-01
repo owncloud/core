@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: create a subadmin
   As an admin
   I want to be able to make a user the subadmin of a group
@@ -7,7 +7,7 @@ Feature: create a subadmin
   Background:
     Given using OCS API version "1"
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: admin creates a subadmin
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "brand-new-group" has been created
@@ -16,6 +16,7 @@ Feature: create a subadmin
     And the HTTP status code should be "200"
     And user "brand-new-user" should be a subadmin of group "brand-new-group"
 
+  @notToImplementOnOCIS
   Scenario: admin tries to create a subadmin using a user which does not exist
     Given user "nonexistentuser" has been deleted
     And group "brand-new-group" has been created
@@ -32,6 +33,7 @@ Feature: create a subadmin
     And the HTTP status code should be "200"
     And the API should not return any data
 
+  @notToImplementOnOCIS
   Scenario: subadmin of a group tries to make another user subadmin of their group
     Given these users have been created with default attributes and skeleton files:
       | username       |

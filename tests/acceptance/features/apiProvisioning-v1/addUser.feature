@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: add user
   As an admin
   I want to be able to add users
@@ -44,6 +44,7 @@ Feature: add user
     And the HTTP status code should be "200"
     And the API should not return any data
 
+  @notToImplementOnOCIS
   Scenario: Admin creates a new user and adds him directly to a group
     Given group "brand-new-group" has been created
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" group "brand-new-group" using the provisioning API
