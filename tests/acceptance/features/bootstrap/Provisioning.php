@@ -852,6 +852,12 @@ trait Provisioning {
 				if (OcisHelper::isTestingOnOcis()) {
 					$attributesToCreateUser['username'] = $userAttributes['userid'];
 					if ($userAttributes['email'] === null) {
+						Assert::assertArrayHasKey(
+							'username',
+							$userAttributes,
+							__METHOD__ . " userAttributes array does not have key 'username'"
+						);
+
 						$attributesToCreateUser['email'] = $userAttributes['username'] . '@owncloud.org';
 					} else {
 						$attributesToCreateUser['email'] = $userAttributes['email'];
