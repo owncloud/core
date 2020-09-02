@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP
+@api @provisioning_api-app-required @skipOnLDAP @toImplementOnOCIS
 Feature: get subadmins
   As an admin
   I want to be able to get the list of subadmins of a group
@@ -7,7 +7,7 @@ Feature: get subadmins
   Background:
     Given using OCS API version "2"
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: admin gets subadmin users of a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "brand-new-group" has been created
@@ -26,7 +26,7 @@ Feature: get subadmins
     And the HTTP status code should be "400"
     And the API should not return any data
 
-  @issue-31276 @notToImplementOnOCIS
+  @issue-31276
   Scenario: subadmin tries to get other subadmins of the same group
     Given these users have been created with default attributes and skeleton files:
       | username         |
@@ -41,7 +41,7 @@ Feature: get subadmins
     And the HTTP status code should be "401"
     And the API should not return any data
 
-  @issue-31276 @notToImplementOnOCIS
+  @issue-31276
   Scenario: normal user tries to get the subadmins of the group
     Given these users have been created with default attributes and skeleton files:
       | username       |
