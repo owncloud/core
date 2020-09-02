@@ -815,6 +815,60 @@ trait Provisioning {
 	}
 
 	/**
+	 * Manually add skeleton files for a single user on OCIS and reva systems
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function manuallyAddSkeletonFilesForUser($user, $password) {
+		$settings = [];
+		$setting["userid"] = $user;
+		$setting["password"] = $password;
+		\array_push($settings, $setting);
+		$this->manuallyAddSkeletonFiles($settings);
+	}
+
+	/**
+	 * Manually add skeleton files on OCIS and reva systems
+	 *
+	 * @param array $usersAttributes
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function manuallyAddSkeletonFiles($usersAttributes) {
+		$skeletonDir = \getenv("SKELETON_DIR");
+		$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
+		if (!$skeletonDir) {
+			throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
+		}
+		if (!$revaRoot && OcisHelper::getDeleteUserDataCommand() !== false) {
+			foreach ($usersAttributes as $userAttributes) {
+				OcisHelper::recurseUpload(
+					$this->getBaseUrl(),
+					$skeletonDir,
+					$userAttributes['userid'],
+					$userAttributes['password']
+				);
+			}
+		} elseif (!$revaRoot) {
+			throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
+		} else {
+			foreach ($usersAttributes as $userAttributes) {
+				$user = $userAttributes['userid'];
+				$dataDir = $revaRoot . "data/$user/files";
+				if (!\file_exists($dataDir)) {
+					\mkdir($dataDir, 0777, true);
+				}
+				OcisHelper::recurseCopy($skeletonDir, $dataDir);
+			}
+		}
+	}
+
+	/**
 	 * This function will allow us to send user creation requests in parallel.
 	 * This will be faster in comparison to waiting for each request to complete before sending another request.
 	 *
@@ -921,32 +975,7 @@ trait Provisioning {
 		// When testing on ownCloud 10 the user is already getting whatever
 		// skeleton dir is defined in the server-under-test.
 		if ($skeleton && OcisHelper::isTestingOnOcis()) {
-			$skeletonDir = \getenv("SKELETON_DIR");
-			$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
-			if (!$skeletonDir) {
-				throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
-			}
-			if (!$revaRoot && OcisHelper::getDeleteUserDataCommand() !== false) {
-				foreach ($usersAttributes as $userAttributes) {
-					OcisHelper::recurseUpload(
-						$this->getBaseUrl(),
-						$skeletonDir,
-						$userAttributes['userid'],
-						$userAttributes['password']
-					);
-				}
-			} elseif (!$revaRoot) {
-				throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
-			} else {
-				foreach ($usersAttributes as $userAttributes) {
-					$user = $userAttributes['userid'];
-					$dataDir = $revaRoot . "data/$user/files";
-					if (!\file_exists($dataDir)) {
-						\mkdir($dataDir, 0777, true);
-					}
-					OcisHelper::recurseCopy($skeletonDir, $dataDir);
-				}
-			}
+			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
 		if ($initialize) {
@@ -1155,6 +1184,15 @@ trait Provisioning {
 			"displayname" => $displayname,
 			"email" => $email
 		];
+
+		if (OcisHelper::isTestingOnOcis()) {
+			if ($email === null) {
+				$email = $username . '@owncloud.org';
+			}
+			$userAttributes["username"] = $username;
+			$userAttributes["email"] = $email;
+		}
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
@@ -1164,6 +1202,9 @@ trait Provisioning {
 		$this->addUserToCreatedUsersList(
 			$username, $password, $displayname, $email
 		);
+		if (OcisHelper::isTestingOnOcis()) {
+			$this->manuallyAddSkeletonFilesForUser($username, $password);
+		}
 	}
 
 	/**
@@ -1173,18 +1214,28 @@ trait Provisioning {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminSendsUserCreationRequestUsingTheProvisioningApi($user, $password) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
-		$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
+		if (OcisHelper::isTestingOnOcis()) {
+			$email = $user . '@owncloud.org';
+			$bodyTable = new TableNode([['userid', $user], ['password', $password], ['username', $user], ['email', $email]]);
+		} else {
+			$email = null;
+			$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
+		}
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
 			$bodyTable
 		);
-		$this->addUserToCreatedUsersList($user, $password);
+		$this->addUserToCreatedUsersList($user, $password, null, $email);
+		if (OcisHelper::isTestingOnOcis()) {
+			$this->manuallyAddSkeletonFilesForUser($user, $password);
+		}
 	}
 
 	/**
@@ -1195,22 +1246,32 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheProvisioningApi(
 		$user, $password, $group
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
-		$bodyTable = new TableNode(
-			[['userid', $user], ['password', $password], ['groups[]', $group]]
-		);
+		if (OcisHelper::isTestingOnOcis()) {
+			$email = $user . '@owncloud.org';
+			$bodyTable = new TableNode([['userid', $user], ['password', $password], ['username', $user], ['email', $email], ['groups[]', $group]]);
+		} else {
+			$email = null;
+			$bodyTable = new TableNode(
+				[['userid', $user], ['password', $password], ['groups[]', $group]]
+			);
+		}
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
 			$bodyTable
 		);
-		$this->addUserToCreatedUsersList($user, $password);
+		$this->addUserToCreatedUsersList($user, $password, null, $email);
+		if (OcisHelper::isTestingOnOcis()) {
+			$this->manuallyAddSkeletonFilesForUser($user, $password);
+		}
 	}
 
 	/**
