@@ -1076,12 +1076,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				break;
 			}
 		}
-		if ($found === false) {
-			throw new Exception(
-				__METHOD__ .
-				" could not find share '$share' offered by '$offeredByUserDisplayName'"
-			);
-		}
+		Assert::assertTrue(
+			$found,
+			__METHOD__ . " could not find share '$share' offered by '$offeredByUserDisplayName'"
+		);
 	}
 
 	/**

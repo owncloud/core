@@ -251,7 +251,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 				"could not get sysinfo " . $result->getReasonPhrase()
 			);
 		}
-		return HttpRequestHelper::getResponseXml($result)->data;
+		return HttpRequestHelper::getResponseXml($result, __METHOD__)->data;
 	}
 
 	/**
@@ -505,7 +505,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			$response->getStatusCode(),
 			"Failed to read the file {$fileInCore}"
 		);
-		$localContent = HttpRequestHelper::getResponseXml($response);
+		$localContent = HttpRequestHelper::getResponseXml($response, __METHOD__);
 		$localContent = (string)$localContent->data->element->contentUrlEncoded;
 		return \urldecode($localContent);
 	}
@@ -561,7 +561,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			$response->getStatusCode(),
 			"Failed to read the file {$fileInSkeletonFolder}"
 		);
-		$localContent = HttpRequestHelper::getResponseXml($response);
+		$localContent = HttpRequestHelper::getResponseXml($response, __METHOD__);
 		$localContent = (string)$localContent->data->element->contentUrlEncoded;
 		$localContent = \urldecode($localContent);
 		return $localContent;

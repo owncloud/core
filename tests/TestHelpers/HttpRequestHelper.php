@@ -333,11 +333,12 @@ class HttpRequestHelper {
 	 *  | ocs    | http://open-collaboration-services.org/ns |
 	 *
 	 * @param ResponseInterface $response
+	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement
 	 * @throws \Exception
 	 */
-	public static function getResponseXml($response) {
+	public static function getResponseXml($response, $exceptionText = '') {
 		// rewind just to make sure we can re-parse it in case it was parsed already...
 		$response->getBody()->rewind();
 		$contents = $response->getBody()->getContents();
@@ -354,10 +355,13 @@ class HttpRequestHelper {
 			);
 			return $responseXmlObject;
 		} catch (\Exception $e) {
-			if ($contents === '') {
-				throw new \Exception("Received empty response where XML was expected");
+			if ($exceptionText !== '') {
+				$exceptionText = $exceptionText . ' ';
 			}
-			$message = "Exception parsing response body: \"" . $contents . "\"";
+			if ($contents === '') {
+				throw new \Exception($exceptionText . "Received empty response where XML was expected");
+			}
+			$message = $exceptionText . "Exception parsing response body: \"" . $contents . "\"";
 			throw new \Exception($message, 0, $e);
 		}
 	}

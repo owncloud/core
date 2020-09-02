@@ -880,7 +880,7 @@ trait Provisioning {
 			// Retrieve all failures.
 			foreach ($results as $e) {
 				if ($e instanceof ClientException) {
-					$responseXml = $this->getResponseXml($e->getResponse());
+					$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
 					$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
 					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
 					$httpStatusCode = $e->getResponse()->getStatusCode();
@@ -3700,7 +3700,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theDisplayNameReturnedByTheApiShouldBe($expectedDisplayName) {
-		$responseDisplayName = (string) $this->getResponseXml()->data[0]->displayname;
+		$responseDisplayName = (string) $this->getResponseXml(null, __METHOD__)->data[0]->displayname;
 		Assert::assertEquals(
 			$expectedDisplayName,
 			$responseDisplayName
@@ -3728,7 +3728,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress) {
-		$responseEmailAddress = (string) $this->getResponseXml()->data[0]->email;
+		$responseEmailAddress = (string) $this->getResponseXml(null, __METHOD__)->data[0]->email;
 		Assert::assertEquals(
 			$expectedEmailAddress,
 			$responseEmailAddress
@@ -3757,7 +3757,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition) {
-		$responseQuotaDefinition = (string) $this->getResponseXml()->data[0]->quota->definition;
+		$responseQuotaDefinition = (string) $this->getResponseXml(null, __METHOD__)->data[0]->quota->definition;
 		Assert::assertEquals(
 			$expectedQuotaDefinition,
 			$responseQuotaDefinition
@@ -3786,7 +3786,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfUsersResponded($resp) {
 		$listCheckedElements
-			= $this->getResponseXml($resp)->data[0]->users[0]->element;
+			= $this->getResponseXml($resp, __METHOD__)->data[0]->users[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -3801,7 +3801,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfGroupsResponded($resp) {
 		$listCheckedElements
-			= $this->getResponseXml($resp)->data[0]->groups[0]->element;
+			= $this->getResponseXml($resp, __METHOD__)->data[0]->groups[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -3816,7 +3816,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfAppsResponded($resp) {
 		$listCheckedElements
-			= $this->getResponseXml($resp)->data[0]->apps[0]->element;
+			= $this->getResponseXml($resp, __METHOD__)->data[0]->apps[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -3831,7 +3831,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfSubadminsResponded($resp) {
 		$listCheckedElements
-			= $this->getResponseXml($resp)->data[0]->element;
+			= $this->getResponseXml($resp, __METHOD__)->data[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -3846,7 +3846,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfAppInfoResponded($resp) {
 		$listCheckedElements
-			= $this->getResponseXml($resp)->data[0];
+			= $this->getResponseXml($resp, __METHOD__)->data[0];
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -3934,7 +3934,7 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		Assert::assertEquals(
-			"false", $this->getResponseXml()->data[0]->enabled
+			"false", $this->getResponseXml(null, __METHOD__)->data[0]->enabled
 		);
 	}
 
@@ -3953,7 +3953,7 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		Assert::assertEquals(
-			"true", $this->getResponseXml()->data[0]->enabled
+			"true", $this->getResponseXml(null, __METHOD__)->data[0]->enabled
 		);
 	}
 
@@ -4032,7 +4032,7 @@ trait Provisioning {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
-		return $this->getResponseXml()->data[0]->home;
+		return $this->getResponseXml(null, __METHOD__)->data[0]->home;
 	}
 
 	/**
@@ -4046,7 +4046,7 @@ trait Provisioning {
 		$this->verifyTableNodeRows($body, [], $this->userResponseFields);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {
-			$data = $this->getResponseXml()->data[0];
+			$data = $this->getResponseXml(null, __METHOD__)->data[0];
 			$field_array = \explode(' ', $field);
 			foreach ($field_array as $field_name) {
 				$data = $data->$field_name;
@@ -4083,7 +4083,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theApiShouldNotReturnAnyData() {
-		$responseData = $this->getResponseXml()->data[0];
+		$responseData = $this->getResponseXml(null, __METHOD__)->data[0];
 		Assert::assertEmpty(
 			$responseData,
 			"Response data is not empty but it should be empty"
@@ -4096,7 +4096,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
-		$usersList = $this->getResponseXml()->data[0]->users[0];
+		$usersList = $this->getResponseXml(null, __METHOD__)->data[0]->users[0];
 		Assert::assertEmpty(
 			$usersList,
 			"Users list is not empty but it should be empty"
@@ -4109,7 +4109,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theListOfGroupsReturnedByTheApiShouldBeEmpty() {
-		$groupsList = $this->getResponseXml()->data[0]->groups[0];
+		$groupsList = $this->getResponseXml(null, __METHOD__)->data[0]->groups[0];
 		Assert::assertEmpty(
 			$groupsList,
 			"Groups list is not empty but it should be empty"

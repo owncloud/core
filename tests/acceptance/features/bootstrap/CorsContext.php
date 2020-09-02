@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -97,9 +98,15 @@ class CorsContext implements Context {
 			]
 		);
 		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
+
+		Assert::assertIsArray(
+			$domains,
+			__METHOD__ . " The output of 'occ user:setting $user core domains' was not valid JSON"
+		);
+
 		if (!\in_array($domain, $domains)) {
 			throw new \Exception(
-				"domain {$domain} is not included in CORS domain {$domains}, but was expected to be"
+				"domain $domain is not included in CORS domain $domains, but was expected to be"
 			);
 		}
 	}

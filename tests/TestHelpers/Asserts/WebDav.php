@@ -34,15 +34,20 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * @param string $element exception|message|reason
 	 * @param string $expectedValue
 	 * @param array $responseXml
+	 * @param string $extraErrorText
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
 	public static function assertDavResponseElementIs(
-		$element, $expectedValue, $responseXml
+		$element, $expectedValue, $responseXml, $extraErrorText = ''
 	) {
+		if ($extraErrorText !== '') {
+			$extraErrorText = $extraErrorText . " ";
+		}
 		self::assertArrayHasKey(
-			'value', $responseXml, '$responseXml seems not to be a valid array'
+			'value',
+			$responseXml,
+			$extraErrorText . "responseXml does not have key 'value'"
 		);
 		if ($element === "exception") {
 			$result = $responseXml['value'][0]['value'];
@@ -54,7 +59,7 @@ class WebDav extends \PHPUnit\Framework\Assert {
 
 		self::assertEquals(
 			$expectedValue, $result,
-			"Expected '$expectedValue' in element $element got '$result'"
+			__METHOD__ . " " . $extraErrorText . "Expected '$expectedValue' in element $element got '$result'"
 		);
 	}
 

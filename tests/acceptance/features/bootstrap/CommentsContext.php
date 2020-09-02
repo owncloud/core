@@ -140,7 +140,7 @@ class CommentsContext implements Context {
 		// limiting number of results and start from first (offset)
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
-			$user, $commentsPath, $properties
+			$user, $commentsPath, $properties, __METHOD__
 		);
 
 		$this->featureContext->verifyTableNodeColumns($expectedElements, ['user', 'comment']);
@@ -197,7 +197,7 @@ class CommentsContext implements Context {
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
-			$user, $commentsPath, $properties
+			$user, $commentsPath, $properties, __METHOD__
 		);
 		$messages = $elementList->xpath("//d:prop/oc:message");
 		Assert::assertCount(
@@ -411,11 +411,12 @@ class CommentsContext implements Context {
 	 * @param string $user
 	 * @param string $path
 	 * @param string $properties properties which needs to be included in the report
+	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement
 	 *
 	 */
-	public function reportElementComments($user, $path, $properties) {
+	public function reportElementComments($user, $path, $properties, $exceptionText = '') {
 		$body = '<?xml version="1.0" encoding="utf-8" ?>
 							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
 									' . $properties . '
@@ -426,23 +427,25 @@ class CommentsContext implements Context {
 			$this->featureContext->getPasswordForUser($user), 'REPORT', $path, [],
 			$body, $this->featureContext->getDavPathVersion(), "comments"
 		);
-		return HttpRequestHelper::getResponseXml($response);
+		return HttpRequestHelper::getResponseXml($response, $exceptionText);
 	}
 
 	/**
 	 * @param string $user
 	 * @param string $path
+	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return void
 	 */
-	public function getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path) {
+	public function getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path, $exceptionText = '') {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$this->featureContext->setResponseXmlObject(
 			$this->reportElementComments(
 				$user,
 				$commentsPath,
-				'<oc:limit>200</oc:limit><oc:offset>0</oc:offset>'
+				'<oc:limit>200</oc:limit><oc:offset>0</oc:offset>',
+				$exceptionText
 			)
 		);
 	}
@@ -456,7 +459,11 @@ class CommentsContext implements Context {
 	 * @return void
 	 */
 	public function userGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path) {
-		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path);
+		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(
+			$user,
+			$path,
+			__METHOD__
+		);
 	}
 
 	/**
@@ -469,7 +476,8 @@ class CommentsContext implements Context {
 	public function theUserGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($path) {
 		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(
 			$this->featureContext->getCurrentUser(),
-			$path
+			$path,
+			__METHOD__
 		);
 	}
 

@@ -160,7 +160,7 @@ class FederationContext implements Context {
 		$previous = $this->featureContext->usingServer($server);
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
-			$this->featureContext->getResponseXml()
+			$this->featureContext->getResponseXml(null, __METHOD__)
 		);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -197,7 +197,7 @@ class FederationContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userGetsTheListOfFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
-			$this->featureContext->getResponseXml()
+			$this->featureContext->getResponseXml(null, __METHOD__)
 		);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -216,7 +216,7 @@ class FederationContext implements Context {
 	 */
 	public function userShouldHaveNoLastPendingFederatedCloudShare($user) {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
-		$responseXml = $this->featureContext->getResponseXml();
+		$responseXml = $this->featureContext->getResponseXml(null, __METHOD__);
 		$xmlPart = $responseXml->xpath("//data/element[last()]/id");
 		Assert::assertTrue(
 			!\is_array($xmlPart) || (\count($xmlPart) === 0),
@@ -235,7 +235,7 @@ class FederationContext implements Context {
 	public function userRetrievesInformationOfLastPendingFederatedShare($user) {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
-			$this->featureContext->getResponseXml()
+			$this->featureContext->getResponseXml(null, __METHOD__)
 		);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -297,7 +297,7 @@ class FederationContext implements Context {
 			$this->userGetsTheListOfFederatedCloudShares($user);
 		}
 		$share_id = SharingHelper::getLastShareIdFromResponse(
-			$this->featureContext->getResponseXml()
+			$this->featureContext->getResponseXml(null, __METHOD__)
 		);
 		if ($shareType === "pending") {
 			$url = "/apps/files_sharing/api/v1/remote_shares/pending/$share_id";
