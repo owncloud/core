@@ -35,6 +35,7 @@ Summary
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
+* Change - Update doctrine/dbal (2.10.2 => 2.10.3): [#37870](https://github.com/owncloud/core/pull/37870)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -230,6 +231,10 @@ Details
 
    https://github.com/owncloud/core/pull/37862
    https://symfony.com/blog/symfony-4-4-12-released
+
+* Change - Update doctrine/dbal (2.10.2 => 2.10.3): [#37870](https://github.com/owncloud/core/pull/37870)
+
+   https://github.com/owncloud/core/pull/37870
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
