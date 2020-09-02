@@ -38,6 +38,7 @@ use WebDriver\Key;
 class OwncloudPage extends Page {
 	protected $userNameDisplayId = "expandDisplayName";
 	protected $notificationId = "notification";
+	protected $notificationCloseBtnXpath = "//a[contains(@class,'close')]";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
 	protected $avatarImgXpath = ".//div[@id='settings']//div[contains(@class, 'avatardiv')]/img";
 	protected $titleXpath = ".//title";
@@ -178,6 +179,32 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * Dismiss the first notification
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function dismissNotification() {
+		$notificationElement = $this->findById($this->notificationId);
+
+		$this->assertElementNotNull(
+			$notificationElement,
+			__METHOD__ . " could not find element with id $this->notificationId"
+		);
+
+		$dismissButton = $notificationElement->find(
+			"xpath", $this->notificationCloseBtnXpath
+		);
+		$this->assertElementNotNull(
+			$dismissButton,
+			__METHOD__ .
+			" xpath $this->notificationCloseBtnXpath could not find dismiss button of notification"
+		);
+
+		$dismissButton->click();
+	}
+
+	/**
 	 * Get the text of the first notification
 	 *
 	 * @return string
@@ -197,10 +224,12 @@ class OwncloudPage extends Page {
 	/**
 	 * Get the text of any notifications
 	 *
+	 * @param int $expectedCount The number of notifications that the caller hopes to find
+	 *
 	 * @return array
-	 * @throws ElementNotFoundException
+	 * @throws \Exception
 	 */
-	public function getNotifications() {
+	public function getNotifications($expectedCount = 0) {
 		$notificationsText = [];
 		$notifications = $this->findById($this->notificationId);
 
@@ -209,7 +238,25 @@ class OwncloudPage extends Page {
 			__METHOD__ . " could not find element with id $this->notificationId"
 		);
 
-		foreach ($notifications->findAll("xpath", "div") as $notification) {
+		// Notifications might take some time to be displayed.
+		// Check until there are at least the expected number of notifications
+		// or the standard wait time has expired.
+		$currentTime = \microtime(true);
+		$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
+		$firstLoop = true;
+		$actualCount = 0;
+		do {
+			if (!$firstLoop) {
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				echo "Notice: " . __METHOD__ . " expecting $expectedCount notifications but found only $actualCount - checking again\n";
+			}
+			$allNotifications = $notifications->findAll("xpath", "div");
+			$actualCount = \count($allNotifications);
+			$currentTime = \microtime(true);
+			$firstLoop = false;
+		} while ($currentTime <= $end && ($actualCount < $expectedCount));
+
+		foreach ($allNotifications as $notification) {
 			\array_push($notificationsText, $this->getTrimmedText($notification));
 		}
 		return $notificationsText;

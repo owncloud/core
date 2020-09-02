@@ -647,7 +647,7 @@ describe('Core base tests', function() {
 					['	122.1 MB ', 128031130],
 					['122.1    MB ', 128031130],
 					[' 125', 125],
-					[' 125 ', 125],					
+					[' 125 ', 125],
 				];
 				for (var i = 0; i < data.length; i++) {
 					expect(OC.Util.computerFileSize(data[i][0])).toEqual(data[i][1]);
@@ -887,7 +887,7 @@ describe('Core base tests', function() {
 
 				expect(showSpy.calledOnce).toEqual(true);
 				expect(showSpy.firstCall.args[0]).toEqual('My notification test');
-				expect(showSpy.firstCall.args[1]).toEqual({isHTML: false, timeout: 7});
+				expect(showSpy.firstCall.args[1]).toEqual({isHTML: false, timeout: 7, showCloseButton: true});
 
 				expect($row).toBeDefined();
 				expect($row.text()).toEqual('My notification test');
@@ -898,7 +898,7 @@ describe('Core base tests', function() {
 				expect(showSpy.notCalled).toEqual(true);
 				expect(showHtmlSpy.calledOnce).toEqual(true);
 				expect(showHtmlSpy.firstCall.args[0]).toEqual('<a>My notification test</a>');
-				expect(showHtmlSpy.firstCall.args[1]).toEqual({isHTML: true, timeout: 7});
+				expect(showHtmlSpy.firstCall.args[1]).toEqual({isHTML: true, timeout: 7, showCloseButton: true});
 
 				expect($row).toBeDefined();
 				expect($row.text()).toEqual('My notification test');
@@ -965,18 +965,37 @@ describe('Core base tests', function() {
 			expect($rows.eq(0).is($row1)).toEqual(true);
 			expect($rows.eq(1).is($row3)).toEqual(true);
 		});
-		it('shows close button for error types', function() {
-			var $row = OC.Notification.showTemporary('One');
+		it('shows close button when specified', function() {
+			var $row1 = OC.Notification.showTemporary('One', {showCloseButton: true});
+			var $row2 = OC.Notification.showTemporary('Two', {showCloseButton: true});
+			expect($row1.find('.close').length).toEqual(1);
+			expect($row2.find('.close').length).toEqual(1);
+
+			// after clicking, a row is gone
+			$row2.find('.close').click();
+
+			var $rows = $('#notification').find('.row');
+			expect($rows.length).toEqual(1);
+			expect($rows.eq(0).is($row1)).toEqual(true);
+		});
+		it('does not show close button when set to false', function() {
+			var $row1 = OC.Notification.showTemporary('One', {showCloseButton: false});
+			var $row2 = OC.Notification.showTemporary('Two', {showCloseButton: true});
+			expect($row1.find('.close').length).toEqual(0);
+			expect($row2.find('.close').length).toEqual(1);
+		});
+		it('shows close button by default for both error and non-error types', function() {
+			var $rowDefault = OC.Notification.showTemporary('One');
 			var $rowError = OC.Notification.showTemporary('Two', {type: 'error'});
-			expect($row.find('.close').length).toEqual(0);
+			expect($rowDefault.find('.close').length).toEqual(1);
 			expect($rowError.find('.close').length).toEqual(1);
 
-			// after clicking, row is gone
+			// after clicking, error row is gone
 			$rowError.find('.close').click();
 
 			var $rows = $('#notification').find('.row');
 			expect($rows.length).toEqual(1);
-			expect($rows.eq(0).is($row)).toEqual(true);
+			expect($rows.eq(0).is($rowDefault)).toEqual(true);
 		});
 		it('fades out the last notification but not the other ones', function() {
 			var fadeOutStub = sinon.stub($.fn, 'fadeOut');

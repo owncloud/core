@@ -236,11 +236,8 @@ Feature: add users
     And the administrator creates a user with the name "<user_id2>" and the password "password" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A user with that name already exists. |
-    When the administrator creates a user with the name "<user_id3>" and the password "password" using the webUI
-    Then notifications should be displayed on the webUI with the text
-      | Error creating user: A user with that name already exists. |
     Examples:
-      | user_id1        | user_id2        | user_id3        |
-      | Mixed-Case-user | mixed-case-user | MIXED-CASE-USER |
-      | mixed-case-user | MIXED-CASE-USER | Mixed-Case-user |
-      | MIXED-CASE-USER | Mixed-Case-user | mixed-case-user |
+      | user_id1        | user_id2        |
+      | Mixed-Case-user | mixed-case-user |
+      | mixed-case-user | MIXED-CASE-USER |
+      | MIXED-CASE-USER | Mixed-Case-user |
