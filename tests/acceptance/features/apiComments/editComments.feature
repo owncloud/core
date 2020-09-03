@@ -1,4 +1,4 @@
-@api @comments-app-required @toImplementOnOCIS @issue-ocis-reva-38
+@api @comments-app-required @issue-ocis-reva-38
 Feature: Comments
 
   Background:
