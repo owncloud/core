@@ -7,7 +7,7 @@ Feature: get users
   Background:
     Given using OCS API version "2"
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: admin gets all users
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator gets the list of all users using the provisioning API
@@ -16,6 +16,14 @@ Feature: get users
     And the users returned by the API should be
       | brand-new-user |
       | admin          |
+
+  Scenario: admin gets all users
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    When the administrator gets the list of all users using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the users returned by the API should include
+      | brand-new-user |
 
   @smokeTest @notToImplementOnOCIS
   Scenario: subadmin gets the users in their group
