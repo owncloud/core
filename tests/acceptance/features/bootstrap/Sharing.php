@@ -26,6 +26,7 @@ use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\OcisHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 
@@ -280,6 +281,25 @@ trait Sharing {
 			$bodyRows['permissions'],
 			$bodyRows['name'],
 			$bodyRows['expireDate']
+		);
+	}
+
+	/**
+	 * @Given auto-accept shares has been disabled
+	 *
+	 * @return void
+	 */
+	public function autoAcceptSharesHasBeenDisabled() {
+		if (OcisHelper::isTestingOnOcis()) {
+			// auto-accept shares is disabled by default on OCIS.
+			// so there is nothing to do, just return
+			return;
+		}
+
+		$this->appConfigurationContext->serverParameterHasBeenSetTo(
+			"shareapi_auto_accept_share",
+			"core",
+			"no"
 		);
 	}
 
@@ -2558,6 +2578,24 @@ trait Sharing {
 				);
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @Then /^the sharing API should report to user "([^"]*)" that no shares are in the (pending|accepted|declined) state$/
+	 *
+	 * @param string $user
+	 * @param string $state
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function assertNoSharesOfUserAreInState($user, $state) {
+		$usersShares = $this->getAllSharesSharedWithUser($user, $state);
+		Assert::assertEmpty(
+			$usersShares,
+			"user has " . \count($usersShares) . " share(s) in the $state state"
+		);
 	}
 
 	/**
