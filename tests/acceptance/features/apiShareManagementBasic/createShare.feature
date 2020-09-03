@@ -152,7 +152,7 @@ Feature: sharing
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_with             | grp1              |
       | share_with_displayname | grp1              |
       | file_target            | /textfile0.txt    |
@@ -177,7 +177,7 @@ Feature: sharing
     When user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_with             | grp1                 |
       | share_with_displayname | grp1                 |
       | file_target            | /FOLDER              |
@@ -432,7 +432,7 @@ Feature: sharing
     When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_with  | grp1           |
       | file_target | /textfile0.txt |
       | path        | /textfile0.txt |
