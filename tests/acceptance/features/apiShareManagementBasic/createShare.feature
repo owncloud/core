@@ -94,18 +94,18 @@ Feature: sharing
       | 1               | 2                     | 2                   | 100             |
       | 2               | 2                     | 2                   | 200             |
 
-  Scenario: Creating a share of a file with no permissions should fail
-    Given using OCS API version "1"
+  Scenario Outline: Creating a share of a file with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "Random data" to "randomfile.txt"
     When user "Alice" shares file "randomfile.txt" with user "Brian" with permissions "0" using the sharing API
     Then the OCS status code should be "400"
-    And the HTTP status code should be "200"
+    And the HTTP status code should be "<http_status_code>"
     And as "Brian" file "randomfile.txt" should not exist
-#    Examples:
-#      | ocs_api_version | http_status_code |
-#      | 1               | 200              |
-#      | 2               | 400              |
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
 
   Scenario Outline: Creating a share of a folder with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
