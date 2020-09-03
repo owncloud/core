@@ -83,39 +83,49 @@ class UpdaterLegacyTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
-	public function testWrite() {
+	public function testOverwrite() {
 		$textSize = \strlen("dummy file data\n");
 		$imageSize = \filesize(\OC::$SERVERROOT . '/core/img/logo.png');
 		$this->cache->put('foo.txt', ['mtime' => 100, 'storage_mtime' => 150]);
-		$rootCachedData = $this->cache->get('');
-		$this->assertEquals(3 * $textSize + $imageSize, $rootCachedData['size']);
+		$rootCachedData1 = $this->cache->get('');
+		$this->assertEquals(3 * $textSize + $imageSize, $rootCachedData1['size']);
 
-		$fooCachedData = $this->cache->get('foo.txt');
+		$oldFooCachedData = $this->cache->get('foo.txt');
 		Filesystem::file_put_contents('foo.txt', 'asd');
-		$cachedData = $this->cache->get('foo.txt');
-		$this->assertEquals(3, $cachedData['size']);
-		$this->assertIsString($fooCachedData['etag']);
-		$this->assertIsString($cachedData['etag']);
-		$this->assertNotSame($fooCachedData['etag'], $cachedData['etag']);
-		$cachedData = $this->cache->get('');
-		$this->assertEquals(2 * $textSize + $imageSize + 3, $cachedData['size']);
-		$this->assertIsString($rootCachedData['etag']);
-		$this->assertIsString($cachedData['etag']);
-		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
-		$rootCachedData = $cachedData;
+		$newFooCachedData = $this->cache->get('foo.txt');
+		$this->assertEquals(3, $newFooCachedData['size']);
+		$this->assertIsString($oldFooCachedData['etag']);
+		$this->assertIsString($newFooCachedData['etag']);
+		$this->assertNotSame($oldFooCachedData['etag'], $newFooCachedData['etag']);
+		$this->assertGreaterThanOrEqual($rootCachedData1['mtime'], $newFooCachedData['mtime']);
+		$this->assertGreaterThanOrEqual($oldFooCachedData['mtime'], $newFooCachedData['mtime']);
+		$rootCachedData2 = $this->cache->get('');
+		$this->assertEquals(2 * $textSize + $imageSize + 3, $rootCachedData2['size']);
+		$this->assertIsString($rootCachedData1['etag']);
+		$this->assertIsString($rootCachedData2['etag']);
+		$this->assertNotSame($rootCachedData1['etag'], $rootCachedData2['etag']);
+		$this->assertGreaterThanOrEqual($rootCachedData1['mtime'], $rootCachedData2['mtime']);
+	}
+
+	public function testWriteNewFile() {
+		$textSize = \strlen("dummy file data\n");
+		$imageSize = \filesize(\OC::$SERVERROOT . '/core/img/logo.png');
+		$rootCachedData1 = $this->cache->get('');
+		$this->assertEquals(3 * $textSize + $imageSize, $rootCachedData1['size']);
+		$this->assertIsString($rootCachedData1['etag']);
 
 		$this->assertFalse($this->cache->inCache('bar.txt'));
 		Filesystem::file_put_contents('bar.txt', 'asd');
 		$this->assertTrue($this->cache->inCache('bar.txt'));
-		$cachedData = $this->cache->get('bar.txt');
-		$this->assertEquals(3, $cachedData['size']);
-		$mtime = $cachedData['mtime'];
-		$cachedData = $this->cache->get('');
-		$this->assertEquals(2 * $textSize + $imageSize + 2 * 3, $cachedData['size']);
-		$this->assertIsString($rootCachedData['etag']);
-		$this->assertIsString($cachedData['etag']);
-		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
-		$this->assertGreaterThanOrEqual($rootCachedData['mtime'], $mtime);
+		$barCachedData = $this->cache->get('bar.txt');
+		$this->assertEquals(3, $barCachedData['size']);
+		$rootCachedData2 = $this->cache->get('');
+		$this->assertEquals(3 * $textSize + $imageSize + 3, $rootCachedData2['size']);
+		$this->assertIsString($rootCachedData2['etag']);
+		$this->assertNotSame($rootCachedData1['etag'], $rootCachedData2['etag']);
+		$this->assertGreaterThanOrEqual($rootCachedData1['mtime'], $rootCachedData2['mtime']);
+		$this->assertGreaterThanOrEqual($rootCachedData1['mtime'], $barCachedData['mtime']);
+		$this->assertGreaterThanOrEqual($barCachedData['mtime'], $rootCachedData2['mtime']);
 	}
 
 	public function testWriteWithMountPoints() {
