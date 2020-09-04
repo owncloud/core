@@ -38,3 +38,58 @@ Feature: get apps
       | files_sharing        |
       | updatenotification   |
       | files_external       |
+
+  @comments-app-required
+  Scenario: admin gets enabled apps when some app is disabled
+    Given app "comments" has been disabled
+    When the administrator gets all enabled apps using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the apps returned by the API should include
+      | dav                  |
+      | federatedfilesharing |
+      | federation           |
+      | files                |
+      | files_sharing        |
+      | updatenotification   |
+      | files_external       |
+    And the apps returned by the API should not include
+      | comments |
+
+  @comments-app-required
+  Scenario: admin gets disabled apps
+    Given app "comments" has been disabled
+    When the administrator gets all disabled apps using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the apps returned by the API should include
+      | comments |
+    And the apps returned by the API should not include
+      | dav                  |
+      | federatedfilesharing |
+      | federation           |
+      | files                |
+      | files_sharing        |
+      | updatenotification   |
+      | files_external       |
+
+  @comments-app-required @issue-37884
+  Scenario: admin gets all apps
+    Given app "comments" has been disabled
+    When the administrator gets all apps using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the apps returned by the API should include
+      | comments             |
+    #  | dav                  |
+    #  | federatedfilesharing |
+      | federation           |
+    #  | files                |
+    #  | files_external       |
+      | files_sharing        |
+      | updatenotification   |
+    And the apps returned by the API should not include
+      | dav                  |
+      | federatedfilesharing |
+      | files                |
+      | files_external       |

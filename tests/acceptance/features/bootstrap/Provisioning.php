@@ -1155,12 +1155,30 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator gets all apps using the provisioning API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllAppsUsingTheProvisioningApi() {
+		$this->getAllApps();
+	}
+
+	/**
 	 * @When the administrator gets all enabled apps using the provisioning API
 	 *
 	 * @return void
 	 */
 	public function theAdministratorGetsAllEnabledAppsUsingTheProvisioningApi() {
 		$this->getEnabledApps();
+	}
+
+	/**
+	 * @When the administrator gets all disabled apps using the provisioning API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllDisabledAppsUsingTheProvisioningApi() {
+		$this->getDisabledApps();
 	}
 
 	/**
@@ -3696,7 +3714,32 @@ trait Provisioning {
 		$appsSimplified = $this->simplifyArray($apps);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
 		foreach ($appsSimplified as $app) {
-			Assert::assertContains($app, $respondedArray);
+			Assert::assertContains(
+				$app,
+				$respondedArray,
+				"The apps returned by the API should include $app but $app was not included"
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the apps returned by the API should not include$/
+	 *
+	 * @param TableNode|null $appList
+	 *
+	 * @return void
+	 */
+	public function theAppsShouldNotInclude($appList) {
+		$this->verifyTableNodeColumnsCount($appList, 1);
+		$apps = $appList->getRows();
+		$appsSimplified = $this->simplifyArray($apps);
+		$respondedArray = $this->getArrayOfAppsResponded($this->response);
+		foreach ($appsSimplified as $app) {
+			Assert::assertNotContains(
+				$app,
+				$respondedArray,
+				"The apps returned by the API should not include $app but $app was included"
+			);
 		}
 	}
 
@@ -4324,7 +4367,21 @@ trait Provisioning {
 	}
 
 	/**
-	 * Returns array of enabled apps
+	 * Returns an array of all apps reported by the cloud/apps endpoint
+	 *
+	 * @return array
+	 */
+	public function getAllApps() {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		return ($this->getArrayOfAppsResponded($this->response));
+	}
+
+	/**
+	 * Returns array of enabled apps reported by the cloud/apps endpoint
 	 *
 	 * @return array
 	 */
@@ -4338,7 +4395,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * Returns array of disabled apps
+	 * Returns array of disabled apps reported by the cloud/apps endpoint
 	 *
 	 * @return array
 	 */
