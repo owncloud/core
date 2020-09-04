@@ -45,7 +45,7 @@ class Apps {
 	 * @return OC_OCS_Result
 	 */
 	public function getApps($parameters) {
-		$apps = OC_App::listAllApps();
+		$apps = OC_App::listAllApps(true);
 		$list = [];
 		foreach ($apps as $app) {
 			$list[] = $app['id'];
