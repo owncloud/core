@@ -361,7 +361,7 @@ Feature: sharing
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
-    And user "Alice" has shared file "randomfile.txt" with group "grp1"
+    When user "Alice" shares file "randomfile.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -440,7 +440,7 @@ Feature: sharing
     And as "Brian" file "/textfile0.txt" should exist
     And as "Carol" file "/textfile0.txt" should exist
     When the administrator deletes group "grp1" using the provisioning API
-    When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    And user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And file "/textfile0.txt" should not be included as path in the response
@@ -468,7 +468,7 @@ Feature: sharing
     And user "Brian" has moved file "/textfile0.txt" to "/common/textfile0.txt"
     And user "Brian" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
     When user "Carol" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0.txt" using the WebDAV API
-    And the content of file "/common/sub/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
+    Then the content of file "/common/sub/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
     And the content of file "/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
     And user "Carol" should see the following elements
       | /common/sub/textfile0.txt |
