@@ -275,7 +275,7 @@ class ScanExternalSharesJobTest extends TestCase {
 			'owner'	=> 'test'
 		];
 		$lastLoginThreshold = '1';
-		$lastScanThreshold = '1';
+		$lastScanThreshold = '2';
 		$result = $this->invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(false, $result);
