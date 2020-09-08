@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "178c1124b5c989168c116f59dd606473",
+    "content-hash": "969f6185d273e6a9c4ad33ddc107fb92",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -436,16 +436,16 @@
         },
         {
             "name": "icewind/smb",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "507b186800ac6c3b287604a4ff9b138cf430da79"
+                "reference": "743a7bf35317f1b76cf8e8b804e54a6c5faacad6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/507b186800ac6c3b287604a4ff9b138cf430da79",
-                "reference": "507b186800ac6c3b287604a4ff9b138cf430da79",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/743a7bf35317f1b76cf8e8b804e54a6c5faacad6",
+                "reference": "743a7bf35317f1b76cf8e8b804e54a6c5faacad6",
                 "shasum": ""
             },
             "require": {
@@ -473,7 +473,7 @@
                 }
             ],
             "description": "php wrapper for smbclient and libsmbclient-php",
-            "time": "2020-07-20T14:12:51+00:00"
+            "time": "2020-09-03T13:00:22+00:00"
         },
         {
             "name": "icewind/streams",
@@ -594,6 +594,16 @@
                 "logging",
                 "psr-3"
             ],
+            "funding": [
+                {
+                    "url": "https://github.com/Seldaek",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-07-23T08:41:23+00:00"
         },
         {
@@ -684,6 +694,20 @@
                 "twofish",
                 "x.509",
                 "x509"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/terrafrost",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpseclib",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-09-08T04:24:43+00:00"
         },
@@ -924,5 +948,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
