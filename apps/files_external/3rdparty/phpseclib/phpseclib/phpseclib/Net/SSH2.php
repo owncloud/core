@@ -2125,11 +2125,13 @@ class SSH2
 
         // try logging with 'none' as an authentication method first since that's what
         // PuTTY does
-        if ($this->_login($username)) {
-            return true;
-        }
-        if (count($args) == 1) {
-            return false;
+        if (substr($this->server_identifier, 0, 13) != 'SSH-2.0-CoreFTP') {
+            if ($this->_login($username)) {
+                return true;
+            }
+            if (count($args) == 1) {
+                return false;
+            }
         }
         return call_user_func_array(array(&$this, '_login'), $args);
     }
@@ -3962,7 +3964,7 @@ class SSH2
         $packet.= $hmac;
 
         $start = microtime(true);
-        $result = strlen($packet) == fputs($this->fsock, $packet);
+        $result = strlen($packet) == @fputs($this->fsock, $packet);
         $stop = microtime(true);
 
         if (defined('NET_SSH2_LOGGING')) {
@@ -4603,11 +4605,15 @@ class SSH2
              //'none'           // OPTIONAL          no encryption; NOT RECOMMENDED
         );
 
-        $engines = array(
-            Base::ENGINE_OPENSSL,
-            Base::ENGINE_MCRYPT,
-            Base::ENGINE_INTERNAL
-        );
+        if ($this->crypto_engine) {
+            $engines = array($this->crypto_engine);
+        } else {
+            $engines = array(
+                Base::ENGINE_OPENSSL,
+                Base::ENGINE_MCRYPT,
+                Base::ENGINE_INTERNAL
+            );
+        }
 
         $ciphers = array();
         foreach ($engines as $engine) {

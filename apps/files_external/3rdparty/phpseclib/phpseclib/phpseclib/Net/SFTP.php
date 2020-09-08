@@ -260,6 +260,16 @@ class SFTP extends SSH2
     var $requestBuffer = array();
 
     /**
+     * Preserve timestamps on file downloads / uploads
+     *
+     * @see self::get()
+     * @see self::put()
+     * @var bool
+     * @access private
+     */
+    var $preserveTime = false;
+
+    /**
      * Default Constructor.
      *
      * Connects to an SFTP server
@@ -2075,7 +2085,14 @@ class SFTP extends SSH2
         }
 
         if ($mode & self::SOURCE_LOCAL_FILE) {
-            fclose($fp);
+            if ($this->preserveTime) {
+                $stat = fstat($fp);
+                $this->touch($remote_file, $stat['mtime'], $stat['atime']);
+            }
+
+            if (isset($fp) && is_resource($fp)) {
+                fclose($fp);
+            }
         }
 
         return $this->_close_handle($handle);
@@ -2292,6 +2309,11 @@ class SFTP extends SSH2
 
         if ($fclose_check) {
             fclose($fp);
+
+            if ($this->preserveTime) {
+                $stat = $this->stat($remote_file);
+                touch($local_file, $stat['mtime'], $stat['atime']);
+            }
         }
 
         if (!$this->_close_handle($handle)) {
@@ -2960,6 +2982,10 @@ class SFTP extends SSH2
      */
     function _send_sftp_packet($type, $data, $request_id = 1)
     {
+        // in SSH2.php the timeout is cumulative per function call. eg. exec() will
+        // timeout after 10s. but for SFTP.php it's cumulative per packet
+        $this->curTimeout = $this->timeout;
+
         $packet = $this->use_request_id ?
             pack('NCNa*', strlen($data) + 5, $type, $request_id, $data) :
             pack('NCa*',  strlen($data) + 1, $type, $data);
@@ -3175,5 +3201,25 @@ class SFTP extends SSH2
     {
         $this->pwd = false;
         parent::_disconnect($reason);
+    }
+
+    /**
+     * Enable Date Preservation
+     *
+     * @access public
+     */
+    function enableDatePreservation()
+    {
+        $this->preserveTime = true;
+    }
+
+    /**
+     * Disable Date Preservation
+     *
+     * @access public
+     */
+    function disableDatePreservation()
+    {
+        $this->preserveTime = false;
     }
 }
