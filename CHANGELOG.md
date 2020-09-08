@@ -40,6 +40,7 @@ Summary
 * Change - Update opis/closure (3.5.6 => 3.5.7): [#37892](https://github.com/owncloud/core/pull/37892)
 * Change - Update egulias/email-validator (2.1.19 => 2.1.20): [#37892](https://github.com/owncloud/core/pull/37892)
 * Change - Update phpseclib/phpseclib (2.0.28 => 2.0.29): [#37893](https://github.com/owncloud/core/pull/37893)
+* Change - Update icewind/smb from 3.2.6 to 3.2.7 in files_external: [#37894](https://github.com/owncloud/core/pull/37894)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -259,6 +260,10 @@ Details
 * Change - Update phpseclib/phpseclib (2.0.28 => 2.0.29): [#37893](https://github.com/owncloud/core/pull/37893)
 
    https://github.com/owncloud/core/pull/37893
+
+* Change - Update icewind/smb from 3.2.6 to 3.2.7 in files_external: [#37894](https://github.com/owncloud/core/pull/37894)
+
+   https://github.com/owncloud/core/pull/37894
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
