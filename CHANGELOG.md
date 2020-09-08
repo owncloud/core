@@ -37,6 +37,8 @@ Summary
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
 * Change - Update doctrine/dbal (2.10.2 => 2.10.3): [#37870](https://github.com/owncloud/core/pull/37870)
 * Change - Update Symfony components to 4.4.13: [#37876](https://github.com/owncloud/core/pull/37876)
+* Change - Update opis/closure (3.5.6 => 3.5.7): [#37892](https://github.com/owncloud/core/pull/37892)
+* Change - Update egulias/email-validator (2.1.19 => 2.1.20): [#37892](https://github.com/owncloud/core/pull/37892)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -244,6 +246,14 @@ Details
 
    https://github.com/owncloud/core/pull/37876
    https://symfony.com/blog/symfony-4-4-13-released
+
+* Change - Update opis/closure (3.5.6 => 3.5.7): [#37892](https://github.com/owncloud/core/pull/37892)
+
+   https://github.com/owncloud/core/pull/37892
+
+* Change - Update egulias/email-validator (2.1.19 => 2.1.20): [#37892](https://github.com/owncloud/core/pull/37892)
+
+   https://github.com/owncloud/core/pull/37892
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
