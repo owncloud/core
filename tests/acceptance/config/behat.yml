@@ -186,9 +186,21 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareManagementBasic:
+    apiShareToRootManagementBasic:
       paths:
-        - '%paths.base%/../features/apiShareManagementBasic'
+        - '%paths.base%/../features/apiShareToRootManagementBasic'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AuthContext:
+
+    apiShareToSharesManagementBasic:
+      paths:
+        - '%paths.base%/../features/apiShareToSharesManagementBasic'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
