@@ -29,6 +29,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use SimpleXMLElement;
 use Sabre\Xml\LibXMLException;
 use Sabre\Xml\Reader;
@@ -89,6 +90,22 @@ class HttpRequestHelper {
 			$body
 		);
 
+		if ((\getenv('DEBUG_ACCEPTANCE_REQUESTS') !== false) || (\getenv('DEBUG_ACCEPTANCE_API_CALLS') !== false)) {
+			$debugRequests = true;
+		} else {
+			$debugRequests = false;
+		}
+
+		if ((\getenv('DEBUG_ACCEPTANCE_RESPONSES') !== false) || (\getenv('DEBUG_ACCEPTANCE_API_CALLS') !== false)) {
+			$debugResponses = true;
+		} else {
+			$debugResponses = false;
+		}
+
+		if ($debugRequests) {
+			self::debugRequest($request, $user, $password);
+		}
+
 		try {
 			$response = $client->send($request);
 		} catch (GuzzleException $ex) {
@@ -99,7 +116,80 @@ class HttpRequestHelper {
 				throw $ex;
 			}
 		}
+
+		if ($debugResponses) {
+			self::debugResponse($response);
+		}
+
 		return $response;
+	}
+
+	/**
+	 * Print details about the request.
+	 *
+	 * @param RequestInterface $request
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	private static function debugRequest($request, $user, $password) {
+		print("### AUTH: $user:$password\n");
+		print("### REQUEST: " . $request->getMethod() . " " . $request->getUri() . "\n");
+		self::printHeaders($request->getHeaders());
+		self::printBody($request->getBody());
+		print("\n### END REQUEST\n");
+	}
+
+	/**
+	 * Print details about the response.
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return void
+	 */
+	private static function debugResponse($response) {
+		print("### RESPONSE\n");
+		print("Status: " . $response->getStatusCode() . "\n");
+		self::printHeaders($response->getHeaders());
+		self::printBody($response->getBody());
+		print("\n### END RESPONSE\n");
+	}
+
+	/**
+	 * Print details about the headers.
+	 *
+	 * @param array $headers
+	 *
+	 * @return void
+	 */
+	private static function printHeaders($headers) {
+		if ($headers) {
+			print("Headers:\n");
+			foreach ($headers as $header => $value) {
+				if (\is_array($value)) {
+					print($header . ": " . \implode(', ', $value) . "\n");
+				} else {
+					print($header . ": " . $value . "\n");
+				}
+			}
+		} else {
+			print("Headers: none\n");
+		}
+	}
+
+	/**
+	 * Print details about the body.
+	 *
+	 * @param StreamInterface $body
+	 *
+	 * @return void
+	 */
+	private static function printBody($body) {
+		print("Body:\n");
+		\var_dump($body->getContents());
+		// Rewind the stream so that later code can read from the start.
+		$body->rewind();
 	}
 
 	/**
