@@ -1943,11 +1943,11 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the last share_id should not be included in the response/
+	 * @Then /^the last share id should not be included in the response/
 	 *
 	 * @return void
 	 */
-	public function checkingLastShareIDIsNotIncluded() {
+	public function checkLastShareIDIsNotIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
 		if ($this->isFieldInResponse('id', $share_id, false)) {
 			Assert::fail(
@@ -1986,7 +1986,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then user :user should not see share_id of last share
+	 * @Then user :user should not see the share id of the last share
 	 *
 	 * @param string $user
 	 *
@@ -1994,7 +1994,7 @@ trait Sharing {
 	 */
 	public function userShouldNotSeeShareIdOfLastShare($user) {
 		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
-		$this->checkingLastShareIDIsNotIncluded();
+		$this->checkLastShareIDIsNotIncluded();
 	}
 
 	/**
@@ -2482,7 +2482,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" (declines|accepts) share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $action
@@ -2524,7 +2524,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has (declined|accepted) share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $action

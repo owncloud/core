@@ -168,8 +168,8 @@ Feature: accept/decline shares coming from internal users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Brian" has shared folder "/testimage.jpg" with group "grp1"
-    And user "Alice" has accepted the share "/simple-folder" offered by user "Brian"
-    And user "Alice" has accepted the share "/testimage.jpg" offered by user "Brian"
+    And user "Alice" has accepted share "/simple-folder" offered by user "Brian"
+    And user "Alice" has accepted share "/testimage.jpg" offered by user "Brian"
     And user "Alice" has logged in using the webUI
     When the user unshares folder "simple-folder" using the webUI
     And the user unshares file "testimage.jpg" using the webUI

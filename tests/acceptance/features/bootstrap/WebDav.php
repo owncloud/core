@@ -494,7 +494,7 @@ trait WebDav {
 	public function destinationHeaderValue($user, $fileDestination) {
 		$fullUrl = $this->getBaseUrl() . '/' .
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
-		return $fullUrl . '/' . \ltrim($fileDestination, '/');
+		return \rtrim($fullUrl, '/') . '/' . \ltrim($fileDestination, '/');
 	}
 
 	/**
@@ -1373,7 +1373,7 @@ trait WebDav {
 		);
 		Assert::assertTrue(
 			$this->isEtagValid(),
-			"$entry '$path' expected to exist but not found"
+			"$entry '$path' expected to exist for user $user but not found"
 		);
 		$isCollection = $this->getResponseXmlObject()->xpath("//d:prop/d:resourcetype/d:collection");
 		if ($entry === "folder") {
