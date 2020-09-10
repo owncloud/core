@@ -42,7 +42,7 @@ Feature: sharing
     When user "Brian" gets all the shares shared with him that are received as file "textfile0 (2).txt" using the provisioning API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the last share_id should not be included in the response
+    And the last share id should not be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

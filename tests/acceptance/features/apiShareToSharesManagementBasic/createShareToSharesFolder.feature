@@ -1,0 +1,567 @@
+@api @files_sharing-app-required
+Feature: sharing
+
+  Background:
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+
+  @smokeTest
+  @skipOnEncryptionType:user-keys @issue-32322
+  Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%            |
+      | share_with_displayname | %displayname%         |
+      | file_target            | /Shares/textfile0.txt |
+      | path                   | /textfile0.txt        |
+      | permissions            | share,read,update     |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | storage_id             | ANY_VALUE             |
+      | share_type             | user                  |
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @smokeTest
+  @skipOnEncryptionType:user-keys @issue-32322
+  Scenario Outline: Creating a share of a file containing commas in the filename, with a user, the default permissions are read(1)+update(2)+can-share(16)
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "file with comma in filename" to "/sample,1.txt"
+    When user "Alice" shares file "sample,1.txt" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%           |
+      | share_with_displayname | %displayname%        |
+      | file_target            | /Shares/sample,1.txt |
+      | path                   | /sample,1.txt        |
+      | permissions            | share,read,update    |
+      | uid_owner              | %username%           |
+      | displayname_owner      | %displayname%        |
+      | item_type              | file                 |
+      | mimetype               | text/plain           |
+      | storage_id             | ANY_VALUE            |
+      | share_type             | user                 |
+    When user "Brian" accepts share "/sample,1.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "/Shares/sample,1.txt" for user "Brian" should be "file with comma in filename"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-301 @issue-ocis-reva-302
+  Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions <requested_permissions> using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%            |
+      | share_with_displayname | %displayname%         |
+      | file_target            | /Shares/textfile0.txt |
+      | path                   | /textfile0.txt        |
+      | permissions            | <granted_permissions> |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | storage_id             | ANY_VALUE             |
+      | share_type             | user                  |
+    Examples:
+      | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
+      # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
+      | 1               | 31                    | 19                  | 100             |
+      | 2               | 31                    | 19                  | 200             |
+      # Ask for read, share (17), create and delete. You get share plus read
+      | 1               | 29                    | 17                  | 100             |
+      | 2               | 29                    | 17                  | 200             |
+      # Ask for read, update, create, delete. You get read plus update.
+      | 1               | 15                    | 3                   | 100             |
+      | 2               | 15                    | 3                   | 200             |
+      # Ask for just update. You get exactly update (you do not get read or anything else)
+      | 1               | 2                     | 2                   | 100             |
+      | 2               | 2                     | 2                   | 200             |
+
+  Scenario Outline: Creating a share of a file with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "Random data" to "randomfile.txt"
+    When user "Alice" shares file "randomfile.txt" with user "Brian" with permissions "0" using the sharing API
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    And the sharing API should report that no shares are shared with user "Brian"
+    And as "Brian" file "/Shares/randomfile.txt" should not exist
+    And as "Brian" file "randomfile.txt" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
+
+  Scenario Outline: Creating a share of a folder with no permissions should fail
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/afolder"
+    When user "Alice" shares folder "afolder" with user "Brian" with permissions "0" using the sharing API
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    And the sharing API should report that no shares are shared with user "Brian"
+    And as "Brian" folder "/Shares/afolder" should not exist
+    And as "Brian" folder "afolder" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
+
+  @skipOnOcis-EOS-Storage @issue-ocis-reva-301
+  Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
+    When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%           |
+      | share_with_displayname | %displayname%        |
+      | file_target            | /Shares/FOLDER       |
+      | path                   | /FOLDER              |
+      | permissions            | all                  |
+      | uid_owner              | %username%           |
+      | displayname_owner      | %displayname%        |
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | storage_id             | ANY_VALUE            |
+      | share_type             | user                 |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-34
+  Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
+      | share_with             | grp1                  |
+      | share_with_displayname | grp1                  |
+      | file_target            | /Shares/textfile0.txt |
+      | path                   | /textfile0.txt        |
+      | permissions            | share,read,update     |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | storage_id             | ANY_VALUE             |
+      | share_type             | group                 |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-34
+  Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And user "Alice" has created folder "/FOLDER"
+    When user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | grp1                 |
+      | share_with_displayname | grp1                 |
+      | file_target            | /Shares/FOLDER       |
+      | path                   | /FOLDER              |
+      | permissions            | all                  |
+      | uid_owner              | %username%           |
+      | displayname_owner      | %displayname%        |
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | storage_id             | ANY_VALUE            |
+      | share_type             | group                |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @smokeTest @issue-ocis-reva-34 @issue-ocis-reva-243
+  Scenario Outline: Share of folder to a group
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/PARENT"
+    And user "Alice" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
+    When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then user "Brian" should see the following elements
+      | /Shares/PARENT/           |
+      | /Shares/PARENT/parent.txt |
+    And the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Carol" should see the following elements
+      | /Shares/PARENT/           |
+      | /Shares/PARENT/parent.txt |
+    And the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-34 @issue-ocis-reva-243
+  Scenario Outline: sharing again an own file while belonging to a group
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Brian" has uploaded file with content "ownCloud test text file 0" to "/randomfile.txt"
+    And user "Brian" has shared file "randomfile.txt" with group "grp1"
+    And user "Brian" has deleted the last share
+    When user "Brian" shares file "/randomfile.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Alice" accepts share "/randomfile.txt" offered by user "Brian" using the sharing API
+    Then as "Alice" file "/Shares/randomfile.txt" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-372 @issue-ocis-reva-243
+  Scenario Outline: sharing subfolder of already shared folder, GET result is correct
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+      | David    |
+      | Emily    |
+    And user "Alice" has created folder "/folder1"
+    And user "Alice" has shared folder "/folder1" with user "Brian"
+    And user "Alice" has shared folder "/folder1" with user "Carol"
+    And user "Alice" has created folder "/folder1/folder2"
+    And user "Alice" has shared folder "/folder1/folder2" with user "David"
+    And user "Alice" has shared folder "/folder1/folder2" with user "Emily"
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the response should contain 4 entries
+    And folder "/folder1" should be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
+    And user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
+    And the response should contain 2 entries
+    And folder "/folder1" should not be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-14 @issue-ocis-reva-243
+  Scenario Outline: user shares a file with file name longer than 64 chars to another user
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has moved file "textfile0.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
+    When user "Alice" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" offered by user "Alice" using the sharing API
+    Then as "Brian" file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-34 @issue-ocis-reva-243
+  Scenario Outline: user shares a file with file name longer than 64 chars to a group
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has moved file "textfile0.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
+    When user "Alice" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" offered by user "Alice" using the sharing API
+    Then as "Brian" file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
+  Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "Alice" has moved file "textfile0.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt"
+    When user "Alice" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" offered by user "Alice" using the sharing API
+    Then the downloaded content when downloading file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt" for user "Brian" with range "bytes=1-6" should be "wnClou"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-34 @issue-ocis-reva-243 @issue-ocis-reva-12
+  Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "Alice" has moved file "textfile0.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt"
+    When user "Alice" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" offered by user "Alice" using the sharing API
+    Then the downloaded content when downloading file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt" for user "Brian" with range "bytes=1-6" should be "wnClou"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-35484
+  @skipOnOcis-OC-Storage @issue-ocis-reva-11
+  Scenario: share with user when username contains capital letters
+    Given these users have been created without skeleton files:
+      | username |
+      | brian    |
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
+    When user "Alice" shares file "/randomfile.txt" with user "BRIAN" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "BRIAN" should include
+      | share_with  | %username%             |
+      | file_target | /Shares/randomfile.txt |
+      | path        | /randomfile.txt        |
+      | permissions | share,read,update      |
+      | uid_owner   | %username%             |
+    # Because of issue-35484 the share is not seen to be pending, so it cannot
+    # even be accepted, and so the file does not exist for Brian
+    #
+    #When user "brian" accepts share "/randomfile.txt" offered by user "Alice" using the sharing API
+    #Then user "brian" should see the following elements
+    #  | /Shares/randomfile.txt |
+    #And the content of file "randomfile.txt" for user "brian" should be "Random data"
+    Then user "brian" should not see the following elements if the upper and lower case username are different
+      | /Shares/randomfile.txt |
+
+  @skipOnLDAP
+  Scenario: creating a new share with user of a group when username contains capital letters
+    Given these users have been created without skeleton files:
+      | username |
+      | Brian    |
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
+    And user "Alice" has shared file "randomfile.txt" with group "grp1"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/randomfile.txt" offered by user "Alice" using the sharing API
+    Then user "Brian" should see the following elements
+      | /Shares/randomfile.txt |
+    And the content of file "/Shares/randomfile.txt" for user "Brian" should be "Random data"
+
+  @issue-ocis-reva-34 @toImplementOnOCIS
+  Scenario Outline: Share of folder to a group with emoji in the name
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And group "😀 😁" has been created
+    And user "Brian" has been added to group "😀 😁"
+    And user "Carol" has been added to group "😀 😁"
+    And user "Alice" has created folder "/PARENT"
+    And user "Alice" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
+    When user "Alice" shares folder "/PARENT" with group "😀 😁" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then user "Brian" should see the following elements
+      | /Shares/PARENT/           |
+      | /Shares/PARENT/parent.txt |
+    And the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Carol" should see the following elements
+      | /Shares/PARENT/           |
+      | /Shares/PARENT/parent.txt |
+    And the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
+  Scenario Outline: share with a group and then add a user to that group
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And these groups have been created:
+      | groupname |
+      | grp1      |
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file with content "some content" to "lorem.txt"
+    When user "Alice" shares file "lorem.txt" with group "grp1" using the sharing API
+    And user "Brian" accepts share "/lorem.txt" offered by user "Alice" using the sharing API
+    And the administrator adds user "Carol" to group "grp1" using the provisioning API
+    And user "Carol" accepts share "/lorem.txt" offered by user "Alice" using the sharing API
+    Then the content of file "/Shares/lorem.txt" for user "Brian" should be "some content"
+    And the content of file "/Shares/lorem.txt" for user "Carol" should be "some content"
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnLDAP
+  # deleting an LDAP group is not relevant or possible using the provisioning API
+  Scenario Outline: shares shared to deleted group should not be available
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has shared file "/textfile0.txt" with group "grp1"
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
+      | share_with  | grp1                  |
+      | file_target | /Shares/textfile0.txt |
+      | path        | /textfile0.txt        |
+      | uid_owner   | %username%            |
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then as "Brian" file "/Shares/textfile0.txt" should exist
+    And as "Carol" file "/Shares/textfile0.txt" should exist
+    When the administrator deletes group "grp1" using the provisioning API
+    And user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And file "/textfile0.txt" should not be included as path in the response
+    And as "Brian" file "/Shares/textfile0.txt" should not exist
+    And as "Carol" file "/Shares/textfile0.txt" should not exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @issue-ocis-reva-34 @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-reva-243
+  Scenario: Share a file by multiple channels and download from sub-folder and direct file share
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/common"
+    And user "Alice" has created folder "/common/sub"
+    And user "Alice" has shared folder "common" with group "grp1"
+    And user "Brian" has accepted share "/common" offered by user "Alice"
+    And user "Carol" has accepted share "/common" offered by user "Alice"
+    And user "Brian" has uploaded file with content "ownCloud" to "/textfile0.txt"
+    And user "Brian" has shared file "textfile0.txt" with user "Carol"
+    And user "Carol" has accepted share "/textfile0.txt" offered by user "Brian"
+    And user "Brian" has moved file "/textfile0.txt" to "/Shares/common/textfile0.txt"
+    And user "Brian" has moved file "/Shares/common/textfile0.txt" to "/Shares/common/sub/textfile0.txt"
+    When user "Carol" uploads file "filesForUpload/file_to_overwrite.txt" to "/Shares/textfile0.txt" using the WebDAV API
+    Then the content of file "/Shares/common/sub/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
+    And the content of file "/Shares/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
+    And user "Carol" should see the following elements
+      | /Shares/common/sub/textfile0.txt |
+      | /Shares/textfile0.txt            |
+    And the content of file "/Shares/common/sub/textfile0.txt" for user "Brian" should be "BLABLABLA" plus end-of-line
+    And the content of file "/common/sub/textfile0.txt" for user "Alice" should be "BLABLABLA" plus end-of-line
+
+  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
+  Scenario: sharing back to resharer is allowed
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "userZeroFolder"
+    And user "Alice" has shared folder "userZeroFolder" with user "Brian"
+    And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
+    And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
+    When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
+    And user "Carol" accepts share "/userZeroFolder/userOneFolder" offered by user "Brian" using the sharing API
+    And user "Carol" shares folder "/Shares/userOneFolder" with user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+#    Then the HTTP status code should be "405"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
+    And as "Brian" folder "/Shares/userOneFolder" should not exist
+
+  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
+  Scenario: sharing back to original sharer is allowed
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "userZeroFolder"
+    And user "Alice" has shared folder "userZeroFolder" with user "Brian"
+    And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
+    And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
+    When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
+    And user "Carol" accepts share "/userZeroFolder/userOneFolder" offered by user "Brian" using the sharing API
+    And user "Carol" shares folder "/Shares/userOneFolder" with user "Alice" using the sharing API
+    Then the HTTP status code should be "200"
+#    Then the HTTP status code should be "405"
+    And the sharing API should report to user "Alice" that no shares are in the pending state
+    And as "Alice" folder "/Shares/userOneFolder" should not exist
+
+  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
+  Scenario: sharing a subfolder to a user that already received parent folder share
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+      | David    |
+    And user "Alice" has created folder "userZeroFolder"
+    And user "Alice" has shared folder "userZeroFolder" with user "Brian"
+    And user "Alice" has shared folder "userZeroFolder" with user "Carol"
+    And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
+    And user "Carol" has accepted share "/userZeroFolder" offered by user "Alice"
+    And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
+    When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "David" with permissions "read, share" using the sharing API
+    And user "David" accepts share "/userZeroFolder/userOneFolder" offered by user "Brian" using the sharing API
+    And user "David" shares folder "/Shares/userOneFolder" with user "Carol" using the sharing API
+    Then the HTTP status code should be "200"
+#    Then the HTTP status code should be "405"
+    And the sharing API should report to user "Carol" that no shares are in the pending state
+    And as "Carol" folder "/Shares/userOneFolder" should not exist

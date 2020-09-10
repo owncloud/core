@@ -119,8 +119,8 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    When user "Brian" declines the share "/PARENT (2)" offered by user "Alice" using the sharing API
-    And user "Brian" declines the share "/textfile0 (2).txt" offered by user "Alice" using the sharing API
+    When user "Brian" declines share "/PARENT (2)" offered by user "Alice" using the sharing API
+    And user "Brian" declines share "/textfile0 (2).txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
@@ -137,10 +137,10 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    And user "Brian" has declined the share "/PARENT (2)" offered by user "Alice"
-    And user "Brian" has declined the share "/textfile0 (2).txt" offered by user "Alice"
-    When user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And user "Brian" has declined share "/PARENT (2)" offered by user "Alice"
+    And user "Brian" has declined share "/textfile0 (2).txt" offered by user "Alice"
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -196,7 +196,7 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     When user "Brian" moves folder "/PARENT (2)" to "/PARENT-renamed" using the WebDAV API
-    And user "Brian" declines the share "/PARENT-renamed" offered by user "Alice" using the sharing API
+    And user "Brian" declines share "/PARENT-renamed" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
@@ -211,8 +211,8 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has moved folder "/PARENT (2)" to "/PARENT-renamed"
-    When user "Brian" declines the share "/PARENT-renamed" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
+    When user "Brian" declines share "/PARENT-renamed" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -228,8 +228,8 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has moved folder "/shared" to "/PARENT/shared"
-    When user "Brian" declines the share "/PARENT/shared" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/shared" offered by user "Alice" using the sharing API
+    When user "Brian" declines share "/PARENT/shared" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
@@ -246,9 +246,9 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has moved folder "/shared" to "/PARENT/shared"
-    When user "Brian" declines the share "/PARENT/shared" offered by user "Alice" using the sharing API
+    When user "Brian" declines share "/PARENT/shared" offered by user "Alice" using the sharing API
     And user "Brian" deletes folder "/PARENT" using the WebDAV API
-    And user "Brian" accepts the share "/shared" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
@@ -334,8 +334,8 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    When user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
@@ -375,8 +375,8 @@ Feature: accept/decline shares coming from internal users
     And the administrator has set the default folder for received shares to "<share_folder>"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    When user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
@@ -422,8 +422,8 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
-    When user "Brian" accepts the share "/shared" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/shared" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -437,8 +437,8 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    When user "Brian" declines the share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" declines the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" declines share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" declines share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -459,10 +459,10 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    And user "Brian" has accepted the share "/PARENT" offered by user "Alice"
-    And user "Brian" has accepted the share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" declines the share "/PARENT (2)" offered by user "Alice" using the sharing API
-    And user "Brian" declines the share "/textfile0 (2).txt" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted share "/PARENT" offered by user "Alice"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" declines share "/PARENT (2)" offered by user "Alice" using the sharing API
+    And user "Brian" declines share "/textfile0 (2).txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
@@ -487,8 +487,8 @@ Feature: accept/decline shares coming from internal users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared folder "/PARENT" with group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1"
-    When user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should not see the following elements
@@ -516,8 +516,8 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has created folder "/shared/Brian"
     And user "Alice" has shared folder "/shared" with user "Carol"
     And user "Brian" has shared folder "/shared" with user "Carol"
-    When user "Carol" accepts the share "/shared" offered by user "Brian" using the sharing API
-    And user "Carol" accepts the share "/shared" offered by user "Alice" using the sharing API
+    When user "Carol" accepts share "/shared" offered by user "Brian" using the sharing API
+    And user "Carol" accepts share "/shared" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should see the following elements
@@ -545,11 +545,11 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has uploaded file with content "Second file" to "/testfile.txt"
     And user "Carol" has uploaded file with content "Third file" to "/testfile.txt"
     And user "Alice" has shared file "/testfile.txt" with user "Carol"
-    And user "Carol" has accepted the share "/testfile.txt" offered by user "Alice"
-    When user "Carol" declines the share "/testfile (2).txt" offered by user "Alice" using the sharing API
+    And user "Carol" has accepted share "/testfile.txt" offered by user "Alice"
+    When user "Carol" declines share "/testfile (2).txt" offered by user "Alice" using the sharing API
     And user "Brian" shares file "/testfile.txt" with user "Carol" using the sharing API
-    And user "Carol" accepts the share "/testfile.txt" offered by user "Brian" using the sharing API
-    And user "Carol" accepts the share "/testfile.txt" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "/testfile.txt" offered by user "Brian" using the sharing API
+    And user "Carol" accepts share "/testfile.txt" offered by user "Alice" using the sharing API
     Then the sharing API should report to user "Carol" that these shares are in the accepted state
       | path                  |
       | /testfile (2).txt     |
@@ -563,16 +563,16 @@ Feature: accept/decline shares coming from internal users
     And user "David" has been created with default attributes and skeleton files
     And user "Brian" has shared folder "/PARENT" with user "Alice"
     And user "Carol" has shared folder "/PARENT" with user "Alice"
-    When user "Alice" accepts the share "/PARENT" offered by user "Brian" using the sharing API
-    And user "Alice" declines the share "/PARENT (2)" offered by user "Brian" using the sharing API
-    And user "Alice" accepts the share "/PARENT" offered by user "Carol" using the sharing API
-    And user "Alice" accepts the share "/PARENT" offered by user "Brian" using the sharing API
-    And user "Alice" declines the share "/PARENT (2)" offered by user "Carol" using the sharing API
-    And user "Alice" declines the share "/PARENT (2) (2)" offered by user "Brian" using the sharing API
+    When user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
+    And user "Alice" declines share "/PARENT (2)" offered by user "Brian" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
+    And user "Alice" declines share "/PARENT (2)" offered by user "Carol" using the sharing API
+    And user "Alice" declines share "/PARENT (2) (2)" offered by user "Brian" using the sharing API
     And user "David" shares folder "/PARENT" with user "Alice" using the sharing API
-    And user "Alice" accepts the share "/PARENT" offered by user "David" using the sharing API
-    And user "Alice" accepts the share "/PARENT" offered by user "Carol" using the sharing API
-    And user "Alice" accepts the share "/PARENT" offered by user "Brian" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "David" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
     Then the sharing API should report to user "Alice" that these shares are in the accepted state
       | path                 | uid_owner |
       | /PARENT (2)/         | David     |
@@ -661,8 +661,8 @@ Feature: accept/decline shares coming from internal users
     But user "Brian" should not see the following elements
       | /textfile0%20(2).txt |
       | /PARENT%20(2)/       |
-    When user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
-    And user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
       | /PARENT/             |
       | /textfile0.txt       |
@@ -683,11 +683,11 @@ Feature: accept/decline shares coming from internal users
       | /textfile0.txt |
     But user "Carol" should not see the following elements
       | /textfile0%20(2).txt |
-    When user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
       | /textfile0.txt       |
       | /textfile0%20(2).txt |
-    When user "Carol" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then user "Carol" should see the following elements
       | /textfile0.txt       |
       | /textfile0%20(2).txt |

@@ -16,14 +16,14 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     Given the administrator has set the default folder for received shares to "Shares"
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    When user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
   Scenario: When accepting a share of a folder, the received folder is accessible
     Given the administrator has set the default folder for received shares to "Shares"
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared file "/PARENT" with user "Brian"
-    When user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
   @skipOnOcV10 @issue-37883
@@ -31,7 +31,7 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     Given the administrator has set the default folder for received shares to "Shares"
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    When user "Brian" accepts the share "/textfile0.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
@@ -53,7 +53,7 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     Given the administrator has set the default folder for received shares to "Shares"
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared file "/PARENT" with user "Brian"
-    When user "Brian" accepts the share "/PARENT" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include

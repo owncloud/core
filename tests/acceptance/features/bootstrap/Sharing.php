@@ -26,6 +26,7 @@ use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\OcisHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 
@@ -280,6 +281,25 @@ trait Sharing {
 			$bodyRows['permissions'],
 			$bodyRows['name'],
 			$bodyRows['expireDate']
+		);
+	}
+
+	/**
+	 * @Given auto-accept shares has been disabled
+	 *
+	 * @return void
+	 */
+	public function autoAcceptSharesHasBeenDisabled() {
+		if (OcisHelper::isTestingOnOcis()) {
+			// auto-accept shares is disabled by default on OCIS.
+			// so there is nothing to do, just return
+			return;
+		}
+
+		$this->appConfigurationContext->serverParameterHasBeenSetTo(
+			"shareapi_auto_accept_share",
+			"core",
+			"no"
 		);
 	}
 
@@ -1923,11 +1943,11 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the last share_id should not be included in the response/
+	 * @Then /^the last share id should not be included in the response/
 	 *
 	 * @return void
 	 */
-	public function checkingLastShareIDIsNotIncluded() {
+	public function checkLastShareIDIsNotIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
 		if ($this->isFieldInResponse('id', $share_id, false)) {
 			Assert::fail(
@@ -1966,7 +1986,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then user :user should not see share_id of last share
+	 * @Then user :user should not see the share id of the last share
 	 *
 	 * @param string $user
 	 *
@@ -1974,7 +1994,7 @@ trait Sharing {
 	 */
 	public function userShouldNotSeeShareIdOfLastShare($user) {
 		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
-		$this->checkingLastShareIDIsNotIncluded();
+		$this->checkLastShareIDIsNotIncluded();
 	}
 
 	/**
@@ -2462,7 +2482,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" (declines|accepts) share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $action
@@ -2504,7 +2524,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has (declined|accepted) share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $action
@@ -2558,6 +2578,24 @@ trait Sharing {
 				);
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @Then /^the sharing API should report to user "([^"]*)" that no shares are in the (pending|accepted|declined) state$/
+	 *
+	 * @param string $user
+	 * @param string $state
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function assertNoSharesOfUserAreInState($user, $state) {
+		$usersShares = $this->getAllSharesSharedWithUser($user, $state);
+		Assert::assertEmpty(
+			$usersShares,
+			"user has " . \count($usersShares) . " share(s) in the $state state"
+		);
 	}
 
 	/**
