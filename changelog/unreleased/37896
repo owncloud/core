@@ -6,7 +6,7 @@ of paragraph, page size, cell date format, currency, etc. will be
 according to the current locale.
 
 Previous files were in German. E.g. document language (spellcheck
-language) was set to German, spreasheet tab name was "Tabelle",
+language) was set to German, spreadsheet tab name was "Tabelle",
 etc. It was not right for non-German users.
 
 https://github.com/owncloud/core/pull/37896
