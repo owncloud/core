@@ -50,9 +50,9 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
     When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
-    Then the value of the item "//d:response[1]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\//"
-    And the value of the item "//d:response[2]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file1.txt/"
-    And the value of the item "//d:response[3]/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>\/file2.txt/"
+    Then there should be an entry with href matching "/remote\.php\/<expected_href>\//" in the response to user "Alice"
+    And there should be an entry with href matching "/remote\.php\/<expected_href>\/file1.txt/" in the response to user "Alice"
+    And there should be an entry with href matching "/remote\.php\/<expected_href>\/file2.txt/" in the response to user "Alice"
     Examples:
       | dav_version | folder_name     | expected_href                                                                  |
       | old         | /upload         | webdav\/upload                                                                 |

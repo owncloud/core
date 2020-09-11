@@ -618,6 +618,45 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then there should be an entry with href matching :pattern in the response to user :user
+	 *
+	 * @param string $pattern
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertEntryWithHrefMatchingRegExpInResponseToUser($pattern, $user) {
+		$resXml = $this->featureContext->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->featureContext->getResponse(),
+				__METHOD__
+			);
+		}
+
+		$user = $this->featureContext->getActualUsername($user);
+		$pattern = $this->featureContext->substituteInLineCodes(
+			$pattern, $user, ['preg_quote' => ['/']]
+		);
+
+		$index = 0;
+		while (true) {
+			$index++;
+			$xpath = "//d:response[$index]/d:href";
+			$xmlPart = $resXml->xpath($xpath);
+			// If we have run out of entries in the response, then fail the test
+			Assert::assertTrue(
+				isset($xmlPart[0]), "Cannot find any entry with href matching $pattern in response to $user"
+			);
+			$value = $xmlPart[0]->__toString();
+			if (\preg_match($pattern, $value) === 1) {
+				break;
+			}
+		}
+	}
+
+	/**
 	 * @Then the value of the item :xpath in the response to user :user should match :value
 	 *
 	 * @param string $xpath
