@@ -170,7 +170,7 @@ interface IManager {
 	public function getSharedWith($userId, $shareType, $node = null, $limit = 50, $offset = 0);
 
 	/**
-	 * Retrieve a share by the share id.
+	 * Retrieve a share by full share id, this is the <providerid>:<internalid>.
 	 * If the recipient is set make sure to retrieve the file for that user.
 	 * This makes sure that if a user has moved/deleted a group share this
 	 * is reflected.
