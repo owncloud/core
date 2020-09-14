@@ -1,0 +1,12 @@
+Bugfix: Add very minimal empty ODF files
+
+These files contain no data at all. This guarantees that when the
+user opens a new document in the richdocuments app, the language
+of paragraph, page size, cell date format, currency, etc. will be
+according to the current locale.
+
+Previous files were in German. E.g. document language (spellcheck
+language) was set to German, spreadsheet tab name was "Tabelle",
+etc. It was incorrect for non-German users.
+
+https://github.com/owncloud/core/pull/37896
