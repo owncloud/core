@@ -18,6 +18,7 @@ Summary
 * Bugfix - Allow federated share name up to 255 character: [#36730](https://github.com/owncloud/core/issues/36730)
 * Bugfix - Fix application id used for sharing settings translation: [#37846](https://github.com/owncloud/core/pull/37846)
 * Bugfix - Add metrics shared secret to the sensitive values list: [#37848](https://github.com/owncloud/core/pull/37848)
+* Bugfix - Add very minimal empty ODF files: [#37896](https://github.com/owncloud/core/pull/37896)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -131,6 +132,17 @@ Details
    The metrics api shared secret was printed as is in the config report. Now it is masked.
 
    https://github.com/owncloud/core/pull/37848
+
+* Bugfix - Add very minimal empty ODF files: [#37896](https://github.com/owncloud/core/pull/37896)
+
+   These files contain no data at all. This guarantees that when the user opens a new document in the
+   richdocuments app, the language of paragraph, page size, cell date format, currency, etc.
+   will be according to the current locale.
+
+   Previous files were in German. E.g. document language (spellcheck language) was set to
+   German, spreadsheet tab name was "Tabelle", etc. It was incorrect for non-German users.
+
+   https://github.com/owncloud/core/pull/37896
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
