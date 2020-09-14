@@ -228,14 +228,30 @@ class LicenseManager implements ILicenseManager {
 	 * This method will register a "complain" if we're under the grace period but the app
 	 * doesn't have a valid license, This way it's easier to keep track of what apps
 	 * have invalid license during the grace period
+	 *
+	 * Options:
+	 * - 'startGracePeriod' => true/false (default true): whether a grace period should
+	 *   start (if possible) automatically. Note that if a grace period is ongoing or
+	 *   has expired, this option won't have any effect. Set the option to false if you
+	 *   don't want to start the grace period.
+	 * - 'disableApp' => true/false (default true): whether the app will be disabled if the
+	 *   grace period has finished and there is no valid license. Setting this
+	 *   option to false is intended to be used by apps which are mostly open but
+	 *   have some parts that require a license: you don't want to disable the whole
+	 *   app if there is no valid license.
 	 */
-	public function checkLicenseFor(string $appid): bool {
+	public function checkLicenseFor(string $appid, array $options = []): bool {
 		$currentTime = $this->timeFactory->getTime();
 
 		$gracePeriod = $this->config->getAppValue('core', 'grace_period', null);
 		if ($gracePeriod === null) {
-			$this->config->setAppValue('core', 'grace_period', $currentTime);
-			$gracePeriod = $currentTime;  // set the expected trial mark as now
+			if (isset($options['startGracePeriod']) && $options['startGracePeriod'] === false) {
+				// don't set the grace period. Use a negative value for the "isNowUnderGracePeriod"
+				$gracePeriod = -self::GRACE_PERIOD;
+			} else {
+				$this->config->setAppValue('core', 'grace_period', $currentTime);
+				$gracePeriod = $currentTime;  // set the expected trial mark as now
+			}
 		}
 
 		$licenseWithState = $this->getLicenseWithState($appid);
@@ -246,8 +262,10 @@ class LicenseManager implements ILicenseManager {
 			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
 				$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE
 			) {
-				$this->appManager->disableApp($appid);
-				$this->logger->warning("$appid has been disabled because the license is not valid", ['app' => 'core']);
+				if (!isset($options['disableApp']) || $options['disableApp'] !== false) {
+					$this->appManager->disableApp($appid);
+					$this->logger->warning("$appid has been disabled because the license is not valid", ['app' => 'core']);
+				}
 				return false;
 			} else {
 				return true;

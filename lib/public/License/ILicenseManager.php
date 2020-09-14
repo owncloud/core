@@ -126,11 +126,18 @@ interface ILicenseManager {
 	 * If there no valid license and the grace period has finished, this method
 	 * will disable the app.
 	 *
+	 * Implementations can provide additional options to customize this behaviour. Check
+	 * the implementations for details.
+	 * Some known options are:
+	 * - startGracePeriod => true/false (default true): in order to start the grace period or not
+	 * - disableApp => true/false (default true): to disable the app under the above conditions or not
+	 *
 	 * This method will return true if there is a license valid for the app (usually
 	 * the ownCloud's license) or if the grace period is active
 	 * @param string $appid the id of the app we want to check
+	 * @param array $options an array with the options to be applied.
 	 * @return bool true if there is a valid license or the grace period is active, false
 	 * otherwise.
 	 */
-	public function checkLicenseFor(string $appid): bool;
+	public function checkLicenseFor(string $appid, array $options = []): bool;
 }
