@@ -230,7 +230,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->exactly(1))
 			->method('getLastLogin')
-			->willReturn(\time() - 2);
+			->willReturn(\time() - 20);
 
 		$this->userManager->expects($this->exactly(1))
 			->method('get')
@@ -245,7 +245,7 @@ class ScanExternalSharesJobTest extends TestCase {
 			'mountpoint' => 'test',
 			'owner'	=> 'test'
 		];
-		$lastLoginThreshold = '1';
+		$lastLoginThreshold = '10';
 		$lastScanThreshold = '1';
 		$result = $this->invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
@@ -271,11 +271,11 @@ class ScanExternalSharesJobTest extends TestCase {
 			'token'	=> 'test',
 			'password' => 'test',
 			'mountpoint' => 'test',
-			'lastscan' => \time(),
+			'lastscan' => \time() - 10,
 			'owner'	=> 'test'
 		];
 		$lastLoginThreshold = '1';
-		$lastScanThreshold = '1';
+		$lastScanThreshold = '20';
 		$result = $this->invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(false, $result);
