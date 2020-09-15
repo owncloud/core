@@ -29,6 +29,7 @@
 
 namespace OCA\Files_External\AppInfo;
 
+use OCA\Files_External\Lib\Auth\SMB\Kerberos;
 use OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\External\Config\IAuthMechanismProvider;
@@ -87,6 +88,8 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 
 	/**
 	 * @{inheritdoc}
+	 *
+	 * @throws \OCP\AppFramework\QueryException
 	 */
 	public function getAuthMechanisms() {
 		$container = $this->getContainer();
@@ -104,6 +107,8 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 			// AuthMechanism::SCHEME_OPENSTACK mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\OpenStack\OpenStack'),
 			$container->query('OCA\Files_External\Lib\Auth\OpenStack\Rackspace'),
+
+			$container->query(Kerberos::class),
 		];
 	}
 }

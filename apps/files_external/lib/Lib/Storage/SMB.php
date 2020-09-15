@@ -72,6 +72,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	protected $statCache;
 
 	public function __construct($params) {
+		parent::__construct($params);
 		$loggedParams = $params;
 		// remove password from log if it is set
 		if (!empty($loggedParams['password'])) {
@@ -79,10 +80,21 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		}
 		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
-		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
-			$domain = (isset($params['domain'])) ? $params['domain'] : '';
+		if (isset($params['host'], $params['share'])) {
+			// kerberos handling
+			$auth = null;
+			if (isset($params['auth'])) {
+				$auth = $params['auth'];
+			} elseif (isset($params['user'], $params['password'])) {
+				$domain = $params['domain'] ?? '';
+				$auth = new BasicAuth($params['user'], $domain, $params['password']);
+			}
+			if ($auth === null) {
+				$ex = new \Exception('Invalid configuration: '.\json_encode($loggedParams));
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			}
 
-			$auth = new BasicAuth($params['user'], $domain, $params['password']);
 			$serverFactory = new ServerFactory();
 			$this->server = $serverFactory->createServer($params['host'], $auth);
 			$this->share = $this->server->getShare(\trim($params['share'], '/'));
@@ -90,11 +102,11 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$shareClass = \get_class($this->share);
 			$this->log("using $shareClass for the connection");
 
-			$this->root = isset($params['root']) ? $params['root'] : '/';
-			if (!$this->root || $this->root[0] != '/') {
+			$this->root = $params['root'] ?? '/';
+			if (!$this->root || $this->root[0] !== '/') {
 				$this->root = '/' . $this->root;
 			}
-			if (\substr($this->root, -1, 1) != '/') {
+			if (\substr($this->root, -1, 1) !== '/') {
 				$this->root .= '/';
 			}
 		} else {

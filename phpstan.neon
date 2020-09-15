@@ -1,6 +1,7 @@
 parameters:
   bootstrapFiles:
     - %currentWorkingDirectory%/lib/base.php
+    - %currentWorkingDirectory%/apps/files_external/3rdparty/autoload.php
   excludes_analyse:
     - %currentWorkingDirectory%/core/ajax/update.php
     - %currentWorkingDirectory%/apps/*/tests*
