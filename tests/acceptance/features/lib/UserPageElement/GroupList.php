@@ -108,9 +108,9 @@ class GroupList extends OwncloudPage {
 		$deleteButton->click();
 
 		if ($confirm) {
-			$confirmButton = $this->find("xpath", $this->deleteConfirmButtonXpath);
+			$confirmButton = $this->waitTillXpathIsVisible($this->deleteConfirmButtonXpath);
 		} else {
-			$confirmButton = $this->find("xpath", $this->deleteNotConfirmButtonXpath);
+			$confirmButton = $this->waitTillXpathIsVisible($this->deleteNotConfirmButtonXpath);
 		}
 
 		if ($confirmButton === null) {

@@ -659,9 +659,9 @@ class UsersPage extends OwncloudPage {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 
 		if ($confirm) {
-			$confirmBtn = $this->find('xpath', $this->deleteConfirmBtnXpath);
+			$confirmBtn = $this->waitTillXpathIsVisible($this->deleteConfirmBtnXpath);
 		} else {
-			$confirmBtn = $this->find('xpath', $this->deleteNotConfirmBtnXpath);
+			$confirmBtn = $this->waitTillXpathIsVisible($this->deleteNotConfirmBtnXpath);
 		}
 
 		if ($confirmBtn === null) {
