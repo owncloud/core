@@ -2962,7 +2962,7 @@ trait Provisioning {
 					$groupCanBeDeleted = true;
 				} else {
 					throw new Exception(
-						"could not create group. "
+						"could not create group '$group'. "
 						. $result->getStatusCode() . " " . $result->getBody()
 					);
 				}
@@ -2973,7 +2973,7 @@ trait Provisioning {
 					$groupCanBeDeleted = true;
 				} else {
 					throw new Exception(
-						"could not create group. {$result['stdOut']} {$result['stdErr']}"
+						"could not create group '$group'. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
 				break;
@@ -2982,13 +2982,13 @@ trait Provisioning {
 					$this->createLdapGroup($group);
 				} catch (LdapException $e) {
 					throw new Exception(
-						"could not create group. Error: {$e}"
+						"could not create group '$group'. Error: {$e}"
 					);
 				}
 				break;
 			default:
 				throw new InvalidArgumentException(
-					"Invalid method to create a group"
+					"Invalid method to create group '$group'"
 				);
 		}
 
