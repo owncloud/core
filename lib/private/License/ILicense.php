@@ -20,8 +20,8 @@
 namespace OC\License;
 
 interface ILicense {
-	const LICENSE_TYPE_NORMAL = 0;
-	const LICENSE_TYPE_DEMO = 1;
+	public const LICENSE_TYPE_NORMAL = 0;
+	public const LICENSE_TYPE_DEMO = 1;
 
 	/**
 	 * get the raw license string, such as "owncloud_28731_df987_234sf"

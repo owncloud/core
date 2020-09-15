@@ -582,10 +582,11 @@ class OC {
 		\stream_wrapper_register('quota', 'OC\Files\Stream\Quota');
 
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
-		OC_App::loadApps(['session', 'theme']);
+		OC_App::loadApps(['session']);
 		if (!self::$CLI) {
 			self::initSession();
 		}
+		OC_App::loadApps(['license', 'theme']);
 
 		\OC::$server->getEventLogger()->end('init_session');
 

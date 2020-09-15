@@ -20,6 +20,7 @@
 
 namespace Test\License;
 
+use OC\License\BasicLicense;
 use OCP\IConfig;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OC\License\ILicense;
@@ -31,7 +32,7 @@ class LicenseFetcherTest extends TestCase {
 	private $config;
 	/** @var ITimeFactory */
 	private $timeFactory;
-	/** @var LicenseFetched */
+	/** @var LicenseFetcher */
 	private $licenseFetcher;
 
 	protected function setUp(): void {
@@ -41,123 +42,154 @@ class LicenseFetcherTest extends TestCase {
 		$this->licenseFetcher = new LicenseFetcher($this->config, $this->timeFactory);
 	}
 
-	public function testGetOwncloudLicense() {
+	public function testGetOwncloudLicense(): void {
 		// licenseFetcher creates a BasicLicense, so we need an acceptable license
-		$this->config->expects($this->once())
+		$this->config->expects(self::once())
 			->method('getAppValue')
 			->with('enterprise_key', 'license-key', null)
 			->willReturn(null);
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::exactly(2))
 			->method('getSystemValue')
-			->with('license-key', null)
-			->willReturn('dummy_license-20020103-6026e293d642dfa0-739b6db3');
+			->willReturnCallback(static function ($key) {
+				if ($key === 'license-key') {
+					return 'dummy_license-20020103-6026e293d642dfa0-739b6db3';
+				}
+				if ($key === 'license-class') {
+					return BasicLicense::class;
+				}
+				throw new \Exception('Invalid argument');
+			});
 
 		// can't assert anything more for now
 		$fetchedLicense = $this->licenseFetcher->getOwncloudLicense();
-		$this->assertInstanceOf(ILicense::class, $fetchedLicense);
-		$this->assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
+		self::assertInstanceOf(ILicense::class, $fetchedLicense);
+		self::assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
 	}
 
-	public function testGetOwncloudLicenseFromDB() {
+	public function testGetOwncloudLicenseFromDB(): void {
 		$this->timeFactory->method('getTime')
 			->willReturn(1010000000);
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::once())
 			->method('getAppValue')
 			->with('enterprise_key', 'license-key', null)
 			->willReturn('dummy_license-20020103-6026e293d642dfa0-739b6db3');
 
 		// licenseFetcher creates a BasicLicense, so we need an acceptable license
-		$this->config->expects($this->never())
-			->method('getSystemValue');
+		$this->config->expects(self::once())
+			->method('getSystemValue')
+			->willReturn(BasicLicense::class);
 
 		// can't assert anything more for now
 		$fetchedLicense = $this->licenseFetcher->getOwncloudLicense();
-		$this->assertInstanceOf(ILicense::class, $fetchedLicense);
-		$this->assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
+		self::assertInstanceOf(ILicense::class, $fetchedLicense);
+		self::assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
 	}
 
-	public function testGetOwncloudLicenseDBExpired() {
+	public function testGetOwncloudLicenseDBExpired(): void {
 		$this->timeFactory->method('getTime')
 			->willReturn(1010000000);
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::once())
 			->method('getAppValue')
 			->with('enterprise_key', 'license-key', null)
 			->willReturn('dummy_license-20000103-1ae6b1f3d642dfa0-48e01c22');
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::exactly(2))
 			->method('getSystemValue')
-			->with('license-key', null)
-			->willReturn('dummy_license-20020103-6026e293d642dfa0-739b6db3');
+			->willReturnCallback(static function ($key) {
+				if ($key === 'license-key') {
+					return 'dummy_license-20020103-6026e293d642dfa0-739b6db3';
+				}
+				if ($key === 'license-class') {
+					return BasicLicense::class;
+				}
+				throw new \Exception('Invalid argument');
+			});
 
 		// can't assert anything more for now
 		$fetchedLicense = $this->licenseFetcher->getOwncloudLicense();
-		$this->assertInstanceOf(ILicense::class, $fetchedLicense);
-		$this->assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
+		self::assertInstanceOf(ILicense::class, $fetchedLicense);
+		self::assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
 	}
 
-	public function testGetOwncloudLicenseDBInvalid() {
+	public function testGetOwncloudLicenseDBInvalid(): void {
 		$this->timeFactory->method('getTime')
 			->willReturn(1010000000);
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::once())
 			->method('getAppValue')
 			->with('enterprise_key', 'license-key', null)
 			->willReturn('dummy_inv-20020103-6026e293d642bfa0-739b6aaa');
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::exactly(2))
 			->method('getSystemValue')
-			->with('license-key', null)
-			->willReturn('dummy_license-20020103-6026e293d642dfa0-739b6db3');
+			->willReturnCallback(static function ($key) {
+				if ($key === 'license-key') {
+					return 'dummy_license-20020103-6026e293d642dfa0-739b6db3';
+				}
+				if ($key === 'license-class') {
+					return BasicLicense::class;
+				}
+				throw new \Exception('Invalid argument');
+			});
 
 		// can't assert anything more for now
 		$fetchedLicense = $this->licenseFetcher->getOwncloudLicense();
-		$this->assertInstanceOf(ILicense::class, $fetchedLicense);
-		$this->assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
+		self::assertInstanceOf(ILicense::class, $fetchedLicense);
+		self::assertSame('dummy_license-20020103-6026e293d642dfa0-739b6db3', $fetchedLicense->getLicenseString());
 	}
 
-	public function testGetOwncloudLicenseDBInvalidConfigMissing() {
+	public function testGetOwncloudLicenseDBInvalidConfigMissing(): void {
 		$this->timeFactory->method('getTime')
 			->willReturn(1010000000);
 
-		$this->config->expects($this->once())
-			->method('getAppValue')
-			->with('enterprise_key', 'license-key', null)
-			->willReturn('dummy_inv-20020103-6026e293d642bfa0-739b6aaa');
-
-		$this->config->expects($this->once())
+		$this->config->expects(self::exactly(2))
 			->method('getSystemValue')
-			->with('license-key', null)
-			->willReturn(null);
+			->willReturnCallback(static function ($key) {
+				if ($key === 'license-key') {
+					return 'dummy_inv-20020103-6026e293d642bfa0-739b6aaa';
+				}
+				if ($key === 'license-class') {
+					return BasicLicense::class;
+				}
+				throw new \Exception('Invalid argument');
+			});
 
 		// can't assert anything more for now
 		$fetchedLicense = $this->licenseFetcher->getOwncloudLicense();
-		$this->assertInstanceOf(ILicense::class, $fetchedLicense);
-		$this->assertSame('dummy_inv-20020103-6026e293d642bfa0-739b6aaa', $fetchedLicense->getLicenseString());
+		self::assertInstanceOf(ILicense::class, $fetchedLicense);
+		self::assertSame('dummy_inv-20020103-6026e293d642bfa0-739b6aaa', $fetchedLicense->getLicenseString());
 	}
 
-	public function testGetOwncloudLicenseMissing() {
-		$this->config->expects($this->once())
+	public function testGetOwncloudLicenseMissing(): void {
+		$this->config->expects(self::exactly(2))
 			->method('getSystemValue')
-			->with('license-key', null)
-			->willReturn(null);
+			->willReturnCallback(static function ($key) {
+				if ($key === 'license-key') {
+					return null;
+				}
+				if ($key === 'license-class') {
+					return BasicLicense::class;
+				}
+				throw new \Exception('Invalid argument');
+			});
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::once())
 			->method('getAppValue')
 			->with('enterprise_key', 'license-key', null)
 			->willReturn(null);
 
-		$this->assertNull($this->licenseFetcher->getOwncloudLicense());
+		self::assertNull($this->licenseFetcher->getOwncloudLicense());
 	}
 
-	public function testSetOwncloudLicense() {
+	public function testSetOwncloudLicense(): void {
 		$dummyLicense = 'dummy_license_string';
 
-		$this->config->expects($this->once())
+		$this->config->expects(self::once())
 			->method('setAppValue');
 
-		$this->assertNull($this->licenseFetcher->setOwncloudLicense($dummyLicense));
+		$this->licenseFetcher->setOwncloudLicense($dummyLicense);
 	}
 }

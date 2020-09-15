@@ -34,17 +34,17 @@ namespace OCP\License;
  */
 interface ILicenseManager {
 	/** The license is valid and hasn't expired yet */
-	const LICENSE_STATE_VALID = 0;
+	public const LICENSE_STATE_VALID = 0;
 	/** No license found */
-	const LICENSE_STATE_MISSING = 1;
+	public const LICENSE_STATE_MISSING = 1;
 	/** The license is invalid or broken. Couldn't parse the license properly */
-	const LICENSE_STATE_INVALID = 2;
+	public const LICENSE_STATE_INVALID = 2;
 	/** The license is "valid" (not broken, can be parsed) but has expired */
-	const LICENSE_STATE_EXPIRED = 3;
+	public const LICENSE_STATE_EXPIRED = 3;
 	/** The license is valid and it's close to its expiration date */
-	const LICENSE_STATE_ABOUT_TO_EXPIRE = 4;
+	public const LICENSE_STATE_ABOUT_TO_EXPIRE = 4;
 
-	const THRESHOLD_ABOUT_TO_EXPIRE = 60;  // 60 days
+	public const THRESHOLD_ABOUT_TO_EXPIRE = 60;  // 60 days
 
 	/**
 	 * @since 10.5.0
@@ -89,6 +89,9 @@ interface ILicenseManager {
 	public function getLicenseStateFor(string $appid): int;
 
 	/**
+	 * @param string $appid the application to be checked
+	 * @param string|null $language the language to translate the messages to.
+	 * @return array containing the information as described above
 	 * @since 10.5.0
 	 * Get a message suitable to be displayed with the state of the license for the app
 	 * The message will be translated to the requested language if there is translation
@@ -104,9 +107,6 @@ interface ILicenseManager {
 	 * "contains_html" -> an array containing which lines of the translated message contains html code
 	 *   The lines start counting at 0
 	 *
-	 * @param string $appid the aplication to be checked
-	 * @param string $language the language to translate the messages to.
-	 * @return array containing the information as described above
 	 */
 	public function getLicenseMessageFor(string $appid, string $language = null): array;
 

@@ -24,11 +24,9 @@ use OCP\IConfig;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\ILogger;
-use OC\License\LicenseFetcher;
-use OC\License\MessageService;
 
 class LicenseManager implements ILicenseManager {
-	const GRACE_PERIOD = 60 * 60 * 24;  // 24h
+	public const GRACE_PERIOD = 60 * 60 * 24;  // 24h
 
 	/** @var LicenseFetcher */
 	private $licenseFetcher;
@@ -62,9 +60,11 @@ class LicenseManager implements ILicenseManager {
 	/**
 	 * Check if "now" is inside the closed interval [t, t+p], where t = $timestamp
 	 * and p = the grace period (24h)
+	 *
 	 * @param int $timestamp the timestamp when the grace period started
+	 * @return bool
 	 */
-	private function isNowUnderGracePeriod(int $timestamp) {
+	private function isNowUnderGracePeriod(int $timestamp): bool {
 		$currentTime = $this->timeFactory->getTime();
 		return $timestamp <= $currentTime && $currentTime <= ($timestamp + self::GRACE_PERIOD);
 	}
@@ -72,7 +72,7 @@ class LicenseManager implements ILicenseManager {
 	/**
 	 * Get the apps that are complaining about not having a valid license
 	 */
-	private function getAppComplains() {
+	private function getAppComplains(): array {
 		$apps = [];
 		$appComplains = $this->config->getAppKeys('core-license-complains');
 		foreach ($appComplains as $appComplain) {
@@ -129,12 +129,12 @@ class LicenseManager implements ILicenseManager {
 				'start' => (int)$gracePeriod,
 				'end' => (int)$gracePeriod + self::GRACE_PERIOD,
 			];
-		} else {
-			return [
-				'start' => (int)$gracePeriod,
-				'end' => (int)$gracePeriod + self::GRACE_PERIOD,
-			];
 		}
+
+		return [
+			'start' => (int)$gracePeriod,
+			'end' => (int)$gracePeriod + self::GRACE_PERIOD,
+		];
 	}
 
 	/**
@@ -267,24 +267,24 @@ class LicenseManager implements ILicenseManager {
 					$this->logger->warning("$appid has been disabled because the license is not valid", ['app' => 'core']);
 				}
 				return false;
-			} else {
-				return true;
 			}
-		} else {
-			if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
-				$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE
-			) {
-				// we're under a grace period but the license for the app isn't valid
-				// mark the app to know there is at least one app using the grace period.
-				// we'll still return true in this case.
-				$licenseKey = '';
-				if ($licenseObj) {
-					$licenseKey = $licenseObj->getLicenseString();
-				}
-				$this->config->setAppValue('core-license-complains', $appid, $licenseKey);
-				$this->logger->debug("$appid has registered a license complain over license $licenseKey", ['app' => 'core']);
-			}
+
 			return true;
 		}
+
+		if ($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
+			$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE
+		) {
+			// we're under a grace period but the license for the app isn't valid
+			// mark the app to know there is at least one app using the grace period.
+			// we'll still return true in this case.
+			$licenseKey = '';
+			if ($licenseObj) {
+				$licenseKey = $licenseObj->getLicenseString();
+			}
+			$this->config->setAppValue('core-license-complains', $appid, $licenseKey);
+			$this->logger->debug("$appid has registered a license complain over license $licenseKey", ['app' => 'core']);
+		}
+		return true;
 	}
 }
