@@ -20,7 +20,7 @@
  *
  * <p>
  * The Google Web Fonts Developer API lets you retrieve information about web
- * fonts served     by Google.</p>
+ * fonts served by Google.</p>
  *
  * <p>
  * For more information about this service, see the API

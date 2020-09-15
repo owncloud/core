@@ -160,8 +160,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @param Google_Service_Compute_AttachedDisk $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool forceAttach Whether to force attach the disk even if it's
-   * currently attached to another instance.
+   * @opt_param bool forceAttach Whether to force attach the regional disk even if
+   * it's currently attached to another instance.
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed.
@@ -316,6 +316,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @param string $zone The name of the zone for this request.
    * @param string $resource Name or id of the resource for this request.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param int optionsRequestedPolicyVersion Requested IAM Policy version.
    * @return Google_Service_Compute_Policy
    */
   public function getIamPolicy($project, $zone, $resource, $optParams = array())
@@ -325,20 +327,45 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('getIamPolicy', array($params), "Google_Service_Compute_Policy");
   }
   /**
-   * Returns the last 1 MB of serial port output from the specified instance.
-   * (instances.getSerialPortOutput)
+   * Returns the screenshot from the specified instance. (instances.getScreenshot)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
    * @param string $instance Name of the instance scoping this request.
    * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_Screenshot
+   */
+  public function getScreenshot($project, $zone, $instance, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance);
+    $params = array_merge($params, $optParams);
+    return $this->call('getScreenshot', array($params), "Google_Service_Compute_Screenshot");
+  }
+  /**
+   * Returns the last 1 MB of serial port output from the specified instance.
+   * (instances.getSerialPortOutput)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name of the instance for this request.
+   * @param array $optParams Optional parameters.
    *
    * @opt_param int port Specifies which COM or serial port to retrieve data from.
-   * @opt_param string start Returns output starting from a specific byte
-   * position. Use this to page through output when the output is too large to
-   * return in a single request. For the initial request, leave this field
-   * unspecified. For subsequent calls, this field should be set to the next value
-   * returned in the previous call.
+   * @opt_param string start Specifies the starting byte position of the output to
+   * return. To start with the first byte of output to the specified port, omit
+   * this field or set it to `0`.
+   *
+   * If the output for that byte position is available, this field matches the
+   * `start` parameter sent with the request. If the amount of serial console
+   * output exceeds the size of the buffer (1 MB), the oldest output is discarded
+   * and is no longer available. If the requested start position refers to
+   * discarded output, the start position is adjusted to the oldest output still
+   * available, and the adjusted start position is returned as the `start`
+   * property value.
+   *
+   * You can also provide a negative start position, which translates to the most
+   * recent number of bytes written to the serial port. For example, -3 is
+   * interpreted as the most recent 3 bytes written to the serial console.
    * @return Google_Service_Compute_SerialPortOutput
    */
   public function getSerialPortOutput($project, $zone, $instance, $optParams = array())

@@ -80,21 +80,21 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
+                'includeUnrevealedLocations' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'boolean',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'includeUnrevealedLocations' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -184,17 +184,17 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                   'type' => 'string',
                   'required' => true,
                 ),
-                'filter' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'filter' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'orderBy' => array(
                   'location' => 'query',
@@ -318,13 +318,13 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

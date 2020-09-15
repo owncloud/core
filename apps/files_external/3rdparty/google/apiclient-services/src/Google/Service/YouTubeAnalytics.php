@@ -75,11 +75,11 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/groupItems',
               'httpMethod' => 'DELETE',
               'parameters' => array(
-                'onBehalfOfContentOwner' => array(
+                'id' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'id' => array(
+                'onBehalfOfContentOwner' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -97,11 +97,11 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/groupItems',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'onBehalfOfContentOwner' => array(
+                'groupId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'groupId' => array(
+                'onBehalfOfContentOwner' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -120,11 +120,11 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/groups',
               'httpMethod' => 'DELETE',
               'parameters' => array(
-                'onBehalfOfContentOwner' => array(
+                'id' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'id' => array(
+                'onBehalfOfContentOwner' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -142,21 +142,21 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/groups',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'onBehalfOfContentOwner' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'id' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'mine' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'id' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'update' => array(
@@ -182,21 +182,33 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/reports',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'includeHistoricalChannelData' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'ids' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'currency' => array(
+                'metrics' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'startIndex' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'sort' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'ids' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'filters' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'startDate' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'includeHistoricalChannelData' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'dimensions' => array(
                   'location' => 'query',
@@ -210,19 +222,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filters' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'sort' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'startDate' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'metrics' => array(
+                'currency' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

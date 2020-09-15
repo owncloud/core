@@ -33,9 +33,6 @@
  */
 class Google_Service_RealTimeBidding extends Google_Service
 {
-  /** Manage your Ad Exchange buyer account configuration. */
-  const ADEXCHANGE_BUYER =
-      "https://www.googleapis.com/auth/adexchange.buyer";
   /** See, create, edit, and delete your Authorized Buyers and Open Bidding account entities. */
   const REALTIME_BIDDING =
       "https://www.googleapis.com/auth/realtime-bidding";
@@ -79,13 +76,13 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'filter' => array(
                   'location' => 'query',
@@ -165,11 +162,7 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'view' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -177,9 +170,13 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(

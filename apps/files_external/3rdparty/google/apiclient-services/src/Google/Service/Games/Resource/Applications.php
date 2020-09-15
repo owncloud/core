@@ -34,10 +34,10 @@ class Google_Service_Games_Resource_Applications extends Google_Service_Resource
    * developer console.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string language The preferred language to use for strings returned
-   * by this method.
    * @opt_param string platformType Restrict application details returned to the
    * specific platform.
+   * @opt_param string language The preferred language to use for strings returned
+   * by this method.
    * @return Google_Service_Games_Application
    */
   public function get($applicationId, $optParams = array())

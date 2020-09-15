@@ -29,11 +29,9 @@ class Google_Service_Document_Resource_ProjectsLocationsDocuments extends Google
    * LRO endpoint to batch process many documents. The output is written to Cloud
    * Storage as JSON in the [Document] format. (documents.batchProcess)
    *
-   * @param string $parent Target project and location to make a call.
-   *
-   * Format: `projects/{project-id}/locations/{location-id}`.
-   *
-   * If no location is specified, a region will be chosen automatically.
+   * @param string $parent Target project and location to make a call. Format:
+   * `projects/{project-id}/locations/{location-id}`. If no location is specified,
+   * a region will be chosen automatically.
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2BatchProcessDocumentsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Document_GoogleLongrunningOperation
@@ -47,12 +45,10 @@ class Google_Service_Document_Resource_ProjectsLocationsDocuments extends Google
   /**
    * Processes a single document. (documents.process)
    *
-   * @param string $parent Target project and location to make a call.
-   *
-   * Format: `projects/{project-id}/locations/{location-id}`.
-   *
-   * If no location is specified, a region will be chosen automatically. This
-   * field is only populated when used in ProcessDocument method.
+   * @param string $parent Target project and location to make a call. Format:
+   * `projects/{project-id}/locations/{location-id}`. If no location is specified,
+   * a region will be chosen automatically. This field is only populated when used
+   * in ProcessDocument method.
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2ProcessDocumentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2Document

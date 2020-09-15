@@ -23,6 +23,7 @@ class Google_Service_FirebaseManagement_FirebaseProject extends Google_Model
   public $projectNumber;
   protected $resourcesType = 'Google_Service_FirebaseManagement_DefaultResources';
   protected $resourcesDataType = '';
+  public $state;
 
   public function setDisplayName($displayName)
   {
@@ -69,5 +70,13 @@ class Google_Service_FirebaseManagement_FirebaseProject extends Google_Model
   public function getResources()
   {
     return $this->resources;
+  }
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  public function getState()
+  {
+    return $this->state;
   }
 }

@@ -15,11 +15,21 @@
  * the License.
  */
 
-class Google_Service_DataFusion_Version extends Google_Model
+class Google_Service_DataFusion_Version extends Google_Collection
 {
+  protected $collection_key = 'availableFeatures';
+  public $availableFeatures;
   public $defaultVersion;
   public $versionNumber;
 
+  public function setAvailableFeatures($availableFeatures)
+  {
+    $this->availableFeatures = $availableFeatures;
+  }
+  public function getAvailableFeatures()
+  {
+    return $this->availableFeatures;
+  }
   public function setDefaultVersion($defaultVersion)
   {
     $this->defaultVersion = $defaultVersion;

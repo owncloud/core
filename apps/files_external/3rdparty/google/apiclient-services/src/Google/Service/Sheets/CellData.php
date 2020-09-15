@@ -18,6 +18,10 @@
 class Google_Service_Sheets_CellData extends Google_Collection
 {
   protected $collection_key = 'textFormatRuns';
+  protected $dataSourceFormulaType = 'Google_Service_Sheets_DataSourceFormula';
+  protected $dataSourceFormulaDataType = '';
+  protected $dataSourceTableType = 'Google_Service_Sheets_DataSourceTable';
+  protected $dataSourceTableDataType = '';
   protected $dataValidationType = 'Google_Service_Sheets_DataValidationRule';
   protected $dataValidationDataType = '';
   protected $effectiveFormatType = 'Google_Service_Sheets_CellFormat';
@@ -36,6 +40,34 @@ class Google_Service_Sheets_CellData extends Google_Collection
   protected $userEnteredValueType = 'Google_Service_Sheets_ExtendedValue';
   protected $userEnteredValueDataType = '';
 
+  /**
+   * @param Google_Service_Sheets_DataSourceFormula
+   */
+  public function setDataSourceFormula(Google_Service_Sheets_DataSourceFormula $dataSourceFormula)
+  {
+    $this->dataSourceFormula = $dataSourceFormula;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceFormula
+   */
+  public function getDataSourceFormula()
+  {
+    return $this->dataSourceFormula;
+  }
+  /**
+   * @param Google_Service_Sheets_DataSourceTable
+   */
+  public function setDataSourceTable(Google_Service_Sheets_DataSourceTable $dataSourceTable)
+  {
+    $this->dataSourceTable = $dataSourceTable;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceTable
+   */
+  public function getDataSourceTable()
+  {
+    return $this->dataSourceTable;
+  }
   /**
    * @param Google_Service_Sheets_DataValidationRule
    */

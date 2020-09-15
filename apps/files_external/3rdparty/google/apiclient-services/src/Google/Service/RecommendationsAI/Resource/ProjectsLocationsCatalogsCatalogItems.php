@@ -71,35 +71,15 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
     return $this->call('get', array($params), "Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem");
   }
   /**
-   * Method for getting the catalog items associated with item group id.
-   * (catalogItems.getGroupIdItems)
-   *
-   * @param string $parent Required. Parent resource name of group id item, such
-   * as "projects/locations/global/catalogs/default_catalog".
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string itemGroupId Required. Catalog item identifier for
-   * prediction results.
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1GetCatalogItemsWithItemGroupIdResponse
-   */
-  public function getGroupIdItems($parent, $optParams = array())
-  {
-    $params = array('parent' => $parent);
-    $params = array_merge($params, $optParams);
-    return $this->call('getGroupIdItems', array($params), "Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1GetCatalogItemsWithItemGroupIdResponse");
-  }
-  /**
    * Bulk import of multiple catalog items. Request processing may be synchronous.
    * No partial updating supported. Non-existing items will be created.
-   *
    * Operation.response is of type ImportResponse. Note that it is possible for a
    * subset of the items to be successfully updated. (catalogItems.import)
    *
    * @param string $parent Required.
-   * "projects/1234/locations/global/catalogs/default_catalog"
-   *
-   * If no updateMask is specified, requires catalogItems.create permission. If
-   * updateMask is specified, requires catalogItems.update permission.
+   * "projects/1234/locations/global/catalogs/default_catalog" If no updateMask is
+   * specified, requires catalogItems.create permission. If updateMask is
+   * specified, requires catalogItems.update permission.
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ImportCatalogItemsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleLongrunningOperation
@@ -120,9 +100,9 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
    *
    * @opt_param string pageToken Optional. The previous
    * ListCatalogItemsResponse.next_page_token.
-   * @opt_param string filter Optional. A filter to apply on the list results.
    * @opt_param int pageSize Optional. Maximum number of results to return per
    * page. If zero, the service will choose a reasonable default.
+   * @opt_param string filter Optional. A filter to apply on the list results.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ListCatalogItemsResponse
    */
   public function listProjectsLocationsCatalogsCatalogItems($parent, $optParams = array())

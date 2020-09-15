@@ -29,7 +29,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
    * Creates a new capacity commitment resource. (capacityCommitments.create)
    *
    * @param string $parent Required. Resource name of the parent reservation.
-   * E.g.,    `projects/myproject/locations/US`
+   * E.g., `projects/myproject/locations/US`
    * @param Google_Service_BigQueryReservation_CapacityCommitment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -49,7 +49,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
    * `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.delete)
    *
    * @param string $name Required. Resource name of the capacity commitment to
-   * delete. E.g.,    `projects/myproject/locations/US/capacityCommitments/123`
+   * delete. E.g., `projects/myproject/locations/US/capacityCommitments/123`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_BigqueryreservationEmpty
    */
@@ -63,7 +63,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
    * Returns information about the capacity commitment. (capacityCommitments.get)
    *
    * @param string $name Required. Resource name of the capacity commitment to
-   * retrieve. E.g.,    `projects/myproject/locations/US/capacityCommitments/123`
+   * retrieve. E.g., `projects/myproject/locations/US/capacityCommitments/123`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_CapacityCommitment
    */
@@ -78,7 +78,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
    * (capacityCommitments.listProjectsLocationsCapacityCommitments)
    *
    * @param string $parent Required. Resource name of the parent reservation.
-   * E.g.,    `projects/myproject/locations/US`
+   * E.g., `projects/myproject/locations/US`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token value returned from a
@@ -93,16 +93,14 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
     return $this->call('list', array($params), "Google_Service_BigQueryReservation_ListCapacityCommitmentsResponse");
   }
   /**
-   * Merges capacity commitments of the same plan into a single commitment.
-   *
-   * The resulting capacity commitment has the greater commitment_end_time out of
-   * the to-be-merged capacity commitments.
-   *
-   * Attempting to merge capacity commitments of different plan will fail with the
-   * error code `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.merge)
+   * Merges capacity commitments of the same plan into a single commitment. The
+   * resulting capacity commitment has the greater commitment_end_time out of the
+   * to-be-merged capacity commitments. Attempting to merge capacity commitments
+   * of different plan will fail with the error code
+   * `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.merge)
    *
    * @param string $parent Parent resource that identifies admin project and
-   * location e.g.,  `projects/myproject/locations/us`
+   * location e.g., `projects/myproject/locations/us`
    * @param Google_Service_BigQueryReservation_MergeCapacityCommitmentsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_CapacityCommitment
@@ -114,13 +112,11 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
     return $this->call('merge', array($params), "Google_Service_BigQueryReservation_CapacityCommitment");
   }
   /**
-   * Updates an existing capacity commitment.
-   *
-   * Only `plan` and `renewal_plan` fields can be updated.
-   *
-   * Plan can only be changed to a plan of a longer commitment period. Attempting
-   * to change to a plan with shorter commitment period will fail with the error
-   * code `google.rpc.Code.FAILED_PRECONDITION`. (capacityCommitments.patch)
+   * Updates an existing capacity commitment. Only `plan` and `renewal_plan`
+   * fields can be updated. Plan can only be changed to a plan of a longer
+   * commitment period. Attempting to change to a plan with shorter commitment
+   * period will fail with the error code `google.rpc.Code.FAILED_PRECONDITION`.
+   * (capacityCommitments.patch)
    *
    * @param string $name Output only. The resource name of the capacity
    * commitment, e.g., `projects/myproject/locations/US/capacityCommitments/123`
@@ -139,14 +135,11 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
   }
   /**
    * Splits capacity commitment to two commitments of the same plan and
-   * `commitment_end_time`.
-   *
-   * A common use case is to enable downgrading commitments.
-   *
-   * For example, in order to downgrade from 10000 slots to 8000, you might split
-   * a 10000 capacity commitment into commitments of 2000 and 8000. Then, you
-   * would change the plan of the first one to `FLEX` and then delete it.
-   * (capacityCommitments.split)
+   * `commitment_end_time`. A common use case is to enable downgrading
+   * commitments. For example, in order to downgrade from 10000 slots to 8000, you
+   * might split a 10000 capacity commitment into commitments of 2000 and 8000.
+   * Then, you would change the plan of the first one to `FLEX` and then delete
+   * it. (capacityCommitments.split)
    *
    * @param string $name Required. The resource name e.g.,:
    * `projects/myproject/locations/US/capacityCommitments/123`

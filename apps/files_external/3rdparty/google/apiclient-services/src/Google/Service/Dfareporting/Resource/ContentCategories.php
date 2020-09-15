@@ -73,6 +73,7 @@ class Google_Service_Dfareporting_Resource_ContentCategories extends Google_Serv
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string ids Select only content categories with these IDs.
    * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Value of the nextPageToken from the previous
@@ -85,7 +86,6 @@ class Google_Service_Dfareporting_Resource_ContentCategories extends Google_Serv
    * example, a search string of "contentcategory" will match objects with name
    * "my contentcategory", "contentcategory 2015", or simply "contentcategory".
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_ContentCategoriesListResponse
    */
   public function listContentCategories($profileId, $optParams = array())
@@ -99,14 +99,15 @@ class Google_Service_Dfareporting_Resource_ContentCategories extends Google_Serv
    * (contentCategories.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Content category ID.
    * @param Google_Service_Dfareporting_ContentCategory $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id ContentCategory ID.
    * @return Google_Service_Dfareporting_ContentCategory
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_ContentCategory $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_ContentCategory $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_ContentCategory");
   }

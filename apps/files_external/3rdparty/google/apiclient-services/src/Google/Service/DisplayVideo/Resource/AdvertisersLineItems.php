@@ -146,18 +146,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLineItems extends Google_S
    * items for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return. Typically, this is the value of next_page_token returned from
-   * the previous call to `ListLineItems` method. If not specified, the first page
-   * of results will be returned.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * "displayName" (default) * "entityStatus" * “flight.dateRange.endDate”
-   * The default sorting order is ascending. To specify descending order for a
-   * field, a suffix "desc" should be added to the field name. Example:
-   * `displayName desc`.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
    * @opt_param string filter Allows filtering by line item properties. Supported
    * syntax: * Filter expressions are made up of one or more restrictions. *
    * Restrictions can be combined by `AND` or `OR` logical operators. A sequence
@@ -165,16 +153,28 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLineItems extends Google_S
    * `{field} {operator} {value}`. * The operator used on
    * `flight.dateRange.endDate` must be LESS THAN (<). * The operators used on all
    * other fields must be `EQUALS (=)`. * Supported fields: - `campaignId` -
-   * `insertionOrderId` - `entityStatus` - `lineItemType` -
-   * `flight.dateRange.endDate` (input formatted as YYYY-MM-DD) Examples: * All
-   * line items under an insertion order: `insertionOrderId="1234"` * All
-   * `ENTITY_STATUS_ACTIVE` or `ENTITY_STATUS_PAUSED` and
-   * `LINE_ITEM_TYPE_DISPLAY_DEFAULT` line items under an advertiser:
-   * `(entityStatus="ENTITY_STATUS_ACTIVE" OR entityStatus="ENTITY_STATUS_PAUSED")
-   * AND lineItemType="LINE_ITEM_TYPE_DISPLAY_DEFAULT"` * All line items whose
-   * flight dates end before March 28, 2019:
-   * `flight.dateRange.endDate<"2019-03-28"` The length of this field should be no
-   * more than 500 characters.
+   * `displayName` - `insertionOrderId` - `entityStatus` - `lineItemId` -
+   * `lineItemType` - `flight.dateRange.endDate` (input formatted as YYYY-MM-DD)
+   * Examples: * All line items under an insertion order:
+   * `insertionOrderId="1234"` * All `ENTITY_STATUS_ACTIVE` or
+   * `ENTITY_STATUS_PAUSED` and `LINE_ITEM_TYPE_DISPLAY_DEFAULT` line items under
+   * an advertiser: `(entityStatus="ENTITY_STATUS_ACTIVE" OR
+   * entityStatus="ENTITY_STATUS_PAUSED") AND
+   * lineItemType="LINE_ITEM_TYPE_DISPLAY_DEFAULT"` * All line items whose flight
+   * dates end before March 28, 2019: `flight.dateRange.endDate<"2019-03-28"` The
+   * length of this field should be no more than 500 characters.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * "displayName" (default) * "entityStatus" * “flight.dateRange.endDate”
+   * The default sorting order is ascending. To specify descending order for a
+   * field, a suffix "desc" should be added to the field name. Example:
+   * `displayName desc`.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListLineItems` method. If not specified, the first page
+   * of results will be returned.
    * @return Google_Service_DisplayVideo_ListLineItemsResponse
    */
   public function listAdvertisersLineItems($advertiserId, $optParams = array())

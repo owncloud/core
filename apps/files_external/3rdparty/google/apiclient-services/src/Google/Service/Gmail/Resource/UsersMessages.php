@@ -26,7 +26,7 @@
 class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resource
 {
   /**
-   * Deletes many messages by message ID.  Provides no guarantees that messages
+   * Deletes many messages by message ID. Provides no guarantees that messages
    * were not already deleted or even existed at all. (messages.batchDelete)
    *
    * @param string $userId The user's email address. The special value `me` can be
@@ -56,7 +56,7 @@ class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resourc
   }
   /**
    * Immediately and permanently deletes the specified message. This operation
-   * cannot be undone.  Prefer `messages.trash` instead. (messages.delete)
+   * cannot be undone. Prefer `messages.trash` instead. (messages.delete)
    *
    * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
@@ -77,9 +77,9 @@ class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resourc
    * @param string $id The ID of the message to retrieve.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string format The format to return the message in.
    * @opt_param string metadataHeaders When given and format is `METADATA`, only
    * include headers specified.
+   * @opt_param string format The format to return the message in.
    * @return Google_Service_Gmail_Message
    */
   public function get($userId, $id, $optParams = array())
@@ -91,13 +91,16 @@ class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resourc
   /**
    * Imports a message into only this user's mailbox, with standard email delivery
    * scanning and classification similar to receiving via SMTP. Does not send a
-   * message. (messages.import)
+   * message. Note: This function doesn't trigger forwarding rules or filters set
+   * up by the user. (messages.import)
    *
    * @param string $userId The user's email address. The special value `me` can be
    * used to indicate the authenticated user.
    * @param Google_Service_Gmail_Message $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool neverMarkSpam Ignore the Gmail spam classifier decision and
+   * never mark this email as SPAM in the mailbox.
    * @opt_param bool processForCalendar Process calendar invites in the email and
    * add any extracted meetings to the Google Calendar for this user.
    * @opt_param bool deleted Mark the email as permanently deleted (not TRASH) and
@@ -105,8 +108,6 @@ class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resourc
    * accounts.
    * @opt_param string internalDateSource Source for Gmail's internal date of the
    * message.
-   * @opt_param bool neverMarkSpam Ignore the Gmail spam classifier decision and
-   * never mark this email as SPAM in the mailbox.
    * @return Google_Service_Gmail_Message
    */
   public function import($userId, Google_Service_Gmail_Message $postBody, $optParams = array())
@@ -125,11 +126,11 @@ class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resourc
    * @param Google_Service_Gmail_Message $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string internalDateSource Source for Gmail's internal date of the
-   * message.
    * @opt_param bool deleted Mark the email as permanently deleted (not TRASH) and
    * only visible in Google Vault to a Vault administrator. Only used for G Suite
    * accounts.
+   * @opt_param string internalDateSource Source for Gmail's internal date of the
+   * message.
    * @return Google_Service_Gmail_Message
    */
   public function insert($userId, Google_Service_Gmail_Message $postBody, $optParams = array())
@@ -145,17 +146,17 @@ class Google_Service_Gmail_Resource_UsersMessages extends Google_Service_Resourc
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string labelIds Only return messages with labels that match all of
-   * the specified label IDs.
-   * @opt_param string pageToken Page token to retrieve a specific page of results
-   * in the list.
    * @opt_param string q Only return messages matching the specified query.
    * Supports the same query format as the Gmail search box. For example,
    * `"from:someuser@example.com rfc822msgid: is:unread"`. Parameter cannot be
    * used when accessing the api using the gmail.metadata scope.
-   * @opt_param string maxResults Maximum number of messages to return.
    * @opt_param bool includeSpamTrash Include messages from `SPAM` and `TRASH` in
    * the results.
+   * @opt_param string maxResults Maximum number of messages to return.
+   * @opt_param string labelIds Only return messages with labels that match all of
+   * the specified label IDs.
+   * @opt_param string pageToken Page token to retrieve a specific page of results
+   * in the list.
    * @return Google_Service_Gmail_ListMessagesResponse
    */
   public function listUsersMessages($userId, $optParams = array())

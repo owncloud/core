@@ -19,6 +19,7 @@ class Google_Service_AdExchangeBuyerII_FilteredBidDetailRow extends Google_Model
 {
   protected $bidCountType = 'Google_Service_AdExchangeBuyerII_MetricValue';
   protected $bidCountDataType = '';
+  public $detail;
   public $detailId;
   protected $rowDimensionsType = 'Google_Service_AdExchangeBuyerII_RowDimensions';
   protected $rowDimensionsDataType = '';
@@ -36,6 +37,14 @@ class Google_Service_AdExchangeBuyerII_FilteredBidDetailRow extends Google_Model
   public function getBidCount()
   {
     return $this->bidCount;
+  }
+  public function setDetail($detail)
+  {
+    $this->detail = $detail;
+  }
+  public function getDetail()
+  {
+    return $this->detail;
   }
   public function setDetailId($detailId)
   {

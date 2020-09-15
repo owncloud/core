@@ -29,7 +29,7 @@ class Google_Service_YouTube_Resource_VideoAbuseReportReasons extends Google_Ser
    * Retrieves a list of resources, possibly filtered.
    * (videoAbuseReportReasons.listVideoAbuseReportReasons)
    *
-   * @param string|array $part The part parameter specifies the videoCategory
+   * @param string|array $part The *part* parameter specifies the videoCategory
    * resource parts that the API response will include. Supported values are id
    * and snippet.
    * @param array $optParams Optional parameters.

@@ -26,18 +26,14 @@
 class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_Resource
 {
   /**
-   * Creates a teacher of a course.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not  permitted to create
+   * Creates a teacher of a course. This method returns the following error codes:
+   * * `PERMISSION_DENIED` if the requesting user is not permitted to create
    * teachers in this course or for access errors. * `NOT_FOUND` if the requested
    * course ID does not exist. * `FAILED_PRECONDITION` if the requested user's
-   * account is disabled, for the following request errors:     *
-   * CourseMemberLimitReached     * CourseNotModifiable     *
-   * CourseTeacherLimitReached     * UserGroupsMembershipLimitReached *
-   * `ALREADY_EXISTS` if the user is already a teacher or student in the course.
-   * (teachers.create)
+   * account is disabled, for the following request errors: *
+   * CourseMemberLimitReached * CourseNotModifiable * CourseTeacherLimitReached *
+   * UserGroupsMembershipLimitReached * `ALREADY_EXISTS` if the user is already a
+   * teacher or student in the course. (teachers.create)
    *
    * @param string $courseId Identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.
@@ -52,10 +48,7 @@ class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_R
     return $this->call('create', array($params), "Google_Service_Classroom_Teacher");
   }
   /**
-   * Deletes a teacher of a course.
-   *
-   * This method returns the following error codes:
-   *
+   * Deletes a teacher of a course. This method returns the following error codes:
    * * `PERMISSION_DENIED` if the requesting user is not permitted to delete
    * teachers of this course or for access errors. * `NOT_FOUND` if no teacher of
    * this course has the requested ID or if the course does not exist. *
@@ -65,10 +58,9 @@ class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_R
    * @param string $courseId Identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.
    * @param string $userId Identifier of the teacher to delete. The identifier can
-   * be one of the following:
-   *
-   * * the numeric identifier for the user * the email address of the user * the
-   * string literal `"me"`, indicating the requesting user
+   * be one of the following: * the numeric identifier for the user * the email
+   * address of the user * the string literal `"me"`, indicating the requesting
+   * user
    * @param array $optParams Optional parameters.
    * @return Google_Service_Classroom_ClassroomEmpty
    */
@@ -79,10 +71,7 @@ class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_R
     return $this->call('delete', array($params), "Google_Service_Classroom_ClassroomEmpty");
   }
   /**
-   * Returns a teacher of a course.
-   *
-   * This method returns the following error codes:
-   *
+   * Returns a teacher of a course. This method returns the following error codes:
    * * `PERMISSION_DENIED` if the requesting user is not permitted to view
    * teachers of this course or for access errors. * `NOT_FOUND` if no teacher of
    * this course has the requested ID or if the course does not exist.
@@ -91,10 +80,9 @@ class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_R
    * @param string $courseId Identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.
    * @param string $userId Identifier of the teacher to return. The identifier can
-   * be one of the following:
-   *
-   * * the numeric identifier for the user * the email address of the user * the
-   * string literal `"me"`, indicating the requesting user
+   * be one of the following: * the numeric identifier for the user * the email
+   * address of the user * the string literal `"me"`, indicating the requesting
+   * user
    * @param array $optParams Optional parameters.
    * @return Google_Service_Classroom_Teacher
    */
@@ -106,26 +94,21 @@ class Google_Service_Classroom_Resource_CoursesTeachers extends Google_Service_R
   }
   /**
    * Returns a list of teachers of this course that the requester is permitted to
-   * view.
-   *
-   * This method returns the following error codes:
-   *
-   * * `NOT_FOUND` if the course does not exist. * `PERMISSION_DENIED` for access
-   * errors. (teachers.listCoursesTeachers)
+   * view. This method returns the following error codes: * `NOT_FOUND` if the
+   * course does not exist. * `PERMISSION_DENIED` for access errors.
+   * (teachers.listCoursesTeachers)
    *
    * @param string $courseId Identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Maximum number of items to return. The default is 30
-   * if unspecified or `0`.
-   *
-   * The server may return fewer than the specified number of results.
    * @opt_param string pageToken nextPageToken value returned from a previous list
-   * call, indicating that the subsequent page of results should be returned.
-   *
-   * The list request must be otherwise identical to the one that resulted in this
+   * call, indicating that the subsequent page of results should be returned. The
+   * list request must be otherwise identical to the one that resulted in this
    * token.
+   * @opt_param int pageSize Maximum number of items to return. The default is 30
+   * if unspecified or `0`. The server may return fewer than the specified number
+   * of results.
    * @return Google_Service_Classroom_ListTeachersResponse
    */
   public function listCoursesTeachers($courseId, $optParams = array())

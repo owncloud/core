@@ -27,12 +27,11 @@ class Google_Service_Apigee_Resource_OrganizationsInstances extends Google_Servi
 {
   /**
    * Creates an Apigee runtime instance. The instance is accessible from the
-   * authorized network configured on the organization.
-   *
-   * **Note:** Not supported for Apigee hybrid. (instances.create)
+   * authorized network configured on the organization. **Note:** Not supported
+   * for Apigee hybrid. (instances.create)
    *
    * @param string $parent Required. Name of the organization. Use the following
-   * structure in your request:   `organizations/{org}`.
+   * structure in your request: `organizations/{org}`.
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Instance $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleLongrunningOperation
@@ -45,12 +44,11 @@ class Google_Service_Apigee_Resource_OrganizationsInstances extends Google_Servi
   }
   /**
    * Deletes an Apigee runtime instance. The instance stops serving requests and
-   * the runtime data is deleted.
-   *
-   * **Note:** Not supported for Apigee hybrid. (instances.delete)
+   * the runtime data is deleted. **Note:** Not supported for Apigee hybrid.
+   * (instances.delete)
    *
    * @param string $name Required. Name of the instance. Use the following
-   * structure in your request:   `organizations/{org}/instance/{instance}`.
+   * structure in your request: `organizations/{org}/instance/{instance}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleLongrunningOperation
    */
@@ -61,12 +59,11 @@ class Google_Service_Apigee_Resource_OrganizationsInstances extends Google_Servi
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
-   * Gets the details for an Apigee runtime instance.
-   *
-   * **Note:** Not supported for Apigee hybrid. (instances.get)
+   * Gets the details for an Apigee runtime instance. **Note:** Not supported for
+   * Apigee hybrid. (instances.get)
    *
    * @param string $name Required. Name of the instance. Use the following
-   * structure in your request:   `organizations/{org}/instances/{instance}`.
+   * structure in your request: `organizations/{org}/instances/{instance}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Instance
    */
@@ -77,19 +74,17 @@ class Google_Service_Apigee_Resource_OrganizationsInstances extends Google_Servi
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Instance");
   }
   /**
-   * Lists all Apigee runtime instances for the organization.
-   *
-   * **Note:** Not supported for Apigee hybrid.
-   * (instances.listOrganizationsInstances)
+   * Lists all Apigee runtime instances for the organization. **Note:** Not
+   * supported for Apigee hybrid. (instances.listOrganizationsInstances)
    *
    * @param string $parent Required. Name of the organization. Use the following
-   * structure in your request:   `organizations/{org}`.
+   * structure in your request: `organizations/{org}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token, returned from a previous
-   * ListInstances call, that you can use to retrieve the next page of content.
    * @opt_param int pageSize Maximum number of instances to return. Defaults to
    * 25.
+   * @opt_param string pageToken Page token, returned from a previous
+   * ListInstances call, that you can use to retrieve the next page of content.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListInstancesResponse
    */
   public function listOrganizationsInstances($parent, $optParams = array())

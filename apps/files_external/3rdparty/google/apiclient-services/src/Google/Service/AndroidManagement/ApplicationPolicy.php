@@ -19,6 +19,7 @@ class Google_Service_AndroidManagement_ApplicationPolicy extends Google_Collecti
 {
   protected $collection_key = 'permissionGrants';
   public $accessibleTrackIds;
+  public $connectedWorkAndPersonalApp;
   public $defaultPermissionPolicy;
   public $delegatedScopes;
   public $disabled;
@@ -39,6 +40,14 @@ class Google_Service_AndroidManagement_ApplicationPolicy extends Google_Collecti
   public function getAccessibleTrackIds()
   {
     return $this->accessibleTrackIds;
+  }
+  public function setConnectedWorkAndPersonalApp($connectedWorkAndPersonalApp)
+  {
+    $this->connectedWorkAndPersonalApp = $connectedWorkAndPersonalApp;
+  }
+  public function getConnectedWorkAndPersonalApp()
+  {
+    return $this->connectedWorkAndPersonalApp;
   }
   public function setDefaultPermissionPolicy($defaultPermissionPolicy)
   {

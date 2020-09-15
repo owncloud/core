@@ -20,6 +20,8 @@ class Google_Service_Sheets_BasicFilter extends Google_Collection
   protected $collection_key = 'sortSpecs';
   protected $criteriaType = 'Google_Service_Sheets_FilterCriteria';
   protected $criteriaDataType = 'map';
+  protected $filterSpecsType = 'Google_Service_Sheets_FilterSpec';
+  protected $filterSpecsDataType = 'array';
   protected $rangeType = 'Google_Service_Sheets_GridRange';
   protected $rangeDataType = '';
   protected $sortSpecsType = 'Google_Service_Sheets_SortSpec';
@@ -38,6 +40,20 @@ class Google_Service_Sheets_BasicFilter extends Google_Collection
   public function getCriteria()
   {
     return $this->criteria;
+  }
+  /**
+   * @param Google_Service_Sheets_FilterSpec
+   */
+  public function setFilterSpecs($filterSpecs)
+  {
+    $this->filterSpecs = $filterSpecs;
+  }
+  /**
+   * @return Google_Service_Sheets_FilterSpec
+   */
+  public function getFilterSpecs()
+  {
+    return $this->filterSpecs;
   }
   /**
    * @param Google_Service_Sheets_GridRange

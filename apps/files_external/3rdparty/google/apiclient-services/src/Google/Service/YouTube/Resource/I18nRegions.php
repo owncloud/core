@@ -29,7 +29,7 @@ class Google_Service_YouTube_Resource_I18nRegions extends Google_Service_Resourc
    * Retrieves a list of resources, possibly filtered.
    * (i18nRegions.listI18nRegions)
    *
-   * @param string|array $part The part parameter specifies the i18nRegion
+   * @param string|array $part The *part* parameter specifies the i18nRegion
    * resource properties that the API response will include. Set the parameter
    * value to snippet.
    * @param array $optParams Optional parameters.

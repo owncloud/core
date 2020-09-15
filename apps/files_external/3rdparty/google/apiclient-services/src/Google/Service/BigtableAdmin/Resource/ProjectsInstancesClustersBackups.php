@@ -26,9 +26,9 @@
 class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClustersBackups extends Google_Service_Resource
 {
   /**
-   * Starts creating a new Cloud Bigtable Backup.  The returned backup long-
-   * running operation can be used to track creation of the backup. The metadata
-   * field type is CreateBackupMetadata. The response field type is Backup, if
+   * Starts creating a new Cloud Bigtable Backup. The returned backup long-running
+   * operation can be used to track creation of the backup. The metadata field
+   * type is CreateBackupMetadata. The response field type is Backup, if
    * successful. Cancelling the returned operation will stop the creation and
    * delete the backup. (backups.create)
    *
@@ -103,7 +103,7 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClustersBackups ext
    * Lists Cloud Bigtable backups. Returns both completed and pending backups.
    * (backups.listProjectsInstancesClustersBackups)
    *
-   * @param string $parent Required. The cluster to list backups from.  Values are
+   * @param string $parent Required. The cluster to list backups from. Values are
    * of the form `projects/{project}/instances/{instance}/clusters/{cluster}`. Use
    * `{cluster} = '-'` to list backups for all clusters in an instance, e.g.,
    * `projects/{project}/instances/{instance}/clusters/-`.
@@ -113,49 +113,38 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClustersBackups ext
    * the response. The expression must specify the field name, a comparison
    * operator, and the value that you want to use for filtering. The value must be
    * a string, a number, or a boolean. The comparison operator must be <, >, <=,
-   * >=, !=, =, or :. Colon ‘:’ represents a HAS operator which is roughly
-   * synonymous with equality. Filter rules are case insensitive.
-   *
-   * The fields eligible for filtering are:   * `name`   * `source_table`   *
-   * `state`   * `start_time` (and values are of the format YYYY-MM-DDTHH:MM:SSZ)
-   * * `end_time` (and values are of the format YYYY-MM-DDTHH:MM:SSZ)   *
-   * `expire_time` (and values are of the format YYYY-MM-DDTHH:MM:SSZ)   *
-   * `size_bytes`
-   *
-   * To filter on multiple expressions, provide each separate expression within
-   * parentheses. By default, each expression is an AND expression. However, you
-   * can include AND, OR, and NOT expressions explicitly.
-   *
-   * Some examples of using filters are:
-   *
-   *   * `name:"exact"` --> The backup's name is the string "exact".   *
-   * `name:howl` --> The backup's name contains the string "howl".   *
-   * `source_table:prod`          --> The source_table's name contains the string
-   * "prod".   * `state:CREATING` --> The backup is pending creation.   *
-   * `state:READY` --> The backup is fully created and ready for use.   *
-   * `(name:howl) AND (start_time < \"2018-03-28T14:50:00Z\")`          --> The
-   * backup name contains the string "howl" and start_time              of the
-   * backup is before 2018-03-28T14:50:00Z.   * `size_bytes > 10000000000` --> The
-   * backup's size is greater than 10GB
+   * >=, !=, =, or :. Colon ':' represents a HAS operator which is roughly
+   * synonymous with equality. Filter rules are case insensitive. The fields
+   * eligible for filtering are: * `name` * `source_table` * `state` *
+   * `start_time` (and values are of the format YYYY-MM-DDTHH:MM:SSZ) * `end_time`
+   * (and values are of the format YYYY-MM-DDTHH:MM:SSZ) * `expire_time` (and
+   * values are of the format YYYY-MM-DDTHH:MM:SSZ) * `size_bytes` To filter on
+   * multiple expressions, provide each separate expression within parentheses. By
+   * default, each expression is an AND expression. However, you can include AND,
+   * OR, and NOT expressions explicitly. Some examples of using filters are: *
+   * `name:"exact"` --> The backup's name is the string "exact". * `name:howl` -->
+   * The backup's name contains the string "howl". * `source_table:prod` --> The
+   * source_table's name contains the string "prod". * `state:CREATING` --> The
+   * backup is pending creation. * `state:READY` --> The backup is fully created
+   * and ready for use. * `(name:howl) AND (start_time <
+   * \"2018-03-28T14:50:00Z\")` --> The backup name contains the string "howl" and
+   * start_time of the backup is before 2018-03-28T14:50:00Z. * `size_bytes >
+   * 10000000000` --> The backup's size is greater than 10GB
    * @opt_param string orderBy An expression for specifying the sort order of the
    * results of the request. The string value should specify one or more fields in
-   * Backup. The full syntax is described at https://aip.dev/132#ordering.
-   *
-   * Fields supported are:    * name    * source_table    * expire_time    *
-   * start_time    * end_time    * size_bytes    * state
-   *
-   * For example, "start_time". The default sorting order is ascending. To specify
-   * descending order for the field, a suffix " desc" should be appended to the
-   * field name. For example, "start_time desc". Redundant space characters in the
-   * syntax are insigificant.
-   *
-   * If order_by is empty, results will be sorted by `start_time` in descending
-   * order starting from the most recently created backup.
+   * Backup. The full syntax is described at https://aip.dev/132#ordering. Fields
+   * supported are: * name * source_table * expire_time * start_time * end_time *
+   * size_bytes * state For example, "start_time". The default sorting order is
+   * ascending. To specify descending order for the field, a suffix " desc" should
+   * be appended to the field name. For example, "start_time desc". Redundant
+   * space characters in the syntax are insigificant. If order_by is empty,
+   * results will be sorted by `start_time` in descending order starting from the
+   * most recently created backup.
+   * @opt_param int pageSize Number of backups to be returned in the response. If
+   * 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListBackupsResponse to the same `parent` and
    * with the same `filter`.
-   * @opt_param int pageSize Number of backups to be returned in the response. If
-   * 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_BigtableAdmin_ListBackupsResponse
    */
   public function listProjectsInstancesClustersBackups($parent, $optParams = array())
@@ -169,12 +158,10 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClustersBackups ext
    *
    * @param string $name A globally unique identifier for the backup which cannot
    * be changed. Values are of the form
-   * `projects/{project}/instances/{instance}/clusters/{cluster}/    backups/_a-
+   * `projects/{project}/instances/{instance}/clusters/{cluster}/ backups/_a-
    * zA-Z0-9*` The final segment of the name must be between 1 and 50 characters
-   * in length.
-   *
-   * The backup is stored in the cluster identified by the prefix of the backup
-   * name of the form
+   * in length. The backup is stored in the cluster identified by the prefix of
+   * the backup name of the form
    * `projects/{project}/instances/{instance}/clusters/{cluster}`.
    * @param Google_Service_BigtableAdmin_Backup $postBody
    * @param array $optParams Optional parameters.

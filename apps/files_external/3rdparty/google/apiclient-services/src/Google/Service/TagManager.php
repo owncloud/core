@@ -19,8 +19,7 @@
  * Service definition for TagManager (v2).
  *
  * <p>
- * This API allows clients to access and modify container and tag
- * configuration.</p>
+ * This API allows clients to access and modify container and tag configuration.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -77,9 +76,9 @@ class Google_Service_TagManager extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://tagmanager.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/tagmanager/v2';
+    $this->batchPath = 'batch';
     $this->version = 'v2';
     $this->serviceName = 'tagmanager';
 
@@ -665,17 +664,17 @@ class Google_Service_TagManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'variableId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
                 'tagId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
                 'triggerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'variableId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,

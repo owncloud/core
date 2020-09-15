@@ -79,13 +79,13 @@ class Google_Service_Blogger_Resource_Comments extends Google_Service_Resource
    * @param string $postId
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view
+   * @opt_param string pageToken
    * @opt_param string maxResults
+   * @opt_param string startDate
    * @opt_param string endDate
    * @opt_param bool fetchBodies
-   * @opt_param string pageToken
    * @opt_param string status
-   * @opt_param string startDate
+   * @opt_param string view
    * @return Google_Service_Blogger_CommentList
    */
   public function listComments($blogId, $postId, $optParams = array())
@@ -101,8 +101,8 @@ class Google_Service_Blogger_Resource_Comments extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string status
-   * @opt_param string pageToken
    * @opt_param string endDate
+   * @opt_param string pageToken
    * @opt_param string maxResults
    * @opt_param bool fetchBodies
    * @opt_param string startDate

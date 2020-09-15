@@ -26,10 +26,10 @@
 class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsOperations extends Google_Service_Resource
 {
   /**
-   * Starts asynchronous cancellation on a long-running operation.  The server
+   * Starts asynchronous cancellation on a long-running operation. The server
    * makes a best effort to cancel the operation, but success is not guaranteed.
    * If the server doesn't support this method, it returns
-   * `google.rpc.Code.UNIMPLEMENTED`.  Clients can use Operations.GetOperation or
+   * `google.rpc.Code.UNIMPLEMENTED`. Clients can use Operations.GetOperation or
    * other methods to check whether the cancellation succeeded or whether the
    * operation completed despite cancellation. On successful cancellation, the
    * operation is not deleted; instead, it becomes an operation with an
@@ -47,7 +47,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsOperat
     return $this->call('cancel', array($params), "Google_Service_CloudMachineLearningEngine_GoogleProtobufEmpty");
   }
   /**
-   * Gets the latest state of a long-running operation.  Clients can use this
+   * Gets the latest state of a long-running operation. Clients can use this
    * method to poll the operation result at intervals as recommended by the API
    * service. (operations.get)
    *

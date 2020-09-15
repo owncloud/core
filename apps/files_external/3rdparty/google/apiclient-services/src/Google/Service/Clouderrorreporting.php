@@ -91,11 +91,15 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'timeRange.period' => array(
+                'groupId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -103,19 +107,15 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'serviceFilter.version' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'serviceFilter.resourceType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'groupId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'serviceFilter.version' => array(
+                'timeRange.period' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -149,11 +149,19 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'serviceFilter.version' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'alignmentTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'order' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'serviceFilter.resourceType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -166,15 +174,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'alignment' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'order' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'timedCountDuration' => array(
+                'serviceFilter.version' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -182,7 +182,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'alignmentTime' => array(
+                'timedCountDuration' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -190,7 +190,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'serviceFilter.resourceType' => array(
+                'alignment' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

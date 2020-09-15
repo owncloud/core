@@ -31,8 +31,8 @@ class Google_Service_Dfareporting_Resource_Cities extends Google_Service_Resourc
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string countryDartIds Select only cities from these countries.
    * @opt_param string dartIds Select only cities with these DART IDs.
+   * @opt_param string countryDartIds Select only cities from these countries.
    * @opt_param string namePrefix Select only cities with names starting with this
    * prefix.
    * @opt_param string regionDartIds Select only cities from these regions.

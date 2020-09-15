@@ -71,14 +71,13 @@ class Google_Service_Apigee_Resource_OrganizationsApiproductsAttributes extends 
     return $this->call('list', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Attributes");
   }
   /**
-   * Updates the value of an API product attribute. Limitations are:
-   *
-   * OAuth access tokens and Key Management Service (KMS) entities (apps,
-   * developers, and API products) are cached for 180 seconds (current default).
-   * Any custom attributes associated with entities also get cached for at least
-   * 180 seconds after entity is accessed during runtime. In this case, the
-   * `ExpiresIn` element on the OAuthV2 policy won't be able to expire an access
-   * token in less than 180 seconds. (attributes.updateApiProductAttribute)
+   * Updates the value of an API product attribute. Limitations are: OAuth access
+   * tokens and Key Management Service (KMS) entities (apps, developers, and API
+   * products) are cached for 180 seconds (current default). Any custom attributes
+   * associated with entities also get cached for at least 180 seconds after
+   * entity is accessed during runtime. In this case, the `ExpiresIn` element on
+   * the OAuthV2 policy won't be able to expire an access token in less than 180
+   * seconds. (attributes.updateApiProductAttribute)
    *
    * @param string $name **Required.** API product name in the following form:
    * organizations/organization_ID/apiproducts/api_product_name

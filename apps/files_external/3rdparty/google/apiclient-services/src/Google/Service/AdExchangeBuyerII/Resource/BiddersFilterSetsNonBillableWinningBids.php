@@ -31,25 +31,21 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersFilterSetsNonBillableWinn
    * (nonBillableWinningBids.listBiddersFilterSetsNonBillableWinningBids)
    *
    * @param string $filterSetName Name of the filter set that should be applied to
-   * the requested metrics. For example:
-   *
-   * - For a bidder-level filter set for bidder 123:
-   * `bidders/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the buyer account representing bidder
-   * 123: `bidders/123/accounts/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the child seat buyer account 456
-   * whose bidder is 123: `bidders/123/accounts/456/filterSets/abc`
+   * the requested metrics. For example: - For a bidder-level filter set for
+   * bidder 123: `bidders/123/filterSets/abc` - For an account-level filter set
+   * for the buyer account representing bidder 123:
+   * `bidders/123/accounts/123/filterSets/abc` - For an account-level filter set
+   * for the child seat buyer account 456 whose bidder is 123:
+   * `bidders/123/accounts/456/filterSets/abc`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. The server may return fewer
+   * results than requested. If unspecified, the server will pick an appropriate
+   * default.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListNonBillableWinningBidsResponse.nextPageToken returned from the previous
    * call to the nonBillableWinningBids.list method.
-   * @opt_param int pageSize Requested page size. The server may return fewer
-   * results than requested. If unspecified, the server will pick an appropriate
-   * default.
    * @return Google_Service_AdExchangeBuyerII_ListNonBillableWinningBidsResponse
    */
   public function listBiddersFilterSetsNonBillableWinningBids($filterSetName, $optParams = array())

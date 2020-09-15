@@ -21,6 +21,7 @@ class Google_Service_Dataflow_RuntimeEnvironment extends Google_Collection
   public $additionalExperiments;
   public $additionalUserLabels;
   public $bypassTempDirValidation;
+  public $enableStreamingEngine;
   public $ipConfiguration;
   public $kmsKeyName;
   public $machineType;
@@ -57,6 +58,14 @@ class Google_Service_Dataflow_RuntimeEnvironment extends Google_Collection
   public function getBypassTempDirValidation()
   {
     return $this->bypassTempDirValidation;
+  }
+  public function setEnableStreamingEngine($enableStreamingEngine)
+  {
+    $this->enableStreamingEngine = $enableStreamingEngine;
+  }
+  public function getEnableStreamingEngine()
+  {
+    return $this->enableStreamingEngine;
   }
   public function setIpConfiguration($ipConfiguration)
   {

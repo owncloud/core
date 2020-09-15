@@ -19,7 +19,7 @@
  * Service definition for Blogger (v3).
  *
  * <p>
- * The Blogger API provides access to posts, comments and pages of a     Blogger
+ * The Blogger API provides access to posts, comments and pages of a Blogger
  * blog.</p>
  *
  * <p>
@@ -138,11 +138,7 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'fetchUserInfo' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'role' => array(
+                'status' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
@@ -151,10 +147,14 @@ class Google_Service_Blogger extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'status' => array(
+                'role' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
+                ),
+                'fetchUserInfo' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),
@@ -245,13 +245,17 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'startDate' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'endDate' => array(
                   'location' => 'query',
@@ -261,15 +265,11 @@ class Google_Service_Blogger extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'status' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'startDate' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -288,11 +288,11 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'pageToken' => array(
+                'endDate' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'endDate' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -441,24 +441,24 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'status' => array(
+                'fetchBodies' => array(
                   'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
+                  'type' => 'boolean',
                 ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'fetchBodies' => array(
+                'status' => array(
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'string',
+                  'repeated' => true,
                 ),
-                'pageToken' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -477,11 +477,11 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'revert' => array(
+                'publish' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'publish' => array(
+                'revert' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
@@ -587,9 +587,13 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'endDate' => array(
+                'startDate' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'labels' => array(
                   'location' => 'query',
@@ -600,29 +604,25 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'endDate' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'fetchBodies' => array(
                   'location' => 'query',
                   'type' => 'boolean',
-                ),
-                'startDate' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'view' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),
@@ -664,10 +664,6 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'view' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxComments' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -675,6 +671,10 @@ class Google_Service_Blogger extends Google_Service
                 'fetchBody' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'fetchImages' => array(
                   'location' => 'query',
@@ -713,7 +713,7 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'fetchBody' => array(
+                'fetchImages' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
@@ -721,7 +721,7 @@ class Google_Service_Blogger extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'fetchImages' => array(
+                'fetchBody' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
@@ -735,11 +735,11 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'labels' => array(
+                'endDate' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'startDate' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -747,11 +747,11 @@ class Google_Service_Blogger extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'fetchImages' => array(
+                'startDate' => array(
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'string',
                 ),
-                'orderBy' => array(
+                'labels' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -760,21 +760,21 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'endDate' => array(
+                'fetchImages' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'boolean',
                 ),
                 'fetchBodies' => array(
                   'location' => 'query',
                   'type' => 'boolean',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -791,15 +791,11 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'fetchBody' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'publish' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'fetchImages' => array(
+                'fetchBody' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
@@ -808,6 +804,10 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'integer',
                 ),
                 'revert' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'fetchImages' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
@@ -883,10 +883,6 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'revert' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'maxComments' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -900,6 +896,10 @@ class Google_Service_Blogger extends Google_Service
                   'type' => 'boolean',
                 ),
                 'fetchBody' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'revert' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),

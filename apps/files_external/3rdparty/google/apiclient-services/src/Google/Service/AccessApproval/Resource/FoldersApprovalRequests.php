@@ -26,11 +26,9 @@
 class Google_Service_AccessApproval_Resource_FoldersApprovalRequests extends Google_Service_Resource
 {
   /**
-   * Approves a request and returns the updated ApprovalRequest.
-   *
-   * Returns NOT_FOUND if the request does not exist. Returns FAILED_PRECONDITION
-   * if the request exists but is not in a pending state.
-   * (approvalRequests.approve)
+   * Approves a request and returns the updated ApprovalRequest. Returns NOT_FOUND
+   * if the request does not exist. Returns FAILED_PRECONDITION if the request
+   * exists but is not in a pending state. (approvalRequests.approve)
    *
    * @param string $name Name of the approval request to approve.
    * @param Google_Service_AccessApproval_ApproveApprovalRequestMessage $postBody
@@ -44,16 +42,11 @@ class Google_Service_AccessApproval_Resource_FoldersApprovalRequests extends Goo
     return $this->call('approve', array($params), "Google_Service_AccessApproval_ApprovalRequest");
   }
   /**
-   * Dismisses a request. Returns the updated ApprovalRequest.
-   *
-   * NOTE: This does not deny access to the resource if another request has been
-   * made and approved. It is equivalent in effect to ignoring the request
-   * altogether.
-   *
-   * Returns NOT_FOUND if the request does not exist.
-   *
-   * Returns FAILED_PRECONDITION if the request exists but is not in a pending
-   * state. (approvalRequests.dismiss)
+   * Dismisses a request. Returns the updated ApprovalRequest. NOTE: This does not
+   * deny access to the resource if another request has been made and approved. It
+   * is equivalent in effect to ignoring the request altogether. Returns NOT_FOUND
+   * if the request does not exist. Returns FAILED_PRECONDITION if the request
+   * exists but is not in a pending state. (approvalRequests.dismiss)
    *
    * @param string $name Name of the ApprovalRequest to dismiss.
    * @param Google_Service_AccessApproval_DismissApprovalRequestMessage $postBody
@@ -92,15 +85,14 @@ class Google_Service_AccessApproval_Resource_FoldersApprovalRequests extends Goo
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter on the type of approval requests to
-   * retrieve. Must be one of the following values:
-   *
-   *   [not set]: Requests that are pending or have active approvals.   ALL: All
-   * requests.   PENDING: Only pending requests.   ACTIVE: Only active (i.e.
-   * currently approved) requests.   DISMISSED: Only dismissed (including expired)
-   * requests.   HISTORY: Active and dismissed (including expired) requests.
+   * retrieve. Must be one of the following values: 1. [not set]: Requests that
+   * are pending or have active approvals. 2. ALL: All requests. 3. PENDING: Only
+   * pending requests. 4. ACTIVE: Only active (i.e. currently approved) requests.
+   * 5. DISMISSED: Only dismissed (including expired) requests. 6. HISTORY: Active
+   * and dismissed (including expired) requests.
+   * @opt_param int pageSize Requested page size.
    * @opt_param string pageToken A token identifying the page of results to
    * return.
-   * @opt_param int pageSize Requested page size.
    * @return Google_Service_AccessApproval_ListApprovalRequestsResponse
    */
   public function listFoldersApprovalRequests($parent, $optParams = array())

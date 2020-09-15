@@ -40,7 +40,7 @@ class Google_Service_YouTube_Resource_LiveChatBans extends Google_Service_Resour
   /**
    * Inserts a new resource into this collection. (liveChatBans.insert)
    *
-   * @param string|array $part The part parameter serves two purposes in this
+   * @param string|array $part The *part* parameter serves two purposes in this
    * operation. It identifies the properties that the write operation will set as
    * well as the properties that the API response returns. Set the parameter value
    * to snippet.

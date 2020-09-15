@@ -15,14 +15,17 @@
  * the License.
  */
 
-class Google_Service_Logging_LogSink extends Google_Model
+class Google_Service_Logging_LogSink extends Google_Collection
 {
+  protected $collection_key = 'exclusions';
   protected $bigqueryOptionsType = 'Google_Service_Logging_BigQueryOptions';
   protected $bigqueryOptionsDataType = '';
   public $createTime;
   public $description;
   public $destination;
   public $disabled;
+  protected $exclusionsType = 'Google_Service_Logging_LogExclusion';
+  protected $exclusionsDataType = 'array';
   public $filter;
   public $includeChildren;
   public $name;
@@ -75,6 +78,20 @@ class Google_Service_Logging_LogSink extends Google_Model
   public function getDisabled()
   {
     return $this->disabled;
+  }
+  /**
+   * @param Google_Service_Logging_LogExclusion
+   */
+  public function setExclusions($exclusions)
+  {
+    $this->exclusions = $exclusions;
+  }
+  /**
+   * @return Google_Service_Logging_LogExclusion
+   */
+  public function getExclusions()
+  {
+    return $this->exclusions;
   }
   public function setFilter($filter)
   {

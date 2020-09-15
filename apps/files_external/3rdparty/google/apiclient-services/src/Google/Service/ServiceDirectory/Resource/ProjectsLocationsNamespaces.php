@@ -98,33 +98,27 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocationsNamespaces exten
    * whose namespaces we'd like to list.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. The filter to list result by.
-   *
-   * General filter string syntax:    ()  can be "name", or "labels." for map
-   * field.  can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and is
-   * roughly the same as "=".  must be the same data type as field.  can be "AND,
-   * OR, NOT".
-   *
-   * Examples of valid filters: * "labels.owner" returns Namespaces that have a
-   * label with the key "owner"   this is the same as "labels:owner". *
-   * "labels.protocol=gRPC" returns Namespaces that have key/value
-   * "protocol=gRPC". * "name>projects/my-project/locations/us-
-   * east/namespaces/namespace-c"   returns Namespaces that have name that is
-   * alphabetically later than the   string, so "namespace-e" will be returned but
-   * "namespace-a" will not be. * "labels.owner!=sd AND labels.foo=bar" returns
-   * Namespaces that have   "owner" in label key but value is not "sd" AND have
-   * key/value foo=bar. * "doesnotexist.foo=bar" returns an empty list. Note that
-   * Namespace doesn't   have a field called "doesnotexist". Since the filter does
-   * not match any   Namespaces, it returns no results.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous List request, if any.
-   * @opt_param string orderBy Optional. The order to list result by.
-   *
-   * General order by string syntax:  () (,)  allows values {"name"}  ascending or
-   * descending order by . If this is left blank, "asc" is used. Note that an
-   * empty order_by string result in default order, which is order by name in
-   * ascending order.
+   * @opt_param string orderBy Optional. The order to list result by. General
+   * order by string syntax: () (,) allows values {"name"} ascending or descending
+   * order by . If this is left blank, "asc" is used. Note that an empty order_by
+   * string result in default order, which is order by name in ascending order.
    * @opt_param int pageSize Optional. The maximum number of items to return.
+   * @opt_param string filter Optional. The filter to list result by. General
+   * filter string syntax: () can be "name", or "labels." for map field. can be
+   * "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and is roughly the same as
+   * "=". must be the same data type as field. can be "AND, OR, NOT". Examples of
+   * valid filters: * "labels.owner" returns Namespaces that have a label with the
+   * key "owner" this is the same as "labels:owner". * "labels.protocol=gRPC"
+   * returns Namespaces that have key/value "protocol=gRPC". * "name>projects/my-
+   * project/locations/us-east/namespaces/namespace-c" returns Namespaces that
+   * have name that is alphabetically later than the string, so "namespace-e" will
+   * be returned but "namespace-a" will not be. * "labels.owner!=sd AND
+   * labels.foo=bar" returns Namespaces that have "owner" in label key but value
+   * is not "sd" AND have key/value foo=bar. * "doesnotexist.foo=bar" returns an
+   * empty list. Note that Namespace doesn't have a field called "doesnotexist".
+   * Since the filter does not match any Namespaces, it returns no results.
    * @return Google_Service_ServiceDirectory_ListNamespacesResponse
    */
   public function listProjectsLocationsNamespaces($parent, $optParams = array())

@@ -28,14 +28,11 @@ class Google_Service_Classroom_Resource_Invitations extends Google_Service_Resou
   /**
    * Accepts an invitation, removing it and adding the invited user to the
    * teachers or students (as appropriate) of the specified course. Only the
-   * invited user may accept an invitation.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to accept the
-   * requested invitation or for access errors. * `FAILED_PRECONDITION` for the
-   * following request errors:     * CourseMemberLimitReached     *
-   * CourseNotModifiable     * CourseTeacherLimitReached     *
+   * invited user may accept an invitation. This method returns the following
+   * error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to
+   * accept the requested invitation or for access errors. * `FAILED_PRECONDITION`
+   * for the following request errors: * CourseMemberLimitReached *
+   * CourseNotModifiable * CourseTeacherLimitReached *
    * UserGroupsMembershipLimitReached * `NOT_FOUND` if no invitation exists with
    * the requested ID. (invitations.accept)
    *
@@ -51,16 +48,14 @@ class Google_Service_Classroom_Resource_Invitations extends Google_Service_Resou
   }
   /**
    * Creates an invitation. Only one invitation for a user and course may exist at
-   * a time. Delete and re-create an invitation to make changes.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to create
-   * invitations for this course or for access errors. * `NOT_FOUND` if the course
-   * or the user does not exist. * `FAILED_PRECONDITION` if the requested user's
-   * account is disabled or if the user already has this role or a role with
-   * greater permissions. * `ALREADY_EXISTS` if an invitation for the specified
-   * user and course already exists. (invitations.create)
+   * a time. Delete and re-create an invitation to make changes. This method
+   * returns the following error codes: * `PERMISSION_DENIED` if the requesting
+   * user is not permitted to create invitations for this course or for access
+   * errors. * `NOT_FOUND` if the course or the user does not exist. *
+   * `FAILED_PRECONDITION` if the requested user's account is disabled or if the
+   * user already has this role or a role with greater permissions. *
+   * `ALREADY_EXISTS` if an invitation for the specified user and course already
+   * exists. (invitations.create)
    *
    * @param Google_Service_Classroom_Invitation $postBody
    * @param array $optParams Optional parameters.
@@ -73,11 +68,8 @@ class Google_Service_Classroom_Resource_Invitations extends Google_Service_Resou
     return $this->call('create', array($params), "Google_Service_Classroom_Invitation");
   }
   /**
-   * Deletes an invitation.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to delete the
+   * Deletes an invitation. This method returns the following error codes: *
+   * `PERMISSION_DENIED` if the requesting user is not permitted to delete the
    * requested invitation or for access errors. * `NOT_FOUND` if no invitation
    * exists with the requested ID. (invitations.delete)
    *
@@ -92,11 +84,8 @@ class Google_Service_Classroom_Resource_Invitations extends Google_Service_Resou
     return $this->call('delete', array($params), "Google_Service_Classroom_ClassroomEmpty");
   }
   /**
-   * Returns an invitation.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to view the
+   * Returns an invitation. This method returns the following error codes: *
+   * `PERMISSION_DENIED` if the requesting user is not permitted to view the
    * requested invitation or for access errors. * `NOT_FOUND` if no invitation
    * exists with the requested ID. (invitations.get)
    *
@@ -112,33 +101,26 @@ class Google_Service_Classroom_Resource_Invitations extends Google_Service_Resou
   }
   /**
    * Returns a list of invitations that the requesting user is permitted to view,
-   * restricted to those that match the list request.
-   *
-   * *Note:* At least one of `user_id` or `course_id` must be supplied. Both
-   * fields can be supplied.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` for access errors. (invitations.listInvitations)
+   * restricted to those that match the list request. *Note:* At least one of
+   * `user_id` or `course_id` must be supplied. Both fields can be supplied. This
+   * method returns the following error codes: * `PERMISSION_DENIED` for access
+   * errors. (invitations.listInvitations)
    *
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken nextPageToken value returned from a previous list
-   * call, indicating that the subsequent page of results should be returned.
-   *
-   * The list request must be otherwise identical to the one that resulted in this
+   * call, indicating that the subsequent page of results should be returned. The
+   * list request must be otherwise identical to the one that resulted in this
    * token.
-   * @opt_param string userId Restricts returned invitations to those for a
-   * specific user. The identifier can be one of the following:
-   *
-   * * the numeric identifier for the user * the email address of the user * the
-   * string literal `"me"`, indicating the requesting user
-   * @opt_param int pageSize Maximum number of items to return. The default is 500
-   * if unspecified or `0`.
-   *
-   * The server may return fewer than the specified number of results.
    * @opt_param string courseId Restricts returned invitations to those for a
    * course with the specified identifier.
+   * @opt_param string userId Restricts returned invitations to those for a
+   * specific user. The identifier can be one of the following: * the numeric
+   * identifier for the user * the email address of the user * the string literal
+   * `"me"`, indicating the requesting user
+   * @opt_param int pageSize Maximum number of items to return. The default is 500
+   * if unspecified or `0`. The server may return fewer than the specified number
+   * of results.
    * @return Google_Service_Classroom_ListInvitationsResponse
    */
   public function listInvitations($optParams = array())

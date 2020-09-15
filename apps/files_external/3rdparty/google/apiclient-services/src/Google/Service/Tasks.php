@@ -89,13 +89,13 @@ class Google_Service_Tasks extends Google_Service
               'path' => 'tasks/v1/users/@me/lists',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -195,7 +195,11 @@ class Google_Service_Tasks extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'dueMax' => array(
+                'showCompleted' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'updatedMin' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -203,11 +207,7 @@ class Google_Service_Tasks extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'showCompleted' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'updatedMin' => array(
+                'completedMax' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -219,21 +219,21 @@ class Google_Service_Tasks extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'maxResults' => array(
+                'completedMin' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'showHidden' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'completedMin' => array(
+                'dueMax' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'completedMax' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
               ),
             ),'move' => array(

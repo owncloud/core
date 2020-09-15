@@ -80,12 +80,12 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsNotificationCon
    * configs. Its format is "organizations/[organization_id]".
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of results to return in a single
+   * response. Default is 10, minimum is 1, maximum is 1000.
    * @opt_param string pageToken The value returned by the last
    * `ListNotificationConfigsResponse`; indicates that this is a continuation of a
    * prior `ListNotificationConfigs` call, and that the system should return the
    * next page of data.
-   * @opt_param int pageSize The maximum number of results to return in a single
-   * response. Default is 10, minimum is 1, maximum is 1000.
    * @return Google_Service_SecurityCommandCenter_ListNotificationConfigsResponse
    */
   public function listOrganizationsNotificationConfigs($parent, $optParams = array())
@@ -108,9 +108,7 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsNotificationCon
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask The FieldMask to use when updating the
-   * notification config.
-   *
-   * If empty all mutable fields will be updated.
+   * notification config. If empty all mutable fields will be updated.
    * @return Google_Service_SecurityCommandCenter_NotificationConfig
    */
   public function patch($name, Google_Service_SecurityCommandCenter_NotificationConfig $postBody, $optParams = array())

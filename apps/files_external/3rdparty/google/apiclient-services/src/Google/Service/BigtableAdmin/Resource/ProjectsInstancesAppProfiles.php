@@ -93,15 +93,12 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesAppProfiles extends
    *
    * @opt_param string pageToken The value of `next_page_token` returned by a
    * previous call.
-   * @opt_param int pageSize Maximum number of results per page.
-   *
-   * A page_size of zero lets the server choose the number of items to return. A
-   * page_size which is strictly positive will return at most that many items. A
-   * negative page_size will cause an error.
-   *
-   * Following the first request, subsequent paginated calls are not required to
-   * pass a page_size. If a page_size is set in subsequent calls, it must match
-   * the page_size given in the first request.
+   * @opt_param int pageSize Maximum number of results per page. A page_size of
+   * zero lets the server choose the number of items to return. A page_size which
+   * is strictly positive will return at most that many items. A negative
+   * page_size will cause an error. Following the first request, subsequent
+   * paginated calls are not required to pass a page_size. If a page_size is set
+   * in subsequent calls, it must match the page_size given in the first request.
    * @return Google_Service_BigtableAdmin_ListAppProfilesResponse
    */
   public function listProjectsInstancesAppProfiles($parent, $optParams = array())

@@ -26,19 +26,14 @@
 class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Service_Resource
 {
   /**
-   * Creates and returns a new product resource.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096
-   * characters. * Returns INVALID_ARGUMENT if description is longer than 4096
-   * characters. * Returns INVALID_ARGUMENT if product_category is missing or
-   * invalid. (products.create)
+   * Creates and returns a new product resource. Possible errors: * Returns
+   * INVALID_ARGUMENT if display_name is missing or longer than 4096 characters. *
+   * Returns INVALID_ARGUMENT if description is longer than 4096 characters. *
+   * Returns INVALID_ARGUMENT if product_category is missing or invalid.
+   * (products.create)
    *
    * @param string $parent Required. The project in which the Product should be
-   * created.
-   *
-   * Format is `projects/PROJECT_ID/locations/LOC_ID`.
+   * created. Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_Product $postBody
    * @param array $optParams Optional parameters.
    *
@@ -55,15 +50,13 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
     return $this->call('create', array($params), "Google_Service_Vision_Product");
   }
   /**
-   * Permanently deletes a product and its reference images.
+   * Permanently deletes a product and its reference images. Metadata of the
+   * product and all its images will be deleted right away, but search queries
+   * against ProductSets containing the product may still work until all related
+   * caches are refreshed. (products.delete)
    *
-   * Metadata of the product and all its images will be deleted right away, but
-   * search queries against ProductSets containing the product may still work
-   * until all related caches are refreshed. (products.delete)
-   *
-   * @param string $name Required. Resource name of product to delete.
-   *
-   * Format is: `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+   * @param string $name Required. Resource name of product to delete. Format is:
+   * `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_VisionEmpty
    */
@@ -74,15 +67,11 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
     return $this->call('delete', array($params), "Google_Service_Vision_VisionEmpty");
   }
   /**
-   * Gets information associated with a Product.
+   * Gets information associated with a Product. Possible errors: * Returns
+   * NOT_FOUND if the Product does not exist. (products.get)
    *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the Product does not exist. (products.get)
-   *
-   * @param string $name Required. Resource name of the Product to get.
-   *
-   * Format is: `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+   * @param string $name Required. Resource name of the Product to get. Format is:
+   * `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_Product
    */
@@ -93,17 +82,12 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
     return $this->call('get', array($params), "Google_Service_Vision_Product");
   }
   /**
-   * Lists products in an unspecified order.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
+   * Lists products in an unspecified order. Possible errors: * Returns
+   * INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
    * (products.listProjectsLocationsProducts)
    *
    * @param string $parent Required. The project OR ProductSet from which Products
-   * should be listed.
-   *
-   * Format: `projects/PROJECT_ID/locations/LOC_ID`
+   * should be listed. Format: `projects/PROJECT_ID/locations/LOC_ID`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token returned from a previous List
@@ -120,25 +104,18 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
   }
   /**
    * Makes changes to a Product resource. Only the `display_name`, `description`,
-   * and `labels` fields can be updated right now.
-   *
-   * If labels are updated, the change will not be reflected in queries until the
-   * next index time.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the Product does not exist. * Returns INVALID_ARGUMENT
-   * if display_name is present in update_mask but is   missing from the request
-   * or longer than 4096 characters. * Returns INVALID_ARGUMENT if description is
-   * present in update_mask but is   longer than 4096 characters. * Returns
-   * INVALID_ARGUMENT if product_category is present in update_mask.
+   * and `labels` fields can be updated right now. If labels are updated, the
+   * change will not be reflected in queries until the next index time. Possible
+   * errors: * Returns NOT_FOUND if the Product does not exist. * Returns
+   * INVALID_ARGUMENT if display_name is present in update_mask but is missing
+   * from the request or longer than 4096 characters. * Returns INVALID_ARGUMENT
+   * if description is present in update_mask but is longer than 4096 characters.
+   * * Returns INVALID_ARGUMENT if product_category is present in update_mask.
    * (products.patch)
    *
-   * @param string $name The resource name of the product.
-   *
-   * Format is: `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
-   *
-   * This field is ignored when creating a product.
+   * @param string $name The resource name of the product. Format is:
+   * `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`. This field is
+   * ignored when creating a product.
    * @param Google_Service_Vision_Product $postBody
    * @param array $optParams Optional parameters.
    *
@@ -155,33 +132,25 @@ class Google_Service_Vision_Resource_ProjectsLocationsProducts extends Google_Se
   }
   /**
    * Asynchronous API to delete all Products in a ProductSet or all Products that
-   * are in no ProductSet.
-   *
-   * If a Product is a member of the specified ProductSet in addition to other
-   * ProductSets, the Product will still be deleted.
-   *
-   * It is recommended to not delete the specified ProductSet until after this
-   * operation has completed. It is also recommended to not add any of the
-   * Products involved in the batch delete to a new ProductSet while this
-   * operation is running because those Products may still end up deleted.
-   *
-   * It's not possible to undo the PurgeProducts operation. Therefore, it is
-   * recommended to keep the csv files used in ImportProductSets (if that was how
-   * you originally built the Product Set) before starting PurgeProducts, in case
-   * you need to re-import the data after deletion.
-   *
-   * If the plan is to purge all of the Products from a ProductSet and then re-use
-   * the empty ProductSet to re-import new Products into the empty ProductSet, you
-   * must wait until the PurgeProducts operation has finished for that ProductSet.
-   *
-   * The google.longrunning.Operation API can be used to keep track of the
-   * progress and results of the request. `Operation.metadata` contains
-   * `BatchOperationMetadata`. (progress) (products.purge)
+   * are in no ProductSet. If a Product is a member of the specified ProductSet in
+   * addition to other ProductSets, the Product will still be deleted. It is
+   * recommended to not delete the specified ProductSet until after this operation
+   * has completed. It is also recommended to not add any of the Products involved
+   * in the batch delete to a new ProductSet while this operation is running
+   * because those Products may still end up deleted. It's not possible to undo
+   * the PurgeProducts operation. Therefore, it is recommended to keep the csv
+   * files used in ImportProductSets (if that was how you originally built the
+   * Product Set) before starting PurgeProducts, in case you need to re-import the
+   * data after deletion. If the plan is to purge all of the Products from a
+   * ProductSet and then re-use the empty ProductSet to re-import new Products
+   * into the empty ProductSet, you must wait until the PurgeProducts operation
+   * has finished for that ProductSet. The google.longrunning.Operation API can be
+   * used to keep track of the progress and results of the request.
+   * `Operation.metadata` contains `BatchOperationMetadata`. (progress)
+   * (products.purge)
    *
    * @param string $parent Required. The project and location in which the
-   * Products should be deleted.
-   *
-   * Format is `projects/PROJECT_ID/locations/LOC_ID`.
+   * Products should be deleted. Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_PurgeProductsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_Operation

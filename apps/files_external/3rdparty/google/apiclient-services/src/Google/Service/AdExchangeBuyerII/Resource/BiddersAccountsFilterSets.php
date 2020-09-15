@@ -30,15 +30,11 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersAccountsFilterSets extend
    * (filterSets.create)
    *
    * @param string $ownerName Name of the owner (bidder or account) of the filter
-   * set to be created. For example:
-   *
-   * - For a bidder-level filter set for bidder 123: `bidders/123`
-   *
-   * - For an account-level filter set for the buyer account representing bidder
-   * 123: `bidders/123/accounts/123`
-   *
-   * - For an account-level filter set for the child seat buyer account 456
-   * whose bidder is 123: `bidders/123/accounts/456`
+   * set to be created. For example: - For a bidder-level filter set for bidder
+   * 123: `bidders/123` - For an account-level filter set for the buyer account
+   * representing bidder 123: `bidders/123/accounts/123` - For an account-level
+   * filter set for the child seat buyer account 456 whose bidder is 123:
+   * `bidders/123/accounts/456`
    * @param Google_Service_AdExchangeBuyerII_FilterSet $postBody
    * @param array $optParams Optional parameters.
    *
@@ -57,16 +53,12 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersAccountsFilterSets extend
    * Deletes the requested filter set from the account with the given account ID.
    * (filterSets.delete)
    *
-   * @param string $name Full name of the resource to delete. For example:
-   *
-   * - For a bidder-level filter set for bidder 123:
-   * `bidders/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the buyer account representing bidder
-   * 123: `bidders/123/accounts/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the child seat buyer account 456
-   * whose bidder is 123: `bidders/123/accounts/456/filterSets/abc`
+   * @param string $name Full name of the resource to delete. For example: - For a
+   * bidder-level filter set for bidder 123: `bidders/123/filterSets/abc` - For an
+   * account-level filter set for the buyer account representing bidder 123:
+   * `bidders/123/accounts/123/filterSets/abc` - For an account-level filter set
+   * for the child seat buyer account 456 whose bidder is 123:
+   * `bidders/123/accounts/456/filterSets/abc`
    * @param array $optParams Optional parameters.
    * @return Google_Service_AdExchangeBuyerII_Adexchangebuyer2Empty
    */
@@ -80,16 +72,12 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersAccountsFilterSets extend
    * Retrieves the requested filter set for the account with the given account ID.
    * (filterSets.get)
    *
-   * @param string $name Full name of the resource being requested. For example:
-   *
-   * - For a bidder-level filter set for bidder 123:
-   * `bidders/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the buyer account representing bidder
-   * 123: `bidders/123/accounts/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the child seat buyer account 456
-   * whose bidder is 123: `bidders/123/accounts/456/filterSets/abc`
+   * @param string $name Full name of the resource being requested. For example: -
+   * For a bidder-level filter set for bidder 123: `bidders/123/filterSets/abc` -
+   * For an account-level filter set for the buyer account representing bidder
+   * 123: `bidders/123/accounts/123/filterSets/abc` - For an account-level filter
+   * set for the child seat buyer account 456 whose bidder is 123:
+   * `bidders/123/accounts/456/filterSets/abc`
    * @param array $optParams Optional parameters.
    * @return Google_Service_AdExchangeBuyerII_FilterSet
    */
@@ -104,24 +92,20 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersAccountsFilterSets extend
    * (filterSets.listBiddersAccountsFilterSets)
    *
    * @param string $ownerName Name of the owner (bidder or account) of the filter
-   * sets to be listed. For example:
-   *
-   * - For a bidder-level filter set for bidder 123: `bidders/123`
-   *
-   * - For an account-level filter set for the buyer account representing bidder
-   * 123: `bidders/123/accounts/123`
-   *
-   * - For an account-level filter set for the child seat buyer account 456
-   * whose bidder is 123: `bidders/123/accounts/456`
+   * sets to be listed. For example: - For a bidder-level filter set for bidder
+   * 123: `bidders/123` - For an account-level filter set for the buyer account
+   * representing bidder 123: `bidders/123/accounts/123` - For an account-level
+   * filter set for the child seat buyer account 456 whose bidder is 123:
+   * `bidders/123/accounts/456`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. The server may return fewer
+   * results than requested. If unspecified, the server will pick an appropriate
+   * default.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListFilterSetsResponse.nextPageToken returned from the previous call to the
    * accounts.filterSets.list method.
-   * @opt_param int pageSize Requested page size. The server may return fewer
-   * results than requested. If unspecified, the server will pick an appropriate
-   * default.
    * @return Google_Service_AdExchangeBuyerII_ListFilterSetsResponse
    */
   public function listBiddersAccountsFilterSets($ownerName, $optParams = array())

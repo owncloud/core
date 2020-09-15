@@ -53,17 +53,17 @@
     },
     {
         "name": "google/apiclient",
-        "version": "v2.7.0",
-        "version_normalized": "2.7.0.0",
+        "version": "v2.7.1",
+        "version_normalized": "2.7.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-api-php-client.git",
-            "reference": "48ec94577b51bde415270116118b07a294e07c43"
+            "reference": "e748d1d5a51166754f13809d35f1fa162cbec530"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/48ec94577b51bde415270116118b07a294e07c43",
-            "reference": "48ec94577b51bde415270116118b07a294e07c43",
+            "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/e748d1d5a51166754f13809d35f1fa162cbec530",
+            "reference": "e748d1d5a51166754f13809d35f1fa162cbec530",
             "shasum": ""
         },
         "require": {
@@ -89,7 +89,7 @@
         "suggest": {
             "cache/filesystem-adapter": "For caching certs and tokens (using Google_Client::setCache)"
         },
-        "time": "2020-07-23T21:37:43+00:00",
+        "time": "2020-09-08T16:38:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -117,17 +117,17 @@
     },
     {
         "name": "google/apiclient-services",
-        "version": "v0.141",
-        "version_normalized": "0.141.0.0",
+        "version": "v0.146",
+        "version_normalized": "0.146.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-api-php-client-services.git",
-            "reference": "4ba7279b0a56366e4f19b9d1a1b5456f99353b6f"
+            "reference": "029e20e81508cee6dc652529514eeeb1cf56ce54"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/4ba7279b0a56366e4f19b9d1a1b5456f99353b6f",
-            "reference": "4ba7279b0a56366e4f19b9d1a1b5456f99353b6f",
+            "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/029e20e81508cee6dc652529514eeeb1cf56ce54",
+            "reference": "029e20e81508cee6dc652529514eeeb1cf56ce54",
             "shasum": ""
         },
         "require": {
@@ -136,7 +136,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8|^5"
         },
-        "time": "2020-07-27T00:25:27+00:00",
+        "time": "2020-09-12T00:24:59+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -156,17 +156,17 @@
     },
     {
         "name": "google/auth",
-        "version": "v1.11.1",
-        "version_normalized": "1.11.1.0",
+        "version": "v1.12.0",
+        "version_normalized": "1.12.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-auth-library-php.git",
-            "reference": "bb959e91bd8ffbd352ab76cbf11d656ce6435088"
+            "reference": "74cad289014f7ef747618480f6b59f6303357f34"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/bb959e91bd8ffbd352ab76cbf11d656ce6435088",
-            "reference": "bb959e91bd8ffbd352ab76cbf11d656ce6435088",
+            "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/74cad289014f7ef747618480f6b59f6303357f34",
+            "reference": "74cad289014f7ef747618480f6b59f6303357f34",
             "shasum": ""
         },
         "require": {
@@ -188,7 +188,7 @@
         "suggest": {
             "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings or for token management. Please require version ^2."
         },
-        "time": "2020-07-27T18:33:35+00:00",
+        "time": "2020-09-08T16:33:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

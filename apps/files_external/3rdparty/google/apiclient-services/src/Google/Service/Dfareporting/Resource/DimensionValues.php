@@ -33,9 +33,9 @@ class Google_Service_Dfareporting_Resource_DimensionValues extends Google_Servic
    * @param Google_Service_Dfareporting_DimensionValueRequest $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken The value of the nextToken from the previous
    * result page.
+   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Dfareporting_DimensionValueList
    */
   public function query($profileId, Google_Service_Dfareporting_DimensionValueRequest $postBody, $optParams = array())

@@ -26,10 +26,8 @@
 class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Google_Service_Resource
 {
   /**
-   * Creates a search application.
-   *
-   * **Note:** This API requires an admin account to execute.
-   * (searchapplications.create)
+   * Creates a search application. **Note:** This API requires an admin account to
+   * execute. (searchapplications.create)
    *
    * @param Google_Service_CloudSearch_SearchApplication $postBody
    * @param array $optParams Optional parameters.
@@ -42,10 +40,8 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
     return $this->call('create', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Deletes a search application.
-   *
-   * **Note:** This API requires an admin account to execute.
-   * (searchapplications.delete)
+   * Deletes a search application. **Note:** This API requires an admin account to
+   * execute. (searchapplications.delete)
    *
    * @param string $name The name of the search application to be deleted. Format:
    * applications/{application_id}.
@@ -62,10 +58,8 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
     return $this->call('delete', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Gets the specified search application.
-   *
-   * **Note:** This API requires an admin account to execute.
-   * (searchapplications.get)
+   * Gets the specified search application. **Note:** This API requires an admin
+   * account to execute. (searchapplications.get)
    *
    * @param string $name Name of the search application. Format:
    * searchapplications/{application_id}.
@@ -82,18 +76,16 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
     return $this->call('get', array($params), "Google_Service_CloudSearch_SearchApplication");
   }
   /**
-   * Lists all search applications.
-   *
-   * **Note:** This API requires an admin account to execute.
-   * (searchapplications.listSettingsSearchapplications)
+   * Lists all search applications. **Note:** This API requires an admin account
+   * to execute. (searchapplications.listSettingsSearchapplications)
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return.
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous List request, if any. The default value is 10
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
    * help with debugging, set this field. Otherwise, ignore this field.
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous List request, if any.  The default value is 10
-   * @opt_param int pageSize The maximum number of items to return.
    * @return Google_Service_CloudSearch_ListSearchApplicationsResponse
    */
   public function listSettingsSearchapplications($optParams = array())
@@ -104,9 +96,7 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
   }
   /**
    * Resets a search application to default settings. This will return an empty
-   * response.
-   *
-   * **Note:** This API requires an admin account to execute.
+   * response. **Note:** This API requires an admin account to execute.
    * (searchapplications.reset)
    *
    * @param string $name The name of the search application to be reset. Format:
@@ -122,10 +112,8 @@ class Google_Service_CloudSearch_Resource_SettingsSearchapplications extends Goo
     return $this->call('reset', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Updates a search application.
-   *
-   * **Note:** This API requires an admin account to execute.
-   * (searchapplications.update)
+   * Updates a search application. **Note:** This API requires an admin account to
+   * execute. (searchapplications.update)
    *
    * @param string $name Name of the Search Application. Format:
    * searchapplications/{application_id}.

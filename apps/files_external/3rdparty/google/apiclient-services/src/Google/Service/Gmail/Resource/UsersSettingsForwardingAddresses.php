@@ -26,15 +26,14 @@
 class Google_Service_Gmail_Resource_UsersSettingsForwardingAddresses extends Google_Service_Resource
 {
   /**
-   * Creates a forwarding address.  If ownership verification is required, a
+   * Creates a forwarding address. If ownership verification is required, a
    * message will be sent to the recipient and the resource's verification status
    * will be set to `pending`; otherwise, the resource will be created with
-   * verification status set to `accepted`.
+   * verification status set to `accepted`. This method is only available to
+   * service account clients that have been delegated domain-wide authority.
+   * (forwardingAddresses.create)
    *
-   * This method is only available to service account clients that have been
-   * delegated domain-wide authority. (forwardingAddresses.create)
-   *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param Google_Service_Gmail_ForwardingAddress $postBody
    * @param array $optParams Optional parameters.
@@ -48,12 +47,11 @@ class Google_Service_Gmail_Resource_UsersSettingsForwardingAddresses extends Goo
   }
   /**
    * Deletes the specified forwarding address and revokes any verification that
-   * may have been required.
+   * may have been required. This method is only available to service account
+   * clients that have been delegated domain-wide authority.
+   * (forwardingAddresses.delete)
    *
-   * This method is only available to service account clients that have been
-   * delegated domain-wide authority. (forwardingAddresses.delete)
-   *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param string $forwardingEmail The forwarding address to be deleted.
    * @param array $optParams Optional parameters.
@@ -67,7 +65,7 @@ class Google_Service_Gmail_Resource_UsersSettingsForwardingAddresses extends Goo
   /**
    * Gets the specified forwarding address. (forwardingAddresses.get)
    *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param string $forwardingEmail The forwarding address to be retrieved.
    * @param array $optParams Optional parameters.
@@ -83,7 +81,7 @@ class Google_Service_Gmail_Resource_UsersSettingsForwardingAddresses extends Goo
    * Lists the forwarding addresses for the specified account.
    * (forwardingAddresses.listUsersSettingsForwardingAddresses)
    *
-   * @param string $userId User's email address.  The special value "me" can be
+   * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Gmail_ListForwardingAddressesResponse

@@ -27,7 +27,7 @@ class Google_Service_Cloudbilling_Resource_BillingAccounts extends Google_Servic
 {
   /**
    * Creates a billing account. This method can only be used to create [billing
-   * subaccounts](https://cloud.google.com/billing/docs/concepts) by GCP
+   * subaccounts](https://cloud.google.com/billing/docs/concepts) by Google Cloud
    * resellers. When creating a subaccount, the current authenticated user must
    * have the `billing.accounts.update` IAM permission on the master account,
    * which is typically given to billing account
@@ -73,17 +73,12 @@ class Google_Service_Cloudbilling_Resource_BillingAccounts extends Google_Servic
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_Cloudbilling_Policy
    */
@@ -106,12 +101,12 @@ class Google_Service_Cloudbilling_Resource_BillingAccounts extends Google_Servic
    * provided reseller billing account. (e.g.
    * "master_billing_account=billingAccounts/012345-678901-ABCDEF"). Boolean
    * algebra and other fields are not currently supported.
+   * @opt_param int pageSize Requested page size. The maximum page size is 100;
+   * this is also the default.
    * @opt_param string pageToken A token identifying a page of results to return.
    * This should be a `next_page_token` value returned from a previous
    * `ListBillingAccounts` call. If unspecified, the first page of results is
    * returned.
-   * @opt_param int pageSize Requested page size. The maximum page size is 100;
-   * this is also the default.
    * @return Google_Service_Cloudbilling_ListBillingAccountsResponse
    */
   public function listBillingAccounts($optParams = array())

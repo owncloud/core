@@ -60,21 +60,18 @@ class Google_Service_Dfareporting_Resource_Campaigns extends Google_Service_Reso
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string advertiserGroupIds Select only campaigns whose advertisers
-   * belong to these advertiser groups.
-   * @opt_param string advertiserIds Select only campaigns that belong to these
-   * advertisers.
-   * @opt_param bool archived Select only archived campaigns. Don't set this field
-   * to select both archived and non-archived campaigns.
-   * @opt_param bool atLeastOneOptimizationActivity Select only campaigns that
-   * have at least one optimization activity.
-   * @opt_param string excludedIds Exclude campaigns with these IDs.
    * @opt_param string ids Select only campaigns with these IDs.
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string overriddenEventTagId Select only campaigns that have
    * overridden this event tag ID.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
+   * @opt_param string subaccountId Select only campaigns that belong to this
+   * subaccount.
+   * @opt_param string excludedIds Exclude campaigns with these IDs.
+   * @opt_param bool atLeastOneOptimizationActivity Select only campaigns that
+   * have at least one optimization activity.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string advertiserGroupIds Select only campaigns whose advertisers
+   * belong to these advertiser groups.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string searchString Allows searching for campaigns by name or ID.
    * Wildcards (*) are allowed. For example, "campaign*2015" will return campaigns
    * with names like "campaign June 2015", "campaign April 2015", or simply
@@ -82,10 +79,13 @@ class Google_Service_Dfareporting_Resource_Campaigns extends Google_Service_Reso
    * start and the end of the search string. For example, a search string of
    * "campaign" will match campaigns with name "my campaign", "campaign 2015", or
    * simply "campaign".
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
+   * @opt_param string advertiserIds Select only campaigns that belong to these
+   * advertisers.
+   * @opt_param bool archived Select only archived campaigns. Don't set this field
+   * to select both archived and non-archived campaigns.
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string sortOrder Order of sorted results.
-   * @opt_param string subaccountId Select only campaigns that belong to this
-   * subaccount.
    * @return Google_Service_Dfareporting_CampaignsListResponse
    */
   public function listCampaigns($profileId, $optParams = array())
@@ -99,14 +99,15 @@ class Google_Service_Dfareporting_Resource_Campaigns extends Google_Service_Reso
    * (campaigns.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Campaign ID.
    * @param Google_Service_Dfareporting_Campaign $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id Campaign ID.
    * @return Google_Service_Dfareporting_Campaign
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_Campaign $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_Campaign $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_Campaign");
   }

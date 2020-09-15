@@ -46,16 +46,16 @@ class Google_Service_Dfareporting_Resource_MobileApps extends Google_Service_Res
    * @param array $optParams Optional parameters.
    *
    * @opt_param string directories Select only apps from these directories.
-   * @opt_param string ids Select only apps with these IDs.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "app*2015" will return objects with
    * names like "app Jan 2018", "app Jan 2018", or simply "app 2018". Most of the
    * searches also add wildcards implicitly at the start and the end of the search
    * string. For example, a search string of "app" will match objects with name
    * "my app", "app 2018", or simply "app".
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string ids Select only apps with these IDs.
    * @return Google_Service_Dfareporting_MobileAppsListResponse
    */
   public function listMobileApps($profileId, $optParams = array())

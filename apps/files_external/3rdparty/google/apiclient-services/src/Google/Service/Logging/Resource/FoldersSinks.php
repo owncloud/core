@@ -102,13 +102,13 @@ class Google_Service_Logging_Resource_FoldersSinks extends Google_Service_Resour
    * "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The maximum number of results to return
+   * from this request. Non-positive values are ignored. The presence of
+   * nextPageToken in the response indicates that more results might be available.
    * @opt_param string pageToken Optional. If present, then retrieve the next
    * batch of results from the preceding call to this method. pageToken must be
    * the value of nextPageToken from the previous response. The values of other
    * method parameters should be identical to those in the previous call.
-   * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request. Non-positive values are ignored. The presence of
-   * nextPageToken in the response indicates that more results might be available.
    * @return Google_Service_Logging_ListSinksResponse
    */
   public function listFoldersSinks($parent, $optParams = array())
@@ -145,10 +145,10 @@ class Google_Service_Logging_Resource_FoldersSinks extends Google_Service_Resour
    * in sink that need an update. A sink field will be overwritten if, and only
    * if, it is in the update mask. name and output only fields cannot be
    * updated.An empty updateMask is temporarily treated as using the following
-   * mask for backwards compatibility purposes:
-   * destination,filter,includeChildren At some point in the future, behavior will
-   * be removed and specifying an empty updateMask will be an error.For a detailed
-   * FieldMask definition, see https://developers.google.com/protocol-
+   * mask for backwards compatibility purposes: destination,filter,includeChildren
+   * At some point in the future, behavior will be removed and specifying an empty
+   * updateMask will be an error.For a detailed FieldMask definition, see
+   * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
    * updateMask=filter.
    * @return Google_Service_Logging_LogSink
@@ -187,10 +187,10 @@ class Google_Service_Logging_Resource_FoldersSinks extends Google_Service_Resour
    * in sink that need an update. A sink field will be overwritten if, and only
    * if, it is in the update mask. name and output only fields cannot be
    * updated.An empty updateMask is temporarily treated as using the following
-   * mask for backwards compatibility purposes:
-   * destination,filter,includeChildren At some point in the future, behavior will
-   * be removed and specifying an empty updateMask will be an error.For a detailed
-   * FieldMask definition, see https://developers.google.com/protocol-
+   * mask for backwards compatibility purposes: destination,filter,includeChildren
+   * At some point in the future, behavior will be removed and specifying an empty
+   * updateMask will be an error.For a detailed FieldMask definition, see
+   * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
    * updateMask=filter.
    * @return Google_Service_Logging_LogSink

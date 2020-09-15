@@ -38,7 +38,7 @@ use Monolog\Handler\SyslogHandler as MonologSyslogHandler;
  */
 class Google_Client
 {
-  const LIBVER = "2.7.0";
+  const LIBVER = "2.7.1";
   const USER_AGENT_SUFFIX = "google-api-php-client/";
   const OAUTH2_REVOKE_URI = 'https://oauth2.googleapis.com/revoke';
   const OAUTH2_TOKEN_URI = 'https://oauth2.googleapis.com/token';
@@ -168,6 +168,18 @@ class Google_Client
     if (!is_null($this->config['scopes'])) {
       $this->setScopes($this->config['scopes']);
       unset($this->config['scopes']);
+    }
+
+    // Set a default token callback to update the in-memory access token
+    if (is_null($this->config['token_callback'])) {
+      $this->config['token_callback'] = function ($cacheKey, $newAccessToken) {
+        $this->setAccessToken(
+            [
+              'access_token' => $newAccessToken,
+              'created' => time(),
+            ]
+        );
+      };
     }
   }
 
@@ -1169,7 +1181,7 @@ class Google_Client
         'client_email' => $this->config['client_email'],
         'private_key' => $signingKey,
         'type' => 'service_account',
-        'quota_project' => $this->config['quota_project'],
+        'quota_project_id' => $this->config['quota_project'],
       );
       $credentials = CredentialsLoader::makeCredentials(
           $scopes,

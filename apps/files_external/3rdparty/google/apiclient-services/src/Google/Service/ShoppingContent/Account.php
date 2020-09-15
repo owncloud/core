@@ -23,10 +23,12 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
   public $adultContent;
   protected $businessInformationType = 'Google_Service_ShoppingContent_AccountBusinessInformation';
   protected $businessInformationDataType = '';
+  public $cssId;
   protected $googleMyBusinessLinkType = 'Google_Service_ShoppingContent_AccountGoogleMyBusinessLink';
   protected $googleMyBusinessLinkDataType = '';
   public $id;
   public $kind;
+  public $labelIds;
   public $name;
   public $sellerId;
   protected $usersType = 'Google_Service_ShoppingContent_AccountUser';
@@ -71,6 +73,14 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
   {
     return $this->businessInformation;
   }
+  public function setCssId($cssId)
+  {
+    $this->cssId = $cssId;
+  }
+  public function getCssId()
+  {
+    return $this->cssId;
+  }
   /**
    * @param Google_Service_ShoppingContent_AccountGoogleMyBusinessLink
    */
@@ -100,6 +110,14 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
   public function getKind()
   {
     return $this->kind;
+  }
+  public function setLabelIds($labelIds)
+  {
+    $this->labelIds = $labelIds;
+  }
+  public function getLabelIds()
+  {
+    return $this->labelIds;
   }
   public function setName($name)
   {

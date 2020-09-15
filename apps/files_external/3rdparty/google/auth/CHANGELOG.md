@@ -1,3 +1,15 @@
+## 1.12.0 (8/31/2020)
+
+* [feat]: Add QuotaProject option to getMiddleware (#296)
+* [feat]: Add caching for calls to GCECredentials::onGce (#301)
+* [feat]: Add updateMetadata function to token cache (#298)
+* [fix]: Use quota_project_id instead of quota_project (#299)
+
+## 1.11.1 (7/27/2020)
+
+* [fix]: catch ConnectException in GCE check (#294)
+* [docs]: Adds [reference docs](https://googleapis.github.io/google-auth-library-php/master)
+
 ## 1.11.0 (7/22/2020)
 
 * [feat]: Check cache expiration (#291)

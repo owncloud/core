@@ -18,6 +18,10 @@
 class Google_Service_Sheets_Spreadsheet extends Google_Collection
 {
   protected $collection_key = 'sheets';
+  protected $dataSourceSchedulesType = 'Google_Service_Sheets_DataSourceRefreshSchedule';
+  protected $dataSourceSchedulesDataType = 'array';
+  protected $dataSourcesType = 'Google_Service_Sheets_DataSource';
+  protected $dataSourcesDataType = 'array';
   protected $developerMetadataType = 'Google_Service_Sheets_DeveloperMetadata';
   protected $developerMetadataDataType = 'array';
   protected $namedRangesType = 'Google_Service_Sheets_NamedRange';
@@ -29,6 +33,34 @@ class Google_Service_Sheets_Spreadsheet extends Google_Collection
   public $spreadsheetId;
   public $spreadsheetUrl;
 
+  /**
+   * @param Google_Service_Sheets_DataSourceRefreshSchedule
+   */
+  public function setDataSourceSchedules($dataSourceSchedules)
+  {
+    $this->dataSourceSchedules = $dataSourceSchedules;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceRefreshSchedule
+   */
+  public function getDataSourceSchedules()
+  {
+    return $this->dataSourceSchedules;
+  }
+  /**
+   * @param Google_Service_Sheets_DataSource
+   */
+  public function setDataSources($dataSources)
+  {
+    $this->dataSources = $dataSources;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSource
+   */
+  public function getDataSources()
+  {
+    return $this->dataSources;
+  }
   /**
    * @param Google_Service_Sheets_DeveloperMetadata
    */

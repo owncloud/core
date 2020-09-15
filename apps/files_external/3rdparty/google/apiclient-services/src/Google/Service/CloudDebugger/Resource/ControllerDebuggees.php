@@ -26,16 +26,14 @@
 class Google_Service_CloudDebugger_Resource_ControllerDebuggees extends Google_Service_Resource
 {
   /**
-   * Registers the debuggee with the controller service.
-   *
-   * All agents attached to the same application must call this method with
-   * exactly the same request content to get back the same stable `debuggee_id`.
-   * Agents should call this method again whenever `google.rpc.Code.NOT_FOUND` is
-   * returned from any controller method.
-   *
-   * This protocol allows the controller service to disable debuggees, recover
-   * from data loss, or change the `debuggee_id` format. Agents must handle
-   * `debuggee_id` value changing upon re-registration. (debuggees.register)
+   * Registers the debuggee with the controller service. All agents attached to
+   * the same application must call this method with exactly the same request
+   * content to get back the same stable `debuggee_id`. Agents should call this
+   * method again whenever `google.rpc.Code.NOT_FOUND` is returned from any
+   * controller method. This protocol allows the controller service to disable
+   * debuggees, recover from data loss, or change the `debuggee_id` format. Agents
+   * must handle `debuggee_id` value changing upon re-registration.
+   * (debuggees.register)
    *
    * @param Google_Service_CloudDebugger_RegisterDebuggeeRequest $postBody
    * @param array $optParams Optional parameters.

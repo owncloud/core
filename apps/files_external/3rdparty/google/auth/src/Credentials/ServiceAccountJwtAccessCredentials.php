@@ -79,8 +79,8 @@ class ServiceAccountJwtAccessCredentials extends CredentialsLoader implements
                 'json key is missing the private_key field'
             );
         }
-        if (array_key_exists('quota_project', $jsonKey)) {
-            $this->quotaProject = (string) $jsonKey['quota_project'];
+        if (array_key_exists('quota_project_id', $jsonKey)) {
+            $this->quotaProject = (string) $jsonKey['quota_project_id'];
         }
         $this->auth = new OAuth2([
             'issuer' => $jsonKey['client_email'],

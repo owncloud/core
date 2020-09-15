@@ -139,7 +139,7 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * The mothod removes a project lien with a 'TenantManager' origin if that was
    * added. It will then attempt to delete the project. If that operation fails,
    * this method also fails. After the project has been deleted, the tenant
-   * resource state is set to DELETED.  To permanently remove resource metadata,
+   * resource state is set to DELETED. To permanently remove resource metadata,
    * call the `RemoveTenantProject` method. New resources with the same tag can't
    * be added if there are existing resources in a DELETED state. Operation.
    * (tenancyUnits.deleteProject)
@@ -171,13 +171,13 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * 'service.googleapis.com'.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The continuation token, which is used to page
-   * through large result sets. To get the next page of results, set this
-   * parameter to the value of `nextPageToken` from the previous response.
    * @opt_param int pageSize The maximum number of results returned by this
    * request.
    * @opt_param string filter Filter expression over tenancy resources field.
    * Optional.
+   * @opt_param string pageToken The continuation token, which is used to page
+   * through large result sets. To get the next page of results, set this
+   * parameter to the value of `nextPageToken` from the previous response.
    * @return Google_Service_ServiceConsumerManagement_ListTenancyUnitsResponse
    */
   public function listServicesTenancyUnits($parent, $optParams = array())

@@ -15,8 +15,10 @@
  * the License.
  */
 
-class Google_Service_ShoppingContent_ProductStatusItemLevelIssue extends Google_Model
+class Google_Service_ShoppingContent_ProductStatusItemLevelIssue extends Google_Collection
 {
+  protected $collection_key = 'applicableCountries';
+  public $applicableCountries;
   public $attributeName;
   public $code;
   public $description;
@@ -26,6 +28,14 @@ class Google_Service_ShoppingContent_ProductStatusItemLevelIssue extends Google_
   public $resolution;
   public $servability;
 
+  public function setApplicableCountries($applicableCountries)
+  {
+    $this->applicableCountries = $applicableCountries;
+  }
+  public function getApplicableCountries()
+  {
+    return $this->applicableCountries;
+  }
   public function setAttributeName($attributeName)
   {
     $this->attributeName = $attributeName;

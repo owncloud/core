@@ -120,10 +120,8 @@ class Google_Service_AndroidEnterprise_Resource_Devices extends Google_Service_R
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Mask that identifies which fields to update. If
-   * not set, all modifiable fields will be modified.
-   *
-   * When set in a query parameter, this field should be specified as
-   * updateMask=field1,field2,...
+   * not set, all modifiable fields will be modified. When set in a query
+   * parameter, this field should be specified as updateMask=,,...
    * @return Google_Service_AndroidEnterprise_Device
    */
   public function update($enterpriseId, $userId, $deviceId, Google_Service_AndroidEnterprise_Device $postBody, $optParams = array())

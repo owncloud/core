@@ -45,13 +45,9 @@ class Google_Service_Recommender_Resource_ProjectsLocationsInsightTypesInsights 
    * (insights.listProjectsLocationsInsightTypesInsights)
    *
    * @param string $parent Required. The container resource on which to execute
-   * the request. Acceptable formats:
-   *
-   * 1. "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE
-   * _ID]",
-   *
-   * LOCATION here refers to GCP Locations:
-   * https://cloud.google.com/about/locations/
+   * the request. Acceptable formats: 1. "projects/[PROJECT_NUMBER]/locations/[LOC
+   * ATION]/insightTypes/[INSIGHT_TYPE_ID]", LOCATION here refers to GCP
+   * Locations: https://cloud.google.com/about/locations/
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Optional. If present, retrieves the next batch of
@@ -59,7 +55,7 @@ class Google_Service_Recommender_Resource_ProjectsLocationsInsightTypesInsights 
    * value of `next_page_token` from the previous response. The values of other
    * method parameters must be identical to those in the previous call.
    * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request.  Non-positive values are ignored. If not specified, the
+   * from this request. Non-positive values are ignored. If not specified, the
    * server will determine the number of results to return.
    * @opt_param string filter Optional. Filter expression to restrict the insights
    * returned. Supported filter fields: state Eg: `state:"DISMISSED" or
@@ -75,11 +71,9 @@ class Google_Service_Recommender_Resource_ProjectsLocationsInsightTypesInsights 
   /**
    * Marks the Insight State as Accepted. Users can use this method to indicate to
    * the Recommender API that they have applied some action based on the insight.
-   * This stops the insight content from being updated.
-   *
-   * MarkInsightAccepted can be applied to insights in ACTIVE state. Requires the
-   * recommender.*.update IAM permission for the specified insight.
-   * (insights.markAccepted)
+   * This stops the insight content from being updated. MarkInsightAccepted can be
+   * applied to insights in ACTIVE state. Requires the recommender.*.update IAM
+   * permission for the specified insight. (insights.markAccepted)
    *
    * @param string $name Required. Name of the insight.
    * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkInsightAcceptedRequest $postBody

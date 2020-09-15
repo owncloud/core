@@ -81,17 +81,12 @@ class Google_Service_DataFusion_Resource_ProjectsLocationsInstances extends Goog
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_DataFusion_Policy
    */
@@ -111,12 +106,12 @@ class Google_Service_DataFusion_Resource_ProjectsLocationsInstances extends Goog
    * project are queried, and the results are aggregated.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token value to use if there are
-   * additional results to retrieve for this list request.
-   * @opt_param string filter List filter.
    * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string orderBy Sort results. Supported values are "name", "name
-   * desc",  or "" (unsorted).
+   * desc", or "" (unsorted).
+   * @opt_param string filter List filter.
+   * @opt_param string pageToken The next_page_token value to use if there are
+   * additional results to retrieve for this list request.
    * @return Google_Service_DataFusion_ListInstancesResponse
    */
   public function listProjectsLocationsInstances($parent, $optParams = array())
@@ -137,8 +132,8 @@ class Google_Service_DataFusion_Resource_ProjectsLocationsInstances extends Goog
    * the update will overwrite in an instance resource. The fields specified in
    * the update_mask are relative to the resource, not the full request. A field
    * will be overwritten if it is in the mask. If the user does not provide a
-   * mask, all the supported fields (labels and options currently) will be
-   * overwritten.
+   * mask, all the supported fields (labels, options, and version currently) will
+   * be overwritten.
    * @return Google_Service_DataFusion_Operation
    */
   public function patch($name, Google_Service_DataFusion_Instance $postBody, $optParams = array())
@@ -166,10 +161,8 @@ class Google_Service_DataFusion_Resource_ProjectsLocationsInstances extends Goog
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.
-   *
-   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
-   * (instances.setIamPolicy)
+   * existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and
+   * `PERMISSION_DENIED` errors. (instances.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -187,11 +180,10 @@ class Google_Service_DataFusion_Resource_ProjectsLocationsInstances extends Goog
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * `NOT_FOUND` error.
-   *
-   * Note: This operation is designed to be used for building permission-aware UIs
-   * and command-line tools, not for authorization checking. This operation may
-   * "fail open" without warning. (instances.testIamPermissions)
+   * `NOT_FOUND` error. Note: This operation is designed to be used for building
+   * permission-aware UIs and command-line tools, not for authorization checking.
+   * This operation may "fail open" without warning.
+   * (instances.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value
@@ -205,23 +197,5 @@ class Google_Service_DataFusion_Resource_ProjectsLocationsInstances extends Goog
     $params = array('resource' => $resource, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('testIamPermissions', array($params), "Google_Service_DataFusion_TestIamPermissionsResponse");
-  }
-  /**
-   * Upgrade a single Data Fusion instance. At the end of an operation instance is
-   * fully upgraded. (instances.upgrade)
-   *
-   * @param string $name Name of the Data Fusion instance which need to be
-   * upgraded in the form of
-   * projects/{project}/locations/{location}/instances/{instance} Instance will be
-   * upgraded with the latest stable version of the Data Fusion.
-   * @param Google_Service_DataFusion_UpgradeInstanceRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_DataFusion_Operation
-   */
-  public function upgrade($name, Google_Service_DataFusion_UpgradeInstanceRequest $postBody, $optParams = array())
-  {
-    $params = array('name' => $name, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('upgrade', array($params), "Google_Service_DataFusion_Operation");
   }
 }

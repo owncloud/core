@@ -17,6 +17,7 @@
 
 class Google_Service_Compute_NodeTemplate extends Google_Model
 {
+  public $cpuOvercommitType;
   public $creationTimestamp;
   public $description;
   public $id;
@@ -33,6 +34,14 @@ class Google_Service_Compute_NodeTemplate extends Google_Model
   public $status;
   public $statusMessage;
 
+  public function setCpuOvercommitType($cpuOvercommitType)
+  {
+    $this->cpuOvercommitType = $cpuOvercommitType;
+  }
+  public function getCpuOvercommitType()
+  {
+    return $this->cpuOvercommitType;
+  }
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;

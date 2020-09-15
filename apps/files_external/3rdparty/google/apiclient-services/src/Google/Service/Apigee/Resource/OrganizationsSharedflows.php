@@ -28,12 +28,9 @@ class Google_Service_Apigee_Resource_OrganizationsSharedflows extends Google_Ser
   /**
    * Uploads a ZIP-formatted shared flow configuration bundle to an organization.
    * If the shared flow already exists, this creates a new revision of it. If the
-   * shared flow does not exist, this creates it.
-   *
-   * Once imported, the shared flow revision must be deployed before it can be
-   * accessed at runtime.
-   *
-   * The size limit of a shared flow bundle is 15 MB. (sharedflows.create)
+   * shared flow does not exist, this creates it. Once imported, the shared flow
+   * revision must be deployed before it can be accessed at runtime. The size
+   * limit of a shared flow bundle is 15 MB. (sharedflows.create)
    *
    * @param string $parent Required. The name of the parent organization under
    * which to create the shared flow. Must be of the form:
@@ -72,7 +69,7 @@ class Google_Service_Apigee_Resource_OrganizationsSharedflows extends Google_Ser
    * (sharedflows.get)
    *
    * @param string $name Required. The name of the shared flow to get. Must be of
-   * the form:   `organizations/{organization_id}/sharedflows/{shared_flow_id}`
+   * the form: `organizations/{organization_id}/sharedflows/{shared_flow_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1SharedFlow
    */
@@ -91,10 +88,10 @@ class Google_Service_Apigee_Resource_OrganizationsSharedflows extends Google_Ser
    * `organizations/{organization_id}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeMetaData Indicates whether to include shared flow
-   * metadata in the response.
    * @opt_param bool includeRevisions Indicates whether to include a list of
    * revisions in the response.
+   * @opt_param bool includeMetaData Indicates whether to include shared flow
+   * metadata in the response.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListSharedFlowsResponse
    */
   public function listOrganizationsSharedflows($parent, $optParams = array())

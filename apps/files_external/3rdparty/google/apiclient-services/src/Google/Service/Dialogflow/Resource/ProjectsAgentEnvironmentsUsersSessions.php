@@ -56,9 +56,8 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEnvironmentsUsersSessions 
    * specified, we are using "-". It's up to the API caller to choose an
    * appropriate `Session ID` and `User Id`. They can be a random number or some
    * type of user and session identifiers (preferably hashed). The length of the
-   * `Session ID` and `User ID` must not exceed 36 characters.
-   *
-   * For more information, see the [API interactions
+   * `Session ID` and `User ID` must not exceed 36 characters. For more
+   * information, see the [API interactions
    * guide](https://cloud.google.com/dialogflow/docs/api-overview).
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2DetectIntentRequest $postBody
    * @param array $optParams Optional parameters.

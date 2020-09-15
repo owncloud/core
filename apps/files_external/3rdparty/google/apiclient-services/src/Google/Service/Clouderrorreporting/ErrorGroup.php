@@ -20,6 +20,7 @@ class Google_Service_Clouderrorreporting_ErrorGroup extends Google_Collection
   protected $collection_key = 'trackingIssues';
   public $groupId;
   public $name;
+  public $resolutionStatus;
   protected $trackingIssuesType = 'Google_Service_Clouderrorreporting_TrackingIssue';
   protected $trackingIssuesDataType = 'array';
 
@@ -38,6 +39,14 @@ class Google_Service_Clouderrorreporting_ErrorGroup extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setResolutionStatus($resolutionStatus)
+  {
+    $this->resolutionStatus = $resolutionStatus;
+  }
+  public function getResolutionStatus()
+  {
+    return $this->resolutionStatus;
   }
   /**
    * @param Google_Service_Clouderrorreporting_TrackingIssue

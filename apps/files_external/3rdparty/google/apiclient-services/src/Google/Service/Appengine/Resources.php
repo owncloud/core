@@ -20,6 +20,7 @@ class Google_Service_Appengine_Resources extends Google_Collection
   protected $collection_key = 'volumes';
   public $cpu;
   public $diskGb;
+  public $kmsKeyReference;
   public $memoryGb;
   protected $volumesType = 'Google_Service_Appengine_Volume';
   protected $volumesDataType = 'array';
@@ -39,6 +40,14 @@ class Google_Service_Appengine_Resources extends Google_Collection
   public function getDiskGb()
   {
     return $this->diskGb;
+  }
+  public function setKmsKeyReference($kmsKeyReference)
+  {
+    $this->kmsKeyReference = $kmsKeyReference;
+  }
+  public function getKmsKeyReference()
+  {
+    return $this->kmsKeyReference;
   }
   public function setMemoryGb($memoryGb)
   {

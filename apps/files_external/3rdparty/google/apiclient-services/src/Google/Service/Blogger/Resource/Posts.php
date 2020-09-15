@@ -45,9 +45,9 @@ class Google_Service_Blogger_Resource_Posts extends Google_Service_Resource
    * @param string $postId
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view
    * @opt_param string maxComments
    * @opt_param bool fetchBody
+   * @opt_param string view
    * @opt_param bool fetchImages
    * @return Google_Service_Blogger_Post
    */
@@ -81,9 +81,9 @@ class Google_Service_Blogger_Resource_Posts extends Google_Service_Resource
    * @param Google_Service_Blogger_Post $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool fetchBody
-   * @opt_param bool isDraft
    * @opt_param bool fetchImages
+   * @opt_param bool isDraft
+   * @opt_param bool fetchBody
    * @return Google_Service_Blogger_Post
    */
   public function insert($blogId, Google_Service_Blogger_Post $postBody, $optParams = array())
@@ -98,16 +98,16 @@ class Google_Service_Blogger_Resource_Posts extends Google_Service_Resource
    * @param string $blogId
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string labels
-   * @opt_param string startDate
-   * @opt_param string maxResults
-   * @opt_param bool fetchImages
-   * @opt_param string orderBy
-   * @opt_param string status
-   * @opt_param string view
    * @opt_param string endDate
-   * @opt_param bool fetchBodies
    * @opt_param string pageToken
+   * @opt_param string maxResults
+   * @opt_param string startDate
+   * @opt_param string labels
+   * @opt_param string status
+   * @opt_param string orderBy
+   * @opt_param string view
+   * @opt_param bool fetchImages
+   * @opt_param bool fetchBodies
    * @return Google_Service_Blogger_PostList
    */
   public function listPosts($blogId, $optParams = array())
@@ -124,11 +124,11 @@ class Google_Service_Blogger_Resource_Posts extends Google_Service_Resource
    * @param Google_Service_Blogger_Post $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool fetchBody
    * @opt_param bool publish
-   * @opt_param bool fetchImages
+   * @opt_param bool fetchBody
    * @opt_param string maxComments
    * @opt_param bool revert
+   * @opt_param bool fetchImages
    * @return Google_Service_Blogger_Post
    */
   public function patch($blogId, $postId, Google_Service_Blogger_Post $postBody, $optParams = array())
@@ -193,11 +193,11 @@ class Google_Service_Blogger_Resource_Posts extends Google_Service_Resource
    * @param Google_Service_Blogger_Post $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool revert
    * @opt_param string maxComments
    * @opt_param bool publish
    * @opt_param bool fetchImages
    * @opt_param bool fetchBody
+   * @opt_param bool revert
    * @return Google_Service_Blogger_Post
    */
   public function update($blogId, $postId, Google_Service_Blogger_Post $postBody, $optParams = array())

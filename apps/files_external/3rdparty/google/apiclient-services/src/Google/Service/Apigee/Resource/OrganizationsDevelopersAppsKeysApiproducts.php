@@ -28,13 +28,12 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersAppsKeysApiproducts 
   /**
    * Removes an API product from an app's consumer key. After the API product is
    * removed, the app cannot access the API resources defined in that API product.
-   *
    * **Note**: The consumer key is not removed, only its association with the API
    * product. (apiproducts.delete)
    *
    * @param string $name Name of the API product in the developer app key in the
-   * following format:   `organizations/{org}/developers/{developer_email}/apps/{a
-   * pp}/keys/{key}/apiproducts/{apiproduct}`
+   * following format: `organizations/{org}/developers/{developer_email}/apps/{app
+   * }/keys/{key}/apiproducts/{apiproduct}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1DeveloperAppKey
    */
@@ -46,17 +45,15 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersAppsKeysApiproducts 
   }
   /**
    * Approve or revoke an app's consumer key. After a consumer key is approved,
-   * the app can use it to access APIs.
-   *
-   * A consumer key that is revoked or pending cannot be used to access an API.
-   * Any access tokens associated with a revoked consumer key will remain active.
-   * However, Apigee hybrid checks the status of the consumer key and if set to
-   * `revoked` will not allow access to the API.
+   * the app can use it to access APIs. A consumer key that is revoked or pending
+   * cannot be used to access an API. Any access tokens associated with a revoked
+   * consumer key will remain active. However, Apigee hybrid checks the status of
+   * the consumer key and if set to `revoked` will not allow access to the API.
    * (apiproducts.updateDeveloperAppKeyApiProduct)
    *
    * @param string $name Name of the API product in the developer app key in the
-   * following format:   `organizations/{org}/developers/{developer_email}/apps/{a
-   * pp}/keys/{key}/apiproducts/{apiproduct}`
+   * following format: `organizations/{org}/developers/{developer_email}/apps/{app
+   * }/keys/{key}/apiproducts/{apiproduct}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string action Approve or revoke the consumer key by setting this

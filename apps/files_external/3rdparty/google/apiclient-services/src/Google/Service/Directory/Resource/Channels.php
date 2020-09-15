@@ -26,7 +26,7 @@
 class Google_Service_Directory_Resource_Channels extends Google_Service_Resource
 {
   /**
-   * Stop watching resources through this channel (channels.stop)
+   * Stop watching resources through this channel. (channels.stop)
    *
    * @param Google_Service_Directory_Channel $postBody
    * @param array $optParams Optional parameters.

@@ -19,12 +19,13 @@
  * Service definition for Reports (reports_v1).
  *
  * <p>
- * Fetches reports for the administrators of G Suite customers about the usage,
- * collaboration, security, and risk for their users.</p>
+ * Admin SDK lets administrators of enterprise domains to view and manage
+ * resources like user, groups etc. It also provides audit and usage reports of
+ * domain.</p>
  *
  * <p>
  * For more information about this service, see the API
- * <a href="/admin-sdk/reports/" target="_blank">Documentation</a>
+ * <a href="http://developers.google.com/admin-sdk/" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -54,7 +55,7 @@ class Google_Service_Reports extends Google_Service
   {
     parent::__construct($client);
     $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
-    $this->servicePath = 'admin/reports/v1/';
+    $this->servicePath = '';
     $this->batchPath = 'batch/admin/reports_v1';
     $this->version = 'reports_v1';
     $this->serviceName = 'admin';
@@ -66,7 +67,7 @@ class Google_Service_Reports extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'activity/users/{userKey}/applications/{applicationName}',
+              'path' => 'admin/reports/v1/activity/users/{userKey}/applications/{applicationName}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userKey' => array(
@@ -83,31 +84,7 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'endTime' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'eventName' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filters' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'orgUnitID' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -115,9 +92,33 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'orgUnitID' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'eventName' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'customerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'filters' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'watch' => array(
-              'path' => 'activity/users/{userKey}/applications/{applicationName}/watch',
+              'path' => 'admin/reports/v1/activity/users/{userKey}/applications/{applicationName}/watch',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'userKey' => array(
@@ -130,11 +131,11 @@ class Google_Service_Reports extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'actorIpAddress' => array(
+                'eventName' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customerId' => array(
+                'actorIpAddress' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -142,19 +143,15 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'eventName' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'filters' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'orgUnitID' => array(
+                'startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -162,7 +159,11 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'startTime' => array(
+                'customerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orgUnitID' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -178,7 +179,7 @@ class Google_Service_Reports extends Google_Service
         array(
           'methods' => array(
             'stop' => array(
-              'path' => '/admin/reports_v1/channels/stop',
+              'path' => 'admin/reports_v1/channels/stop',
               'httpMethod' => 'POST',
               'parameters' => array(),
             ),
@@ -192,7 +193,7 @@ class Google_Service_Reports extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'usage/dates/{date}',
+              'path' => 'admin/reports/v1/usage/dates/{date}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'date' => array(
@@ -200,7 +201,7 @@ class Google_Service_Reports extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'customerId' => array(
+                'parameters' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -208,7 +209,7 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'parameters' => array(
+                'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -224,7 +225,7 @@ class Google_Service_Reports extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'usage/{entityType}/{entityKey}/dates/{date}',
+              'path' => 'admin/reports/v1/usage/{entityType}/{entityKey}/dates/{date}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'entityType' => array(
@@ -242,7 +243,7 @@ class Google_Service_Reports extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'customerId' => array(
+                'parameters' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -250,17 +251,17 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'parameters' => array(
+                'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -274,7 +275,7 @@ class Google_Service_Reports extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'usage/users/{userKey}/dates/{date}',
+              'path' => 'admin/reports/v1/usage/users/{userKey}/dates/{date}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userKey' => array(
@@ -287,11 +288,7 @@ class Google_Service_Reports extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'customerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filters' => array(
+                'parameters' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -299,15 +296,19 @@ class Google_Service_Reports extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+                'customerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'orgUnitID' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'filters' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'parameters' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

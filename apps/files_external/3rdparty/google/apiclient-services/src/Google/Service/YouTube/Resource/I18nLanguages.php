@@ -29,7 +29,7 @@ class Google_Service_YouTube_Resource_I18nLanguages extends Google_Service_Resou
    * Retrieves a list of resources, possibly filtered.
    * (i18nLanguages.listI18nLanguages)
    *
-   * @param string|array $part The part parameter specifies the i18nLanguage
+   * @param string|array $part The *part* parameter specifies the i18nLanguage
    * resource properties that the API response will include. Set the parameter
    * value to snippet.
    * @param array $optParams Optional parameters.

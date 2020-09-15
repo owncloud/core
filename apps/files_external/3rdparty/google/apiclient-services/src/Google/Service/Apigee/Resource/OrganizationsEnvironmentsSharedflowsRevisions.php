@@ -26,27 +26,39 @@
 class Google_Service_Apigee_Resource_OrganizationsEnvironmentsSharedflowsRevisions extends Google_Service_Resource
 {
   /**
-   * Undeploys a shared flow revision from an environment. (revisions.deployments)
+   * Deploys a revision of a shared flow. If a shared flow revision is currently
+   * deployed, to ensure seamless deployment with zero downtime set the `override`
+   * parameter to `true`. In this case, hybrid attempts to deply the new revision
+   * fully before undeploying the existing revision. You cannot use a shared flows
+   * until it has been deployed to an environment. (revisions.deploy)
    *
-   * @param string $name Required. Name of the shared flow revision to undeploy in
-   * the following format:   `organizations/{org}/environments/{env}/sharedflows/{
-   * sharedflow}/revisions/{rev}`
+   * @param string $name Required. Name of the shared flow revision to deploy in
+   * the following format: `organizations/{org}/environments/{env}/sharedflows/{sh
+   * aredflow}/revisions/{rev}`
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Apigee_GoogleProtobufEmpty
+   *
+   * @opt_param bool override Flag that specifies whether to force the deployment
+   * of the new revision over the currently deployed revision by overriding
+   * conflict checks. If an existing shared flow revision is deployed, to ensure
+   * seamless deployment with no downtime, set this parameter to `true`. In this
+   * case, hybrid deploys the new revision fully before undeploying the existing
+   * revision. If set to `false`, you must undeploy the existing revision before
+   * deploying the new revision.
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
    */
-  public function deployments($name, $optParams = array())
+  public function deploy($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('deployments', array($params), "Google_Service_Apigee_GoogleProtobufEmpty");
+    return $this->call('deploy', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Deployment");
   }
   /**
    * Gets the deployment of a shared flow revision and actual state reported by
    * runtime pods. (revisions.getDeployments)
    *
    * @param string $name Required. Name representing a shared flow in an
-   * environment in the following format:   `organizations/{org}/environments/{env
-   * }/sharedflows/{sharedflow}/revisions/{rev}`
+   * environment in the following format: `organizations/{org}/environments/{env}/
+   * sharedflows/{sharedflow}/revisions/{rev}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
    */
@@ -55,5 +67,20 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsSharedflowsRevisio
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
     return $this->call('getDeployments', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Deployment");
+  }
+  /**
+   * Undeploys a shared flow revision from an environment. (revisions.undeploy)
+   *
+   * @param string $name Required. Name of the shared flow revision to undeploy in
+   * the following format: `organizations/{org}/environments/{env}/sharedflows/{sh
+   * aredflow}/revisions/{rev}`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigee_GoogleProtobufEmpty
+   */
+  public function undeploy($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('undeploy', array($params), "Google_Service_Apigee_GoogleProtobufEmpty");
   }
 }

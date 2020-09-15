@@ -31,9 +31,8 @@ class Google_Service_Genomics_Resource_Operations extends Google_Service_Resourc
    * Clients may use Operations.GetOperation or Operations.ListOperations to check
    * whether the cancellation succeeded or the operation completed despite
    * cancellation. Authorization requires the following [Google
-   * IAM](https://cloud.google.com/iam) permission
-   *
-   * * `genomics.operations.cancel` (operations.cancel)
+   * IAM](https://cloud.google.com/iam) permission: * `genomics.operations.cancel`
+   * (operations.cancel)
    *
    * @param string $name The name of the operation resource to be cancelled.
    * @param Google_Service_Genomics_CancelOperationRequest $postBody
@@ -50,9 +49,8 @@ class Google_Service_Genomics_Resource_Operations extends Google_Service_Resourc
    * Gets the latest state of a long-running operation. Clients can use this
    * method to poll the operation result at intervals as recommended by the API
    * service. Authorization requires the following [Google
-   * IAM](https://cloud.google.com/iam) permission
-   *
-   * * `genomics.operations.get` (operations.get)
+   * IAM](https://cloud.google.com/iam) permission: * `genomics.operations.get`
+   * (operations.get)
    *
    * @param string $name The name of the operation resource.
    * @param array $optParams Optional parameters.
@@ -67,41 +65,33 @@ class Google_Service_Genomics_Resource_Operations extends Google_Service_Resourc
   /**
    * Lists operations that match the specified filter in the request.
    * Authorization requires the following [Google
-   * IAM](https://cloud.google.com/iam) permission
-   *
-   * * `genomics.operations.list` (operations.listOperations)
+   * IAM](https://cloud.google.com/iam) permission: * `genomics.operations.list`
+   * (operations.listOperations)
    *
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The standard list page token.
    * @opt_param int pageSize The maximum number of results to return. The maximum
    * value is 256.
+   * @opt_param string pageToken The standard list page token.
    * @opt_param string filter A string for filtering Operations. In v2alpha1, the
-   * following filter fields are supported
-   *
-   * * createTime The time this job was created * events The set of event (names)
-   * that have occurred while running   the pipeline.  The  operator can be used
-   * to determine if a   particular event has occurred. * error If the pipeline is
-   * running, this value is NULL.  Once the   pipeline finishes, the value is the
-   * standard Google error code. * labels.key or labels."key with space" where key
-   * is a label key. * done If the pipeline is running, this value is false. Once
-   * the   pipeline finishes, the value is true.
-   *
-   * In v1 and v1alpha2, the following filter fields are supported
-   *
-   * * projectId Required. Corresponds to   OperationMetadata.projectId. *
-   * createTime The time this job was created, in seconds from the
+   * following filter fields are supported: * createTime: The time this job was
+   * created * events: The set of event (names) that have occurred while running
+   * the pipeline. The : operator can be used to determine if a particular event
+   * has occurred. * error: If the pipeline is running, this value is NULL. Once
+   * the pipeline finishes, the value is the standard Google error code. *
+   * labels.key or labels."key with space" where key is a label key. * done: If
+   * the pipeline is running, this value is false. Once the pipeline finishes, the
+   * value is true. In v1 and v1alpha2, the following filter fields are supported:
+   * * projectId: Required. Corresponds to OperationMetadata.projectId. *
+   * createTime: The time this job was created, in seconds from the
    * [epoch](http://en.wikipedia.org/wiki/Unix_time). Can use `>=` and/or `<=`
-   * operators. * status Can be `RUNNING`, `SUCCESS`, `FAILURE`, or `CANCELED`.
-   * Only   one status may be specified. * labels.key where key is a label key.
-   *
-   * Examples
-   *
-   * * `projectId = my-project AND createTime >= 1432140000` * `projectId = my-
-   * project AND createTime >= 1432140000 AND createTime <= 1432150000 AND status
-   * = RUNNING` * `projectId = my-project AND labels.color = *` * `projectId = my-
-   * project AND labels.color = red`
+   * operators. * status: Can be `RUNNING`, `SUCCESS`, `FAILURE`, or `CANCELED`.
+   * Only one status may be specified. * labels.key where key is a label key.
+   * Examples: * `projectId = my-project AND createTime >= 1432140000` *
+   * `projectId = my-project AND createTime >= 1432140000 AND createTime <=
+   * 1432150000 AND status = RUNNING` * `projectId = my-project AND labels.color =
+   * *` * `projectId = my-project AND labels.color = red`
    * @return Google_Service_Genomics_ListOperationsResponse
    */
   public function listOperations($name, $optParams = array())

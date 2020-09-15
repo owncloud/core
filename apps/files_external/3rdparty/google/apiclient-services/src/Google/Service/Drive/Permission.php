@@ -33,6 +33,7 @@ class Google_Service_Drive_Permission extends Google_Collection
   protected $teamDrivePermissionDetailsType = 'Google_Service_Drive_PermissionTeamDrivePermissionDetails';
   protected $teamDrivePermissionDetailsDataType = 'array';
   public $type;
+  public $view;
 
   public function setAllowFileDiscovery($allowFileDiscovery)
   {
@@ -149,5 +150,13 @@ class Google_Service_Drive_Permission extends Google_Collection
   public function getType()
   {
     return $this->type;
+  }
+  public function setView($view)
+  {
+    $this->view = $view;
+  }
+  public function getView()
+  {
+    return $this->view;
   }
 }

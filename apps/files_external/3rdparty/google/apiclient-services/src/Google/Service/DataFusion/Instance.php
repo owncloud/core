@@ -24,6 +24,7 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   protected $availableVersionType = 'Google_Service_DataFusion_Version';
   protected $availableVersionDataType = 'array';
   public $createTime;
+  public $dataprocServiceAccount;
   public $description;
   public $displayName;
   public $enableStackdriverLogging;
@@ -34,11 +35,13 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   protected $networkConfigType = 'Google_Service_DataFusion_NetworkConfig';
   protected $networkConfigDataType = '';
   public $options;
+  public $p4ServiceAccount;
   public $privateInstance;
   public $serviceAccount;
   public $serviceEndpoint;
   public $state;
   public $stateMessage;
+  public $tenantProjectId;
   public $type;
   public $updateTime;
   public $version;
@@ -87,6 +90,14 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  public function setDataprocServiceAccount($dataprocServiceAccount)
+  {
+    $this->dataprocServiceAccount = $dataprocServiceAccount;
+  }
+  public function getDataprocServiceAccount()
+  {
+    return $this->dataprocServiceAccount;
   }
   public function setDescription($description)
   {
@@ -166,6 +177,14 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   {
     return $this->options;
   }
+  public function setP4ServiceAccount($p4ServiceAccount)
+  {
+    $this->p4ServiceAccount = $p4ServiceAccount;
+  }
+  public function getP4ServiceAccount()
+  {
+    return $this->p4ServiceAccount;
+  }
   public function setPrivateInstance($privateInstance)
   {
     $this->privateInstance = $privateInstance;
@@ -205,6 +224,14 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   public function getStateMessage()
   {
     return $this->stateMessage;
+  }
+  public function setTenantProjectId($tenantProjectId)
+  {
+    $this->tenantProjectId = $tenantProjectId;
+  }
+  public function getTenantProjectId()
+  {
+    return $this->tenantProjectId;
   }
   public function setType($type)
   {

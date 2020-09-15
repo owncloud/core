@@ -15,9 +15,12 @@
  * the License.
  */
 
-class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTranslation extends Google_Model
+class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTranslation extends Google_Collection
 {
+  protected $collection_key = 'provenance';
   public $languageCode;
+  protected $provenanceType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance';
+  protected $provenanceDataType = 'array';
   protected $textAnchorType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchor';
   protected $textAnchorDataType = '';
   public $translatedText;
@@ -29,6 +32,20 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTranslation ex
   public function getLanguageCode()
   {
     return $this->languageCode;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance
+   */
+  public function setProvenance($provenance)
+  {
+    $this->provenance = $provenance;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance
+   */
+  public function getProvenance()
+  {
+    return $this->provenance;
   }
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchor

@@ -52,9 +52,7 @@ class Google_Service_SecurityCommandCenter_Resource_Organizations extends Google
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask The FieldMask to use when updating the settings
-   * resource.
-   *
-   * If empty all mutable fields will be updated.
+   * resource. If empty all mutable fields will be updated.
    * @return Google_Service_SecurityCommandCenter_OrganizationSettings
    */
   public function updateOrganizationSettings($name, Google_Service_SecurityCommandCenter_OrganizationSettings $postBody, $optParams = array())

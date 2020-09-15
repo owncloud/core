@@ -46,7 +46,7 @@ class Google_Service_AndroidEnterprise_Resource_Serviceaccountkeys extends Googl
    * Generates new credentials for the service account associated with this
    * enterprise. The calling service account must have been retrieved by calling
    * Enterprises.GetServiceAccount and must have been set as the enterprise
-   * service account by calling Enterprises.SetAccount.  Only the type of the key
+   * service account by calling Enterprises.SetAccount. Only the type of the key
    * should be populated in the resource to be inserted.
    * (serviceaccountkeys.insert)
    *

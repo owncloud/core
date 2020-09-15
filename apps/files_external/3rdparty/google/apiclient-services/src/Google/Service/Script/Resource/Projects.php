@@ -77,10 +77,10 @@ class Google_Service_Script_Resource_Projects extends Google_Service_Resource
    * for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string metricsFilter.deploymentId Optional field indicating a
-   * specific deployment to retrieve metrics from.
    * @opt_param string metricsGranularity Required field indicating what
    * granularity of metrics are returned.
+   * @opt_param string metricsFilter.deploymentId Optional field indicating a
+   * specific deployment to retrieve metrics from.
    * @return Google_Service_Script_Metrics
    */
   public function getMetrics($scriptId, $optParams = array())

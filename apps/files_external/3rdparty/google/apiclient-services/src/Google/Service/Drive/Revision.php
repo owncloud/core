@@ -29,6 +29,7 @@ class Google_Service_Drive_Revision extends Google_Model
   public $originalFilename;
   public $publishAuto;
   public $published;
+  public $publishedLink;
   public $publishedOutsideDomain;
   public $size;
 
@@ -125,6 +126,14 @@ class Google_Service_Drive_Revision extends Google_Model
   public function getPublished()
   {
     return $this->published;
+  }
+  public function setPublishedLink($publishedLink)
+  {
+    $this->publishedLink = $publishedLink;
+  }
+  public function getPublishedLink()
+  {
+    return $this->publishedLink;
   }
   public function setPublishedOutsideDomain($publishedOutsideDomain)
   {

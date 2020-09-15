@@ -26,9 +26,7 @@
 class Google_Service_Dataflow_Resource_ProjectsLocationsJobsMessages extends Google_Service_Resource
 {
   /**
-   * Request the job status.
-   *
-   * To request the status of a job, we recommend using
+   * Request the job status. To request the status of a job, we recommend using
    * `projects.locations.jobs.messages.list` with a [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
    * `projects.jobs.messages.list` is not recommended, as you can only request the
@@ -42,17 +40,17 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobsMessages extends Goo
    * @param string $jobId The job to get messages about.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string minimumImportance Filter to only get messages with
-   * importance >= level
+   * @opt_param int pageSize If specified, determines the maximum number of
+   * messages to return. If unspecified, the service may choose an appropriate
+   * default, or may return an arbitrarily large number of results.
    * @opt_param string pageToken If supplied, this should be the value of
    * next_page_token returned by an earlier call. This will cause the next page of
    * results to be returned.
+   * @opt_param string minimumImportance Filter to only get messages with
+   * importance >= level
    * @opt_param string startTime If specified, return only messages with
    * timestamps >= start_time. The default is the job creation time (i.e.
    * beginning of messages).
-   * @opt_param int pageSize If specified, determines the maximum number of
-   * messages to return.  If unspecified, the service may choose an appropriate
-   * default, or may return an arbitrarily large number of results.
    * @opt_param string endTime Return only messages with timestamps < end_time.
    * The default is now (i.e. return up to the latest messages available).
    * @return Google_Service_Dataflow_ListJobMessagesResponse

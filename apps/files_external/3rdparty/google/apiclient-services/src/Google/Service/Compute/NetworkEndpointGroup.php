@@ -18,6 +18,12 @@
 class Google_Service_Compute_NetworkEndpointGroup extends Google_Model
 {
   public $annotations;
+  protected $appEngineType = 'Google_Service_Compute_NetworkEndpointGroupAppEngine';
+  protected $appEngineDataType = '';
+  protected $cloudFunctionType = 'Google_Service_Compute_NetworkEndpointGroupCloudFunction';
+  protected $cloudFunctionDataType = '';
+  protected $cloudRunType = 'Google_Service_Compute_NetworkEndpointGroupCloudRun';
+  protected $cloudRunDataType = '';
   public $creationTimestamp;
   public $defaultPort;
   public $description;
@@ -26,6 +32,7 @@ class Google_Service_Compute_NetworkEndpointGroup extends Google_Model
   public $name;
   public $network;
   public $networkEndpointType;
+  public $region;
   public $selfLink;
   public $size;
   public $subnetwork;
@@ -38,6 +45,48 @@ class Google_Service_Compute_NetworkEndpointGroup extends Google_Model
   public function getAnnotations()
   {
     return $this->annotations;
+  }
+  /**
+   * @param Google_Service_Compute_NetworkEndpointGroupAppEngine
+   */
+  public function setAppEngine(Google_Service_Compute_NetworkEndpointGroupAppEngine $appEngine)
+  {
+    $this->appEngine = $appEngine;
+  }
+  /**
+   * @return Google_Service_Compute_NetworkEndpointGroupAppEngine
+   */
+  public function getAppEngine()
+  {
+    return $this->appEngine;
+  }
+  /**
+   * @param Google_Service_Compute_NetworkEndpointGroupCloudFunction
+   */
+  public function setCloudFunction(Google_Service_Compute_NetworkEndpointGroupCloudFunction $cloudFunction)
+  {
+    $this->cloudFunction = $cloudFunction;
+  }
+  /**
+   * @return Google_Service_Compute_NetworkEndpointGroupCloudFunction
+   */
+  public function getCloudFunction()
+  {
+    return $this->cloudFunction;
+  }
+  /**
+   * @param Google_Service_Compute_NetworkEndpointGroupCloudRun
+   */
+  public function setCloudRun(Google_Service_Compute_NetworkEndpointGroupCloudRun $cloudRun)
+  {
+    $this->cloudRun = $cloudRun;
+  }
+  /**
+   * @return Google_Service_Compute_NetworkEndpointGroupCloudRun
+   */
+  public function getCloudRun()
+  {
+    return $this->cloudRun;
   }
   public function setCreationTimestamp($creationTimestamp)
   {
@@ -102,6 +151,14 @@ class Google_Service_Compute_NetworkEndpointGroup extends Google_Model
   public function getNetworkEndpointType()
   {
     return $this->networkEndpointType;
+  }
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  public function getRegion()
+  {
+    return $this->region;
   }
   public function setSelfLink($selfLink)
   {

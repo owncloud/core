@@ -89,8 +89,8 @@ class UserRefreshCredentials extends CredentialsLoader implements GetQuotaProjec
             'scope' => $scope,
             'tokenCredentialUri' => self::TOKEN_CREDENTIAL_URI,
         ]);
-        if (array_key_exists('quota_project', $jsonKey)) {
-            $this->quotaProject = (string) $jsonKey['quota_project'];
+        if (array_key_exists('quota_project_id', $jsonKey)) {
+            $this->quotaProject = (string) $jsonKey['quota_project_id'];
         }
     }
 

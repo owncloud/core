@@ -944,13 +944,9 @@ class Google_Service_AndroidEnterprise extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'approved' => array(
+                'query' => array(
                   'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'token' => array(
                   'location' => 'query',
@@ -960,9 +956,13 @@ class Google_Service_AndroidEnterprise extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'query' => array(
+                'approved' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'boolean',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'unapprove' => array(

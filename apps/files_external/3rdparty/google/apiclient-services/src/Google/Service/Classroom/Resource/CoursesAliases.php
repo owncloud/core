@@ -26,16 +26,13 @@
 class Google_Service_Classroom_Resource_CoursesAliases extends Google_Service_Resource
 {
   /**
-   * Creates an alias for a course.
-   *
-   * This method returns the following error codes:
-   *
+   * Creates an alias for a course. This method returns the following error codes:
    * * `PERMISSION_DENIED` if the requesting user is not permitted to create the
    * alias or for access errors. * `NOT_FOUND` if the course does not exist. *
    * `ALREADY_EXISTS` if the alias already exists. * `FAILED_PRECONDITION` if the
-   * alias requested does not make sense for the   requesting user or course (for
-   * example, if a user not in a domain   attempts to access a domain-scoped
-   * alias). (aliases.create)
+   * alias requested does not make sense for the requesting user or course (for
+   * example, if a user not in a domain attempts to access a domain-scoped alias).
+   * (aliases.create)
    *
    * @param string $courseId Identifier of the course to alias. This identifier
    * can be either the Classroom-assigned identifier or an alias.
@@ -50,15 +47,12 @@ class Google_Service_Classroom_Resource_CoursesAliases extends Google_Service_Re
     return $this->call('create', array($params), "Google_Service_Classroom_CourseAlias");
   }
   /**
-   * Deletes an alias of a course.
-   *
-   * This method returns the following error codes:
-   *
+   * Deletes an alias of a course. This method returns the following error codes:
    * * `PERMISSION_DENIED` if the requesting user is not permitted to remove the
    * alias or for access errors. * `NOT_FOUND` if the alias does not exist. *
    * `FAILED_PRECONDITION` if the alias requested does not make sense for the
-   * requesting user or course (for example, if a user not in a domain   attempts
-   * to delete a domain-scoped alias). (aliases.delete)
+   * requesting user or course (for example, if a user not in a domain attempts to
+   * delete a domain-scoped alias). (aliases.delete)
    *
    * @param string $courseId Identifier of the course whose alias should be
    * deleted. This identifier can be either the Classroom-assigned identifier or
@@ -75,26 +69,21 @@ class Google_Service_Classroom_Resource_CoursesAliases extends Google_Service_Re
     return $this->call('delete', array($params), "Google_Service_Classroom_ClassroomEmpty");
   }
   /**
-   * Returns a list of aliases for a course.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to access the
-   * course or for access errors. * `NOT_FOUND` if the course does not exist.
-   * (aliases.listCoursesAliases)
+   * Returns a list of aliases for a course. This method returns the following
+   * error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to
+   * access the course or for access errors. * `NOT_FOUND` if the course does not
+   * exist. (aliases.listCoursesAliases)
    *
    * @param string $courseId The identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Maximum number of items to return. Zero or
-   * unspecified indicates that the server may assign a maximum.
-   *
-   * The server may return fewer than the specified number of results.
+   * unspecified indicates that the server may assign a maximum. The server may
+   * return fewer than the specified number of results.
    * @opt_param string pageToken nextPageToken value returned from a previous list
-   * call, indicating that the subsequent page of results should be returned.
-   *
-   * The list request must be otherwise identical to the one that resulted in this
+   * call, indicating that the subsequent page of results should be returned. The
+   * list request must be otherwise identical to the one that resulted in this
    * token.
    * @return Google_Service_Classroom_ListCourseAliasesResponse
    */

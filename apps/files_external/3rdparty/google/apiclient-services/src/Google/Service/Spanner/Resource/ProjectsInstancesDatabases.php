@@ -92,7 +92,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
   /**
    * Gets the access control policy for a database or backup resource. Returns an
    * empty policy if a database or backup exists but does not have a policy set.
-   *
    * Authorization requires `spanner.databases.getIamPolicy` permission on
    * resource. For backups, authorization requires `spanner.backups.getIamPolicy`
    * permission on resource. (databases.getIamPolicy)
@@ -117,10 +116,10 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
    * listed. Values are of the form `projects//instances/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Number of databases to be returned in the response.
-   * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListDatabasesResponse.
+   * @opt_param int pageSize Number of databases to be returned in the response.
+   * If 0 or less, defaults to the server's maximum allowed page size.
    * @return Google_Service_Spanner_ListDatabasesResponse
    */
   public function listProjectsInstancesDatabases($parent, $optParams = array())
@@ -159,11 +158,10 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
   }
   /**
    * Sets the access control policy on a database or backup resource. Replaces any
-   * existing policy.
-   *
-   * Authorization requires `spanner.databases.setIamPolicy` permission on
-   * resource. For backups, authorization requires `spanner.backups.setIamPolicy`
-   * permission on resource. (databases.setIamPolicy)
+   * existing policy. Authorization requires `spanner.databases.setIamPolicy`
+   * permission on resource. For backups, authorization requires
+   * `spanner.backups.setIamPolicy` permission on resource.
+   * (databases.setIamPolicy)
    *
    * @param string $resource REQUIRED: The Cloud Spanner resource for which the
    * policy is being set. The format is `projects//instances/` for instance
@@ -180,14 +178,12 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
   }
   /**
    * Returns permissions that the caller has on the specified database or backup
-   * resource.
-   *
-   * Attempting this RPC on a non-existent Cloud Spanner database will result in a
-   * NOT_FOUND error if the user has `spanner.databases.list` permission on the
-   * containing Cloud Spanner instance. Otherwise returns an empty set of
-   * permissions. Calling this method on a backup that does not exist will result
-   * in a NOT_FOUND error if the user has `spanner.backups.list` permission on the
-   * containing instance. (databases.testIamPermissions)
+   * resource. Attempting this RPC on a non-existent Cloud Spanner database will
+   * result in a NOT_FOUND error if the user has `spanner.databases.list`
+   * permission on the containing Cloud Spanner instance. Otherwise returns an
+   * empty set of permissions. Calling this method on a backup that does not exist
+   * will result in a NOT_FOUND error if the user has `spanner.backups.list`
+   * permission on the containing instance. (databases.testIamPermissions)
    *
    * @param string $resource REQUIRED: The Cloud Spanner resource for which
    * permissions are being tested. The format is `projects//instances/` for
@@ -207,7 +203,7 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
    * Updates the schema of a Cloud Spanner database by creating/altering/dropping
    * tables, columns, indexes, etc. The returned long-running operation will have
    * a name of the format `/operations/` and can be used to track execution of the
-   * schema change(s). The metadata field type is UpdateDatabaseDdlMetadata.  The
+   * schema change(s). The metadata field type is UpdateDatabaseDdlMetadata. The
    * operation has no response. (databases.updateDdl)
    *
    * @param string $database Required. The database to update.

@@ -60,8 +60,6 @@ class Google_Service_Dfareporting_Resource_Subaccounts extends Google_Service_Re
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string ids Select only subaccounts with these IDs.
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
@@ -70,9 +68,11 @@ class Google_Service_Dfareporting_Resource_Subaccounts extends Google_Service_Re
    * "subaccount 2015". Most of the searches also add wildcards implicitly at the
    * start and the end of the search string. For example, a search string of
    * "subaccount" will match objects with name "my subaccount", "subaccount 2015",
-   * or simply "subaccount".
-   * @opt_param string sortField Field by which to sort the list.
+   * or simply "subaccount" .
    * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string ids Select only subaccounts with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string sortField Field by which to sort the list.
    * @return Google_Service_Dfareporting_SubaccountsListResponse
    */
   public function listSubaccounts($profileId, $optParams = array())
@@ -86,14 +86,15 @@ class Google_Service_Dfareporting_Resource_Subaccounts extends Google_Service_Re
    * (subaccounts.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Subaccount ID.
    * @param Google_Service_Dfareporting_Subaccount $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id Subaccount ID.
    * @return Google_Service_Dfareporting_Subaccount
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_Subaccount $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_Subaccount $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_Subaccount");
   }

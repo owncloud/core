@@ -26,14 +26,16 @@
 class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_Service_Resource
 {
   /**
-   * Requests that a new IosApp be created.
-   *
-   * The result of this call is an `Operation` which can be used to track the
+   * Requests the creation of a new IosApp in the specified FirebaseProject. The
+   * result of this call is an `Operation` which can be used to track the
    * provisioning process. The `Operation` is automatically deleted after
    * completion, so there is no need to call `DeleteOperation`. (iosApps.create)
    *
-   * @param string $parent The parent Project in which to create an App, in the
-   * format: projects/PROJECT_NUMBER
+   * @param string $parent The resource name of the parent FirebaseProject in
+   * which to create an IosApp, in the format: projects/PROJECT_IDENTIFIER/iosApps
+   * Refer to the `FirebaseProject`
+   * [`name`](../projects#FirebaseProject.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER values.
    * @param Google_Service_FirebaseManagement_IosApp $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -45,12 +47,14 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
     return $this->call('create', array($params), "Google_Service_FirebaseManagement_Operation");
   }
   /**
-   * Gets the IosApp identified by the specified resource name. (iosApps.get)
+   * Gets the specified IosApp. (iosApps.get)
    *
-   * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/PROJECT_NUMBER/iosApps/APP_ID As an APP_ID is a unique
+   * @param string $name The resource name of the IosApp, in the format:
+   * projects/PROJECT_IDENTIFIER /iosApps/APP_ID Since an APP_ID is a unique
    * identifier, the Unique Resource from Sub-Collection access pattern may be
-   * used here, in the format: projects/-/iosApps/APP_ID
+   * used here, in the format: projects/-/iosApps/APP_ID Refer to the `IosApp`
+   * [`name`](../projects.iosApps#IosApp.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER and APP_ID values.
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_IosApp
    */
@@ -65,9 +69,11 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
    * (iosApps.getConfig)
    *
    * @param string $name The resource name of the App configuration to download,
-   * in the format: projects/PROJECT_NUMBER/iosApps/APP_ID/config As an APP_ID is
-   * a unique identifier, the Unique Resource from Sub-Collection access pattern
-   * may be used here, in the format: projects/-/iosApps/APP_ID
+   * in the format: projects/PROJECT_IDENTIFIER/iosApps/APP_ID/config Since an
+   * APP_ID is a unique identifier, the Unique Resource from Sub-Collection access
+   * pattern may be used here, in the format: projects/-/iosApps/APP_ID Refer to
+   * the `IosApp` [`name`](../projects.iosApps#IosApp.FIELDS.name) field for
+   * details about PROJECT_IDENTIFIER and APP_ID values.
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_IosAppConfig
    */
@@ -78,23 +84,24 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
     return $this->call('getConfig', array($params), "Google_Service_FirebaseManagement_IosAppConfig");
   }
   /**
-   * Lists each IosApp associated with the specified parent Project.
-   *
-   * The elements are returned in no particular order, but will be a consistent
-   * view of the Apps when additional requests are made with a `pageToken`.
+   * Lists each IosApp associated with the specified FirebaseProject. The elements
+   * are returned in no particular order, but will be a consistent view of the
+   * Apps when additional requests are made with a `pageToken`.
    * (iosApps.listProjectsIosApps)
    *
-   * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/PROJECT_NUMBER
+   * @param string $parent The resource name of the parent FirebaseProject for
+   * which to list each associated IosApp, in the format:
+   * projects/PROJECT_IDENTIFIER/iosApps Refer to the `FirebaseProject`
+   * [`name`](../projects#FirebaseProject.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER values.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListIosApps` indicating where in the set of Apps to resume listing.
    * @opt_param int pageSize The maximum number of Apps to return in the response.
-   *
    * The server may return fewer than this at its discretion. If no value is
    * specified (or too large a value is specified), the server will impose its own
    * limit.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListIosApps` indicating where in the set of Apps to resume listing.
    * @return Google_Service_FirebaseManagement_ListIosAppsResponse
    */
   public function listProjectsIosApps($parent, $optParams = array())
@@ -104,11 +111,19 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
     return $this->call('list', array($params), "Google_Service_FirebaseManagement_ListIosAppsResponse");
   }
   /**
-   * Updates the attributes of the IosApp identified by the specified resource
-   * name. (iosApps.patch)
+   * Updates the attributes of the specified IosApp. (iosApps.patch)
    *
-   * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/projectId/iosApps/appId
+   * @param string $name The resource name of the IosApp, in the format:
+   * projects/PROJECT_IDENTIFIER /iosApps/APP_ID * PROJECT_IDENTIFIER: the parent
+   * Project's
+   * [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number)
+   * ***(recommended)*** or its
+   * [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more
+   * about using project identifiers in Google's [AIP 2510
+   * standard](https://google.aip.dev/cloud/2510). Note that the value for
+   * PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID:
+   * the globally unique, Firebase-assigned identifier for the App (see
+   * [`appId`](../projects.iosApps#IosApp.FIELDS.app_id)).
    * @param Google_Service_FirebaseManagement_IosApp $postBody
    * @param array $optParams Optional parameters.
    *

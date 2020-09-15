@@ -113,11 +113,11 @@ class Google_Service_AlertCenter extends Google_Service
               'path' => 'v1beta1/alerts',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'filter' => array(
+                'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -125,7 +125,7 @@ class Google_Service_AlertCenter extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customerId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

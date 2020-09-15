@@ -26,9 +26,7 @@
 class Google_Service_CloudBuild_Resource_ProjectsTriggers extends Google_Service_Resource
 {
   /**
-   * Creates a new `BuildTrigger`.
-   *
-   * This API is experimental. (triggers.create)
+   * Creates a new `BuildTrigger`. This API is experimental. (triggers.create)
    *
    * @param string $projectId Required. ID of the project for which to configure
    * automatic builds.
@@ -43,9 +41,8 @@ class Google_Service_CloudBuild_Resource_ProjectsTriggers extends Google_Service
     return $this->call('create', array($params), "Google_Service_CloudBuild_BuildTrigger");
   }
   /**
-   * Deletes a `BuildTrigger` by its project ID and trigger ID.
-   *
-   * This API is experimental. (triggers.delete)
+   * Deletes a `BuildTrigger` by its project ID and trigger ID. This API is
+   * experimental. (triggers.delete)
    *
    * @param string $projectId Required. ID of the project that owns the trigger.
    * @param string $triggerId Required. ID of the `BuildTrigger` to delete.
@@ -59,9 +56,8 @@ class Google_Service_CloudBuild_Resource_ProjectsTriggers extends Google_Service
     return $this->call('delete', array($params), "Google_Service_CloudBuild_CloudbuildEmpty");
   }
   /**
-   * Returns information about a `BuildTrigger`.
-   *
-   * This API is experimental. (triggers.get)
+   * Returns information about a `BuildTrigger`. This API is experimental.
+   * (triggers.get)
    *
    * @param string $projectId Required. ID of the project that owns the trigger.
    * @param string $triggerId Required. Identifier (`id` or `name`) of the
@@ -76,9 +72,8 @@ class Google_Service_CloudBuild_Resource_ProjectsTriggers extends Google_Service
     return $this->call('get', array($params), "Google_Service_CloudBuild_BuildTrigger");
   }
   /**
-   * Lists existing `BuildTrigger`s.
-   *
-   * This API is experimental. (triggers.listProjectsTriggers)
+   * Lists existing `BuildTrigger`s. This API is experimental.
+   * (triggers.listProjectsTriggers)
    *
    * @param string $projectId Required. ID of the project for which to list
    * BuildTriggers.
@@ -96,9 +91,8 @@ class Google_Service_CloudBuild_Resource_ProjectsTriggers extends Google_Service
     return $this->call('list', array($params), "Google_Service_CloudBuild_ListBuildTriggersResponse");
   }
   /**
-   * Updates a `BuildTrigger` by its project ID and trigger ID.
-   *
-   * This API is experimental. (triggers.patch)
+   * Updates a `BuildTrigger` by its project ID and trigger ID. This API is
+   * experimental. (triggers.patch)
    *
    * @param string $projectId Required. ID of the project that owns the trigger.
    * @param string $triggerId Required. ID of the `BuildTrigger` to update.

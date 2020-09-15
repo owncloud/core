@@ -36,6 +36,7 @@ class Google_Service_AdExchangeBuyer_MarketplaceDeal extends Google_Collection
   public $isSetupComplete;
   public $kind;
   public $lastUpdateTimeMs;
+  public $makegoodRequestedReason;
   public $name;
   public $productId;
   public $productRevisionNumber;
@@ -187,6 +188,14 @@ class Google_Service_AdExchangeBuyer_MarketplaceDeal extends Google_Collection
   public function getLastUpdateTimeMs()
   {
     return $this->lastUpdateTimeMs;
+  }
+  public function setMakegoodRequestedReason($makegoodRequestedReason)
+  {
+    $this->makegoodRequestedReason = $makegoodRequestedReason;
+  }
+  public function getMakegoodRequestedReason()
+  {
+    return $this->makegoodRequestedReason;
   }
   public function setName($name)
   {

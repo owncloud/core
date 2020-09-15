@@ -27,23 +27,21 @@ class Google_Service_CloudSearch_Resource_StatsSessionSearchapplications extends
 {
   /**
    * Get the # of search sessions, % of successful sessions with a click query
-   * statistics for search application.
-   *
-   * **Note:** This API requires a standard end user account to execute.
-   * (searchapplications.get)
+   * statistics for search application. **Note:** This API requires a standard end
+   * user account to execute. (searchapplications.get)
    *
    * @param string $name The resource id of the search application session stats,
    * in the following format: searchapplications/{application_id}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
-   * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
-   * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
-   * the year and month.
    * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
+   * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
+   * the year and month.
+   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @return Google_Service_CloudSearch_GetSearchApplicationSessionStatsResponse
    */
   public function get($name, $optParams = array())

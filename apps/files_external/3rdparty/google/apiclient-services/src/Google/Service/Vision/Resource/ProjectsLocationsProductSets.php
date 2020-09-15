@@ -27,17 +27,11 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
 {
   /**
    * Adds a Product to the specified ProductSet. If the Product is already
-   * present, no change is made.
-   *
-   * One Product can be added to at most 100 ProductSets.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
-   * (productSets.addProduct)
+   * present, no change is made. One Product can be added to at most 100
+   * ProductSets. Possible errors: * Returns NOT_FOUND if the Product or the
+   * ProductSet doesn't exist. (productSets.addProduct)
    *
    * @param string $name Required. The resource name for the ProductSet to modify.
-   *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param Google_Service_Vision_AddProductToProductSetRequest $postBody
    * @param array $optParams Optional parameters.
@@ -50,17 +44,12 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
     return $this->call('addProduct', array($params), "Google_Service_Vision_VisionEmpty");
   }
   /**
-   * Creates and returns a new ProductSet resource.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if display_name is missing, or is longer than
-   * 4096 characters. (productSets.create)
+   * Creates and returns a new ProductSet resource. Possible errors: * Returns
+   * INVALID_ARGUMENT if display_name is missing, or is longer than 4096
+   * characters. (productSets.create)
    *
    * @param string $parent Required. The project in which the ProductSet should be
-   * created.
-   *
-   * Format is `projects/PROJECT_ID/locations/LOC_ID`.
+   * created. Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_ProductSet $postBody
    * @param array $optParams Optional parameters.
    *
@@ -78,13 +67,10 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
   }
   /**
    * Permanently deletes a ProductSet. Products and ReferenceImages in the
-   * ProductSet are not deleted.
-   *
-   * The actual image files are not deleted from Google Cloud Storage.
-   * (productSets.delete)
+   * ProductSet are not deleted. The actual image files are not deleted from
+   * Google Cloud Storage. (productSets.delete)
    *
    * @param string $name Required. Resource name of the ProductSet to delete.
-   *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_VisionEmpty
@@ -96,15 +82,11 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
     return $this->call('delete', array($params), "Google_Service_Vision_VisionEmpty");
   }
   /**
-   * Gets information associated with a ProductSet.
+   * Gets information associated with a ProductSet. Possible errors: * Returns
+   * NOT_FOUND if the ProductSet does not exist. (productSets.get)
    *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the ProductSet does not exist. (productSets.get)
-   *
-   * @param string $name Required. Resource name of the ProductSet to get.
-   *
-   * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+   * @param string $name Required. Resource name of the ProductSet to get. Format
+   * is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_ProductSet
    */
@@ -116,21 +98,16 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
   }
   /**
    * Asynchronous API that imports a list of reference images to specified product
-   * sets based on a list of image information.
-   *
-   * The google.longrunning.Operation API can be used to keep track of the
-   * progress and results of the request. `Operation.metadata` contains
-   * `BatchOperationMetadata`. (progress) `Operation.response` contains
-   * `ImportProductSetsResponse`. (results)
-   *
-   * The input source of this method is a csv file on Google Cloud Storage. For
-   * the format of the csv file please see
-   * ImportProductSetsGcsSource.csv_file_uri. (productSets.import)
+   * sets based on a list of image information. The google.longrunning.Operation
+   * API can be used to keep track of the progress and results of the request.
+   * `Operation.metadata` contains `BatchOperationMetadata`. (progress)
+   * `Operation.response` contains `ImportProductSetsResponse`. (results) The
+   * input source of this method is a csv file on Google Cloud Storage. For the
+   * format of the csv file please see ImportProductSetsGcsSource.csv_file_uri.
+   * (productSets.import)
    *
    * @param string $parent Required. The project in which the ProductSets should
-   * be imported.
-   *
-   * Format is `projects/PROJECT_ID/locations/LOC_ID`.
+   * be imported. Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param Google_Service_Vision_ImportProductSetsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_Operation
@@ -142,17 +119,12 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
     return $this->call('import', array($params), "Google_Service_Vision_Operation");
   }
   /**
-   * Lists ProductSets in an unspecified order.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if page_size is greater than 100, or less   than
-   * 1. (productSets.listProjectsLocationsProductSets)
+   * Lists ProductSets in an unspecified order. Possible errors: * Returns
+   * INVALID_ARGUMENT if page_size is greater than 100, or less than 1.
+   * (productSets.listProjectsLocationsProductSets)
    *
    * @param string $parent Required. The project from which ProductSets should be
-   * listed.
-   *
-   * Format is `projects/PROJECT_ID/locations/LOC_ID`.
+   * listed. Format is `projects/PROJECT_ID/locations/LOC_ID`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token returned from a previous List
@@ -169,19 +141,14 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
   }
   /**
    * Makes changes to a ProductSet resource. Only display_name can be updated
-   * currently.
+   * currently. Possible errors: * Returns NOT_FOUND if the ProductSet does not
+   * exist. * Returns INVALID_ARGUMENT if display_name is present in update_mask
+   * but missing from the request or longer than 4096 characters.
+   * (productSets.patch)
    *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the ProductSet does not exist. * Returns
-   * INVALID_ARGUMENT if display_name is present in update_mask but   missing from
-   * the request or longer than 4096 characters. (productSets.patch)
-   *
-   * @param string $name The resource name of the ProductSet.
-   *
-   * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
-   *
-   * This field is ignored when creating a ProductSet.
+   * @param string $name The resource name of the ProductSet. Format is:
+   * `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`. This field
+   * is ignored when creating a ProductSet.
    * @param Google_Service_Vision_ProductSet $postBody
    * @param array $optParams Optional parameters.
    *
@@ -200,7 +167,6 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductSets extends Google
    * Removes a Product from the specified ProductSet. (productSets.removeProduct)
    *
    * @param string $name Required. The resource name for the ProductSet to modify.
-   *
    * Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
    * @param Google_Service_Vision_RemoveProductFromProductSetRequest $postBody
    * @param array $optParams Optional parameters.

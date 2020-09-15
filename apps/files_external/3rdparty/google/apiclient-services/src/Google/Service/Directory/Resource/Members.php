@@ -89,13 +89,13 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
    * @param string $groupKey Email or immutable ID of the group
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeDerivedMembership Whether to list indirect
-   * memberships. Default: false.
    * @opt_param int maxResults Maximum number of results to return. Max allowed
    * value is 200.
-   * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string roles Comma separated role values to filter list results
    * on.
+   * @opt_param bool includeDerivedMembership Whether to list indirect
+   * memberships. Default: false.
+   * @opt_param string pageToken Token to specify next page in the list
    * @return Google_Service_Directory_Members
    */
   public function listMembers($groupKey, $optParams = array())
@@ -105,8 +105,7 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Directory_Members");
   }
   /**
-   * Update membership of a user in the specified group. This method supports
-   * patch semantics. (members.patch)
+   * Patch Member via Apiary Patch Orchestration (members.patch)
    *
    * @param string $groupKey Email or immutable ID of the group. If ID, it should
    * match with id of group object

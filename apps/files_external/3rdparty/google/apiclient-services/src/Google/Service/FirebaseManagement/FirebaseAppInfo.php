@@ -20,6 +20,7 @@ class Google_Service_FirebaseManagement_FirebaseAppInfo extends Google_Model
   public $appId;
   public $displayName;
   public $name;
+  public $namespace;
   public $platform;
 
   public function setAppId($appId)
@@ -45,6 +46,14 @@ class Google_Service_FirebaseManagement_FirebaseAppInfo extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setNamespace($namespace)
+  {
+    $this->namespace = $namespace;
+  }
+  public function getNamespace()
+  {
+    return $this->namespace;
   }
   public function setPlatform($platform)
   {

@@ -104,12 +104,12 @@ class Google_Service_ContainerAnalysis_Resource_ProvidersNotes extends Google_Se
    * "providers/{provider_id} @Deprecated
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token to provide to skip to a particular spot in
-   * the list.
    * @opt_param int pageSize Number of notes to return in the list.
+   * @opt_param string filter The filter expression.
    * @opt_param string parent This field contains the project Id for example:
    * "projects/{PROJECT_ID}".
-   * @opt_param string filter The filter expression.
+   * @opt_param string pageToken Token to provide to skip to a particular spot in
+   * the list.
    * @return Google_Service_ContainerAnalysis_ListNotesResponse
    */
   public function listProvidersNotes($name, $optParams = array())

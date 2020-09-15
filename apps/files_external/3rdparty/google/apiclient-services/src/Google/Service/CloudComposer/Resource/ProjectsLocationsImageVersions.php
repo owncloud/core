@@ -33,9 +33,9 @@ class Google_Service_CloudComposer_Resource_ProjectsLocationsImageVersions exten
    * in the form: "projects/{projectId}/locations/{locationId}"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of image_versions to return.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of image_versions to return.
    * @return Google_Service_CloudComposer_ListImageVersionsResponse
    */
   public function listProjectsLocationsImageVersions($parent, $optParams = array())

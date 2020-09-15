@@ -20,6 +20,8 @@ class Google_Service_Games_PlayerLeaderboardScore extends Google_Model
   protected $internal_gapi_mappings = array(
         "leaderboardId" => "leaderboard_id",
   );
+  protected $friendsRankType = 'Google_Service_Games_LeaderboardScoreRank';
+  protected $friendsRankDataType = '';
   public $kind;
   public $leaderboardId;
   protected $publicRankType = 'Google_Service_Games_LeaderboardScoreRank';
@@ -32,6 +34,20 @@ class Google_Service_Games_PlayerLeaderboardScore extends Google_Model
   public $timeSpan;
   public $writeTimestamp;
 
+  /**
+   * @param Google_Service_Games_LeaderboardScoreRank
+   */
+  public function setFriendsRank(Google_Service_Games_LeaderboardScoreRank $friendsRank)
+  {
+    $this->friendsRank = $friendsRank;
+  }
+  /**
+   * @return Google_Service_Games_LeaderboardScoreRank
+   */
+  public function getFriendsRank()
+  {
+    return $this->friendsRank;
+  }
   public function setKind($kind)
   {
     $this->kind = $kind;

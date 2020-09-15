@@ -67,10 +67,10 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * ent_store"
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. The previous
-   * `ListPredictionApiKeyRegistration.nextPageToken`.
    * @opt_param int pageSize Optional. Maximum number of results to return per
    * page. If unset, the service will choose a reasonable default.
+   * @opt_param string pageToken Optional. The previous
+   * `ListPredictionApiKeyRegistration.nextPageToken`.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ListPredictionApiKeyRegistrationsResponse
    */
   public function listProjectsLocationsCatalogsEventStoresPredictionApiKeyRegistrations($parent, $optParams = array())

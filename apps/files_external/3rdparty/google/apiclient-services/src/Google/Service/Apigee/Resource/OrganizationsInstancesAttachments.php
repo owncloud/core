@@ -26,12 +26,11 @@
 class Google_Service_Apigee_Resource_OrganizationsInstancesAttachments extends Google_Service_Resource
 {
   /**
-   * Creates a new attachment of an environment to an instance.
-   *
-   * **Note:** Not supported for Apigee hybrid. (attachments.create)
+   * Creates a new attachment of an environment to an instance. **Note:** Not
+   * supported for Apigee hybrid. (attachments.create)
    *
    * @param string $parent Required. Name of the instance. Use the following
-   * structure in your request:   `organizations/{org}/instances/{instance}`.
+   * structure in your request: `organizations/{org}/instances/{instance}`.
    * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceAttachment $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleLongrunningOperation
@@ -43,9 +42,8 @@ class Google_Service_Apigee_Resource_OrganizationsInstancesAttachments extends G
     return $this->call('create', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
-   * Deletes an attachment.
-   *
-   * **Note:** Not supported for Apigee hybrid. (attachments.delete)
+   * Deletes an attachment. **Note:** Not supported for Apigee hybrid.
+   * (attachments.delete)
    *
    * @param string $name Required. Name of the attachment. Use the following
    * structure in your request:
@@ -60,9 +58,8 @@ class Google_Service_Apigee_Resource_OrganizationsInstancesAttachments extends G
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
-   * Gets an attachment.
-   *
-   * **Note:** Not supported for Apigee hybrid. (attachments.get)
+   * Gets an attachment. **Note:** Not supported for Apigee hybrid.
+   * (attachments.get)
    *
    * @param string $name Required. Name of the attachment. Use the following
    * structure in your request:
@@ -77,20 +74,18 @@ class Google_Service_Apigee_Resource_OrganizationsInstancesAttachments extends G
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1InstanceAttachment");
   }
   /**
-   * Lists all attachments to an instance.
-   *
-   * **Note:** Not supported for Apigee hybrid.
-   * (attachments.listOrganizationsInstancesAttachments)
+   * Lists all attachments to an instance. **Note:** Not supported for Apigee
+   * hybrid. (attachments.listOrganizationsInstancesAttachments)
    *
    * @param string $parent Required. Name of the organization. Use the following
-   * structure in your request:   `organizations/{org}/instances/{instance}`
+   * structure in your request: `organizations/{org}/instances/{instance}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Maximum number of instance attachments to return.
-   * Defaults to 25.
    * @opt_param string pageToken Page token, returned by a previous
    * ListInstanceAttachments call, that you can use to retrieve the next page of
    * content.
+   * @opt_param int pageSize Maximum number of instance attachments to return.
+   * Defaults to 25.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListInstanceAttachmentsResponse
    */
   public function listOrganizationsInstancesAttachments($parent, $optParams = array())

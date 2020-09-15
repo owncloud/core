@@ -26,15 +26,13 @@
 class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Service_Resource
 {
   /**
-   * Create a `Ruleset` from `Source`.
-   *
-   * The `Ruleset` is given a unique generated name which is returned to the
-   * caller. `Source` containing syntactic or semantics errors will result in an
-   * error response indicating the first error encountered. For a detailed view of
-   * `Source` issues, use TestRuleset. (rulesets.create)
+   * Create a `Ruleset` from `Source`. The `Ruleset` is given a unique generated
+   * name which is returned to the caller. `Source` containing syntactic or
+   * semantics errors will result in an error response indicating the first error
+   * encountered. For a detailed view of `Source` issues, use TestRuleset.
+   * (rulesets.create)
    *
    * @param string $name Resource name for Project which owns this `Ruleset`.
-   *
    * Format: `projects/{project_id}`
    * @param Google_Service_FirebaseRules_Ruleset $postBody
    * @param array $optParams Optional parameters.
@@ -47,14 +45,11 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
     return $this->call('create', array($params), "Google_Service_FirebaseRules_Ruleset");
   }
   /**
-   * Delete a `Ruleset` by resource name.
+   * Delete a `Ruleset` by resource name. If the `Ruleset` is referenced by a
+   * `Release` the operation will fail. (rulesets.delete)
    *
-   * If the `Ruleset` is referenced by a `Release` the operation will fail.
-   * (rulesets.delete)
-   *
-   * @param string $name Resource name for the ruleset to delete.
-   *
-   * Format: `projects/{project_id}/rulesets/{ruleset_id}`
+   * @param string $name Resource name for the ruleset to delete. Format:
+   * `projects/{project_id}/rulesets/{ruleset_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseRules_FirebaserulesEmpty
    */
@@ -67,9 +62,8 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
   /**
    * Get a `Ruleset` by name including the full `Source` contents. (rulesets.get)
    *
-   * @param string $name Resource name for the ruleset to get.
-   *
-   * Format: `projects/{project_id}/rulesets/{ruleset_id}`
+   * @param string $name Resource name for the ruleset to get. Format:
+   * `projects/{project_id}/rulesets/{ruleset_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseRules_Ruleset
    */
@@ -81,29 +75,24 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
   }
   /**
    * List `Ruleset` metadata only and optionally filter the results by `Ruleset`
-   * name.
+   * name. The full `Source` contents of a `Ruleset` may be retrieved with
+   * GetRuleset. (rulesets.listProjectsRulesets)
    *
-   * The full `Source` contents of a `Ruleset` may be retrieved with GetRuleset.
-   * (rulesets.listProjectsRulesets)
-   *
-   * @param string $name Resource name for the project.
-   *
-   * Format: `projects/{project_id}`
+   * @param string $name Resource name for the project. Format:
+   * `projects/{project_id}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Next page token for loading the next batch of
-   * `Ruleset` instances.
+   * @opt_param string filter `Ruleset` filter. The list method supports filters
+   * with restrictions on `Ruleset.name`. Filters on `Ruleset.create_time` should
+   * use the `date` function which parses strings that conform to the RFC 3339
+   * date/time specifications. Example: `create_time >
+   * date("2017-01-01T00:00:00Z") AND name=UUID-*`
    * @opt_param int pageSize Page size to load. Maximum of 100. Defaults to 10.
    * Note: `page_size` is just a hint and the service may choose to load less than
    * `page_size` due to the size of the output. To traverse all of the releases,
    * caller should iterate until the `page_token` is empty.
-   * @opt_param string filter `Ruleset` filter. The list method supports filters
-   * with restrictions on `Ruleset.name`.
-   *
-   * Filters on `Ruleset.create_time` should use the `date` function which parses
-   * strings that conform to the RFC 3339 date/time specifications.
-   *
-   * Example: `create_time > date("2017-01-01T00:00:00Z") AND name=UUID-*`
+   * @opt_param string pageToken Next page token for loading the next batch of
+   * `Ruleset` instances.
    * @return Google_Service_FirebaseRules_ListRulesetsResponse
    */
   public function listProjectsRulesets($name, $optParams = array())

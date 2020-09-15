@@ -27,6 +27,8 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdmi
   public $minCpuPlatform;
   public $networkAccess;
   public $reserved;
+  protected $soleTenancyType = 'Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaSoleTenancyConfig';
+  protected $soleTenancyDataType = '';
   public $vmImage;
 
   /**
@@ -106,6 +108,20 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdmi
   public function getReserved()
   {
     return $this->reserved;
+  }
+  /**
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaSoleTenancyConfig
+   */
+  public function setSoleTenancy(Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaSoleTenancyConfig $soleTenancy)
+  {
+    $this->soleTenancy = $soleTenancy;
+  }
+  /**
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaSoleTenancyConfig
+   */
+  public function getSoleTenancy()
+  {
+    return $this->soleTenancy;
   }
   public function setVmImage($vmImage)
   {

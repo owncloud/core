@@ -17,10 +17,20 @@
 
 class Google_Service_BigQueryReservation_Reservation extends Google_Model
 {
+  public $creationTime;
   public $ignoreIdleSlots;
   public $name;
   public $slotCapacity;
+  public $updateTime;
 
+  public function setCreationTime($creationTime)
+  {
+    $this->creationTime = $creationTime;
+  }
+  public function getCreationTime()
+  {
+    return $this->creationTime;
+  }
   public function setIgnoreIdleSlots($ignoreIdleSlots)
   {
     $this->ignoreIdleSlots = $ignoreIdleSlots;
@@ -44,5 +54,13 @@ class Google_Service_BigQueryReservation_Reservation extends Google_Model
   public function getSlotCapacity()
   {
     return $this->slotCapacity;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
 }

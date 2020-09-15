@@ -15,8 +15,9 @@
  * the License.
  */
 
-class Google_Service_CloudRun_ExecAction extends Google_Model
+class Google_Service_CloudRun_ExecAction extends Google_Collection
 {
+  protected $collection_key = 'command';
   public $command;
 
   public function setCommand($command)

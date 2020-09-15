@@ -19,6 +19,8 @@ class Google_Service_Compute_InstanceGroupManagerStatus extends Google_Model
 {
   public $autoscaler;
   public $isStable;
+  protected $statefulType = 'Google_Service_Compute_InstanceGroupManagerStatusStateful';
+  protected $statefulDataType = '';
   protected $versionTargetType = 'Google_Service_Compute_InstanceGroupManagerStatusVersionTarget';
   protected $versionTargetDataType = '';
 
@@ -37,6 +39,20 @@ class Google_Service_Compute_InstanceGroupManagerStatus extends Google_Model
   public function getIsStable()
   {
     return $this->isStable;
+  }
+  /**
+   * @param Google_Service_Compute_InstanceGroupManagerStatusStateful
+   */
+  public function setStateful(Google_Service_Compute_InstanceGroupManagerStatusStateful $stateful)
+  {
+    $this->stateful = $stateful;
+  }
+  /**
+   * @return Google_Service_Compute_InstanceGroupManagerStatusStateful
+   */
+  public function getStateful()
+  {
+    return $this->stateful;
   }
   /**
    * @param Google_Service_Compute_InstanceGroupManagerStatusVersionTarget

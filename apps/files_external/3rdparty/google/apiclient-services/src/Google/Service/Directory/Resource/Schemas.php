@@ -80,7 +80,7 @@ class Google_Service_Directory_Resource_Schemas extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Directory_Schemas");
   }
   /**
-   * Update schema. This method supports patch semantics. (schemas.patch)
+   * Patch Schema via Apiary Patch Orchestration (schemas.patch)
    *
    * @param string $customerId Immutable ID of the G Suite account
    * @param string $schemaKey Name or immutable ID of the schema.

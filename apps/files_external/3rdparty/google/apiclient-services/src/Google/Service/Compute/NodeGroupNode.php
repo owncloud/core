@@ -18,6 +18,7 @@
 class Google_Service_Compute_NodeGroupNode extends Google_Collection
 {
   protected $collection_key = 'instances';
+  public $cpuOvercommitType;
   public $instances;
   public $name;
   public $nodeType;
@@ -26,6 +27,14 @@ class Google_Service_Compute_NodeGroupNode extends Google_Collection
   public $serverId;
   public $status;
 
+  public function setCpuOvercommitType($cpuOvercommitType)
+  {
+    $this->cpuOvercommitType = $cpuOvercommitType;
+  }
+  public function getCpuOvercommitType()
+  {
+    return $this->cpuOvercommitType;
+  }
   public function setInstances($instances)
   {
     $this->instances = $instances;

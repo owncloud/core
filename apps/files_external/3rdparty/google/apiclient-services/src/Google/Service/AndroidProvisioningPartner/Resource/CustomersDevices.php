@@ -64,9 +64,9 @@ class Google_Service_AndroidProvisioningPartner_Resource_CustomersDevices extend
    * resource name in the format `customers/[CUSTOMER_ID]`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken A token specifying which result page to return.
    * @opt_param string pageSize The maximum number of devices to show in a page of
    * results. Must be between 1 and 100 inclusive.
-   * @opt_param string pageToken A token specifying which result page to return.
    * @return Google_Service_AndroidProvisioningPartner_CustomerListDevicesResponse
    */
   public function listCustomersDevices($parent, $optParams = array())
@@ -92,7 +92,6 @@ class Google_Service_AndroidProvisioningPartner_Resource_CustomersDevices extend
   }
   /**
    * Unclaims a device from a customer and removes it from zero-touch enrollment.
-   *
    * After removing a device, a customer must contact their reseller to register
    * the device into zero-touch enrollment again. (devices.unclaim)
    *

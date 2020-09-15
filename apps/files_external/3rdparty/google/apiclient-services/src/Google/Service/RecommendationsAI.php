@@ -25,7 +25,7 @@
  *
  * <p>
  * For more information about this service, see the API
- * <a href="https://cloud.google.com/recommendations/docs/" target="_blank">Documentation</a>
+ * <a href="https://cloud.google.com/recommendations-ai/docs" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -74,13 +74,13 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(
@@ -137,20 +137,6 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'required' => true,
                 ),
               ),
-            ),'getGroupIdItems' => array(
-              'path' => 'v1beta1/{+parent}/catalogItems:groupIdItems',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'itemGroupId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
             ),'import' => array(
               'path' => 'v1beta1/{+parent}/catalogItems:import',
               'httpMethod' => 'POST',
@@ -174,13 +160,13 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -230,13 +216,13 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -298,13 +284,13 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -326,15 +312,15 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'ets' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'userEvent' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'uri' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'ets' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -430,10 +416,6 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -441,6 +423,10 @@ class Google_Service_RecommendationsAI extends Google_Service
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),

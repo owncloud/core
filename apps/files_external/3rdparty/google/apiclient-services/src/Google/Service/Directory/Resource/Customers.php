@@ -39,7 +39,7 @@ class Google_Service_Directory_Resource_Customers extends Google_Service_Resourc
     return $this->call('get', array($params), "Google_Service_Directory_Customer");
   }
   /**
-   * Updates a customer. This method supports patch semantics. (customers.patch)
+   * Patch Customers via Apiary Patch Orchestration (customers.patch)
    *
    * @param string $customerKey Id of the customer to be updated
    * @param Google_Service_Directory_Customer $postBody

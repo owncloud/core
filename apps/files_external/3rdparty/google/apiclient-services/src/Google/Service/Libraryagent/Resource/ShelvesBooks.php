@@ -63,12 +63,12 @@ class Google_Service_Libraryagent_Resource_ShelvesBooks extends Google_Service_R
    * to list.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. Server may return fewer books
+   * than requested. If unspecified, server will pick an appropriate default.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListBooksResponse.next_page_token. returned from the previous call to
    * `ListBooks` method.
-   * @opt_param int pageSize Requested page size. Server may return fewer books
-   * than requested. If unspecified, server will pick an appropriate default.
    * @return Google_Service_Libraryagent_GoogleExampleLibraryagentV1ListBooksResponse
    */
   public function listShelvesBooks($parent, $optParams = array())

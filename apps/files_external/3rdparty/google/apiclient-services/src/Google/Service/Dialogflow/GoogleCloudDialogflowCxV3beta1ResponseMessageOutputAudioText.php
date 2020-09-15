@@ -17,9 +17,18 @@
 
 class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageOutputAudioText extends Google_Model
 {
+  public $allowPlaybackInterruption;
   public $ssml;
   public $text;
 
+  public function setAllowPlaybackInterruption($allowPlaybackInterruption)
+  {
+    $this->allowPlaybackInterruption = $allowPlaybackInterruption;
+  }
+  public function getAllowPlaybackInterruption()
+  {
+    return $this->allowPlaybackInterruption;
+  }
   public function setSsml($ssml)
   {
     $this->ssml = $ssml;

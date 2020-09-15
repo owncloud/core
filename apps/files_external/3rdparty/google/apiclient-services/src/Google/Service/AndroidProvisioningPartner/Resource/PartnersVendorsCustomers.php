@@ -32,9 +32,9 @@ class Google_Service_AndroidProvisioningPartner_Resource_PartnersVendorsCustomer
    * `partners/[PARTNER_ID]/vendors/[VENDOR_ID]`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of results to be returned.
    * @opt_param string pageToken A token identifying a page of results returned by
    * the server.
-   * @opt_param int pageSize The maximum number of results to be returned.
    * @return Google_Service_AndroidProvisioningPartner_ListVendorCustomersResponse
    */
   public function listPartnersVendorsCustomers($parent, $optParams = array())

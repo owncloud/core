@@ -38,9 +38,8 @@ class Google_Service_HangoutsChat_Resource_SpacesMessages extends Google_Service
    * message with a given thread identifier, a new thread is created. Subsequent
    * messages with the same thread identifier will be posted into the same thread.
    * This relieves bots and webhooks from having to store the Hangouts Chat thread
-   * ID of a thread (created earlier by them) to post further updates to it.
-   *
-   * Has no effect if thread field, corresponding to an existing thread, is set in
+   * ID of a thread (created earlier by them) to post further updates to it. Has
+   * no effect if thread field, corresponding to an existing thread, is set in
    * message.
    * @return Google_Service_HangoutsChat_Message
    */
@@ -54,9 +53,8 @@ class Google_Service_HangoutsChat_Resource_SpacesMessages extends Google_Service
    * Deletes a message. (messages.delete)
    *
    * @param string $name Required. Resource name of the message to be deleted, in
-   * the form "spaces/messages"
-   *
-   * Example: spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
+   * the form "spaces/messages" Example:
+   * spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
    * @param array $optParams Optional parameters.
    * @return Google_Service_HangoutsChat_ChatEmpty
    */
@@ -70,9 +68,8 @@ class Google_Service_HangoutsChat_Resource_SpacesMessages extends Google_Service
    * Returns a message. (messages.get)
    *
    * @param string $name Required. Resource name of the message to be retrieved,
-   * in the form "spaces/messages".
-   *
-   * Example: spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
+   * in the form "spaces/messages". Example:
+   * spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
    * @param array $optParams Optional parameters.
    * @return Google_Service_HangoutsChat_Message
    */
@@ -85,16 +82,14 @@ class Google_Service_HangoutsChat_Resource_SpacesMessages extends Google_Service
   /**
    * Updates a message. (messages.update)
    *
-   * @param string $name Resource name, in the form "spaces/messages".
-   *
-   * Example: spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
+   * @param string $name Resource name, in the form "spaces/messages". Example:
+   * spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
    * @param Google_Service_HangoutsChat_Message $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. The field paths to be updated, comma
-   * separated if there are multiple.
-   *
-   * Currently supported field paths: * text * cards
+   * separated if there are multiple. Currently supported field paths: * text *
+   * cards
    * @return Google_Service_HangoutsChat_Message
    */
   public function update($name, Google_Service_HangoutsChat_Message $postBody, $optParams = array())

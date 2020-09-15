@@ -100,7 +100,6 @@ class Google_Service_CloudAsset_Resource_Feeds extends Google_Service_Resource
    * projects/{project_number}/feeds/{client-assigned_feed_identifier} or
    * folders/{folder_number}/feeds/{client-assigned_feed_identifier} or
    * organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
-   *
    * The client-assigned feed identifier must be unique within the parent
    * project/folder/organization.
    * @param Google_Service_CloudAsset_UpdateFeedRequest $postBody

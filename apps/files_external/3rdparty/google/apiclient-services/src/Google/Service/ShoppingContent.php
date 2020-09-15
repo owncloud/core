@@ -138,6 +138,10 @@ class Google_Service_ShoppingContent extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'insert' => array(
               'path' => '{merchantId}/accounts',
@@ -173,11 +177,19 @@ class Google_Service_ShoppingContent extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'label' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -208,6 +220,21 @@ class Google_Service_ShoppingContent extends Google_Service
             ),'update' => array(
               'path' => '{merchantId}/accounts/{accountId}',
               'httpMethod' => 'PUT',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'accountId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'updatelabels' => array(
+              'path' => '{merchantId}/accounts/{accountId}/updatelabels',
+              'httpMethod' => 'POST',
               'parameters' => array(
                 'merchantId' => array(
                   'location' => 'path',

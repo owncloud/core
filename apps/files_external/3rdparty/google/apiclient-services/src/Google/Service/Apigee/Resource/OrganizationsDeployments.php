@@ -30,7 +30,7 @@ class Google_Service_Apigee_Resource_OrganizationsDeployments extends Google_Ser
    * (deployments.listOrganizationsDeployments)
    *
    * @param string $parent Required. Name of the organization for which to return
-   * deployment information in the following format:  `organizations/{org}`
+   * deployment information in the following format: `organizations/{org}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool sharedFlows Optional. Flag that specifies whether to return

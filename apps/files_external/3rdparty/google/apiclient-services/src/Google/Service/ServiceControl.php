@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for ServiceControl (v1).
+ * Service definition for ServiceControl (v2).
  *
  * <p>
  * Provides control plane functionality to managed services, such as logging,
@@ -52,7 +52,7 @@ class Google_Service_ServiceControl extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://servicecontrol.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1';
+    $this->version = 'v2';
     $this->serviceName = 'servicecontrol';
 
     $this->services = new Google_Service_ServiceControl_Resource_Services(
@@ -61,18 +61,8 @@ class Google_Service_ServiceControl extends Google_Service
         'services',
         array(
           'methods' => array(
-            'allocateQuota' => array(
-              'path' => 'v1/services/{serviceName}:allocateQuota',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'serviceName' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'check' => array(
-              'path' => 'v1/services/{serviceName}:check',
+            'check' => array(
+              'path' => 'v2/services/{serviceName}:check',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'serviceName' => array(
@@ -82,7 +72,7 @@ class Google_Service_ServiceControl extends Google_Service
                 ),
               ),
             ),'report' => array(
-              'path' => 'v1/services/{serviceName}:report',
+              'path' => 'v2/services/{serviceName}:report',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'serviceName' => array(

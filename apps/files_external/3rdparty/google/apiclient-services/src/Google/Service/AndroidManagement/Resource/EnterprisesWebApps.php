@@ -75,10 +75,10 @@ class Google_Service_AndroidManagement_Resource_EnterprisesWebApps extends Googl
    * enterprises/{enterpriseId}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A token identifying a page of results returned by
-   * the server.
    * @opt_param int pageSize The requested page size. The actual page size may be
    * fixed to a min or max value.
+   * @opt_param string pageToken A token identifying a page of results returned by
+   * the server.
    * @return Google_Service_AndroidManagement_ListWebAppsResponse
    */
   public function listEnterprisesWebApps($parent, $optParams = array())
