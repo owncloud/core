@@ -174,7 +174,7 @@ class FilesPageCRUD extends FilesPageBasic {
 	 *
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented");
+		throw new \Exception(__METHOD__ . " not implemented in FilesPageCRUD");
 	}
 
 	/**
@@ -359,7 +359,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception("could not create folder");
+			throw new \Exception("could not create folder '$name'");
 		}
 		return $name;
 	}

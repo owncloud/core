@@ -752,7 +752,7 @@ class SharingDialog extends OwncloudPage {
 			"could not find public link remove buttons"
 		);
 		if ($number < 1) {
-			throw new \Exception("Position cannot be less than 1");
+			throw new \Exception(__METHOD__ . " Position cannot be less than 1");
 		}
 		$publicLinkRemoveBtn = $publicLinkRemoveBtns[$number - 1];
 		$this->assertElementNotNull(

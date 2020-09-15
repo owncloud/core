@@ -114,6 +114,6 @@ class LockEntry extends OwncloudPage {
 	 * @return void
 	 */
 	public function getLockingResource() {
-		throw new \Exception("not yet implemented");
+		throw new \Exception(__METHOD__ . " not implemented in LockEntry");
 	}
 }

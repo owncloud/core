@@ -95,7 +95,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in PublicLinkFilesPage");
+		throw new \Exception(__METHOD__ . " not implemented in PublicLinkFilesPage");
 	}
 
 	/**
@@ -363,7 +363,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException
 	 */
 	public function getTooltipOfFile($fileName, Session $session) {
-		throw new \Exception("not implemented");
+		throw new \Exception(__METHOD__ . " not implemented in PublicLinkFilesPage");
 	}
 
 	/**

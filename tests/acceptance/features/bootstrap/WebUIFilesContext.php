@@ -526,7 +526,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		} catch (Exception $e) {
 			//do not throw the exception if we expect the folder creation to fail
 			if ($invalid !== "invalid"
-				|| $e->getMessage() !== "could not create folder"
+				|| $e->getMessage() !== "could not create folder '$name'"
 			) {
 				throw $e;
 			}

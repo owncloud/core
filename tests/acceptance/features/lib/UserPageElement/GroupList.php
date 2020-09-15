@@ -102,15 +102,15 @@ class GroupList extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->deleteBtnXpath " .
-				"could not find delete button"
+				"could not find delete button for group $name"
 			);
 		}
 		$deleteButton->click();
 
 		if ($confirm) {
-			$confirmButton = $this->find("xpath", $this->deleteConfirmButtonXpath);
+			$confirmButton = $this->waitTillXpathIsVisible($this->deleteConfirmButtonXpath);
 		} else {
-			$confirmButton = $this->find("xpath", $this->deleteNotConfirmButtonXpath);
+			$confirmButton = $this->waitTillXpathIsVisible($this->deleteNotConfirmButtonXpath);
 		}
 
 		if ($confirmButton === null) {
@@ -118,7 +118,7 @@ class GroupList extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathSelector " .
-				"could not find delete confirm button"
+				"could not find delete confirm button for group $name"
 			);
 		}
 		$confirmButton->click();

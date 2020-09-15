@@ -76,7 +76,7 @@ class SharedWithYouPage extends FilesPageBasic {
 	 *
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in SharedWithYouPage");
+		throw new \Exception(__METHOD__ . " not implemented in SharedWithYouPage");
 	}
 
 	/**

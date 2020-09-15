@@ -293,7 +293,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @return void
 	 */
 	public function deleteLink($name) {
-		throw new Exception("not implemented");
+		throw new Exception(__METHOD__ . " not implemented in PublicLinkTab");
 	}
 
 	/**
@@ -304,7 +304,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @return void
 	 */
 	public function shareLink($name, $service) {
-		throw new Exception("not implemented");
+		throw new Exception(__METHOD__ . " not implemented in PublicLinkTab");
 	}
 
 	/**
@@ -314,7 +314,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @return void
 	 */
 	public function copyLinkToClipboard($name) {
-		throw new Exception("not implemented");
+		throw new Exception(__METHOD__ . " not implemented in PublicLinkTab");
 	}
 
 	/**

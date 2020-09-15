@@ -508,7 +508,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->quotaSelectXpath " .
-				"could not find quota select element"
+				"could not find quota select element for user $username"
 			);
 		}
 		$selectField->click();
@@ -523,7 +523,7 @@ class UsersPage extends OwncloudPage {
 				throw new ElementNotFoundException(
 					__METHOD__ .
 					" xpath $xpathLocator " .
-					"could not find quota option element"
+					"could not find quota option element for user $username"
 				);
 			}
 
@@ -536,7 +536,7 @@ class UsersPage extends OwncloudPage {
 				throw new ElementNotFoundException(
 					__METHOD__ .
 					" xpath $this->manualQuotaInputXpath " .
-					"could not find manual quota input element"
+					"could not find manual quota input element for user $username"
 				);
 			}
 
@@ -652,16 +652,16 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->deleteUserBtnXpath " .
-				"could not find delete user field "
+				"could not find delete user field for user $username"
 			);
 		}
 		$deleteBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 
 		if ($confirm) {
-			$confirmBtn = $this->find('xpath', $this->deleteConfirmBtnXpath);
+			$confirmBtn = $this->waitTillXpathIsVisible($this->deleteConfirmBtnXpath);
 		} else {
-			$confirmBtn = $this->find('xpath', $this->deleteNotConfirmBtnXpath);
+			$confirmBtn = $this->waitTillXpathIsVisible($this->deleteNotConfirmBtnXpath);
 		}
 
 		if ($confirmBtn === null) {
@@ -669,7 +669,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathSelector " .
-				"could not find delete confirm button"
+				"could not find delete confirm button for user $username"
 			);
 		}
 
@@ -690,7 +690,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->editDisplayNameBtn " .
-				"could not find edit button "
+				"could not find edit button for user $username"
 			);
 		}
 		$editDisplayNameBtn->focus();
@@ -701,7 +701,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->editDisplayNameInput " .
-				"could not find display name field "
+				"could not find display name field for user $username"
 			);
 		}
 		try {
@@ -726,7 +726,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->editPasswordBtnXpath " .
-				"could not find edit button "
+				"could not find edit button for user $user"
 			);
 		}
 		$editPasswordBtn->focus();
@@ -737,7 +737,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->editPasswordInputXpath " .
-				"could not find password field "
+				"could not find password field for user $user"
 			);
 		}
 		try {
@@ -807,7 +807,7 @@ class UsersPage extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->groupLabelInInputXpath " .
-				"could not find groups input"
+				"could not find groups input for user $user"
 			);
 		}
 		$groupInput = $groupsField->find(
