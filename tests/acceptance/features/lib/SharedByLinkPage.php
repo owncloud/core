@@ -82,7 +82,7 @@ class SharedByLinkPage extends FilesPageCRUD {
 	 *
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in SharedByLinkPage");
+		throw new \Exception(__METHOD__ . " not implemented in SharedByLinkPage");
 	}
 
 	/**

@@ -106,6 +106,6 @@ class LockDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function deleteLockByUserAndLockingResource($user, $resource) {
-		throw new \Exception("not yet implemented");
+		throw new \Exception(__METHOD__ . " not implemented in LockDialog");
 	}
 }

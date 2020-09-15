@@ -89,7 +89,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in FilesPage");
+		throw new \Exception(__METHOD__ . " not implemented in FilesPage");
 	}
 
 	/**
