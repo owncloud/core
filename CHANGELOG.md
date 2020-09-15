@@ -45,6 +45,7 @@ Summary
 * Change - Update icewind/smb from 3.2.6 to 3.2.7 in files_external: [#37894](https://github.com/owncloud/core/pull/37894)
 * Change - Update doctrine/dbal (2.10.3 => 2.10.4): [#37904](https://github.com/owncloud/core/pull/37904)
 * Change - Update symfony/translation-contracts (v1.1.9 => v1.1.10): [#37904](https://github.com/owncloud/core/pull/37904)
+* Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -293,6 +294,14 @@ Details
 * Change - Update symfony/translation-contracts (v1.1.9 => v1.1.10): [#37904](https://github.com/owncloud/core/pull/37904)
 
    https://github.com/owncloud/core/pull/37904
+
+* Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
+
+   This change updates the 3rd-party dependencies of files_external: - google/apiclient
+   (v2.7.0 => v2.7.1) - google/apiclient-services (v0.141 => v0.146) - google/auth (v1.11.1 =>
+   v1.12.0)
+
+   https://github.com/owncloud/core/pull/37912
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
