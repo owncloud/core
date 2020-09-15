@@ -27,9 +27,8 @@ class Google_Service_Vision_Resource_Files extends Google_Service_Resource
 {
   /**
    * Service that performs image detection and annotation for a batch of files.
-   * Now only "application/pdf", "image/tiff" and "image/gif" are supported.
-   *
-   * This service will extract at most 5 (customers can specify which 5 in
+   * Now only "application/pdf", "image/tiff" and "image/gif" are supported. This
+   * service will extract at most 5 (customers can specify which 5 in
    * AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each file
    * provided and perform detection and annotation for each image extracted.
    * (files.annotate)

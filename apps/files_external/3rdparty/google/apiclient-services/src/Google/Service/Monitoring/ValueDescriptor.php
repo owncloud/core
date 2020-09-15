@@ -19,6 +19,7 @@ class Google_Service_Monitoring_ValueDescriptor extends Google_Model
 {
   public $key;
   public $metricKind;
+  public $unit;
   public $valueType;
 
   public function setKey($key)
@@ -36,6 +37,14 @@ class Google_Service_Monitoring_ValueDescriptor extends Google_Model
   public function getMetricKind()
   {
     return $this->metricKind;
+  }
+  public function setUnit($unit)
+  {
+    $this->unit = $unit;
+  }
+  public function getUnit()
+  {
+    return $this->unit;
   }
   public function setValueType($valueType)
   {

@@ -57,9 +57,6 @@ class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Reso
    *
    * @param string $userKey Email or immutable ID of the user
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string event Event on which subscription is intended (if
-   * subscribing)
    * @return Google_Service_Directory_Aliases
    */
   public function listUsersAliases($userKey, $optParams = array())
@@ -69,7 +66,7 @@ class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Reso
     return $this->call('list', array($params), "Google_Service_Directory_Aliases");
   }
   /**
-   * Watch for changes in user aliases list (aliases.watch)
+   * Watch for changes in users list (aliases.watch)
    *
    * @param string $userKey Email or immutable ID of the user
    * @param Google_Service_Directory_Channel $postBody

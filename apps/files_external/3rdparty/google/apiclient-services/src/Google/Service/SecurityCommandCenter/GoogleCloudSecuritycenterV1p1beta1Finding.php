@@ -26,6 +26,7 @@ class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Fin
   public $resourceName;
   protected $securityMarksType = 'Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1SecurityMarks';
   protected $securityMarksDataType = '';
+  public $severity;
   public $sourceProperties;
   public $state;
 
@@ -98,6 +99,14 @@ class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Fin
   public function getSecurityMarks()
   {
     return $this->securityMarks;
+  }
+  public function setSeverity($severity)
+  {
+    $this->severity = $severity;
+  }
+  public function getSeverity()
+  {
+    return $this->severity;
   }
   public function setSourceProperties($sourceProperties)
   {

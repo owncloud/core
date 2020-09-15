@@ -26,9 +26,8 @@
 class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Service_Resource
 {
   /**
-   * Creates a datasource.
-   *
-   * **Note:** This API requires an admin account to execute. (datasources.create)
+   * Creates a datasource. **Note:** This API requires an admin account to
+   * execute. (datasources.create)
    *
    * @param Google_Service_CloudSearch_DataSource $postBody
    * @param array $optParams Optional parameters.
@@ -41,9 +40,8 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('create', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Deletes a datasource.
-   *
-   * **Note:** This API requires an admin account to execute. (datasources.delete)
+   * Deletes a datasource. **Note:** This API requires an admin account to
+   * execute. (datasources.delete)
    *
    * @param string $name Name of the datasource. Format: datasources/{source_id}.
    * @param array $optParams Optional parameters.
@@ -59,9 +57,8 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_CloudSearch_Operation");
   }
   /**
-   * Gets a datasource.
-   *
-   * **Note:** This API requires an admin account to execute. (datasources.get)
+   * Gets a datasource. **Note:** This API requires an admin account to execute.
+   * (datasources.get)
    *
    * @param string $name Name of the datasource resource. Format:
    * datasources/{source_id}.
@@ -78,18 +75,16 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('get', array($params), "Google_Service_CloudSearch_DataSource");
   }
   /**
-   * Lists datasources.
-   *
-   * **Note:** This API requires an admin account to execute.
+   * Lists datasources. **Note:** This API requires an admin account to execute.
    * (datasources.listSettingsDatasources)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Starting index of the results.
    * @opt_param int pageSize Maximum number of datasources to fetch in a request.
    * The max value is 100. The default value is 10
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
    * help with debugging, set this field. Otherwise, ignore this field.
+   * @opt_param string pageToken Starting index of the results.
    * @return Google_Service_CloudSearch_ListDataSourceResponse
    */
   public function listSettingsDatasources($optParams = array())
@@ -99,9 +94,8 @@ class Google_Service_CloudSearch_Resource_SettingsDatasources extends Google_Ser
     return $this->call('list', array($params), "Google_Service_CloudSearch_ListDataSourceResponse");
   }
   /**
-   * Updates a datasource.
-   *
-   * **Note:** This API requires an admin account to execute. (datasources.update)
+   * Updates a datasource. **Note:** This API requires an admin account to
+   * execute. (datasources.update)
    *
    * @param string $name Name of the datasource resource. Format:
    * datasources/{source_id}. The name is ignored when creating a datasource.

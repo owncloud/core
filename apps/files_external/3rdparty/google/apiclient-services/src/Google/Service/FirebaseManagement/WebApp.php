@@ -23,6 +23,7 @@ class Google_Service_FirebaseManagement_WebApp extends Google_Collection
   public $displayName;
   public $name;
   public $projectId;
+  public $webId;
 
   public function setAppId($appId)
   {
@@ -63,5 +64,13 @@ class Google_Service_FirebaseManagement_WebApp extends Google_Collection
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  public function setWebId($webId)
+  {
+    $this->webId = $webId;
+  }
+  public function getWebId()
+  {
+    return $this->webId;
   }
 }

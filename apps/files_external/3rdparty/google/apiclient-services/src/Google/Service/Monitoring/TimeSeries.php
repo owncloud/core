@@ -27,6 +27,7 @@ class Google_Service_Monitoring_TimeSeries extends Google_Collection
   protected $pointsDataType = 'array';
   protected $resourceType = 'Google_Service_Monitoring_MonitoredResource';
   protected $resourceDataType = '';
+  public $unit;
   public $valueType;
 
   /**
@@ -92,6 +93,14 @@ class Google_Service_Monitoring_TimeSeries extends Google_Collection
   public function getResource()
   {
     return $this->resource;
+  }
+  public function setUnit($unit)
+  {
+    $this->unit = $unit;
+  }
+  public function getUnit()
+  {
+    return $this->unit;
   }
   public function setValueType($valueType)
   {

@@ -26,17 +26,11 @@
 class Google_Service_ServiceManagement_Resource_Services extends Google_Service_Resource
 {
   /**
-   * Creates a new managed service.
-   *
-   * A managed service is immutable, and is subject to mandatory 30-day data
-   * retention. You cannot move a service or recreate it within 30 days after
-   * deletion.
-   *
-   * One producer project can own no more than 500 services. For security and
-   * reliability purposes, a production service should be hosted in a dedicated
-   * producer project.
-   *
-   * Operation (services.create)
+   * Creates a new managed service. A managed service is immutable, and is subject
+   * to mandatory 30-day data retention. You cannot move a service or recreate it
+   * within 30 days after deletion. One producer project can own no more than 500
+   * services. For security and reliability purposes, a production service should
+   * be hosted in a dedicated producer project. Operation (services.create)
    *
    * @param Google_Service_ServiceManagement_ManagedService $postBody
    * @param array $optParams Optional parameters.
@@ -52,12 +46,10 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    * Deletes a managed service. This method will change the service to the `Soft-
    * Delete` state for 30 days. Within this period, service producers may call
    * UndeleteService to restore the service. After 30 days, the service will be
-   * permanently deleted.
+   * permanently deleted. Operation (services.delete)
    *
-   * Operation (services.delete)
-   *
-   * @param string $serviceName Required. The name of the service.  See the
-   * [overview](/service-management/overview) for naming requirements.  For
+   * @param string $serviceName Required. The name of the service. See the
+   * [overview](/service-management/overview) for naming requirements. For
    * example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceManagement_Operation
@@ -71,9 +63,7 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   /**
    * Disables a service for a project, so it can no longer be be used for the
    * project. It prevents accidental usage that may cause unexpected billing
-   * charges or security leaks.
-   *
-   * Operation (services.disable)
+   * charges or security leaks. Operation (services.disable)
    *
    * @param string $serviceName Required. Name of the service to disable.
    * Specifying an unknown service name will cause the request to fail.
@@ -90,9 +80,7 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   /**
    * Enables a service for a project, so it can be used for the project. See
    * [Cloud Auth Guide](https://cloud.google.com/docs/authentication) for more
-   * information.
-   *
-   * Operation (services.enable)
+   * information. Operation (services.enable)
    *
    * @param string $serviceName Required. Name of the service to enable.
    * Specifying an unknown service name will cause the request to fail.
@@ -108,9 +96,8 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   }
   /**
    * Generates and returns a report (errors, warnings and changes from existing
-   * configurations) associated with GenerateConfigReportRequest.new_value
-   *
-   * If GenerateConfigReportRequest.old_value is specified,
+   * configurations) associated with GenerateConfigReportRequest.new_value If
+   * GenerateConfigReportRequest.old_value is specified,
    * GenerateConfigReportRequest will contain a single ChangeReport based on the
    * comparison between GenerateConfigReportRequest.new_value and
    * GenerateConfigReportRequest.old_value. If
@@ -132,8 +119,8 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    * Gets a managed service. Authentication is required unless the service is
    * public. (services.get)
    *
-   * @param string $serviceName Required. The name of the service.  See the
-   * `ServiceManager` overview for naming requirements.  For example:
+   * @param string $serviceName Required. The name of the service. See the
+   * `ServiceManager` overview for naming requirements. For example:
    * `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceManagement_ManagedService
@@ -148,18 +135,16 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    * Gets a service configuration (version) for a managed service.
    * (services.getConfig)
    *
-   * @param string $serviceName Required. The name of the service.  See the
-   * [overview](/service-management/overview) for naming requirements.  For
+   * @param string $serviceName Required. The name of the service. See the
+   * [overview](/service-management/overview) for naming requirements. For
    * example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string configId Required. The id of the service configuration
+   * resource. This field must be specified for the server to return all fields,
+   * including `SourceInfo`.
    * @opt_param string view Specifies which parts of the Service Config should be
    * returned in the response.
-   * @opt_param string configId Required. The id of the service configuration
-   * resource.
-   *
-   * This field must be specified for the server to return all fields, including
-   * `SourceInfo`.
    * @return Google_Service_ServiceManagement_Service
    */
   public function getConfig($serviceName, $optParams = array())
@@ -186,29 +171,24 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
     return $this->call('getIamPolicy', array($params), "Google_Service_ServiceManagement_Policy");
   }
   /**
-   * Lists managed services.
-   *
-   * Returns all public services. For authenticated users, also returns all
-   * services the calling user has "servicemanagement.services.get" permission
-   * for.
-   *
-   * **BETA:** If the caller specifies the `consumer_id`, it returns only the
-   * services enabled on the consumer. The `consumer_id` must have the format of
-   * "project:{PROJECT-ID}". (services.listServices)
+   * Lists managed services. Returns all public services. For authenticated users,
+   * also returns all services the calling user has
+   * "servicemanagement.services.get" permission for. **BETA:** If the caller
+   * specifies the `consumer_id`, it returns only the services enabled on the
+   * consumer. The `consumer_id` must have the format of "project:{PROJECT-ID}".
+   * (services.listServices)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string producerProjectId Include services produced by the
-   * specified project.
    * @opt_param string pageToken Token identifying which result to start with;
    * returned by a previous list call.
+   * @opt_param string consumerId Include services consumed by the specified
+   * consumer. The Google Service Management implementation accepts the following
+   * forms: - project:
+   * @opt_param string producerProjectId Include services produced by the
+   * specified project.
    * @opt_param int pageSize The max number of items to include in the response
    * list. Page size is 50 if not specified. Maximum value is 100.
-   * @opt_param string consumerId Include services consumed by the specified
-   * consumer.
-   *
-   * The Google Service Management implementation accepts the following forms: -
-   * project:
    * @return Google_Service_ServiceManagement_ListServicesResponse
    */
   public function listServices($optParams = array())
@@ -219,10 +199,8 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.
-   *
-   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
-   * (services.setIamPolicy)
+   * existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and
+   * `PERMISSION_DENIED` errors. (services.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -240,11 +218,9 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * `NOT_FOUND` error.
-   *
-   * Note: This operation is designed to be used for building permission-aware UIs
-   * and command-line tools, not for authorization checking. This operation may
-   * "fail open" without warning. (services.testIamPermissions)
+   * `NOT_FOUND` error. Note: This operation is designed to be used for building
+   * permission-aware UIs and command-line tools, not for authorization checking.
+   * This operation may "fail open" without warning. (services.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value
@@ -263,7 +239,6 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
    * Revives a previously deleted managed service. The method restores the service
    * using the configuration at the time the service was deleted. The target
    * service must exist and must have been deleted within the last 30 days.
-   *
    * Operation (services.undelete)
    *
    * @param string $serviceName Required. The name of the service. See the

@@ -61,14 +61,15 @@ class Google_Service_Dfareporting_Resource_FloodlightConfigurations extends Goog
    * semantics. (floodlightConfigurations.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Floodlight configuration ID.
    * @param Google_Service_Dfareporting_FloodlightConfiguration $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id FloodlightConfiguration ID.
    * @return Google_Service_Dfareporting_FloodlightConfiguration
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_FloodlightConfiguration $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_FloodlightConfiguration $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_FloodlightConfiguration");
   }

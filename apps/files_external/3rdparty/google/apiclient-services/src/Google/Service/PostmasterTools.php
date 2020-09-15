@@ -19,7 +19,7 @@
  * Service definition for PostmasterTools (v1beta1).
  *
  * <p>
- * The Gmail Postmaster API is a RESTful API that provides programmatic access
+ * The Postmaster Tools API is a RESTful API that provides programmatic access
  * to email traffic metrics (like spam reports, delivery errors etc) otherwise
  * available through the Gmail Postmaster Tools UI currently.</p>
  *
@@ -74,13 +74,13 @@ class Google_Service_PostmasterTools extends Google_Service
               'path' => 'v1beta1/domains',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -112,7 +112,7 @@ class Google_Service_PostmasterTools extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'endDate.month' => array(
+                'startDate.month' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -124,7 +124,7 @@ class Google_Service_PostmasterTools extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'startDate.day' => array(
+                'startDate.year' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -132,11 +132,11 @@ class Google_Service_PostmasterTools extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'startDate.month' => array(
+                'startDate.day' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'startDate.year' => array(
+                'endDate.month' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),

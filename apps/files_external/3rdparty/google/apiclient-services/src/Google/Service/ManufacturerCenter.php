@@ -101,18 +101,18 @@ class Google_Service_ManufacturerCenter extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'include' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'include' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
+                  'repeated' => true,
                 ),
               ),
             ),'update' => array(

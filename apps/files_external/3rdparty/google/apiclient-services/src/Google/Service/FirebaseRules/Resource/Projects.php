@@ -28,31 +28,22 @@ class Google_Service_FirebaseRules_Resource_Projects extends Google_Service_Reso
   /**
    * Test `Source` for syntactic and semantic correctness. Issues present, if any,
    * will be returned to the caller with a description, severity, and source
-   * location.
-   *
-   * The test method may be executed with `Source` or a `Ruleset` name. Passing
-   * `Source` is useful for unit testing new rules. Passing a `Ruleset` name is
-   * useful for regression testing an existing rule.
-   *
-   * The following is an example of `Source` that permits users to upload images
-   * to a bucket bearing their user id and matching the correct metadata:
-   *
-   * _*Example*_
-   *
-   *     // Users are allowed to subscribe and unsubscribe to the blog.
-   * service firebase.storage {       match /users/{userId}/images/{imageName} {
-   * allow write: if userId == request.auth.uid               &&
-   * (imageName.matches('*.png$')               || imageName.matches('*.jpg$'))
-   * && resource.mimeType.matches('^image/')       }     } (projects.test)
+   * location. The test method may be executed with `Source` or a `Ruleset` name.
+   * Passing `Source` is useful for unit testing new rules. Passing a `Ruleset`
+   * name is useful for regression testing an existing rule. The following is an
+   * example of `Source` that permits users to upload images to a bucket bearing
+   * their user id and matching the correct metadata: _*Example*_ // Users are
+   * allowed to subscribe and unsubscribe to the blog. service firebase.storage {
+   * match /users/{userId}/images/{imageName} { allow write: if userId ==
+   * request.auth.uid && (imageName.matches('*.png$') ||
+   * imageName.matches('*.jpg$')) && resource.mimeType.matches('^image/') } }
+   * (projects.test)
    *
    * @param string $name Tests may either provide `source` or a `Ruleset` resource
-   * name.
-   *
-   * For tests against `source`, the resource name must refer to the project:
-   * Format: `projects/{project_id}`
-   *
-   * For tests against a `Ruleset`, this must be the `Ruleset` resource name:
-   * Format: `projects/{project_id}/rulesets/{ruleset_id}`
+   * name. For tests against `source`, the resource name must refer to the
+   * project: Format: `projects/{project_id}` For tests against a `Ruleset`, this
+   * must be the `Ruleset` resource name: Format:
+   * `projects/{project_id}/rulesets/{ruleset_id}`
    * @param Google_Service_FirebaseRules_TestRulesetRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseRules_TestRulesetResponse

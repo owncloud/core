@@ -72,14 +72,13 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersAttributes extends G
     return $this->call('list', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Attributes");
   }
   /**
-   * Updates a developer attribute.
-   *
-   * **Note**: OAuth access tokens and Key Management Service (KMS) entities
-   * (apps, developers, and API products) are cached for 180 seconds (default).
-   * Any custom attributes associated with these entities are cached for at least
-   * 180 seconds after the entity is accessed at runtime. Therefore, an
-   * `ExpiresIn` element on the OAuthV2 policy won't be able to expire an access
-   * token in less than 180 seconds. (attributes.updateDeveloperAttribute)
+   * Updates a developer attribute. **Note**: OAuth access tokens and Key
+   * Management Service (KMS) entities (apps, developers, and API products) are
+   * cached for 180 seconds (default). Any custom attributes associated with these
+   * entities are cached for at least 180 seconds after the entity is accessed at
+   * runtime. Therefore, an `ExpiresIn` element on the OAuthV2 policy won't be
+   * able to expire an access token in less than 180 seconds.
+   * (attributes.updateDeveloperAttribute)
    *
    * @param string $name Required. Name of the developer attribute. Use the
    * following structure in your request:

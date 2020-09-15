@@ -29,6 +29,7 @@ class Google_Service_Container_IPAllocationPolicy extends Google_Model
   public $subnetworkName;
   public $tpuIpv4CidrBlock;
   public $useIpAliases;
+  public $useRoutes;
 
   public function setClusterIpv4Cidr($clusterIpv4Cidr)
   {
@@ -125,5 +126,13 @@ class Google_Service_Container_IPAllocationPolicy extends Google_Model
   public function getUseIpAliases()
   {
     return $this->useIpAliases;
+  }
+  public function setUseRoutes($useRoutes)
+  {
+    $this->useRoutes = $useRoutes;
+  }
+  public function getUseRoutes()
+  {
+    return $this->useRoutes;
   }
 }

@@ -26,17 +26,12 @@
 class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_Service_Resource
 {
   /**
-   * Retrieve a cached execution result.
-   *
-   * Implementations SHOULD ensure that any blobs referenced from the
-   * ContentAddressableStorage are available at the time of returning the
-   * ActionResult and will be for some period of time afterwards. The TTLs of the
-   * referenced blobs SHOULD be increased if necessary and applicable.
-   *
-   * Errors:
-   *
-   * * `NOT_FOUND`: The requested `ActionResult` is not in the cache.
-   * (actionResults.get)
+   * Retrieve a cached execution result. Implementations SHOULD ensure that any
+   * blobs referenced from the ContentAddressableStorage are available at the time
+   * of returning the ActionResult and will be for some period of time afterwards.
+   * The TTLs of the referenced blobs SHOULD be increased if necessary and
+   * applicable. Errors: * `NOT_FOUND`: The requested `ActionResult` is not in the
+   * cache. (actionResults.get)
    *
    * @param string $instanceName The instance of the execution system to operate
    * against. A server may support multiple instances of the execution system
@@ -64,20 +59,14 @@ class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_
     return $this->call('get', array($params), "Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionResult");
   }
   /**
-   * Upload a new execution result.
-   *
-   * In order to allow the server to perform access control based on the type of
-   * action, and to assist with client debugging, the client MUST first upload the
-   * Action that produced the result, along with its Command, into the
-   * `ContentAddressableStorage`.
-   *
-   * Errors:
-   *
-   * * `INVALID_ARGUMENT`: One or more arguments are invalid. *
-   * `FAILED_PRECONDITION`: One or more errors occurred in updating the   action
-   * result, such as a missing command or action. * `RESOURCE_EXHAUSTED`: There is
-   * insufficient storage space to add the   entry to the cache.
-   * (actionResults.update)
+   * Upload a new execution result. In order to allow the server to perform access
+   * control based on the type of action, and to assist with client debugging, the
+   * client MUST first upload the Action that produced the result, along with its
+   * Command, into the `ContentAddressableStorage`. Errors: * `INVALID_ARGUMENT`:
+   * One or more arguments are invalid. * `FAILED_PRECONDITION`: One or more
+   * errors occurred in updating the action result, such as a missing command or
+   * action. * `RESOURCE_EXHAUSTED`: There is insufficient storage space to add
+   * the entry to the cache. (actionResults.update)
    *
    * @param string $instanceName The instance of the execution system to operate
    * against. A server may support multiple instances of the execution system
@@ -94,11 +83,9 @@ class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_
    * of this content in the overall cache. Generally, a lower value means a longer
    * retention time or other advantage, but the interpretation of a given value is
    * server-dependent. A priority of 0 means a *default* value, decided by the
-   * server.
-   *
-   * The particular semantics of this field is up to the server. In particular,
-   * every server will have their own supported range of priorities, and will
-   * decide how these map into retention/eviction policy.
+   * server. The particular semantics of this field is up to the server. In
+   * particular, every server will have their own supported range of priorities,
+   * and will decide how these map into retention/eviction policy.
    * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionResult
    */
   public function update($instanceName, $hash, $sizeBytes, Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionResult $postBody, $optParams = array())

@@ -89,15 +89,11 @@ class Google_Service_DisplayVideo_Resource_PartnersChannelsSites extends Google_
    * requested sites belong.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `urlOrAppId` (default) The default sorting order is ascending. To
-   * specify descending order for a field, a suffix " desc" should be added to the
-   * field name. Example: `urlOrAppId desc`.
+   * @opt_param string advertiserId The ID of the advertiser that owns the parent
+   * channel.
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
-   * @opt_param string advertiserId The ID of the advertiser that owns the parent
-   * channel.
    * @opt_param string filter Allows filtering by site fields. Supported syntax: *
    * Filter expressions for site currently can only contain at most one *
    * restriction. * A restriction has the form of `{field} {operator} {value}`. *
@@ -108,6 +104,10 @@ class Google_Service_DisplayVideo_Resource_PartnersChannelsSites extends Google_
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListSites` method. If not specified, the first page of
    * results will be returned.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `urlOrAppId` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix " desc" should be added to the
+   * field name. Example: `urlOrAppId desc`.
    * @return Google_Service_DisplayVideo_ListSitesResponse
    */
   public function listPartnersChannelsSites($partnerId, $channelId, $optParams = array())

@@ -26,9 +26,8 @@
 class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google_Service_Resource
 {
   /**
-   * Deletes entity types in the specified agent.
-   *
-   * Operation  (entityTypes.batchDelete)
+   * Deletes entity types in the specified agent. Operation
+   * (entityTypes.batchDelete)
    *
    * @param string $parent Required. The name of the agent to delete all entities
    * types for. Format: `projects//agent`.
@@ -43,9 +42,8 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
     return $this->call('batchDelete', array($params), "Google_Service_Dialogflow_GoogleLongrunningOperation");
   }
   /**
-   * Updates/Creates multiple entity types in the specified agent.
-   *
-   * Operation  (entityTypes.batchUpdate)
+   * Updates/Creates multiple entity types in the specified agent. Operation
+   * (entityTypes.batchUpdate)
    *
    * @param string $parent Required. The name of the agent to update or create
    * entity types in. Format: `projects//agent`.
@@ -122,10 +120,10 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
    * Format: `projects//agent`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous list request.
    * @opt_param int pageSize Optional. The maximum number of items to return in a
    * single page. By default 100 and at most 1000.
+   * @opt_param string pageToken Optional. The next_page_token value returned from
+   * a previous list request.
    * @opt_param string languageCode Optional. The language used to access
    * language-specific data. If not specified, the agent's default language is
    * used. For more information, see [Multilingual intent and entity
@@ -148,13 +146,13 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Optional. The mask to control which fields get
-   * updated.
    * @opt_param string languageCode Optional. The language used to access
    * language-specific data. If not specified, the agent's default language is
    * used. For more information, see [Multilingual intent and entity
    * data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-
    * entity).
+   * @opt_param string updateMask Optional. The mask to control which fields get
+   * updated.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
    */
   public function patch($name, Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType $postBody, $optParams = array())

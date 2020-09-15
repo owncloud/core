@@ -35,9 +35,9 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotesOccurrences extends
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter The filter expression.
+   * @opt_param int pageSize Number of notes to return in the list.
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
-   * @opt_param int pageSize Number of notes to return in the list.
    * @return Google_Service_ContainerAnalysis_ListNoteOccurrencesResponse
    */
   public function listProjectsNotesOccurrences($name, $optParams = array())

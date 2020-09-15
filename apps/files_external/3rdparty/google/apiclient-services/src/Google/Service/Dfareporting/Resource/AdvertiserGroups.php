@@ -73,10 +73,8 @@ class Google_Service_Dfareporting_Resource_AdvertiserGroups extends Google_Servi
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string ids Select only advertiser groups with these IDs.
    * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
+   * @opt_param string sortField Field by which to sort the list.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "advertiser*2015" will return objects
    * with names like "advertiser group June 2015", "advertiser group April 2015",
@@ -84,7 +82,9 @@ class Google_Service_Dfareporting_Resource_AdvertiserGroups extends Google_Servi
    * implicitly at the start and the end of the search string. For example, a
    * search string of "advertisergroup" will match objects with name "my
    * advertisergroup", "advertisergroup 2015", or simply "advertisergroup".
-   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
+   * @opt_param string ids Select only advertiser groups with these IDs.
    * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_AdvertiserGroupsListResponse
    */
@@ -99,14 +99,15 @@ class Google_Service_Dfareporting_Resource_AdvertiserGroups extends Google_Servi
    * (advertiserGroups.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Advertiser group ID.
    * @param Google_Service_Dfareporting_AdvertiserGroup $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id AdvertiserGroup ID.
    * @return Google_Service_Dfareporting_AdvertiserGroup
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_AdvertiserGroup $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_AdvertiserGroup $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_AdvertiserGroup");
   }

@@ -18,6 +18,8 @@
 class Google_Service_Sheets_PivotValue extends Google_Model
 {
   public $calculatedDisplayType;
+  protected $dataSourceColumnReferenceType = 'Google_Service_Sheets_DataSourceColumnReference';
+  protected $dataSourceColumnReferenceDataType = '';
   public $formula;
   public $name;
   public $sourceColumnOffset;
@@ -30,6 +32,20 @@ class Google_Service_Sheets_PivotValue extends Google_Model
   public function getCalculatedDisplayType()
   {
     return $this->calculatedDisplayType;
+  }
+  /**
+   * @param Google_Service_Sheets_DataSourceColumnReference
+   */
+  public function setDataSourceColumnReference(Google_Service_Sheets_DataSourceColumnReference $dataSourceColumnReference)
+  {
+    $this->dataSourceColumnReference = $dataSourceColumnReference;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceColumnReference
+   */
+  public function getDataSourceColumnReference()
+  {
+    return $this->dataSourceColumnReference;
   }
   public function setFormula($formula)
   {

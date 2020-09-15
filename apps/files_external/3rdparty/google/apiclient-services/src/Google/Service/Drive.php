@@ -144,6 +144,10 @@ class Google_Service_Drive extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'includeRemoved' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -197,6 +201,10 @@ class Google_Service_Drive extends Google_Service
                 'includeItemsFromAllDrives' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'includeRemoved' => array(
                   'location' => 'query',
@@ -466,6 +474,10 @@ class Google_Service_Drive extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'keepRevisionForever' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -494,6 +506,10 @@ class Google_Service_Drive extends Google_Service
                 'ignoreDefaultVisibility' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'keepRevisionForever' => array(
                   'location' => 'query',
@@ -525,6 +541,10 @@ class Google_Service_Drive extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'enforceSingleParent' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'supportsAllDrives' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -537,7 +557,12 @@ class Google_Service_Drive extends Google_Service
             ),'emptyTrash' => array(
               'path' => 'files/trash',
               'httpMethod' => 'DELETE',
-              'parameters' => array(),
+              'parameters' => array(
+                'enforceSingleParent' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+              ),
             ),'export' => array(
               'path' => 'files/{fileId}/export',
               'httpMethod' => 'GET',
@@ -579,6 +604,10 @@ class Google_Service_Drive extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'supportsAllDrives' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -607,6 +636,10 @@ class Google_Service_Drive extends Google_Service
                 'includeItemsFromAllDrives' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'includeTeamDriveItems' => array(
                   'location' => 'query',
@@ -662,6 +695,10 @@ class Google_Service_Drive extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'keepRevisionForever' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -699,6 +736,10 @@ class Google_Service_Drive extends Google_Service
                 'acknowledgeAbuse' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'supportsAllDrives' => array(
                   'location' => 'query',
@@ -823,6 +864,10 @@ class Google_Service_Drive extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'includePermissionsForView' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',

@@ -26,26 +26,18 @@
 class Google_Service_ToolResults_Resource_ProjectsHistories extends Google_Service_Resource
 {
   /**
-   * Creates a History.
+   * Creates a History. The returned History will have the id set. May return any
+   * of the following canonical error codes: - PERMISSION_DENIED - if the user is
+   * not authorized to write to project - INVALID_ARGUMENT - if the request is
+   * malformed - NOT_FOUND - if the containing project does not exist
+   * (histories.create)
    *
-   * The returned History will have the id set.
-   *
-   * May return any of the following canonical error codes:
-   *
-   * - PERMISSION_DENIED - if the user is not authorized to write to project -
-   * INVALID_ARGUMENT - if the request is malformed - NOT_FOUND - if the
-   * containing project does not exist (histories.create)
-   *
-   * @param string $projectId A Project id.
-   *
-   * Required.
+   * @param string $projectId A Project id. Required.
    * @param Google_Service_ToolResults_History $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string requestId A unique request ID for server to detect
-   * duplicated requests. For example, a UUID.
-   *
-   * Optional, but strongly recommended.
+   * duplicated requests. For example, a UUID. Optional, but strongly recommended.
    * @return Google_Service_ToolResults_History
    */
   public function create($projectId, Google_Service_ToolResults_History $postBody, $optParams = array())
@@ -55,20 +47,13 @@ class Google_Service_ToolResults_Resource_ProjectsHistories extends Google_Servi
     return $this->call('create', array($params), "Google_Service_ToolResults_History");
   }
   /**
-   * Gets a History.
-   *
-   * May return any of the following canonical error codes:
-   *
-   * - PERMISSION_DENIED - if the user is not authorized to read project -
+   * Gets a History. May return any of the following canonical error codes: -
+   * PERMISSION_DENIED - if the user is not authorized to read project -
    * INVALID_ARGUMENT - if the request is malformed - NOT_FOUND - if the History
    * does not exist (histories.get)
    *
-   * @param string $projectId A Project id.
-   *
-   * Required.
-   * @param string $historyId A History id.
-   *
-   * Required.
+   * @param string $projectId A Project id. Required.
+   * @param string $historyId A History id. Required.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ToolResults_History
    */
@@ -79,37 +64,23 @@ class Google_Service_ToolResults_Resource_ProjectsHistories extends Google_Servi
     return $this->call('get', array($params), "Google_Service_ToolResults_History");
   }
   /**
-   * Lists Histories for a given Project.
+   * Lists Histories for a given Project. The histories are sorted by modification
+   * time in descending order. The history_id key will be used to order the
+   * history with the same modification time. May return any of the following
+   * canonical error codes: - PERMISSION_DENIED - if the user is not authorized to
+   * read project - INVALID_ARGUMENT - if the request is malformed - NOT_FOUND -
+   * if the History does not exist (histories.listProjectsHistories)
    *
-   * The histories are sorted by modification time in descending order. The
-   * history_id key will be used to order the history with the same modification
-   * time.
-   *
-   * May return any of the following canonical error codes:
-   *
-   * - PERMISSION_DENIED - if the user is not authorized to read project -
-   * INVALID_ARGUMENT - if the request is malformed - NOT_FOUND - if the History
-   * does not exist (histories.listProjectsHistories)
-   *
-   * @param string $projectId A Project id.
-   *
-   * Required.
+   * @param string $projectId A Project id. Required.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filterByName If set, only return histories with the given
-   * name.
-   *
-   * Optional.
+   * name. Optional.
    * @opt_param string pageToken A continuation token to resume the query at the
-   * next item.
-   *
-   * Optional.
-   * @opt_param int pageSize The maximum number of Histories to fetch.
-   *
-   * Default value: 20. The server will use this default if the field is not set
-   * or has a value of 0. Any value greater than 100 will be treated as 100.
-   *
-   * Optional.
+   * next item. Optional.
+   * @opt_param int pageSize The maximum number of Histories to fetch. Default
+   * value: 20. The server will use this default if the field is not set or has a
+   * value of 0. Any value greater than 100 will be treated as 100. Optional.
    * @return Google_Service_ToolResults_ListHistoriesResponse
    */
   public function listProjectsHistories($projectId, $optParams = array())

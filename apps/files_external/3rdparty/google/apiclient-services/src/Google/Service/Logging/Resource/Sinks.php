@@ -137,10 +137,10 @@ class Google_Service_Logging_Resource_Sinks extends Google_Service_Resource
    * in sink that need an update. A sink field will be overwritten if, and only
    * if, it is in the update mask. name and output only fields cannot be
    * updated.An empty updateMask is temporarily treated as using the following
-   * mask for backwards compatibility purposes:
-   * destination,filter,includeChildren At some point in the future, behavior will
-   * be removed and specifying an empty updateMask will be an error.For a detailed
-   * FieldMask definition, see https://developers.google.com/protocol-
+   * mask for backwards compatibility purposes: destination,filter,includeChildren
+   * At some point in the future, behavior will be removed and specifying an empty
+   * updateMask will be an error.For a detailed FieldMask definition, see
+   * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
    * updateMask=filter.
    * @opt_param bool uniqueWriterIdentity Optional. See sinks.create for a

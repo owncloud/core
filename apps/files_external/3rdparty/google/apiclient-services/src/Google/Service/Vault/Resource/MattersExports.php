@@ -73,8 +73,8 @@ class Google_Service_Vault_Resource_MattersExports extends Google_Service_Resour
    * @param string $matterId The matter ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The pagination token as returned in the response.
    * @opt_param int pageSize The number of exports to return in the response.
+   * @opt_param string pageToken The pagination token as returned in the response.
    * @return Google_Service_Vault_ListExportsResponse
    */
   public function listMattersExports($matterId, $optParams = array())

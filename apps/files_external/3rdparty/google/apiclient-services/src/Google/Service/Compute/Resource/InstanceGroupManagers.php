@@ -261,6 +261,25 @@ class Google_Service_Compute_Resource_InstanceGroupManagers extends Google_Servi
     return $this->call('deleteInstances', array($params), "Google_Service_Compute_Operation");
   }
   /**
+   * Deletes selected per-instance configs for the managed instance group.
+   * (instanceGroupManagers.deletePerInstanceConfigs)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone where the managed instance group is
+   * located. It should conform to RFC1035.
+   * @param string $instanceGroupManager The name of the managed instance group.
+   * It should conform to RFC1035.
+   * @param Google_Service_Compute_InstanceGroupManagersDeletePerInstanceConfigsReq $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_Operation
+   */
+  public function deletePerInstanceConfigs($project, $zone, $instanceGroupManager, Google_Service_Compute_InstanceGroupManagersDeletePerInstanceConfigsReq $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instanceGroupManager' => $instanceGroupManager, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('deletePerInstanceConfigs', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
    * Returns all of the details about the specified managed instance group. Gets a
    * list of available managed instance groups by making a list() request.
    * (instanceGroupManagers.get)
@@ -493,6 +512,64 @@ class Google_Service_Compute_Resource_InstanceGroupManagers extends Google_Servi
     return $this->call('listManagedInstances', array($params), "Google_Service_Compute_InstanceGroupManagersListManagedInstancesResponse");
   }
   /**
+   * Lists all of the per-instance configs defined for the managed instance group.
+   * The orderBy query parameter is not supported.
+   * (instanceGroupManagers.listPerInstanceConfigs)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone where the managed instance group is
+   * located. It should conform to RFC1035.
+   * @param string $instanceGroupManager The name of the managed instance group.
+   * It should conform to RFC1035.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter A filter expression that filters resources listed in
+   * the response. The expression must specify the field name, a comparison
+   * operator, and the value that you want to use for filtering. The value must be
+   * a string, a number, or a boolean. The comparison operator must be either `=`,
+   * `!=`, `>`, or `<`.
+   *
+   * For example, if you are filtering Compute Engine instances, you can exclude
+   * instances named `example-instance` by specifying `name != example-instance`.
+   *
+   * You can also filter nested fields. For example, you could specify
+   * `scheduling.automaticRestart = false` to include instances only if they are
+   * not scheduled for automatic restarts. You can use filtering on nested fields
+   * to filter based on resource labels.
+   *
+   * To filter on multiple expressions, provide each separate expression within
+   * parentheses. For example: ``` (scheduling.automaticRestart = true)
+   * (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND`
+   * expression. However, you can include `AND` and `OR` expressions explicitly.
+   * For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel
+   * Broadwell") AND (scheduling.automaticRestart = true) ```
+   * @opt_param string maxResults The maximum number of results per page that
+   * should be returned. If the number of available results is larger than
+   * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
+   * get the next page of results in subsequent list requests. Acceptable values
+   * are `0` to `500`, inclusive. (Default: `500`)
+   * @opt_param string orderBy Sorts list results by a certain order. By default,
+   * results are returned in alphanumerical order based on the resource name.
+   *
+   * You can also sort results in descending order based on the creation timestamp
+   * using `orderBy="creationTimestamp desc"`. This sorts results based on the
+   * `creationTimestamp` field in reverse chronological order (newest result
+   * first). Use this to sort resources like operations so that the newest
+   * operation is returned first.
+   *
+   * Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+   * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
+   * the `nextPageToken` returned by a previous list request to get the next page
+   * of results.
+   * @return Google_Service_Compute_InstanceGroupManagersListPerInstanceConfigsResp
+   */
+  public function listPerInstanceConfigs($project, $zone, $instanceGroupManager, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instanceGroupManager' => $instanceGroupManager);
+    $params = array_merge($params, $optParams);
+    return $this->call('listPerInstanceConfigs', array($params), "Google_Service_Compute_InstanceGroupManagersListPerInstanceConfigsResp");
+  }
+  /**
    * Updates a managed instance group using the information that you specify in
    * the request. This operation is marked as DONE when the group is patched even
    * if the instances in the group are still in the process of being patched. You
@@ -527,6 +604,39 @@ class Google_Service_Compute_Resource_InstanceGroupManagers extends Google_Servi
     $params = array('project' => $project, 'zone' => $zone, 'instanceGroupManager' => $instanceGroupManager, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Inserts or patches per-instance configs for the managed instance group.
+   * perInstanceConfig.name serves as a key used to distinguish whether to perform
+   * insert or patch. (instanceGroupManagers.patchPerInstanceConfigs)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone where the managed instance group is
+   * located. It should conform to RFC1035.
+   * @param string $instanceGroupManager The name of the managed instance group.
+   * It should conform to RFC1035.
+   * @param Google_Service_Compute_InstanceGroupManagersPatchPerInstanceConfigsReq $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function patchPerInstanceConfigs($project, $zone, $instanceGroupManager, Google_Service_Compute_InstanceGroupManagersPatchPerInstanceConfigsReq $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instanceGroupManager' => $instanceGroupManager, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patchPerInstanceConfigs', array($params), "Google_Service_Compute_Operation");
   }
   /**
    * Flags the specified instances in the managed instance group to be immediately
@@ -690,5 +800,38 @@ class Google_Service_Compute_Resource_InstanceGroupManagers extends Google_Servi
     $params = array('project' => $project, 'zone' => $zone, 'instanceGroupManager' => $instanceGroupManager, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('setTargetPools', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Inserts or updates per-instance configs for the managed instance group.
+   * perInstanceConfig.name serves as a key used to distinguish whether to perform
+   * insert or patch. (instanceGroupManagers.updatePerInstanceConfigs)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone where the managed instance group is
+   * located. It should conform to RFC1035.
+   * @param string $instanceGroupManager The name of the managed instance group.
+   * It should conform to RFC1035.
+   * @param Google_Service_Compute_InstanceGroupManagersUpdatePerInstanceConfigsReq $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function updatePerInstanceConfigs($project, $zone, $instanceGroupManager, Google_Service_Compute_InstanceGroupManagersUpdatePerInstanceConfigsReq $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instanceGroupManager' => $instanceGroupManager, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updatePerInstanceConfigs', array($params), "Google_Service_Compute_Operation");
   }
 }

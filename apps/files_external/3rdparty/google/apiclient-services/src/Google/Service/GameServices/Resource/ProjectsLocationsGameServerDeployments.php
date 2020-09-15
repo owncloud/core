@@ -49,7 +49,6 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    *
    * @param string $name Required. The name of the game server delpoyment to
    * delete. Uses the form:
-   *
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_Operation
@@ -68,7 +67,6 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    *
    * @param string $name Required. The name of the game server delpoyment. Uses
    * the form:
-   *
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * @param Google_Service_GameServices_FetchDeploymentStateRequest $postBody
    * @param array $optParams Optional parameters.
@@ -85,7 +83,6 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    *
    * @param string $name Required. The name of the game server delpoyment to
    * retrieve. Uses the form:
-   *
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_GameServerDeployment
@@ -107,17 +104,12 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_GameServices_Policy
    */
@@ -132,10 +124,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * (gameServerDeployments.getRollout)
    *
    * @param string $name Required. The name of the game server delpoyment to
-   * retrieve. Uses the form:
-   *
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/r
-   * ollout`.
+   * retrieve. Uses the form: `projects/{project}/locations/{location}/gameServerD
+   * eployments/{deployment}/rollout`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_GameServerDeploymentRollout
    */
@@ -153,17 +143,17 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * `projects/{project}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of items to return.  If
+   * @opt_param string pageToken Optional. The next_page_token value returned from
+   * a previous List request, if any.
+   * @opt_param string filter Optional. The filter to apply to list results.
+   * @opt_param string orderBy Optional. Specifies the ordering of results
+   * following syntax at
+   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
+   * @opt_param int pageSize Optional. The maximum number of items to return. If
    * unspecified, the server will pick an appropriate default. The server may
    * return fewer items than requested. A caller should only rely on response's
    * next_page_token to determine if there are more GameServerDeployments left to
    * be queried.
-   * @opt_param string orderBy Optional. Specifies the ordering of results
-   * following syntax at
-   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
-   * @opt_param string filter Optional. The filter to apply to list results.
-   * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
    * @return Google_Service_GameServices_ListGameServerDeploymentsResponse
    */
   public function listProjectsLocationsGameServerDeployments($parent, $optParams = array())
@@ -177,18 +167,14 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    *
    * @param string $name The resource name of the game server deployment. Uses the
    * form:
-   *
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
-   * For example,
-   *
-   * `projects/my-project/locations/{location}/gameServerDeployments/my-
+   * For example, `projects/my-project/locations/global/gameServerDeployments/my-
    * deployment`.
    * @param Google_Service_GameServices_GameServerDeployment $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
-   *
    * https: //developers.google.com/protocol-buffers //
    * /docs/reference/google.protobuf#fieldmask
    * @return Google_Service_GameServices_Operation
@@ -204,19 +190,14 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * rollout resource. (gameServerDeployments.previewRollout)
    *
    * @param string $name The resource name of the game server deployment rollout.
-   * Uses the form:
-   *
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/r
-   * ollout`. For example,
-   *
-   * `projects/my-project/locations/{location}/gameServerDeployments/my-
-   * deployment/rollout`.
+   * Uses the form: `projects/{project}/locations/{location}/gameServerDeployments
+   * /{deployment}/rollout`. For example, `projects/my-
+   * project/locations/global/gameServerDeployments/my-deployment/rollout`.
    * @param Google_Service_GameServices_GameServerDeploymentRollout $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Optional. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
-   *
    * https: //developers.google.com/protocol-buffers //
    * /docs/reference/google.protobuf#fieldmask
    * @opt_param string previewTime Optional. The target timestamp to compute the
@@ -231,10 +212,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.
-   *
-   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
-   * (gameServerDeployments.setIamPolicy)
+   * existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and
+   * `PERMISSION_DENIED` errors. (gameServerDeployments.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -252,11 +231,10 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * `NOT_FOUND` error.
-   *
-   * Note: This operation is designed to be used for building permission-aware UIs
-   * and command-line tools, not for authorization checking. This operation may
-   * "fail open" without warning. (gameServerDeployments.testIamPermissions)
+   * `NOT_FOUND` error. Note: This operation is designed to be used for building
+   * permission-aware UIs and command-line tools, not for authorization checking.
+   * This operation may "fail open" without warning.
+   * (gameServerDeployments.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value
@@ -280,19 +258,14 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * in an error. (gameServerDeployments.updateRollout)
    *
    * @param string $name The resource name of the game server deployment rollout.
-   * Uses the form:
-   *
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/r
-   * ollout`. For example,
-   *
-   * `projects/my-project/locations/{location}/gameServerDeployments/my-
-   * deployment/rollout`.
+   * Uses the form: `projects/{project}/locations/{location}/gameServerDeployments
+   * /{deployment}/rollout`. For example, `projects/my-
+   * project/locations/global/gameServerDeployments/my-deployment/rollout`.
    * @param Google_Service_GameServices_GameServerDeploymentRollout $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
-   *
    * https: //developers.google.com/protocol-buffers //
    * /docs/reference/google.protobuf#fieldmask
    * @return Google_Service_GameServices_Operation

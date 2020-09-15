@@ -63,15 +63,14 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
    * @param string $customerId Immutable ID of the G Suite account
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return. Max allowed
-   * value is 200.
-   * @opt_param string orderBy Column to use for sorting results
-   * @opt_param string orgUnitPath Full path of the organizational unit or its ID
-   * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string projection Restrict information returned to a set of
    * selected fields.
-   * @opt_param string query Search string in the format provided by this Help
-   * Center article.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string orderBy Column to use for sorting results
+   * @opt_param string pageToken Token to specify next page in the list
+   * @opt_param string orgUnitPath Full path of the organizational unit or its ID
+   * @opt_param string query Search string in the format given at
+   * http://support.google.com/chromeos/a/bin/answer.py?answer=1698333
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order. Only of use when orderBy is also used
    * @return Google_Service_Directory_ChromeOsDevices
@@ -99,8 +98,7 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
     return $this->call('moveDevicesToOu', array($params));
   }
   /**
-   * Update Chrome OS Device. This method supports patch semantics.
-   * (chromeosdevices.patch)
+   * Patch Chrome OS Device (chromeosdevices.patch)
    *
    * @param string $customerId Immutable ID of the G Suite account
    * @param string $deviceId Immutable ID of Chrome OS Device

@@ -115,14 +115,14 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroupsEntries ex
    * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of items to return. Default is 10.
-   * Max limit is 1000. Throws an invalid argument for `page_size > 1000`.
    * @opt_param string readMask The fields to return for each Entry. If not set or
    * empty, all fields are returned. For example, setting read_mask to contain
    * only one path "name" will cause ListEntries to return a list of Entries with
    * only "name" field.
    * @opt_param string pageToken Token that specifies which page is requested. If
    * empty, the first page is returned.
+   * @opt_param int pageSize The maximum number of items to return. Default is 10.
+   * Max limit is 1000. Throws an invalid argument for `page_size > 1000`.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListEntriesResponse
    */
   public function listProjectsLocationsEntryGroupsEntries($parent, $optParams = array())

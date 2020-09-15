@@ -20,6 +20,7 @@ class Google_Service_ShoppingContent_OrderreturnsRefundOperation extends Google_
   public $fullRefund;
   protected $partialRefundType = 'Google_Service_ShoppingContent_OrderreturnsPartialRefund';
   protected $partialRefundDataType = '';
+  public $paymentType;
   public $reasonText;
   public $returnRefundReason;
 
@@ -44,6 +45,14 @@ class Google_Service_ShoppingContent_OrderreturnsRefundOperation extends Google_
   public function getPartialRefund()
   {
     return $this->partialRefund;
+  }
+  public function setPaymentType($paymentType)
+  {
+    $this->paymentType = $paymentType;
+  }
+  public function getPaymentType()
+  {
+    return $this->paymentType;
   }
   public function setReasonText($reasonText)
   {

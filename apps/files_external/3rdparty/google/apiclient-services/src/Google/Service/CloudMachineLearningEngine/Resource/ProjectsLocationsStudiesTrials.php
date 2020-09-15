@@ -42,7 +42,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('addMeasurement', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial");
   }
   /**
-   * Checks  whether a trial should stop or not. Returns a long-running operation.
+   * Checks whether a trial should stop or not. Returns a long-running operation.
    * When the operation is successful, it will contain a
    * CheckTrialEarlyStoppingStateResponse. (trials.checkEarlyStoppingState)
    *
@@ -143,7 +143,7 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
   }
   /**
    * Adds one or more trials to a study, with parameter values suggested by AI
-   * Platform Optimizer. Returns a long-running operation associated with the
+   * Platform Vizier. Returns a long-running operation associated with the
    * generation of trial suggestions. When this long-running operation succeeds,
    * it will contain a SuggestTrialsResponse. (trials.suggest)
    *

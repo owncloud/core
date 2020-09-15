@@ -26,12 +26,11 @@
 class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Service_Resource
 {
   /**
-   * Creates a Cloud Dataflow job.
-   *
-   * To create a job, we recommend using `projects.locations.jobs.create` with a
-   * [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts
-   * /regional-endpoints). Using `projects.jobs.create` is not recommended, as
-   * your job will always start in `us-central1`. (jobs.create)
+   * Creates a Cloud Dataflow job. To create a job, we recommend using
+   * `projects.locations.jobs.create` with a [regional endpoint]
+   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
+   * `projects.jobs.create` is not recommended, as your job will always start in
+   * `us-central1`. (jobs.create)
    *
    * @param string $projectId The ID of the Cloud Platform project that the job
    * belongs to.
@@ -53,12 +52,11 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
     return $this->call('create', array($params), "Google_Service_Dataflow_Job");
   }
   /**
-   * Gets the state of the specified Cloud Dataflow job.
-   *
-   * To get the state of a job, we recommend using `projects.locations.jobs.get`
-   * with a [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts
-   * /regional-endpoints). Using `projects.jobs.get` is not recommended, as you
-   * can only get the state of jobs that are running in `us-central1`. (jobs.get)
+   * Gets the state of the specified Cloud Dataflow job. To get the state of a
+   * job, we recommend using `projects.locations.jobs.get` with a [regional
+   * endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-
+   * endpoints). Using `projects.jobs.get` is not recommended, as you can only get
+   * the state of jobs that are running in `us-central1`. (jobs.get)
    *
    * @param string $projectId The ID of the Cloud Platform project that the job
    * belongs to.
@@ -78,9 +76,26 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
     return $this->call('get', array($params), "Google_Service_Dataflow_Job");
   }
   /**
-   * Request the job status.
+   * Request detailed information about the execution status of the job.
+   * EXPERIMENTAL. This API is subject to change or removal without notice.
+   * (jobs.getExecutionDetails)
    *
-   * To request the status of a job, we recommend using
+   * @param string $projectId A project id.
+   * @param string $location The [regional endpoint]
+   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+   * contains the job specified by job_id.
+   * @param string $jobId The job to get execution details for.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dataflow_JobExecutionDetails
+   */
+  public function getExecutionDetails($projectId, $location, $jobId, $optParams = array())
+  {
+    $params = array('projectId' => $projectId, 'location' => $location, 'jobId' => $jobId);
+    $params = array_merge($params, $optParams);
+    return $this->call('getExecutionDetails', array($params), "Google_Service_Dataflow_JobExecutionDetails");
+  }
+  /**
+   * Request the job status. To request the status of a job, we recommend using
    * `projects.locations.jobs.getMetrics` with a [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
    * `projects.jobs.getMetrics` is not recommended, as you can only request the
@@ -90,7 +105,7 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * @param string $location The [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
    * contains the job specified by job_id.
-   * @param string $jobId The job to get messages for.
+   * @param string $jobId The job to get metrics for.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string startTime Return only metric data that has changed since
@@ -105,10 +120,8 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
     return $this->call('getMetrics', array($params), "Google_Service_Dataflow_JobMetrics");
   }
   /**
-   * List the jobs of a project.
-   *
-   * To list the jobs of a project in a region, we recommend using
-   * `projects.locations.jobs.list` with a [regional endpoint]
+   * List the jobs of a project. To list the jobs of a project in a region, we
+   * recommend using `projects.locations.jobs.list` with a [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). To list
    * the all jobs across all regions, use `projects.jobs.aggregated`. Using
    * `projects.jobs.list` is not recommended, as you can only get the list of jobs
@@ -120,14 +133,14 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * contains this job.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view Level of information requested in response. Default is
-   * `JOB_VIEW_SUMMARY`.
    * @opt_param string filter The kind of filter to use.
+   * @opt_param string pageToken Set this to the 'next_page_token' field of a
+   * previous response to request additional results in a long list.
    * @opt_param int pageSize If there are many jobs, limit response to at most
    * this many. The actual number of jobs returned will be the lesser of
    * max_responses and an unspecified server-defined limit.
-   * @opt_param string pageToken Set this to the 'next_page_token' field of a
-   * previous response to request additional results in a long list.
+   * @opt_param string view Level of information requested in response. Default is
+   * `JOB_VIEW_SUMMARY`.
    * @return Google_Service_Dataflow_ListJobsResponse
    */
   public function listProjectsLocationsJobs($projectId, $location, $optParams = array())
@@ -153,13 +166,12 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
     return $this->call('snapshot', array($params), "Google_Service_Dataflow_Snapshot");
   }
   /**
-   * Updates the state of an existing Cloud Dataflow job.
-   *
-   * To update the state of an existing job, we recommend using
-   * `projects.locations.jobs.update` with a [regional endpoint]
-   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
-   * `projects.jobs.update` is not recommended, as you can only update the state
-   * of jobs that are running in `us-central1`. (jobs.update)
+   * Updates the state of an existing Cloud Dataflow job. To update the state of
+   * an existing job, we recommend using `projects.locations.jobs.update` with a
+   * [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts
+   * /regional-endpoints). Using `projects.jobs.update` is not recommended, as you
+   * can only update the state of jobs that are running in `us-central1`.
+   * (jobs.update)
    *
    * @param string $projectId The ID of the Cloud Platform project that the job
    * belongs to.

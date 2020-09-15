@@ -26,11 +26,9 @@
 class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSampleSeries extends Google_Service_Resource
 {
   /**
-   * Creates a PerfSampleSeries.
-   *
-   * May return any of the following error code(s): - ALREADY_EXISTS -
-   * PerfMetricSummary already exists for the given Step - NOT_FOUND - The
-   * containing Step does not exist (perfSampleSeries.create)
+   * Creates a PerfSampleSeries. May return any of the following error code(s): -
+   * ALREADY_EXISTS - PerfMetricSummary already exists for the given Step -
+   * NOT_FOUND - The containing Step does not exist (perfSampleSeries.create)
    *
    * @param string $projectId The cloud project
    * @param string $historyId A tool results history ID.
@@ -47,10 +45,9 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSa
     return $this->call('create', array($params), "Google_Service_ToolResults_PerfSampleSeries");
   }
   /**
-   * Gets a PerfSampleSeries.
-   *
-   * May return any of the following error code(s): - NOT_FOUND - The specified
-   * PerfSampleSeries does not exist (perfSampleSeries.get)
+   * Gets a PerfSampleSeries. May return any of the following error code(s): -
+   * NOT_FOUND - The specified PerfSampleSeries does not exist
+   * (perfSampleSeries.get)
    *
    * @param string $projectId The cloud project
    * @param string $historyId A tool results history ID.
@@ -67,13 +64,10 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSa
     return $this->call('get', array($params), "Google_Service_ToolResults_PerfSampleSeries");
   }
   /**
-   * Lists PerfSampleSeries for a given Step.
-   *
-   * The request provides an optional filter which specifies one or more
-   * PerfMetricsType to include in the result; if none returns all. The resulting
-   * PerfSampleSeries are sorted by ids.
-   *
-   * May return any of the following canonical error codes: - NOT_FOUND - The
+   * Lists PerfSampleSeries for a given Step. The request provides an optional
+   * filter which specifies one or more PerfMetricsType to include in the result;
+   * if none returns all. The resulting PerfSampleSeries are sorted by ids. May
+   * return any of the following canonical error codes: - NOT_FOUND - The
    * containing Step does not exist
    * (perfSampleSeries.listProjectsHistoriesExecutionsStepsPerfSampleSeries)
    *

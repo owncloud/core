@@ -92,10 +92,10 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTaxonomiesPolicyTags 
    * policy tags of.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of items to return. Must be a
-   * value between 1 and 1000. If not set, defaults to 50.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any. If not set, defaults to an empty string.
+   * @opt_param int pageSize The maximum number of items to return. Must be a
+   * value between 1 and 1000. If not set, defaults to 50.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListPolicyTagsResponse
    */
   public function listProjectsLocationsTaxonomiesPolicyTags($parent, $optParams = array())

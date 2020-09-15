@@ -31,9 +31,9 @@ class Google_Service_DoubleClickBidManager_Resource_Reports extends Google_Servi
    * @param string $queryId Query ID with which the reports are associated.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Optional pagination token.
    * @opt_param int pageSize Maximum number of results per page. Must be between 1
    * and 100. Defaults to 100 if unspecified.
-   * @opt_param string pageToken Optional pagination token.
    * @return Google_Service_DoubleClickBidManager_ListReportsResponse
    */
   public function listreports($queryId, $optParams = array())

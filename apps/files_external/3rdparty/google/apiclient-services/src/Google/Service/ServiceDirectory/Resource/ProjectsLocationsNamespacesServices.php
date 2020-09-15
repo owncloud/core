@@ -99,28 +99,25 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocationsNamespacesServic
    * services we'd like to list.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The maximum number of items to return.
+   * @opt_param string orderBy Optional. The order to list result by.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous List request, if any.
-   * @opt_param string orderBy Optional. The order to list result by.
-   * @opt_param int pageSize Optional. The maximum number of items to return.
-   * @opt_param string filter Optional. The filter to list result by.
-   *
-   * General filter string syntax:    ()  can be "name", or "metadata." for map
-   * field.  can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and is
-   * roughly the same as "=".  must be the same data type as field.  can be "AND,
-   * OR, NOT".
-   *
-   * Examples of valid filters: * "metadata.owner" returns Services that have a
-   * label with the key "owner"   this is the same as "metadata:owner". *
-   * "metadata.protocol=gRPC" returns Services that have key/value
-   * "protocol=gRPC". * "name>projects/my-project/locations/us-east/namespaces/my-
-   * namespace/services/service-c"   returns Services that have name that is
-   * alphabetically later than the   string, so "service-e" will be returned but
-   * "service-a" will not be. * "metadata.owner!=sd AND metadata.foo=bar" returns
-   * Services that have   "owner" in label key but value is not "sd" AND have
-   * key/value foo=bar. * "doesnotexist.foo=bar" returns an empty list. Note that
-   * Service doesn't   have a field called "doesnotexist". Since the filter does
-   * not match any   Services, it returns no results.
+   * @opt_param string filter Optional. The filter to list result by. General
+   * filter string syntax: () can be "name", or "metadata." for map field. can be
+   * "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and is roughly the same as
+   * "=". must be the same data type as field. can be "AND, OR, NOT". Examples of
+   * valid filters: * "metadata.owner" returns Services that have a label with the
+   * key "owner" this is the same as "metadata:owner". * "metadata.protocol=gRPC"
+   * returns Services that have key/value "protocol=gRPC". * "name>projects/my-
+   * project/locations/us-east/namespaces/my-namespace/services/service-c" returns
+   * Services that have name that is alphabetically later than the string, so
+   * "service-e" will be returned but "service-a" will not be. *
+   * "metadata.owner!=sd AND metadata.foo=bar" returns Services that have "owner"
+   * in label key but value is not "sd" AND have key/value foo=bar. *
+   * "doesnotexist.foo=bar" returns an empty list. Note that Service doesn't have
+   * a field called "doesnotexist". Since the filter does not match any Services,
+   * it returns no results.
    * @return Google_Service_ServiceDirectory_ListServicesResponse
    */
   public function listProjectsLocationsNamespacesServices($parent, $optParams = array())

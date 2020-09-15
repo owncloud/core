@@ -91,7 +91,7 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
     return $this->call('list', array($params), "Google_Service_Directory_Features");
   }
   /**
-   * Updates a feature. This method supports patch semantics. (features.patch)
+   * Patches a feature via Apiary Patch Orchestration. (features.patch)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
    * an account administrator, you can also use the my_customer alias to represent

@@ -26,18 +26,16 @@
 class Google_Service_CloudProfiler_Resource_ProjectsProfiles extends Google_Service_Resource
 {
   /**
-   * CreateProfile creates a new profile resource in the online mode.
-   *
-   * The server ensures that the new profiles are created at a constant rate per
-   * deployment, so the creation request may hang for some time until the next
-   * profile session is available.
-   *
-   * The request may fail with ABORTED error if the creation is not available
-   * within ~1m, the response will indicate the duration of the backoff the client
-   * should take before attempting creating a profile again. The backoff duration
-   * is returned in google.rpc.RetryInfo extension on the response status. To a
-   * gRPC client, the extension will be return as a binary-serialized proto in the
-   * trailing metadata item named "google.rpc.retryinfo-bin". (profiles.create)
+   * CreateProfile creates a new profile resource in the online mode. The server
+   * ensures that the new profiles are created at a constant rate per deployment,
+   * so the creation request may hang for some time until the next profile session
+   * is available. The request may fail with ABORTED error if the creation is not
+   * available within ~1m, the response will indicate the duration of the backoff
+   * the client should take before attempting creating a profile again. The
+   * backoff duration is returned in google.rpc.RetryInfo extension on the
+   * response status. To a gRPC client, the extension will be return as a binary-
+   * serialized proto in the trailing metadata item named "google.rpc.retryinfo-
+   * bin". (profiles.create)
    *
    * @param string $parent Parent project to create the profile in.
    * @param Google_Service_CloudProfiler_CreateProfileRequest $postBody

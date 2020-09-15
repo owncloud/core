@@ -18,12 +18,28 @@
 class Google_Service_Sheets_DimensionProperties extends Google_Collection
 {
   protected $collection_key = 'developerMetadata';
+  protected $dataSourceColumnReferenceType = 'Google_Service_Sheets_DataSourceColumnReference';
+  protected $dataSourceColumnReferenceDataType = '';
   protected $developerMetadataType = 'Google_Service_Sheets_DeveloperMetadata';
   protected $developerMetadataDataType = 'array';
   public $hiddenByFilter;
   public $hiddenByUser;
   public $pixelSize;
 
+  /**
+   * @param Google_Service_Sheets_DataSourceColumnReference
+   */
+  public function setDataSourceColumnReference(Google_Service_Sheets_DataSourceColumnReference $dataSourceColumnReference)
+  {
+    $this->dataSourceColumnReference = $dataSourceColumnReference;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceColumnReference
+   */
+  public function getDataSourceColumnReference()
+  {
+    return $this->dataSourceColumnReference;
+  }
   /**
    * @param Google_Service_Sheets_DeveloperMetadata
    */

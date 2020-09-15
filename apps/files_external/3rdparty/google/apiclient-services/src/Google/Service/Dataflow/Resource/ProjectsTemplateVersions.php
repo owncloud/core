@@ -32,12 +32,9 @@ class Google_Service_Dataflow_Resource_ProjectsTemplateVersions extends Google_S
    * (templateVersions.listProjectsTemplateVersions)
    *
    * @param string $parent parent includes project_id, and display_name is
-   * optional.
-   *
-   * List by project_id(pid1) and display_name(tid1).   Format:
-   * projects/{pid1}/catalogTemplates/{tid1}
-   *
-   * List by project_id(pid1).   Format: projects/{pid1}
+   * optional. List by project_id(pid1) and display_name(tid1). Format:
+   * projects/{pid1}/catalogTemplates/{tid1} List by project_id(pid1). Format:
+   * projects/{pid1}
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The page token, received from a previous

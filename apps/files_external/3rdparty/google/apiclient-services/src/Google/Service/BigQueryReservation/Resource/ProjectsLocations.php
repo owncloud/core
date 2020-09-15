@@ -41,38 +41,28 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
   }
   /**
    * Looks up assignments for a specified resource for a particular region. If the
-   * request is about a project:
-   *
-   * 1. Assignments created on the project will be returned if they exist. 2.
-   * Otherwise assignments created on the closest ancestor will be    returned. 3.
-   * Assignments for different JobTypes will all be returned.
-   *
-   * The same logic applies if the request is about a folder.
-   *
-   * If the request is about an organization, then assignments created on the
+   * request is about a project: 1. Assignments created on the project will be
+   * returned if they exist. 2. Otherwise assignments created on the closest
+   * ancestor will be returned. 3. Assignments for different JobTypes will all be
+   * returned. The same logic applies if the request is about a folder. If the
+   * request is about an organization, then assignments created on the
    * organization will be returned (organization doesn't have ancestors).
-   *
-   * Comparing to ListAssignments, there are some behavior differences:
-   *
-   * 1. permission on the assignee will be verified in this API. 2. Hierarchy
-   * lookup (project->folder->organization) happens in this API. 3. Parent here is
-   * `projects/locations`, instead of    `projects/locationsreservations`.
+   * Comparing to ListAssignments, there are some behavior differences: 1.
+   * permission on the assignee will be verified in this API. 2. Hierarchy lookup
+   * (project->folder->organization) happens in this API. 3. Parent here is
+   * `projects/locations`, instead of `projects/locationsreservations`.
    * (locations.searchAllAssignments)
    *
    * @param string $parent Required. The resource name with location (project name
-   * could be the wildcard '-'), e.g.:   `projects/-/locations/US`.
+   * could be the wildcard '-'), e.g.: `projects/-/locations/US`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string query Please specify resource name as assignee in the
-   * query.
-   *
-   * Examples:
-   *
-   * * `assignee=projects/myproject` * `assignee=folders/123` *
-   * `assignee=organizations/456`
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
    * @opt_param int pageSize The maximum number of items to return per page.
+   * @opt_param string query Please specify resource name as assignee in the
+   * query. Examples: * `assignee=projects/myproject` * `assignee=folders/123` *
+   * `assignee=organizations/456`
    * @return Google_Service_BigQueryReservation_SearchAllAssignmentsResponse
    */
   public function searchAllAssignments($parent, $optParams = array())
@@ -83,41 +73,29 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
   }
   /**
    * Looks up assignments for a specified resource for a particular region. If the
-   * request is about a project:
-   *
-   * 1. Assignments created on the project will be returned if they exist. 2.
-   * Otherwise assignments created on the closest ancestor will be    returned. 3.
-   * Assignments for different JobTypes will all be returned.
-   *
-   * The same logic applies if the request is about a folder.
-   *
-   * If the request is about an organization, then assignments created on the
+   * request is about a project: 1. Assignments created on the project will be
+   * returned if they exist. 2. Otherwise assignments created on the closest
+   * ancestor will be returned. 3. Assignments for different JobTypes will all be
+   * returned. The same logic applies if the request is about a folder. If the
+   * request is about an organization, then assignments created on the
    * organization will be returned (organization doesn't have ancestors).
-   *
-   * Comparing to ListAssignments, there are some behavior differences:
-   *
-   * 1. permission on the assignee will be verified in this API. 2. Hierarchy
-   * lookup (project->folder->organization) happens in this API. 3. Parent here is
-   * `projects/locations`, instead of    `projects/locationsreservations`.
-   *
-   * **Note** "-" cannot be used for projects nor locations.
-   * (locations.searchAssignments)
+   * Comparing to ListAssignments, there are some behavior differences: 1.
+   * permission on the assignee will be verified in this API. 2. Hierarchy lookup
+   * (project->folder->organization) happens in this API. 3. Parent here is
+   * `projects/locations`, instead of `projects/locationsreservations`. **Note**
+   * "-" cannot be used for projects nor locations. (locations.searchAssignments)
    *
    * @param string $parent Required. The resource name of the admin
    * project(containing project and location), e.g.:
    * `projects/myproject/locations/US`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string query Please specify resource name as assignee in the
-   * query.
-   *
-   * Examples:
-   *
-   * * `assignee=projects/myproject` * `assignee=folders/123` *
-   * `assignee=organizations/456`
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
    * @opt_param int pageSize The maximum number of items to return per page.
+   * @opt_param string query Please specify resource name as assignee in the
+   * query. Examples: * `assignee=projects/myproject` * `assignee=folders/123` *
+   * `assignee=organizations/456`
    * @return Google_Service_BigQueryReservation_SearchAssignmentsResponse
    */
   public function searchAssignments($parent, $optParams = array())
@@ -127,13 +105,10 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
     return $this->call('searchAssignments', array($params), "Google_Service_BigQueryReservation_SearchAssignmentsResponse");
   }
   /**
-   * Updates a BI reservation.
-   *
-   * Only fields specified in the `field_mask` are updated.
-   *
-   * A singleton BI reservation always exists with default size 0. In order to
-   * reserve BI capacity it needs to be updated to an amount greater than 0. In
-   * order to release BI capacity reservation size must be set to 0.
+   * Updates a BI reservation. Only fields specified in the `field_mask` are
+   * updated. A singleton BI reservation always exists with default size 0. In
+   * order to reserve BI capacity it needs to be updated to an amount greater than
+   * 0. In order to release BI capacity reservation size must be set to 0.
    * (locations.updateBiReservation)
    *
    * @param string $name The resource name of the singleton BI reservation.

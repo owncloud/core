@@ -101,25 +101,16 @@ class Google_Service_CloudFunctions_Resource_ProjectsLocationsFunctions extends 
    * https://cloud.google.com/storage/docs/access-control/signed-urls. Once the
    * function source code upload is complete, the used signed URL should be
    * provided in CreateFunction or UpdateFunction request as a reference to the
-   * function source code.
-   *
-   * When uploading source code to the generated signed URL, please follow these
-   * restrictions:
-   *
-   * * Source file type should be a zip file. * Source file size should not exceed
-   * 100MB limit. * No credentials should be attached - the signed URLs provide
-   * access to the   target bucket using internal service identity; if credentials
-   * were   attached, the identity from the credentials would be used, but that
-   * identity does not have permissions to upload files to the URL.
-   *
-   * When making a HTTP PUT request, these two headers need to be specified:
-   *
-   * * `content-type: application/zip` * `x-goog-content-length-range:
-   * 0,104857600`
-   *
-   * And this header SHOULD NOT be specified:
-   *
-   * * `Authorization: Bearer YOUR_TOKEN` (functions.generateUploadUrl)
+   * function source code. When uploading source code to the generated signed URL,
+   * please follow these restrictions: * Source file type should be a zip file. *
+   * Source file size should not exceed 100MB limit. * No credentials should be
+   * attached - the signed URLs provide access to the target bucket using internal
+   * service identity; if credentials were attached, the identity from the
+   * credentials would be used, but that identity does not have permissions to
+   * upload files to the URL. When making a HTTP PUT request, these two headers
+   * need to be specified: * `content-type: application/zip` * `x-goog-content-
+   * length-range: 0,104857600` And this header SHOULD NOT be specified: *
+   * `Authorization: Bearer YOUR_TOKEN` (functions.generateUploadUrl)
    *
    * @param string $parent The project and location in which the Google Cloud
    * Storage signed URL should be generated, specified in the format
@@ -159,17 +150,12 @@ class Google_Service_CloudFunctions_Resource_ProjectsLocationsFunctions extends 
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_CloudFunctions_Policy
    */
@@ -191,11 +177,11 @@ class Google_Service_CloudFunctions_Resource_ProjectsLocationsFunctions extends 
    * names of any unreachable locations.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of functions to return per call.
    * @opt_param string pageToken The value returned by the last
    * `ListFunctionsResponse`; indicates that this is a continuation of a prior
    * `ListFunctions` call, and that the system should return the next page of
    * data.
-   * @opt_param int pageSize Maximum number of functions to return per call.
    * @return Google_Service_CloudFunctions_ListFunctionsResponse
    */
   public function listProjectsLocationsFunctions($parent, $optParams = array())

@@ -41,11 +41,8 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
   /**
    * Generates an authentication token which the device policy client can use to
    * provision the given EMM-managed user account on a device. The generated token
-   * is single-use and expires after a few minutes.
-   *
-   * You can provision a maximum of 10 devices per user.
-   *
-   * This call only works with EMM-managed accounts.
+   * is single-use and expires after a few minutes. You can provision a maximum of
+   * 10 devices per user. This call only works with EMM-managed accounts.
    * (users.generateAuthenticationToken)
    *
    * @param string $enterpriseId The ID of the enterprise.
@@ -89,12 +86,11 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
     return $this->call('getAvailableProductSet', array($params), "Google_Service_AndroidEnterprise_ProductSet");
   }
   /**
-   * Creates a new EMM-managed user.
-   *
-   * The Users resource passed in the body of the request should include an
-   * accountIdentifier and an accountType. If a corresponding user already exists
-   * with the same account identifier, the user will be updated with the resource.
-   * In this case only the displayName field can be changed. (users.insert)
+   * Creates a new EMM-managed user. The Users resource passed in the body of the
+   * request should include an accountIdentifier and an accountType. If a
+   * corresponding user already exists with the same account identifier, the user
+   * will be updated with the resource. In this case only the displayName field
+   * can be changed. (users.insert)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param Google_Service_AndroidEnterprise_User $postBody
@@ -109,7 +105,7 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
   }
   /**
    * Looks up a user by primary email address. This is only supported for Google-
-   * managed users.  Lookup of the id is not needed for EMM-managed users because
+   * managed users. Lookup of the id is not needed for EMM-managed users because
    * the id is already returned in the result of the Users.insert call.
    * (users.listUsers)
    *
@@ -128,9 +124,8 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
   /**
    * Revokes access to all devices currently provisioned to the user. The user
    * will no longer be able to use the managed Play store on any of their managed
-   * devices.
-   *
-   * This call only works with EMM-managed accounts. (users.revokeDeviceAccess)
+   * devices. This call only works with EMM-managed accounts.
+   * (users.revokeDeviceAccess)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -144,7 +139,7 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
   }
   /**
    * Modifies the set of products that a user is entitled to access (referred to
-   * as whitelisted products). Only products that are approved or products that
+   * as *whitelisted* products). Only products that are approved or products that
    * were previously approved (products with revoked approval) can be whitelisted.
    * (users.setAvailableProductSet)
    *
@@ -161,12 +156,11 @@ class Google_Service_AndroidEnterprise_Resource_Users extends Google_Service_Res
     return $this->call('setAvailableProductSet', array($params), "Google_Service_AndroidEnterprise_ProductSet");
   }
   /**
-   * Updates the details of an EMM-managed user.
-   *
-   * Can be used with EMM-managed users only (not Google managed users). Pass the
-   * new details in the Users resource in the request body. Only the displayName
-   * field can be changed. Other fields must either be unset or have the currently
-   * active value. (users.update)
+   * Updates the details of an EMM-managed user. Can be used with EMM-managed
+   * users only (not Google managed users). Pass the new details in the Users
+   * resource in the request body. Only the displayName field can be changed.
+   * Other fields must either be unset or have the currently active value.
+   * (users.update)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.

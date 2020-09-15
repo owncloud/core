@@ -30,16 +30,12 @@ class Google_Service_AdExchangeBuyerII_Resource_BiddersAccountsFilterSetsBidMetr
    * (bidMetrics.listBiddersAccountsFilterSetsBidMetrics)
    *
    * @param string $filterSetName Name of the filter set that should be applied to
-   * the requested metrics. For example:
-   *
-   * - For a bidder-level filter set for bidder 123:
-   * `bidders/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the buyer account representing bidder
-   * 123: `bidders/123/accounts/123/filterSets/abc`
-   *
-   * - For an account-level filter set for the child seat buyer account 456
-   * whose bidder is 123: `bidders/123/accounts/456/filterSets/abc`
+   * the requested metrics. For example: - For a bidder-level filter set for
+   * bidder 123: `bidders/123/filterSets/abc` - For an account-level filter set
+   * for the buyer account representing bidder 123:
+   * `bidders/123/accounts/123/filterSets/abc` - For an account-level filter set
+   * for the child seat buyer account 456 whose bidder is 123:
+   * `bidders/123/accounts/456/filterSets/abc`
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Requested page size. The server may return fewer

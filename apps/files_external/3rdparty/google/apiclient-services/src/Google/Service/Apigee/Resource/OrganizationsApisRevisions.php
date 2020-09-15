@@ -42,19 +42,14 @@ class Google_Service_Apigee_Resource_OrganizationsApisRevisions extends Google_S
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ApiProxyRevision");
   }
   /**
-   * Gets an API proxy revision.
-   *
-   * To download the API proxy configuration bundle for the specified revision as
-   * a zip file, do the following:
-   *
-   * Set the `format` query parameter to `bundle`. Set the `Accept` header to
-   * `application/zip`.
-   *
-   * If you are using curl, specify `-o filename.zip` to save the output to a
-   * file; otherwise, it displays to `stdout`. Then, develop the API proxy
-   * configuration locally and upload the updated API proxy configuration
-   * revision, as described in [updateApiProxyRevision](updateApiProxyRevision).
-   * (revisions.get)
+   * Gets an API proxy revision. To download the API proxy configuration bundle
+   * for the specified revision as a zip file, do the following: * Set the
+   * `format` query parameter to `bundle`. * Set the `Accept` header to
+   * `application/zip`. If you are using curl, specify `-o filename.zip` to save
+   * the output to a file; otherwise, it displays to `stdout`. Then, develop the
+   * API proxy configuration locally and upload the updated API proxy
+   * configuration revision, as described in
+   * [updateApiProxyRevision](updateApiProxyRevision). (revisions.get)
    *
    * @param string $name Required. API proxy revision in the following format:
    * `organizations/{org}/apis/{api}/revisions/{rev}`
@@ -73,17 +68,14 @@ class Google_Service_Apigee_Resource_OrganizationsApisRevisions extends Google_S
   }
   /**
    * Updates an existing API proxy revision by uploading the API proxy
-   * configuration bundle as a zip file from your local machine.
-   *
-   * You can update only API proxy revisions that have never been deployed. After
-   * deployment, an API proxy revision becomes immutable, even if it is
-   * undeployed.
-   *
-   * Set the `Content-Type` header to either `multipart/form-data` or `application
-   * /octet-stream`. (revisions.updateApiProxyRevision)
+   * configuration bundle as a zip file from your local machine. You can update
+   * only API proxy revisions that have never been deployed. After deployment, an
+   * API proxy revision becomes immutable, even if it is undeployed. Set the
+   * `Content-Type` header to either `multipart/form-data` or `application/octet-
+   * stream`. (revisions.updateApiProxyRevision)
    *
    * @param string $name Required. API proxy revision to update in the following
-   * format:   `organizations/{org}/apis/{api}/revisions/{rev}`
+   * format: `organizations/{org}/apis/{api}/revisions/{rev}`
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *

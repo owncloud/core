@@ -17,11 +17,27 @@
 
 class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaInstance extends Google_Model
 {
+  protected $featurePolicyType = 'Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaFeaturePolicy';
+  protected $featurePolicyDataType = '';
   public $location;
   public $loggingEnabled;
   public $name;
   public $state;
 
+  /**
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaFeaturePolicy
+   */
+  public function setFeaturePolicy(Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaFeaturePolicy $featurePolicy)
+  {
+    $this->featurePolicy = $featurePolicy;
+  }
+  /**
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaFeaturePolicy
+   */
+  public function getFeaturePolicy()
+  {
+    return $this->featurePolicy;
+  }
   public function setLocation($location)
   {
     $this->location = $location;

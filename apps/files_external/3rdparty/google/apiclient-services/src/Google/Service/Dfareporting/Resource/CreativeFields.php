@@ -73,12 +73,9 @@ class Google_Service_Dfareporting_Resource_CreativeFields extends Google_Service
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string advertiserIds Select only creative fields that belong to
    * these advertisers.
-   * @opt_param string ids Select only creative fields with these IDs.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
    * @opt_param string searchString Allows searching for creative fields by name
    * or ID. Wildcards (*) are allowed. For example, "creativefield*2015" will
    * return creative fields with names like "creativefield June 2015",
@@ -88,6 +85,9 @@ class Google_Service_Dfareporting_Resource_CreativeFields extends Google_Service
    * creative fields with the name "my creativefield", "creativefield 2015", or
    * simply "creativefield".
    * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string ids Select only creative fields with these IDs.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_CreativeFieldsListResponse
    */
@@ -102,14 +102,15 @@ class Google_Service_Dfareporting_Resource_CreativeFields extends Google_Service
    * (creativeFields.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Creative Field ID
    * @param Google_Service_Dfareporting_CreativeField $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id CreativeField ID.
    * @return Google_Service_Dfareporting_CreativeField
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_CreativeField $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_CreativeField $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_CreativeField");
   }

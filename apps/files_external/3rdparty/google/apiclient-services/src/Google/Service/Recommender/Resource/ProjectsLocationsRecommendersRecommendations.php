@@ -45,18 +45,11 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * (recommendations.listProjectsLocationsRecommendersRecommendations)
    *
    * @param string $parent Required. The container resource on which to execute
-   * the request. Acceptable formats:
-   *
-   * 1. "projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_
-   * ID]",
-   *
-   * LOCATION here refers to GCP Locations:
+   * the request. Acceptable formats: 1. "projects/[PROJECT_NUMBER]/locations/[LOC
+   * ATION]/recommenders/[RECOMMENDER_ID]", LOCATION here refers to GCP Locations:
    * https://cloud.google.com/about/locations/
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request.  Non-positive values are ignored. If not specified, the
-   * server will determine the number of results to return.
    * @opt_param string pageToken Optional. If present, retrieves the next batch of
    * results from the preceding call to this method. `page_token` must be the
    * value of `next_page_token` from the previous response. The values of other
@@ -64,6 +57,9 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * @opt_param string filter Filter expression to restrict the recommendations
    * returned. Supported filter fields: state_info.state Eg:
    * `state_info.state:"DISMISSED" or state_info.state:"FAILED"
+   * @opt_param int pageSize Optional. The maximum number of results to return
+   * from this request. Non-positive values are ignored. If not specified, the
+   * server will determine the number of results to return.
    * @return Google_Service_Recommender_GoogleCloudRecommenderV1ListRecommendationsResponse
    */
   public function listProjectsLocationsRecommendersRecommendations($parent, $optParams = array())
@@ -77,12 +73,9 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * indicate to the Recommender API that they are starting to apply the
    * recommendation themselves. This stops the recommendation content from being
    * updated. Associated insights are frozen and placed in the ACCEPTED state.
-   *
    * MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
-   * SUCCEEDED, FAILED, or ACTIVE state.
-   *
-   * Requires the recommender.*.update IAM permission for the specified
-   * recommender. (recommendations.markClaimed)
+   * SUCCEEDED, FAILED, or ACTIVE state. Requires the recommender.*.update IAM
+   * permission for the specified recommender. (recommendations.markClaimed)
    *
    * @param string $name Required. Name of the recommendation.
    * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationClaimedRequest $postBody
@@ -100,13 +93,9 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * indicate to the Recommender API that they have applied the recommendation
    * themselves, and the operation failed. This stops the recommendation content
    * from being updated. Associated insights are frozen and placed in the ACCEPTED
-   * state.
-   *
-   * MarkRecommendationFailed can be applied to recommendations in ACTIVE,
-   * CLAIMED, SUCCEEDED, or FAILED state.
-   *
-   * Requires the recommender.*.update IAM permission for the specified
-   * recommender. (recommendations.markFailed)
+   * state. MarkRecommendationFailed can be applied to recommendations in ACTIVE,
+   * CLAIMED, SUCCEEDED, or FAILED state. Requires the recommender.*.update IAM
+   * permission for the specified recommender. (recommendations.markFailed)
    *
    * @param string $name Required. Name of the recommendation.
    * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationFailedRequest $postBody
@@ -124,13 +113,10 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * indicate to the Recommender API that they have applied the recommendation
    * themselves, and the operation was successful. This stops the recommendation
    * content from being updated. Associated insights are frozen and placed in the
-   * ACCEPTED state.
-   *
-   * MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
-   * CLAIMED, SUCCEEDED, or FAILED state.
-   *
-   * Requires the recommender.*.update IAM permission for the specified
-   * recommender. (recommendations.markSucceeded)
+   * ACCEPTED state. MarkRecommendationSucceeded can be applied to recommendations
+   * in ACTIVE, CLAIMED, SUCCEEDED, or FAILED state. Requires the
+   * recommender.*.update IAM permission for the specified recommender.
+   * (recommendations.markSucceeded)
    *
    * @param string $name Required. Name of the recommendation.
    * @param Google_Service_Recommender_GoogleCloudRecommenderV1MarkRecommendationSucceededRequest $postBody

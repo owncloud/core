@@ -26,11 +26,8 @@
 class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsEnvironments extends Google_Service_Resource
 {
   /**
-   * Gets an Environment.
-   *
-   * May return any of the following canonical error codes:
-   *
-   * - PERMISSION_DENIED - if the user is not authorized to read project -
+   * Gets an Environment. May return any of the following canonical error codes: -
+   * PERMISSION_DENIED - if the user is not authorized to read project -
    * INVALID_ARGUMENT - if the request is malformed - NOT_FOUND - if the
    * Environment does not exist (environments.get)
    *
@@ -48,13 +45,9 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsEnvironment
     return $this->call('get', array($params), "Google_Service_ToolResults_Environment");
   }
   /**
-   * Lists Environments for a given Execution.
-   *
-   * The Environments are sorted by display name.
-   *
-   * May return any of the following canonical error codes:
-   *
-   * - PERMISSION_DENIED - if the user is not authorized to read project -
+   * Lists Environments for a given Execution. The Environments are sorted by
+   * display name. May return any of the following canonical error codes: -
+   * PERMISSION_DENIED - if the user is not authorized to read project -
    * INVALID_ARGUMENT - if the request is malformed - NOT_FOUND - if the
    * containing Execution does not exist
    * (environments.listProjectsHistoriesExecutionsEnvironments)
@@ -64,12 +57,11 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsEnvironment
    * @param string $executionId Required. An Execution id.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of Environments to fetch.
-   *
-   * Default value: 25. The server will use this default if the field is not set
-   * or has a value of 0.
    * @opt_param string pageToken A continuation token to resume the query at the
    * next item.
+   * @opt_param int pageSize The maximum number of Environments to fetch. Default
+   * value: 25. The server will use this default if the field is not set or has a
+   * value of 0.
    * @return Google_Service_ToolResults_ListEnvironmentsResponse
    */
   public function listProjectsHistoriesExecutionsEnvironments($projectId, $historyId, $executionId, $optParams = array())

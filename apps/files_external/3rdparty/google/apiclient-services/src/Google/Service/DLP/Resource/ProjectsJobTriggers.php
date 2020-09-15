@@ -47,8 +47,14 @@ class Google_Service_DLP_Resource_ProjectsJobTriggers extends Google_Service_Res
    * https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
    * (jobTriggers.create)
    *
-   * @param string $parent Required. Parent resource name. - Format:projects
-   * /[PROJECT-ID] - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+   * @param string $parent Required. Parent resource name. The format of this
+   * value varies depending on whether you have [specified a processing
+   * location](/dlp/docs/specifying-location): + Projects scope, location
+   * specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no
+   * location specified (defaults to global): `projects/`PROJECT_ID The following
+   * example `parent` string specifies a parent project with the identifier
+   * `example-project`, and specifies the `europe-west3` location for processing
+   * data: parent=projects/example-project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2CreateJobTriggerRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2JobTrigger
@@ -93,51 +99,45 @@ class Google_Service_DLP_Resource_ProjectsJobTriggers extends Google_Service_Res
    * Lists job triggers. See https://cloud.google.com/dlp/docs/creating-job-
    * triggers to learn more. (jobTriggers.listProjectsJobTriggers)
    *
-   * @param string $parent Required. Parent resource name. - Format:projects
-   * /[PROJECT-ID] - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+   * @param string $parent Required. Parent resource name. The format of this
+   * value varies depending on whether you have [specified a processing
+   * location](/dlp/docs/specifying-location): + Projects scope, location
+   * specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no
+   * location specified (defaults to global): `projects/`PROJECT_ID The following
+   * example `parent` string specifies a parent project with the identifier
+   * `example-project`, and specifies the `europe-west3` location for processing
+   * data: parent=projects/example-project/locations/europe-west3
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token to continue retrieval. Comes from
-   * previous call to ListJobTriggers. `order_by` field must not change for
-   * subsequent calls.
-   * @opt_param string filter Allows filtering.
-   *
-   * Supported syntax:
-   *
-   * * Filter expressions are made up of one or more restrictions. * Restrictions
-   * can be combined by `AND` or `OR` logical operators. A sequence of
-   * restrictions implicitly uses `AND`. * A restriction has the form of `{field}
-   * {operator} {value}`. * Supported fields/values for inspect jobs:     -
-   * `status` - HEALTHY|PAUSED|CANCELLED     - `inspected_storage` -
-   * DATASTORE|CLOUD_STORAGE|BIGQUERY     - 'last_run_time` - RFC 3339 formatted
-   * timestamp, surrounded by     quotation marks. Nanoseconds are ignored.     -
-   * 'error_count' - Number of errors that have occurred while running. * The
-   * operator must be `=` or `!=` for status and inspected_storage.
-   *
-   * Examples:
-   *
-   * * inspected_storage = cloud_storage AND status = HEALTHY * inspected_storage
-   * = cloud_storage OR inspected_storage = bigquery * inspected_storage =
-   * cloud_storage AND (state = PAUSED OR state = HEALTHY) * last_run_time >
-   * \"2017-12-12T00:00:00+00:00\"
-   *
-   * The length of this field should be no more than 500 characters.
-   * @opt_param int pageSize Size of the page, can be limited by a server.
-   * @opt_param string locationId Deprecated. This field has no effect.
    * @opt_param string orderBy Comma separated list of triggeredJob fields to
    * order by, followed by `asc` or `desc` postfix. This list is case-insensitive,
    * default sorting order is ascending, redundant space characters are
-   * insignificant.
-   *
-   * Example: `name asc,update_time, create_time desc`
-   *
-   * Supported fields are:
-   *
-   * - `create_time`: corresponds to time the JobTrigger was created. -
-   * `update_time`: corresponds to time the JobTrigger was last updated. -
+   * insignificant. Example: `name asc,update_time, create_time desc` Supported
+   * fields are: - `create_time`: corresponds to time the JobTrigger was created.
+   * - `update_time`: corresponds to time the JobTrigger was last updated. -
    * `last_run_time`: corresponds to the last time the JobTrigger ran. - `name`:
    * corresponds to JobTrigger's name. - `display_name`: corresponds to
    * JobTrigger's display name. - `status`: corresponds to JobTrigger's status.
+   * @opt_param string pageToken Page token to continue retrieval. Comes from
+   * previous call to ListJobTriggers. `order_by` field must not change for
+   * subsequent calls.
+   * @opt_param int pageSize Size of the page, can be limited by a server.
+   * @opt_param string locationId Deprecated. This field has no effect.
+   * @opt_param string filter Allows filtering. Supported syntax: * Filter
+   * expressions are made up of one or more restrictions. * Restrictions can be
+   * combined by `AND` or `OR` logical operators. A sequence of restrictions
+   * implicitly uses `AND`. * A restriction has the form of `{field} {operator}
+   * {value}`. * Supported fields/values for inspect jobs: - `status` -
+   * HEALTHY|PAUSED|CANCELLED - `inspected_storage` -
+   * DATASTORE|CLOUD_STORAGE|BIGQUERY - 'last_run_time` - RFC 3339 formatted
+   * timestamp, surrounded by quotation marks. Nanoseconds are ignored. -
+   * 'error_count' - Number of errors that have occurred while running. * The
+   * operator must be `=` or `!=` for status and inspected_storage. Examples: *
+   * inspected_storage = cloud_storage AND status = HEALTHY * inspected_storage =
+   * cloud_storage OR inspected_storage = bigquery * inspected_storage =
+   * cloud_storage AND (state = PAUSED OR state = HEALTHY) * last_run_time >
+   * \"2017-12-12T00:00:00+00:00\" The length of this field should be no more than
+   * 500 characters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListJobTriggersResponse
    */
   public function listProjectsJobTriggers($parent, $optParams = array())

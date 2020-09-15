@@ -58,13 +58,13 @@ class Google_Service_DataTransfer_Resource_Transfers extends Google_Service_Reso
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customerId Immutable ID of the G Suite account.
+   * @opt_param string newOwnerUserId Destination user's profile ID.
+   * @opt_param string status Status of the transfer.
+   * @opt_param string customerId Immutable ID of the Google Apps account.
    * @opt_param int maxResults Maximum number of results to return. Default is
    * 100.
-   * @opt_param string newOwnerUserId Destination user's profile ID.
    * @opt_param string oldOwnerUserId Source user's profile ID.
    * @opt_param string pageToken Token to specify the next page in the list.
-   * @opt_param string status Status of the transfer.
    * @return Google_Service_DataTransfer_DataTransfersListResponse
    */
   public function listTransfers($optParams = array())

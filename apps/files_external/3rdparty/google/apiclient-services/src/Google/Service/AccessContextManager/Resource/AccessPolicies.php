@@ -48,7 +48,6 @@ class Google_Service_AccessContextManager_Resource_AccessPolicies extends Google
    * storage. (accessPolicies.delete)
    *
    * @param string $name Required. Resource name for the access policy to delete.
-   *
    * Format `accessPolicies/{policy_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
@@ -63,7 +62,6 @@ class Google_Service_AccessContextManager_Resource_AccessPolicies extends Google
    * Get an AccessPolicy by name. (accessPolicies.get)
    *
    * @param string $name Required. Resource name for the access policy to get.
-   *
    * Format `accessPolicies/{policy_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_AccessPolicy
@@ -80,14 +78,12 @@ class Google_Service_AccessContextManager_Resource_AccessPolicies extends Google
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Next page token for the next batch of
-   * AccessPolicy instances. Defaults to the first page of results.
    * @opt_param int pageSize Number of AccessPolicy instances to include in the
    * list. Default 100.
+   * @opt_param string pageToken Next page token for the next batch of
+   * AccessPolicy instances. Defaults to the first page of results.
    * @opt_param string parent Required. Resource name for the container to list
-   * AccessPolicy instances from.
-   *
-   * Format: `organizations/{org_id}`
+   * AccessPolicy instances from. Format: `organizations/{org_id}`
    * @return Google_Service_AccessContextManager_ListAccessPoliciesResponse
    */
   public function listAccessPolicies($optParams = array())

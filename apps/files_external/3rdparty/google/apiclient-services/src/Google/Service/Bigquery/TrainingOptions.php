@@ -19,6 +19,7 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
 {
   protected $collection_key = 'inputLabelColumns';
   public $autoArima;
+  public $autoArimaMaxOrder;
   public $batchSize;
   public $dataFrequency;
   public $dataSplitColumn;
@@ -69,6 +70,14 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getAutoArima()
   {
     return $this->autoArima;
+  }
+  public function setAutoArimaMaxOrder($autoArimaMaxOrder)
+  {
+    $this->autoArimaMaxOrder = $autoArimaMaxOrder;
+  }
+  public function getAutoArimaMaxOrder()
+  {
+    return $this->autoArimaMaxOrder;
   }
   public function setBatchSize($batchSize)
   {

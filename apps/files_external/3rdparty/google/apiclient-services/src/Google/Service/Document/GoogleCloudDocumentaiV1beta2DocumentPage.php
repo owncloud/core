@@ -26,6 +26,8 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage extends G
   protected $dimensionDataType = '';
   protected $formFieldsType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageFormField';
   protected $formFieldsDataType = 'array';
+  protected $imageType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageImage';
+  protected $imageDataType = '';
   protected $layoutType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageLayout';
   protected $layoutDataType = '';
   protected $linesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageLine';
@@ -37,6 +39,8 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage extends G
   protected $tablesDataType = 'array';
   protected $tokensType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageToken';
   protected $tokensDataType = 'array';
+  protected $transformsType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageMatrix';
+  protected $transformsDataType = 'array';
   protected $visualElementsType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageVisualElement';
   protected $visualElementsDataType = 'array';
 
@@ -95,6 +99,20 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage extends G
   public function getFormFields()
   {
     return $this->formFields;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageImage
+   */
+  public function setImage(Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageImage $image)
+  {
+    $this->image = $image;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageImage
+   */
+  public function getImage()
+  {
+    return $this->image;
   }
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageLayout
@@ -173,6 +191,20 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage extends G
   public function getTokens()
   {
     return $this->tokens;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageMatrix
+   */
+  public function setTransforms($transforms)
+  {
+    $this->transforms = $transforms;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageMatrix
+   */
+  public function getTransforms()
+  {
+    return $this->transforms;
   }
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageVisualElement

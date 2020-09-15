@@ -41,7 +41,7 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsOperations extends Googl
     return $this->call('create', array($params), "Google_Service_ContainerAnalysis_Operation");
   }
   /**
-   * Updates an existing operation returns an error if operation  does not exist.
+   * Updates an existing operation returns an error if operation does not exist.
    * The only valid operations are to update mark the done bit change the result.
    * (operations.patch)
    *

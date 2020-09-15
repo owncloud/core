@@ -203,6 +203,8 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
    * @param string $zone The name of the zone for this request.
    * @param string $resource Name or id of the resource for this request.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param int optionsRequestedPolicyVersion Requested IAM Policy version.
    * @return Google_Service_Compute_Policy
    */
   public function getIamPolicy($project, $zone, $resource, $optParams = array())
@@ -213,10 +215,10 @@ class Google_Service_Compute_Resource_Disks extends Google_Service_Resource
   }
   /**
    * Creates a persistent disk in the specified project using the data in the
-   * request. You can create a disk with a sourceImage, a sourceSnapshot, or
-   * create an empty 500 GB data disk by omitting all properties. You can also
-   * create a disk that is larger than the default size by specifying the sizeGb
-   * property. (disks.insert)
+   * request. You can create a disk from a source (sourceImage, sourceSnapshot, or
+   * sourceDisk) or create an empty 500 GB data disk by omitting all properties.
+   * You can also create a disk that is larger than the default size by specifying
+   * the sizeGb property. (disks.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

@@ -26,14 +26,16 @@
 class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_Service_Resource
 {
   /**
-   * Requests that a new WebApp be created.
-   *
-   * The result of this call is an `Operation` which can be used to track the
+   * Requests the creation of a new WebApp in the specified FirebaseProject. The
+   * result of this call is an `Operation` which can be used to track the
    * provisioning process. The `Operation` is automatically deleted after
    * completion, so there is no need to call `DeleteOperation`. (webApps.create)
    *
-   * @param string $parent The parent Project in which to create an App, in the
-   * format: projects/PROJECT_NUMBER
+   * @param string $parent The resource name of the parent FirebaseProject in
+   * which to create a WebApp, in the format: projects/PROJECT_IDENTIFIER/webApps
+   * Refer to the `FirebaseProject`
+   * [`name`](../projects#FirebaseProject.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER values.
    * @param Google_Service_FirebaseManagement_WebApp $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -45,12 +47,14 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
     return $this->call('create', array($params), "Google_Service_FirebaseManagement_Operation");
   }
   /**
-   * Gets the WebApp identified by the specified resource name. (webApps.get)
+   * Gets the specified WebApp. (webApps.get)
    *
-   * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/PROJECT_NUMBER/webApps/APP_ID As an APP_ID is a unique
+   * @param string $name The resource name of the WebApp, in the format:
+   * projects/PROJECT_IDENTIFIER /webApps/APP_ID Since an APP_ID is a unique
    * identifier, the Unique Resource from Sub-Collection access pattern may be
-   * used here, in the format: projects/-/webApps/APP_ID
+   * used here, in the format: projects/-/webApps/APP_ID Refer to the `WebApp`
+   * [`name`](../projects.webApps#WebApp.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER and APP_ID values.
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_WebApp
    */
@@ -64,10 +68,13 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
    * Gets the configuration artifact associated with the specified WebApp.
    * (webApps.getConfig)
    *
-   * @param string $name The resource name of the App configuration to download,
-   * in the format: projects/PROJECT_NUMBER/webApps/APP_ID/config As an APP_ID is
-   * a unique identifier, the Unique Resource from Sub-Collection access pattern
-   * may be used here, in the format: projects/-/webApps/APP_ID
+   * @param string $name The resource name of the WebApp configuration to
+   * download, in the format: projects/PROJECT_IDENTIFIER/webApps/APP_ID/config
+   * Since an APP_ID is a unique identifier, the Unique Resource from Sub-
+   * Collection access pattern may be used here, in the format:
+   * projects/-/webApps/APP_ID Refer to the `WebApp`
+   * [`name`](../projects.webApps#WebApp.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER and APP_ID values.
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_WebAppConfig
    */
@@ -78,18 +85,19 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
     return $this->call('getConfig', array($params), "Google_Service_FirebaseManagement_WebAppConfig");
   }
   /**
-   * Lists each WebApp associated with the specified parent Project.
-   *
-   * The elements are returned in no particular order, but will be a consistent
-   * view of the Apps when additional requests are made with a `pageToken`.
+   * Lists each WebApp associated with the specified FirebaseProject. The elements
+   * are returned in no particular order, but will be a consistent view of the
+   * Apps when additional requests are made with a `pageToken`.
    * (webApps.listProjectsWebApps)
    *
-   * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/PROJECT_NUMBER
+   * @param string $parent The resource name of the parent FirebaseProject for
+   * which to list each associated WebApp, in the format:
+   * projects/PROJECT_IDENTIFIER/webApps Refer to the `FirebaseProject`
+   * [`name`](../projects#FirebaseProject.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER values.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of Apps to return in the response.
-   *
    * The server may return fewer than this value at its discretion. If no value is
    * specified (or too large a value is specified), then the server will impose
    * its own limit.
@@ -104,11 +112,19 @@ class Google_Service_FirebaseManagement_Resource_ProjectsWebApps extends Google_
     return $this->call('list', array($params), "Google_Service_FirebaseManagement_ListWebAppsResponse");
   }
   /**
-   * Updates the attributes of the WebApp identified by the specified resource
-   * name. (webApps.patch)
+   * Updates the attributes of the specified WebApp. (webApps.patch)
    *
-   * @param string $name The fully qualified resource name of the App, for
-   * example: projects/projectId/webApps/appId
+   * @param string $name The resource name of the WebApp, in the format:
+   * projects/PROJECT_IDENTIFIER /webApps/APP_ID * PROJECT_IDENTIFIER: the parent
+   * Project's
+   * [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number)
+   * ***(recommended)*** or its
+   * [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more
+   * about using project identifiers in Google's [AIP 2510
+   * standard](https://google.aip.dev/cloud/2510). Note that the value for
+   * PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID:
+   * the globally unique, Firebase-assigned identifier for the App (see
+   * [`appId`](../projects.webApps#WebApp.FIELDS.app_id)).
    * @param Google_Service_FirebaseManagement_WebApp $postBody
    * @param array $optParams Optional parameters.
    *

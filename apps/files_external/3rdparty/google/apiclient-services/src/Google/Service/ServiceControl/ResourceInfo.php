@@ -17,32 +17,32 @@
 
 class Google_Service_ServiceControl_ResourceInfo extends Google_Model
 {
-  public $resourceContainer;
-  public $resourceLocation;
-  public $resourceName;
+  public $name;
+  public $permission;
+  public $type;
 
-  public function setResourceContainer($resourceContainer)
+  public function setName($name)
   {
-    $this->resourceContainer = $resourceContainer;
+    $this->name = $name;
   }
-  public function getResourceContainer()
+  public function getName()
   {
-    return $this->resourceContainer;
+    return $this->name;
   }
-  public function setResourceLocation($resourceLocation)
+  public function setPermission($permission)
   {
-    $this->resourceLocation = $resourceLocation;
+    $this->permission = $permission;
   }
-  public function getResourceLocation()
+  public function getPermission()
   {
-    return $this->resourceLocation;
+    return $this->permission;
   }
-  public function setResourceName($resourceName)
+  public function setType($type)
   {
-    $this->resourceName = $resourceName;
+    $this->type = $type;
   }
-  public function getResourceName()
+  public function getType()
   {
-    return $this->resourceName;
+    return $this->type;
   }
 }

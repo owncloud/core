@@ -26,20 +26,17 @@
 class Google_Service_CloudLifeSciences_Resource_ProjectsLocationsPipelines extends Google_Service_Resource
 {
   /**
-   * Runs a pipeline.  The returned Operation's metadata field will contain a
+   * Runs a pipeline. The returned Operation's metadata field will contain a
    * google.cloud.lifesciences.v2beta.Metadata object describing the status of the
    * pipeline execution. The response field will contain a
    * google.cloud.lifesciences.v2beta.RunPipelineResponse object if the pipeline
-   * completes successfully.
-   *
-   * **Note:** Before you can use this method, the *Life Sciences Service Agent*
-   * must have access to your project. This is done automatically when the Cloud
-   * Life Sciences API is first enabled, but if you delete this permission you
-   * must disable and re-enable the API to grant the Life Sciences Service Agent
-   * the required permissions. Authorization requires the following [Google
-   * IAM](https://cloud.google.com/iam/) permission:
-   *
-   * * `lifesciences.workflows.run` (pipelines.run)
+   * completes successfully. **Note:** Before you can use this method, the *Life
+   * Sciences Service Agent* must have access to your project. This is done
+   * automatically when the Cloud Life Sciences API is first enabled, but if you
+   * delete this permission you must disable and re-enable the API to grant the
+   * Life Sciences Service Agent the required permissions. Authorization requires
+   * the following [Google IAM](https://cloud.google.com/iam/) permission: *
+   * `lifesciences.workflows.run` (pipelines.run)
    *
    * @param string $parent The project and location that this request should be
    * executed against.

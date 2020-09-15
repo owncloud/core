@@ -46,9 +46,9 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsPublisherProfiles extend
    * @param string $accountId Account ID of the buyer.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Specify the number of results to include per page.
    * @opt_param string pageToken The page token as return from
    * ListPublisherProfilesResponse.
-   * @opt_param int pageSize Specify the number of results to include per page.
    * @return Google_Service_AdExchangeBuyerII_ListPublisherProfilesResponse
    */
   public function listAccountsPublisherProfiles($accountId, $optParams = array())

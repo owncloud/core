@@ -31,6 +31,9 @@
  */
 class Google_Service_CloudBillingBudget extends Google_Service
 {
+  /** View and manage your Google Cloud Platform billing accounts. */
+  const CLOUD_BILLING =
+      "https://www.googleapis.com/auth/cloud-billing";
   /** View and manage your data across Google Cloud Platform services. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
@@ -97,13 +100,13 @@ class Google_Service_CloudBillingBudget extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(

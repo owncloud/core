@@ -59,16 +59,16 @@ class Google_Service_Storagetransfer_Resource_TransferJobs extends Google_Servic
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The list page size. The max allowed value is 256.
+   * @opt_param string pageToken The list page token.
    * @opt_param string filter Required. A list of query parameters specified as
    * JSON text in the form of: {"project_id":"my_project_id",
    * "job_names":["jobid1","jobid2",...],
    * "job_statuses":["status1","status2",...]}. Since `job_names` and
    * `job_statuses` support multiple values, their values must be specified with
-   * array notation. `project``_``id` is required.  `job_names` and `job_statuses`
-   * are optional.  The valid values for `job_statuses` are case-insensitive:
+   * array notation. `project``_``id` is required. `job_names` and `job_statuses`
+   * are optional. The valid values for `job_statuses` are case-insensitive:
    * ENABLED, DISABLED, and DELETED.
-   * @opt_param string pageToken The list page token.
-   * @opt_param int pageSize The list page size. The max allowed value is 256.
    * @return Google_Service_Storagetransfer_ListTransferJobsResponse
    */
   public function listTransferJobs($optParams = array())
@@ -80,10 +80,9 @@ class Google_Service_Storagetransfer_Resource_TransferJobs extends Google_Servic
   /**
    * Updates a transfer job. Updating a job's transfer spec does not affect
    * transfer operations that are running already. Updating a job's schedule is
-   * not allowed.
-   *
-   * **Note:** The job's status field can be modified using this RPC (for example,
-   * to set a job's status to DELETED, DISABLED, or ENABLED). (transferJobs.patch)
+   * not allowed. **Note:** The job's status field can be modified using this RPC
+   * (for example, to set a job's status to DELETED, DISABLED, or ENABLED).
+   * (transferJobs.patch)
    *
    * @param string $jobName Required. The name of job to update.
    * @param Google_Service_Storagetransfer_UpdateTransferJobRequest $postBody

@@ -22,8 +22,6 @@ class Google_Service_FirebaseManagement_StatusProto extends Google_Model
   public $message;
   protected $messageSetType = 'Google_Service_FirebaseManagement_MessageSet';
   protected $messageSetDataType = '';
-  protected $payloadType = 'Google_Service_FirebaseManagement_TypedMessage';
-  protected $payloadDataType = '';
   public $space;
 
   public function setCanonicalCode($canonicalCode)
@@ -63,20 +61,6 @@ class Google_Service_FirebaseManagement_StatusProto extends Google_Model
   public function getMessageSet()
   {
     return $this->messageSet;
-  }
-  /**
-   * @param Google_Service_FirebaseManagement_TypedMessage
-   */
-  public function setPayload(Google_Service_FirebaseManagement_TypedMessage $payload)
-  {
-    $this->payload = $payload;
-  }
-  /**
-   * @return Google_Service_FirebaseManagement_TypedMessage
-   */
-  public function getPayload()
-  {
-    return $this->payload;
   }
   public function setSpace($space)
   {

@@ -28,14 +28,13 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
   /**
    * Creates a new service configuration (version) for a managed service. This
    * method only stores the service configuration. To roll out the service
-   * configuration to backend systems please call CreateServiceRollout.
+   * configuration to backend systems please call CreateServiceRollout. Only the
+   * 100 most recent service configurations and ones referenced by existing
+   * rollouts are kept for each service. The rest will be deleted eventually.
+   * (configs.create)
    *
-   * Only the 100 most recent service configurations and ones referenced by
-   * existing rollouts are kept for each service. The rest will be deleted
-   * eventually. (configs.create)
-   *
-   * @param string $serviceName Required. The name of the service.  See the
-   * [overview](/service-management/overview) for naming requirements.  For
+   * @param string $serviceName Required. The name of the service. See the
+   * [overview](/service-management/overview) for naming requirements. For
    * example: `example.googleapis.com`.
    * @param Google_Service_ServiceManagement_Service $postBody
    * @param array $optParams Optional parameters.
@@ -50,14 +49,12 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
   /**
    * Gets a service configuration (version) for a managed service. (configs.get)
    *
-   * @param string $serviceName Required. The name of the service.  See the
-   * [overview](/service-management/overview) for naming requirements.  For
+   * @param string $serviceName Required. The name of the service. See the
+   * [overview](/service-management/overview) for naming requirements. For
    * example: `example.googleapis.com`.
    * @param string $configId Required. The id of the service configuration
-   * resource.
-   *
-   * This field must be specified for the server to return all fields, including
-   * `SourceInfo`.
+   * resource. This field must be specified for the server to return all fields,
+   * including `SourceInfo`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string view Specifies which parts of the Service Config should be
@@ -74,8 +71,8 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
    * Lists the history of the service configuration for a managed service, from
    * the newest to the oldest. (configs.listServicesConfigs)
    *
-   * @param string $serviceName Required. The name of the service.  See the
-   * [overview](/service-management/overview) for naming requirements.  For
+   * @param string $serviceName Required. The name of the service. See the
+   * [overview](/service-management/overview) for naming requirements. For
    * example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
@@ -95,16 +92,13 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
    * user-supplied configuration source files (for example: OpenAPI
    * Specification). This method stores the source configurations as well as the
    * generated service configuration. To rollout the service configuration to
-   * other services, please call CreateServiceRollout.
+   * other services, please call CreateServiceRollout. Only the 100 most recent
+   * configuration sources and ones referenced by existing service configurtions
+   * are kept for each service. The rest will be deleted eventually. Operation
+   * (configs.submit)
    *
-   * Only the 100 most recent configuration sources and ones referenced by
-   * existing service configurtions are kept for each service. The rest will be
-   * deleted eventually.
-   *
-   * Operation (configs.submit)
-   *
-   * @param string $serviceName Required. The name of the service.  See the
-   * [overview](/service-management/overview) for naming requirements.  For
+   * @param string $serviceName Required. The name of the service. See the
+   * [overview](/service-management/overview) for naming requirements. For
    * example: `example.googleapis.com`.
    * @param Google_Service_ServiceManagement_SubmitConfigSourceRequest $postBody
    * @param array $optParams Optional parameters.

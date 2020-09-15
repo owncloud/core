@@ -27,7 +27,6 @@ class Google_Service_ChromeUXReport_Resource_Records extends Google_Service_Reso
 {
   /**
    * Queries the Chrome User Experience for a single `record` for a given site.
-   *
    * Returns a `record` that contains one or more `metrics` corresponding to
    * performance data about the requested site. (records.queryRecord)
    *

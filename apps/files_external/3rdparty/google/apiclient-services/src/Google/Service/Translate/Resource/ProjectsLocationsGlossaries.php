@@ -77,6 +77,21 @@ class Google_Service_Translate_Resource_ProjectsLocationsGlossaries extends Goog
    * all of the glossaries.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Filter specifying constraints of a list
+   * operation. Specify the constraint by the format of "key=value", where key
+   * must be "src" or "tgt", and the value must be a valid language code. For
+   * multiple restrictions, concatenate them by "AND" (uppercase only), such as:
+   * "src=en-US AND tgt=zh-CN". Notice that the exact match is used here, which
+   * means using 'en-US' and 'en' can lead to different results, which depends on
+   * the language code you used when you create the glossary. For the
+   * unidirectional glossaries, the "src" and "tgt" add restrictions on the source
+   * and target language code separately. For the equivalent term set glossaries,
+   * the "src" and/or "tgt" add restrictions on the term set. For example: "src
+   * =en-US AND tgt=zh-CN" will only pick the unidirectional glossaries which
+   * exactly match the source language code as "en-US" and the target language
+   * code "zh-CN", but all equivalent term set glossaries which contain "en-US"
+   * and "zh-CN" in their language set will be picked. If missing, no filtering is
+   * performed.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * the server should return. Typically, this is the value of
    * [ListGlossariesResponse.next_page_token] returned from the previous call to
@@ -85,9 +100,6 @@ class Google_Service_Translate_Resource_ProjectsLocationsGlossaries extends Goog
    * @opt_param int pageSize Optional. Requested page size. The server may return
    * fewer glossaries than requested. If unspecified, the server picks an
    * appropriate default.
-   * @opt_param string filter Optional. Filter specifying constraints of a list
-   * operation. Filtering is not supported yet, and the parameter currently has no
-   * effect. If missing, no filtering is performed.
    * @return Google_Service_Translate_ListGlossariesResponse
    */
   public function listProjectsLocationsGlossaries($parent, $optParams = array())

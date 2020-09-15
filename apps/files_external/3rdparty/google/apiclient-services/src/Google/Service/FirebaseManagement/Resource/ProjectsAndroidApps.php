@@ -26,15 +26,17 @@
 class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Google_Service_Resource
 {
   /**
-   * Requests that a new AndroidApp be created.
-   *
+   * Requests the creation of a new AndroidApp in the specified FirebaseProject.
    * The result of this call is an `Operation` which can be used to track the
    * provisioning process. The `Operation` is automatically deleted after
    * completion, so there is no need to call `DeleteOperation`.
    * (androidApps.create)
    *
-   * @param string $parent The parent Project in which to create an App, in the
-   * format: projects/PROJECT_NUMBER
+   * @param string $parent The resource name of the parent FirebaseProject in
+   * which to create an AndroidApp, in the format:
+   * projects/PROJECT_IDENTIFIER/androidApps Refer to the `FirebaseProject`
+   * [`name`](../projects#FirebaseProject.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER values.
    * @param Google_Service_FirebaseManagement_AndroidApp $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_Operation
@@ -46,13 +48,14 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
     return $this->call('create', array($params), "Google_Service_FirebaseManagement_Operation");
   }
   /**
-   * Gets the AndroidApp identified by the specified resource name.
-   * (androidApps.get)
+   * Gets the specified AndroidApp. (androidApps.get)
    *
-   * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/PROJECT_NUMBER/androidApps/APP_ID As an APP_ID is a unique
+   * @param string $name The resource name of the AndroidApp, in the format:
+   * projects/ PROJECT_IDENTIFIER/androidApps/APP_ID Since an APP_ID is a unique
    * identifier, the Unique Resource from Sub-Collection access pattern may be
-   * used here, in the format: projects/-/androidApps/APP_ID
+   * used here, in the format: projects/-/androidApps/APP_ID Refer to the
+   * `AndroidApp` [`name`](../projects.androidApps#AndroidApp.FIELDS.name) field
+   * for details about PROJECT_IDENTIFIER and APP_ID values.
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_AndroidApp
    */
@@ -66,10 +69,13 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * Gets the configuration artifact associated with the specified AndroidApp.
    * (androidApps.getConfig)
    *
-   * @param string $name The resource name of the App configuration to download,
-   * in the format: projects/PROJECT_NUMBER/androidApps/APP_ID/config As an APP_ID
-   * is a unique identifier, the Unique Resource from Sub-Collection access
-   * pattern may be used here, in the format: projects/-/androidApps/APP_ID
+   * @param string $name The resource name of the AndroidApp configuration to
+   * download, in the format:
+   * projects/PROJECT_IDENTIFIER/androidApps/APP_ID/config Since an APP_ID is a
+   * unique identifier, the Unique Resource from Sub-Collection access pattern may
+   * be used here, in the format: projects/-/androidApps/APP_ID Refer to the
+   * `AndroidApp` [`name`](../projects.androidApps#AndroidApp.FIELDS.name) field
+   * for details about PROJECT_IDENTIFIER and APP_ID values.
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseManagement_AndroidAppConfig
    */
@@ -80,18 +86,19 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
     return $this->call('getConfig', array($params), "Google_Service_FirebaseManagement_AndroidAppConfig");
   }
   /**
-   * Lists each AndroidApp associated with the specified parent Project.
-   *
-   * The elements are returned in no particular order, but will be a consistent
-   * view of the Apps when additional requests are made with a `pageToken`.
+   * Lists each AndroidApp associated with the specified FirebaseProject. The
+   * elements are returned in no particular order, but will be a consistent view
+   * of the Apps when additional requests are made with a `pageToken`.
    * (androidApps.listProjectsAndroidApps)
    *
-   * @param string $parent The parent Project for which to list Apps, in the
-   * format: projects/PROJECT_NUMBER
+   * @param string $parent The resource name of the parent FirebaseProject for
+   * which to list each associated AndroidApp, in the format:
+   * projects/PROJECT_IDENTIFIER /androidApps Refer to the `FirebaseProject`
+   * [`name`](../projects#FirebaseProject.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER values.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of Apps to return in the response.
-   *
    * The server may return fewer than this at its discretion. If no value is
    * specified (or too large a value is specified), then the server will impose
    * its own limit.
@@ -106,11 +113,19 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
     return $this->call('list', array($params), "Google_Service_FirebaseManagement_ListAndroidAppsResponse");
   }
   /**
-   * Updates the attributes of the AndroidApp identified by the specified resource
-   * name. (androidApps.patch)
+   * Updates the attributes of the specified AndroidApp. (androidApps.patch)
    *
-   * @param string $name The fully qualified resource name of the App, in the
-   * format: projects/projectId/androidApps/appId
+   * @param string $name The resource name of the AndroidApp, in the format:
+   * projects/ PROJECT_IDENTIFIER/androidApps/APP_ID * PROJECT_IDENTIFIER: the
+   * parent Project's
+   * [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number)
+   * ***(recommended)*** or its
+   * [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more
+   * about using project identifiers in Google's [AIP 2510
+   * standard](https://google.aip.dev/cloud/2510). Note that the value for
+   * PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID:
+   * the globally unique, Firebase-assigned identifier for the App (see
+   * [`appId`](../projects.androidApps#AndroidApp.FIELDS.app_id)).
    * @param Google_Service_FirebaseManagement_AndroidApp $postBody
    * @param array $optParams Optional parameters.
    *

@@ -73,12 +73,8 @@ class Google_Service_Dfareporting_Resource_UserRoles extends Google_Service_Reso
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool accountUserRoleOnly Select only account level user roles not
-   * associated with any specific subaccount.
-   * @opt_param string ids Select only user roles with the specified IDs.
+   * @opt_param string sortField Field by which to sort the list.
    * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "userrole*2015" will return objects
    * with names like "userrole June 2015", "userrole April 2015", or simply
@@ -86,8 +82,12 @@ class Google_Service_Dfareporting_Resource_UserRoles extends Google_Service_Reso
    * start and the end of the search string. For example, a search string of
    * "userrole" will match objects with name "my userrole", "userrole 2015", or
    * simply "userrole".
-   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string ids Select only user roles with the specified IDs.
+   * @opt_param bool accountUserRoleOnly Select only account level user roles not
+   * associated with any specific subaccount.
    * @opt_param string subaccountId Select only user roles that belong to this
    * subaccount.
    * @return Google_Service_Dfareporting_UserRolesListResponse
@@ -103,14 +103,15 @@ class Google_Service_Dfareporting_Resource_UserRoles extends Google_Service_Reso
    * (userRoles.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id User role ID.
    * @param Google_Service_Dfareporting_UserRole $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id UserRole ID.
    * @return Google_Service_Dfareporting_UserRole
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_UserRole $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_UserRole $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_UserRole");
   }

@@ -64,6 +64,15 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsCreatives extends Google
    * to list all creatives the current user has access to.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string query An optional query string to filter creatives. If no
+   * filter is specified, all active creatives will be returned. Supported queries
+   * are: - accountId=*account_id_string* - creativeId=*creative_id_string* -
+   * dealsStatus: {approved, conditionally_approved, disapproved, not_checked} -
+   * openAuctionStatus: {approved, conditionally_approved, disapproved,
+   * not_checked} - attribute: {a numeric attribute from the list of attributes} -
+   * disapprovalReason: {a reason from DisapprovalReason} Example:
+   * 'accountId=12345 AND (dealsStatus:disapproved AND
+   * disapprovalReason:unacceptable_content) OR attribute:47'
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListCreativesResponse.next_page_token returned from the previous call to
@@ -72,19 +81,6 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsCreatives extends Google
    * creatives than requested (due to timeout constraint) even if more are
    * available via another call. If unspecified, server will pick an appropriate
    * default. Acceptable values are 1 to 1000, inclusive.
-   * @opt_param string query An optional query string to filter creatives. If no
-   * filter is specified, all active creatives will be returned. Supported queries
-   * are:
-   *
-   * accountId=account_id_string creativeId=creative_id_string dealsStatus:
-   * {approved, conditionally_approved, disapproved,
-   * not_checked} openAuctionStatus: {approved, conditionally_approved,
-   * disapproved,                           not_checked} attribute: {a numeric
-   * attribute from the list of attributes} disapprovalReason: {a reason from
-   * DisapprovalReason}
-   *
-   * Example: 'accountId=12345 AND (dealsStatus:disapproved AND
-   * disapprovalReason:unacceptable_content) OR attribute:47'
    * @return Google_Service_AdExchangeBuyerII_ListCreativesResponse
    */
   public function listAccountsCreatives($accountId, $optParams = array())

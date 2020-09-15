@@ -26,19 +26,15 @@
 class Google_Service_Classroom_Resource_UserProfiles extends Google_Service_Resource
 {
   /**
-   * Returns a user profile.
-   *
-   * This method returns the following error codes:
-   *
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to access this
+   * Returns a user profile. This method returns the following error codes: *
+   * `PERMISSION_DENIED` if the requesting user is not permitted to access this
    * user profile, if no profile exists with the requested ID, or for access
    * errors. (userProfiles.get)
    *
    * @param string $userId Identifier of the profile to return. The identifier can
-   * be one of the following:
-   *
-   * * the numeric identifier for the user * the email address of the user * the
-   * string literal `"me"`, indicating the requesting user
+   * be one of the following: * the numeric identifier for the user * the email
+   * address of the user * the string literal `"me"`, indicating the requesting
+   * user
    * @param array $optParams Optional parameters.
    * @return Google_Service_Classroom_UserProfile
    */

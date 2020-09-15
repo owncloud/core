@@ -49,12 +49,12 @@ class Google_Service_PostmasterTools_Resource_Domains extends Google_Service_Res
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. Server may return fewer domains
+   * than requested. If unspecified, server will pick an appropriate default.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any. This is the value of
    * ListDomainsResponse.next_page_token returned from the previous call to
    * `ListDomains` method.
-   * @opt_param int pageSize Requested page size. Server may return fewer domains
-   * than requested. If unspecified, server will pick an appropriate default.
    * @return Google_Service_PostmasterTools_ListDomainsResponse
    */
   public function listDomains($optParams = array())

@@ -29,7 +29,12 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * DeleteSeries deletes all instances within the given study and series. Delete
    * requests are equivalent to the GET requests specified in the Retrieve
    * transaction. The method returns an Operation which will be marked successful
-   * when the deletion is complete. (series.delete)
+   * when the deletion is complete. Warning: Inserting instances into a series
+   * while a delete operation is running for that series could result in the new
+   * instances not appearing in search results until the deletion operation
+   * finishes. For samples that show how to call DeleteSeries, see [Deleting a
+   * study, series, or instance](https://cloud.google.com/healthcare/docs/how-
+   * tos/dicomweb#deleting_a_study_series_or_instance). (series.delete)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -49,7 +54,13 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
    * RetrieveSeriesMetadata returns instance associated with the given study and
    * series, presented as metadata with the bulk data removed. See
    * [RetrieveTransaction] (http://dicom.nema.org/medical/dicom/current/output/htm
-   * l/part18.html#sect_10.4). (series.retrieveMetadata)
+   * l/part18.html#sect_10.4). For details on the implementation of
+   * RetrieveSeriesMetadata, see [Metadata
+   * resources](https://cloud.google.com/healthcare/docs/dicom#metadata_resources)
+   * in the Cloud Healthcare API conformance statement. For samples that show how
+   * to call RetrieveSeriesMetadata, see [Retrieving
+   * metadata](https://cloud.google.com/healthcare/docs/how-
+   * tos/dicomweb#retrieving_metadata). (series.retrieveMetadata)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -68,7 +79,12 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * RetrieveSeries returns all instances within the given study and series. See
    * [RetrieveTransaction] (http://dicom.nema.org/medical/dicom/current/output/htm
-   * l/part18.html#sect_10.4). (series.retrieveSeries)
+   * l/part18.html#sect_10.4). For details on the implementation of
+   * RetrieveSeries, see [DICOM study/series/instances](https://cloud.google.com/h
+   * ealthcare/docs/dicom#dicom_studyseriesinstances) in the Cloud Healthcare API
+   * conformance statement. For samples that show how to call RetrieveSeries, see
+   * [Retrieving DICOM data](https://cloud.google.com/healthcare/docs/how-
+   * tos/dicomweb#retrieving_dicom_data). (series.retrieveSeries)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
@@ -87,7 +103,13 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsDicomStor
   /**
    * SearchForInstances returns a list of matching instances. See [Search
    * Transaction] (http://dicom.nema.org/medical/dicom/current/output/html/part18.
-   * html#sect_10.6). (series.searchForInstances)
+   * html#sect_10.6). For details on the implementation of SearchForInstances, see
+   * [Search transaction](https://cloud.google.com/healthcare/docs/dicom#search_tr
+   * ansaction) in the Cloud Healthcare API conformance statement. For samples
+   * that show how to call SearchForInstances, see [Searching for studies, series,
+   * instances, and frames](https://cloud.google.com/healthcare/docs/how-
+   * tos/dicomweb#searching_for_studies_series_instances_and_frames).
+   * (series.searchForInstances)
    *
    * @param string $parent The name of the DICOM store that is being accessed. For
    * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}

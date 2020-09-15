@@ -50,13 +50,12 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
    * @param array $optParams Optional parameters.
    *
    * @opt_param string domainName Required. The fully qualified domain name. e.g.
-   * mydomain.myorganization.com, with the following restrictions:
-   *
-   * Must contain only lowercase letters, numbers, periods and hyphens. Must start
-   * with a letter. Must contain between 2-64 characters. Must end with a number
-   * or a letter. Must not start with period. First segement length (mydomain form
-   * example above) shouldn't exceed    15 chars. The last segment cannot be fully
-   * numeric. Must be unique within the customer project.
+   * mydomain.myorganization.com, with the following restrictions: * Must contain
+   * only lowercase letters, numbers, periods and hyphens. * Must start with a
+   * letter. * Must contain between 2-64 characters. * Must end with a number or a
+   * letter. * Must not start with period. * First segement length (mydomain form
+   * example above) shouldn't exceed 15 chars. * The last segment cannot be fully
+   * numeric. * Must be unique within the customer project.
    * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Operation
    */
   public function create($parent, Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Domain $postBody, $optParams = array())
@@ -119,17 +118,12 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Policy
    */
@@ -147,15 +141,15 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
    * using the form: `projects/{project_id}/locations/global`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. A filter specifying constraints of a list
-   * operation. For example, `Domain.fqdn="mydomain.myorginization"`.
-   * @opt_param string pageToken Optional. The `next_page_token` value returned
-   * from a previous ListDomainsRequest request, if any.
    * @opt_param int pageSize Optional. The maximum number of items to return. If
    * not specified, a default value of 1000 will be used. Regardless of the
    * page_size value, the response may include a partial list. Callers should rely
    * on a response's next_page_token to determine if there are additional results
    * to list.
+   * @opt_param string pageToken Optional. The `next_page_token` value returned
+   * from a previous ListDomainsRequest request, if any.
+   * @opt_param string filter Optional. A filter specifying constraints of a list
+   * operation. For example, `Domain.fqdn="mydomain.myorginization"`.
    * @opt_param string orderBy Optional. Specifies the ordering of results. See
    * [Sorting
    * order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
@@ -178,7 +172,7 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
    *
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. The elements of the repeated paths field
-   * may only include fields from Domain: `labels` `locations`
+   * may only include fields from Domain: * `labels` * `locations` *
    * `authorized_networks`
    * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Operation
    */
@@ -221,10 +215,8 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy.
-   *
-   * Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
-   * (domains.setIamPolicy)
+   * existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and
+   * `PERMISSION_DENIED` errors. (domains.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -242,11 +234,9 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
   /**
    * Returns permissions that a caller has on the specified resource. If the
    * resource does not exist, this will return an empty set of permissions, not a
-   * `NOT_FOUND` error.
-   *
-   * Note: This operation is designed to be used for building permission-aware UIs
-   * and command-line tools, not for authorization checking. This operation may
-   * "fail open" without warning. (domains.testIamPermissions)
+   * `NOT_FOUND` error. Note: This operation is designed to be used for building
+   * permission-aware UIs and command-line tools, not for authorization checking.
+   * This operation may "fail open" without warning. (domains.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value

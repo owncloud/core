@@ -18,6 +18,7 @@
 class Google_Service_AccessApproval_DismissDecision extends Google_Model
 {
   public $dismissTime;
+  public $implicit;
 
   public function setDismissTime($dismissTime)
   {
@@ -26,5 +27,13 @@ class Google_Service_AccessApproval_DismissDecision extends Google_Model
   public function getDismissTime()
   {
     return $this->dismissTime;
+  }
+  public function setImplicit($implicit)
+  {
+    $this->implicit = $implicit;
+  }
+  public function getImplicit()
+  {
+    return $this->implicit;
   }
 }

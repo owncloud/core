@@ -62,10 +62,10 @@ class Google_Service_Blogger_Resource_Blogs extends Google_Service_Resource
    * @param string $userId
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool fetchUserInfo
-   * @opt_param string role
-   * @opt_param string view
    * @opt_param string status Default value of status is LIVE.
+   * @opt_param string view
+   * @opt_param string role
+   * @opt_param bool fetchUserInfo
    * @return Google_Service_Blogger_BlogList
    */
   public function listByUser($userId, $optParams = array())

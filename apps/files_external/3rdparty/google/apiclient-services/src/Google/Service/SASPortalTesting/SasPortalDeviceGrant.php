@@ -22,6 +22,7 @@ class Google_Service_SASPortalTesting_SasPortalDeviceGrant extends Google_Collec
   public $expireTime;
   protected $frequencyRangeType = 'Google_Service_SASPortalTesting_SasPortalFrequencyRange';
   protected $frequencyRangeDataType = '';
+  public $grantId;
   public $maxEirp;
   protected $moveListType = 'Google_Service_SASPortalTesting_SasPortalDpaMoveList';
   protected $moveListDataType = 'array';
@@ -57,6 +58,14 @@ class Google_Service_SASPortalTesting_SasPortalDeviceGrant extends Google_Collec
   public function getFrequencyRange()
   {
     return $this->frequencyRange;
+  }
+  public function setGrantId($grantId)
+  {
+    $this->grantId = $grantId;
+  }
+  public function getGrantId()
+  {
+    return $this->grantId;
   }
   public function setMaxEirp($maxEirp)
   {

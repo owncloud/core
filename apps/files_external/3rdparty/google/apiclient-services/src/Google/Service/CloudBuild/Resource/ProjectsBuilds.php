@@ -41,15 +41,17 @@ class Google_Service_CloudBuild_Resource_ProjectsBuilds extends Google_Service_R
     return $this->call('cancel', array($params), "Google_Service_CloudBuild_Build");
   }
   /**
-   * Starts a build with the specified configuration.
-   *
-   * This method returns a long-running `Operation`, which includes the build ID.
-   * Pass the build ID to `GetBuild` to determine the build status (such as
-   * `SUCCESS` or `FAILURE`). (builds.create)
+   * Starts a build with the specified configuration. This method returns a long-
+   * running `Operation`, which includes the build ID. Pass the build ID to
+   * `GetBuild` to determine the build status (such as `SUCCESS` or `FAILURE`).
+   * (builds.create)
    *
    * @param string $projectId Required. ID of the project.
    * @param Google_Service_CloudBuild_Build $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string parent The parent resource where this build will be
+   * created. Format: `projects/{project}/locations/{location}`
    * @return Google_Service_CloudBuild_Operation
    */
   public function create($projectId, Google_Service_CloudBuild_Build $postBody, $optParams = array())
@@ -59,14 +61,16 @@ class Google_Service_CloudBuild_Resource_ProjectsBuilds extends Google_Service_R
     return $this->call('create', array($params), "Google_Service_CloudBuild_Operation");
   }
   /**
-   * Returns information about a previously requested build.
-   *
-   * The `Build` that is returned includes its status (such as `SUCCESS`,
-   * `FAILURE`, or `WORKING`), and timing information. (builds.get)
+   * Returns information about a previously requested build. The `Build` that is
+   * returned includes its status (such as `SUCCESS`, `FAILURE`, or `WORKING`),
+   * and timing information. (builds.get)
    *
    * @param string $projectId Required. ID of the project.
    * @param string $id Required. ID of the build.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string name The name of the `Build` to retrieve. Format:
+   * `projects/{project}/locations/{location}/builds/{build}`
    * @return Google_Service_CloudBuild_Build
    */
   public function get($projectId, $id, $optParams = array())
@@ -76,18 +80,19 @@ class Google_Service_CloudBuild_Resource_ProjectsBuilds extends Google_Service_R
     return $this->call('get', array($params), "Google_Service_CloudBuild_Build");
   }
   /**
-   * Lists previously requested builds.
-   *
-   * Previously requested builds may still be in-progress, or may have finished
-   * successfully or unsuccessfully. (builds.listProjectsBuilds)
+   * Lists previously requested builds. Previously requested builds may still be
+   * in-progress, or may have finished successfully or unsuccessfully.
+   * (builds.listProjectsBuilds)
    *
    * @param string $projectId Required. ID of the project.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string parent The parent of the collection of `Builds`. Format:
+   * `projects/{project}/locations/location`
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
-   * @opt_param string filter The raw filter text to constrain the results.
    * @opt_param int pageSize Number of results to return in the list.
+   * @opt_param string filter The raw filter text to constrain the results.
    * @return Google_Service_CloudBuild_ListBuildsResponse
    */
   public function listProjectsBuilds($projectId, $optParams = array())
@@ -97,32 +102,22 @@ class Google_Service_CloudBuild_Resource_ProjectsBuilds extends Google_Service_R
     return $this->call('list', array($params), "Google_Service_CloudBuild_ListBuildsResponse");
   }
   /**
-   * Creates a new build based on the specified build.
-   *
-   * This method creates a new build using the original build request, which may
-   * or may not result in an identical build.
-   *
-   * For triggered builds:
-   *
-   * * Triggered builds resolve to a precise revision; therefore a retry of a
-   * triggered build will result in a build that uses the same revision.
-   *
-   * For non-triggered builds that specify `RepoSource`:
-   *
-   * * If the original build built from the tip of a branch, the retried build
-   * will build from the tip of that branch, which may not be the same revision as
-   * the original build. * If the original build specified a commit sha or
-   * revision ID, the retried build will use the identical source.
-   *
-   * For builds that specify `StorageSource`:
-   *
-   * * If the original build pulled source from Google Cloud Storage without
-   * specifying the generation of the object, the new build will use the current
-   * object, which may be different from the original build source. * If the
-   * original build pulled source from Cloud Storage and specified the generation
-   * of the object, the new build will attempt to use the same object, which may
-   * or may not be available depending on the bucket's lifecycle management
-   * settings. (builds.retry)
+   * Creates a new build based on the specified build. This method creates a new
+   * build using the original build request, which may or may not result in an
+   * identical build. For triggered builds: * Triggered builds resolve to a
+   * precise revision; therefore a retry of a triggered build will result in a
+   * build that uses the same revision. For non-triggered builds that specify
+   * `RepoSource`: * If the original build built from the tip of a branch, the
+   * retried build will build from the tip of that branch, which may not be the
+   * same revision as the original build. * If the original build specified a
+   * commit sha or revision ID, the retried build will use the identical source.
+   * For builds that specify `StorageSource`: * If the original build pulled
+   * source from Google Cloud Storage without specifying the generation of the
+   * object, the new build will use the current object, which may be different
+   * from the original build source. * If the original build pulled source from
+   * Cloud Storage and specified the generation of the object, the new build will
+   * attempt to use the same object, which may or may not be available depending
+   * on the bucket's lifecycle management settings. (builds.retry)
    *
    * @param string $projectId Required. ID of the project.
    * @param string $id Required. Build ID of the original build.

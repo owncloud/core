@@ -27,11 +27,9 @@ class Google_Service_PlayableLocations_Resource_V3 extends Google_Service_Resour
 {
   /**
    * Logs new events when playable locations are displayed, and when they are
-   * interacted with.
-   *
-   * Impressions are not partially saved; either all impressions are saved and
-   * this request succeeds, or no impressions are saved, and this request fails.
-   * (v3.logImpressions)
+   * interacted with. Impressions are not partially saved; either all impressions
+   * are saved and this request succeeds, or no impressions are saved, and this
+   * request fails. (v3.logImpressions)
    *
    * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3LogImpressionsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -44,11 +42,9 @@ class Google_Service_PlayableLocations_Resource_V3 extends Google_Service_Resour
     return $this->call('logImpressions', array($params), "Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3LogImpressionsResponse");
   }
   /**
-   * Logs bad playable location reports submitted by players.
-   *
-   * Reports are not partially saved; either all reports are saved and this
-   * request succeeds, or no reports are saved, and this request fails.
-   * (v3.logPlayerReports)
+   * Logs bad playable location reports submitted by players. Reports are not
+   * partially saved; either all reports are saved and this request succeeds, or
+   * no reports are saved, and this request fails. (v3.logPlayerReports)
    *
    * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3LogPlayerReportsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -62,11 +58,9 @@ class Google_Service_PlayableLocations_Resource_V3 extends Google_Service_Resour
   }
   /**
    * Returns a set of playable locations that lie within a specified area, that
-   * satisfy optional filter criteria.
-   *
-   * Note: Identical `SamplePlayableLocations` requests can return different
-   * results as the state of the world changes over time.
-   * (v3.samplePlayableLocations)
+   * satisfy optional filter criteria. Note: Identical `SamplePlayableLocations`
+   * requests can return different results as the state of the world changes over
+   * time. (v3.samplePlayableLocations)
    *
    * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocationsRequest $postBody
    * @param array $optParams Optional parameters.

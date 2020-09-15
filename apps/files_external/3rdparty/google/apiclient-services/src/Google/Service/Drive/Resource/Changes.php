@@ -62,6 +62,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * be no further change entries for this file.
    * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
    * drive items should be included in results.
+   * @opt_param string includePermissionsForView Specifies which additional view's
+   * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool includeRemoved Whether to include changes indicating that
    * items have been removed from the list of changes, for example by deletion or
    * loss of access.
@@ -104,6 +106,8 @@ class Google_Service_Drive_Resource_Changes extends Google_Service_Resource
    * be no further change entries for this file.
    * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
    * drive items should be included in results.
+   * @opt_param string includePermissionsForView Specifies which additional view's
+   * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool includeRemoved Whether to include changes indicating that
    * items have been removed from the list of changes, for example by deletion or
    * loss of access.

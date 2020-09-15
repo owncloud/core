@@ -83,11 +83,11 @@ class Google_Service_Appengine_Resource_AppsAuthorizedCertificates extends Googl
    * resource. Example: apps/myapp.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Continuation token for fetching the next page of
-   * results.
    * @opt_param int pageSize Maximum results to return per page.
    * @opt_param string view Controls the set of fields returned in the LIST
    * response.
+   * @opt_param string pageToken Continuation token for fetching the next page of
+   * results.
    * @return Google_Service_Appengine_ListAuthorizedCertificatesResponse
    */
   public function listAppsAuthorizedCertificates($appsId, $optParams = array())

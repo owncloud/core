@@ -78,10 +78,10 @@ class Google_Service_Fitness extends Google_Service
   /** See and add info about your oxygen saturation in Google Fit. I consent to Google sharing my oxygen saturation information with this app.. */
   const FITNESS_OXYGEN_SATURATION_WRITE =
       "https://www.googleapis.com/auth/fitness.oxygen_saturation.write";
-  /** See info about your reproductive health in Google Fit. I consent to Google sharing my reporductive health information with this app.. */
+  /** See info about your reproductive health in Google Fit. I consent to Google sharing my reproductive health information with this app.. */
   const FITNESS_REPRODUCTIVE_HEALTH_READ =
       "https://www.googleapis.com/auth/fitness.reproductive_health.read";
-  /** See and add info about your reproductive health in Google Fit. I consent to Google sharing my reporductive health information with this app.. */
+  /** See and add info about your reproductive health in Google Fit. I consent to Google sharing my reproductive health information with this app.. */
   const FITNESS_REPRODUCTIVE_HEALTH_WRITE =
       "https://www.googleapis.com/auth/fitness.reproductive_health.write";
 
@@ -100,9 +100,9 @@ class Google_Service_Fitness extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
-    $this->servicePath = '';
-    $this->batchPath = 'batch/fitness/v1';
+    $this->rootUrl = $rootUrl ?: 'https://fitness.googleapis.com/';
+    $this->servicePath = 'fitness/v1/users/';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'fitness';
 
@@ -113,7 +113,7 @@ class Google_Service_Fitness extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources',
+              'path' => '{userId}/dataSources',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'userId' => array(
@@ -123,7 +123,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}',
+              'path' => '{userId}/dataSources/{dataSourceId}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'userId' => array(
@@ -138,7 +138,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}',
+              'path' => '{userId}/dataSources/{dataSourceId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userId' => array(
@@ -153,7 +153,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources',
+              'path' => '{userId}/dataSources',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userId' => array(
@@ -168,7 +168,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}',
+              'path' => '{userId}/dataSources/{dataSourceId}',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'userId' => array(
@@ -193,7 +193,7 @@ class Google_Service_Fitness extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}/dataPointChanges',
+              'path' => '{userId}/dataSources/{dataSourceId}/dataPointChanges',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userId' => array(
@@ -226,7 +226,7 @@ class Google_Service_Fitness extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
+              'path' => '{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'userId' => array(
@@ -254,7 +254,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
+              'path' => '{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userId' => array(
@@ -282,7 +282,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'fitness/v1/users/{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
+              'path' => '{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'userId' => array(
@@ -316,7 +316,7 @@ class Google_Service_Fitness extends Google_Service
         array(
           'methods' => array(
             'aggregate' => array(
-              'path' => 'fitness/v1/users/{userId}/dataset:aggregate',
+              'path' => '{userId}/dataset:aggregate',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'userId' => array(
@@ -336,7 +336,7 @@ class Google_Service_Fitness extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'fitness/v1/users/{userId}/sessions/{sessionId}',
+              'path' => '{userId}/sessions/{sessionId}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'userId' => array(
@@ -355,7 +355,7 @@ class Google_Service_Fitness extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'fitness/v1/users/{userId}/sessions',
+              'path' => '{userId}/sessions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'userId' => array(
@@ -363,12 +363,7 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'activityType' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                  'repeated' => true,
-                ),
-                'pageToken' => array(
+                'startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -380,13 +375,18 @@ class Google_Service_Fitness extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'startTime' => array(
+                'activityType' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                  'repeated' => true,
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
               ),
             ),'update' => array(
-              'path' => 'fitness/v1/users/{userId}/sessions/{sessionId}',
+              'path' => '{userId}/sessions/{sessionId}',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'userId' => array(

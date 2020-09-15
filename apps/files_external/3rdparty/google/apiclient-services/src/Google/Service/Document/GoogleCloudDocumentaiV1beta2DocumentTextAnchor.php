@@ -18,9 +18,18 @@
 class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextAnchor extends Google_Collection
 {
   protected $collection_key = 'textSegments';
+  public $content;
   protected $textSegmentsType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextAnchorTextSegment';
   protected $textSegmentsDataType = 'array';
 
+  public function setContent($content)
+  {
+    $this->content = $content;
+  }
+  public function getContent()
+  {
+    return $this->content;
+  }
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextAnchorTextSegment
    */

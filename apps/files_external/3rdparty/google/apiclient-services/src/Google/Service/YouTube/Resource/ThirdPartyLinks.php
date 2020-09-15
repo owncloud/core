@@ -44,7 +44,7 @@ class Google_Service_YouTube_Resource_ThirdPartyLinks extends Google_Service_Res
   /**
    * Inserts a new resource into this collection. (thirdPartyLinks.insert)
    *
-   * @param string|array $part The part parameter specifies the thirdPartyLink
+   * @param string|array $part The *part* parameter specifies the thirdPartyLink
    * resource parts that the API request and response will include. Supported
    * values are linkingToken, status, and snippet.
    * @param Google_Service_YouTube_ThirdPartyLink $postBody
@@ -61,14 +61,14 @@ class Google_Service_YouTube_Resource_ThirdPartyLinks extends Google_Service_Res
    * Retrieves a list of resources, possibly filtered.
    * (thirdPartyLinks.listThirdPartyLinks)
    *
-   * @param string|array $part The part parameter specifies the thirdPartyLink
+   * @param string|array $part The *part* parameter specifies the thirdPartyLink
    * resource parts that the API response will include. Supported values are
    * linkingToken, status, and snippet.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string type Get a third party link of the given type.
    * @opt_param string linkingToken Get a third party link with the given linking
    * token.
-   * @opt_param string type Get a third party link of the given type.
    * @return Google_Service_YouTube_ThirdPartyLink
    */
   public function listThirdPartyLinks($part, $optParams = array())
@@ -80,7 +80,7 @@ class Google_Service_YouTube_Resource_ThirdPartyLinks extends Google_Service_Res
   /**
    * Updates an existing resource. (thirdPartyLinks.update)
    *
-   * @param string|array $part The part parameter specifies the thirdPartyLink
+   * @param string|array $part The *part* parameter specifies the thirdPartyLink
    * resource parts that the API request and response will include. Supported
    * values are linkingToken, status, and snippet.
    * @param Google_Service_YouTube_ThirdPartyLink $postBody

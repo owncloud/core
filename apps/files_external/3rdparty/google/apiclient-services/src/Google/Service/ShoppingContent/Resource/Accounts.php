@@ -97,6 +97,9 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    * account and `accountId` must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string view Controls which fields will be populated. Acceptable
+   * values are: "merchant" and "css". The default value is "merchant".
    * @return Google_Service_ShoppingContent_Account
    */
   public function get($merchantId, $accountId, $optParams = array())
@@ -146,9 +149,13 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    * multi-client account.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string label If view is set to "css", only return accounts that
+   * are assigned label with given ID.
    * @opt_param string maxResults The maximum number of accounts to return in the
    * response, used for paging.
    * @opt_param string pageToken The token returned by the previous request.
+   * @opt_param string view Controls which fields will be populated. Acceptable
+   * values are: "merchant" and "css". The default value is "merchant".
    * @return Google_Service_ShoppingContent_AccountsListResponse
    */
   public function listAccounts($merchantId, $optParams = array())
@@ -195,5 +202,21 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
     $params = array('merchantId' => $merchantId, 'accountId' => $accountId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('update', array($params), "Google_Service_ShoppingContent_Account");
+  }
+  /**
+   * Updates labels that are assigned to the Merchant Center account by CSS user.
+   * (accounts.updatelabels)
+   *
+   * @param string $merchantId The ID of the managing account.
+   * @param string $accountId The ID of the account whose labels are updated.
+   * @param Google_Service_ShoppingContent_AccountsUpdateLabelsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ShoppingContent_AccountsUpdateLabelsResponse
+   */
+  public function updatelabels($merchantId, $accountId, Google_Service_ShoppingContent_AccountsUpdateLabelsRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'accountId' => $accountId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updatelabels', array($params), "Google_Service_ShoppingContent_AccountsUpdateLabelsResponse");
   }
 }

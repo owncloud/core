@@ -30,21 +30,21 @@ class Google_Service_FactCheckTools_Resource_Claims extends Google_Service_Resou
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxAgeDays The maximum age of the returned search results, in
-   * days. Age is determined by either claim date or review date, whichever is
-   * newer.
-   * @opt_param int offset An integer that specifies the current offset (that is,
-   * starting result location) in search results. This field is only considered if
-   * `page_token` is unset. For example, 0 means to return results starting from
-   * the first matching result, and 10 means to return from the 11th result.
    * @opt_param string pageToken The pagination token. You may provide the
    * `next_page_token` returned from a previous List request, if any, in order to
    * get the next page. All other fields must have the same values as in the
    * previous request.
-   * @opt_param string reviewPublisherSiteFilter The review publisher site to
-   * filter results by, e.g. nytimes.com.
    * @opt_param int pageSize The pagination size. We will return up to that many
    * results. Defaults to 10 if not set.
+   * @opt_param int offset An integer that specifies the current offset (that is,
+   * starting result location) in search results. This field is only considered if
+   * `page_token` is unset. For example, 0 means to return results starting from
+   * the first matching result, and 10 means to return from the 11th result.
+   * @opt_param int maxAgeDays The maximum age of the returned search results, in
+   * days. Age is determined by either claim date or review date, whichever is
+   * newer.
+   * @opt_param string reviewPublisherSiteFilter The review publisher site to
+   * filter results by, e.g. nytimes.com.
    * @opt_param string query Textual query string. Required unless
    * `review_publisher_site_filter` is specified.
    * @opt_param string languageCode The BCP-47 language code, such as "en-US" or

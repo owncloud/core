@@ -21,8 +21,6 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage ex
   protected $conversationSuccessDataType = '';
   protected $endInteractionType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageEndInteraction';
   protected $endInteractionDataType = '';
-  protected $humanAgentHandoffType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff';
-  protected $humanAgentHandoffDataType = '';
   protected $liveAgentHandoffType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageLiveAgentHandoff';
   protected $liveAgentHandoffDataType = '';
   protected $mixedAudioType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudio';
@@ -62,20 +60,6 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage ex
   public function getEndInteraction()
   {
     return $this->endInteraction;
-  }
-  /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff
-   */
-  public function setHumanAgentHandoff(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff $humanAgentHandoff)
-  {
-    $this->humanAgentHandoff = $humanAgentHandoff;
-  }
-  /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageHumanAgentHandoff
-   */
-  public function getHumanAgentHandoff()
-  {
-    return $this->humanAgentHandoff;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageLiveAgentHandoff

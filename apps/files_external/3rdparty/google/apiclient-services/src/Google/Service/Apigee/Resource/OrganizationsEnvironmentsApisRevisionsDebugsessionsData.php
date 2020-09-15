@@ -29,8 +29,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisionsDebug
    * Gets the debug data from a transaction. (data.get)
    *
    * @param string $name Required. The name of the debug session transaction. Must
-   * be of the form:  `organizations/{organization}/environments/{environment}/api
-   * s/{api}/revisions/{revision}/debugsessions/{session}/data/{transaction}`.
+   * be of the form: `organizations/{organization}/environments/{environment}/apis
+   * /{api}/revisions/{revision}/debugsessions/{session}/data/{transaction}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1DebugSessionTransaction
    */

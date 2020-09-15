@@ -19,11 +19,13 @@
  * Service definition for DataTransfer (datatransfer_v1).
  *
  * <p>
- * Transfers user data from one user to another.</p>
+ * Admin SDK lets administrators of enterprise domains to view and manage
+ * resources like user, groups etc. It also provides audit and usage reports of
+ * domain.</p>
  *
  * <p>
  * For more information about this service, see the API
- * <a href="https://developers.google.com/admin-sdk/data-transfer/" target="_blank">Documentation</a>
+ * <a href="http://developers.google.com/admin-sdk/" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -50,7 +52,7 @@ class Google_Service_DataTransfer extends Google_Service
   {
     parent::__construct($client);
     $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
-    $this->servicePath = 'admin/datatransfer/v1/';
+    $this->servicePath = '';
     $this->batchPath = 'batch/admin/datatransfer_v1';
     $this->version = 'datatransfer_v1';
     $this->serviceName = 'admin';
@@ -62,7 +64,7 @@ class Google_Service_DataTransfer extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'applications/{applicationId}',
+              'path' => 'admin/datatransfer/v1/applications/{applicationId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'applicationId' => array(
@@ -72,10 +74,10 @@ class Google_Service_DataTransfer extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'applications',
+              'path' => 'admin/datatransfer/v1/applications',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'customerId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -83,7 +85,7 @@ class Google_Service_DataTransfer extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
+                'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -99,7 +101,7 @@ class Google_Service_DataTransfer extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'transfers/{dataTransferId}',
+              'path' => 'admin/datatransfer/v1/transfers/{dataTransferId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'dataTransferId' => array(
@@ -109,13 +111,21 @@ class Google_Service_DataTransfer extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'transfers',
+              'path' => 'admin/datatransfer/v1/transfers',
               'httpMethod' => 'POST',
               'parameters' => array(),
             ),'list' => array(
-              'path' => 'transfers',
+              'path' => 'admin/datatransfer/v1/transfers',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'newOwnerUserId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'status' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -124,19 +134,11 @@ class Google_Service_DataTransfer extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'newOwnerUserId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'oldOwnerUserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'status' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

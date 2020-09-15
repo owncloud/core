@@ -17,10 +17,55 @@
 
 class Google_Service_DisplayVideo_AuditAdvertiserResponse extends Google_Model
 {
+  public $adGroupCriteriaCount;
+  public $campaignCriteriaCount;
+  public $channelsCount;
+  public $negativeKeywordListsCount;
+  public $negativelyTargetedChannelsCount;
   public $usedCampaignsCount;
   public $usedInsertionOrdersCount;
   public $usedLineItemsCount;
 
+  public function setAdGroupCriteriaCount($adGroupCriteriaCount)
+  {
+    $this->adGroupCriteriaCount = $adGroupCriteriaCount;
+  }
+  public function getAdGroupCriteriaCount()
+  {
+    return $this->adGroupCriteriaCount;
+  }
+  public function setCampaignCriteriaCount($campaignCriteriaCount)
+  {
+    $this->campaignCriteriaCount = $campaignCriteriaCount;
+  }
+  public function getCampaignCriteriaCount()
+  {
+    return $this->campaignCriteriaCount;
+  }
+  public function setChannelsCount($channelsCount)
+  {
+    $this->channelsCount = $channelsCount;
+  }
+  public function getChannelsCount()
+  {
+    return $this->channelsCount;
+  }
+  public function setNegativeKeywordListsCount($negativeKeywordListsCount)
+  {
+    $this->negativeKeywordListsCount = $negativeKeywordListsCount;
+  }
+  public function getNegativeKeywordListsCount()
+  {
+    return $this->negativeKeywordListsCount;
+  }
+  public function setNegativelyTargetedChannelsCount($negativelyTargetedChannelsCount)
+  {
+    $this->negativelyTargetedChannelsCount = $negativelyTargetedChannelsCount;
+  }
+  public function getNegativelyTargetedChannelsCount()
+  {
+    return $this->negativelyTargetedChannelsCount;
+  }
   public function setUsedCampaignsCount($usedCampaignsCount)
   {
     $this->usedCampaignsCount = $usedCampaignsCount;

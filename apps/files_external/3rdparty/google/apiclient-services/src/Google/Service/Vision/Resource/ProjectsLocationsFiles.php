@@ -27,23 +27,17 @@ class Google_Service_Vision_Resource_ProjectsLocationsFiles extends Google_Servi
 {
   /**
    * Service that performs image detection and annotation for a batch of files.
-   * Now only "application/pdf", "image/tiff" and "image/gif" are supported.
-   *
-   * This service will extract at most 5 (customers can specify which 5 in
+   * Now only "application/pdf", "image/tiff" and "image/gif" are supported. This
+   * service will extract at most 5 (customers can specify which 5 in
    * AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each file
    * provided and perform detection and annotation for each image extracted.
    * (files.annotate)
    *
    * @param string $parent Optional. Target project and location to make a call.
-   *
-   * Format: `projects/{project-id}/locations/{location-id}`.
-   *
-   * If no parent is specified, a region will be chosen automatically.
-   *
-   * Supported location-ids:     `us`: USA country only,     `asia`: East asia
-   * areas, like Japan, Taiwan,     `eu`: The European Union.
-   *
-   * Example: `projects/project-A/locations/eu`.
+   * Format: `projects/{project-id}/locations/{location-id}`. If no parent is
+   * specified, a region will be chosen automatically. Supported location-ids:
+   * `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`:
+   * The European Union. Example: `projects/project-A/locations/eu`.
    * @param Google_Service_Vision_BatchAnnotateFilesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_BatchAnnotateFilesResponse
@@ -63,15 +57,10 @@ class Google_Service_Vision_Resource_ProjectsLocationsFiles extends Google_Servi
    * `AsyncBatchAnnotateFilesResponse` (results). (files.asyncBatchAnnotate)
    *
    * @param string $parent Optional. Target project and location to make a call.
-   *
-   * Format: `projects/{project-id}/locations/{location-id}`.
-   *
-   * If no parent is specified, a region will be chosen automatically.
-   *
-   * Supported location-ids:     `us`: USA country only,     `asia`: East asia
-   * areas, like Japan, Taiwan,     `eu`: The European Union.
-   *
-   * Example: `projects/project-A/locations/eu`.
+   * Format: `projects/{project-id}/locations/{location-id}`. If no parent is
+   * specified, a region will be chosen automatically. Supported location-ids:
+   * `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`:
+   * The European Union. Example: `projects/project-A/locations/eu`.
    * @param Google_Service_Vision_AsyncBatchAnnotateFilesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_Operation

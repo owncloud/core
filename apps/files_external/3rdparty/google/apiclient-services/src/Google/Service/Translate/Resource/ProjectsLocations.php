@@ -29,22 +29,16 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * Translates a large volume of text in asynchronous batch mode. This function
    * provides real-time output as the inputs are being processed. If caller
    * cancels a request, the partial results (for an input file, it's all or
-   * nothing) may still be available on the specified output location.
-   *
-   * This call returns immediately and you can use
-   * google.longrunning.Operation.name to poll the status of the call.
-   * (locations.batchTranslateText)
+   * nothing) may still be available on the specified output location. This call
+   * returns immediately and you can use google.longrunning.Operation.name to poll
+   * the status of the call. (locations.batchTranslateText)
    *
    * @param string $parent Required. Location to make a call. Must refer to a
-   * caller's project.
-   *
-   * Format: `projects/{project-number-or-id}/locations/{location-id}`.
-   *
-   * The `global` location is not supported for batch translation.
-   *
-   * Only AutoML Translation models or glossaries within the same region (have the
-   * same location-id) can be used, otherwise an INVALID_ARGUMENT (400) error is
-   * returned.
+   * caller's project. Format: `projects/{project-number-or-id}/locations
+   * /{location-id}`. The `global` location is not supported for batch
+   * translation. Only AutoML Translation models or glossaries within the same
+   * region (have the same location-id) can be used, otherwise an INVALID_ARGUMENT
+   * (400) error is returned.
    * @param Google_Service_Translate_BatchTranslateTextRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Translate_Operation
@@ -59,16 +53,12 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * Detects the language of text within a request. (locations.detectLanguage)
    *
    * @param string $parent Required. Project or location to make a call. Must
-   * refer to a caller's project.
-   *
-   * Format: `projects/{project-number-or-id}/locations/{location-id}` or
-   * `projects/{project-number-or-id}`.
-   *
-   * For global calls, use `projects/{project-number-or-id}/locations/global` or
-   * `projects/{project-number-or-id}`.
-   *
-   * Only models within the same region (has same location-id) can be used.
-   * Otherwise an INVALID_ARGUMENT (400) error is returned.
+   * refer to a caller's project. Format: `projects/{project-number-or-
+   * id}/locations/{location-id}` or `projects/{project-number-or-id}`. For global
+   * calls, use `projects/{project-number-or-id}/locations/global` or `projects
+   * /{project-number-or-id}`. Only models within the same region (has same
+   * location-id) can be used. Otherwise an INVALID_ARGUMENT (400) error is
+   * returned.
    * @param Google_Service_Translate_DetectLanguageRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Translate_DetectLanguageResponse
@@ -97,33 +87,22 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * (locations.getSupportedLanguages)
    *
    * @param string $parent Required. Project or location to make a call. Must
-   * refer to a caller's project.
-   *
-   * Format: `projects/{project-number-or-id}` or `projects/{project-number-or-
-   * id}/locations/{location-id}`.
-   *
-   * For global calls, use `projects/{project-number-or-id}/locations/global` or
-   * `projects/{project-number-or-id}`.
-   *
-   * Non-global location is required for AutoML models.
-   *
-   * Only models within the same region (have same location-id) can be used,
-   * otherwise an INVALID_ARGUMENT (400) error is returned.
+   * refer to a caller's project. Format: `projects/{project-number-or-id}` or
+   * `projects/{project-number-or-id}/locations/{location-id}`. For global calls,
+   * use `projects/{project-number-or-id}/locations/global` or `projects/{project-
+   * number-or-id}`. Non-global location is required for AutoML models. Only
+   * models within the same region (have same location-id) can be used, otherwise
+   * an INVALID_ARGUMENT (400) error is returned.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string model Optional. Get supported languages of this model.
-   *
-   * The format depends on model type:
-   *
-   * - AutoML Translation models:   `projects/{project-number-or-id}/locations
-   * /{location-id}/models/{model-id}`
-   *
-   * - General (built-in) models:   `projects/{project-number-or-id}/locations
-   * /{location-id}/models/general/nmt`,   `projects/{project-number-or-
-   * id}/locations/{location-id}/models/general/base`
-   *
-   * Returns languages supported by the specified model. If missing, we get
-   * supported languages of Google general base (PBMT) model.
+   * @opt_param string model Optional. Get supported languages of this model. The
+   * format depends on model type: - AutoML Translation models: `projects
+   * /{project-number-or-id}/locations/{location-id}/models/{model-id}` - General
+   * (built-in) models: `projects/{project-number-or-id}/locations/{location-
+   * id}/models/general/nmt`, `projects/{project-number-or-id}/locations
+   * /{location-id}/models/general/base` Returns languages supported by the
+   * specified model. If missing, we get supported languages of Google general
+   * base (PBMT) model.
    * @opt_param string displayLanguageCode Optional. The language to use to return
    * localized, human readable names of supported languages. If missing, then
    * display names are not returned in a response.
@@ -158,19 +137,13 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * Translates input text and returns translated text. (locations.translateText)
    *
    * @param string $parent Required. Project or location to make a call. Must
-   * refer to a caller's project.
-   *
-   * Format: `projects/{project-number-or-id}` or `projects/{project-number-or-
-   * id}/locations/{location-id}`.
-   *
-   * For global calls, use `projects/{project-number-or-id}/locations/global` or
-   * `projects/{project-number-or-id}`.
-   *
-   * Non-global location is required for requests using AutoML models or custom
-   * glossaries.
-   *
-   * Models and glossaries must be within the same region (have same location-id),
-   * otherwise an INVALID_ARGUMENT (400) error is returned.
+   * refer to a caller's project. Format: `projects/{project-number-or-id}` or
+   * `projects/{project-number-or-id}/locations/{location-id}`. For global calls,
+   * use `projects/{project-number-or-id}/locations/global` or `projects/{project-
+   * number-or-id}`. Non-global location is required for requests using AutoML
+   * models or custom glossaries. Models and glossaries must be within the same
+   * region (have same location-id), otherwise an INVALID_ARGUMENT (400) error is
+   * returned.
    * @param Google_Service_Translate_TranslateTextRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Translate_TranslateTextResponse

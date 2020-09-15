@@ -79,7 +79,7 @@ class Google_Service_Apigee_Resource_OrganizationsReports extends Google_Service
    * Return a list of Custom Reports (reports.listOrganizationsReports)
    *
    * @param string $parent Required. The parent organization name under which the
-   * API product will be listed   `organizations/{organization_id}/reports`
+   * API product will be listed `organizations/{organization_id}/reports`
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool expand Set to 'true' to get expanded details about each

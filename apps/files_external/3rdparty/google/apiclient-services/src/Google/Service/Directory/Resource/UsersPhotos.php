@@ -51,8 +51,7 @@ class Google_Service_Directory_Resource_UsersPhotos extends Google_Service_Resou
     return $this->call('get', array($params), "Google_Service_Directory_UserPhoto");
   }
   /**
-   * Add a photo for the user. This method supports patch semantics.
-   * (photos.patch)
+   * Patch Photo via Apiary Patch Orchestration (photos.patch)
    *
    * @param string $userKey Email or immutable ID of the user
    * @param Google_Service_Directory_UserPhoto $postBody

@@ -32,9 +32,7 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesAccessLevels ex
    * the first error encountered. (accessLevels.create)
    *
    * @param string $parent Required. Resource name for the access policy which
-   * owns this Access Level.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * owns this Access Level. Format: `accessPolicies/{policy_id}`
    * @param Google_Service_AccessContextManager_AccessLevel $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
@@ -50,9 +48,8 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesAccessLevels ex
    * RPC will have a successful status once the Access Level has been removed from
    * long-lasting storage. (accessLevels.delete)
    *
-   * @param string $name Required. Resource name for the Access Level.
-   *
-   * Format: `accessPolicies/{policy_id}/accessLevels/{access_level_id}`
+   * @param string $name Required. Resource name for the Access Level. Format:
+   * `accessPolicies/{policy_id}/accessLevels/{access_level_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
    */
@@ -65,9 +62,8 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesAccessLevels ex
   /**
    * Get an Access Level by resource name. (accessLevels.get)
    *
-   * @param string $name Required. Resource name for the Access Level.
-   *
-   * Format: `accessPolicies/{policy_id}/accessLevels/{access_level_id}`
+   * @param string $name Required. Resource name for the Access Level. Format:
+   * `accessPolicies/{policy_id}/accessLevels/{access_level_id}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string accessLevelFormat Whether to return `BasicLevels` in the
@@ -89,19 +85,17 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesAccessLevels ex
    * (accessLevels.listAccessPoliciesAccessLevels)
    *
    * @param string $parent Required. Resource name for the access policy to list
-   * Access Levels from.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * Access Levels from. Format: `accessPolicies/{policy_id}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Next page token for the next batch of Access
    * Level instances. Defaults to the first page of results.
-   * @opt_param int pageSize Number of Access Levels to include in the list.
-   * Default 100.
    * @opt_param string accessLevelFormat Whether to return `BasicLevels` in the
    * Cloud Common Expression language, as `CustomLevels`, rather than as
    * `BasicLevels`. Defaults to returning `AccessLevels` in the format they were
    * defined.
+   * @opt_param int pageSize Number of Access Levels to include in the list.
+   * Default 100.
    * @return Google_Service_AccessContextManager_ListAccessLevelsResponse
    */
   public function listAccessPoliciesAccessLevels($parent, $optParams = array())
@@ -138,15 +132,13 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesAccessLevels ex
    * provided. This is done atomically. The longrunning operation from this RPC
    * will have a successful status once all replacements have propagated to long-
    * lasting storage. Replacements containing errors will result in an error
-   * response for the first error encountered.  Replacement will be cancelled on
+   * response for the first error encountered. Replacement will be cancelled on
    * error, existing Access Levels will not be affected. Operation.response field
    * will contain ReplaceAccessLevelsResponse. Removing Access Levels contained in
    * existing Service Perimeters will result in error. (accessLevels.replaceAll)
    *
    * @param string $parent Required. Resource name for the access policy which
-   * owns these Access Levels.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * owns these Access Levels. Format: `accessPolicies/{policy_id}`
    * @param Google_Service_AccessContextManager_ReplaceAccessLevelsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation

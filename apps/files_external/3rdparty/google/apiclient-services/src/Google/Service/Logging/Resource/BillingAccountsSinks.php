@@ -133,6 +133,16 @@ class Google_Service_Logging_Resource_BillingAccountsSinks extends Google_Servic
    * @param Google_Service_Logging_LogSink $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string updateMask Optional. Field mask that specifies the fields
+   * in sink that need an update. A sink field will be overwritten if, and only
+   * if, it is in the update mask. name and output only fields cannot be
+   * updated.An empty updateMask is temporarily treated as using the following
+   * mask for backwards compatibility purposes: destination,filter,includeChildren
+   * At some point in the future, behavior will be removed and specifying an empty
+   * updateMask will be an error.For a detailed FieldMask definition, see
+   * https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
+   * updateMask=filter.
    * @opt_param bool uniqueWriterIdentity Optional. See sinks.create for a
    * description of this field. When updating a sink, the effect of this field on
    * the value of writer_identity in the updated sink depends on both the old and
@@ -141,16 +151,6 @@ class Google_Service_Logging_Resource_BillingAccountsSinks extends Google_Servic
    * the old value is false and the new value is true, then writer_identity is
    * changed to a unique service account. It is an error if the old value is true
    * and the new value is set to false or defaulted to false.
-   * @opt_param string updateMask Optional. Field mask that specifies the fields
-   * in sink that need an update. A sink field will be overwritten if, and only
-   * if, it is in the update mask. name and output only fields cannot be
-   * updated.An empty updateMask is temporarily treated as using the following
-   * mask for backwards compatibility purposes:
-   * destination,filter,includeChildren At some point in the future, behavior will
-   * be removed and specifying an empty updateMask will be an error.For a detailed
-   * FieldMask definition, see https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
-   * updateMask=filter.
    * @return Google_Service_Logging_LogSink
    */
   public function patch($sinkName, Google_Service_Logging_LogSink $postBody, $optParams = array())
@@ -179,10 +179,10 @@ class Google_Service_Logging_Resource_BillingAccountsSinks extends Google_Servic
    * in sink that need an update. A sink field will be overwritten if, and only
    * if, it is in the update mask. name and output only fields cannot be
    * updated.An empty updateMask is temporarily treated as using the following
-   * mask for backwards compatibility purposes:
-   * destination,filter,includeChildren At some point in the future, behavior will
-   * be removed and specifying an empty updateMask will be an error.For a detailed
-   * FieldMask definition, see https://developers.google.com/protocol-
+   * mask for backwards compatibility purposes: destination,filter,includeChildren
+   * At some point in the future, behavior will be removed and specifying an empty
+   * updateMask will be an error.For a detailed FieldMask definition, see
+   * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
    * updateMask=filter.
    * @opt_param bool uniqueWriterIdentity Optional. See sinks.create for a

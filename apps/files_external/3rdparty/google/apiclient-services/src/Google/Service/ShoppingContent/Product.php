@@ -97,6 +97,7 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   protected $shippingWeightDataType = '';
   protected $shippingWidthType = 'Google_Service_ShoppingContent_ProductShippingDimension';
   protected $shippingWidthDataType = '';
+  public $shoppingAdsExcludedCountries;
   public $sizeSystem;
   public $sizeType;
   public $sizes;
@@ -721,6 +722,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getShippingWidth()
   {
     return $this->shippingWidth;
+  }
+  public function setShoppingAdsExcludedCountries($shoppingAdsExcludedCountries)
+  {
+    $this->shoppingAdsExcludedCountries = $shoppingAdsExcludedCountries;
+  }
+  public function getShoppingAdsExcludedCountries()
+  {
+    return $this->shoppingAdsExcludedCountries;
   }
   public function setSizeSystem($sizeSystem)
   {

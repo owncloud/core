@@ -31,7 +31,7 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * @param string $customer The unique ID for the customer's G Suite account. As
    * an account administrator, you can also use the my_customer alias to represent
    * your account's customer ID.
-   * @param string $buildingId The ID of the building to delete.
+   * @param string $buildingId The id of the building to delete.
    * @param array $optParams Optional parameters.
    */
   public function delete($customer, $buildingId, $optParams = array())
@@ -84,8 +84,8 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * your account's customer ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Token to specify the next page in the list.
+   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Directory_Buildings
    */
   public function listResourcesBuildings($customer, $optParams = array())
@@ -95,12 +95,12 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
     return $this->call('list', array($params), "Google_Service_Directory_Buildings");
   }
   /**
-   * Updates a building. This method supports patch semantics. (buildings.patch)
+   * Patches a building via Apiary Patch Orchestration. (buildings.patch)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
    * an account administrator, you can also use the my_customer alias to represent
    * your account's customer ID.
-   * @param string $buildingId The ID of the building to update.
+   * @param string $buildingId The id of the building to update.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
    *
@@ -120,7 +120,7 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * @param string $customer The unique ID for the customer's G Suite account. As
    * an account administrator, you can also use the my_customer alias to represent
    * your account's customer ID.
-   * @param string $buildingId The ID of the building to update.
+   * @param string $buildingId The id of the building to update.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
    *

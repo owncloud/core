@@ -28,20 +28,18 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
   /**
    * Gets indexed item statistics aggreggated across all data sources. This API
    * only returns statistics for previous dates; it doesn't return statistics for
-   * the current day.
-   *
-   * **Note:** This API requires a standard end user account to execute.
-   * (stats.getIndex)
+   * the current day. **Note:** This API requires a standard end user account to
+   * execute. (stats.getIndex)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
-   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
-   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
    * @return Google_Service_CloudSearch_GetCustomerIndexStatsResponse
    */
@@ -52,21 +50,19 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
     return $this->call('getIndex', array($params), "Google_Service_CloudSearch_GetCustomerIndexStatsResponse");
   }
   /**
-   * Get the query statistics for customer.
-   *
-   * **Note:** This API requires a standard end user account to execute.
-   * (stats.getQuery)
+   * Get the query statistics for customer. **Note:** This API requires a standard
+   * end user account to execute. (stats.getQuery)
    *
    * @param array $optParams Optional parameters.
    *
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
-   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
-   * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
-   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
    * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @return Google_Service_CloudSearch_GetCustomerQueryStatsResponse
    */
   public function getQuery($optParams = array())
@@ -77,21 +73,19 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
   }
   /**
    * Get the # of search sessions, % of successful sessions with a click query
-   * statistics for customer.
-   *
-   * **Note:** This API requires a standard end user account to execute.
-   * (stats.getSession)
+   * statistics for customer. **Note:** This API requires a standard end user
+   * account to execute. (stats.getSession)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
-   * the year and month.
    * @opt_param int toDate.month Month of date. Must be from 1 to 12.
-   * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
-   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
+   * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
+   * the year and month.
    * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
    * @return Google_Service_CloudSearch_GetCustomerSessionStatsResponse
    */
   public function getSession($optParams = array())
@@ -101,21 +95,19 @@ class Google_Service_CloudSearch_Resource_Stats extends Google_Service_Resource
     return $this->call('getSession', array($params), "Google_Service_CloudSearch_GetCustomerSessionStatsResponse");
   }
   /**
-   * Get the users statistics for customer.
-   *
-   * **Note:** This API requires a standard end user account to execute.
-   * (stats.getUser)
+   * Get the users statistics for customer. **Note:** This API requires a standard
+   * end user account to execute. (stats.getUser)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int fromDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
-   * @opt_param int fromDate.year Year of date. Must be from 1 to 9999.
    * @opt_param int toDate.day Day of month. Must be from 1 to 31 and valid for
    * the year and month.
-   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @opt_param int toDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int fromDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int toDate.month Month of date. Must be from 1 to 12.
    * @return Google_Service_CloudSearch_GetCustomerUserStatsResponse
    */
   public function getUser($optParams = array())

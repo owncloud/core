@@ -31,10 +31,8 @@ class Google_Service_Dataflow_Resource_ProjectsCatalogTemplates extends Google_S
    * (catalogTemplates.commit)
    *
    * @param string $name The location of the template, name includes project_id
-   * and display_name.
-   *
-   * Commit using project_id(pid1) and display_name(tid1).   Format:
-   * projects/{pid1}/catalogTemplates/{tid1}
+   * and display_name. Commit using project_id(pid1) and display_name(tid1).
+   * Format: projects/{pid1}/catalogTemplates/{tid1}
    * @param Google_Service_Dataflow_CommitTemplateVersionRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_TemplateVersion
@@ -49,9 +47,8 @@ class Google_Service_Dataflow_Resource_ProjectsCatalogTemplates extends Google_S
    * Deletes an existing Template. Do nothing if Template does not exist.
    * (catalogTemplates.delete)
    *
-   * @param string $name name includes project_id and display_name.
-   *
-   * Delete by project_id(pid1) and display_name(tid1).   Format:
+   * @param string $name name includes project_id and display_name. Delete by
+   * project_id(pid1) and display_name(tid1). Format:
    * projects/{pid1}/catalogTemplates/{tid1}
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_DataflowEmpty
@@ -69,11 +66,9 @@ class Google_Service_Dataflow_Resource_ProjectsCatalogTemplates extends Google_S
    *
    * @param string $name Resource name includes project_id and display_name.
    * version_id is optional. Get the latest TemplateVersion if version_id not set.
-   *
-   * Get by project_id(pid1) and display_name(tid1):   Format:
-   * projects/{pid1}/catalogTemplates/{tid1}
-   *
-   * Get by project_id(pid1), display_name(tid1), and version_id(vid1):   Format:
+   * Get by project_id(pid1) and display_name(tid1): Format:
+   * projects/{pid1}/catalogTemplates/{tid1} Get by project_id(pid1),
+   * display_name(tid1), and version_id(vid1): Format:
    * projects/{pid1}/catalogTemplates/{tid1@vid}
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_TemplateVersion
@@ -90,10 +85,8 @@ class Google_Service_Dataflow_Resource_ProjectsCatalogTemplates extends Google_S
    * (catalogTemplates.label)
    *
    * @param string $name Resource name includes project_id, display_name, and
-   * version_id.
-   *
-   * Updates by project_id(pid1), display_name(tid1), and version_id(vid1):
-   * Format: projects/{pid1}/catalogTemplates/{tid1@vid}
+   * version_id. Updates by project_id(pid1), display_name(tid1), and
+   * version_id(vid1): Format: projects/{pid1}/catalogTemplates/{tid1@vid}
    * @param Google_Service_Dataflow_ModifyTemplateVersionLabelRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_ModifyTemplateVersionLabelResponse
@@ -112,10 +105,8 @@ class Google_Service_Dataflow_Resource_ProjectsCatalogTemplates extends Google_S
    * the tag from this TemplateVersion. (catalogTemplates.tag)
    *
    * @param string $name Resource name includes project_id, display_name, and
-   * version_id.
-   *
-   * Updates by project_id(pid1), display_name(tid1), and version_id(vid1):
-   * Format: projects/{pid1}/catalogTemplates/{tid1@vid}
+   * version_id. Updates by project_id(pid1), display_name(tid1), and
+   * version_id(vid1): Format: projects/{pid1}/catalogTemplates/{tid1@vid}
    * @param Google_Service_Dataflow_ModifyTemplateVersionTagRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_ModifyTemplateVersionTagResponse

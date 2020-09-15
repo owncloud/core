@@ -31,10 +31,8 @@ class Google_Service_Dataflow_Resource_ProjectsCatalogTemplatesTemplateVersions 
    * by the user. (templateVersions.create)
    *
    * @param string $parent The parent project and template that the
-   * TemplateVersion will be created under.
-   *
-   * Create using project_id(pid1) and display_name(tid1).   Format:
-   * projects/{pid1}/catalogTemplates/{tid1}
+   * TemplateVersion will be created under. Create using project_id(pid1) and
+   * display_name(tid1). Format: projects/{pid1}/catalogTemplates/{tid1}
    * @param Google_Service_Dataflow_CreateTemplateVersionRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_TemplateVersion

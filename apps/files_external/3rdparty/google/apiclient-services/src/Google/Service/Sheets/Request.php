@@ -23,6 +23,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $addChartDataType = '';
   protected $addConditionalFormatRuleType = 'Google_Service_Sheets_AddConditionalFormatRuleRequest';
   protected $addConditionalFormatRuleDataType = '';
+  protected $addDataSourceType = 'Google_Service_Sheets_AddDataSourceRequest';
+  protected $addDataSourceDataType = '';
   protected $addDimensionGroupType = 'Google_Service_Sheets_AddDimensionGroupRequest';
   protected $addDimensionGroupDataType = '';
   protected $addFilterViewType = 'Google_Service_Sheets_AddFilterViewRequest';
@@ -55,6 +57,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $deleteBandingDataType = '';
   protected $deleteConditionalFormatRuleType = 'Google_Service_Sheets_DeleteConditionalFormatRuleRequest';
   protected $deleteConditionalFormatRuleDataType = '';
+  protected $deleteDataSourceType = 'Google_Service_Sheets_DeleteDataSourceRequest';
+  protected $deleteDataSourceDataType = '';
   protected $deleteDeveloperMetadataType = 'Google_Service_Sheets_DeleteDeveloperMetadataRequest';
   protected $deleteDeveloperMetadataDataType = '';
   protected $deleteDimensionType = 'Google_Service_Sheets_DeleteDimensionRequest';
@@ -93,6 +97,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $pasteDataDataType = '';
   protected $randomizeRangeType = 'Google_Service_Sheets_RandomizeRangeRequest';
   protected $randomizeRangeDataType = '';
+  protected $refreshDataSourceType = 'Google_Service_Sheets_RefreshDataSourceRequest';
+  protected $refreshDataSourceDataType = '';
   protected $repeatCellType = 'Google_Service_Sheets_RepeatCellRequest';
   protected $repeatCellDataType = '';
   protected $setBasicFilterType = 'Google_Service_Sheets_SetBasicFilterRequest';
@@ -117,6 +123,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $updateChartSpecDataType = '';
   protected $updateConditionalFormatRuleType = 'Google_Service_Sheets_UpdateConditionalFormatRuleRequest';
   protected $updateConditionalFormatRuleDataType = '';
+  protected $updateDataSourceType = 'Google_Service_Sheets_UpdateDataSourceRequest';
+  protected $updateDataSourceDataType = '';
   protected $updateDeveloperMetadataType = 'Google_Service_Sheets_UpdateDeveloperMetadataRequest';
   protected $updateDeveloperMetadataDataType = '';
   protected $updateDimensionGroupType = 'Google_Service_Sheets_UpdateDimensionGroupRequest';
@@ -179,6 +187,20 @@ class Google_Service_Sheets_Request extends Google_Model
   public function getAddConditionalFormatRule()
   {
     return $this->addConditionalFormatRule;
+  }
+  /**
+   * @param Google_Service_Sheets_AddDataSourceRequest
+   */
+  public function setAddDataSource(Google_Service_Sheets_AddDataSourceRequest $addDataSource)
+  {
+    $this->addDataSource = $addDataSource;
+  }
+  /**
+   * @return Google_Service_Sheets_AddDataSourceRequest
+   */
+  public function getAddDataSource()
+  {
+    return $this->addDataSource;
   }
   /**
    * @param Google_Service_Sheets_AddDimensionGroupRequest
@@ -403,6 +425,20 @@ class Google_Service_Sheets_Request extends Google_Model
   public function getDeleteConditionalFormatRule()
   {
     return $this->deleteConditionalFormatRule;
+  }
+  /**
+   * @param Google_Service_Sheets_DeleteDataSourceRequest
+   */
+  public function setDeleteDataSource(Google_Service_Sheets_DeleteDataSourceRequest $deleteDataSource)
+  {
+    $this->deleteDataSource = $deleteDataSource;
+  }
+  /**
+   * @return Google_Service_Sheets_DeleteDataSourceRequest
+   */
+  public function getDeleteDataSource()
+  {
+    return $this->deleteDataSource;
   }
   /**
    * @param Google_Service_Sheets_DeleteDeveloperMetadataRequest
@@ -671,6 +707,20 @@ class Google_Service_Sheets_Request extends Google_Model
     return $this->randomizeRange;
   }
   /**
+   * @param Google_Service_Sheets_RefreshDataSourceRequest
+   */
+  public function setRefreshDataSource(Google_Service_Sheets_RefreshDataSourceRequest $refreshDataSource)
+  {
+    $this->refreshDataSource = $refreshDataSource;
+  }
+  /**
+   * @return Google_Service_Sheets_RefreshDataSourceRequest
+   */
+  public function getRefreshDataSource()
+  {
+    return $this->refreshDataSource;
+  }
+  /**
    * @param Google_Service_Sheets_RepeatCellRequest
    */
   public function setRepeatCell(Google_Service_Sheets_RepeatCellRequest $repeatCell)
@@ -837,6 +887,20 @@ class Google_Service_Sheets_Request extends Google_Model
   public function getUpdateConditionalFormatRule()
   {
     return $this->updateConditionalFormatRule;
+  }
+  /**
+   * @param Google_Service_Sheets_UpdateDataSourceRequest
+   */
+  public function setUpdateDataSource(Google_Service_Sheets_UpdateDataSourceRequest $updateDataSource)
+  {
+    $this->updateDataSource = $updateDataSource;
+  }
+  /**
+   * @return Google_Service_Sheets_UpdateDataSourceRequest
+   */
+  public function getUpdateDataSource()
+  {
+    return $this->updateDataSource;
   }
   /**
    * @param Google_Service_Sheets_UpdateDeveloperMetadataRequest

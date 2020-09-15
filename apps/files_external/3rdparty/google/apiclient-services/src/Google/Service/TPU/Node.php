@@ -17,7 +17,7 @@
 
 class Google_Service_TPU_Node extends Google_Collection
 {
-  protected $collection_key = 'networkEndpoints';
+  protected $collection_key = 'symptoms';
   public $acceleratorType;
   public $cidrBlock;
   public $createTime;
@@ -35,7 +35,10 @@ class Google_Service_TPU_Node extends Google_Collection
   protected $schedulingConfigDataType = '';
   public $serviceAccount;
   public $state;
+  protected $symptomsType = 'Google_Service_TPU_Symptom';
+  protected $symptomsDataType = 'array';
   public $tensorflowVersion;
+  public $useServiceNetworking;
 
   public function setAcceleratorType($acceleratorType)
   {
@@ -169,6 +172,20 @@ class Google_Service_TPU_Node extends Google_Collection
   {
     return $this->state;
   }
+  /**
+   * @param Google_Service_TPU_Symptom
+   */
+  public function setSymptoms($symptoms)
+  {
+    $this->symptoms = $symptoms;
+  }
+  /**
+   * @return Google_Service_TPU_Symptom
+   */
+  public function getSymptoms()
+  {
+    return $this->symptoms;
+  }
   public function setTensorflowVersion($tensorflowVersion)
   {
     $this->tensorflowVersion = $tensorflowVersion;
@@ -176,5 +193,13 @@ class Google_Service_TPU_Node extends Google_Collection
   public function getTensorflowVersion()
   {
     return $this->tensorflowVersion;
+  }
+  public function setUseServiceNetworking($useServiceNetworking)
+  {
+    $this->useServiceNetworking = $useServiceNetworking;
+  }
+  public function getUseServiceNetworking()
+  {
+    return $this->useServiceNetworking;
   }
 }

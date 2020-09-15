@@ -29,15 +29,10 @@ class Google_Service_Vision_Resource_ProjectsImages extends Google_Service_Resou
    * Run image detection and annotation for a batch of images. (images.annotate)
    *
    * @param string $parent Optional. Target project and location to make a call.
-   *
-   * Format: `projects/{project-id}/locations/{location-id}`.
-   *
-   * If no parent is specified, a region will be chosen automatically.
-   *
-   * Supported location-ids:     `us`: USA country only,     `asia`: East asia
-   * areas, like Japan, Taiwan,     `eu`: The European Union.
-   *
-   * Example: `projects/project-A/locations/eu`.
+   * Format: `projects/{project-id}/locations/{location-id}`. If no parent is
+   * specified, a region will be chosen automatically. Supported location-ids:
+   * `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`:
+   * The European Union. Example: `projects/project-A/locations/eu`.
    * @param Google_Service_Vision_BatchAnnotateImagesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_BatchAnnotateImagesResponse
@@ -50,26 +45,18 @@ class Google_Service_Vision_Resource_ProjectsImages extends Google_Service_Resou
   }
   /**
    * Run asynchronous image detection and annotation for a list of images.
-   *
    * Progress and results can be retrieved through the
    * `google.longrunning.Operations` interface. `Operation.metadata` contains
    * `OperationMetadata` (metadata). `Operation.response` contains
-   * `AsyncBatchAnnotateImagesResponse` (results).
-   *
-   * This service will write image annotation outputs to json files in customer
-   * GCS bucket, each json file containing BatchAnnotateImagesResponse proto.
-   * (images.asyncBatchAnnotate)
+   * `AsyncBatchAnnotateImagesResponse` (results). This service will write image
+   * annotation outputs to json files in customer GCS bucket, each json file
+   * containing BatchAnnotateImagesResponse proto. (images.asyncBatchAnnotate)
    *
    * @param string $parent Optional. Target project and location to make a call.
-   *
-   * Format: `projects/{project-id}/locations/{location-id}`.
-   *
-   * If no parent is specified, a region will be chosen automatically.
-   *
-   * Supported location-ids:     `us`: USA country only,     `asia`: East asia
-   * areas, like Japan, Taiwan,     `eu`: The European Union.
-   *
-   * Example: `projects/project-A/locations/eu`.
+   * Format: `projects/{project-id}/locations/{location-id}`. If no parent is
+   * specified, a region will be chosen automatically. Supported location-ids:
+   * `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`:
+   * The European Union. Example: `projects/project-A/locations/eu`.
    * @param Google_Service_Vision_AsyncBatchAnnotateImagesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Vision_Operation

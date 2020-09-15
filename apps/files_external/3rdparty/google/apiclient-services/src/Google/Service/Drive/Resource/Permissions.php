@@ -117,6 +117,8 @@ class Google_Service_Drive_Resource_Permissions extends Google_Service_Resource
    * @param string $fileId The ID of the file or shared drive.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string includePermissionsForView Specifies which additional view's
+   * permissions to include in the response. Only 'published' is supported.
    * @opt_param int pageSize The maximum number of permissions to return per page.
    * When not set for files in a shared drive, at most 100 results will be
    * returned. When not set for files that are not in a shared drive, the entire

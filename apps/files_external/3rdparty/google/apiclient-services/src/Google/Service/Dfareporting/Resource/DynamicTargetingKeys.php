@@ -71,10 +71,10 @@ class Google_Service_Dfareporting_Resource_DynamicTargetingKeys extends Google_S
    *
    * @opt_param string advertiserId Select only dynamic targeting keys whose
    * object has this advertiser ID.
-   * @opt_param string names Select only dynamic targeting keys exactly matching
-   * these names.
    * @opt_param string objectId Select only dynamic targeting keys with this
    * object ID.
+   * @opt_param string names Select only dynamic targeting keys exactly matching
+   * these names.
    * @opt_param string objectType Select only dynamic targeting keys with this
    * object type.
    * @return Google_Service_Dfareporting_DynamicTargetingKeysListResponse

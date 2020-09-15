@@ -60,10 +60,9 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeysCrypto
     return $this->call('asymmetricSign', array($params), "Google_Service_CloudKMS_AsymmetricSignResponse");
   }
   /**
-   * Create a new CryptoKeyVersion in a CryptoKey.
-   *
-   * The server will assign the next sequential id. If unset, state will be set to
-   * ENABLED. (cryptoKeyVersions.create)
+   * Create a new CryptoKeyVersion in a CryptoKey. The server will assign the next
+   * sequential id. If unset, state will be set to ENABLED.
+   * (cryptoKeyVersions.create)
    *
    * @param string $parent Required. The name of the CryptoKey associated with the
    * CryptoKeyVersions.
@@ -78,13 +77,10 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeysCrypto
     return $this->call('create', array($params), "Google_Service_CloudKMS_CryptoKeyVersion");
   }
   /**
-   * Schedule a CryptoKeyVersion for destruction.
-   *
-   * Upon calling this method, CryptoKeyVersion.state will be set to
-   * DESTROY_SCHEDULED and destroy_time will be set to a time 24 hours in the
-   * future, at which point the state will be changed to DESTROYED, and the key
-   * material will be irrevocably destroyed.
-   *
+   * Schedule a CryptoKeyVersion for destruction. Upon calling this method,
+   * CryptoKeyVersion.state will be set to DESTROY_SCHEDULED and destroy_time will
+   * be set to a time 24 hours in the future, at which point the state will be
+   * changed to DESTROYED, and the key material will be irrevocably destroyed.
    * Before the destroy_time is reached, RestoreCryptoKeyVersion may be called to
    * reverse the process. (cryptoKeyVersions.destroy)
    *
@@ -131,10 +127,8 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeysCrypto
   }
   /**
    * Imports a new CryptoKeyVersion into an existing CryptoKey using the wrapped
-   * key material provided in the request.
-   *
-   * The version ID will be assigned the next sequential id within the CryptoKey.
-   * (cryptoKeyVersions.import)
+   * key material provided in the request. The version ID will be assigned the
+   * next sequential id within the CryptoKey. (cryptoKeyVersions.import)
    *
    * @param string $parent Required. The name of the CryptoKey to be imported
    * into.
@@ -156,21 +150,21 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeysCrypto
    * in the format `projects/locations/keyRings/cryptoKeys`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view The fields to include in the response.
    * @opt_param string filter Optional. Only include resources that match the
    * filter in the response. For more information, see [Sorting and filtering list
    * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+   * @opt_param string view The fields to include in the response.
+   * @opt_param int pageSize Optional. Optional limit on the number of
+   * CryptoKeyVersions to include in the response. Further CryptoKeyVersions can
+   * subsequently be obtained by including the
+   * ListCryptoKeyVersionsResponse.next_page_token in a subsequent request. If
+   * unspecified, the server will pick an appropriate default.
    * @opt_param string orderBy Optional. Specify how the results should be sorted.
    * If not specified, the results will be sorted in the default order. For more
    * information, see [Sorting and filtering list
    * results](https://cloud.google.com/kms/docs/sorting-and-filtering).
    * @opt_param string pageToken Optional. Optional pagination token, returned
    * earlier via ListCryptoKeyVersionsResponse.next_page_token.
-   * @opt_param int pageSize Optional. Optional limit on the number of
-   * CryptoKeyVersions to include in the response. Further CryptoKeyVersions can
-   * subsequently be obtained by including the
-   * ListCryptoKeyVersionsResponse.next_page_token in a subsequent request. If
-   * unspecified, the server will pick an appropriate default.
    * @return Google_Service_CloudKMS_ListCryptoKeyVersionsResponse
    */
   public function listProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersions($parent, $optParams = array())
@@ -180,11 +174,10 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeysCrypto
     return $this->call('list', array($params), "Google_Service_CloudKMS_ListCryptoKeyVersionsResponse");
   }
   /**
-   * Update a CryptoKeyVersion's metadata.
-   *
-   * state may be changed between ENABLED and DISABLED using this method. See
-   * DestroyCryptoKeyVersion and RestoreCryptoKeyVersion to move between other
-   * states. (cryptoKeyVersions.patch)
+   * Update a CryptoKeyVersion's metadata. state may be changed between ENABLED
+   * and DISABLED using this method. See DestroyCryptoKeyVersion and
+   * RestoreCryptoKeyVersion to move between other states.
+   * (cryptoKeyVersions.patch)
    *
    * @param string $name Output only. The resource name for this CryptoKeyVersion
    * in the format `projects/locations/keyRings/cryptoKeys/cryptoKeyVersions`.
@@ -202,10 +195,9 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeysCrypto
     return $this->call('patch', array($params), "Google_Service_CloudKMS_CryptoKeyVersion");
   }
   /**
-   * Restore a CryptoKeyVersion in the DESTROY_SCHEDULED state.
-   *
-   * Upon restoration of the CryptoKeyVersion, state will be set to DISABLED, and
-   * destroy_time will be cleared. (cryptoKeyVersions.restore)
+   * Restore a CryptoKeyVersion in the DESTROY_SCHEDULED state. Upon restoration
+   * of the CryptoKeyVersion, state will be set to DISABLED, and destroy_time will
+   * be cleared. (cryptoKeyVersions.restore)
    *
    * @param string $name Required. The resource name of the CryptoKeyVersion to
    * restore.

@@ -27,6 +27,8 @@ class Google_Service_AndroidManagement_SoftwareInfo extends Google_Model
   public $deviceKernelVersion;
   public $primaryLanguageCode;
   public $securityPatchLevel;
+  protected $systemUpdateInfoType = 'Google_Service_AndroidManagement_SystemUpdateInfo';
+  protected $systemUpdateInfoDataType = '';
 
   public function setAndroidBuildNumber($androidBuildNumber)
   {
@@ -107,5 +109,19 @@ class Google_Service_AndroidManagement_SoftwareInfo extends Google_Model
   public function getSecurityPatchLevel()
   {
     return $this->securityPatchLevel;
+  }
+  /**
+   * @param Google_Service_AndroidManagement_SystemUpdateInfo
+   */
+  public function setSystemUpdateInfo(Google_Service_AndroidManagement_SystemUpdateInfo $systemUpdateInfo)
+  {
+    $this->systemUpdateInfo = $systemUpdateInfo;
+  }
+  /**
+   * @return Google_Service_AndroidManagement_SystemUpdateInfo
+   */
+  public function getSystemUpdateInfo()
+  {
+    return $this->systemUpdateInfo;
   }
 }

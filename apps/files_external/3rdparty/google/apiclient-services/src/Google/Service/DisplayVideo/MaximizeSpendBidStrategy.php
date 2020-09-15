@@ -17,9 +17,18 @@
 
 class Google_Service_DisplayVideo_MaximizeSpendBidStrategy extends Google_Model
 {
+  public $customBiddingAlgorithmId;
   public $maxAverageCpmBidAmountMicros;
   public $performanceGoalType;
 
+  public function setCustomBiddingAlgorithmId($customBiddingAlgorithmId)
+  {
+    $this->customBiddingAlgorithmId = $customBiddingAlgorithmId;
+  }
+  public function getCustomBiddingAlgorithmId()
+  {
+    return $this->customBiddingAlgorithmId;
+  }
   public function setMaxAverageCpmBidAmountMicros($maxAverageCpmBidAmountMicros)
   {
     $this->maxAverageCpmBidAmountMicros = $maxAverageCpmBidAmountMicros;

@@ -17,12 +17,28 @@
 
 class Google_Service_Sheets_UpdateDimensionPropertiesRequest extends Google_Model
 {
+  protected $dataSourceSheetRangeType = 'Google_Service_Sheets_DataSourceSheetDimensionRange';
+  protected $dataSourceSheetRangeDataType = '';
   public $fields;
   protected $propertiesType = 'Google_Service_Sheets_DimensionProperties';
   protected $propertiesDataType = '';
   protected $rangeType = 'Google_Service_Sheets_DimensionRange';
   protected $rangeDataType = '';
 
+  /**
+   * @param Google_Service_Sheets_DataSourceSheetDimensionRange
+   */
+  public function setDataSourceSheetRange(Google_Service_Sheets_DataSourceSheetDimensionRange $dataSourceSheetRange)
+  {
+    $this->dataSourceSheetRange = $dataSourceSheetRange;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceSheetDimensionRange
+   */
+  public function getDataSourceSheetRange()
+  {
+    return $this->dataSourceSheetRange;
+  }
   public function setFields($fields)
   {
     $this->fields = $fields;

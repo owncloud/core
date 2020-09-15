@@ -26,13 +26,10 @@
 class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles extends Google_Service_Resource
 {
   /**
-   * Creates a resource file.
-   *
-   * Specify the `Content-Type` as `application/octet-stream` or `multipart/form-
-   * data`.
-   *
-   * For more information about resource files, see [Resource files](/api-
-   * platform/develop/resource-files). (resourcefiles.create)
+   * Creates a resource file. Specify the `Content-Type` as `application/octet-
+   * stream` or `multipart/form-data`. For more information about resource files,
+   * see [Resource files](/api-platform/develop/resource-files).
+   * (resourcefiles.create)
    *
    * @param string $parent Required. Name of the environment in which to create
    * the resource file in the following format:
@@ -40,7 +37,7 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string name Required. Name of the resource file.  Must match the
+   * @opt_param string name Required. Name of the resource file. Must match the
    * regular expression: [a-zA-Z0-9:/\\!@#$%^&{}\[\]()+\-=,.~'` ]{1,255}
    * @opt_param string type Required. Resource file type. {{ resource_file_type }}
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile
@@ -52,13 +49,12 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('create', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile");
   }
   /**
-   * Deletes a resource file.
-   *
-   * For more information about resource files, see [Resource files](/api-
-   * platform/develop/resource-files). (resourcefiles.delete)
+   * Deletes a resource file. For more information about resource files, see
+   * [Resource files](/api-platform/develop/resource-files).
+   * (resourcefiles.delete)
    *
    * @param string $parent Required. Name of the environment in the following
-   * format:   `organizations/{org}/environments/{env}`.
+   * format: `organizations/{org}/environments/{env}`.
    * @param string $type Required. Resource file type. {{ resource_file_type }}
    * @param string $name Required. ID of the resource file to delete. Must match
    * the regular expression: [a-zA-Z0-9:/\\!@#$%^&{}\[\]()+\-=,.~'` ]{1,255}
@@ -72,14 +68,13 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile");
   }
   /**
-   * Gets the contents of a resource file.
-   *
-   * For more information about resource files, see [Resource files](/api-
-   * platform/develop/resource-files). (resourcefiles.get)
+   * Gets the contents of a resource file. For more information about resource
+   * files, see [Resource files](/api-platform/develop/resource-files).
+   * (resourcefiles.get)
    *
    * @param string $parent Required. Name of the environment in the following
-   * format:   `organizations/{org}/environments/{env}`.
-   * @param string $type Required. Resource file type.  {{ resource_file_type }}
+   * format: `organizations/{org}/environments/{env}`.
+   * @param string $type Required. Resource file type. {{ resource_file_type }}
    * @param string $name Required. ID of the resource file. Must match the regular
    * expression: [a-zA-Z0-9:/\\!@#$%^&{}\[\]()+\-=,.~'` ]{1,255}
    * @param array $optParams Optional parameters.
@@ -92,10 +87,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleApiHttpBody");
   }
   /**
-   * Lists all resource files.
-   *
-   * For more information about resource files, see [Resource files](/api-
-   * platform/develop/resource-files).
+   * Lists all resource files. For more information about resource files, see
+   * [Resource files](/api-platform/develop/resource-files).
    * (resourcefiles.listOrganizationsEnvironmentsResourcefiles)
    *
    * @param string $parent Required. Name of the environment in which to list
@@ -114,10 +107,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('list', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentResourcesResponse");
   }
   /**
-   * Lists all resource files.
-   *
-   * For more information about resource files, see [Resource files](/api-
-   * platform/develop/resource-files). (resourcefiles.listEnvironmentResources)
+   * Lists all resource files. For more information about resource files, see
+   * [Resource files](/api-platform/develop/resource-files).
+   * (resourcefiles.listEnvironmentResources)
    *
    * @param string $parent Required. Name of the environment in which to list
    * resource files in the following format:
@@ -134,16 +126,13 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('listEnvironmentResources', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentResourcesResponse");
   }
   /**
-   * Updates a resource file.
-   *
-   * Specify the `Content-Type` as `application/octet-stream` or `multipart/form-
-   * data`.
-   *
-   * For more information about resource files, see [Resource files](/api-
-   * platform/develop/resource-files). (resourcefiles.update)
+   * Updates a resource file. Specify the `Content-Type` as `application/octet-
+   * stream` or `multipart/form-data`. For more information about resource files,
+   * see [Resource files](/api-platform/develop/resource-files).
+   * (resourcefiles.update)
    *
    * @param string $parent Required. Name of the environment in the following
-   * format:   `organizations/{org}/environments/{env}`.
+   * format: `organizations/{org}/environments/{env}`.
    * @param string $type Required. Resource file type. {{ resource_file_type }}
    * @param string $name Required. ID of the resource file to update. Must match
    * the regular expression: [a-zA-Z0-9:/\\!@#$%^&{}\[\]()+\-=,.~'` ]{1,255}

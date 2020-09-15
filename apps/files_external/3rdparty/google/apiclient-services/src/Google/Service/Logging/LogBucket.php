@@ -20,6 +20,7 @@ class Google_Service_Logging_LogBucket extends Google_Model
   public $createTime;
   public $description;
   public $lifecycleState;
+  public $locked;
   public $name;
   public $retentionDays;
   public $updateTime;
@@ -47,6 +48,14 @@ class Google_Service_Logging_LogBucket extends Google_Model
   public function getLifecycleState()
   {
     return $this->lifecycleState;
+  }
+  public function setLocked($locked)
+  {
+    $this->locked = $locked;
+  }
+  public function getLocked()
+  {
+    return $this->locked;
   }
   public function setName($name)
   {

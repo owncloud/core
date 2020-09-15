@@ -48,11 +48,11 @@ class Google_Service_Dfareporting_Resource_ReportsFiles extends Google_Service_R
    * @param string $reportId The ID of the parent report.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string sortField The field by which to sort the list.
    * @opt_param string pageToken The value of the nextToken from the previous
    * result page.
-   * @opt_param string sortField The field by which to sort the list.
-   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Dfareporting_FileList
    */
   public function listReportsFiles($profileId, $reportId, $optParams = array())

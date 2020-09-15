@@ -81,14 +81,14 @@ class Google_Service_Dfareporting_Resource_CreativeFieldValues extends Google_Se
    * value.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string ids Select only creative field values with these IDs.
    * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string searchString Allows searching for creative field values by
    * their values. Wildcards (e.g. *) are not allowed.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
+   * @opt_param string ids Select only creative field values with these IDs.
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_CreativeFieldValuesListResponse
    */
   public function listCreativeFieldValues($profileId, $creativeFieldId, $optParams = array())
@@ -102,16 +102,16 @@ class Google_Service_Dfareporting_Resource_CreativeFieldValues extends Google_Se
    * semantics. (creativeFieldValues.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $creativeFieldId Creative field ID for this creative field
-   * value.
-   * @param string $id Creative Field Value ID
+   * @param string $creativeFieldId CreativeField ID.
    * @param Google_Service_Dfareporting_CreativeFieldValue $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id CreativeFieldValue ID.
    * @return Google_Service_Dfareporting_CreativeFieldValue
    */
-  public function patch($profileId, $creativeFieldId, $id, Google_Service_Dfareporting_CreativeFieldValue $postBody, $optParams = array())
+  public function patch($profileId, $creativeFieldId, Google_Service_Dfareporting_CreativeFieldValue $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'creativeFieldId' => $creativeFieldId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'creativeFieldId' => $creativeFieldId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_CreativeFieldValue");
   }

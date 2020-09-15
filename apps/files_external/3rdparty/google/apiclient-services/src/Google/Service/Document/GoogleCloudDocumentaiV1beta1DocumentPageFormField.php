@@ -26,6 +26,7 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageFormField 
   protected $nameDetectedLanguagesDataType = 'array';
   protected $valueDetectedLanguagesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage';
   protected $valueDetectedLanguagesDataType = 'array';
+  public $valueType;
 
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageLayout
@@ -82,5 +83,13 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageFormField 
   public function getValueDetectedLanguages()
   {
     return $this->valueDetectedLanguages;
+  }
+  public function setValueType($valueType)
+  {
+    $this->valueType = $valueType;
+  }
+  public function getValueType()
+  {
+    return $this->valueType;
   }
 }

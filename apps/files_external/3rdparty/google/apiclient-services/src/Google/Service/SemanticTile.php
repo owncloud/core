@@ -65,25 +65,49 @@ class Google_Service_SemanticTile extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'enablePrivateRoads' => array(
+                'clientInfo.operatingSystem' => array(
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'string',
+                ),
+                'regionCode' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'clientInfo.userId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'enableDetailedHighwayTypes' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'clientInfo.applicationVersion' => array(
+                'clientInfo.platform' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'clientInfo.operatingSystem' => array(
+                'enableModeledVolumes' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'boolean',
                 ),
                 'clientInfo.applicationId' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'clientInfo.applicationVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'enableUnclippedBuildings' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'enableFeatureNames' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'enablePrivateRoads' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'clientInfo.deviceModel' => array(
                   'location' => 'query',
@@ -93,39 +117,15 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'clientInfo.platform' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'enableFeatureNames' => array(
+                'enablePoliticalFeatures' => array(
                   'location' => 'query',
                   'type' => 'boolean',
-                ),
-                'enableUnclippedBuildings' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'clientInfo.userId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'languageCode' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'enablePoliticalFeatures' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'clientInfo.apiClient' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'enableModeledVolumes' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'regionCode' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -149,40 +149,15 @@ class Google_Service_SemanticTile extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'clientInfo.userId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'clientInfo.applicationVersion' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxElevationResolutionCells' => array(
+                'minElevationResolutionCells' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'clientInfo.apiClient' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'clientInfo.platform' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'altitudePrecisionCentimeters' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'terrainFormats' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'clientInfo.applicationId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'clientInfo.operatingSystem' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -190,7 +165,32 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'minElevationResolutionCells' => array(
+                'clientInfo.applicationId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'terrainFormats' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'clientInfo.operatingSystem' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'clientInfo.apiClient' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'clientInfo.userId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'maxElevationResolutionCells' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'altitudePrecisionCentimeters' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),

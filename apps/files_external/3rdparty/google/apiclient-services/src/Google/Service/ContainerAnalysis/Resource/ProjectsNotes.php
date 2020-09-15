@@ -33,9 +33,9 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
    * @param Google_Service_ContainerAnalysis_Note $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string noteId The ID to use for this note.
    * @opt_param string name The name of the project. Should be of the form
    * "providers/{provider_id}". @Deprecated
-   * @opt_param string noteId The ID to use for this note.
    * @return Google_Service_ContainerAnalysis_Note
    */
   public function create($parent, Google_Service_ContainerAnalysis_Note $postBody, $optParams = array())
@@ -104,11 +104,11 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
    * "projects/{PROJECT_ID}".
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Number of notes to return in the list.
    * @opt_param string name The name field will contain the project Id for
    * example: "providers/{provider_id} @Deprecated
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
-   * @opt_param int pageSize Number of notes to return in the list.
    * @opt_param string filter The filter expression.
    * @return Google_Service_ContainerAnalysis_ListNotesResponse
    */

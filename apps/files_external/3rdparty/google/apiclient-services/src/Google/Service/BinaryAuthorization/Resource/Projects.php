@@ -29,10 +29,8 @@ class Google_Service_BinaryAuthorization_Resource_Projects extends Google_Servic
    * A policy specifies the attestors that must attest to a container image,
    * before the project is allowed to deploy that image. There is at most one
    * policy per project. All image admission requests are permitted if a project
-   * has no policy.
-   *
-   * Gets the policy for this project. Returns a default policy if the project
-   * does not have one. (projects.getPolicy)
+   * has no policy. Gets the policy for this project. Returns a default policy if
+   * the project does not have one. (projects.getPolicy)
    *
    * @param string $name Required. The resource name of the policy to retrieve, in
    * the format `projects/policy`.

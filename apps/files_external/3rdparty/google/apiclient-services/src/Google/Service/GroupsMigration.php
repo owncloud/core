@@ -19,8 +19,8 @@
  * Service definition for GroupsMigration (v1).
  *
  * <p>
- * The Groups Migration API allows domain administrators to archive     emails
- * into Google groups.</p>
+ * The Groups Migration API allows domain administrators to archive emails into
+ * Google groups.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -46,9 +46,9 @@ class Google_Service_GroupsMigration extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://groupsmigration.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/groupsmigration/v1';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'groupsmigration';
 

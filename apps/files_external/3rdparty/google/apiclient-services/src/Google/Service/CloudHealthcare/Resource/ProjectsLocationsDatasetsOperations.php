@@ -26,10 +26,10 @@
 class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsOperations extends Google_Service_Resource
 {
   /**
-   * Starts asynchronous cancellation on a long-running operation.  The server
+   * Starts asynchronous cancellation on a long-running operation. The server
    * makes a best effort to cancel the operation, but success is not guaranteed.
    * If the server doesn't support this method, it returns
-   * `google.rpc.Code.UNIMPLEMENTED`.  Clients can use Operations.GetOperation or
+   * `google.rpc.Code.UNIMPLEMENTED`. Clients can use Operations.GetOperation or
    * other methods to check whether the cancellation succeeded or whether the
    * operation completed despite cancellation. On successful cancellation, the
    * operation is not deleted; instead, it becomes an operation with an
@@ -48,7 +48,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsOperation
     return $this->call('cancel', array($params), "Google_Service_CloudHealthcare_HealthcareEmpty");
   }
   /**
-   * Gets the latest state of a long-running operation.  Clients can use this
+   * Gets the latest state of a long-running operation. Clients can use this
    * method to poll the operation result at intervals as recommended by the API
    * service. (operations.get)
    *
@@ -64,23 +64,21 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsOperation
   }
   /**
    * Lists operations that match the specified filter in the request. If the
-   * server doesn't support this method, it returns `UNIMPLEMENTED`.
-   *
-   * NOTE: the `name` binding allows API services to override the binding to use
-   * different resource name schemes, such as `users/operations`. To override the
-   * binding, API services can add a binding such as
-   * `"/v1/{name=users}/operations"` to their service configuration. For backwards
-   * compatibility, the default name includes the operations collection id,
-   * however overriding users must ensure the name binding is the parent resource,
-   * without the operations collection id.
-   * (operations.listProjectsLocationsDatasetsOperations)
+   * server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the
+   * `name` binding allows API services to override the binding to use different
+   * resource name schemes, such as `users/operations`. To override the binding,
+   * API services can add a binding such as `"/v1/{name=users}/operations"` to
+   * their service configuration. For backwards compatibility, the default name
+   * includes the operations collection id, however overriding users must ensure
+   * the name binding is the parent resource, without the operations collection
+   * id. (operations.listProjectsLocationsDatasetsOperations)
    *
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The standard list page token.
    * @opt_param int pageSize The standard list page size.
    * @opt_param string filter The standard list filter.
-   * @opt_param string pageToken The standard list page token.
    * @return Google_Service_CloudHealthcare_ListOperationsResponse
    */
   public function listProjectsLocationsDatasetsOperations($name, $optParams = array())

@@ -29,28 +29,18 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
    * Creates an instance and begins preparing it to begin serving. The returned
    * long-running operation can be used to track the progress of preparing the new
    * instance. The instance name is assigned by the caller. If the named instance
-   * already exists, `CreateInstance` returns `ALREADY_EXISTS`.
-   *
-   * Immediately upon completion of this request:
-   *
-   *   * The instance is readable via the API, with all requested attributes
-   * but no allocated resources. Its state is `CREATING`.
-   *
-   * Until completion of the returned operation:
-   *
-   *   * Cancelling the operation renders the instance immediately unreadable
-   * via the API.   * The instance can be deleted.   * All other attempts to
-   * modify the instance are rejected.
-   *
-   * Upon completion of the returned operation:
-   *
-   *   * Billing for all successfully-allocated resources begins (some types
-   * may have lower than the requested levels).   * Databases can be created in
-   * the instance.   * The instance's allocated resource levels are readable via
-   * the API.   * The instance's state becomes `READY`.
-   *
-   * The returned long-running operation will have a name of the format
-   * `/operations/` and can be used to track creation of the instance.  The
+   * already exists, `CreateInstance` returns `ALREADY_EXISTS`. Immediately upon
+   * completion of this request: * The instance is readable via the API, with all
+   * requested attributes but no allocated resources. Its state is `CREATING`.
+   * Until completion of the returned operation: * Cancelling the operation
+   * renders the instance immediately unreadable via the API. * The instance can
+   * be deleted. * All other attempts to modify the instance are rejected. Upon
+   * completion of the returned operation: * Billing for all successfully-
+   * allocated resources begins (some types may have lower than the requested
+   * levels). * Databases can be created in the instance. * The instance's
+   * allocated resource levels are readable via the API. * The instance's state
+   * becomes `READY`. The returned long-running operation will have a name of the
+   * format `/operations/` and can be used to track creation of the instance. The
    * metadata field type is CreateInstanceMetadata. The response field type is
    * Instance, if successful. (instances.create)
    *
@@ -67,16 +57,10 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
     return $this->call('create', array($params), "Google_Service_Spanner_Operation");
   }
   /**
-   * Deletes an instance.
-   *
-   * Immediately upon completion of the request:
-   *
-   *   * Billing ceases for all of the instance's reserved resources.
-   *
-   * Soon afterward:
-   *
-   *   * The instance and *all of its databases* immediately and     irrevocably
-   * disappear from the API. All data in the databases     is permanently deleted.
+   * Deletes an instance. Immediately upon completion of the request: * Billing
+   * ceases for all of the instance's reserved resources. Soon afterward: * The
+   * instance and *all of its databases* immediately and irrevocably disappear
+   * from the API. All data in the databases is permanently deleted.
    * (instances.delete)
    *
    * @param string $name Required. The name of the instance to be deleted. Values
@@ -110,9 +94,8 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
   }
   /**
    * Gets the access control policy for an instance resource. Returns an empty
-   * policy if an instance exists but does not have a policy set.
-   *
-   * Authorization requires `spanner.instances.getIamPolicy` on resource.
+   * policy if an instance exists but does not have a policy set. Authorization
+   * requires `spanner.instances.getIamPolicy` on resource.
    * (instances.getIamPolicy)
    *
    * @param string $resource REQUIRED: The Cloud Spanner resource for which the
@@ -135,27 +118,20 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
    * instances is requested. Values are of the form `projects/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter An expression for filtering the results of the
-   * request. Filter rules are case insensitive. The fields eligible for filtering
-   * are:
-   *
-   *   * `name`   * `display_name`   * `labels.key` where key is the name of a
-   * label
-   *
-   * Some examples of using filters are:
-   *
-   *   * `name:*` --> The instance has a name.   * `name:Howl` --> The instance's
-   * name contains the string "howl".   * `name:HOWL` --> Equivalent to above.   *
-   * `NAME:howl` --> Equivalent to above.   * `labels.env:*` --> The instance has
-   * the label "env".   * `labels.env:dev` --> The instance has the label "env"
-   * and the value of                        the label contains the string "dev".
-   * * `name:howl labels.env:dev` --> The instance's name contains "howl" and
-   * it has the label "env" with its value
-   * containing "dev".
    * @opt_param int pageSize Number of instances to be returned in the response.
    * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string pageToken If non-empty, `page_token` should contain a
    * next_page_token from a previous ListInstancesResponse.
+   * @opt_param string filter An expression for filtering the results of the
+   * request. Filter rules are case insensitive. The fields eligible for filtering
+   * are: * `name` * `display_name` * `labels.key` where key is the name of a
+   * label Some examples of using filters are: * `name:*` --> The instance has a
+   * name. * `name:Howl` --> The instance's name contains the string "howl". *
+   * `name:HOWL` --> Equivalent to above. * `NAME:howl` --> Equivalent to above. *
+   * `labels.env:*` --> The instance has the label "env". * `labels.env:dev` -->
+   * The instance has the label "env" and the value of the label contains the
+   * string "dev". * `name:howl labels.env:dev` --> The instance's name contains
+   * "howl" and it has the label "env" with its value containing "dev".
    * @return Google_Service_Spanner_ListInstancesResponse
    */
   public function listProjectsInstances($parent, $optParams = array())
@@ -168,34 +144,22 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
    * Updates an instance, and begins allocating or releasing resources as
    * requested. The returned long-running operation can be used to track the
    * progress of updating the instance. If the named instance does not exist,
-   * returns `NOT_FOUND`.
-   *
-   * Immediately upon completion of this request:
-   *
-   *   * For resource types for which a decrease in the instance's allocation
-   * has been requested, billing is based on the newly-requested level.
-   *
-   * Until completion of the returned operation:
-   *
-   *   * Cancelling the operation sets its metadata's     cancel_time, and begins
-   * restoring resources to their pre-request values. The operation     is
-   * guaranteed to succeed at undoing all resource changes,     after which point
-   * it terminates with a `CANCELLED` status.   * All other attempts to modify the
-   * instance are rejected.   * Reading the instance via the API continues to give
-   * the pre-request     resource levels.
-   *
-   * Upon completion of the returned operation:
-   *
-   *   * Billing begins for all successfully-allocated resources (some types
-   * may have lower than the requested levels).   * All newly-reserved resources
-   * are available for serving the instance's     tables.   * The instance's new
-   * resource levels are readable via the API.
-   *
-   * The returned long-running operation will have a name of the format
-   * `/operations/` and can be used to track the instance modification.  The
-   * metadata field type is UpdateInstanceMetadata. The response field type is
-   * Instance, if successful.
-   *
+   * returns `NOT_FOUND`. Immediately upon completion of this request: * For
+   * resource types for which a decrease in the instance's allocation has been
+   * requested, billing is based on the newly-requested level. Until completion of
+   * the returned operation: * Cancelling the operation sets its metadata's
+   * cancel_time, and begins restoring resources to their pre-request values. The
+   * operation is guaranteed to succeed at undoing all resource changes, after
+   * which point it terminates with a `CANCELLED` status. * All other attempts to
+   * modify the instance are rejected. * Reading the instance via the API
+   * continues to give the pre-request resource levels. Upon completion of the
+   * returned operation: * Billing begins for all successfully-allocated resources
+   * (some types may have lower than the requested levels). * All newly-reserved
+   * resources are available for serving the instance's tables. * The instance's
+   * new resource levels are readable via the API. The returned long-running
+   * operation will have a name of the format `/operations/` and can be used to
+   * track the instance modification. The metadata field type is
+   * UpdateInstanceMetadata. The response field type is Instance, if successful.
    * Authorization requires `spanner.instances.update` permission on resource
    * name. (instances.patch)
    *
@@ -215,9 +179,7 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
   }
   /**
    * Sets the access control policy on an instance resource. Replaces any existing
-   * policy.
-   *
-   * Authorization requires `spanner.instances.setIamPolicy` on resource.
+   * policy. Authorization requires `spanner.instances.setIamPolicy` on resource.
    * (instances.setIamPolicy)
    *
    * @param string $resource REQUIRED: The Cloud Spanner resource for which the
@@ -235,7 +197,6 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
   }
   /**
    * Returns permissions that the caller has on the specified instance resource.
-   *
    * Attempting this RPC on a non-existent Cloud Spanner instance resource will
    * result in a NOT_FOUND error if the user has `spanner.instances.list`
    * permission on the containing Google Cloud Project. Otherwise returns an empty

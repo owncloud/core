@@ -18,6 +18,7 @@
 class Google_Service_Container_CloudRunConfig extends Google_Model
 {
   public $disabled;
+  public $loadBalancerType;
 
   public function setDisabled($disabled)
   {
@@ -26,5 +27,13 @@ class Google_Service_Container_CloudRunConfig extends Google_Model
   public function getDisabled()
   {
     return $this->disabled;
+  }
+  public function setLoadBalancerType($loadBalancerType)
+  {
+    $this->loadBalancerType = $loadBalancerType;
+  }
+  public function getLoadBalancerType()
+  {
+    return $this->loadBalancerType;
   }
 }

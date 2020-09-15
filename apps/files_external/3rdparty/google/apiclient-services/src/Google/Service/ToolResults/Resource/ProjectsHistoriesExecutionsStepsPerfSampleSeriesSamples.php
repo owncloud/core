@@ -31,10 +31,9 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSa
    * request payload - duplicates and existing timestamp entries will be ignored.
    * - the batch operation may partially succeed - the set of elements
    * successfully inserted is returned in the response (omits items which already
-   * existed in the database).
-   *
-   * May return any of the following canonical error codes: - NOT_FOUND - The
-   * containing PerfSampleSeries does not exist (samples.batchCreate)
+   * existed in the database). May return any of the following canonical error
+   * codes: - NOT_FOUND - The containing PerfSampleSeries does not exist
+   * (samples.batchCreate)
    *
    * @param string $projectId The cloud project
    * @param string $historyId A tool results history ID.
@@ -57,11 +56,9 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSa
    * maximum size allowed 5000 - The response token indicates the last returned
    * PerfSample timestamp - When the results size exceeds the page size, submit a
    * subsequent request including the page token to return the rest of the samples
-   * up to the page limit
-   *
-   * May return any of the following canonical error codes: - OUT_OF_RANGE - The
-   * specified request page_token is out of valid range - NOT_FOUND - The
-   * containing PerfSampleSeries does not exist
+   * up to the page limit May return any of the following canonical error codes: -
+   * OUT_OF_RANGE - The specified request page_token is out of valid range -
+   * NOT_FOUND - The containing PerfSampleSeries does not exist
    * (samples.listProjectsHistoriesExecutionsStepsPerfSampleSeriesSamples)
    *
    * @param string $projectId The cloud project
@@ -71,11 +68,11 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSa
    * @param string $sampleSeriesId A sample series id
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Optional, the next_page_token returned in the
+   * previous response
    * @opt_param int pageSize The default page size is 500 samples, and the maximum
    * size is 5000. If the page_size is greater than 5000, the effective page size
    * will be 5000
-   * @opt_param string pageToken Optional, the next_page_token returned in the
-   * previous response
    * @return Google_Service_ToolResults_ListPerfSamplesResponse
    */
   public function listProjectsHistoriesExecutionsStepsPerfSampleSeriesSamples($projectId, $historyId, $executionId, $stepId, $sampleSeriesId, $optParams = array())

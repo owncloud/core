@@ -86,8 +86,6 @@ class Google_Service_Monitoring_Resource_ProjectsAlertPolicies extends Google_Se
    * operation, instead.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of results to return in a single
-   * response.
    * @opt_param string pageToken If this field is not empty then it must contain
    * the nextPageToken value returned by a previous call to this method. Using
    * this field causes the method to return more results from the previous method
@@ -101,6 +99,8 @@ class Google_Service_Monitoring_Resource_ProjectsAlertPolicies extends Google_Se
    * must be met by alert policies to be included in the response.For more
    * details, see sorting and filtering
    * (https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
+   * @opt_param int pageSize The maximum number of results to return in a single
+   * response.
    * @return Google_Service_Monitoring_ListAlertPoliciesResponse
    */
   public function listProjectsAlertPolicies($name, $optParams = array())

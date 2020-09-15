@@ -21,6 +21,8 @@ class Google_Service_Sheets_SortSpec extends Google_Model
   protected $backgroundColorDataType = '';
   protected $backgroundColorStyleType = 'Google_Service_Sheets_ColorStyle';
   protected $backgroundColorStyleDataType = '';
+  protected $dataSourceColumnReferenceType = 'Google_Service_Sheets_DataSourceColumnReference';
+  protected $dataSourceColumnReferenceDataType = '';
   public $dimensionIndex;
   protected $foregroundColorType = 'Google_Service_Sheets_Color';
   protected $foregroundColorDataType = '';
@@ -55,6 +57,20 @@ class Google_Service_Sheets_SortSpec extends Google_Model
   public function getBackgroundColorStyle()
   {
     return $this->backgroundColorStyle;
+  }
+  /**
+   * @param Google_Service_Sheets_DataSourceColumnReference
+   */
+  public function setDataSourceColumnReference(Google_Service_Sheets_DataSourceColumnReference $dataSourceColumnReference)
+  {
+    $this->dataSourceColumnReference = $dataSourceColumnReference;
+  }
+  /**
+   * @return Google_Service_Sheets_DataSourceColumnReference
+   */
+  public function getDataSourceColumnReference()
+  {
+    return $this->dataSourceColumnReference;
   }
   public function setDimensionIndex($dimensionIndex)
   {

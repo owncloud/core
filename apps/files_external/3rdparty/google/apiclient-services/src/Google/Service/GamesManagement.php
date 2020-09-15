@@ -20,7 +20,7 @@
  *
  * <p>
  * The Google Play Game Management API allows developers to manage resources
- * from the Google      Play Game service.</p>
+ * from the Google Play Game service.</p>
  *
  * <p>
  * For more information about this service, see the API

@@ -26,7 +26,7 @@
 class Google_Service_Directory_Resource_DomainAliases extends Google_Service_Resource
 {
   /**
-   * Deletes a Domain Alias of the customer. (domainAliases.delete)
+   * Deletes a domain Alias of the customer. (domainAliases.delete)
    *
    * @param string $customer Immutable ID of the G Suite account.
    * @param string $domainAliasName Name of domain alias to be retrieved.
@@ -53,7 +53,7 @@ class Google_Service_Directory_Resource_DomainAliases extends Google_Service_Res
     return $this->call('get', array($params), "Google_Service_Directory_DomainAlias");
   }
   /**
-   * Inserts a Domain alias of the customer. (domainAliases.insert)
+   * Inserts a domain alias of the customer. (domainAliases.insert)
    *
    * @param string $customer Immutable ID of the G Suite account.
    * @param Google_Service_Directory_DomainAlias $postBody

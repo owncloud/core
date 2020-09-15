@@ -62,7 +62,11 @@ class Google_Service_FactCheckTools extends Google_Service
               'path' => 'v1alpha1/claims:search',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'maxAgeDays' => array(
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -70,17 +74,13 @@ class Google_Service_FactCheckTools extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
+                'maxAgeDays' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'reviewPublisherSiteFilter' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
                 'query' => array(
                   'location' => 'query',
@@ -129,14 +129,6 @@ class Google_Service_FactCheckTools extends Google_Service
               'path' => 'v1alpha1/pages',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'organization' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -148,6 +140,14 @@ class Google_Service_FactCheckTools extends Google_Service
                 'offset' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'organization' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'update' => array(

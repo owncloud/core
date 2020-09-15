@@ -62,12 +62,8 @@ class Google_Service_Dfareporting_Resource_CreativeGroups extends Google_Service
    *
    * @opt_param string advertiserIds Select only creative groups that belong to
    * these advertisers.
-   * @opt_param int groupNumber Select only creative groups that belong to this
-   * subgroup.
-   * @opt_param string ids Select only creative groups with these IDs.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
+   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string searchString Allows searching for creative groups by name
    * or ID. Wildcards (*) are allowed. For example, "creativegroup*2015" will
    * return creative groups with names like "creativegroup June 2015",
@@ -76,8 +72,12 @@ class Google_Service_Dfareporting_Resource_CreativeGroups extends Google_Service
    * search string. For example, a search string of "creativegroup" will match
    * creative groups with the name "my creativegroup", "creativegroup 2015", or
    * simply "creativegroup".
-   * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string ids Select only creative groups with these IDs.
+   * @opt_param int groupNumber Select only creative groups that belong to this
+   * subgroup.
    * @return Google_Service_Dfareporting_CreativeGroupsListResponse
    */
   public function listCreativeGroups($profileId, $optParams = array())
@@ -91,14 +91,15 @@ class Google_Service_Dfareporting_Resource_CreativeGroups extends Google_Service
    * (creativeGroups.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $id Creative group ID.
    * @param Google_Service_Dfareporting_CreativeGroup $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string id CreativeGroup ID.
    * @return Google_Service_Dfareporting_CreativeGroup
    */
-  public function patch($profileId, $id, Google_Service_Dfareporting_CreativeGroup $postBody, $optParams = array())
+  public function patch($profileId, Google_Service_Dfareporting_CreativeGroup $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_CreativeGroup");
   }

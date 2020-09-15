@@ -39,9 +39,8 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * cleared after a successful commit operation. (servicePerimeters.commit)
    *
    * @param string $parent Required. Resource name for the parent Access Policy
-   * which owns all Service Perimeters in scope for the commit operation.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * which owns all Service Perimeters in scope for the commit operation. Format:
+   * `accessPolicies/{policy_id}`
    * @param Google_Service_AccessContextManager_CommitServicePerimetersRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
@@ -59,9 +58,7 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * response for the first error encountered. (servicePerimeters.create)
    *
    * @param string $parent Required. Resource name for the access policy which
-   * owns this Service Perimeter.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * owns this Service Perimeter. Format: `accessPolicies/{policy_id}`
    * @param Google_Service_AccessContextManager_ServicePerimeter $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
@@ -78,7 +75,6 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * removed from long-lasting storage. (servicePerimeters.delete)
    *
    * @param string $name Required. Resource name for the Service Perimeter.
-   *
    * Format: `accessPolicies/{policy_id}/servicePerimeters/{service_perimeter_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
@@ -93,7 +89,6 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * Get a Service Perimeter by resource name. (servicePerimeters.get)
    *
    * @param string $name Required. Resource name for the Service Perimeter.
-   *
    * Format:
    * `accessPolicies/{policy_id}/servicePerimeters/{service_perimeters_id}`
    * @param array $optParams Optional parameters.
@@ -110,9 +105,7 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * (servicePerimeters.listAccessPoliciesServicePerimeters)
    *
    * @param string $parent Required. Resource name for the access policy to list
-   * Service Perimeters from.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * Service Perimeters from. Format: `accessPolicies/{policy_id}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Next page token for the next batch of Service
@@ -133,7 +126,7 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * to long-lasting storage. Service Perimeter containing errors will result in
    * an error response for the first error encountered. (servicePerimeters.patch)
    *
-   * @param string $name Required. Resource name for the ServicePerimeter.  The
+   * @param string $name Required. Resource name for the ServicePerimeter. The
    * `short_name` component must begin with a letter and only include alphanumeric
    * and '_'. Format: `accessPolicies/{policy_id}/servicePerimeters/{short_name}`
    * @param Google_Service_AccessContextManager_ServicePerimeter $postBody
@@ -160,9 +153,7 @@ class Google_Service_AccessContextManager_Resource_AccessPoliciesServicePerimete
    * (servicePerimeters.replaceAll)
    *
    * @param string $parent Required. Resource name for the access policy which
-   * owns these Service Perimeters.
-   *
-   * Format: `accessPolicies/{policy_id}`
+   * owns these Service Perimeters. Format: `accessPolicies/{policy_id}`
    * @param Google_Service_AccessContextManager_ReplaceServicePerimetersRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AccessContextManager_Operation
