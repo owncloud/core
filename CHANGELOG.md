@@ -34,6 +34,7 @@ Summary
 * Change - Update symfony/polyfill (1.18.0 => 1.18.1): [#37772](https://github.com/owncloud/core/pull/37772)
 * Change - Update egulias/email-validator (2.1.18 => 2.1.19): [#37790](https://github.com/owncloud/core/pull/37790)
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
+* Change - Add system config to load a different license implementation: [#37827](https://github.com/owncloud/core/pull/37827)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
 * Change - Update doctrine/dbal (2.10.2 => 2.10.3): [#37870](https://github.com/owncloud/core/pull/37870)
@@ -238,6 +239,12 @@ Details
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
 
    https://github.com/owncloud/core/pull/37804
+
+* Change - Add system config to load a different license implementation: [#37827](https://github.com/owncloud/core/pull/37827)
+
+   The default license implementation can now be replaced.
+
+   https://github.com/owncloud/core/pull/37827
 
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 
