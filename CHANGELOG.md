@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 * Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
+* Bugfix - Translate public link sharing email subject: [#37321](https://github.com/owncloud/core/issues/37321)
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
@@ -75,6 +76,11 @@ Details
 
    https://github.com/owncloud/core/issues/35364
    https://github.com/owncloud/core/pull/37783
+
+* Bugfix - Translate public link sharing email subject: [#37321](https://github.com/owncloud/core/issues/37321)
+
+   https://github.com/owncloud/core/issues/37321
+   https://github.com/owncloud/core/pull/37322
 
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 
