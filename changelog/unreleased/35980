@@ -1,0 +1,9 @@
+Enhancement: Cleanup encryption config values on disabling encryption
+
+occ encryption:disable command was changed to delete some encryption-specific
+config key-value pairs that made reenabling encryption not possible.
+A safety check was added to prevent disabling encryption until all files are
+decrypted. The occ encryption:disable command exits with an error code and message
+if the system still has any encrypted files.
+
+https://github.com/owncloud/core/pull/35980

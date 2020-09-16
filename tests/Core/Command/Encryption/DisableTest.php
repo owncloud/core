@@ -21,15 +21,25 @@
 
 namespace Tests\Core\Command\Encryption;
 
+use Doctrine\DBAL\Driver\Statement;
 use OC\Core\Command\Encryption\Disable;
+use OC\DB\QueryBuilder\ExpressionBuilder\ExpressionBuilder;
+use OC\DB\QueryBuilder\QueryBuilder;
+use OCP\IConfig;
+use OCP\IDBConnection;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
 class DisableTest extends TestCase {
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
+	/** @var MockObject */
+	protected $db;
+	/** @var MockObject */
 	protected $config;
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
+	/** @var MockObject */
 	protected $consoleInput;
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
+	/** @var MockObject */
 	protected $consoleOutput;
 
 	/** @var \Symfony\Component\Console\Command\Command */
@@ -38,21 +48,23 @@ class DisableTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$config = $this->config = $this->getMockBuilder('OCP\IConfig')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->db = $this->createMock(IDBConnection::class);
+		$this->config = $this->createMock(IConfig::class);
+		$this->consoleInput = $this->createMock(InputInterface::class);
+		$this->consoleOutput = $this->createMock(OutputInterface::class);
 
-		/** @var \OCP\IConfig $config */
-		$this->command = new Disable($config);
+		/** @var IConfig $config */
+		$this->command = new Disable($this->db, $this->config);
 	}
 
 	public function dataDisable() {
 		return [
-			['yes', true, '1', 'Encryption disabled'],
-			['yes', true, '', 'Encryption disabled'],
-			['no', false, false, 'Encryption is already disabled'],
+			['yes', true, '1', false, 'Encryption disabled'],
+			['yes', true, '', false, 'Encryption disabled'],
+			['no', false, false, false, 'Encryption is already disabled'],
+			['yes', true, '1', true, 'Encryption disabled'],
+			['yes', true, '', true, 'Encryption disabled'],
+			['no', false, false, true, 'Encryption is already disabled'],
 		];
 	}
 
@@ -62,38 +74,66 @@ class DisableTest extends TestCase {
 	 * @param string $oldStatus
 	 * @param bool $isUpdating
 	 * @param bool $masterKeyEnabled
+	 * @param int $hasEncryptedFiles
 	 * @param string $expectedString
 	 */
-	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $expectedString) {
-		$this->config->expects($this->exactly(1))
-			->method('getAppValue')
-			->willReturnMap([
-					['core', 'encryption_enabled', 'no', $oldStatus],
-				]
-			);
+	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $hasEncryptedFiles, $expectedString) {
+		$stmt = $this->createMock(Statement::class);
+		$stmt->method('fetchColumn')
+			->willReturn($hasEncryptedFiles);
+		$qbExpr = $this->createMock(ExpressionBuilder::class);
+		$qbMock = $this->createMock(QueryBuilder::class);
+		$qbMock->method('expr')
+			->willReturn($qbExpr);
+		$qbMock->method('select')
+			->willReturnSelf();
+		$qbMock->method('from')
+			->willReturnSelf();
+		$qbMock->method('where')
+			->willReturnSelf();
+		$qbMock->method('execute')
+			->willReturn($stmt);
+		$this->db->method('getQueryBuilder')
+			->willReturn($qbMock);
 
-		$this->consoleOutput->expects($this->exactly(2))
-			->method('writeln')
-			->will($this->onConsecutiveCalls([
-				$this->stringContains('<info>Cleaned up config</info>'),
-				$this->stringContains($expectedString),
-			]));
-
-		if ($isUpdating) {
-			$this->config
-				->method('setAppValue')
+		if ($hasEncryptedFiles === false) {
+			$this->config->expects($this->exactly(1))
+				->method('getAppValue')
 				->willReturnMap([
-						['core', 'encryption_enabled', 'no', true],
+						['core', 'encryption_enabled', 'no', $oldStatus],
 					]
 				);
-			$this->config
-				->method('deleteAppValue')
-				->willReturnMap([
-					['encryption', 'useMasterKey', true],
-					['encryption', 'userSpecificKey', true],
-				]);
+
+			$this->consoleOutput->expects($this->exactly(2))
+				->method('writeln')
+				->will($this->onConsecutiveCalls([
+					$this->stringContains('<info>Cleaned up config</info>'),
+					$this->stringContains($expectedString),
+				]));
+
+			if ($isUpdating) {
+				$this->config
+					->method('setAppValue')
+					->willReturnMap([
+							['core', 'encryption_enabled', 'no', true],
+						]
+					);
+				$this->config
+					->method('deleteAppValue')
+					->willReturnMap([
+						['encryption', 'useMasterKey', true],
+						['encryption', 'userSpecificKey', true],
+					]);
+			}
+			$expectedExitCode = 0;
+		} else {
+			$this->consoleOutput->expects($this->once())
+				->method('writeln')
+				->with($this->stringContains('<info>The system still have encrypted files. Please decrypt them all before disabling encryption.</info>'));
+			$expectedExitCode = 1;
 		}
 
-		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		$exitCode = self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		$this->assertEquals($expectedExitCode, $exitCode);
 	}
 }
