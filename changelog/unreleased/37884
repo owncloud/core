@@ -1,0 +1,7 @@
+Bugfix: Fix list of apps returned by OCS Provisioning API apps endpoint
+
+Requests to ocs/v1.php/cloud/apps without any filter now return all apps,
+including the always-enabled apps.
+
+https://github.com/owncloud/core/issues/37884
+https://github.com/owncloud/core/pull/37901

@@ -764,19 +764,21 @@ class OC_App {
 	/**
 	 * List all apps, this is used in apps.php
 	 *
-	 * @param bool $onlyLocal
-	 * @param bool $includeUpdateInfo Should we check whether there is an update
-	 *                                in the app store?
+	 * @param bool $listEveryApp including always-enabled apps
 	 * @return array
 	 */
-	public static function listAllApps() {
+	public static function listAllApps(bool $listEveryApp = false) {
 		$installedApps = OC_App::getAllApps();
 
 		//TODO which apps do we want to blacklist and how do we integrate
 		// blacklisting with the multi apps folder feature?
 
-		//we don't want to show configuration for these
-		$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
+		if ($listEveryApp) {
+			$blacklist = [];
+		} else {
+			//we don't want to show configuration for these
+			$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
+		}
 		$appList = [];
 		$urlGenerator = \OC::$server->getURLGenerator();
 

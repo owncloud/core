@@ -76,7 +76,7 @@ class AppsTest extends TestCase {
 
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
-		$this->assertCount(\count(\OC_App::listAllApps(false, true)), $data['apps']);
+		$this->assertCount(\count(\OC_App::listAllApps(true)), $data['apps']);
 	}
 
 	public function testGetAppsEnabled() {
@@ -92,7 +92,7 @@ class AppsTest extends TestCase {
 		$result = $this->api->getApps(['filter' => 'disabled']);
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
-		$apps = \OC_App::listAllApps(false, true);
+		$apps = \OC_App::listAllApps(true);
 		$list =  [];
 		foreach ($apps as $app) {
 			$list[] = $app['id'];
