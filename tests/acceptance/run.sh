@@ -18,8 +18,12 @@ then
 else
     BEHAT=${BEHAT_BIN}
 fi
-
 BEHAT_TAGS_OPTION_FOUND=false
+
+if [ -n "${STEP_THROUGH}" ]
+then
+    STEP_THROUGH_OPTION="--step-through"
+fi
 
 # The following environment variables can be specified:
 #
@@ -98,6 +102,7 @@ fi
 # --part - run a subset of scenarios, need two numbers.
 #          first number: which part to run
 #          second number: in how many parts to divide the set of scenarios
+# --step-through - pause after each test step
 
 # Command line options processed here will override environment variables that
 # might have been set by the caller, or in the code above.
@@ -153,6 +158,9 @@ do
 			;;
 		--norerun)
 			RERUN_FAILED_WEBUI_SCENARIOS=false
+			;;
+		--step-through)
+			STEP_THROUGH_OPTION="--step-through"
 			;;
 		*)
 			# A "random" parameter is presumed to be a feature file to run.
@@ -368,7 +376,7 @@ function run_behat_tests() {
 		cat ${SCRIPT_PATH}/usernames.json
 	fi
 
-	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
