@@ -1199,6 +1199,22 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * This step may be useful when debugging a test. You can add the step into
+	 * a scenario and give time to look at some system state, or see if slowing
+	 * things down helps, or... Please do not use this step in the final scenarios
+	 * that are committed and run in CI.
+	 *
+	 * @When the test sleeps for :seconds seconds
+	 *
+	 * @param string $seconds
+	 *
+	 * @return void
+	 */
+	public function theTestSleeps($seconds) {
+		\sleep($seconds);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
 	 *
 	 * @param string $user
