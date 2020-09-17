@@ -18,6 +18,6 @@
 $(document).ready(function() {
 	$.get(OC.generateUrl('/license/licenseMessage'), {app: 'core'})
 		.done(function(data) {
-			OC.Notification.showHtml(data.translated_message.join('<br/>'), {type: 'error'});
+			OC.Notification.showHtml(data.translated_message.join('<br/>'), {showCloseButton: false});
 		});
 });

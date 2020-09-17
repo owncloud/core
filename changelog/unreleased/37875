@@ -1,0 +1,9 @@
+Enhancement: Re-design UI yellow notification bar
+
+The yellow notification center has been redesigned:
+- not blocking the top centered logo anymore
+- gets more attention using icons and red color
+- looks more modern
+- shows a close button by default so users can dismiss most notifications
+
+https://github.com/owncloud/core/pull/37875

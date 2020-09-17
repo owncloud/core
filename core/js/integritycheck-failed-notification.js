@@ -31,7 +31,8 @@ $(document).ready(function(){
 	OC.Notification.showHtml(
 		text,
 		{
-			isHTML: true
+			isHTML: true,
+			showCloseButton: false
 		}
 	);
 });
