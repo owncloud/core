@@ -668,6 +668,13 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function theOccCommandExitStatusWasSuccess() {
+		return ($this->featureContext->getExitStatusCodeOfOccCommand() === 0);
+	}
+
+	/**
 	 * @Then /^the command should have been successful$/
 	 *
 	 * @return void

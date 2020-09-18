@@ -1218,7 +1218,11 @@ trait Provisioning {
 			$userAttributes
 		);
 		$this->addUserToCreatedUsersList(
-			$username, $password, $displayname, $email
+			$username,
+			$password,
+			$displayname,
+			$email,
+			$this->theHTTPStatusCodeWasSuccess()
 		);
 		if (OcisHelper::isTestingOnOcis()) {
 			$this->manuallyAddSkeletonFilesForUser($username, $password);
@@ -1250,7 +1254,13 @@ trait Provisioning {
 			"/cloud/users",
 			$bodyTable
 		);
-		$this->addUserToCreatedUsersList($user, $password, null, $email);
+		$this->addUserToCreatedUsersList(
+			$user,
+			$password,
+			null,
+			$email,
+			$this->theHTTPStatusCodeWasSuccess()
+		);
 		if (OcisHelper::isTestingOnOcis()) {
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
 		}
@@ -1286,7 +1296,13 @@ trait Provisioning {
 			"/cloud/users",
 			$bodyTable
 		);
-		$this->addUserToCreatedUsersList($user, $password, null, $email);
+		$this->addUserToCreatedUsersList(
+			$user,
+			$password,
+			null,
+			$email,
+			$this->theHTTPStatusCodeWasSuccess()
+		);
 		if (OcisHelper::isTestingOnOcis()) {
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
 		}

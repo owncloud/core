@@ -1414,6 +1414,15 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 *
+	 * @return bool
+	 */
+	public function theHTTPStatusCodeWasSuccess() {
+		$statusCode = $this->response->getStatusCode();
+		return (($statusCode >= 200) && ($statusCode <= 299));
+	}
+
+	/**
 	 * Check the text in an HTTP reason phrase
 	 *
 	 * @Then /^the HTTP reason phrase should be "([^"]*)"$/
