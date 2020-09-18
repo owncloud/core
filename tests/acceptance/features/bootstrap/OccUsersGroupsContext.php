@@ -104,7 +104,8 @@ class OccUsersGroupsContext implements Context {
 				$username,
 				$password,
 				$displayName,
-				$email
+				$email,
+				$this->occContext->theOccCommandExitStatusWasSuccess()
 			);
 		}
 	}
@@ -178,7 +179,13 @@ class OccUsersGroupsContext implements Context {
 			'OC_PASS',
 			$this->featureContext->getActualPassword($password)
 		);
-		$this->featureContext->addUserToCreatedUsersList($user, $password);
+		$this->featureContext->addUserToCreatedUsersList(
+			$user,
+			$password,
+			null,
+			null,
+			$this->occContext->theOccCommandExitStatusWasSuccess()
+		);
 		$this->featureContext->addGroupToCreatedGroupsList($group);
 	}
 
