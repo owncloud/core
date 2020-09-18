@@ -2,7 +2,9 @@
 Feature: resharing a resource with an expiration date
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
 
   @skipOnOcV10.3
@@ -10,12 +12,14 @@ Feature: resharing a resource with an expiration date
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
-      | expireDate  | +3 days       |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+      | expireDate  | +3 days               |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -34,12 +38,14 @@ Feature: resharing a resource with an expiration date
     And group "grp1" has been created
     And user "Carol" has been added to group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | group         |
-      | permissions | change        |
-      | shareWith   | grp1          |
-      | expireDate  | +3 days       |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | group                 |
+      | permissions | change                |
+      | shareWith   | grp1                  |
+      | expireDate  | +3 days               |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -59,11 +65,13 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -87,11 +95,13 @@ Feature: resharing a resource with an expiration date
     And group "grp1" has been created
     And user "Carol" has been added to group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | group         |
-      | permissions | change        |
-      | shareWith   | grp1          |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | group                 |
+      | permissions | change                |
+      | shareWith   | grp1                  |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -112,11 +122,13 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -139,11 +151,13 @@ Feature: resharing a resource with an expiration date
     And group "grp1" has been created
     And user "Carol" has been added to group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | group         |
-      | permissions | change        |
-      | shareWith   | grp1          |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | group                 |
+      | permissions | change                |
+      | shareWith   | grp1                  |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -165,12 +179,14 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
-      | expireDate  | +20 days      |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+      | expireDate  | +20 days              |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -194,12 +210,14 @@ Feature: resharing a resource with an expiration date
     And group "grp1" has been created
     And user "Carol" has been added to group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | group         |
-      | permissions | change        |
-      | shareWith   | grp1          |
-      | expireDate  | +20 days      |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | group                 |
+      | permissions | change                |
+      | shareWith   | grp1                  |
+      | expireDate  | +20 days              |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -218,7 +236,9 @@ Feature: resharing a resource with an expiration date
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
-    And user "Brian" has shared file "/textfile0.txt" with user "Carol"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    And user "Brian" has shared file "/Shares/textfile0.txt" with user "Carol"
+    And user "Carol" has accepted share "/textfile0.txt" offered by user "Brian"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce-expire-date>"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "4"
@@ -246,11 +266,13 @@ Feature: resharing a resource with an expiration date
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -274,12 +296,14 @@ Feature: resharing a resource with an expiration date
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
-      | expireDate  | +20 days      |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+      | expireDate  | +20 days              |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -301,11 +325,13 @@ Feature: resharing a resource with an expiration date
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update,share"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -332,11 +358,13 @@ Feature: resharing a resource with an expiration date
       | permissions | all           |
       | shareWith   | Brian         |
       | expireDate  | +20 days      |
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Alice" should include
@@ -365,12 +393,14 @@ Feature: resharing a resource with an expiration date
       | permissions | all           |
       | shareWith   | Brian         |
       | expireDate  | +20 days      |
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
-      | expireDate  | +40 days      |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+      | expireDate  | +40 days              |
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Alice" should include
@@ -397,12 +427,13 @@ Feature: resharing a resource with an expiration date
       | permissions | all           |
       | shareWith   | Brian         |
       | expireDate  | +20 days      |
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" creates a share using the sharing API with settings
-      | path        | textfile0.txt |
-      | shareType   | user          |
-      | permissions | change        |
-      | shareWith   | Carol         |
-      | expireDate  | +40 days      |
+      | path        | /Shares/textfile0.txt |
+      | shareType   | user                  |
+      | permissions | change                |
+      | shareWith   | Carol                 |
+      | expireDate  | +40 days              |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the information of the last share of user "Alice" should include
