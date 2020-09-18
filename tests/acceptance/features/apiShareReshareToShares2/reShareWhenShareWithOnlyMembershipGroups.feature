@@ -18,7 +18,7 @@ Feature: resharing a resource with an expiration date
     When user "Brian" shares folder "/Shares/PARENT" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "Carol" folder "/PARENT (2)" should not exist
+    And as "Carol" folder "/Shares/PARENT" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
@@ -35,7 +35,7 @@ Feature: resharing a resource with an expiration date
     When user "Brian" shares folder "/Shares/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "Carol" folder "/textfile0 (2).txt" should not exist
+    And as "Carol" folder "/Shares/textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
