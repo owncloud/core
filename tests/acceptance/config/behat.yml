@@ -279,9 +279,21 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareReshare3:
+    apiShareReshareToRoot3:
       paths:
-        - '%paths.base%/../features/apiShareReshare3'
+        - '%paths.base%/../features/apiShareReshareToRoot3'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiShareReshareToShares3:
+      paths:
+        - '%paths.base%/../features/apiShareReshareToShares3'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
