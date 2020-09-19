@@ -106,6 +106,7 @@ OC.L10N.register(
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Dosyalarınız şifrelenmiş. Kurtarma anahtarını etkinleştirmemişseniz, parola sıfırlama işleminden sonra verilerinize erişmeniz imkansız olacak.<br />Ne yaptığınızdan emin değilseniz, devam etmeden önce sistem yöneticiniz ile iletişime geçin.<br />Gerçekten devam etmek istiyor musunuz?",
     "I know what I'm doing" : "Ne yaptığımı biliyorum",
     "Password can not be changed. Please contact your administrator." : "Parola değiştirilemedi. Lütfen yöneticiniz ile iletişime geçin.",
+    "Passwords do not match" : "Parolalar uyuşmuyor",
     "Error adding {addItem}: {addItem} already exists" : "{addItem} eklerken hata: {addItem} zaten mevcut",
     "No" : "Hayır",
     "Yes" : "Evet",
