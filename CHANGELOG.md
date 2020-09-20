@@ -48,6 +48,8 @@ Summary
 * Change - Update doctrine/dbal (2.10.3 => 2.10.4): [#37904](https://github.com/owncloud/core/pull/37904)
 * Change - Update symfony/translation-contracts (v1.1.9 => v1.1.10): [#37904](https://github.com/owncloud/core/pull/37904)
 * Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
+* Change - Update sabre/event (5.1.0 => 5.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
+* Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -318,6 +320,14 @@ Details
    v1.12.0)
 
    https://github.com/owncloud/core/pull/37912
+
+* Change - Update sabre/event (5.1.0 => 5.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
+
+   https://github.com/owncloud/core/pull/37921
+
+* Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
+
+   https://github.com/owncloud/core/pull/37921
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
