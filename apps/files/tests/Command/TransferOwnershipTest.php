@@ -391,6 +391,7 @@ class TransferOwnershipTest extends TestCase {
 		$shareNode->method('getPath')->willReturn('/source-user/files/transfer');
 		$share = $this->createMock(IShare::class);
 		$share->method('getId')->willReturn(1);
+		$share->method('getShareType')->willReturn(1);
 		$share->method('getNode')->willThrowException($exception);
 
 		$shareManager = $this->createMock(IManager::class);
@@ -417,7 +418,7 @@ class TransferOwnershipTest extends TestCase {
 		$commandTester->execute($input);
 		$output = $commandTester->getDisplay();
 
-		$this->assertStringContainsString('Share with id 1 points at deleted file, skipping', $output);
+		$this->assertStringContainsString('Share with id 1 and type 1 points at deleted file or share that is no longer accessible, skipping', $output);
 		foreach ($expectedOutputs as $expectedOutput) {
 			$this->assertStringContainsString($expectedOutput, $output);
 		}
