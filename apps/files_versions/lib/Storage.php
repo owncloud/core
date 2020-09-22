@@ -188,7 +188,13 @@ class Storage {
 
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
-			$users_view->copy('files/' . $filename, 'files_versions/' . $filename . '.v' . $mtime);
+
+			// copy the version via stream to set properly the checksum of the version
+			$source = $users_view->fopen("files/$filename", 'rb');
+			$target = $users_view->fopen("files_versions/$filename.v$mtime", 'wb');
+			\OC_Helper::streamCopy($source, $target);
+			\fclose($source);
+			\fclose($target);
 			// call getFileInfo to enforce a file cache entry for the new version
 			$users_view->getFileInfo('files_versions/' . $filename . '.v' . $mtime);
 		}
