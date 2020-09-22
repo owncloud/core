@@ -50,6 +50,8 @@ Summary
 * Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
 * Change - Update sabre/event (5.1.0 => 5.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
 * Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
+* Change - Update pear/archive_tar (1.4.9 => 1.4.10): [#37926](https://github.com/owncloud/core/pull/37926)
+* Change - Update egulias/email-validator (2.1.20 => 2.1.21): [#37926](https://github.com/owncloud/core/pull/37926)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -328,6 +330,14 @@ Details
 * Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
 
    https://github.com/owncloud/core/pull/37921
+
+* Change - Update pear/archive_tar (1.4.9 => 1.4.10): [#37926](https://github.com/owncloud/core/pull/37926)
+
+   https://github.com/owncloud/core/pull/37926
+
+* Change - Update egulias/email-validator (2.1.20 => 2.1.21): [#37926](https://github.com/owncloud/core/pull/37926)
+
+   https://github.com/owncloud/core/pull/37926
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
