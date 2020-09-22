@@ -10,7 +10,7 @@
 	"require": {
 		"icewind/smb": "3.2.7",
 		"icewind/streams": "0.7.2",
-		"google/apiclient": "2.7.1",
+		"google/apiclient": "2.7.2",
 		"guzzlehttp/guzzle": "^5.3"
 	},
 	"autoload": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49136b6738999051f7eaa26e48d3a21e",
+    "content-hash": "79db643f276f2d1bc70f41aff9285c07",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -58,16 +58,16 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "e748d1d5a51166754f13809d35f1fa162cbec530"
+                "reference": "9df720d72c59456b5466e3f66e1e78cfe422a5ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/e748d1d5a51166754f13809d35f1fa162cbec530",
-                "reference": "e748d1d5a51166754f13809d35f1fa162cbec530",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/9df720d72c59456b5466e3f66e1e78cfe422a5ba",
+                "reference": "9df720d72c59456b5466e3f66e1e78cfe422a5ba",
                 "shasum": ""
             },
             "require": {
@@ -116,20 +116,20 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-09-08T16:38:08+00:00"
+            "time": "2020-09-18T20:02:04+00:00"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.146",
+            "version": "v0.147",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "029e20e81508cee6dc652529514eeeb1cf56ce54"
+                "reference": "8624bd004cfccb33b760ae7650d0b750168cd7f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/029e20e81508cee6dc652529514eeeb1cf56ce54",
-                "reference": "029e20e81508cee6dc652529514eeeb1cf56ce54",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/8624bd004cfccb33b760ae7650d0b750168cd7f7",
+                "reference": "8624bd004cfccb33b760ae7650d0b750168cd7f7",
                 "shasum": ""
             },
             "require": {
@@ -153,20 +153,20 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-09-12T00:24:59+00:00"
+            "time": "2020-09-20T00:24:43+00:00"
         },
         {
             "name": "google/auth",
-            "version": "v1.12.0",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "74cad289014f7ef747618480f6b59f6303357f34"
+                "reference": "173191f5defd1d9ae8bdfc28da31b63eb73dd34e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/74cad289014f7ef747618480f6b59f6303357f34",
-                "reference": "74cad289014f7ef747618480f6b59f6303357f34",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/173191f5defd1d9ae8bdfc28da31b63eb73dd34e",
+                "reference": "173191f5defd1d9ae8bdfc28da31b63eb73dd34e",
                 "shasum": ""
             },
             "require": {
@@ -205,7 +205,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2020-09-08T16:33:56+00:00"
+            "time": "2020-09-18T20:03:05+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
