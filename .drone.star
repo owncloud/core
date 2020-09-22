@@ -264,47 +264,70 @@ config = {
 }
 
 def main(ctx):
-	initial = initialPipelines()
+	initial = initialPipelines(ctx)
 
 	before = beforePipelines(ctx)
 	dependsOn(initial, before)
 
+	coverageTests = coveragePipelines(ctx)
+	if (coverageTests == False):
+		print('Errors detected in coveragePipelines. Review messages above.')
+		return []
+
+	dependsOn(before, coverageTests)
+
 	stages = stagePipelines(ctx)
 	if (stages == False):
-		print('Errors detected. Review messages above.')
+		print('Errors detected in stagePipelines. Review messages above.')
 		return []
 
 	dependsOn(before, stages)
 
-	after = afterPipelines()
-	dependsOn(stages, after)
+	afterCoverageTests = afterCoveragePipelines(ctx)
+	dependsOn(coverageTests, afterCoverageTests)
 
-	return initial + before + stages + after
+	after = afterPipelines(ctx)
+	dependsOn(afterCoverageTests + stages, after)
 
-def initialPipelines():
-	return dependencies()
+	return initial + before + coverageTests + afterCoverageTests + stages + after
+
+def initialPipelines(ctx):
+	return dependencies(ctx)
 
 def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
 
-def stagePipelines(ctx):
-	jsPipelines = javascript()
-	litmusPipelines = litmus()
-	davPipelines = dav()
-	phpunitPipelines = phptests('phpunit')
-	phpintegrationPipelines = phptests('phpintegration')
-	acceptancePipelines = acceptance(ctx)
-	if (jsPipelines == False) or (litmusPipelines == False) or (davPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False) or (acceptancePipelines == False):
+def coveragePipelines(ctx):
+	# All pipelines that might have coverage or other test analysis reported
+	jsPipelines = javascript(ctx)
+	phpunitPipelines = phptests(ctx, 'phpunit')
+	phpintegrationPipelines = phptests(ctx, 'phpintegration')
+	if (jsPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False):
 		return False
 
-	return jsPipelines + litmusPipelines + davPipelines + phpunitPipelines + phpintegrationPipelines + acceptancePipelines
+	return jsPipelines + phpunitPipelines + phpintegrationPipelines
 
-def afterPipelines():
+def stagePipelines(ctx):
+	# Pipelines that do not produce coverage or other test analysis reports
+	litmusPipelines = litmus()
+	davPipelines = dav()
+	acceptancePipelines = acceptance(ctx)
+	if (litmusPipelines == False) or (davPipelines == False) or (acceptancePipelines == False):
+		return False
+
+	return litmusPipelines + davPipelines + acceptancePipelines
+
+def afterCoveragePipelines(ctx):
+	return [
+		sonarAnalysis(ctx)
+	]
+
+def afterPipelines(ctx):
 	return [
 		notify()
 	]
 
-def dependencies():
+def dependencies(ctx):
 	pipelines = []
 
 	if 'dependencies' not in config:
@@ -353,64 +376,8 @@ def dependencies():
 					composerInstall(phpVersion) +
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
-					[
-						{
-							'name': 'cache-rebuild',
-							'image': 'plugins/s3-cache:1',
-							'pull': 'always',
-							'settings': {
-								'access_key': {
-									'from_secret': 'cache_s3_access_key'
-								},
-								'endpoint': {
-									'from_secret': 'cache_s3_endpoint'
-								},
-								'mount': [
-									'.cache'
-								],
-								'rebuild': True,
-								'secret_key': {
-									'from_secret': 'cache_s3_secret_key'
-								}
-							},
-							'when': {
-								'event': [
-									'push',
-								],
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
-							}
-						},
-						{
-							'name': 'cache-flush',
-							'image': 'plugins/s3-cache:1',
-							'pull': 'always',
-							'settings': {
-								'access_key': {
-									'from_secret': 'cache_s3_access_key'
-								},
-								'endpoint': {
-									'from_secret': 'cache_s3_endpoint'
-								},
-								'flush': True,
-								'flush_age': '14',
-								'secret_key': {
-									'from_secret': 'cache_s3_secret_key'
-								}
-							},
-							'when': {
-								'event': [
-									'push',
-								],
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
-							}
-						}
-					],
+					cacheRebuildOnEventPush() +
+					cacheFlushOnEventPush(),
 				'depends_on': [],
 				'trigger': {
 					'ref': [
@@ -1006,7 +973,7 @@ def dav():
 
 	return pipelines
 
-def javascript():
+def javascript(ctx):
 	pipelines = []
 
 	if 'javascript' not in config:
@@ -1069,37 +1036,33 @@ def javascript():
 	}
 
 	if params['coverage']:
-		result['steps'].append({
-			'name': 'coverage-upload',
-			'image': 'plugins/codecov:latest',
-			'pull': 'always',
-			'environment': {
-				'CODECOV_TOKEN': {
-					'from_secret': 'codecov_token'
+		result['steps'].append(
+			{
+				'name': 'coverage-cache',
+				'image': 'plugins/s3',
+				'pull': 'always',
+				'settings': {
+					'endpoint': {
+						'from_secret': 'cache_s3_endpoint'
+					},
+					'bucket': 'cache',
+					'source': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info',
+					'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+					'path_style': True,
+					'strip_prefix': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)',
+					'access_key': {
+						'from_secret': 'cache_s3_access_key'
+					},
+					'secret_key': {
+						'from_secret': 'cache_s3_secret_key'
+					}
 				}
-			},
-			'settings': {
-				'files': [
-					'*.xml'
-				],
-				'flags': [
-					'javascript'
-				],
-				'paths': [
-					'tests/output/coverage',
-				],
-			},
-			'when': {
-				'instance': [
-					'drone.owncloud.services',
-					'drone.owncloud.com'
-				],
 			}
-		})
+		)
 
 	return [result]
 
-def phptests(testType):
+def phptests(ctx, testType):
 	pipelines = []
 
 	if testType not in config:
@@ -1185,6 +1148,22 @@ def phptests(testType):
 						needScality = False
 						primaryObjectstore = ''
 
+					if (filesExternalType == ''):
+						# for the regular unit test runs, the clover coverage results are in a file named like:
+						# autotest-clover-sqlite.xml
+						coverageFileNameStart = 'autotest'
+						extraCoverageRenameCommand = []
+						extraCoverage = False
+					else:
+						# for the files-external unit test runs, the clover coverage results are in 2 files named like:
+						# autotest-external-clover-sqlite.xml
+						# autotest-external-clover-sqlite-samba.xml
+						coverageFileNameStart = 'autotest-external'
+						extraCoverageRenameCommand = [
+							'mv tests/output/coverage/%s-clover-%s-%s.xml tests/output/coverage/clover-%s-%s.xml' % (coverageFileNameStart, getDbName(db), externalType, name, externalType)
+						]
+						extraCoverage = True
+
 					if ((externalType == 'scality') or (params['cephS3'] != False) or (params['scalityS3'] != False)):
 						# If we need S3 storage, then install the 'files_primary_s3' app
 						extraAppsDict  = {
@@ -1250,32 +1229,56 @@ def phptests(testType):
 
 					if params['coverage']:
 						result['steps'].append({
-							'name': 'coverage-upload',
-							'image': 'plugins/codecov:latest',
+							'name': 'coverage-rename',
+							'image': 'owncloudci/php:%s' % phpVersion,
 							'pull': 'always',
-							'environment': {
-								'CODECOV_TOKEN': {
-									'from_secret': 'codecov_token'
-								}
-							},
+							'commands': [
+								'mv tests/output/coverage/%s-clover-%s.xml tests/output/coverage/clover-%s.xml' % (coverageFileNameStart, getDbName(db), name)
+							] + extraCoverageRenameCommand
+						})
+						result['steps'].append({
+							'name': 'coverage-cache-1',
+							'image': 'plugins/s3',
+							'pull': 'always',
 							'settings': {
-								'files': [
-									'*.xml'
-								],
-								'flags': [
-									'phpunit'
-								],
-								'paths': [
-									'tests/output/coverage',
-								],
-							},
-							'when': {
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
+								'endpoint': {
+									'from_secret': 'cache_s3_endpoint'
+								},
+								'bucket': 'cache',
+								'source': 'tests/output/coverage/clover-%s.xml'  % (name),
+								'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+								'path_style': True,
+								'strip_prefix': 'tests/output/coverage',
+								'access_key': {
+									'from_secret': 'cache_s3_access_key'
+								},
+								'secret_key': {
+									'from_secret': 'cache_s3_secret_key'
+								}
 							}
 						})
+						if extraCoverage:
+							result['steps'].append({
+								'name': 'coverage-cache-2',
+								'image': 'plugins/s3',
+								'pull': 'always',
+								'settings': {
+									'endpoint': {
+										'from_secret': 'cache_s3_endpoint'
+									},
+									'bucket': 'cache',
+									'source': 'tests/output/coverage/clover-%s-%s.xml'  % (name, externalType),
+									'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+									'path_style': True,
+									'strip_prefix': 'tests/output/coverage',
+									'access_key': {
+										'from_secret': 'cache_s3_access_key'
+									},
+									'secret_key': {
+										'from_secret': 'cache_s3_secret_key'
+									}
+								}
+							})
 
 					pipelines.append(result)
 
@@ -1512,6 +1515,89 @@ def acceptance(ctx):
 		return False
 
 	return pipelines
+
+def sonarAnalysis(ctx, phpVersion = '7.4'):
+	result = {
+		'kind': 'pipeline',
+		'type': 'docker',
+		'name': 'sonar-analysis',
+		'workspace' : {
+			'base': '/drone',
+			'path': 'src'
+		},
+		'steps':
+			cacheRestore() +
+			composerInstall(phpVersion) +
+			vendorbinInstall(phpVersion) +
+			yarnInstall(phpVersion) +
+			installServer(phpVersion, 'sqlite') +
+		[
+			{
+				'name': 'sync-from-cache',
+				'image': 'minio/mc',
+				'pull': 'always',
+				'environment': {
+					'MC_HOST_cache': {
+						'from_secret': 'cache_s3_connection_url'
+					},
+				},
+				'commands': [
+					'mkdir -p results',
+					'mc mirror cache/cache/%s/%s/coverage results/' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+				]
+			},
+			{
+				'name': 'setup-before-sonarcloud',
+				'image': 'owncloudci/php:%s' % phpVersion,
+				'pull': 'always',
+				'commands': [
+					'pwd',
+					'ls -l',
+					'ls -l results',
+					'ls -l apps',
+					'ls -l config',
+					'cd apps',
+					'git clone https://github.com/owncloud/files_primary_s3.git',
+					'cd files_primary_s3',
+					'composer install',
+					'cd /drone/src'
+				]
+			},
+			{
+				'name': 'sonarcloud',
+				'image': 'sonarsource/sonar-scanner-cli',
+				'pull': 'always',
+				'environment': {
+					'SONAR_TOKEN': {
+						'from_secret': 'sonar_token'
+					},
+					'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
+					'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
+					'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
+					'SONAR_SCANNER_OPTS': '-Xdebug'
+				},
+				'when': {
+					'instance': [
+						'drone.owncloud.services',
+						'drone.owncloud.com'
+					],
+				}
+			}
+		],
+		'depends_on': [],
+		'trigger': {
+			'ref': [
+				'refs/pull/**',
+				'refs/tags/**'
+			]
+		}
+	}
+
+	for branch in config['branches']:
+		result['trigger']['ref'].append('refs/heads/%s' % branch)
+
+	return result
+
 
 def notify():
 	result = {
@@ -1842,6 +1928,66 @@ def cacheRestore():
 		}
 	}]
 
+def cacheRebuildOnEventPush():
+	return [{
+		'name': 'cache-rebuild',
+		'image': 'plugins/s3-cache:1',
+		'pull': 'always',
+		'settings': {
+			'access_key': {
+				'from_secret': 'cache_s3_access_key'
+			},
+			'endpoint': {
+				'from_secret': 'cache_s3_endpoint'
+			},
+			'mount': [
+				'.cache'
+			],
+			'rebuild': True,
+			'secret_key': {
+				'from_secret': 'cache_s3_secret_key'
+			}
+		},
+		'when': {
+			'event': [
+				'push',
+			],
+			'instance': [
+				'drone.owncloud.services',
+				'drone.owncloud.com'
+			],
+		}
+	}]
+
+def cacheFlushOnEventPush():
+	return [{
+		'name': 'cache-flush',
+		'image': 'plugins/s3-cache:1',
+		'pull': 'always',
+		'settings': {
+			'access_key': {
+				'from_secret': 'cache_s3_access_key'
+			},
+			'endpoint': {
+				'from_secret': 'cache_s3_endpoint'
+			},
+			'flush': True,
+			'flush_age': '14',
+			'secret_key': {
+				'from_secret': 'cache_s3_secret_key'
+			}
+		},
+		'when': {
+			'event': [
+				'push',
+			],
+			'instance': [
+				'drone.owncloud.services',
+				'drone.owncloud.com'
+			],
+		}
+	}]
+
 def composerInstall(phpVersion):
 	return [{
 		'name': 'composer-install',
@@ -1965,7 +2111,7 @@ def databaseServiceForFederation(db, suffix):
 		}
 	}]
 
-def installServer(phpVersion, db, logLevel, ssl = False, federatedServerNeeded = False, proxyNeeded = False):
+def installServer(phpVersion, db, logLevel = '2', ssl = False, federatedServerNeeded = False, proxyNeeded = False):
 	return [{
 		'name': 'install-server',
 		'image': 'owncloudci/php:%s' % phpVersion,

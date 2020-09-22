@@ -266,7 +266,8 @@ module.exports = function(config) {
 			dir:'tests/output/coverage',
 			reporters: [
 				{ type: 'html' },
-				{ type: 'cobertura' }
+				{ type: 'cobertura' },
+				{ type: 'lcov' },
 			]
 		},
 
