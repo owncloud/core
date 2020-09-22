@@ -23,6 +23,7 @@ namespace OC\Files\Storage\Wrapper;
 use Icewind\Streams\CallbackWrapper;
 use Doctrine\DBAL\Exception\DriverException;
 use OC\Files\Stream\Checksum as ChecksumStream;
+use OCP\Files\IHomeStorage;
 
 /**
  * Class Checksum
@@ -91,9 +92,14 @@ class Checksum extends Wrapper {
 	 * @return int
 	 */
 	private function getChecksumRequirement($path, $mode) {
+		$isNormalFile = true;
+		if ($this->instanceOfStorage(IHomeStorage::class)) {
+			// home storage stores files in "files"
+			$isNormalFile = \substr($path, 0, 6) === 'files/';
+		}
 		$fileIsWritten = $mode !== 'r' && $mode !== 'rb';
 
-		if ($fileIsWritten) {
+		if ($isNormalFile && $fileIsWritten) {
 			return self::PATH_NEW_OR_UPDATED;
 		}
 
