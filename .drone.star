@@ -92,7 +92,7 @@ config = {
 }
 
 def main(ctx):
-	initial = initialPipelines()
+	initial = initialPipelines(ctx)
 
 	before = beforePipelines(ctx)
 	dependsOn(initial, before)
@@ -104,35 +104,36 @@ def main(ctx):
 
 	dependsOn(before, stages)
 
-	after = afterPipelines()
+	after = afterPipelines(ctx)
 	dependsOn(stages, after)
 
 	return initial + before + stages + after
 
-def initialPipelines():
-	return dependencies()
+def initialPipelines(ctx):
+	return dependencies(ctx)
 
 def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
 
 def stagePipelines(ctx):
-	jsPipelines = javascript()
+	jsPipelines = javascript(ctx)
 	litmusPipelines = litmus()
 	davPipelines = dav()
-	phpunitPipelines = phptests('phpunit')
-	phpintegrationPipelines = phptests('phpintegration')
+	phpunitPipelines = phptests(ctx, 'phpunit')
+	phpintegrationPipelines = phptests(ctx, 'phpintegration')
 	acceptancePipelines = acceptance(ctx)
 	if (jsPipelines == False) or (litmusPipelines == False) or (davPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False) or (acceptancePipelines == False):
 		return False
 
 	return jsPipelines + litmusPipelines + davPipelines + phpunitPipelines + phpintegrationPipelines + acceptancePipelines
 
-def afterPipelines():
+def afterPipelines(ctx):
 	return [
+		sonarAnalysis(ctx),
 		notify()
 	]
 
-def dependencies():
+def dependencies(ctx):
 	pipelines = []
 
 	if 'dependencies' not in config:
@@ -181,64 +182,9 @@ def dependencies():
 					composerInstall(phpVersion) +
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
-					[
-						{
-							'name': 'cache-rebuild',
-							'image': 'plugins/s3-cache:1',
-							'pull': 'always',
-							'settings': {
-								'access_key': {
-									'from_secret': 'cache_s3_access_key'
-								},
-								'endpoint': {
-									'from_secret': 'cache_s3_endpoint'
-								},
-								'mount': [
-									'.cache'
-								],
-								'rebuild': True,
-								'secret_key': {
-									'from_secret': 'cache_s3_secret_key'
-								}
-							},
-							'when': {
-								'event': [
-									'push',
-								],
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
-							}
-						},
-						{
-							'name': 'cache-flush',
-							'image': 'plugins/s3-cache:1',
-							'pull': 'always',
-							'settings': {
-								'access_key': {
-									'from_secret': 'cache_s3_access_key'
-								},
-								'endpoint': {
-									'from_secret': 'cache_s3_endpoint'
-								},
-								'flush': True,
-								'flush_age': '14',
-								'secret_key': {
-									'from_secret': 'cache_s3_secret_key'
-								}
-							},
-							'when': {
-								'event': [
-									'push',
-								],
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
-							}
-						}
-					],
+					cacheRebuildOnEventPush() +
+					cacheFlushOnEventPush() +
+					createSharedDataFolder(ctx, phpVersion),
 				'depends_on': [],
 				'trigger': {
 					'ref': [
@@ -834,7 +780,7 @@ def dav():
 
 	return pipelines
 
-def javascript():
+def javascript(ctx):
 	pipelines = []
 
 	if 'javascript' not in config:
@@ -896,26 +842,21 @@ def javascript():
 		}
 	}
 
-	if params['coverage']:
+	uploadCoverage = False
+
+	# if params['coverage']:
+	if uploadCoverage:
 		result['steps'].append({
-			'name': 'coverage-upload',
-			'image': 'plugins/codecov:latest',
+			'name': 'sonarcloud',
+			'image': 'sonarsource/sonar-scanner-cli',
 			'pull': 'always',
 			'environment': {
-				'CODECOV_TOKEN': {
-					'from_secret': 'codecov_token'
-				}
-			},
-			'settings': {
-				'files': [
-					'*.xml'
-				],
-				'flags': [
-					'javascript'
-				],
-				'paths': [
-					'tests/output/coverage',
-				],
+				'SONAR_TOKEN': {
+					'from_secret': 'sonar_token'
+				},
+				'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
+				'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
+				'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
 			},
 			'when': {
 				'instance': [
@@ -927,7 +868,7 @@ def javascript():
 
 	return [result]
 
-def phptests(testType):
+def phptests(ctx, testType):
 	pipelines = []
 
 	if testType not in config:
@@ -1013,6 +954,20 @@ def phptests(testType):
 						needScality = False
 						primaryObjectstore = ''
 
+					if (filesExternalType == ''):
+						# for the regular unit test runs, the clover coverage results are in a file named like:
+						# autotest-clover-sqlite.xml
+						coverageFileNameStart = 'autotest'
+						extraResultsToUpload = []
+					else:
+						# for the files-external unit test runs, the clover coverage results are in 2 files named like:
+						# autotest-external-clover-sqlite.xml
+						# autotest-external-clover-sqlite-samba.xml
+						coverageFileNameStart = 'autotest-external'
+						extraResultsToUpload = [
+							'curl -u "$${SHARED_STORAGE_KEY}:" -X PUT $${SHARED_STORAGE_BASE}/public.php/webdav/commit-%s/clover-%s-%s.xml -T tests/output/coverage/%s-clover-%s-%s.xml' % (ctx.build.commit, name, externalType, coverageFileNameStart, getDbName(db), externalType)
+						]
+
 					if ((externalType == 'scality') or (params['cephS3'] != False) or (params['scalityS3'] != False)):
 						# If we need S3 storage, then install the 'files_primary_s3' app
 						extraAppsDict  = {
@@ -1049,6 +1004,12 @@ def phptests(testType):
 								'image': 'owncloudci/php:%s' % phpVersion,
 								'pull': 'always',
 								'environment': {
+									'SHARED_STORAGE_BASE': {
+										'from_secret': 'shared_storage_base'
+									},
+									'SHARED_STORAGE_KEY': {
+										'from_secret': 'shared_storage_key'
+									},
 									'COVERAGE': params['coverage'],
 									'DB_TYPE': getDbName(db),
 									'FILES_EXTERNAL_TYPE': filesExternalType,
@@ -1079,30 +1040,20 @@ def phptests(testType):
 					if params['coverage']:
 						result['steps'].append({
 							'name': 'coverage-upload',
-							'image': 'plugins/codecov:latest',
+							'image': 'owncloudci/php:%s' % phpVersion,
 							'pull': 'always',
 							'environment': {
-								'CODECOV_TOKEN': {
-									'from_secret': 'codecov_token'
-								}
+								'SHARED_STORAGE_BASE': {
+									'from_secret': 'shared_storage_base'
+								},
+								'SHARED_STORAGE_KEY': {
+									'from_secret': 'shared_storage_key'
+								},
 							},
-							'settings': {
-								'files': [
-									'*.xml'
-								],
-								'flags': [
-									'phpunit'
-								],
-								'paths': [
-									'tests/output/coverage',
-								],
-							},
-							'when': {
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
-							}
+							'commands': [
+								'ls -l tests/output/coverage',
+								'curl -u "$${SHARED_STORAGE_KEY}:" -X PUT $${SHARED_STORAGE_BASE}/public.php/webdav/commit-%s/clover-%s.xml -T tests/output/coverage/%s-clover-%s.xml' % (ctx.build.commit, name, coverageFileNameStart, getDbName(db))
+							] + extraResultsToUpload
 						})
 
 					pipelines.append(result)
@@ -1340,6 +1291,51 @@ def acceptance(ctx):
 		return False
 
 	return pipelines
+
+def sonarAnalysis(ctx):
+	result = {
+		'kind': 'pipeline',
+		'type': 'docker',
+		'name': 'sonar-analysis',
+		'clone': {
+			'disable': True
+		},
+		'steps': [
+			{
+				'name': 'get-test-results',
+				'image': 'owncloudci/php',
+				'pull': 'always',
+				'environment': {
+					'SHARED_STORAGE_BASE': {
+						'from_secret': 'shared_storage_base'
+					},
+					'SHARED_STORAGE_KEY': {
+						'from_secret': 'shared_storage_key'
+					},
+				},
+				'commands': [
+					'curl --output test-results.zip $${SHARED_STORAGE_BASE}/index.php/s/$${SHARED_STORAGE_KEY}/download?path=%%2Fcommit-%s' % ctx.build.commit,
+					'unzip -j test-results.zip -d results',
+					'pwd',
+					'ls -l',
+					'ls -l results'
+				]
+			}
+		],
+		'depends_on': [],
+		'trigger': {
+			'ref': [
+				'refs/pull/**',
+				'refs/tags/**'
+			]
+		}
+	}
+
+	for branch in config['branches']:
+		result['trigger']['ref'].append('refs/heads/%s' % branch)
+
+	return result
+
 
 def notify():
 	result = {
@@ -1668,6 +1664,84 @@ def cacheRestore():
 				'drone.owncloud.com'
 			],
 		}
+	}]
+
+def cacheRebuildOnEventPush():
+	return [{
+		'name': 'cache-rebuild',
+		'image': 'plugins/s3-cache:1',
+		'pull': 'always',
+		'settings': {
+			'access_key': {
+				'from_secret': 'cache_s3_access_key'
+			},
+			'endpoint': {
+				'from_secret': 'cache_s3_endpoint'
+			},
+			'mount': [
+				'.cache'
+			],
+			'rebuild': True,
+			'secret_key': {
+				'from_secret': 'cache_s3_secret_key'
+			}
+		},
+		'when': {
+			'event': [
+				'push',
+			],
+			'instance': [
+				'drone.owncloud.services',
+				'drone.owncloud.com'
+			],
+		}
+	}]
+
+def cacheFlushOnEventPush():
+	return [{
+		'name': 'cache-flush',
+		'image': 'plugins/s3-cache:1',
+		'pull': 'always',
+		'settings': {
+			'access_key': {
+				'from_secret': 'cache_s3_access_key'
+			},
+			'endpoint': {
+				'from_secret': 'cache_s3_endpoint'
+			},
+			'flush': True,
+			'flush_age': '14',
+			'secret_key': {
+				'from_secret': 'cache_s3_secret_key'
+			}
+		},
+		'when': {
+			'event': [
+				'push',
+			],
+			'instance': [
+				'drone.owncloud.services',
+				'drone.owncloud.com'
+			],
+		}
+	}]
+
+def createSharedDataFolder(ctx, phpVersion):
+	return [{
+		'name': 'create-shared-data-folder',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'environment': {
+			'SHARED_STORAGE_BASE': {
+				'from_secret': 'shared_storage_base'
+			},
+			'SHARED_STORAGE_KEY': {
+				'from_secret': 'shared_storage_key'
+			},
+		},
+		'commands': [
+			'curl -u "$${SHARED_STORAGE_KEY}:" -X MKCOL $${SHARED_STORAGE_BASE}/public.php/webdav/commit-%s' % ctx.build.commit,
+		]
 	}]
 
 def composerInstall(phpVersion):

@@ -70,7 +70,7 @@ RCS/*
 .project
 .settings
 
-# netbeans 
+# netbeans
 nbproject
 
 # phpStorm
@@ -89,7 +89,7 @@ nbproject
 
 # ack(-grep)
 .ackrc
-	
+
 # Mac OS
 .DS_Store
 
@@ -142,3 +142,6 @@ clover.xml
 
 # Generated from .drone.star
 .drone.yml
+
+# SonarCloud scanner
+.scannerwork
