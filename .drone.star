@@ -283,11 +283,11 @@ def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
 
 def stagePipelines(ctx):
-	jsPipelines = javascript()
+	jsPipelines = javascript(ctx)
 	litmusPipelines = litmus()
 	davPipelines = dav()
-	phpunitPipelines = phptests('phpunit')
-	phpintegrationPipelines = phptests('phpintegration')
+	phpunitPipelines = phptests(ctx, 'phpunit')
+	phpintegrationPipelines = phptests(ctx, 'phpintegration')
 	acceptancePipelines = acceptance(ctx)
 	if (jsPipelines == False) or (litmusPipelines == False) or (davPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False) or (acceptancePipelines == False):
 		return False
@@ -1013,7 +1013,7 @@ def dav():
 
 	return pipelines
 
-def javascript():
+def javascript(ctx):
 	pipelines = []
 
 	if 'javascript' not in config:
@@ -1077,24 +1077,16 @@ def javascript():
 
 	if params['coverage']:
 		result['steps'].append({
-			'name': 'coverage-upload',
-			'image': 'plugins/codecov:latest',
+			'name': 'sonarcloud',
+			'image': 'sonarsource/sonar-scanner-cli',
 			'pull': 'always',
 			'environment': {
-				'CODECOV_TOKEN': {
-					'from_secret': 'codecov_token'
-				}
-			},
-			'settings': {
-				'files': [
-					'*.xml'
-				],
-				'flags': [
-					'javascript'
-				],
-				'paths': [
-					'tests/output/coverage',
-				],
+				'SONAR_TOKEN': {
+					'from_secret': 'sonar_token'
+				},
+				'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
+				'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
+				'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
 			},
 			'when': {
 				'instance': [
@@ -1109,7 +1101,7 @@ def javascript():
 
 	return [result]
 
-def phptests(testType):
+def phptests(ctx, testType):
 	pipelines = []
 
 	if testType not in config:
@@ -1260,24 +1252,16 @@ def phptests(testType):
 
 					if params['coverage']:
 						result['steps'].append({
-							'name': 'coverage-upload',
-							'image': 'plugins/codecov:latest',
+							'name': 'sonarcloud',
+							'image': 'sonarsource/sonar-scanner-cli',
 							'pull': 'always',
 							'environment': {
-								'CODECOV_TOKEN': {
-									'from_secret': 'codecov_token'
-								}
-							},
-							'settings': {
-								'files': [
-									'*.xml'
-								],
-								'flags': [
-									'phpunit'
-								],
-								'paths': [
-									'tests/output/coverage',
-								],
+								'SONAR_TOKEN': {
+									'from_secret': 'sonar_token'
+								},
+								'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
+								'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
+								'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
 							},
 							'when': {
 								'instance': [
