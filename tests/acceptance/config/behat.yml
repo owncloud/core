@@ -210,9 +210,20 @@ default:
         - WebDavPropertiesContext:
         - AuthContext:
 
-    apiShareOperations:
+    apiShareOperationsToRoot:
       paths:
-        - '%paths.base%/../features/apiShareOperations'
+        - '%paths.base%/../features/apiShareOperationsToRoot'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareOperationsToShares:
+      paths:
+        - '%paths.base%/../features/apiShareOperationsToShares'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
