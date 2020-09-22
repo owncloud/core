@@ -2,7 +2,9 @@
 Feature: cannot share resources with invalid permissions
 
   Background:
-    Given user "Alice" has been created with default attributes and without skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has created folder "/PARENT"
 
@@ -17,6 +19,7 @@ Feature: cannot share resources with invalid permissions
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "<item>" should not exist
+    And as "Brian" entry "/Shares/<item>" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | item          | permissions |
       | 1               | 400             | 200              | textfile0.txt | 0           |
@@ -40,6 +43,7 @@ Feature: cannot share resources with invalid permissions
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
+    And as "Brian" entry "/Shares/textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 400             | 200              |
@@ -57,6 +61,7 @@ Feature: cannot share resources with invalid permissions
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
+    And as "Brian" entry "/Shares/textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
       | 1               | 400             | 200              | delete        |
@@ -78,6 +83,7 @@ Feature: cannot share resources with invalid permissions
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
+    And as "Brian" entry "/Shares/textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 400             | 200              |
@@ -97,6 +103,7 @@ Feature: cannot share resources with invalid permissions
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
+    And as "Brian" entry "/Shares/textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
       | 1               | 400             | 200              | delete        |
