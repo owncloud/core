@@ -50,6 +50,7 @@ Summary
 * Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
 * Change - Update sabre/event (5.1.0 => 5.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
 * Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
+* Change - New defaults for phoenix app switcher icon and label: [#37923](https://github.com/owncloud/core/pull/37923)
 * Change - Update pear/archive_tar (1.4.9 => 1.4.10): [#37926](https://github.com/owncloud/core/pull/37926)
 * Change - Update egulias/email-validator (2.1.20 => 2.1.21): [#37926](https://github.com/owncloud/core/pull/37926)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
@@ -330,6 +331,14 @@ Details
 * Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
 
    https://github.com/owncloud/core/pull/37921
+
+* Change - New defaults for phoenix app switcher icon and label: [#37923](https://github.com/owncloud/core/pull/37923)
+
+   When phoenix is configured (phoenix.baseUrl in config.php), the app switcher has a menu item
+   for Phoenix. This now has a new and configurable default icon and default label.
+
+   https://github.com/owncloud/product/issues/227
+   https://github.com/owncloud/core/pull/37923
 
 * Change - Update pear/archive_tar (1.4.9 => 1.4.10): [#37926](https://github.com/owncloud/core/pull/37926)
 
