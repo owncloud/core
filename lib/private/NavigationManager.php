@@ -193,11 +193,13 @@ class NavigationManager implements INavigationManager {
 		// add phoenix if setup
 		$phoenixBaseUrl = $this->config->getSystemValue('phoenix.baseUrl', null);
 		if ($phoenixBaseUrl) {
-			$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon.svg');
+			$iconPath = $this->config->getSystemValue('phoenix.icon', $this->urlGenerator->imagePath('core', 'apps/phoenix.svg'));
+			$l = $this->l10nFac->get("core");
+			$label = $this->config->getSystemValue('phoenix.label', $l->t('New Design'));
 			$this->add([
 				'id' => 'phoenix',
 				'href' => $phoenixBaseUrl,
-				'name' => 'Phoenix',
+				'name' => $label,
 				'icon' => $iconPath,
 				'order' => 99
 			]);

@@ -1,0 +1,6 @@
+Change: New defaults for phoenix app switcher icon and label
+
+When phoenix is configured (phoenix.baseUrl in config.php), the app switcher has a menu item for Phoenix. This now has a new and configurable default icon and default label.
+
+https://github.com/owncloud/core/pull/37923
+https://github.com/owncloud/product/issues/227
