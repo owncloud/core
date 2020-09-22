@@ -1092,6 +1092,7 @@ def phptests(ctx, testType):
 								'SONAR_TOKEN': {
 									'from_secret': 'sonar_token'
 								},
+								'DB_TYPE': getDbName(db),
 								'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
 								'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
 								'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
