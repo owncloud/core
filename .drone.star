@@ -201,15 +201,6 @@ def dependencies(ctx):
 								'secret_key': {
 									'from_secret': 'cache_s3_secret_key'
 								}
-							},
-							'when': {
-								'event': [
-									'push',
-								],
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
 							}
 						},
 						{
@@ -228,15 +219,6 @@ def dependencies(ctx):
 								'secret_key': {
 									'from_secret': 'cache_s3_secret_key'
 								}
-							},
-							'when': {
-								'event': [
-									'push',
-								],
-								'instance': [
-									'drone.owncloud.services',
-									'drone.owncloud.com'
-								],
 							}
 						}
 					],
