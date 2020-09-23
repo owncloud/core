@@ -1321,11 +1321,8 @@ def listBuildData(ctx):
 		'depends_on': [],
 		'trigger': {
 			'ref': [
+				'refs/pull/**',
 				'refs/tags/**'
-			],
-			'status': [
-				'success',
-				'failure'
 			]
 		}
 	}
