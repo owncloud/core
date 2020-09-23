@@ -92,7 +92,7 @@ config = {
 }
 
 def main(ctx):
-	initial = initialPipelines()
+	initial = initialPipelines(ctx)
 
 	before = beforePipelines(ctx)
 	dependsOn(initial, before)
@@ -104,13 +104,13 @@ def main(ctx):
 
 	dependsOn(before, stages)
 
-	after = afterPipelines()
+	after = afterPipelines(ctx)
 	dependsOn(stages, after)
 
 	return initial + before + stages + after
 
-def initialPipelines():
-	return dependencies()
+def initialPipelines(ctx):
+	return dependencies(ctx)
 
 def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
@@ -127,12 +127,12 @@ def stagePipelines(ctx):
 
 	return jsPipelines + litmusPipelines + davPipelines + phpunitPipelines + phpintegrationPipelines + acceptancePipelines
 
-def afterPipelines():
+def afterPipelines(ctx):
 	return [
 		notify()
 	]
 
-def dependencies():
+def dependencies(ctx):
 	pipelines = []
 
 	if 'dependencies' not in config:
@@ -181,6 +181,7 @@ def dependencies():
 					composerInstall(phpVersion) +
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
+					createBuildData(ctx, phpVersion) +
 					[
 						{
 							'name': 'cache-rebuild',
@@ -1062,6 +1063,7 @@ def phptests(ctx, testType):
 									'PRIMARY_OBJECTSTORE': primaryObjectstore
 								},
 								'commands': params['extraCommandsBeforeTestRun'] + [
+									'ls -l /drone/src/.cache/build-data/commit-%s' % ctx.build.commit,
 									command
 								]
 							}
@@ -1674,6 +1676,19 @@ def cacheRestore():
 				'drone.owncloud.com'
 			],
 		}
+	}]
+
+def createBuildData(ctx, phpVersion):
+	return [{
+		'name': 'build-data',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'commands': [
+			'mkdir -p /drone/src/.cache/build-data/commit-%s' % ctx.build.commit,
+			'touch /drone/src/.cache/build-data/commit-%s/empty.txt' % ctx.build.commit,
+			'ls -l /drone/src/.cache/build-data',
+			'ls -l /drone/src/.cache/build-data/commit-%s' % ctx.build.commit,
+		]
 	}]
 
 def composerInstall(phpVersion):
