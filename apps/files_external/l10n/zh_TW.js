@@ -56,6 +56,7 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "SFTP" : "安全檔案傳輸協定-SFTP",
     "Host" : "主機",
+    "Root" : "根目錄",
     "SFTP with secret key login" : "以密碼金鑰登入SFTP",
     "SMB / CIFS" : "伺服器訊息區塊-SMB/網路文件共享系統 (CIFS)",
     "Share" : "分享",

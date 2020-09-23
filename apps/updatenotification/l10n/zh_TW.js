@@ -3,7 +3,13 @@ OC.L10N.register(
     {
     "Update notifications" : "通知更新",
     "{version} is available. Get more information on how to update." : "{version} 釋出了，可以更新",
+    "Updated channel" : "更新頻道",
+    "ownCloud core" : "ownCloud 核心",
     "Updater" : "更新者",
+    "A new version is available: %s" : "有新版本可用：%s",
+    "Open updater" : "開啟更新器",
+    "Show changelog" : "顯示更新日誌",
+    "Your version is up to date." : "你的版本是最新的了。",
     "Update channel:" : "更新通道:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "您可以隨時更新至較新的版本 / 實驗通道，但您不能降版至更穩定的通道。"
 },
