@@ -182,46 +182,8 @@ def dependencies(ctx):
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
 					createBuildData(ctx, phpVersion) +
-					[
-						{
-							'name': 'cache-rebuild',
-							'image': 'plugins/s3-cache:1',
-							'pull': 'always',
-							'settings': {
-								'access_key': {
-									'from_secret': 'cache_s3_access_key'
-								},
-								'endpoint': {
-									'from_secret': 'cache_s3_endpoint'
-								},
-								'mount': [
-									'.cache'
-								],
-								'rebuild': True,
-								'secret_key': {
-									'from_secret': 'cache_s3_secret_key'
-								}
-							}
-						},
-						{
-							'name': 'cache-flush',
-							'image': 'plugins/s3-cache:1',
-							'pull': 'always',
-							'settings': {
-								'access_key': {
-									'from_secret': 'cache_s3_access_key'
-								},
-								'endpoint': {
-									'from_secret': 'cache_s3_endpoint'
-								},
-								'flush': True,
-								'flush_age': '14',
-								'secret_key': {
-									'from_secret': 'cache_s3_secret_key'
-								}
-							}
-						}
-					],
+					cacheRebuild() +
+					cacheFlush(),
 				'depends_on': [],
 				'trigger': {
 					'ref': [
@@ -1046,6 +1008,7 @@ def phptests(ctx, testType):
 								},
 								'commands': params['extraCommandsBeforeTestRun'] + [
 									'ls -l /drone/src/.cache/build-data/commit-%s' % ctx.build.commit,
+									'touch /drone/src/.cache/build-data/commit-%s/%s.txt' % (ctx.build.commit, name),
 									command
 								]
 							}
@@ -1067,7 +1030,10 @@ def phptests(ctx, testType):
 						}
 					}
 
-					if params['coverage']:
+					uploadCoverage = False
+
+					# if params['coverage']:
+					if uploadCoverage:
 						result['steps'].append({
 							'name': 'sonarcloud',
 							'image': 'sonarsource/sonar-scanner-cli',
@@ -1657,6 +1623,48 @@ def cacheRestore():
 				'drone.owncloud.services',
 				'drone.owncloud.com'
 			],
+		}
+	}]
+
+def cacheRebuild():
+	return [{
+		'name': 'cache-rebuild',
+		'image': 'plugins/s3-cache:1',
+		'pull': 'always',
+		'settings': {
+			'access_key': {
+				'from_secret': 'cache_s3_access_key'
+			},
+			'endpoint': {
+				'from_secret': 'cache_s3_endpoint'
+			},
+			'mount': [
+				'.cache'
+			],
+			'rebuild': True,
+			'secret_key': {
+				'from_secret': 'cache_s3_secret_key'
+			}
+		}
+	}]
+
+def cacheFlush():
+	return [{
+		'name': 'cache-flush',
+		'image': 'plugins/s3-cache:1',
+		'pull': 'always',
+		'settings': {
+			'access_key': {
+				'from_secret': 'cache_s3_access_key'
+			},
+			'endpoint': {
+				'from_secret': 'cache_s3_endpoint'
+			},
+			'flush': True,
+			'flush_age': '14',
+			'secret_key': {
+				'from_secret': 'cache_s3_secret_key'
+			}
 		}
 	}]
 
