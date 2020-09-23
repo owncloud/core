@@ -206,11 +206,20 @@ class Checksum extends Wrapper {
 	 * @return array
 	 */
 	public static function getChecksums($path) {
-		if (!isset(self::$checksums[$path])) {
-			return [];
+		if (isset(self::$checksums[$path])) {
+			return self::$checksums[$path];
 		}
 
-		return self::$checksums[$path];
+		// check the md5($path) in case "part_file_in_storage" is set to false
+		// see apps/dav/lib/Connector/Sabre/File.php getPartFileBasePath  (around line 305)
+		// strip initial dir, usually "files" from "files/dir1/dir2"
+		$pathPieces = \explode('/', $path, 2);
+		$pathToCheck = "{$pathPieces[0]}/" . \md5("/{$pathPieces[1]}");
+		if (isset(self::$checksums[$pathToCheck])) {
+			return self::$checksums[$pathToCheck];
+		}
+
+		return [];
 	}
 
 	/**
