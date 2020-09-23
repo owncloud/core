@@ -1014,7 +1014,7 @@ def phptests(ctx, testType):
 								]
 							}
 						] +
-							cacheRebuild() +
+							# cacheRebuild() +
 							cacheFlush(),
 						'services':
 							databaseService(db) +
