@@ -129,6 +129,7 @@ def stagePipelines(ctx):
 
 def afterPipelines(ctx):
 	return [
+		listBuildData(ctx),
 		notify()
 	]
 
@@ -1012,7 +1013,9 @@ def phptests(ctx, testType):
 									command
 								]
 							}
-						],
+						] +
+							cacheRebuild() +
+							cacheFlush(),
 						'services':
 							databaseService(db) +
 							cephService(params['cephS3']) +
@@ -1296,6 +1299,42 @@ def acceptance(ctx):
 		return False
 
 	return pipelines
+
+def listBuildData(ctx):
+	result = {
+		'kind': 'pipeline',
+		'type': 'docker',
+		'name': 'list-build-data',
+		'clone': {
+			'disable': True
+		},
+		'steps': cacheRestore() + [
+			{
+				'name': 'list-build-data',
+				'image': 'owncloudci/php',
+				'pull': 'always',
+				'commands': [
+					'ls -l /drone/src/.cache/build-data/commit-%s' % ctx.build.commit
+				]
+			}
+		],
+		'depends_on': [],
+		'trigger': {
+			'ref': [
+				'refs/tags/**'
+			],
+			'status': [
+				'success',
+				'failure'
+			]
+		}
+	}
+
+	for branch in config['branches']:
+		result['trigger']['ref'].append('refs/heads/%s' % branch)
+
+	return result
+
 
 def notify():
 	result = {
