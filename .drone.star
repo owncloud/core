@@ -1014,8 +1014,8 @@ def phptests(ctx, testType):
 								]
 							}
 						] +
-							cacheRebuild() +
-							cacheFlush(),
+							cacheRebuild(),
+							# cacheFlush(),
 						'services':
 							databaseService(db) +
 							cephService(params['cephS3']) +
