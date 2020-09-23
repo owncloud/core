@@ -214,6 +214,10 @@ class Checksum extends Wrapper {
 		// see apps/dav/lib/Connector/Sabre/File.php getPartFileBasePath  (around line 305)
 		// strip initial dir, usually "files" from "files/dir1/dir2"
 		$pathPieces = \explode('/', $path, 2);
+		if (\count($pathPieces) !== 2) {
+			return [];
+		}
+
 		$pathToCheck = "{$pathPieces[0]}/" . \md5("/{$pathPieces[1]}");
 		if (isset(self::$checksums[$pathToCheck])) {
 			return self::$checksums[$pathToCheck];
