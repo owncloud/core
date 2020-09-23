@@ -309,7 +309,7 @@ Feature: transfer-ownership
     Then the command output should contain the text "No files/folders to transfer"
     And the command should have failed with exit code 1
 
-  @skipOnEncryptionType:user-keys
+  @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: troubleshoot transfer ownerships for all with share and reshare
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and skeleton files
@@ -330,7 +330,7 @@ Feature: transfer-ownership
     And the command output should contain the text "Found 0 invalid share owners"
     And the command output should contain the text "Repaired 0 invalid share owners"
 
-  @skipOnEncryptionType:user-keys
+  @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: troubleshoot transfer ownerships for invalid-initiator with reshare
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and skeleton files
@@ -346,7 +346,7 @@ Feature: transfer-ownership
     And the command output should contain the text "Found 0 invalid initiator reshares"
     And the command output should contain the text "Repaired 0 invalid initiator reshares"
 
-  @skipOnEncryptionType:user-keys
+  @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: troubleshoot transfer ownerships for invalid-owner with share
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and skeleton files
