@@ -2,7 +2,9 @@
 Feature: cannot share resources when in a group that is excluded from sharing
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
