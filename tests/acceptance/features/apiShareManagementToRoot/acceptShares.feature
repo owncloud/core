@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-34 @issue-ocis-reva-41 @issue-ocis-reva-243
+@api @files_sharing-app-required @notToImplementOnOCIS
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept
@@ -16,7 +16,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
 
-  @smokeTest @toImplementOnOCIS
+  @smokeTest
   Scenario Outline: share a file & folder with another internal user with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     When user "Alice" creates a share using the sharing API with settings
@@ -46,7 +46,6 @@ Feature: accept/decline shares coming from internal users
       | change      |
       | all         |
 
-  @toImplementOnOCIS
   Scenario Outline: share a file & folder with another internal user when auto accept is enabled and there is a default folder for received shares
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -73,7 +72,6 @@ Feature: accept/decline shares coming from internal users
       | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
       | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
 
-  @toImplementOnOCIS
   Scenario Outline: share a file & folder with internal group with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     When user "Alice" creates a share using the sharing API with settings
@@ -114,7 +112,7 @@ Feature: accept/decline shares coming from internal users
       | change      |
       | all         |
 
-  @smokeTest @toImplementOnOCIS
+  @smokeTest
   Scenario: decline a share that has been auto-accepted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -132,7 +130,6 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
 
-  @toImplementOnOCIS
   Scenario: accept a share that has been declined before
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -167,7 +164,6 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
 
-  @toImplementOnOCIS
   Scenario: unshare a share that was shared with a group and auto-accepted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with group "grp1"
@@ -191,7 +187,6 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
 
-  @toImplementOnOCIS
   Scenario: rename accepted share, decline it
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -206,7 +201,6 @@ Feature: accept/decline shares coming from internal users
       | path     |
       | /PARENT/ |
 
-  @toImplementOnOCIS
   Scenario: rename accepted share, decline it then accept again, name stays
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -222,7 +216,6 @@ Feature: accept/decline shares coming from internal users
       | path             |
       | /PARENT-renamed/ |
 
-  @toImplementOnOCIS
   Scenario: move accepted share, decline it, accept again
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has created folder "/shared"
@@ -240,7 +233,6 @@ Feature: accept/decline shares coming from internal users
       | path            |
       | /PARENT/shared/ |
 
-  @toImplementOnOCIS
   Scenario: move accepted share, decline it, delete parent folder, accept again
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has created folder "/shared"
@@ -259,7 +251,6 @@ Feature: accept/decline shares coming from internal users
       | path     |
       | /shared/ |
 
-  @toImplementOnOCIS
   Scenario: receive two shares with identical names from different users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has created folder "/shared"
@@ -278,7 +269,7 @@ Feature: accept/decline shares coming from internal users
       | /shared/     |
       | /shared (2)/ |
 
-  @smokeTest @toImplementOnOCIS
+  @smokeTest
   Scenario: share a file & folder with another internal group when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -482,7 +473,6 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the sharing API should report that no shares are shared with user "Brian"
 
-  @toImplementOnOCIS
   Scenario: only one user in a group accepts a share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared folder "/PARENT" with group "grp1"
@@ -528,7 +518,6 @@ Feature: accept/decline shares coming from internal users
       | /shared/     |
       | /shared (2)/ |
 
-  @toImplementOnOCIS
   Scenario: share with a group that you are part of yourself
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -599,7 +588,6 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/PARENT (2)/abc.txt" for user "Brian" should be "uploaded content"
     And the content of file "/FOLDER (2)/abc.txt" for user "Brian" should be "uploaded content"
 
-  @toImplementOnOCIS
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
     And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
@@ -632,7 +620,6 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/PARENT (2)/abc.txt" for user "Carol" should be "uploaded content"
     And the content of file "/FOLDER (2)/abc.txt" for user "Carol" should be "uploaded content"
 
-  @toImplementOnOCIS
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile1.txt" with group "grp1" using the sharing API
@@ -669,7 +656,6 @@ Feature: accept/decline shares coming from internal users
       | /PARENT%20(2)/       |
       | /textfile0%20(2).txt |
 
-  @toImplementOnOCIS
   Scenario: user shares file in a group with matching filename when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API

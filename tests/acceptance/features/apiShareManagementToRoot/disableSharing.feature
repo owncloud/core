@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-41 @issue-ocis-reva-243
+@api @files_sharing-app-required @notToImplementOnOCIS
 Feature: sharing
   As an admin
   I want to be able to disable sharing functionality

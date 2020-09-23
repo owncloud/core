@@ -185,9 +185,21 @@ default:
         - ShareesContext:
         - AppConfigurationContext:
 
-    apiShareManagement:
+    apiShareManagementToRoot:
       paths:
-        - '%paths.base%/../features/apiShareManagement'
+        - '%paths.base%/../features/apiShareManagementToRoot'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiShareManagementToShares:
+      paths:
+        - '%paths.base%/../features/apiShareManagementToShares'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
