@@ -319,12 +319,6 @@ class Cache implements ICache {
 			$data['name'] = $this->normalize($data['name']);
 		}
 
-		list($queryParts, $params) = $this->buildParts($data);
-		// duplicate $params because we need the parts twice in the SQL statement
-		// once for the SET part, once in the WHERE clause
-		$params = \array_merge($params, $params);
-		$params[] = $id;
-
 		// Oracle does not support empty string values so we convert them to nulls
 		// https://github.com/owncloud/core/issues/31692
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
@@ -335,13 +329,47 @@ class Cache implements ICache {
 			}
 		}
 
+		list($queryParts, $params) = $this->buildParts($data);
+
 		// don't update if the data we try to set is the same as the one in the record
 		// some databases (Postgres) don't like superfluous updates
-		$sql = 'UPDATE `*PREFIX*filecache` SET ' . \implode(' = ?, ', $queryParts) . '=? ' .
-			'WHERE (' .
-			\implode(' <> ? OR ', $queryParts) . ' <> ? OR ' .
-			\implode(' IS NULL OR ', $queryParts) . ' IS NULL' .
-			') AND `fileid` = ? ';
+		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$whereParts = [];
+			$setParts = [];
+			for ($i = 0; $i < \count($queryParts); $i++) {
+				if ($params[$i] === null) {
+					$setParts[] = "{$queryParts[$i]} = NULL";
+					$whereParts[] = "{$queryParts[$i]} IS NOT NULL";
+				} else {
+					$setParts[] = "{$queryParts[$i]} = ?";
+					$whereParts[] = "{$queryParts[$i]} <> ?";
+				}
+			}
+			$setClause = \implode(', ', $setParts);
+			$whereClause = \implode(' OR ', $whereParts);
+
+			// remove null values from the $params
+			$params = \array_values(\array_filter($params, function ($v) {
+				return $v !== null;
+			}));
+			// duplicate $params because we need the parts twice in the SQL statement
+			// once for the SET part, once in the WHERE clause
+			$params = \array_merge($params, $params);
+			$params[] = $id;
+
+			$sql = "UPDATE `*PREFIX*filecache` SET $setClause WHERE ($whereClause) AND `fileid` = ?";
+		} else {
+			// duplicate $params because we need the parts twice in the SQL statement
+			// once for the SET part, once in the WHERE clause
+			$params = \array_merge($params, $params);
+			$params[] = $id;
+			$sql = 'UPDATE `*PREFIX*filecache` SET ' . \implode(' = ?, ', $queryParts) . '=? ' .
+				'WHERE (' .
+				\implode(' <> ? OR ', $queryParts) . ' <> ? OR ' .
+				\implode(' IS NULL OR ', $queryParts) . ' IS NULL' .
+				') AND `fileid` = ? ';
+		}
+
 		$this->connection->executeQuery($sql, $params);
 	}
 
