@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-42 @issue-ocis-reva-243
+@api @files_sharing-app-required @notToImplementOnOCIS
 Feature: shares are received in the default folder for received shares
 
   Background:

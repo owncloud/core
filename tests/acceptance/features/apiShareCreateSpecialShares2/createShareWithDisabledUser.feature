@@ -2,7 +2,9 @@
 Feature: share resources with a disabled user
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
 
   Scenario Outline: Creating a new share with a disabled user
     Given using OCS API version "<ocs_api_version>"

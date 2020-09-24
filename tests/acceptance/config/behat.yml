@@ -154,9 +154,20 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareCreateSpecial2:
+    apiShareCreateSpecialRoot2:
       paths:
-        - '%paths.base%/../features/apiShareCreateSpecial2'
+        - '%paths.base%/../features/apiShareCreateSpecialRoot2'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiShareCreateSpecialShares2:
+      paths:
+        - '%paths.base%/../features/apiShareCreateSpecialShares2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
