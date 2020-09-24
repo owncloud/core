@@ -41,8 +41,8 @@ In order to constantly increase the quality of our software we can no longer acc
 It is a must have that changed and added code segments are unit tested.
 In some areas unit testing is hard (aka almost impossible) as of today - in these areas refactoring WHILE fixing a bug is encouraged to enable unit testing.
 
-[agreement]: https://owncloud.org/about/contributor-agreement/
-[devmanual]: https://owncloud.org/dev
+[agreement]: https://owncloud.com/contribute/join-the-development/contributor-agreement/
+[devmanual]: https://doc.owncloud.com/server/developer_manual/
 
 ## Translations
 Please submit translations via [Transifex][transifex].
