@@ -74,7 +74,7 @@ Feature: sharing
     Given user "Alice" has created folder "folderToShare"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
     And user "Alice" has shared folder "folderToShare" with user "Brian" with permissions "share,read,change"
-    And user "Brian" accepts share "/folderToShare" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted share "/folderToShare" offered by user "Alice"
     When user "Brian" moves folder "/Shares/folderToShare" to "myFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" folder "myFolder" should exist
@@ -89,7 +89,7 @@ Feature: sharing
     Given user "Alice" has created folder "folderToShare"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
     And user "Alice" has shared folder "folderToShare" with user "Brian" with permissions "share,read"
-    And user "Brian" accepts share "/folderToShare" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted share "/folderToShare" offered by user "Alice"
     When user "Brian" moves folder "/Shares/folderToShare" to "/myFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" folder "myFolder" should exist

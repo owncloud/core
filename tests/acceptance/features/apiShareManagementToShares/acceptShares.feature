@@ -18,7 +18,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
 
-  @smokeTest @toImplementOnOCIS
+  @smokeTest
   Scenario: share a file & folder with another internal group when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
@@ -214,7 +214,6 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the sharing API should report that no shares are shared with user "Brian"
 
-  @toImplementOnOCIS
   Scenario: only one user in a group accepts a share
     Given user "Alice" has shared folder "/PARENT" with group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1"
@@ -258,7 +257,6 @@ Feature: accept/decline shares coming from internal users
       | /Shares/shared/     |
       | /Shares/shared (2)/ |
 
-  @toImplementOnOCIS
   Scenario: share with a group that you are part of yourself
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -331,7 +329,6 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT/abc.txt" for user "Brian" should be "uploaded content"
     And the content of file "/Shares/FOLDER/abc.txt" for user "Brian" should be "uploaded content"
 
-  @toImplementOnOCIS
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
     And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
@@ -368,7 +365,6 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT/abc.txt" for user "Carol" should be "uploaded content"
     And the content of file "/Shares/FOLDER/abc.txt" for user "Carol" should be "uploaded content"
 
-  @toImplementOnOCIS
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile1.txt" with group "grp1" using the sharing API
@@ -408,7 +404,6 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
 
-  @toImplementOnOCIS
   Scenario: user shares file in a group with matching filename when auto accept is disabled
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -437,7 +432,7 @@ Feature: accept/decline shares coming from internal users
       | David    |
     And user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
     When user "Alice" shares folder "/PARENT" with user "David" using the sharing API
-    When user "David" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "David" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then user "David" should see the following elements
       | /Shares/PARENT/        |
       | /Shares/PARENT/abc.txt |
