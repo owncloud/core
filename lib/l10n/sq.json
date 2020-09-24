@@ -65,6 +65,7 @@
     "Evaluation - expires in %d days." : "Vlerësim - skadon për %d ditë.",
     "Your Enterprise license key is about to expire (days remaining: %d)." : "Kyçi juaj i licencës për Ndërmarrje është duke skaduar (ditë akoma: %d).",
     "The registered enterprise license key expires in %d days" : "Kyçi i regjistruar për licencë ndërmarrjeje skadon për %d ditë",
+    "New Design" : "Dizajn i Ri",
     "Apps" : "Aplikacione",
     "General" : "Të përgjithshme",
     "Storage" : "Depozitë",
