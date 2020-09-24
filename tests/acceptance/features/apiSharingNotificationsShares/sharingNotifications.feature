@@ -5,7 +5,8 @@ Feature: Display notifications when receiving a share
   So that I can easily decide what I want to do with new received shares
 
   Background:
-    Given app "notifications" has been enabled
+    Given the administrator has set the default folder for received shares to "Shares"
+    And app "notifications" has been enabled
     And using OCS API version "1"
     And using new DAV path
     And these users have been created with default attributes and skeleton files:
@@ -53,18 +54,6 @@ Feature: Display notifications when receiving a share
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
       | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
       | object_type | /^local_share$/                                 |
-
-	# This scenario documents behavior discussed in core issue 31870
-	# An old share keeps its old auto-accept behavior, even after auto-accept has been disabled.
-  @skipOnLDAP
-  Scenario: share to group does not send notifications to either existing or new members for an old share created before auto-accept is disabled
-    Given user "Alice" has shared folder "/PARENT" with group "grp1"
-    When the administrator sets parameter "shareapi_auto_accept_share" of app "core" to "no"
-    And the administrator creates user "David" using the provisioning API
-    And the administrator adds user "David" to group "grp1" using the provisioning API
-    Then user "Brian" should have 0 notifications
-    And user "Carol" should have 0 notifications
-    And user "David" should have 0 notifications
 
 	# This scenario documents behavior discussed in core issue 31870
 	# As users are added to an existing group, they are not sent notifications about group shares.
