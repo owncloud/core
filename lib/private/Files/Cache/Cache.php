@@ -342,7 +342,7 @@ class Cache implements ICache {
 					$whereParts[] = "{$queryParts[$i]} IS NOT NULL";
 				} else {
 					$setParts[] = "{$queryParts[$i]} = ?";
-					$whereParts[] = "{$queryParts[$i]} <> ?";
+					$whereParts[] = "({$queryParts[$i]} <> ? OR {$queryParts[$i]} IS NULL)";
 				}
 			}
 			$setClause = \implode(', ', $setParts);
