@@ -1,4 +1,4 @@
-@api @files_sharing-app-required
+@api @files_sharing-app-required @notToImplementOnOCIS
 Feature: accept/decline shares coming from internal users to the Shares folder
   As a user
   I want to have control of which received shares I accept
@@ -12,7 +12,6 @@ Feature: accept/decline shares coming from internal users to the Shares folder
       | Alice    |
       | Brian    |
 
-  @notToImplementOnOCIS @issue-37883
   Scenario: When accepting a share of a file, the response has valid fields
     # When fixing this issue on oC10, delete this scenario and enable the scenario in acceptSharesToSharesFolder
     Given the administrator has set the default folder for received shares to "Shares"
@@ -35,7 +34,6 @@ Feature: accept/decline shares coming from internal users to the Shares folder
       | share_type             | user                         |
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
-  @notToImplementOnOCIS @issue-37883
   Scenario: When accepting a share of a folder, the response has valid fields
     # When fixing this issue on oC10, delete this scenario and enable the scenario in acceptSharesToSharesFolder
     Given the administrator has set the default folder for received shares to "Shares"

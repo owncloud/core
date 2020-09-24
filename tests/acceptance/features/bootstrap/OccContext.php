@@ -356,7 +356,7 @@ class OccContext implements Context {
 		$key, $value, $type = "string"
 	) {
 		$this->invokingTheCommand(
-			"config:system:set --value ${value} --type ${type} ${key}"
+			"config:system:set --value '${value}' --type ${type} ${key}"
 		);
 	}
 
