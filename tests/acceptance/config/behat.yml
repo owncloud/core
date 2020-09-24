@@ -337,9 +337,21 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareUpdate:
+    apiShareUpdateToRoot:
       paths:
-        - '%paths.base%/../features/apiShareUpdate'
+        - '%paths.base%/../features/apiShareUpdateToRoot'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiShareUpdateToShares:
+      paths:
+        - '%paths.base%/../features/apiShareUpdateToShares'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params

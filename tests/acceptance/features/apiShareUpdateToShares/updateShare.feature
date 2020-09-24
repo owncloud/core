@@ -2,7 +2,9 @@
 Feature: sharing
 
   Background:
-    Given using OCS API version "1"
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
   @smokeTest @toImplementOnOCIS @issue-ocis-reva-243
@@ -14,12 +16,14 @@ Feature: sharing
       | Carol    |
     And user "Alice" has created folder "/TMP"
     And user "Alice" has shared folder "TMP" with user "Brian"
-    And user "Brian" has shared folder "TMP" with user "Carol"
+    And user "Brian" has accepted share "/TMP" offered by user "Alice"
+    And user "Brian" has shared folder "/Shares/TMP" with user "Carol"
+    And user "Carol" has accepted share "/TMP" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
-    And user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
-    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
+    And user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/textfile.txt"
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -32,25 +36,26 @@ Feature: sharing
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
-    And user "Brian" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    And user "Brian" has moved file "/Shares/textfile0.txt" to "/FOLDER/textfile0.txt"
     When user "Alice" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with group "grp1" should include
-      | id                | A_STRING       |
-      | item_type         | file           |
-      | item_source       | A_STRING       |
-      | share_type        | group          |
-      | file_source       | A_STRING       |
-      | file_target       | /textfile0.txt |
-      | permissions       | read           |
-      | stime             | A_NUMBER       |
-      | storage           | A_STRING       |
-      | mail_send         | 0              |
-      | uid_owner         | %username%     |
-      | displayname_owner | %displayname%  |
-      | mimetype          | text/plain     |
+      | id                | A_STRING              |
+      | item_type         | file                  |
+      | item_source       | A_STRING              |
+      | share_type        | group                 |
+      | file_source       | A_STRING              |
+      | file_target       | /Shares/textfile0.txt |
+      | permissions       | read                  |
+      | stime             | A_NUMBER              |
+      | storage           | A_STRING              |
+      | mail_send         | 0                     |
+      | uid_owner         | %username%            |
+      | displayname_owner | %displayname%         |
+      | mimetype          | text/plain            |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -75,12 +80,13 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Alice" updates the last share using the sharing API with
       | permissions | <permissions> |
     Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     # Brian should still have at least read access to the shared file
-    And as "Brian" entry "textfile0.txt" should exist
+    And as "Brian" entry "/Shares/textfile0.txt" should exist
     Examples:
       | ocs_api_version | http_status_code | permissions   |
       | 1               | 200              | create        |
@@ -97,12 +103,13 @@ Feature: sharing
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Alice" updates the last share using the sharing API with
       | permissions | <permissions> |
     Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     # Brian in grp1 should still have at least read access to the shared file
-    And as "Brian" entry "textfile0.txt" should exist
+    And as "Brian" entry "/Shares/textfile0.txt" should exist
     Examples:
       | ocs_api_version | http_status_code | permissions   |
       | 1               | 200              | create        |
@@ -122,8 +129,10 @@ Feature: sharing
     And user "Alice" has created folder "/folder1/folder2"
     And user "Brian" has created folder "/moved-out"
     And user "Alice" has shared folder "/folder1" with user "Brian" with permissions "all"
-    And user "Brian" has shared folder "/folder1/folder2" with user "Carol" with permissions "all"
-    When user "Brian" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
+    And user "Brian" has accepted share "/folder1" offered by user "Alice"
+    And user "Brian" has shared folder "/Shares/folder1/folder2" with user "Carol" with permissions "all"
+    And user "Carol" has accepted share "/folder1/folder2" offered by user "Brian"
+    When user "Brian" moves folder "/Shares/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "Brian" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Brian" sharing with user "Carol" should include
       | id                | A_STRING             |
@@ -131,7 +140,7 @@ Feature: sharing
       | item_source       | A_STRING             |
       | share_type        | user                 |
       | file_source       | A_STRING             |
-      | file_target       | /folder2             |
+      | file_target       | /Shares/folder2             |
       | permissions       | all                  |
       | stime             | A_NUMBER             |
       | storage           | A_STRING             |
@@ -139,8 +148,8 @@ Feature: sharing
       | uid_owner         | %username%           |
       | displayname_owner | %displayname%        |
       | mimetype          | httpd/unix-directory |
-    And as "Alice" folder "/folder1/folder2" should not exist
-    And as "Carol" folder "/folder2" should exist
+    And as "Alice" folder "/Shares/folder1/folder2" should not exist
+    And as "Carol" folder "/Shares/folder2" should exist
 
   @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
   Scenario: Share ownership change after moving a shared file to another share
@@ -152,8 +161,10 @@ Feature: sharing
     And user "Alice" has created folder "/Alice-folder/folder2"
     And user "Carol" has created folder "/Carol-folder"
     And user "Alice" has shared folder "/Alice-folder" with user "Brian" with permissions "all"
+    And user "Brian" has accepted share "/Alice-folder" offered by user "Alice"
     And user "Carol" has shared folder "/Carol-folder" with user "Brian" with permissions "all"
-    When user "Brian" moves folder "/Alice-folder/folder2" to "/Carol-folder/folder2" using the WebDAV API
+    And user "Brian" has accepted share "/Carol-folder" offered by user "Carol"
+    When user "Brian" moves folder "/Shares/Alice-folder/folder2" to "/Shares/Carol-folder/folder2" using the WebDAV API
     And user "Carol" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Carol" sharing with user "Brian" should include
       | id                | A_STRING             |
@@ -161,7 +172,7 @@ Feature: sharing
       | item_source       | A_STRING             |
       | share_type        | user                 |
       | file_source       | A_STRING             |
-      | file_target       | /Carol-folder        |
+      | file_target       | /Shares/Carol-folder |
       | permissions       | all                  |
       | stime             | A_NUMBER             |
       | storage           | A_STRING             |
@@ -205,7 +216,7 @@ Feature: sharing
       | storage_id                 | A_STRING             |
       | storage                    | A_STRING             |
       | file_source                | A_STRING             |
-      | file_target                | /Alice-folder        |
+      | file_target                | /Shares/Alice-folder |
       | share_with                 | %username%           |
       | share_with_displayname     | %displayname%        |
       | share_with_additional_info |                      |
@@ -228,13 +239,14 @@ Feature: sharing
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
     And user "Carol" has shared folder "/FOLDER" with group "grp1"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Carol"
     And user "Carol" has updated the last share with
       | permissions | read |
     When user "Carol" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "FOLDER/textfile.txt"
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -268,7 +280,7 @@ Feature: sharing
       | item_type         | file                |
       | item_source       | A_STRING            |
       | share_type        | group               |
-      | file_target       | /textfile0.txt      |
+      | file_target       | /Shares/textfile0.txt      |
       | permissions       | read, update, share |
       | mail_send         | 0                   |
       | uid_owner         | %username%          |
@@ -335,6 +347,7 @@ Feature: sharing
       | shareWith   | Brian         |
       | permissions | read,share    |
       | expireDate  | +30 days      |
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "10"
     And user "Alice" updates the last share using the sharing API with
       | permissions | read |
