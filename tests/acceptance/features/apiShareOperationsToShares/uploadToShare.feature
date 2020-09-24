@@ -2,7 +2,9 @@
 Feature: sharing
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
 
   Scenario: Uploading file to a user read-only share folder does not work
     Given user "Brian" has been created with default attributes and skeleton files
@@ -11,7 +13,8 @@ Feature: sharing
       | shareType   | user   |
       | permissions | read   |
       | shareWith   | Brian  |
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
@@ -24,7 +27,8 @@ Feature: sharing
       | shareType   | group  |
       | permissions | read   |
       | shareWith   | grp1   |
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     Examples:
       | dav-path |
@@ -39,7 +43,8 @@ Feature: sharing
       | shareType   | user   |
       | permissions | create |
       | shareWith   | Brian  |
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Brian"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
@@ -58,7 +63,8 @@ Feature: sharing
       | shareType   | group  |
       | permissions | create |
       | shareWith   | grp1   |
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Brian"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
@@ -76,7 +82,8 @@ Feature: sharing
       | shareType   | user   |
       | permissions | change |
       | shareWith   | Brian  |
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     Examples:
       | dav-path |
@@ -93,7 +100,8 @@ Feature: sharing
       | shareType   | group  |
       | permissions | change |
       | shareWith   | grp1   |
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     Examples:
       | dav-path |
@@ -107,7 +115,8 @@ Feature: sharing
     And the quota of user "Brian" has been set to "0"
     And user "Alice" has moved file "/welcome.txt" to "/myfile.txt"
     And user "Alice" has shared file "myfile.txt" with user "Brian"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/myfile.txt" using the WebDAV API
+    And user "Brian" has accepted share "/myfile.txt" offered by user "Alice"
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the following headers should match these regular expressions for user "Brian"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
@@ -124,8 +133,9 @@ Feature: sharing
       | shareType   | user   |
       | permissions | change |
       | shareWith   | Brian  |
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And the quota of user "Alice" has been set to "0"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -142,8 +152,9 @@ Feature: sharing
       | shareType   | group  |
       | permissions | change |
       | shareWith   | grp1   |
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And the quota of user "Alice" has been set to "0"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -158,8 +169,9 @@ Feature: sharing
       | shareType   | user   |
       | permissions | create |
       | shareWith   | Brian  |
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And the quota of user "Alice" has been set to "0"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -176,8 +188,9 @@ Feature: sharing
       | shareType   | group  |
       | permissions | create |
       | shareWith   | grp1   |
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And the quota of user "Alice" has been set to "0"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/FOLDER/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -193,7 +206,8 @@ Feature: sharing
       | shareType   | user       |
       | permissions | read       |
       | shareWith   | Brian      |
-    When user "Brian" uploads the following chunks to "/READ_ONLY/myfile.txt" with new chunking and using the WebDAV API
+    And user "Brian" has accepted share "/READ_ONLY" offered by user "Alice"
+    When user "Brian" uploads the following chunks to "/Shares/READ_ONLY/myfile.txt" with new chunking and using the WebDAV API
       | number | content |
       | 1      | hallo   |
       | 2      | welt    |
