@@ -608,8 +608,8 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-283
-  Scenario Outline: Do not allow public sharing of the root
+  @issue-ocis-reva-283 @notToImplementOnOCIS
+  Scenario Outline: Do not allow public sharing of the root on ownCloud10
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | / |
@@ -619,6 +619,37 @@ Feature: create a public link share
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
+
+  @issue-ocis-reva-283 @skipOnOcV10
+  Scenario Outline: Allow public sharing of the root on OCIS, the default is read permission
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
+    When user "Alice" creates a public link share using the sharing API with settings
+      | path | / |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" should include
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | file_target            | /                    |
+      | path                   | /                    |
+      | permissions            | read                 |
+      | share_type             | public_link          |
+      | displayname_file_owner | %displayname%        |
+      | displayname_owner      | %displayname%        |
+      | uid_file_owner         | %username%           |
+      | uid_owner              | %username%           |
+      | name                   |                      |
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the old public WebDAV API
+    And the downloaded content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API
+    And the downloaded content should be "Random data"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars using the old public WebDAV API
