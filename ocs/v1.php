@@ -83,7 +83,7 @@ try {
 
 	OC::$server->getRouter()->match('/ocsapp'.\OC::$server->getRequest()->getRawPathInfo());
 } catch (LoginException $e) {
-	OC_API::respond(new Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'Unauthorised'), OC_API::requestedFormat());
+	OC_API::respond(new Result(null, \OCP\API::RESPOND_UNAUTHORISED, $e->getMessage()), OC_API::requestedFormat());
 } catch (ResourceNotFoundException $e) {
 	OC_API::setContentType();
 	OC_API::notFound();

@@ -35,6 +35,7 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Core\Controller\LoginController;
 use OC\OCS\Result;
 use OC\Security\CSP\ContentSecurityPolicyManager;
+use OC\User\LoginException;
 use OCP\API;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -190,6 +191,9 @@ class SecurityMiddleware extends Middleware {
 		if ($controller instanceof OCSController) {
 			if ($exception instanceof NotLoggedInException) {
 				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'));
+			}
+			if ($exception instanceof LoginException) {
+				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, $exception->getMessage()));
 			}
 			if ($exception instanceof NotAdminException) {
 				return $controller->buildResponse(new Result(null, $exception->getCode(), $exception->getMessage()));
