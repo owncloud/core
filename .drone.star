@@ -1325,7 +1325,14 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 					'unzip -j test-results.zip -d results',
 					'pwd',
 					'ls -l',
-					'ls -l results'
+					'ls -l results',
+					'ls -l apps',
+					'ls -l config',
+					'cd apps',
+					'git clone https://github.com/owncloud/files_primary_s3.git',
+					'cd files_primary_s3',
+					'composer install',
+					'cd /drone/src'
 				]
 			},
 			{
