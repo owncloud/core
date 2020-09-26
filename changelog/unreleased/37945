@@ -1,0 +1,5 @@
+Bugfix: fix display of public link shares in case avatars are disabled
+
+In case avatars were disabled through config.php and a public link was created for some file, a "sharing is not allowed" message was displayed when leaving the sharing panel and trying to access it again for that specific file. The behavior has now been fixed.
+
+https://github.com/owncloud/core/pull/37945

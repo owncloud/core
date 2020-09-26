@@ -1898,8 +1898,10 @@
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith });
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' });
-
-					$icon.avatar(share.share_with, 32);
+                                       
+					if (oc_config.enable_avatars) {
+					       $icon.avatar(share.share_with, 32);
+					}
 
 					$('<li class="shareTree-item">').append( $icon, $name, $path).appendTo($list).click(function() {
 						self.changeDirectory(share.path.replace(folder.name, ''), true).then(function() {
