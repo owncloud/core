@@ -1320,6 +1320,25 @@ def sonarAnalysis(ctx):
 					'ls -l',
 					'ls -l results'
 				]
+			},
+			{
+				'name': 'sonarcloud',
+				'image': 'sonarsource/sonar-scanner-cli',
+				'pull': 'always',
+				'environment': {
+					'SONAR_TOKEN': {
+						'from_secret': 'sonar_token'
+					},
+					'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
+					'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
+					'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
+				},
+				'when': {
+					'instance': [
+						'drone.owncloud.services',
+						'drone.owncloud.com'
+					],
+				}
 			}
 		],
 		'depends_on': [],
