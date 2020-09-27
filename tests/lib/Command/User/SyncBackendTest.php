@@ -269,9 +269,7 @@ class SyncBackendTest extends TestCase {
 
 	/**
 	 */
-	public function testSingleUserSyncExistingUserException() {
-		$this->expectException(\LengthException::class);
-
+	public function testSingleUserSyncExistingUserError() {
 		$inputInterface = $this->createMock(InputInterface::class);
 		$outputInterface = $this->createMock(OutputInterface::class);
 		$syncService = $this->createMock(SyncService::class);
@@ -283,7 +281,12 @@ class SyncBackendTest extends TestCase {
 		$missingAccountsAction = 'disable';
 		$syncService->expects($this->never())->method('run');
 
-		static::invokePrivate($this->command, 'syncSingleUser', [
+		$outputInterface
+			->expects($this->at(1))
+			->method('writeln')
+			->with('<error>Multiple users returned from backend for: existing-uid. Cancelling sync.</error>');
+
+		$return = static::invokePrivate($this->command, 'syncSingleUser', [
 			$inputInterface,
 			$outputInterface,
 			$syncService,
@@ -291,6 +294,8 @@ class SyncBackendTest extends TestCase {
 			'existing-uid',
 			$missingAccountsAction,
 		]);
+
+		$this->assertFalse($return);
 	}
 
 	public function testSingleUserSyncExistingUser() {
@@ -312,7 +317,7 @@ class SyncBackendTest extends TestCase {
 			$this->anything()
 		);
 
-		static::invokePrivate($this->command, 'syncSingleUser', [
+		$return = static::invokePrivate($this->command, 'syncSingleUser', [
 			$inputInterface,
 			$outputInterface,
 			$syncService,
@@ -320,6 +325,7 @@ class SyncBackendTest extends TestCase {
 			'existing-uid',
 			$missingAccountsAction,
 		]);
+		$this->assertTrue($return);
 	}
 
 	public function removedUserProvider() {
@@ -368,7 +374,7 @@ class SyncBackendTest extends TestCase {
 			$removedUser->expects($this->never())->method('setEnabled');
 		}
 
-		static::invokePrivate($this->command, 'syncSingleUser', [
+		$return = static::invokePrivate($this->command, 'syncSingleUser', [
 			$inputInterface,
 			$outputInterface,
 			$syncService,
@@ -376,6 +382,7 @@ class SyncBackendTest extends TestCase {
 			'removed-uid',
 			$action,
 		]);
+		$this->assertTrue($return);
 	}
 
 	public function testSyncMultipleUsersExistingUsers() {
@@ -404,13 +411,14 @@ class SyncBackendTest extends TestCase {
 			$this->anything()
 		);
 
-		static::invokePrivate($this->command, 'syncMultipleUsers', [
+		$return = static::invokePrivate($this->command, 'syncMultipleUsers', [
 			$inputInterface,
 			$outputInterface,
 			$syncService,
 			$this->dummyBackend,
 			$missingAccountsAction,
 		]);
+		$this->assertTrue($return);
 	}
 
 	/**
@@ -457,13 +465,14 @@ class SyncBackendTest extends TestCase {
 			$removedUser->expects($this->never())->method('setEnabled');
 		}
 
-		static::invokePrivate($this->command, 'syncMultipleUsers', [
+		$return = static::invokePrivate($this->command, 'syncMultipleUsers', [
 			$inputInterface,
 			$outputInterface,
 			$syncService,
 			$this->dummyBackend,
 			$action,
 		]);
+		$this->assertTrue($return);
 	}
 
 	public function testReEnableAction() {

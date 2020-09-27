@@ -130,16 +130,16 @@ class SyncService {
 				$uid = $account->getUserId(); // get correct case
 				// clean the user's preferences
 				$this->cleanPreferences($uid);
+				if (\is_callable($callback)) {
+					$callback($uid, null);
+				}
 			} catch (\Exception $e) {
 				// Error syncing this user
 				$backendClass = \get_class($backend);
-				$this->logger->error("Error syncing user with uid: $uid and backend: $backendClass");
-				$this->logger->logException($e);
-			}
-
-			// call the callback
-			if (\is_callable($callback)) {
-				$callback($uid);
+				$this->logger->logException($e, ['message' => "Error syncing user with uid: $uid and backend: $backendClass"]);
+				if (\is_callable($callback)) {
+					$callback($uid, $e);
+				}
 			}
 		}
 	}

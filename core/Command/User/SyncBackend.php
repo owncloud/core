@@ -122,7 +122,7 @@ class SyncBackend extends Command {
 	/**
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
-	 * @return int|null
+	 * @return int
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		if ($input->getOption('list')) {
@@ -169,19 +169,27 @@ class SyncBackend extends Command {
 		$uid = $input->getOption('uid');
 
 		if ($uid) {
-			$this->syncSingleUser($input, $output, $syncService, $backend, $uid, $missingAccountsAction);
+			$syncSuccess = $this->syncSingleUser($input, $output, $syncService, $backend, $uid, $missingAccountsAction);
 		} else {
-			$this->syncMultipleUsers($input, $output, $syncService, $backend, $missingAccountsAction);
+			$syncSuccess = $this->syncMultipleUsers($input, $output, $syncService, $backend, $missingAccountsAction);
+		}
+
+		if (!$syncSuccess) {
+			return 1;
 		}
 		return 0;
 	}
 
 	/**
+	 * Sync multiple users. Returns true if all users
+	 * were successfully synced, and returns false if at least 1 user had error
+	 *
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param SyncService $syncService
 	 * @param UserInterface $backend
 	 * @param string $missingAccountsAction
+	 * @return bool
 	 */
 	private function syncMultipleUsers(
 		InputInterface $input,
@@ -217,31 +225,48 @@ class SyncBackend extends Command {
 			$iterator = new BackendUsersIterator($backend);
 		}
 
-		$p = new ProgressBar($output);
+		$progress = new ProgressBar($output);
 		$max = null;
 		if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS) && $input->getOption('showCount')) {
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$max = $backend->countUsers();
 		}
-		$p->start($max);
+		$progress->start($max);
 
-		$syncService->run($backend, $iterator, function () use ($p) {
-			$p->advance();
+		$syncErrors = [];
+		$syncService->run($backend, $iterator, function ($uid, $syncError) use ($progress, &$syncErrors) {
+			if ($syncError !== null) {
+				// NOTE: we cannot output here exception as this would break the progress bar
+				$syncErrors[] = "Sync error for {$uid}: {$syncError->getMessage()}";
+			}
+			$progress->advance();
 		});
+		$progress->finish();
+		$output->writeln('');
 
-		$p->finish();
+		foreach ($syncErrors as $syncError) {
+			$output->writeln("<error>$syncError</error>");
+		}
+
 		$output->writeln('');
 		$output->writeln('');
+
+		$syncErrorCount = \count($syncErrors);
+		$output->writeln("Sync of users finished, encountered $syncErrorCount errors.");
+		return $syncErrorCount === 0;
 	}
 
 	/**
+	 * Sync single user. Returns true if user
+	 * was successfully synced, and returns false if there was an error
+	 *
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param SyncService $syncService
 	 * @param UserInterface $backend
 	 * @param string $uid
 	 * @param string $missingAccountsAction
-	 * @throws \LengthException
+	 * @return bool
 	 */
 	private function syncSingleUser(
 		InputInterface $input,
@@ -260,7 +285,8 @@ class SyncBackend extends Command {
 				if ($userToSync === null) {
 					$userToSync = $userUid;
 				} else {
-					throw new \LengthException("Multiple users returned from backend for: $uid. Cancelling sync.");
+					$output->writeln("<error>Multiple users returned from backend for: $uid. Cancelling sync.</error>");
+					return false;
 				}
 			}
 		}
@@ -268,9 +294,21 @@ class SyncBackend extends Command {
 		$dummy = new Account(); // to prevent null pointer when writing messages
 
 		if ($userToSync !== null) {
+			$syncSuccess = true;
 			// Run the sync using the internal username if mapped
 			$output->writeln("Syncing $uid ...");
-			$syncService->run($backend, new \ArrayIterator([$userToSync]));
+			$syncService->run($backend, new \ArrayIterator([$userToSync]), function ($uid, $syncError) use ($output, &$syncSuccess) {
+				if ($syncError !== null) {
+					$syncSuccess = false;
+					$output->writeln("<error>Sync error for {$uid} : {$syncError->getMessage()}</error>");
+				}
+			});
+
+			if (!$syncSuccess) {
+				$output->writeln("Sync for $uid failed!");
+				return false;
+			}
+			$output->writeln("Synced $uid ");
 		} else {
 			// Not found
 			$output->writeln("Exact match for user $uid not found in the backend.");
@@ -282,6 +320,8 @@ class SyncBackend extends Command {
 		if ($input->getOption('re-enable')) {
 			$this->reEnableUsers([$uid => $dummy], $output);
 		}
+
+		return true;
 	}
 	/**
 	 * @param $backend
