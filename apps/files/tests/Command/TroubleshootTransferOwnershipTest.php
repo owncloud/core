@@ -123,7 +123,7 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 			'share_with' => 'user3',
 		];
 		$invalidUidOwnerShareWithPointingToStorage = [
-			'share_id' => '1',
+			'share_id' => '2',
 			'share_type' => '0',
 			'share_parent' => '',
 			'file_source' => '1',
@@ -139,7 +139,7 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 
 		$command->expects($this->at(0))->method('getAllInvalidShareStorages')->with('home::')->willReturn($invalidShareStorages);
 		$command->expects($this->at(1))->method('getAllInvalidShareStorages')->with('object::user:')->willReturn([]);
-		$command->expects($this->exactly(1))->method('deleteCorruptedShare')->with($invalidUidOwnerShareWithPointingToStorage)->willReturn(null);
+		$command->expects($this->exactly(1))->method('deleteCorruptedShare')->with('2', 0)->willReturn(null);
 		$command->expects($this->exactly(1))->method('adjustShareOwner')->with('1', 'user1')->willReturn(null);
 
 		$commandTester = new CommandTester($command);

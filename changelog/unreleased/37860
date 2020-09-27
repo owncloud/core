@@ -1,0 +1,5 @@
+Change: Add command to troubleshoot transfer ownership runs for issues
+
+https://github.com/owncloud/core/pull/37950
+https://github.com/owncloud/core/pull/37860
+https://github.com/owncloud/enterprise/issues/4121

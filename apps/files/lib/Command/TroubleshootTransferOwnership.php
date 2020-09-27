@@ -70,12 +70,20 @@ class TroubleshootTransferOwnership extends Command {
 				'f',
 				InputOption::VALUE_NONE,
 				'perform auto-fix for found problems'
+			)
+			->addOption(
+				'uid',
+				'u',
+				InputArgument::OPTIONAL,
+				'scope for particular user',
+				null
 			);
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$type = $input->getArgument('type');
 		$fix = $input->getOption('fix');
+		$scopeUid = $input->getOption('uid');
 
 		$allowedOps = \explode("|", $this->allowedOps);
 		if (!\in_array($type, $allowedOps)) {
@@ -86,10 +94,10 @@ class TroubleshootTransferOwnership extends Command {
 		}
 
 		if ($type == 'all' || $type == 'invalid-initiator') {
-			$this->findInvalidReshareInitiator($input, $output, $fix);
+			$this->findInvalidReshareInitiator($input, $output, $fix, $scopeUid);
 		}
 		if ($type == 'all' || $type == 'invalid-owner') {
-			$this->findInvalidShareOwner($input, $output, $fix);
+			$this->findInvalidShareOwner($input, $output, $fix, $scopeUid);
 		}
 
 		return 0;
@@ -103,8 +111,9 @@ class TroubleshootTransferOwnership extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param boolean $fix
+	 * @param $scopeUid
 	 */
-	protected function findInvalidShareOwner(InputInterface $input, OutputInterface $output, $fix) {
+	protected function findInvalidShareOwner(InputInterface $input, OutputInterface $output, $fix, $scopeUid) {
 		$output->writeln([
 			"<info>==========================</>",
 			"<info>Searching for shares that have invalid uid_owner, meaning share uid_owner that does not match associated file storage id.</>",
@@ -115,8 +124,8 @@ class TroubleshootTransferOwnership extends Command {
 		$invalidSharesCount = 0;
 
 		$shareStorages = \array_merge(
-			$this->getAllInvalidShareStorages('home::'),
-			$this->getAllInvalidShareStorages('object::user:')
+			$this->getAllInvalidShareStorages('home::', $scopeUid),
+			$this->getAllInvalidShareStorages('object::user:', $scopeUid)
 		);
 
 		$tableRows = [];
@@ -156,7 +165,7 @@ class TroubleshootTransferOwnership extends Command {
 				}
 
 				if ($shareToFix['share_with'] !== null && $userIdFromStorage == $shareToFix['share_with']) {
-					$this->deleteCorruptedShare($shareToFix);
+					$this->deleteCorruptedShare($shareToFix['share_id'], (int) $shareToFix["share_type"]);
 				} else {
 					$this->adjustShareOwner($shareToFix['share_id'], $userIdFromStorage);
 				}
@@ -177,8 +186,9 @@ class TroubleshootTransferOwnership extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param boolean $fix
+	 * @param $scopeUid
 	 */
-	protected function findInvalidReshareInitiator(InputInterface $input, OutputInterface $output, $fix) {
+	protected function findInvalidReshareInitiator(InputInterface $input, OutputInterface $output, $fix, $scopeUid) {
 		$output->writeln([
 			"<info>==========================</>",
 			"<info>Searching for reshares that have invalid uid_initiator(resharer), meaning resharer which does not have the received share mounted anymore (that he reshared with other user).</>",
@@ -188,7 +198,12 @@ class TroubleshootTransferOwnership extends Command {
 
 		$runExceptions = 0;
 		$invalidReshareInitiatorCount = 0;
-		$resharers = $this->getAllResharers();
+
+		if ($scopeUid == null) {
+			$resharers = $this->getAllResharers();
+		} else {
+			$resharers = [['uid_initiator' => $scopeUid]];
+		}
 
 		$resharesToFix = [];
 		foreach ($resharers as $resharer) {
@@ -201,6 +216,7 @@ class TroubleshootTransferOwnership extends Command {
 			]);
 			$tableRows = [];
 			try {
+				$this->setupFS($resharerUid);
 				$userFolder = $this->getUserFolder($resharerUid);
 
 				// extract all reshares for this user and check if they have mount node
@@ -218,6 +234,7 @@ class TroubleshootTransferOwnership extends Command {
 					$table->render();
 					$output->writeln("");
 				}
+				$this->tearDownFS();
 			} catch (\Exception $e) {
 				$runExceptions = $runExceptions + 1;
 				$table->setRows($tableRows);
@@ -225,9 +242,9 @@ class TroubleshootTransferOwnership extends Command {
 				$output->writeln("<info>Encountered error for user {$resharer['uid_initiator']}, command might need to be retried: </info>");
 				$output->writeln("<error>{$e->getMessage()}: </error>");
 				$output->writeln("<error>{$e->getTraceAsString()}: </error>");
-				$output->writeln("<info>Waiting 1 seconds after error before continuing with next user..</info>");
+				$output->writeln("<info>Waiting 5 seconds after error before continuing with next user..</info>");
 				$output->writeln("");
-				\sleep(1);
+				\sleep(5);
 			}
 		}
 
@@ -287,7 +304,7 @@ class TroubleshootTransferOwnership extends Command {
 		return $reshares;
 	}
 
-	protected function getAllInvalidShareStorages($storageType) {
+	protected function getAllInvalidShareStorages($storageType, $scopeUid) {
 		$query = $this->connection->getQueryBuilder();
 
 		if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
@@ -319,6 +336,10 @@ class TroubleshootTransferOwnership extends Command {
 				$concatFunction,
 				'st.id'
 			));
+
+		if ($scopeUid !== null) {
+			$query->andWhere($query->expr()->eq('s.uid_owner', $query->createNamedParameter($scopeUid)));
+		}
 
 		$cursor = $query->execute();
 		$shareStorages = $cursor->fetchAll();
@@ -361,13 +382,21 @@ class TroubleshootTransferOwnership extends Command {
 		return $query->execute();
 	}
 
-	protected function deleteCorruptedShare($shareData) {
-		$shareProvider = $this->shareProviderFactory->getProviderForType((int) $shareData["share_type"]);
-		$share = $shareProvider->getShareById($shareData["id"]);
+	protected function deleteCorruptedShare($shareId, $shareType) {
+		$shareProvider = $this->shareProviderFactory->getProviderForType($shareType);
+		$share = $shareProvider->getShareById($shareId);
 		$shareProvider->delete($share);
 	}
 
 	protected function getUserFolder($uid) {
 		return \OC::$server->getUserFolder($uid);
+	}
+
+	protected function tearDownFS() {
+		\OC_Util::tearDownFS();
+	}
+
+	protected function setupFS($user) {
+		\OC_Util::setupFS($user);
 	}
 }
