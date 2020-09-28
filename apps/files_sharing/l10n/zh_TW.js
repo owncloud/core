@@ -59,6 +59,7 @@ OC.L10N.register(
     "Shared via public link" : "透過公用連結分享",
     "Shared by %2$s" : "由 %2$s 分享",
     "Shares" : "分享",
+    "Public link" : "公開的連結",
     "Couldn't send mail to following recipient(s): %s " : "無法發送郵件給以下人員：%s",
     "Share API is disabled" : "分享 API 已停用",
     "Wrong share ID, share doesn't exist" : "錯誤的分享 ID，分享不存在",

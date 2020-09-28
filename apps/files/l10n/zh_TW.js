@@ -1,15 +1,18 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "儲存空間暫時不可用的",
     "Storage invalid" : "無效的儲存空間",
     "Unknown error" : "未知的錯誤",
     "All files" : "所有檔案",
+    "File could not be found" : "檔案找不到",
     "Home" : "家目錄",
     "Close" : " 關閉",
     "Favorites" : "最愛",
     "Could not create folder \"{dir}\"" : "無法建立資料夾 \"{dir}\"",
     "Upload cancelled." : "上傳已取消",
     "The file {file} already exists" : "此檔案 {file} 已存在",
+    "Processing files..." : "正在處理文件...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "因為 {filename} 是個目錄或是大小為零，所以無法上傳",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "可用空間不足，你正要上傳 {size1} 可是只剩下 {size2}",
     "You don’t have permission to upload or create files here" : "您沒有權限在這裡上傳或建立檔案",

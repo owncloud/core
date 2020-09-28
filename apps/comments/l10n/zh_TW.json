@@ -15,6 +15,7 @@
     "Error occurred while posting comment" : "發表留言時發生錯誤",
     "{count} unread comments" : "{count} 則未讀留言",
     "Comment" : "留言",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>評論</strong> 用於文件 <em>（總是在信息流中列出）</em>",
     "You commented" : "您留言",
     "%1$s commented" : "%1$s 留言",
     "You commented on %2$s" : "您對 %2$s 留言",
