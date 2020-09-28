@@ -128,8 +128,8 @@ config = {
 		},
 		'apiNotifications': {
 			'suites': [
-				'apiSharingNotificationsRoot',
-				'apiSharingNotificationsShares',
+				'apiSharingNotificationsToRoot',
+				'apiSharingNotificationsToShares',
 			],
 			'extraApps': {
 				'notifications': 'composer install'

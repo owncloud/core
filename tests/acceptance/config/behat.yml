@@ -384,18 +384,18 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiSharingNotificationsRoot:
+    apiSharingNotificationsToRoot:
       paths:
-        - '%paths.base%/../features/apiSharingNotificationsRoot'
+        - '%paths.base%/../features/apiSharingNotificationsToRoot'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
         - AppConfigurationContext:
 
-    apiSharingNotificationsShares:
+    apiSharingNotificationsToShares:
       paths:
-        - '%paths.base%/../features/apiSharingNotificationsShares'
+        - '%paths.base%/../features/apiSharingNotificationsToShares'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
