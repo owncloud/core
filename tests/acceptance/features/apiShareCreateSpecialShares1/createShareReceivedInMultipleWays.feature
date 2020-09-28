@@ -14,10 +14,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Alice" has shared file "welcome.txt" with group "grp1"
     And user "Brian" has accepted share "/welcome.txt" offered by user "Alice"
     When user "Alice" shares file "/welcome.txt" with user "Brian" using the sharing API
-    And user "Brian" accepts share "/welcome.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+    When user "Brian" accepts share "/welcome.txt" offered by user "Alice" using the sharing API
+    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | %username%              |
       | share_with_displayname | %displayname%           |
       | file_target            | /Shares/welcome (2).txt |
@@ -41,8 +41,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And group "grp4" has been created
     And user "Brian" has been added to group "grp4"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
-    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Alice" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/PARENT/CHILD" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
       | /FOLDER/                  |
@@ -52,8 +54,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | /PARENT/parent.txt        |
       | /Shares/CHILD/            |
       | /Shares/CHILD/child.txt   |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -68,10 +68,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Alice" has created folder "/test/sub"
     And user "Alice" has shared folder "/test" with group "grp1"
     When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
-    And user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "Brian" folder "/Shares/sub" should exist
+    When user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
+    Then as "Brian" folder "/Shares/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -87,10 +87,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Alice" has created folder "/test/sub"
     And user "Alice" has shared folder "/test" with group "grp0"
     When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
-    And user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "Brian" folder "/Shares/sub" should exist
+    When user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
+    Then as "Brian" folder "/Shares/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

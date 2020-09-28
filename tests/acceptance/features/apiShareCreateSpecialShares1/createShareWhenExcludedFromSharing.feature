@@ -17,6 +17,8 @@ Feature: cannot share resources when in a group that is excluded from sharing
     When user "Brian" shares file "fileToShare.txt" with user "Alice" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
+    And the sharing API should report to user "Alice" that no shares are in the pending state
+    And as "Alice" file "Shares/fileToShare.txt" should not exist
     And as "Alice" file "fileToShare.txt" should not exist
     Examples:
       | ocs_api_version | http_status_code |
@@ -37,6 +39,8 @@ Feature: cannot share resources when in a group that is excluded from sharing
     When user "Brian" shares file "fileToShare.txt" with group "grp2" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
+    And the sharing API should report to user "Carol" that no shares are in the pending state
+    And as "Carol" file "Shares/fileToShare.txt" should not exist
     And as "Carol" file "fileToShare.txt" should not exist
     Examples:
       | ocs_api_version | http_status_code |
@@ -54,6 +58,8 @@ Feature: cannot share resources when in a group that is excluded from sharing
     When user "Brian" shares folder "folderToShare" with user "Alice" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
+    And the sharing API should report to user "Alice" that no shares are in the pending state
+    And as "Alice" folder "Shares/folderToShare" should not exist
     And as "Alice" folder "folderToShare" should not exist
     Examples:
       | ocs_api_version | http_status_code |
@@ -73,6 +79,8 @@ Feature: cannot share resources when in a group that is excluded from sharing
     When user "Alice" shares folder "folderToShare" with group "grp1" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
+    And as "Brian" folder "Shares/folderToShare" should not exist
     And as "Brian" folder "folderToShare" should not exist
     Examples:
       | ocs_api_version | http_status_code |
