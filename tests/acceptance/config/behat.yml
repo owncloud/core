@@ -143,9 +143,9 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
 
-    apiShareCreateSpecial1:
+    apiShareCreateSpecialToRoot1:
       paths:
-        - '%paths.base%/../features/apiShareCreateSpecial1'
+        - '%paths.base%/../features/apiShareCreateSpecialToRoot1'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -154,9 +154,9 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareCreateSpecialRoot2:
+    apiShareCreateSpecialToShares1:
       paths:
-        - '%paths.base%/../features/apiShareCreateSpecialRoot2'
+        - '%paths.base%/../features/apiShareCreateSpecialToShares1'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -165,9 +165,20 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareCreateSpecialShares2:
+    apiShareCreateSpecialToRoot2:
       paths:
-        - '%paths.base%/../features/apiShareCreateSpecialShares2'
+        - '%paths.base%/../features/apiShareCreateSpecialToRoot2'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
+    apiShareCreateSpecialToShares2:
+      paths:
+        - '%paths.base%/../features/apiShareCreateSpecialToShares2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -209,9 +220,9 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiShareToRootManagementBasic:
+    apiShareManagementBasicToRoot:
       paths:
-        - '%paths.base%/../features/apiShareToRootManagementBasic'
+        - '%paths.base%/../features/apiShareManagementBasicToRoot'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -221,9 +232,9 @@ default:
         - WebDavPropertiesContext:
         - AuthContext:
 
-    apiShareToSharesManagementBasic:
+    apiShareManagementBasicToShares:
       paths:
-        - '%paths.base%/../features/apiShareToSharesManagementBasic'
+        - '%paths.base%/../features/apiShareManagementBasicToShares'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
