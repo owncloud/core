@@ -29,6 +29,7 @@
 
 namespace OCA\Files_Sharing\External;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Files\Filesystem;
 use OC\User\NoUserException;
 use OCA\Files_Sharing\Helper;
@@ -315,7 +316,11 @@ class Manager {
 			WHERE `mountpoint_hash` = ?
 			AND `user` = ?
 		');
-		$result = (bool)$query->execute([$target, $targetHash, $sourceHash, $this->uid]);
+		try {
+			$result = (bool)$query->execute([$target, $targetHash, $sourceHash, $this->uid]);
+		} catch (UniqueConstraintViolationException $e) {
+			$result = false;
+		}
 
 		return $result;
 	}
