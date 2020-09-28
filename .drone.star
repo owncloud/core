@@ -1346,6 +1346,7 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 					'SONAR_PULL_REQUEST_BASE': 'master' if ctx.build.event == 'pull_request' else None,
 					'SONAR_PULL_REQUEST_BRANCH': ctx.build.source if ctx.build.event == 'pull_request' else None,
 					'SONAR_PULL_REQUEST_KEY': ctx.build.ref.replace("refs/pull/", "").split("/")[0] if ctx.build.event == 'pull_request' else None,
+					'SONAR_SCANNER_OPTS': '-Xdebug'
 				},
 				'when': {
 					'instance': [
