@@ -537,6 +537,19 @@ default:
         - OccContext:
         - PublicWebDavContext:
 
+    apiWebdavEtagPropagation:
+      paths:
+        - '%paths.base%/../features/apiWebdavEtagPropagation'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - OccContext:
+        - TrashbinContext:
+        - PublicWebDavContext:
+        - FilesVersionsContext:
+        - WebDavPropertiesContext:
+
     apiTranslation:
       paths:
         - '%paths.base%/../features/apiTranslation'
