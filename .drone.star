@@ -668,9 +668,6 @@ def phpstan():
 				}
 			}
 
-			for branch in config['branches']:
-				result['trigger']['ref'].append('refs/heads/%s' % branch)
-
 			pipelines.append(result)
 
 	return pipelines
@@ -744,9 +741,6 @@ def phan():
 					]
 				}
 			}
-
-			for branch in config['branches']:
-				result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 			pipelines.append(result)
 
@@ -911,9 +905,6 @@ def litmus():
 				}
 			}
 
-			for branch in config['branches']:
-				result['trigger']['ref'].append('refs/heads/%s' % branch)
-
 			pipelines.append(result)
 
 	return pipelines
@@ -1006,9 +997,6 @@ def dav():
 						]
 					}
 				}
-
-				for branch in config['branches']:
-					result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 				pipelines.append(result)
 
@@ -1104,9 +1092,6 @@ def javascript():
 				],
 			}
 		})
-
-	for branch in config['branches']:
-		result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 	return [result]
 
@@ -1287,9 +1272,6 @@ def phptests(testType):
 								],
 							}
 						})
-
-					for branch in config['branches']:
-						result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 					pipelines.append(result)
 
@@ -1519,9 +1501,6 @@ def acceptance(ctx):
 										]
 									}
 								}
-
-								for branch in config['branches']:
-									result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 								pipelines.append(result)
 
