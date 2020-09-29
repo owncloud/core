@@ -424,9 +424,15 @@ class SyncService {
 	 * @param string $uid
 	 */
 	private function cleanPreferences($uid) {
-		$this->config->deleteUserValue($uid, 'core', 'enabled');
-		$this->config->deleteUserValue($uid, 'login', 'lastLogin');
-		$this->config->deleteUserValue($uid, 'settings', 'email');
-		$this->config->deleteUserValue($uid, 'files', 'quota');
+		$this->deletePreferenceIfExists($uid, 'core', 'enabled');
+		$this->deletePreferenceIfExists($uid, 'login', 'lastLogin');
+		$this->deletePreferenceIfExists($uid, 'settings', 'email');
+		$this->deletePreferenceIfExists($uid, 'files', 'quota');
+	}
+
+	private function deletePreferenceIfExists($uid, $app, $key) {
+		if ($this->config->getUserValue($uid, $app, $key, null) !== null) {
+			$this->config->deleteUserValue($uid, $app, $key);
+		}
 	}
 }
