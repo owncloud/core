@@ -49,6 +49,7 @@ Summary
 * Change - Update icewind/smb from 3.2.6 to 3.2.7 in files_external: [#37894](https://github.com/owncloud/core/pull/37894)
 * Change - Update doctrine/dbal (2.10.3 => 2.10.4): [#37904](https://github.com/owncloud/core/pull/37904)
 * Change - Update symfony/translation-contracts (v1.1.9 => v1.1.10): [#37904](https://github.com/owncloud/core/pull/37904)
+* Change - Reduce the log level of locked exceptions: [#37907](https://github.com/owncloud/core/pull/37907)
 * Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
 * Change - Update sabre/event (5.1.0 => 5.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
 * Change - Update laminas/laminas-zendframework-bridge (1.1.0 => 1.1.1): [#37921](https://github.com/owncloud/core/pull/37921)
@@ -341,6 +342,12 @@ Details
 * Change - Update symfony/translation-contracts (v1.1.9 => v1.1.10): [#37904](https://github.com/owncloud/core/pull/37904)
 
    https://github.com/owncloud/core/pull/37904
+
+* Change - Reduce the log level of locked exceptions: [#37907](https://github.com/owncloud/core/pull/37907)
+
+   Log level of locked exceptions will be "debug" by default instead of "fatal"
+
+   https://github.com/owncloud/core/pull/37907
 
 * Change - Update google/apiclient from 2.7.0 to 2.7.1 and related dependencies: [#37912](https://github.com/owncloud/core/pull/37912)
 
