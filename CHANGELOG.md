@@ -22,6 +22,7 @@ Summary
 * Bugfix - Fix list of apps returned by OCS Provisioning API apps endpoint: [#37884](https://github.com/owncloud/core/issues/37884)
 * Bugfix - Add very minimal empty ODF files: [#37896](https://github.com/owncloud/core/pull/37896)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
+* Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -177,6 +178,20 @@ Details
    access it again for that specific file. The behavior has now been fixed.
 
    https://github.com/owncloud/core/pull/37945
+
+* Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
+
+   Previously, the user's preferences were cleaned during the user:sync command. This was done
+   regardless of the preferences existance, which was causing the
+   "userpreference.afterDeleteValue" event to be triggered always, and then, as consequence,
+   the admin_audit app was logging those events. Basically, this bug was causing a log flood by the
+   admin_audit app even if those preferences weren't there in the first place.
+
+   Now we check first if those preferences exist before attempting to delete them. If they exist,
+   the admin_audit app will still log that deletion, but if not nothing happens because the
+   deletion won't be attempted.
+
+   https://github.com/owncloud/core/pull/37947
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
