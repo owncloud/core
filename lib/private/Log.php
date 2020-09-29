@@ -425,7 +425,6 @@ class Log implements ILogger {
 		$level = Util::ERROR;
 		if (isset($context['level'])) {
 			$level = $context['level'];
-			unset($context['level']);
 		}
 		$exception = [
 			'Exception' => \get_class($exception),
