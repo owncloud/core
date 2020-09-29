@@ -1312,6 +1312,7 @@ def acceptance(ctx):
 		'databases': ['postgres:9.4'],
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
+		'federatedDb': '',
 		'filterTags': '',
 		'logLevel': '2',
 		'emailNeeded': False,
@@ -1379,6 +1380,12 @@ def acceptance(ctx):
 						for db in params['databases']:
 							for runPart in range(1, params['numberOfParts'] + 1):
 								name = 'unknown'
+								federatedDb = db if params['federatedDb'] == '' else params['federatedDb']
+
+								if federatedDb == 'oracle':
+									# Do not try to run 2 sets of Oracle databases
+									# When testing with Oracle, let the federated server use mariadb
+									federatedDb = 'mariadb:10.2'
 
 								if isWebUI or isAPI or isCLI:
 									browserString = '' if browser == '' else '-' + browser
@@ -1469,7 +1476,7 @@ def acceptance(ctx):
 										yarnInstall(phpVersion) +
 										installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
-											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, db, federationDbSuffix) +
+											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, federatedDb, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
 										) +
 										installExtraApps(phpVersion, extraAppsDict) +
@@ -1504,7 +1511,7 @@ def acceptance(ctx):
 										owncloudService(phpVersion, 'server', '/drone/src', params['useHttps']) +
 										((
 											owncloudService(params['federatedPhpVersion'], 'federated', '/drone/federated', params['useHttps']) +
-											databaseServiceForFederation(db, federationDbSuffix)
+											databaseServiceForFederation(federatedDb, federationDbSuffix)
 										) if params['federatedServerNeeded'] else []),
 									'depends_on': [],
 									'trigger': {
