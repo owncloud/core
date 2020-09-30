@@ -1296,7 +1296,7 @@ def acceptance(ctx):
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.4'],
-		'databases': ['postgres:9.4'],
+		'databases': ['postgres:10.3'],
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
