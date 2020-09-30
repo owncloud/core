@@ -645,8 +645,10 @@ td.avatar {
 	width: 100%;
 	text-align: center;
 	z-index: 8000;
+	pointer-events: none;
 }
 #notification {
+	pointer-events: auto;
 	margin: 0 auto;
 	max-width: 60%;
 	background-color: #fef4f6;

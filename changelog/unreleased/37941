@@ -1,0 +1,3 @@
+Bugfix: Fix invisible notification container blocking mouse events
+
+https://github.com/owncloud/core/pull/37941
