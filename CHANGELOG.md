@@ -58,6 +58,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.20 => 2.1.21): [#37926](https://github.com/owncloud/core/pull/37926)
 * Change - Update egulias/email-validator (2.1.21 => 2.1.22): [#37949](https://github.com/owncloud/core/pull/37949)
 * Change - Update Symfony components to 4.4.14: [#37949](https://github.com/owncloud/core/pull/37949)
+* Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
@@ -392,6 +393,15 @@ Details
 
    https://github.com/owncloud/core/pull/37949
    https://symfony.com/blog/symfony-4-4-14-released
+
+* Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
+
+   Occ encryption:disable command was changed to delete some encryption-specific config
+   key-value pairs that made reenabling encryption not possible. A safety check was added to
+   prevent disabling encryption until all files are decrypted. The occ encryption:disable
+   command exits with an error code and message if the system still has any encrypted files.
+
+   https://github.com/owncloud/core/pull/35980
 
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 
