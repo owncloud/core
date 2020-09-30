@@ -21,6 +21,7 @@ Summary
 * Bugfix - Add metrics shared secret to the sensitive values list: [#37848](https://github.com/owncloud/core/pull/37848)
 * Bugfix - Fix list of apps returned by OCS Provisioning API apps endpoint: [#37884](https://github.com/owncloud/core/issues/37884)
 * Bugfix - Add very minimal empty ODF files: [#37896](https://github.com/owncloud/core/pull/37896)
+* Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
@@ -172,6 +173,10 @@ Details
    German, spreadsheet tab name was "Tabelle", etc. It was incorrect for non-German users.
 
    https://github.com/owncloud/core/pull/37896
+
+* Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
+
+   https://github.com/owncloud/core/pull/37941
 
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 
