@@ -97,17 +97,27 @@ def main(ctx):
 	before = beforePipelines(ctx)
 	dependsOn(initial, before)
 
+	coverageTests = coveragePipelines(ctx)
+	if (coverageTests == False):
+		print('Errors detected in coveragePipelines. Review messages above.')
+		return []
+
+	dependsOn(before, coverageTests)
+
 	stages = stagePipelines(ctx)
 	if (stages == False):
-		print('Errors detected. Review messages above.')
+		print('Errors detected in stagePipelines. Review messages above.')
 		return []
 
 	dependsOn(before, stages)
 
-	after = afterPipelines(ctx)
-	dependsOn(stages, after)
+	afterCoverageTests = afterCoveragePipelines(ctx)
+	dependsOn(coverageTests, afterCoverageTests)
 
-	return initial + before + stages + after
+	after = afterPipelines(ctx)
+	dependsOn(afterCoverageTests + stages, after)
+
+	return initial + before + coverageTests + afterCoverageTests + stages + after
 
 def initialPipelines(ctx):
 	return dependencies(ctx)
@@ -115,21 +125,33 @@ def initialPipelines(ctx):
 def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
 
-def stagePipelines(ctx):
+def coveragePipelines(ctx):
+	# All pipelines that might have coverage or other test analysis reported
 	jsPipelines = javascript(ctx)
-	litmusPipelines = litmus()
-	davPipelines = dav()
 	phpunitPipelines = phptests(ctx, 'phpunit')
 	phpintegrationPipelines = phptests(ctx, 'phpintegration')
-	acceptancePipelines = acceptance(ctx)
-	if (jsPipelines == False) or (litmusPipelines == False) or (davPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False) or (acceptancePipelines == False):
+	if (jsPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False):
 		return False
 
-	return jsPipelines + litmusPipelines + davPipelines + phpunitPipelines + phpintegrationPipelines + acceptancePipelines
+	return jsPipelines + phpunitPipelines + phpintegrationPipelines
+
+def stagePipelines(ctx):
+	# Pipelines that do not produce coverage or other test analysis  reports
+	litmusPipelines = litmus()
+	davPipelines = dav()
+	acceptancePipelines = acceptance(ctx)
+	if (litmusPipelines == False) or (davPipelines == False) or (acceptancePipelines == False):
+		return False
+
+	return litmusPipelines + davPipelines + acceptancePipelines
+
+def afterCoveragePipelines(ctx):
+	return [
+		sonarAnalysis(ctx)
+	]
 
 def afterPipelines(ctx):
 	return [
-		sonarAnalysis(ctx),
 		notify()
 	]
 
