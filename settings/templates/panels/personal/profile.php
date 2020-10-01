@@ -33,13 +33,13 @@ if ($_['enableAvatars']) {
 
 if ($_['displayNameChangeSupported']) {
 	?>
-<form id="displaynameform" class="section">
+<form id="displaynameform" class="section" autocapitalize="none">
 	<h2>
 		<label for="displayName"><?php echo $l->t('Full name'); ?></label>
 	</h2>
 	<input type="text" id="displayName" name="displayName"
 		value="<?php p($_['displayName'])?>"
-		autocomplete="on" autocapitalize="off" autocorrect="off" />
+		autocomplete="on" autocorrect="off" />
     <span class="msg"></span>
 	<input type="hidden" id="oldDisplayName" name="oldDisplayName" value="<?php p($_['displayName'])?>" />
 </form>
@@ -61,13 +61,13 @@ if ($_['displayNameChangeSupported']) {
 <?php
 if ($_['displayNameChangeSupported']) {
 	?>
-<form id="lostpassword" class="section">
+<form id="lostpassword" class="section" autocapitalize="none">
 	<h2>
 		<label for="email"><?php p($l->t('Email')); ?></label>
 	</h2>
 	<input type="email" name="email" id="email" value="<?php p($_['email']); ?>"
 		placeholder="<?php p($l->t('Your email address')); ?>"
-		autocomplete="on" autocapitalize="off" autocorrect="off" />
+		autocomplete="on" autocorrect="off" />
 	<input id="emailbutton" type="button" value="<?php if (isset($_['email'][0])) {
 		echo $l->t('Change email');
 	} else {
@@ -111,7 +111,7 @@ if ($_['displayNameChangeSupported']) {
 <?php
 if ($_['passwordChangeSupported']) {
 		script('jquery-showpassword'); ?>
-<form id="passwordform" class="section">
+<form id="passwordform" class="section" autocapitalize="none">
 	<h2 class="inlineblock"><?php p($l->t('Password')); ?></h2>
 	<div class="hidden icon-checkmark" id="password-changed"></div>
 	<div class="hidden msg error" id="password-error"><?php p($l->t('Unable to change your password')); ?></div>
@@ -119,12 +119,12 @@ if ($_['passwordChangeSupported']) {
 	<label for="pass1" class="hidden-visually"><?php echo $l->t('Current password'); ?>: </label>
 	<input type="password" id="pass1" name="oldpassword"
 		placeholder="<?php echo $l->t('Current password'); ?>"
-		autocomplete="off" autocapitalize="off" autocorrect="off" />
+		autocomplete="off" autocorrect="off" />
 	<label for="pass2" class="hidden-visually"><?php echo $l->t('New password'); ?>: </label>
 	<input type="password" id="pass2" name="personal-password"
 		placeholder="<?php echo $l->t('New password'); ?>"
 		data-typetoggle="#personal-show"
-		autocomplete="off" autocapitalize="off" autocorrect="off" />
+		autocomplete="off" autocorrect="off" />
 	<input type="checkbox" id="personal-show" name="show" /><label for="personal-show"></label>
 	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password'); ?>" />
 </form>

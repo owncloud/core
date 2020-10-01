@@ -729,7 +729,7 @@ $(document).ready(function () {
 		var $td = $(this).closest('td');
 		var $tr = $(this).closest('tr');
 		var uid = UserList.getUID($td);
-		var $input = $('<input type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off">');
+		var $input = $('<input type="password" autocomplete="new-password" autocorrect="off">');
 		var isRestoreDisabled = UserList.getRestoreDisabled($td) === true;
 		if(isRestoreDisabled) {
 			$tr.addClass('row-warning');

@@ -25,9 +25,9 @@
 		'</ul>';
 
 	var TEMPLATE_FILENAME_FORM =
-		'<form class="filenameform">' +
+		'<form class="filenameform" autocapitalize="none">' +
 		'<label class="hidden-visually" for="{{cid}}-input-{{fileType}}">{{fileName}}</label>' +
-		'<input id="{{cid}}-input-{{fileType}}" type="text" value="{{fileName}}" autocomplete="off" autocapitalize="off">' +
+		'<input id="{{cid}}-input-{{fileType}}" type="text" value="{{fileName}}" autocomplete="off">' +
 		'</form>';
 
 	/**
