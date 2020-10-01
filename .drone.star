@@ -205,8 +205,7 @@ def dependencies(ctx):
 					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
 					cacheRebuildOnEventPush() +
-					cacheFlushOnEventPush() +
-					createSharedDataFolder(ctx, phpVersion),
+					cacheFlushOnEventPush(),
 				'depends_on': [],
 				'trigger': {
 					'ref': [
@@ -980,15 +979,17 @@ def phptests(ctx, testType):
 						# for the regular unit test runs, the clover coverage results are in a file named like:
 						# autotest-clover-sqlite.xml
 						coverageFileNameStart = 'autotest'
-						extraResultsToUpload = []
+						extraCoverageRenameCommand = []
+						extraCoverage = False
 					else:
 						# for the files-external unit test runs, the clover coverage results are in 2 files named like:
 						# autotest-external-clover-sqlite.xml
 						# autotest-external-clover-sqlite-samba.xml
 						coverageFileNameStart = 'autotest-external'
-						extraResultsToUpload = [
-							'curl -u "$${SHARED_STORAGE_KEY}:" -X PUT $${SHARED_STORAGE_BASE}/public.php/webdav/commit-%s/clover-%s-%s.xml -T tests/output/coverage/%s-clover-%s-%s.xml' % (ctx.build.commit, name, externalType, coverageFileNameStart, getDbName(db), externalType)
+						extraCoverageRenameCommand = [
+							'mv tests/output/coverage/%s-clover-%s-%s.xml tests/output/coverage/clover-%s-%s.xml' % (coverageFileNameStart, getDbName(db), externalType, name, externalType)
 						]
+						extraCoverage = True
 
 					if ((externalType == 'scality') or (params['cephS3'] != False) or (params['scalityS3'] != False)):
 						# If we need S3 storage, then install the 'files_primary_s3' app
@@ -1026,12 +1027,6 @@ def phptests(ctx, testType):
 								'image': 'owncloudci/php:%s' % phpVersion,
 								'pull': 'always',
 								'environment': {
-									'SHARED_STORAGE_BASE': {
-										'from_secret': 'shared_storage_base'
-									},
-									'SHARED_STORAGE_KEY': {
-										'from_secret': 'shared_storage_key'
-									},
 									'COVERAGE': params['coverage'],
 									'DB_TYPE': getDbName(db),
 									'FILES_EXTERNAL_TYPE': filesExternalType,
@@ -1061,22 +1056,56 @@ def phptests(ctx, testType):
 
 					if params['coverage']:
 						result['steps'].append({
-							'name': 'coverage-upload',
+							'name': 'coverage-rename',
 							'image': 'owncloudci/php:%s' % phpVersion,
 							'pull': 'always',
-							'environment': {
-								'SHARED_STORAGE_BASE': {
-									'from_secret': 'shared_storage_base'
-								},
-								'SHARED_STORAGE_KEY': {
-									'from_secret': 'shared_storage_key'
-								},
-							},
 							'commands': [
-								'ls -l tests/output/coverage',
-								'curl -u "$${SHARED_STORAGE_KEY}:" -X PUT $${SHARED_STORAGE_BASE}/public.php/webdav/commit-%s/clover-%s.xml -T tests/output/coverage/%s-clover-%s.xml' % (ctx.build.commit, name, coverageFileNameStart, getDbName(db))
-							] + extraResultsToUpload
+								'mv tests/output/coverage/%s-clover-%s.xml tests/output/coverage/clover-%s.xml' % (coverageFileNameStart, getDbName(db), name)
+							] + extraCoverageRenameCommand
 						})
+						result['steps'].append({
+							'name': 'coverage-cache-1',
+							'image': 'plugins/s3',
+							'pull': 'always',
+							'settings': {
+								'endpoint': {
+									'from_secret': 'cache_s3_endpoint'
+								},
+								'bucket': 'cache',
+								'source': 'tests/output/coverage/clover-%s.xml'  % (name),
+								'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+								'path_style': True,
+								'strip_prefix': 'tests/output/coverage',
+								'access_key': {
+									'from_secret': 'cache_s3_access_key'
+								},
+								'secret_key': {
+									'from_secret': 'cache_s3_secret_key'
+								}
+							}
+						})
+						if extraCoverage:
+							result['steps'].append({
+								'name': 'coverage-cache-2',
+								'image': 'plugins/s3',
+								'pull': 'always',
+								'settings': {
+									'endpoint': {
+										'from_secret': 'cache_s3_endpoint'
+									},
+									'bucket': 'cache',
+									'source': 'tests/output/coverage/clover-%s-%s.xml'  % (name, externalType),
+									'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+									'path_style': True,
+									'strip_prefix': 'tests/output/coverage',
+									'access_key': {
+										'from_secret': 'cache_s3_access_key'
+									},
+									'secret_key': {
+										'from_secret': 'cache_s3_secret_key'
+									}
+								}
+							})
 
 					pipelines.append(result)
 
@@ -1331,20 +1360,24 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 			installServer(phpVersion, 'sqlite') +
 		[
 			{
-				'name': 'get-test-results',
-				'image': 'owncloudci/php:%s' % phpVersion,
+				'name': 'sync-from-cache',
+				'image': 'minio/mc',
 				'pull': 'always',
 				'environment': {
-					'SHARED_STORAGE_BASE': {
-						'from_secret': 'shared_storage_base'
-					},
-					'SHARED_STORAGE_KEY': {
-						'from_secret': 'shared_storage_key'
+					'MC_HOST_cache': {
+						'from_secret': 'cache_s3_connection_url'
 					},
 				},
 				'commands': [
-					'curl --output test-results.zip $${SHARED_STORAGE_BASE}/index.php/s/$${SHARED_STORAGE_KEY}/download?path=%%2Fcommit-%s' % ctx.build.commit,
-					'unzip -j test-results.zip -d results',
+					'mkdir -p results',
+					'mc mirror cache/cache/%s/%s/coverage results/' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+				]
+			},
+			{
+				'name': 'setup-before-sonarcloud',
+				'image': 'owncloudci/php:%s' % phpVersion,
+				'pull': 'always',
+				'commands': [
 					'pwd',
 					'ls -l',
 					'ls -l results',
@@ -1780,24 +1813,6 @@ def cacheFlushOnEventPush():
 				'drone.owncloud.com'
 			],
 		}
-	}]
-
-def createSharedDataFolder(ctx, phpVersion):
-	return [{
-		'name': 'create-shared-data-folder',
-		'image': 'owncloudci/php:%s' % phpVersion,
-		'pull': 'always',
-		'environment': {
-			'SHARED_STORAGE_BASE': {
-				'from_secret': 'shared_storage_base'
-			},
-			'SHARED_STORAGE_KEY': {
-				'from_secret': 'shared_storage_key'
-			},
-		},
-		'commands': [
-			'curl -u "$${SHARED_STORAGE_KEY}:" -X MKCOL $${SHARED_STORAGE_BASE}/public.php/webdav/commit-%s' % ctx.build.commit,
-		]
 	}]
 
 def composerInstall(phpVersion):
