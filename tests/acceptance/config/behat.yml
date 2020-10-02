@@ -85,9 +85,9 @@ default:
         - FavoritesContext:
         - WebDavPropertiesContext:
 
-    apiFederation1:
+    apiFederationToRoot1:
       paths:
-        - '%paths.base%/../features/apiFederation1'
+        - '%paths.base%/../features/apiFederationToRoot1'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -95,15 +95,37 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
-    apiFederation2:
+    apiFederationToRoot2:
       paths:
-        - '%paths.base%/../features/apiFederation2'
+        - '%paths.base%/../features/apiFederationToRoot2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
+
+    apiFederationToShares1:
+      paths:
+        - '%paths.base%/../features/apiFederationToShares1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+        - OccContext:
+
+    apiFederationToShares2:
+      paths:
+        - '%paths.base%/../features/apiFederationToShares2'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+        - OccContext:
 
     apiProvisioning-v1:
       paths:
