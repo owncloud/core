@@ -26,6 +26,8 @@ https://owncloud.org/contribute/
 ## Support
 Learn about the different ways you can get support for ownCloud: https://owncloud.org/support/
 
+Make a PR from a fork to see what happens for CI ( issue 37966 )
+
 ## Get in touch
 * :clipboard: [Forum](https://central.owncloud.org)
 * :envelope: [Mailing list](https://mailman.owncloud.org/mailman/listinfo)
