@@ -114,6 +114,7 @@ config = {
 				'apiTranslation',
 				'apiTrashbin',
 				'apiVersions',
+				'apiWebdavEtagPropagation',
 				'apiWebdavLocks',
 				'apiWebdavLocks2',
 				'apiWebdavMove1',
