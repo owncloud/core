@@ -571,6 +571,7 @@ default:
         - PublicWebDavContext:
         - FilesVersionsContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
 
     apiTranslation:
       paths:
