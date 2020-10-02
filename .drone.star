@@ -2025,7 +2025,16 @@ def installFederated(ctx, federatedServerVersion, db, dbSuffix = '-federated'):
 	}
 
 	if (federatedServerVersion == 'git'):
-		installerSettings['git_reference'] = ctx.build.source
+		if (ctx.build.source_repo == ctx.repo.slug):
+			# The PR comes from a branch that is in the same repo
+			# So use that branch for installing the federated server
+			installerSettings['git_reference'] = ctx.build.source
+		else:
+			# The PR comes from a branch that is in some other repo
+			# e.g. a community contribution from a fork
+			# Rather than jumping through hoops to find that code,
+			# install the federated server from owncloud/core master
+			installerSettings['git_reference'] = 'master'
 	else:
 		installerSettings['version'] = federatedServerVersion
 
