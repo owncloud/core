@@ -6,6 +6,7 @@ Feature: propagation of etags when restoring a version of a file
     And using new DAV path
     And user "Alice" has been created with default attributes and without skeleton files
 
+  @skipOnStorage:ceph @skipOnStorage:scality @issue-files_primary_s3-387
   Scenario Outline: Restoring a file changes the etags of all parents
     Given user "Alice" has created folder "/upload"
     And user "Alice" has created folder "/upload/sub"
