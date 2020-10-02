@@ -1006,11 +1006,11 @@ class Share20OcsController extends OCSController {
 		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 		$parentDir = \dirname($share->getTarget());
 		if (!$userFolder->nodeExists($parentDir)) {
-			$parentDir = Helper::getShareFolder();
-			$pathAttempt = Filesystem::normalizePath($parentDir . '/' . $share->getTarget());
-		} else {
-			$pathAttempt = Filesystem::normalizePath($share->getTarget());
+			// assume the parent folder matches the configured shared folder
+			// the "getShareFolder" method will create the configured shared folder if needed
+			Helper::getShareFolder();
 		}
+		$pathAttempt = Filesystem::normalizePath($share->getTarget());
 
 		$pathinfo = \pathinfo($pathAttempt);
 		$ext = isset($pathinfo['extension']) ? '.'.$pathinfo['extension'] : '';
@@ -1018,7 +1018,7 @@ class Share20OcsController extends OCSController {
 
 		$i = 2;
 		while ($userFolder->nodeExists($pathAttempt)) {
-			$pathAttempt = Filesystem::normalizePath($parentDir . '/' . $name . ' ('.$i.')' . $ext);
+			$pathAttempt = Filesystem::normalizePath("{$parentDir}/{$name} ({$i}){$ext}");
 			$i++;
 		}
 
