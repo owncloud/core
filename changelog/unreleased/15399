@@ -1,0 +1,7 @@
+Bugfix: Cleaning up `autocapitalize="off"` in files
+
+All instances of deprecated `autocapitalize="off"` HTML attributes were replaced
+with `autocapitalize="none"` in the parent <form> tag.
+
+https://github.com/owncloud/core/issues/15399
+https://github.com/owncloud/core/pull/37965
