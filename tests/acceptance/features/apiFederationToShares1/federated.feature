@@ -296,13 +296,13 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario Outline: Remote sharee tries to delete an accepted federated share sending wrong password
     Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last federated cloud share with password "invalid" using the sharing API
-    Then the OCS status code should be "997"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "Brian" should see the following elements
       | /Shares/textfile0.txt |
@@ -343,12 +343,12 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario Outline: Remote sharee tries to delete a pending federated share sending wrong password
     Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last pending federated cloud share with password "invalid" using the sharing API
-    Then the OCS status code should be "997"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "Brian" should not see the following elements
       | /Shares/textfile0.txt |

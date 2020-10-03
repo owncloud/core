@@ -75,8 +75,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @smokeTest @toImplementOnOCIS
-  @issue-ocis-reva-39
+  @smokeTest
   Scenario Outline: Get favorited elements of a folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
@@ -92,8 +91,6 @@ Feature: favorite
       | old         |
       | new         |
 
-  @toImplementOnOCIS
-  @issue-ocis-reva-39
   Scenario Outline: Get favorited elements of a subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"
@@ -115,8 +112,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @toImplementOnOCIS
-  @issue-ocis-reva-39
+  @files_sharing-app-required
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -132,8 +128,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @issue-33840 @toImplementOnOCIS
-  @issue-ocis-reva-39
+  @issue-33840 @skipOnOcV10
   Scenario Outline: Get favorited elements and limit count of entries
     Given using <dav_version> DAV path
     And user "Alice" has favorited element "/textfile0.txt"
@@ -142,8 +137,7 @@ Feature: favorite
     And user "Alice" has favorited element "/textfile3.txt"
     And user "Alice" has favorited element "/textfile4.txt"
     When user "Alice" lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
-    #Then the search result of "Alice" should contain any "3" of these entries:
-    Then the search result should contain any "0" of these entries:
+    Then the search result should contain any "3" of these entries:
       | /textfile0.txt |
       | /textfile1.txt |
       | /textfile2.txt |
@@ -154,8 +148,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @issue-33840 @toImplementOnOCIS
-  @issue-ocis-reva-39
+  @issue-33840 @skipOnOcV10
   Scenario Outline: Get favorited elements paginated in subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"
@@ -172,8 +165,7 @@ Feature: favorite
     And user "Alice" has favorited element "/subfolder/textfile4.txt"
     And user "Alice" has favorited element "/subfolder/textfile5.txt"
     When user "Alice" lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
-    #Then the search result of "Alice" should contain any "3" of these entries:
-    Then the search result should contain any "0" of these entries:
+    Then the search result should contain any "3" of these entries:
       | /subfolder/textfile0.txt |
       | /subfolder/textfile1.txt |
       | /subfolder/textfile2.txt |
@@ -184,8 +176,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @toImplementOnOCIS
-  @issue-ocis-reva-39
+  @files_sharing-app-required
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -199,8 +190,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @toImplementOnOCIS
-  @toImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -214,7 +204,6 @@ Feature: favorite
       | old         |
       | new         |
 
-  @issue-ocis-reva-39
   Scenario Outline: favoriting a folder does not change the favorite state of elements inside the folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/PARENT/parent.txt" using the WebDAV API

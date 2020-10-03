@@ -47,18 +47,13 @@ Feature: add users to group
       | staff?group         | Question mark                           |
       | 😅 😆               | emoji                                   |
 
-  @issue-31015 @skipOnLDAP
+  @issue-31015 @skipOnOcV10
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    # After fixing issue-31015, change the following step to "has been created"
-    And the administrator sends a group creation request for group "<group_id>" using the provisioning API
-    #And group "<group_id>" has been created
+    And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    # The following step is needed so that the group does get cleaned up.
-    # After fixing issue-31015, remove the following step:
-    And the administrator deletes group "<group_id>" using the occ command
     Examples:
       | group_id         | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
@@ -84,12 +79,11 @@ Feature: add users to group
       | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
       | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
-  @issue-31276 @skipOnLDAP
+  @issue-31276 @skipOnLDAP @skipOnOcV10
   Scenario: normal user tries to add himself to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     When user "brand-new-user" tries to add himself to group "brand-new-group" using the provisioning API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
 

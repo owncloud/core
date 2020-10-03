@@ -4,7 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @issue-32068
+  @issue-32068 @skipOnOcV10
   @issue-ocis-reva-30
   @smokeTest
   Scenario: using OCS anonymously
@@ -27,7 +27,7 @@ Feature: auth
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
-    And the OCS status code of responses on all endpoints should be "997"
+    And the OCS status code of responses on all endpoints should be "401"
 
   @issue-ocis-reva-29
   Scenario: ocs config end point accessible by unauthorized users
@@ -42,7 +42,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @issue-32068
+  @issue-32068 @skipOnOcV10
   @issue-ocis-reva-11
   @issue-ocis-reva-30
   @issue-ocis-reva-31
@@ -80,9 +80,9 @@ Feature: auth
       | /ocs/v2.php/cloud/groups |
       | /ocs/v2.php/cloud/users  |
     Then the HTTP status code of responses on all endpoints should be "401"
-    And the OCS status code of responses on all endpoints should be "997"
+    And the OCS status code of responses on all endpoints should be "401"
 
-  @issue-32068 @issue-ocis-reva-29 @issue-ocis-reva-30
+  @issue-32068 @skipOnOcV10 @issue-ocis-reva-29 @issue-ocis-reva-30
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
@@ -105,7 +105,7 @@ Feature: auth
       | /ocs/v1.php/privatedata/getattribute                        |
       | /ocs/v2.php/privatedata/getattribute                        |
     Then the HTTP status code of responses on all endpoints should be "401"
-    And the OCS status code of responses on all endpoints should be "997"
+    And the OCS status code of responses on all endpoints should be "401"
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint           |
       | /ocs/v1.php/config |

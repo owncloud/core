@@ -31,7 +31,7 @@ Feature: create a subadmin
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: subadmin of a group tries to make another user subadmin of their group
     Given these users have been created with default attributes and skeleton files:
       | username       |
@@ -41,7 +41,6 @@ Feature: create a subadmin
     And user "subadmin" has been made a subadmin of group "brand-new-group"
     And user "brand-new-user" has been added to group "brand-new-group"
     When user "subadmin" makes user "brand-new-user" a subadmin of group "brand-new-group" using the provisioning API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"

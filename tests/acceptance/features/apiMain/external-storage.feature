@@ -46,7 +46,6 @@ Feature: external-storage
     And as "Alice" file "/local_storage/foo2/textfile0.txt" should not exist
     And as "Brian" file "/local.txt" should exist
 
-  @issue-37723
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Alice" has created folder "/local_storage/foo3"
@@ -54,8 +53,9 @@ Feature: external-storage
     And file "foo3/textfile0.txt" has been deleted from local storage on the server
     When user "Alice" downloads file "local_storage/foo3/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
+    # See issue-37723 for discussion. In this case the server still reports the file exists
+    # in the folder. The file cache will be cleared after the local storage is scanned.
     And as "Alice" file "local_storage/foo3/textfile0.txt" should exist
-#   And as "Alice" file "local_storage/foo3/textfile0.txt" should not exist
 
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "Alice" has been created with default attributes and skeleton files
