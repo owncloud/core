@@ -60,34 +60,6 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 		parent::tearDown();
 	}
 
-	private function getMockedCommand(): CommandTester {
-		$command = $this->getMockBuilder(TroubleshootTransferOwnership::class)
-			->setConstructorArgs([
-				$this->createMock(IDBConnection::class),
-				$this->createMock(ProviderFactory::class)
-			])
-			->setMethods([
-				'getAllResharers',
-				'getUserFolder',
-				'getResharesForUser',
-				'adjustShareInitiator',
-				'getAllInvalidShareStorages',
-				'deleteCorruptedShare',
-				'adjustShareOwner',
-			])
-			->getMock();
-
-		$command->expects($this->any())->method('getAllResharers')->willReturn(null);
-		$command->expects($this->any())->method('getUserFolder')->willReturn(null);
-		$command->expects($this->any())->method('getResharesForUser')->willReturn(null);
-		$command->expects($this->any())->method('adjustShareInitiator')->willReturn(null);
-		$command->expects($this->any())->method('getAllInvalidShareStorages')->willReturn(null);
-		$command->expects($this->any())->method('deleteCorruptedShare')->willReturn(null);
-		$command->expects($this->any())->method('adjustShareOwner')->willReturn(null);
-
-		return new CommandTester($command);
-	}
-
 	public function testTypeIsNotRecognised() {
 		$input = [
 			'type' => 'not-existing'
@@ -109,6 +81,12 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 				'getAllInvalidShareStorages',
 				'deleteCorruptedShare',
 				'adjustShareOwner',
+				'getAllResharers',
+				'getResharesForUser',
+				'adjustShareInitiator',
+				'getUserFolder',
+				'tearDownFS',
+				'setupFS',
 			])
 			->getMock();
 
@@ -140,7 +118,7 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 		$command->expects($this->at(0))->method('getAllInvalidShareStorages')->with('home::')->willReturn($invalidShareStorages);
 		$command->expects($this->at(1))->method('getAllInvalidShareStorages')->with('object::user:')->willReturn([]);
 		$command->expects($this->exactly(1))->method('deleteCorruptedShare')->with('2', 0)->willReturn(null);
-		$command->expects($this->exactly(1))->method('adjustShareOwner')->with('1', 'user1')->willReturn(null);
+		$command->expects($this->exactly(1))->method('adjustShareOwner')->with('1', 0, 'user1')->willReturn(null);
 
 		$commandTester = new CommandTester($command);
 
@@ -153,7 +131,8 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 		$output = $commandTester->getDisplay();
 
 		$this->assertStringContainsString('Found 2 invalid share owners', $output);
-		$this->assertStringContainsString('Repaired 2 invalid share owners', $output);
+		$this->assertStringContainsString('Adjusted share with id=1 and its children from uid_owner=user2 to uid_owner=user1', $output);
+		$this->assertStringContainsString('Deleted corrupted share with id=2', $output);
 	}
 
 	public function testFindInvalidReshareInitiator() {
@@ -163,10 +142,15 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 				$this->createMock(ProviderFactory::class)
 			])
 			->setMethods([
+				'getAllInvalidShareStorages',
+				'deleteCorruptedShare',
+				'adjustShareOwner',
 				'getAllResharers',
-				'getUserFolder',
 				'getResharesForUser',
 				'adjustShareInitiator',
+				'getUserFolder',
+				'tearDownFS',
+				'setupFS',
 			])
 			->getMock();
 
@@ -189,7 +173,7 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 		$userFolder->expects($this->at(0))->method('getById')->with(1, true)->willReturn([]);
 
 		$command->expects($this->exactly(1))->method('getAllResharers')->willReturn([
-			[ 'uid_initiator' => 'user2']
+			'user2'
 		]);
 		$command->expects($this->exactly(1))->method('getUserFolder')->with('user2')->willReturn($userFolder);
 		$command->expects($this->exactly(1))->method('getResharesForUser')->with('user2')->willReturn($reshares);
@@ -206,6 +190,6 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 		$output = $commandTester->getDisplay();
 
 		$this->assertStringContainsString('Found 1 invalid initiator reshares', $output);
-		$this->assertStringContainsString('Repaired 1 invalid initiator reshares', $output);
+		$this->assertStringContainsString('Adjusted share with id=1 from uid_initiator=user2 to uid_initiator=user1', $output);
 	}
 }
