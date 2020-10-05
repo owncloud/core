@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Cleaning up `autocapitalize="off"` in files: [#15399](https://github.com/owncloud/core/issues/15399)
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 * Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
 * Bugfix - Translate public link sharing email subject: [#37321](https://github.com/owncloud/core/issues/37321)
@@ -72,6 +73,14 @@ Summary
 
 Details
 -------
+
+* Bugfix - Cleaning up `autocapitalize="off"` in files: [#15399](https://github.com/owncloud/core/issues/15399)
+
+   All instances of deprecated `autocapitalize="off"` HTML attributes were replaced with
+   `autocapitalize="none"` in the parent <form> tag.
+
+   https://github.com/owncloud/core/issues/15399
+   https://github.com/owncloud/core/pull/37965
 
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 
