@@ -24,6 +24,7 @@ Summary
 * Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
+* Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -59,6 +60,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.20 => 2.1.21): [#37926](https://github.com/owncloud/core/pull/37926)
 * Change - Update egulias/email-validator (2.1.21 => 2.1.22): [#37949](https://github.com/owncloud/core/pull/37949)
 * Change - Update Symfony components to 4.4.14: [#37949](https://github.com/owncloud/core/pull/37949)
+* Change - DropOldTables repair job won't show a progress bar: [#37953](https://github.com/owncloud/core/pull/37953)
 * Change - Update sabre dependencies: [#37975](https://github.com/owncloud/core/pull/37975)
 * Change - Update Symfony components to 4.4.15: [#37975](https://github.com/owncloud/core/pull/37975)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
@@ -201,6 +203,16 @@ Details
    deletion won't be attempted.
 
    https://github.com/owncloud/core/pull/37947
+
+* Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
+
+   If you had a custom share_folder set in the config.php file and the auto-accept feature for the
+   internal user sharing was disabled, when a user accepted the user share, the file target in the
+   API response contained the share_folder duplicated. This was limited to the API response.
+
+   Now the API responds correctly, and the file target doesn't have the share_folder duplicated
+
+   https://github.com/owncloud/core/pull/37973
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
@@ -400,6 +412,13 @@ Details
 
    https://github.com/owncloud/core/pull/37949
    https://symfony.com/blog/symfony-4-4-14-released
+
+* Change - DropOldTables repair job won't show a progress bar: [#37953](https://github.com/owncloud/core/pull/37953)
+
+   The "DropOldTables" repair job that happens during upgrade won't show a progress bar any
+   longer.
+
+   https://github.com/owncloud/core/pull/37953
 
 * Change - Update sabre dependencies: [#37975](https://github.com/owncloud/core/pull/37975)
 
