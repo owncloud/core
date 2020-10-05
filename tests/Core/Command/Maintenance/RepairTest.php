@@ -75,7 +75,7 @@ class RepairTest extends TestCase {
 			[[], false, 0, 'Turn on maintenance mode to use this command'],
 			[['--single' => '\OC\UnexistingClass'], true, 1, 'Repair step not found'],
 			[['--single' => 'OC\Repair\RepairMimeTypes'], true, 0, 'Repair mime types'],
-			[[], true, 0, '100%'],
+			[[], true, 0, 'Step:'],
 			[['--include-expensive' => true], true, 0, 'Remove shares of old group memberships']
 		];
 	}
