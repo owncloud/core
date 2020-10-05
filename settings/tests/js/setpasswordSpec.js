@@ -13,13 +13,13 @@ describe('OCA.UserManagement.SetPassword tests', function () {
 	beforeEach(function () {
 		$('#testArea').append(
 			'<label id="error-message" class="warning" style="display:none"></label>' +
-			'<form id="set-password" method="post">\n' +
+			'<form id="set-password" method="post" autocapitalize="none">\n' +
 			'<fieldset>' +
 			'<p>' +
 			'<label for="password" class="infield">New password</label>' +
 			'<input type="password" name="password" id="password" value=""' +
 			'placeholder="New Password"' +
-			'autocomplete="off" autocapitalize="off" autocorrect="off"' +
+			'autocomplete="off" autocorrect="off"' +
 			'required autofocus />' +
 			'<input type="password" name="retypepassword" id="retypepassword" value=""' +
 			'placeholder="<"Confirm Password">' +

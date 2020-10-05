@@ -10,7 +10,7 @@ script('core', [
 ?>
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
-<form method="post" name="login">
+<form method="post" name="login" autocapitalize="none">
 	<fieldset>
 	<?php if (!empty($_['redirect_url'])) {
 	print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
@@ -51,7 +51,7 @@ script('core', [
 				placeholder="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				value="<?php p($_['loginName']); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
-				autocomplete="on" autocapitalize="off" autocorrect="off" required>
+				autocomplete="on" autocorrect="off" required>
 			<label for="user" class="infield"><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
 		</p>
 
@@ -61,7 +61,7 @@ script('core', [
 			<input type="password" name="password" id="password" value=""
 				placeholder="<?php p($l->t('Password')); ?>"
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
-				autocomplete="off" autocapitalize="off" autocorrect="off" required>
+				autocomplete="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Login')); ?>" value="" disabled="disabled"/>
 		</p>
