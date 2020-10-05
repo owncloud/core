@@ -852,6 +852,27 @@ def javascript(ctx):
 				'commands': [
 					'make test-js'
 				]
+			},
+			{
+				'name': 'coverage-cache',
+				'image': 'plugins/s3',
+				'pull': 'always',
+				'settings': {
+					'endpoint': {
+						'from_secret': 'cache_s3_endpoint'
+					},
+					'bucket': 'cache',
+					'source': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info',
+					'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+					'path_style': True,
+					'strip_prefix': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)',
+					'access_key': {
+						'from_secret': 'cache_s3_access_key'
+					},
+					'secret_key': {
+						'from_secret': 'cache_s3_secret_key'
+					}
+				}
 			}
 		],
 		'depends_on': [],
