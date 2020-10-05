@@ -1,4 +1,4 @@
-@api @federation-app-required @files_sharing-app-required @toImplementOnOCIS
+@api @federation-app-required @files_sharing-app-required @notToImplementOnOCIS
 Feature: federated
 
   Background:

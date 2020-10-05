@@ -3481,6 +3481,9 @@ class FeatureContext extends BehatVariablesContext {
 		$ocPath = null
 	) {
 		$args[] = '--no-ansi';
+		if ($baseUrl == null) {
+			$baseUrl = $this->getBaseUrl();
+		}
 		$return = SetupHelper::runOcc(
 			$args, $adminUsername, $adminPassword, $baseUrl, $ocPath, $envVariables
 		);

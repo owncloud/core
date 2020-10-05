@@ -138,8 +138,10 @@ config = {
 		},
 		'apiFederation': {
 			'suites': [
-				'apiFederation1',
-				'apiFederation2',
+				'apiFederationToRoot1',
+				'apiFederationToRoot2',
+				'apiFederationToShares1',
+				'apiFederationToShares2',
 			],
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['git', 'latest', '10.4.1']
