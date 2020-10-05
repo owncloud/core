@@ -24,7 +24,6 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
-  @skipOnOcV10 @issue-37883
   Scenario: When accepting a share of a file, the response is valid
     Given user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
@@ -44,7 +43,6 @@ Feature: accept/decline shares coming from internal users to the Shares folder
       | share_type             | user                  |
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
-  @skipOnOcV10 @issue-37883
   Scenario: When accepting a share of a folder, the response is valid
     Given user "Alice" has shared file "/PARENT" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
