@@ -129,11 +129,11 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" sharing with user "Carol" should include
-      | share_with  | %username%                   |
-      | file_target | /Shares/Shares/textfile0.txt |
-      | path        | /Shares/textfile0.txt        |
-      | permissions | <granted_permissions>        |
-      | uid_owner   | %username%                   |
+      | share_with  | %username%            |
+      | file_target | /Shares/textfile0.txt |
+      | path        | /Shares/textfile0.txt |
+      | permissions | <granted_permissions> |
+      | uid_owner   | %username%            |
     And as "Carol" file "/Shares/textfile0.txt" should exist
     # The receiver of the reshare can always delete their received share, even though they do not have delete permission
     And user "Carol" should be able to delete file "/Shares/textfile0.txt"
