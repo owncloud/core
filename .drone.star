@@ -1383,6 +1383,7 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 					'ls -l results',
 					'ls -l apps',
 					'ls -l config',
+					'cat results/clover-phpunit-php7.2-mariadb10.2.xml',
 					'cd apps',
 					'git clone https://github.com/owncloud/files_primary_s3.git',
 					'cd files_primary_s3',
