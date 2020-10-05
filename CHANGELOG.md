@@ -59,6 +59,8 @@ Summary
 * Change - Update egulias/email-validator (2.1.20 => 2.1.21): [#37926](https://github.com/owncloud/core/pull/37926)
 * Change - Update egulias/email-validator (2.1.21 => 2.1.22): [#37949](https://github.com/owncloud/core/pull/37949)
 * Change - Update Symfony components to 4.4.14: [#37949](https://github.com/owncloud/core/pull/37949)
+* Change - Update sabre dependencies: [#37975](https://github.com/owncloud/core/pull/37975)
+* Change - Update Symfony components to 4.4.15: [#37975](https://github.com/owncloud/core/pull/37975)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
@@ -398,6 +400,22 @@ Details
 
    https://github.com/owncloud/core/pull/37949
    https://symfony.com/blog/symfony-4-4-14-released
+
+* Change - Update sabre dependencies: [#37975](https://github.com/owncloud/core/pull/37975)
+
+   This change updates: - sabre/dav (4.1.1 => 4.1.2) - sabre/event (5.1.1 => 5.1.2) - sabre/http
+   (5.1.0 => 5.1.1) - sabre/uri (2.2.0 => 2.2.1) - sabre/vobject (4.3.1 => 4.3.2) - sabre/xml
+   (2.2.1 => 2.2.3)
+
+   https://github.com/owncloud/core/pull/37975
+
+* Change - Update Symfony components to 4.4.15: [#37975](https://github.com/owncloud/core/pull/37975)
+
+   The following Symfony components have been updated to version 4.4.15 - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/37975
+   https://symfony.com/blog/symfony-4-4-15-released
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
