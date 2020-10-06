@@ -24,7 +24,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares with expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -51,7 +51,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date not enabled, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -151,7 +151,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares with expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -180,7 +180,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date not enabled for groups, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -267,7 +267,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               |
       | 2               |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date enabled and enforced for users, user shares without setting expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -309,7 +309,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date enabled and enforced for users/max expire date is set, user shares without setting expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -389,7 +389,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               |
       | 2               |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date enabled and enforced for groups, user shares without setting expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -435,7 +435,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date enabled and enforced for groups/max expire date is set, user shares without setting expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"

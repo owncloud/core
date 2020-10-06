@@ -120,6 +120,7 @@ Feature: sharing
       | 1               | 200              | 17                   | 15                  |
       | 2               | 404              | 17                   | 15                  |
 
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
