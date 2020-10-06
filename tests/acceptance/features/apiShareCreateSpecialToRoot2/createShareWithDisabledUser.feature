@@ -1,4 +1,4 @@
-@api @files_sharing-app-required
+@api @files_sharing-app-required @notToImplementOnOCIS
 Feature: share resources with a disabled user
 
   Background:
