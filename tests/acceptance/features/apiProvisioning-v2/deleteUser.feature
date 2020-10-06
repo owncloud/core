@@ -50,14 +50,13 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: normal user tries to delete a user
     Given these users have been created with default attributes and skeleton files:
       | username |
       | Alice    |
       | Brian    |
     When user "Alice" deletes user "Brian" using the provisioning API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "Brian" should exist

@@ -40,14 +40,13 @@ Feature: get users
     And the OCS status code should be "200"
     And the HTTP status code should be "200"
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: normal user tries to get other users
     Given these users have been created with default attributes and skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
     When user "brand-new-user" gets the list of all users using the provisioning API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data

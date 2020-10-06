@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: share resources with a disabled user
 
   Background:
@@ -15,12 +15,11 @@ Feature: share resources with a disabled user
       | ocs_api_version | ocs_status_code |
       | 1               | 997             |
 
-  @issue-32068
+  @issue-32068 @skipOnOcV10
   Scenario: Creating a new share with a disabled user
     Given using OCS API version "2"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has been disabled
     When user "Alice" shares file "welcome.txt" with user "Brian" using the sharing API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"

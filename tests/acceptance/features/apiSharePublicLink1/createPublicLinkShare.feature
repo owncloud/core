@@ -389,7 +389,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-36442 @issue-ocis-reva-41
+  @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -397,23 +397,20 @@ Feature: create a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | /afolder    |
       | permissions | read,create |
-    # And the fields of the last response to user "Alice" should include
-    #  | id          | A_STRING    |
-    #  | share_type  | public_link |
-    #  | permissions | read        |
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the fields of the last response to user "Alice" should include
+      | id          | A_STRING    |
+      | share_type  | public_link |
+      | permissions | read        |
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the OCS status message should be "Public upload not allowed"
-    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
-    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 403             | 200              |
-      #| 1               | 100             | 200              |
-      | 2               | 403             | 403              |
-      #| 2               | 200             | 200              |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
-  @issue-36442 @issue-ocis-reva-41
+  @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -421,23 +418,20 @@ Feature: create a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | /afolder |
       | permissions | create   |
-    # And the fields of the last response to user "Alice" should include
-    #  | id          | A_STRING    |
-    #  | share_type  | public_link |
-    #  | permissions | read        |
+    Then the fields of the last response to user "Alice" should include
+      | id          | A_STRING    |
+      | share_type  | public_link |
+      | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the OCS status message should be "Public upload disabled by the administrator"
-    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
-    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 403             | 200              |
-      #| 1               | 100             | 200              |
-      | 2               | 403             | 403              |
-      #| 2               | 200             | 200              |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
-  @issue-36442 @issue-ocis-reva-41
+  @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -447,23 +441,20 @@ Feature: create a public link share
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     When user "Alice" tries to update the last share using the sharing API with
       | permissions | read,create |
-    # And the fields of the last response to user "Alice" should include
-    #  | id          | A_STRING    |
-    #  | share_type  | public_link |
-    #  | permissions | read        |
+    Then the fields of the last response to user "Alice" should include
+      | id          | A_STRING    |
+      | share_type  | public_link |
+      | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the OCS status message should be "Public upload not allowed"
-    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
-    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 400             | 200              |
-      #| 1               | 100             | 200              |
-      | 2               | 400             | 400              |
-      #| 2               | 200             | 200              |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
-  @issue-36442 @issue-ocis-reva-41
+  @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -473,29 +464,22 @@ Feature: create a public link share
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     When user "Alice" tries to update the last share using the sharing API with
       | permissions | <permission> |
-    # And the fields of the last response to user "Alice" should include
-    #  | id          | A_STRING    |
-    #  | share_type  | public_link |
-    #  | permissions | read        |
+    Then the fields of the last response to user "Alice" should include
+      | id          | A_STRING    |
+      | share_type  | public_link |
+      | permissions | read        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And the OCS status message should be "Public upload disabled by the administrator"
-    # And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
-    # And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permission                |
-      | 1               | 403             | 200              | create                    |
-      #| 1               | 100             | 200              | create                     |
-      | 2               | 403             | 403              | create                    |
-      #| 2               | 200             | 200              | create                     |
-      | 1               | 403             | 200              | create,read,update        |
-      #| 1               | 100             | 200              | create,read,update         |
-      | 2               | 403             | 403              | create,read,update        |
-      #| 2               | 200             | 200              | create,read,update         |
-      | 1               | 403             | 200              | read,create,update,delete |
-      #| 1               | 100             | 200              | read,create,update,delete  |
-      | 2               | 403             | 403              | read,create,update,delete |
-      #| 2               | 200             | 200              | read,create,update,delete  |
+      | 1               | 100             | 200              | create                    |
+      | 2               | 200             | 200              | create                    |
+      | 1               | 100             | 200              | create,read,update        |
+      | 2               | 200             | 200              | create,read,update        |
+      | 1               | 100             | 200              | read,create,update,delete |
+      | 2               | 200             | 200              | read,create,update,delete |
 
   @issue-ocis-reva-41
   Scenario Outline: Creating a link share with read+update+create permissions defaults to read permissions when public upload disabled globally
@@ -805,8 +789,7 @@ Feature: create a public link share
       | old         |
       | new         |
 
-  @issue-37605
-  #after fixing all issues make this scenario like the one in OCIS, and delete the one in OCIS
+  @issue-37605 @skipOnOcV10
   Scenario: Get the mtime of a file inside a folder shared by public link using new webDAV version
     Given user "Alice" has created folder "testFolder"
     And user "Alice" has created a public link share with settings
@@ -814,22 +797,17 @@ Feature: create a public link share
       | permissions | read,update,create,delete |
     When the public uploads file "file.txt" to the last shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
     Then as "Alice" file "testFolder/file.txt" should exist
-    And as "Alice" the mtime of the file "testFolder/file.txt" should not be "Thu, 08 Aug 2019 04:18:13 GMT"
-#    And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
-    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should not be "Thu, 08 Aug 2019 04:18:13 GMT"
-#    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
+    And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
+    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-  @issue-37605
-  #after fixing all issues make this scenario like the one in OCIS, and delete the one in OCIS
+  @issue-37605 @skipOnOcV10
   Scenario: overwriting a file changes its mtime (new public webDAV API)
     Given user "Alice" has created folder "testFolder"
     When user "Alice" uploads file with content "uploaded content for file name ending with a dot" to "testFolder/file.txt" using the WebDAV API
     And user "Alice" has created a public link share with settings
-      | path        | /testFolder |
+      | path        | /testFolder               |
       | permissions | read,update,create,delete |
     And the public uploads file "file.txt" to the last shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
     Then as "Alice" file "/testFolder/file.txt" should exist
-    And as "Alice" the mtime of the file "testFolder/file.txt" should not be "Thu, 08 Aug 2019 04:18:13 GMT"
-#    And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
-    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should not be "Thu, 08 Aug 2019 04:18:13 GMT"
-#    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
+    And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
+    And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"

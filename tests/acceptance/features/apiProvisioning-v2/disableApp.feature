@@ -15,24 +15,22 @@ Feature: disable an app
     And the HTTP status code should be "200"
     And app "comments" should be disabled
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: subadmin tries to disable an app
     Given user "subadmin" has been created with default attributes and skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
     And app "comments" has been enabled
     When user "subadmin" disables app "comments"
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And app "comments" should be enabled
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: normal user tries to disable an app
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And app "comments" has been enabled
     When user "brand-new-user" disables app "comments"
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And app "comments" should be enabled

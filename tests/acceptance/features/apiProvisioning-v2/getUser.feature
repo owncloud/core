@@ -78,15 +78,14 @@ Feature: get user
     And the HTTP status code should be "401"
     And the API should not return any data
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: a normal user tries to get information of another user
     Given these users have been created with default attributes and skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
     When user "another-new-user" retrieves the information of user "brand-new-user" using the provisioning API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
 

@@ -60,7 +60,7 @@ Feature: enable user
     When user "another-admin" tries to enable user "another-admin" using the provisioning API
     Then user "another-admin" should be disabled
 
-  @issue-31276
+  @issue-31276 @skipOnOcV10
   Scenario: normal user tries to enable other user
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -68,8 +68,7 @@ Feature: enable user
       | Brian    |
     And user "Brian" has been disabled
     When user "Alice" tries to enable user "Brian" using the provisioning API
-    Then the OCS status code should be "997"
-    #And the OCS status code should be "401"
+    Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "Brian" should be disabled
 
