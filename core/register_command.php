@@ -139,7 +139,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Maintenance\SingleUser(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Maintenance\UpdateHtaccess());
 
-	$application->add(new OC\Core\Command\Upgrade(\OC::$server->getConfig(), \OC::$server->getLogger()));
+	$application->add(new OC\Core\Command\Upgrade(\OC::$server->getConfig(), \OC::$server->getLogger(), \OC::$server->getMemCacheFactory()));
 	$application->add(new OC\Core\Command\Maintenance\Repair(
 		new \OC\Repair(\OC\Repair::getRepairSteps(), \OC::$server->getEventDispatcher()),
 		\OC::$server->getConfig(),

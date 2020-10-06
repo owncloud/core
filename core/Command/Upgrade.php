@@ -33,6 +33,7 @@ use OC\Console\TimestampFormatter;
 use OC\Updater;
 use OCP\IConfig;
 use OCP\ILogger;
+use \OCP\ICacheFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,14 +55,18 @@ class Upgrade extends Command {
 	/** @var ILogger */
 	private $logger;
 
+	/** @var ICacheFactory */
+	private $cacheFactory;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 */
-	public function __construct(IConfig $config, ILogger $logger) {
+	public function __construct(IConfig $config, ILogger $logger, ICacheFactory $cacheFactory) {
 		parent::__construct();
 		$this->config = $config;
 		$this->logger = $logger;
+		$this->cacheFactory = $cacheFactory;
 	}
 
 	protected function configure() {
@@ -266,6 +271,11 @@ class Upgrade extends Command {
 				return self::ERROR_FAILURE;
 			}
 
+			// Clear caches after successful upgrade.
+			// Caches were created before the upgrade, so the cache prefix will be the old one
+			// TODO: Note that only the "create" method is available in the interface. It isn't
+			// possible to create local or distributed caches explicitly
+			$this->cacheFactory->create()->clear();
 			return self::ERROR_SUCCESS;
 		} elseif ($this->config->getSystemValue('maintenance', false)) {
 			//Possible scenario: ownCloud core is updated but an app failed
