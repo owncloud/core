@@ -222,6 +222,7 @@ OC.L10N.register(
     "Federated" : "聯盟的",
     "User and Groups" : "使用者及群組",
     "Public Links" : "公共連結",
+    "Sharing is not allowed" : "不允許分享",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "與其他在ownCloud上的人們分享，請使用此格式 username@example.com/owncloud",
     "Share with users…" : "分享給其他使用者…",
     "Share with users, groups or remote users…" : "分享給其他使用者、群組或遠端使用者…",

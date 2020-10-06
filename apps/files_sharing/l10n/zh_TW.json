@@ -18,6 +18,7 @@
     "Files and folders you share will show up here" : "您分享的檔案與資料夾將會顯示在這裡",
     "No shared links" : "沒有已分享的連結",
     "Files and folders you share by link will show up here" : "您分享的檔案與資料夾連結將會顯示在這裡",
+    "Decline Share" : "下降分享",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "是否要加入來自 {owner}@{remote} 的遠端分享 {name} ？",
     "Remote share" : "遠端分享",
     "Remote share password" : "遠端分享密碼",
@@ -70,6 +71,7 @@
     "Please specify a valid user" : "請指定正確的使用者",
     "Group sharing is disabled by the administrator" : "群組分享已被管理者停用",
     "Please specify a valid group" : "請指定正確的群組",
+    "The group is blacklisted for sharing" : "該群組已列入共享黑名單",
     "Public link sharing is disabled by the administrator" : "公開連結分享已被管理者停用",
     "Public upload disabled by the administrator" : "公開上傳已被管理者停用",
     "Public upload is only possible for publicly shared folders" : "公開上傳只可能給公用分享資料夾",
@@ -95,6 +97,7 @@
     "For more info, please ask the person who sent this link." : "請詢問告訴您此連結的人以瞭解更多",
     "Download" : "下載",
     "Download %s" : "下載 %s",
-    "Direct link" : "直接連結"
+    "Direct link" : "直接連結",
+    "Nothing to configure." : "無需配置。"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
