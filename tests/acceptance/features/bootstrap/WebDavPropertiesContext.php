@@ -926,6 +926,73 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @param string $path
+	 * @param string $user
+	 *
+	 * @return string
+	 */
+	public function getCurrentEtagOfElement(string $path, string $user) {
+		$user = $this->featureContext->getActualUsername($user);
+		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
+		$this->userGetsPropertiesOfFolder(
+			$user, $path, $propertiesTable
+		);
+		return $this->featureContext->getEtagFromResponseXmlObject();
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $user
+	 * @param string $messageStart
+	 *
+	 * @return string
+	 */
+	public function getStoredEtagOfElement(string $path, string $user, string $messageStart = '') {
+		if ($messageStart === '') {
+			$messageStart = __METHOD__;
+		}
+		Assert::assertArrayHasKey(
+			$user,
+			$this->storedETAG,
+			$messageStart
+			. " Trying to check etag of element $path of user $user but the user does not have any stored etags"
+		);
+		Assert::assertArrayHasKey(
+			$path,
+			$this->storedETAG[$user],
+			$messageStart
+			. " Trying to check etag of element $path of user $user but the user does not have a stored etag for the element"
+		);
+		return $this->storedETAG[$user][$path];
+	}
+
+	/**
+	 * @Then these etags should not have changed:
+	 *
+	 * @param TableNode $etagTable
+	 *
+	 * @return void
+	 */
+	public function theseEtagsShouldNotHaveChanged(TableNode $etagTable) {
+		$this->featureContext->verifyTableNodeColumns($etagTable, ["user", "path"]);
+		$this->featureContext->verifyTableNodeColumnsCount($etagTable, 2);
+		$changedEtagCount = 0;
+		$changedEtagMessage = __METHOD__;
+		foreach ($etagTable->getColumnsHash() as $row) {
+			$user = $row["user"];
+			$path = $row["path"];
+			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
+			$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
+			if ($actualEtag !== $storedEtag) {
+				$changedEtagCount = $changedEtagCount + 1;
+				$changedEtagMessage
+					.= "\nThe etag '$storedEtag' of element '$path' of user '$user' changed to '$actualEtag'.";
+			}
+		}
+		Assert::assertEquals(0, $changedEtagCount, $changedEtagMessage);
+	}
+
+	/**
 	 * @Then the etag of element :path of user :user should not have changed
 	 *
 	 * @param string $path
@@ -933,22 +1000,42 @@ class WebDavPropertiesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
-		$user = $this->featureContext->getActualUsername($user);
-		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
-		$this->userGetsPropertiesOfFolder(
-			$user, $path, $propertiesTable
-		);
+	public function etagOfElementOfUserShouldNotHaveChanged(string $path, string $user) {
+		$actualEtag = $this->getCurrentEtagOfElement($path, $user);
+		$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 		Assert::assertEquals(
-			$this->storedETAG[$user][$path],
-			$this->featureContext->getEtagFromResponseXmlObject(),
+			$storedEtag,
+			$actualEtag,
 			__METHOD__
-			. " The etag of element '$path' of user '$user' was not expected to change. The stored etag was '"
-			. $this->storedETAG[$user][$path]
-			. "' but got '"
-			. $this->featureContext->getEtagFromResponseXmlObject()
-			. "' from the response"
+			. " The etag of element '$path' of user '$user' was not expected to change."
+			. " The stored etag was '$storedEtag' but got '$actualEtag' from the response"
 		);
+	}
+
+	/**
+	 * @Then these etags should have changed:
+	 *
+	 * @param TableNode $etagTable
+	 *
+	 * @return void
+	 */
+	public function theseEtagsShouldHaveChanged(TableNode $etagTable) {
+		$this->featureContext->verifyTableNodeColumns($etagTable, ["user", "path"]);
+		$this->featureContext->verifyTableNodeColumnsCount($etagTable, 2);
+		$unchangedEtagCount = 0;
+		$unchangedEtagMessage = __METHOD__;
+		foreach ($etagTable->getColumnsHash() as $row) {
+			$user = $row["user"];
+			$path = $row["path"];
+			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
+			$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
+			if ($actualEtag === $storedEtag) {
+				$unchangedEtagCount = $unchangedEtagCount + 1;
+				$unchangedEtagMessage
+					.= "\nThe etag '$storedEtag' of element '$path' of user '$user' did not change.";
+			}
+		}
+		Assert::assertEquals(0, $unchangedEtagCount, $unchangedEtagMessage);
 	}
 
 	/**
@@ -959,21 +1046,15 @@ class WebDavPropertiesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
-		$user = $this->featureContext->getActualUsername($user);
-		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
-		$this->userGetsPropertiesOfFolder(
-			$user, $path, $propertiesTable
-		);
+	public function etagOfElementOfUserShouldHaveChanged(string $path, string $user) {
+		$actualEtag = $this->getCurrentEtagOfElement($path, $user);
+		$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 		Assert::assertNotEquals(
-			$this->storedETAG[$user][$path],
-			$this->featureContext->getEtagFromResponseXmlObject(),
+			$storedEtag,
+			$actualEtag,
 			__METHOD__
-			. " The etag of element '$path' of user '$user' was expected to change. The stored etag was '"
-			. $this->storedETAG[$user][$path]
-			. "' and got '"
-			. $this->featureContext->getEtagFromResponseXmlObject()
-			. "' from the response"
+			. " The etag of element '$path' of user '$user' was expected to change."
+			. " The stored etag was '$storedEtag' and also got '$actualEtag' from the response"
 		);
 	}
 
@@ -987,7 +1068,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function theEtagOfElementOfUserOnServerShouldHaveChanged(
-		$path, $user, $server
+		string $path, string $user, string $server
 	) {
 		$previousServer = $this->featureContext->usingServer($server);
 		$this->etagOfElementOfUserShouldHaveChanged($path, $user);
@@ -1004,7 +1085,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function theEtagOfElementOfUserOnServerShouldNotHaveChanged(
-		$path, $user, $server
+		string $path, string $user, string $server
 	) {
 		$previousServer = $this->featureContext->usingServer($server);
 		$this->etagOfElementOfUserShouldNotHaveChanged($path, $user);
